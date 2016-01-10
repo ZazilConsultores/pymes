@@ -18,7 +18,59 @@
           <layoutScriptFile layoutName="layout"/>
         </layoutScriptsDirectory>
       </layoutsDirectory>
-      <modelsDirectory/>
+      <modelsDirectory>
+        <dbTableDirectory>
+          <dbTableFile dbTableName="Estado"/>
+          <dbTableFile dbTableName="Municipio"/>
+          <dbTableFile dbTableName="Domicilio"/>
+          <dbTableFile dbTableName="FiscalesDomicilio"/>
+          <dbTableFile dbTableName="Fiscales"/>
+          <dbTableFile dbTableName="FiscalesTelefonos"/>
+          <dbTableFile dbTableName="Telefono"/>
+          <dbTableFile dbTableName="Email"/>
+          <dbTableFile dbTableName="FiscalesEmail"/>
+          <dbTableFile dbTableName="Banco"/>
+          <dbTableFile dbTableName="BancosEmpresa"/>
+          <dbTableFile dbTableName="Empresa"/>
+          <dbTableFile dbTableName="Clientes"/>
+          <dbTableFile dbTableName="Empresas"/>
+          <dbTableFile dbTableName="Factura"/>
+          <dbTableFile dbTableName="Proveedores"/>
+          <dbTableFile dbTableName="FacturaDetalle"/>
+          <dbTableFile dbTableName="Parametro"/>
+          <dbTableFile dbTableName="Subparametro"/>
+          <dbTableFile dbTableName="TipoProveedor"/>
+          <dbTableFile dbTableName="Multiplos"/>
+          <dbTableFile dbTableName="Producto"/>
+          <dbTableFile dbTableName="Divisa"/>
+          <dbTableFile dbTableName="Impuesto"/>
+          <dbTableFile dbTableName="ProductoImpuesto"/>
+          <dbTableFile dbTableName="Vendedor"/>
+        </dbTableDirectory>
+        <modelFile modelName="Banco"/>
+        <modelFile modelName="Clientes"/>
+        <modelFile modelName="Cliente"/>
+        <modelFile modelName="Divisa"/>
+        <modelFile modelName="Domicilio"/>
+        <modelFile modelName="Email"/>
+        <modelFile modelName="Empresa"/>
+        <modelFile modelName="Empresas"/>
+        <modelFile modelName="Estado"/>
+        <modelFile modelName="Factura"/>
+        <modelFile modelName="FacturaDetalle"/>
+        <modelFile modelName="Fiscales"/>
+        <modelFile modelName="Impuesto"/>
+        <modelFile modelName="Multiplos"/>
+        <modelFile modelName="Municipio"/>
+        <modelFile modelName="Parametro"/>
+        <modelFile modelName="Producto"/>
+        <modelFile modelName="Proveedores"/>
+        <modelFile modelName="Subparametro"/>
+        <modelFile modelName="Telefono"/>
+        <modelFile modelName="TipoProveedor"/>
+        <modelFile modelName="Vendedor"/>
+        <modelFile modelName="Proveedor"/>
+      </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
