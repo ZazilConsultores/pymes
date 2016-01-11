@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Hector Giovanni Rodriguez Ramos
+ * @copyright 2016, Zazil Consultores S.A. de C.V.
+ * @version 1.0.0
+ */
 class Application_Model_Banco
 {
 	private $idBanco;
@@ -81,6 +85,8 @@ class Application_Model_Banco
 		$datos["tipo"] = $this->tipo;
 		$datos["fecha"] = $this->fecha;
 		$datos["saldo"] = $this->saldo;
+		
+		return $datos;
 	}
 	 
 
