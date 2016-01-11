@@ -25,10 +25,21 @@ class Application_Model_Empresa
     public function setIdFiscales($idFiscales) {
         $this->idFiscales = $idFiscales;
     }
+	
+	private $tipo;
+
+    public function getTipo() {
+        return $this->tipo;
+    }
+    
+    public function setTipo($tipo) {
+        $this->tipo = $tipo;
+    }
 
     public function __construct(array $datos)
     {
         $this->idFiscales = $datos["idFiscales"];
+		$this->tipo = $datos["tipo"];
     }
 	
 	public function toArray()
@@ -37,6 +48,7 @@ class Application_Model_Empresa
 		
 		$datos["idEmpresa"] = $this->idEmpresa;
 		$datos["idFiscales"] = $this->idFiscales;
+		$datos["tipo"] = $this->tipo;
 		
 		return $datos;
 	}
