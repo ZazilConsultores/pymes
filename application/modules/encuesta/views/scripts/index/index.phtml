@@ -1,4 +1,156 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>index</b></p>
+<section class="row">
+	<?php $encuestas = $this->encuestas; ?>
+	<article class="col-xs-12 col-sm-6 col-md-3 ">
+		<header>
+			<h4>
+				Encuestas
+			</h4>
+		</header>
+		<div id="contenedorEncuestas">
+			<table class="table table-condensed">
+				<tbody>
+					<tr>
+						<td>
+							<button type="button" class="btn btn-block btn-success" href="#nuevaEncuestaF" data-toggle="modal">
+								<span class="glyphicon glyphicon-plus"></span> Nueva
+							</button>
+						</td>
+					</tr>
+					<?php foreach ($encuestas as $encuesta) : ?>
+					<tr>
+						<td>
+							<button type="button" class="btn btn-block btn-default" tipo="encuesta" hash="<?php echo $encuesta->getIdEncuesta(); ?>">
+								<span class="glyphicon glyphicon-list-alt"></span> <?php echo $encuesta->getDetalle(); ?>
+							</button>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		
+	</article>
+	
+	<article class="col-xs-12 col-sm-6 col-md-3">
+		<header>
+			<h4>Secciones</h4>
+		</header>
+		<div id="contenedorSecciones">
+			
+		</div>
+	</article>
+	
+	<article class="col-xs-12 col-sm-6 col-md-3">
+		<header>
+			<h4>Grupos</h4>
+		</header>
+		<div id="contenedorGrupos">
+			
+		</div>
+	</article>
+	
+	<article class="col-xs-12 col-sm-6 col-md-3">
+		<header>
+			<h4>Preguntas</h4>
+		</header>
+		<div id="contenedorPreguntas">
+			
+		</div>
+	</article>
+</section>
+
+<section class="row">
+	<div id="contentDet" class="panel panel-info">
+		<div class="panel-heading">
+			<h4>Detalles</h4>
+		</div>
+		<div id="detalles" class="panel-body">
+		</div>
+	</div>
+</section>
+
+<div id="nuevaEncuesta" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Alta de Encuesta</h3>
+			</div>
+			<div class="modal-body">
+				<div role="tabpanel">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active" role="presentation"><a href="#secc1" aria-controls="secc1" data-toggle="tab" role="tab">Seccion 1</a></li>
+						<li role="presentation"><a href="#secc2" aria-controls="secc2" data-toggle="tab" role="tab">Seccion 2</a></li>
+						<li role="presentation"><a href="#secc3" aria-controls="secc3" data-toggle="tab" role="tab">Seccion 3</a></li>
+					</ul>
+					
+					<div class="tab-content">
+						<div id="secc1" role="tabpanel" class="tab-pane active">
+							<h3>Seccion 1</h3>
+							<p>Un parrafo de la seccion uno</p>
+						</div>
+						
+						<div id="secc2" role="tabpanel" class="tab-pane">
+							<h3>Seccion 2</h3>
+							<p>Un parrafo de la seccion dos</p>
+						</div>
+						
+						<div id="secc3" role="tabpanel" class="tab-pane">
+							<h3>Seccion 3</h3>
+							<p>Un parrafo de la seccion tres</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-success">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="nuevaEncuestaF" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Alta de Encuesta</h3>
+			</div>
+			<div class="modal-body">
+				<div role="tabpanel">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active" role="presentation"><a href="#seccion1" aria-controls="seccion1" data-toggle="tab" role="tab">Seccion 1</a></li>
+						<li role="presentation"><a href="#seccion2" aria-controls="seccion2" data-toggle="tab" role="tab">Seccion 2</a></li>
+						<li role="presentation"><a href="#seccion3" aria-controls="seccion3" data-toggle="tab" role="tab">Seccion 3</a></li>
+					</ul>
+					
+					<div class="tab-content">
+						<div id="seccion1" role="tabpanel" class="tab-pane active">
+							<h3>Seccion 1</h3>
+							<p>Un parrafo de la seccion uno</p>
+						</div>
+						
+						<div id="seccion2" role="tabpanel" class="tab-pane">
+							<h3>Seccion 2</h3>
+							<p>Un parrafo de la seccion dos</p>
+						</div>
+						
+						<div id="seccion3" role="tabpanel" class="tab-pane">
+							<h3>Seccion 3</h3>
+							<p>Un parrafo de la seccion tres</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-success">Guardar</button>
+			</div>
+		</div>
+	</div>
 </div>

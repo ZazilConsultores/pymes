@@ -1,0 +1,11 @@
+fieldset{
+	overflow: hidden;
+}
+label{
+	padding:2px 1em 0 0;
+}
+
+input[type=radio], input.radio {
+	margin: 2px 0px 0px 2px;
+}
+

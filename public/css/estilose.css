@@ -1,0 +1,46 @@
+.document{
+	background-color: #FFDAB9;
+}
+.documentBack{
+	background-color: #FFDAB9;
+	color: #FFDAB9;
+}
+.encuBack{
+	background-color: #FF1493;
+}
+.seccBack{
+	background-color: #FF69B4;
+}
+.gposBack{
+	background-color: #FCB6C1;
+}
+.ptasBack{
+	background-color: #FCC0CB;
+}
+.details{
+	background-color: #DDA0DD;
+}
+.encuestaDet{
+	background-color: #F8F8FF;
+}
+.encuTitle{
+	color: #FF1493;
+}
+.seccTitle{
+	color: #FF69B4;
+}
+.gposTitle{
+	color: #FCB6C1;
+}
+.ptasTitle{
+	color: #FCC0CB;
+}
+/* ==============================================   *   ==============================================*/
+.oculto{
+	display: none;
+	transition: 1.5s;
+}
+.visible{
+	display: block;
+	transition: 1.5s;
+}
