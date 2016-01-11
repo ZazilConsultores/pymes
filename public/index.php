@@ -30,7 +30,7 @@ $application = new Zend_Application(
  $connlocal = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
-		'password' => 'general',
+		'password' => 'admin',
 		'dbname' => 'general',
 	);
 	

@@ -140,13 +140,43 @@
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
             </controllerFile>
+            <controllerFile controllerName="Categoria">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
-          <formsDirectory enabled="false"/>
+          <formsDirectory>
+            <formFile formName="AltaEncuesta"/>
+            <formFile formName="AltaSeccion"/>
+            <formFile formName="AltaGrupo"/>
+            <formFile formName="AltaPregunta"/>
+            <formFile formName="AltaCategoria"/>
+            <formFile formName="AltaOpcion"/>
+          </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Realizadas"/>
+              <dbTableFile dbTableName="Encuesta"/>
+              <dbTableFile dbTableName="Seccion"/>
+              <dbTableFile dbTableName="Grupo"/>
+              <dbTableFile dbTableName="OpcionesGrupo"/>
+              <dbTableFile dbTableName="Registro"/>
+              <dbTableFile dbTableName="OpcionesPregunta"/>
+              <dbTableFile dbTableName="Pregunta"/>
+              <dbTableFile dbTableName="Respuesta"/>
+              <dbTableFile dbTableName="Categoria"/>
+              <dbTableFile dbTableName="Opcion"/>
+            </dbTableDirectory>
+            <modelFile modelName="Encuesta"/>
+            <modelFile modelName="Seccion"/>
+            <modelFile modelName="Grupo"/>
+            <modelFile modelName="Registro"/>
+            <modelFile modelName="Pregunta"/>
+            <modelFile modelName="Respuesta"/>
+            <modelFile modelName="Categoria"/>
+            <modelFile modelName="Opcion"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -246,6 +276,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Opcion">
                 <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -416,6 +449,9 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Categoria">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
