@@ -11,26 +11,88 @@ class Inventario_DAO_Fiscales implements Inventario_DAO_IFiscales {
 	private $tablaTelefono;
 	private $tablaEmail;
 	
+	private $tablaFiscalesDomicilio;
+	private $tablaFiscalesTelefonos;
+	private $tablaFiscalesEmails;
+	
 	function __construct() {
 		$this->tablaFiscales = new Application_Model_DbTable_Fiscales;
 		$this->tablaDomicilio = new Application_Model_DbTable_Domicilio;
 		$this->tablaTelefono = new Application_Model_DbTable_Telefono;
 		$this->tablaEmail = new Application_Model_DbTable_Email;
-	}
-	
-	public function obtenerFiscales($idEmpresa){
 		
+		$this->tablaFiscalesDomicilio = new Application_Model_DbTable_FiscalesDomicilio;
+		$this->tablaFiscalesTelefonos = new Application_Model_DbTable_FiscalesTelefonos;
+		$this->tablaFiscalesEmails = new Application_Model_DbTable_FiscalesEmail;
 	}
 	
-	public function obtenerDomicilios($idEmpresa){
+	public function obtenerFiscales($idFiscales){
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $idFiscales);
+		$fiscales = $tablaFiscales->fetchRow($select);
+		$fiscalesModel = new Application_Model_Fiscales($fiscales->toArray());
+		$fiscalesModel->setIdFiscales($fiscales->idFiscales);
 		
+		return $fiscalesModel;
 	}
 	
-	public function obtenerTelefonos($idEmpresa){
+	public function obtenerDomicilios($idFiscales){
+		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilio;
+		$select = $tablaFiscalesDomicilio->select()->from($tablaFiscalesDomicilio)->where("idFiscales = ?", $idFiscales);
+		$referenciasDom = $tablaFiscalesDomicilio->fetchAll($select);
+		//===========================================================
+		$tablaDomicilio = $this->tablaDomicilio;
+		$domicilios = array();
+		foreach ($referenciasDom as $referencia) {
+			$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $referencia->idDomicilio);
+			$rowDomicilio = $tablaDomicilio->fetchRow($select);
+			
+			$domicilioModel = new Application_Model_Domicilio($rowDomicilio->toArray());
+			$domicilioModel->setIdDomicilio($rowDomicilio->idDomicilio);
+			$domicilioModel->setIdEstado($rowDomicilio->idEstado);
+			$domicilioModel->setIdMunicipio($rowDomicilio->idMunicipio);
+			$domicilios[] = $domicilioModel;
+		}
 		
+		return $domicilios;
 	}
 	
-	public function obtenerEmails($idEmpresa){
+	public function obtenerTelefonos($idFiscales){
+		$tablaFiscalesTelefono = $this->tablaFiscalesTelefonos;
+		$select = $tablaFiscalesTelefono->select()->from($tablaFiscalesTelefono)->where("idFiscales = ?", $idFiscales);
+		$referenciasTel = $tablaFiscalesTelefono->fetchAll($select);
+		//===========================================================
+		$tablaTelefono = $this->tablaTelefono;
+		$telefonos = array();
+		foreach ($referenciasTel as $referencia) {
+			$select = $tablaTelefono->select()->from($tablaTelefono)->where("idTelefono = ?", $referencia->idTelefono);
+			$rowTelefono = $tablaTelefono->fetchRow($select);
+			
+			$telefonoModel = new Application_Model_Telefono($rowTelefono->toArray());
+			$telefonoModel->setIdTelefono($rowTelefono->idTelefono);
+			$telefonos[] = $telefonoModel;
+		}
+		
+		return $telefonos;
+	}
+	
+	public function obtenerEmails($idFiscales){
+		$tablaFiscalesEmail = $this->tablaFiscalesEmails;
+		$select = $tablaFiscalesEmail->select()->from($tablaFiscalesEmail)->where("idFiscales = ?", $idFiscales);
+		$referenciasEmail = $tablaFiscalesEmail->fetchAll($select);
+		//===========================================================
+		$tablaEmail = $this->tablaEmail;
+		$email = array();
+		foreach ($referenciasEmail as $referencia) {
+			$select = $tablaEmail->select()->from($tablaEmail)->where("idEmail = ?", $referencia->idEmail);
+			$rowEmail= $tablaEmail->fetchRow($select);
+			
+			$emailModel = new Application_Model_Email($rowEmail->toArray());
+			$emailModel->setIdEmail($rowEmail->idEmail);
+			$email[] = $emailModel;
+		}
+		
+		return $email;
 		
 	}
 }

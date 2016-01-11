@@ -38,7 +38,7 @@ class Application_Model_Fiscales
 
     public function __construct(array $datos)
     {
-        $this->idFiscales = $datos["idFiscales"];
+        //$this->idFiscales = $datos["idFiscales"];
 		$this->rfc = $datos["rfc"];
 		$this->razonSocial = $datos["razonSocial"];
     }

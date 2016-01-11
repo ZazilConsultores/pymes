@@ -46,7 +46,7 @@ class Application_Model_Telefono
         $this->extensiones = $extensiones;
     }
 
-    	public function __construct(array $datos)
+    public function __construct(array $datos)
     {
     	$this->lada= $datos["lada"];
     	$this->telefono = $datos["telefono"];

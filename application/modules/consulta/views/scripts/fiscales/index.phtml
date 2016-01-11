@@ -1,0 +1,21 @@
+<?php $fiscales = $this->fiscales; ?>
+<section>
+	<article class="col-md-6">
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>R.F.C.</th>
+					<th>Razon Social</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?php echo $fiscales->getIdFiscales(); ?></td>
+					<td><?php echo $fiscales->getRfc(); ?></td>
+					<td><?php echo $fiscales->getRazonSocial(); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</article>
+</section>
