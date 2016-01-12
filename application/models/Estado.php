@@ -25,31 +25,23 @@ class Application_Model_Estado
     public function setEstado($estado) {
         $this->estado = $estado;
     }
-
-    private $claveEstado;
-
-    public function getClaveEstado() {
-        return $this->claveEstado;
-    }
-    
-    public function setClaveEstado($claveEstado) {
-        $this->claveEstado = $claveEstado;
-    }
 	
 	public function __construct(array $datos)
 	{
-		$this->idEstado = $datos["idEstado"];
+		//$this->idEstado = $datos["idEstado"];
 		$this->estado = $datos["estado"];
-		$this->claveEstado = $datos["claveEstado"];
+		//$this->claveEstado = $datos["claveEstado"];
 	}
 	
 	public function toArray()
 	{
 		$datos = array();
 		
-		$datos["idEstado"] = $this->idEstado;
+		if(!is_null($this->idEstado)) $datos["idEstado"] = $this->idEstado;
 		$datos["estado"] = $this->estado;
-		$datos["claveEstado"] = $this->claveEstado;
+		//$datos["claveEstado"] = $this->claveEstado;
+		
+		return $datos;
 	}
 
 }

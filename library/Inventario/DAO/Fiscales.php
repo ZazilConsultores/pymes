@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Inventario_DAO_Fiscales implements Inventario_DAO_IFiscales {
+class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 	
 	private $tablaFiscales;
 	private $tablaDomicilio;
