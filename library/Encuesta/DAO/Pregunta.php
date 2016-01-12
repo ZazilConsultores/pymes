@@ -14,12 +14,12 @@ class Encuesta_DAO_Pregunta implements Zazil_Interfaces_IPregunta {
 	private $tablaPreguntasGrupo;
 	
 	function __construct() {
-		$this->tablaSeccion = new Application_Model_DbTable_Seccion;
-		$this->tablaGrupo = new Application_Model_DbTable_Grupo;
-		$this->tablaPregunta = new Application_Model_DbTable_Pregunta;
+		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
+		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 		
-		$this->tablaPreguntasSeccion = new Application_Model_DbTable_PreguntasSeccion;
-		$this->tablaPreguntasGrupo = new Application_Model_DbTable_PreguntasGrupo;
+		$this->tablaPreguntasSeccion = new Encuesta_Model_DbTable_PreguntasSeccion;
+		$this->tablaPreguntasGrupo = new Encuesta_Model_DbTable_PreguntasGrupo;
 	}
 	
 	public function obtenerPreguntaId($idPregunta) {
