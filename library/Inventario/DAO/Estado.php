@@ -33,7 +33,7 @@ class Inventario_DAO_Estado implements Inventario_Interfaces_IEstado {
 	public function crearEstado(Application_Model_Estado $estado){
 		$tablaEstado = $this->tablaEstado;
 		print_r($estado->toArray());
-		//$tablaEstado->insert($estado->toArray());
+		$tablaEstado->insert($estado->toArray());
 	}
 	
 	public function editarEstado($idEstado, Application_Model_Estado $estado){}
