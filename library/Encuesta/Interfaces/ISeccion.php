@@ -10,9 +10,9 @@ interface Encuesta_Interfaces_ISeccion{
 	public function obtenerSecciones($idEncuesta);
 	public function obtenerElementos($idEncuesta);
 	// =====================================================================================>>>   Crear
-	public function crearSeccion(Zazil_Model_Seccion $seccion);
+	public function crearSeccion(Encuesta_Model_Seccion $seccion);
 	// =====================================================================================>>>   Editar
-	public function editarSeccion($idSeccion, Zazil_Model_Seccion $seccion);
+	public function editarSeccion($idSeccion, Encuesta_Model_Seccion $seccion);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarSeccion($idSeccion);
 	

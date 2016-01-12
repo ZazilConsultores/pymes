@@ -25,16 +25,6 @@ class Encuesta_Model_Encuesta
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
-
-	private $detalle;
-
-    public function getDetalle() {
-        return $this->detalle;
-    }
-    
-    public function setDetalle($detalle) {
-        $this->detalle = $detalle;
-    }
 	
 	private $descripcion;
 
@@ -46,17 +36,17 @@ class Encuesta_Model_Encuesta
         $this->descripcion = $descripcion;
     }
     
-    private $fechaRegistro;
+    private $fecha;
 
-    public function getFechaRegistro() {
-        return $this->fechaRegistro;
+    public function getFecha() {
+        return $this->fecha;
     }
     
-    public function setFechaRegistro($fechaRegistro) {
-        $this->fechaRegistro = $fechaRegistro;
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
     }
-	
-	private $fechaInicio;
+
+    private $fechaInicio;
 
     public function getFechaInicio() {
         return $this->fechaInicio;
@@ -91,27 +81,16 @@ class Encuesta_Model_Encuesta
 		$this->nombre = $datos["nombre"];
 		$this->detalle = $datos["detalle"];
 		$this->descripcion = $datos["descripcion"];
-		$this->fechaRegistro = $datos["fechaRegistro"];
+		$this->fecha = $datos["fecha"];
 		$this->fechaInicio = $datos["fechaInicio"];
 		$this->fechaFin = $datos["fechaFin"];
 		$this->estatus = $datos["estatus"];
-		//Generamos el ID de esta entidad
-		//Este caso es cuando lo recuperamos de la base de datos (previamente generado)
-		if(isset($datos["idEncuesta"]) && ! is_null($datos["idEncuesta"])){
-			$this->idEncuesta = $datos["idEncuesta"];
-		}else{
-			//Este caso es cuando lo generamos en la aplicacion, es la primera vez que se genera.
-			$conjunto = $datos["nombre"] . $datos["detalle"] . $datos["descripcion"] . $datos["fechaRegistro"];
-			$conjunto .= $datos["fechaInicio"] . $datos["fechaFin"] . $datos["estatus"];
-			
-			$this->idEncuesta = hash("adler32", $conjunto);
-			//echo sha1($conjunto);
-		}
 	}
 	
 	public function toArray() {
 		$datos = array();
 		
+		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["nombre"] = $this->nombre;
 		$datos["detalle"] = $this->detalle;
 		$datos["descripcion"] = $this->descripcion;
@@ -119,14 +98,6 @@ class Encuesta_Model_Encuesta
 		$datos["fechaInicio"] = $this->fechaInicio;
 		$datos["fechaFin"] = $this->fechaFin;
 		$datos["estatus"] = $this->estatus;
-		
-		if(isset($this->idEncuesta) && ! is_null($this->idEncuesta)){
-			 $datos["idEncuesta"] = $this->idEncuesta;
-		}else{
-			$conjunto = $this->nombre . $this->detalle . $this->descripcion . $this->fechaRegistro;
-			$conjunto .= $this->fechaInicio . $this->fechaFin . $this->estatus;
-			$datos["idEncuesta"] = hash("adler32", $conjunto);
-		}
 		
 		return $datos;
 	}

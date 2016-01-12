@@ -39,7 +39,7 @@ class Encuesta_Model_Respuesta
     public function __construct(array $datos)
     {
     	//$this->idRespuesta = $datos["idRespuesta"];
-        $this->idPregunta = $datos["idPregunta"];
+        //$this->idPregunta = $datos["idPregunta"];
 		$this->respuesta = $datos["respuesta"];
     }
 	

@@ -8,68 +8,82 @@ class Encuesta_Model_Pregunta
 {
 	private $idPregunta;
 
-    function getIdPregunta() {
+    public function getIdPregunta() {
         return $this->idPregunta;
     }
     
-    function setIdPregunta($idPregunta) {
+    public function setIdPregunta($idPregunta) {
         $this->idPregunta = $idPregunta;
     }
-    
-	private $nombre;
 
-    function getNombre() {
-        return $this->nombre;
+    private $pregunta;
+
+    public function getPregunta() {
+        return $this->pregunta;
     }
     
-    function setNombre($nombre) {
-        $this->nombre = $nombre;
+    public function setPregunta($pregunta) {
+        $this->pregunta = $pregunta;
     }
-	
-	private $tipo;
 
-    function getTipo() {
+    private $origen;
+
+    public function getOrigen() {
+        return $this->origen;
+    }
+    
+    public function setOrigen($origen) {
+        $this->origen = $origen;
+    }
+
+    private $idOrigen;
+
+    public function getIdOrigen() {
+        return $this->idOrigen;
+    }
+    
+    public function setIdOrigen($idOrigen) {
+        $this->idOrigen = $idOrigen;
+    }
+
+    private $tipo;
+
+    public function getTipo() {
         return $this->tipo;
     }
     
-    function setTipo($tipo) {
+    public function setTipo($tipo) {
         $this->tipo = $tipo;
     }
-	
-	private $orden;
 
-    function getOrden() {
+    private $orden;
+
+    public function getOrden() {
         return $this->orden;
     }
     
-    function setOrden($orden) {
+    public function setOrden($orden) {
         $this->orden = $orden;
     }
-		
-    function __construct(array $datos) {
-		$this->nombre = $datos["nombre"];
-		if(array_key_exists("idPregunta", $datos)){
-			$this->idPregunta = $datos["idPregunta"];
-		}else{
-			$this->idPregunta = hash("adler32", $datos["nombre"]);
-		}
-		//$this->idPregunta = hash("adler32", $datos["pregunta"]);
-		//if(array_key_exists("origen", $datos)) $this->origen = $datos["origen"];
-		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
-		if(array_key_exists("tipo", $datos)){
-			$this->tipo = $datos["tipo"];
-		}else{
-			$this->tipo = "AB";
-		}
+
+    public function __construct(array $datos) {
+    	//$this->idPregunta = $datos["idPregunta"];
+		$this->pregunta = $datos["pregunta"];
+		$this->origen = $datos["origen"];
+		$this->idOrigen = $datos["idOrigen"];
+		$this->tipo = $datos["tipo"];
+		$this->orden = $datos["orden"];
 	}
 	
 	public function toArray() {
 		$datos = array();
 		
 		$datos["idPregunta"] = $this->idPregunta;
-		$datos["nombre"] = $this->nombre;
-		$datos["orden"] = $this->orden;
+		$datos["pregunta"] = $this->pregunta;
+		$datos["origen"] = $this->origen;
+		$datos["idOrigen"] = $this->idOrigen;
 		$datos["tipo"] = $this->tipo;
+		$datos["orden"] = $this->orden;
 		
 		return $datos;
 	}

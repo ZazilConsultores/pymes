@@ -4,14 +4,17 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Encuesta_DAO_Grupo implements Zazil_Interfaces_IGrupo {
+class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	
 	private $tablaSeccion;
 	private $tablaGrupo;
-	
+	private $tablaPreguntas;
+		
 	function __construct() {
-		$this->tablaSeccion = new Application_Model_DbTable_Seccion;
-		$this->tablaGrupo = new Application_Model_DbTable_Grupo;
+		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
+		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
+		
 	}
 	
 	public function obtenerGrupoId($idGrupo) {
@@ -22,7 +25,7 @@ class Encuesta_DAO_Grupo implements Zazil_Interfaces_IGrupo {
 		return $grupoM;
 	}
 	
-	public function crearGrupo(Zazil_Model_Grupo $grupo) {
+	public function crearGrupo(Encuesta_Model_Grupo $grupo) {
 		$tablaSeccion = $this->tablaSeccion;
 		$tablaGrupo = $this->tablaGrupo;
 		

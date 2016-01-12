@@ -9,9 +9,9 @@ interface Encuesta_Interfaces_IEncuesta{
 	public function obtenerEncuestaId($idEncuesta);
 	public function obtenerEncuestas();
 	// =====================================================================================>>>   Insertar
-	public function crearEncuesta(Zazil_Model_Encuesta $encuesta);
+	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
 	// =====================================================================================>>>   Actualizar
-	public function editarEncuesta($idEncuesta, Zazil_Model_Encuesta $encuesta);
+	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarEncuesta($idEncuesta);
 	

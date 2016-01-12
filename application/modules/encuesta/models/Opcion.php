@@ -8,64 +8,59 @@ class Encuesta_Model_Opcion
 {
 	private $idOpcion;
 
-    function getIdOpcion() {
+    public function getIdOpcion() {
         return $this->idOpcion;
     }
     
-    function setIdOpcion($idOpcion) {
+    public function setIdOpcion($idOpcion) {
         $this->idOpcion = $idOpcion;
     }
-	
-	private $idCategoria;
 
-    function getIdCategoria() {
+    private $idCategoria;
+
+    public function getIdCategoria() {
         return $this->idCategoria;
     }
     
-    function setIdCategoria($idCategoria) {
+    public function setIdCategoria($idCategoria) {
         $this->idCategoria = $idCategoria;
     }
-    
-	private $nombre;
 
-    function getNombre() {
-        return $this->nombre;
+    private $opcion;
+
+    public function getOpcion() {
+        return $this->opcion;
     }
     
-    function setNombre($nombre) {
-        $this->nombre = $nombre;
+    public function setOpcion($opcion) {
+        $this->opcion = $opcion;
     }
-    
-	private $orden;
 
-    function getOrden() {
+    private $orden;
+
+    public function getOrden() {
         return $this->orden;
     }
     
-    function setOrden($orden) {
+    public function setOrden($orden) {
         $this->orden = $orden;
     }
-	
-    function __construct(array $datos) {
-    	$this->setIdCategoria($datos["idCategoria"]);
-		$this->setNombre($datos["nombre"]);
-		if(array_key_exists("idOpcion", $datos)){
-			$this->setIdOpcion($datos["idCategoria"]);
-		}else{
-			$this->setIdOpcion(hash("adler32", $datos["idCategoria"] . $datos["nombre"]));
-		}
-		
-		if(array_key_exists("orden", $datos)) $this->setOrden($datos["orden"]);
-		
+
+    public function __construct(array $datos) {
+    	
+		//$this->idOpcion = $datos["idOpcion"];
+		//$this->idCategoria = $datos["idCategoria"];
+		$this->opcion = $datos["opcion"];
+		$this->orden = $datos["orden"];
 	}
 	
 	public function toArray() {
 		$datos = array();
 		
-		$datos["idOpcion"] = $this->getIdOpcion();
-		$datos["idCategoria"] = $this->getIdCategoria();
-		$datos["nombre"] = $this->getNombre();
-		$datos["orden"] = $this->getOrden();
+		$datos["idOpcion"] = $this->idOpcion;
+		$datos["idCategoria"] = $this->idCategoria;
+		$datos["opcion"] = $this->opcion;
+		$datos["orden"] = $this->orden;
 		
 		return $datos;
 	}

@@ -9,9 +9,9 @@ interface Encuesta_Interfaces_IPregunta{
 	public function obtenerPreguntaId($idPregunta);
 	public function obtenerPreguntas($idPadre, $tipoPadre);
 	// =====================================================================================>>>   Crear
-	public function crearPregunta($idPadre, $tipoPadre, Zazil_Model_Pregunta $pregunta);
+	public function crearPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta);
 	// =====================================================================================>>>   Editar
-	public function editarPregunta($idPadre, $tipoPadre, Zazil_Model_Pregunta $pregunta);
+	public function editarPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarPregunta($idPadre, $tipoPadre, $idPregunta);
 }

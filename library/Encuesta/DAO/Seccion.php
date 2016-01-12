@@ -7,71 +7,82 @@
 class Encuesta_DAO_Seccion implements Zazil_Interfaces_ISeccion {
 	
 	private $tablaEncuesta;
-	private $encuestaDAO;
 	private $tablaSeccion;
+	private $tablaGrupo;
+	private $tablaPregunta;
 	
-	private $preguntaDAO;
-	private $grupoDAO;
-	
-	function __construct() {
+	public function __construct() {
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
-		$this->encuestaDAO = new Encuesta_DAO_Encuesta;
-		
-		$this->grupoDAO = new Encuesta_DAO_Grupo;
-		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
+		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 	}
 	// =====================================================================================>>>   Buscar
 	public function obtenerSeccionId($idSeccion) {
-		$tabla = $this->tablaSeccion;
+		$tablaSeccion = $this->tablaSeccion;
 		
-		$select = $tabla->select()->from($tabla)->where("idSeccion = ?", $idSeccion);
-		$seccion = $tabla->fetchRow($select);
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
+		$rowSeccion = $tablaSeccion->fetchRow($select);
 		
-		$seccionM = new Zazil_Model_Seccion($seccion->toArray());
+		$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
 		
-		return $seccionM;
+		return $modelSeccion;
 	}
 	
 	public function obtenerSecciones($idEncuesta) {
-		$tabla = $this->tablaSeccion;
-		$select = $tabla->select()->from($tabla)->where("idEncuesta = ?", $idEncuesta);
+		$tablaSeccion = $this->tablaSeccion;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta = ?", $idEncuesta);
 		
-		$secciones = $tabla->fetchAll($select);
-		$arraySecciones = array();
+		$rowsSecciones = $tablaSeccion->fetchAll($select);
+		$modelSecciones = array();
 		
-		foreach ($secciones as $seccion) {
-			$secM = new Zazil_Model_Seccion($seccion->toArray());
-			$arraySecciones[] = $secM;
+		foreach ($rowsSecciones as $rowSeccion) {
+			$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
+			$modelSecciones[] = $modelSeccion;
 		}
 		
-		return $arraySecciones;
+		return $modelSecciones;
 	}
 	
 	public function obtenerElementos($idSeccion) {
-		$grupoDAO = $this->grupoDAO;
-		$preguntaDAO = $this->preguntaDAO;
+		$tablaGrupo = $this->tablaGrupo;
+		$tablaPregunta = $this->tablaPregunta;
+		
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
+		$gruposSeccion = $tablaGrupo->fetchAll($select);
+		
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
+		$preguntasSeccion = $tablaPregunta->fetchAll($select);
+		
 		$elementos = array();
 		
-		$grupos = $grupoDAO->obtenerGrupos($idSeccion);
-		$preguntas = $preguntaDAO->obtenerPreguntas($idSeccion, "seccion");
-		foreach ($grupos as $grupo) {
-			$elementos[$grupo->getOrden()] = $grupo;
+		foreach ($gruposSeccion as $grupo) {
+			$grupoModel = new Encuesta_Model_Grupo($grupo->toArray());
+			$grupoModel->setIdGrupo($grupo->idGrupo);
+			$grupoModel->setIdSeccion($grupo->idSeccion);
+			$grupoModel->setOrden($grupo->orden);
+			$grupoModel->setElementos($grupo->elementos);
+			
+			$elementos[$grupo->orden] = $grupoModel; 
 		}
 		
-		foreach ($preguntas as $pregunta) {
-			$elementos[$pregunta->getOrden()] = $pregunta;
+		foreach ($preguntasSeccion as $pregunta) {
+			$preguntaModel = new Encuesta_Model_Pregunta($pregunta->toArray());
+			$preguntaModel->setIdPregunta($pregunta->idPregunta);
+			
+			$elementos[$pregunta->orden] = $preguntaModel;
 		}
+		
 		ksort($elementos);
 		
 		return $elementos;
 	}
 	// =====================================================================================>>>   Crear
-	public function crearSeccion(Zazil_Model_Seccion $seccion) {
+	public function crearSeccion(Encuesta_Model_Seccion $seccion) {
 		//primero buscamos todas las secciones asociadas con la encuesta, si no hay esta se designa como la seccion 0
-		$tabla = $this->tablaSeccion;
+		$tablaSeccion = $this->tablaSeccion;
 		//Seleccionamos todas las secciones de la encuesta
-		$select = $tabla->select()->from($tabla)->where("idEncuesta = ?", $seccion->getIdEncuesta());
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta = ?", $seccion->getIdEncuesta());
 		$orden = count($tabla->fetchAll($select));
 		$orden++;
 		$seccion->setOrden($orden);
@@ -79,16 +90,16 @@ class Encuesta_DAO_Seccion implements Zazil_Interfaces_ISeccion {
 		$tabla->insert($seccion->toArray());
 	}
 	// =====================================================================================>>>   Editar
-	public function editarSeccion($idSeccion, Zazil_Model_Seccion $seccion) {
-		$tabla = $this->tablaSeccion;
-		$select = $tabla->select()->from($tabla)->where("idSeccion = ?", $idSeccion); 
+	public function editarSeccion($idSeccion, Encuesta_Model_Seccion $seccion) {
+		$tablaSeccion = $this->tablaSeccion;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion); 
 		$tabla->update($seccion->toArray(), $select);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarSeccion($idSeccion) {
-		$tabla = $this->tablaSeccion;
-		$select = $tabla->select()->from($tabla)->where("idSeccion = ?", $idSeccion);
-		$tabla->delete($select);
+		$tablaSeccion = $this->tablaSeccion;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
+		$tablaSeccion->delete($select);
 	}
 	
 	

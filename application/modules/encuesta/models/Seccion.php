@@ -8,67 +8,70 @@ class Encuesta_Model_Seccion
 {
 	private $idSeccion;
 
-    function getIdSeccion() {
+    public function getIdSeccion() {
         return $this->idSeccion;
     }
     
-    function setIdSeccion($idSeccion) {
+    public function setIdSeccion($idSeccion) {
         $this->idSeccion = $idSeccion;
     }
 
-	private $idEncuesta;
+    private $idEncuesta;
 
-    function getIdEncuesta() {
+    public function getIdEncuesta() {
         return $this->idEncuesta;
     }
     
-    function setIdEncuesta($idEncuesta) {
+    public function setIdEncuesta($idEncuesta) {
         $this->idEncuesta = $idEncuesta;
     }
 
-	private $nombre;
+    private $nombre;
 
-    function getNombre() {
+    public function getNombre() {
         return $this->nombre;
     }
     
-    function setNombre($nombre) {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
-    
-	private $orden;
 
-    function getOrden() {
+    private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+    }
+
+    private $orden;
+
+    public function getOrden() {
         return $this->orden;
     }
     
-    function setOrden($orden) {
+    public function setOrden($orden) {
         $this->orden = $orden;
     }
-	
-	private $elementos;
-	
-	function getElementos() {
+
+    private $elementos;
+
+    public function getElementos() {
         return $this->elementos;
     }
     
-    function setElementos($elementos) {
+    public function setElementos($elementos) {
         $this->elementos = $elementos;
     }
-	
-	function __construct(array $datos) {
+
+    public function __construct(array $datos) {
 		
-		$this->idEncuesta = $datos["idEncuesta"];
 		$this->nombre = $datos["nombre"];
-		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
-		if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
-		
-		if(array_key_exists("idSeccion", $datos)){
-			$this->idSeccion = $datos["idSeccion"];
-		}else{
-			$conjunto = $datos["idEncuesta"] . $datos["nombre"];
-			$this->idSeccion = hash("adler32", $conjunto);
-		}
+		$this->fecha = $datos["fecha"];
+		//if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
+		//if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
 	}
 	
 	public function toArray() {
@@ -77,6 +80,7 @@ class Encuesta_Model_Seccion
 		$datos["idSeccion"] = $this->idSeccion;
 		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["nombre"] = $this->nombre;
+		$datos["fecha"] = $this->fecha;
 		$datos["orden"] = $this->orden;
 		$datos["elementos"] = $this->elementos;
 		
