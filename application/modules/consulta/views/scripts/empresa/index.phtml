@@ -1,0 +1,29 @@
+<?php
+	$empresas = $this->empresas;
+	$clientes = $this->clientes;
+	$proveedores = $this->proveedores;
+ ?>
+<section class="row">
+	<table>
+		<tbody>
+			<?php foreach ($empresas as $empresa): ?>
+			<tr>
+				<td><?php echo $empresa->getRfc() ?></td>
+				<td><?php echo $empresa->getRazonSocial() ?></td>
+				<td>Empresa</td>
+				<td>
+					<a class="btn btn-warning btn-block" href="<?php echo $this->url(array("module" => "consulta", "controller" => "fiscales", "action" => "index", "idFiscales" => $empresa->getIdFiscales())) ?>">
+						Administrar
+					</a>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</section>
+<section class="row">
+	
+</section>
+<section class="row">
+	
+</section>
