@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Encuesta_DAO_Pregunta implements Zazil_Interfaces_IPregunta {
+class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 	
 	private $tablaSeccion;
 	private $tablaGrupo;
