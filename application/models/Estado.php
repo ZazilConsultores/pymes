@@ -26,11 +26,21 @@ class Application_Model_Estado
         $this->estado = $estado;
     }
 	
+	private $capital;
+
+    public function getCapital() {
+        return $this->capital;
+    }
+    
+    public function setCapital($capital) {
+        $this->capital = $capital;
+    }
+	
 	public function __construct(array $datos)
 	{
 		//$this->idEstado = $datos["idEstado"];
 		$this->estado = $datos["estado"];
-		//$this->claveEstado = $datos["claveEstado"];
+		$this->capital = $datos["capital"];
 	}
 	
 	public function toArray()
@@ -39,7 +49,7 @@ class Application_Model_Estado
 		
 		if(!is_null($this->idEstado)) $datos["idEstado"] = $this->idEstado;
 		$datos["estado"] = $this->estado;
-		//$datos["claveEstado"] = $this->claveEstado;
+		$datos["capital"] = $this->capital;
 		
 		return $datos;
 	}

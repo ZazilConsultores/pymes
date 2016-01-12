@@ -16,16 +16,16 @@ class Encuesta_Model_Categoria
         $this->idCategoria = $idCategoria;
     }
 	
-	private $nombre;
+	private $categoria;
 
-    function getNombre() {
-        return $this->nombre;
+    public function getCategoria() {
+        return $this->categoria;
     }
     
-    function setNombre($nombre) {
-        $this->nombre = $nombre;
+    public function setCategoria($categoria) {
+        $this->categoria = $categoria;
     }
-	
+
 	private $descripcion;
 
     function getDescripcion() {
@@ -37,20 +37,16 @@ class Encuesta_Model_Categoria
     }
     
     function __construct(array $datos) {
-		$this->setNombre($datos["nombre"]);
-		$this->setDescripcion($datos["descripcion"]);
-		if(array_key_exists("idCategoria", $datos)){
-			$this->setIdCategoria($datos["idCategoria"]);
-		}else{
-			$this->setIdCategoria(hash("adler32", $datos["nombre"]));
-		}
+    	//$this->idCategoria = $datos["idCategoria"];
+    	$this->categoria = $datos["categoria"];
+		$this->descripcion = $datos["descripcion"];
 	}
 	
 	public function toArray() {
 		$datos = array();
 		
 		$datos["idCategoria"] = $this->getIdCategoria();
-		$datos["nombre"] = $this->getNombre();
+		$datos["categoria"] = $this->getCategoria();
 		$datos["descripcion"] = $this->getDescripcion();
 		
 		return $datos;

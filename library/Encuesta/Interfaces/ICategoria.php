@@ -10,9 +10,9 @@ interface Encuesta_Interfaces_ICategoria{
 	public function obtenerOpciones($idCategoria);
 	public function obtenerCategorias();
 	// =====================================================================================>>>   Insertar
-	public function crearCategoria(Zazil_Model_Categoria $categoria);
+	public function crearCategoria(Encuesta_Model_Categoria $categoria);
 	// =====================================================================================>>>   Actualizar
-	public function editarCategoria($idCategoria, Zazil_Model_Categoria $categoria);
+	public function editarCategoria($idCategoria, Encuesta_Model_Categoria $categoria);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarCategoria($idCategoria);
 }

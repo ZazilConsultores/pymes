@@ -6,17 +6,27 @@ class Sistema_Form_AltaEstado extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $subForm = new Zend_Form_SubForm();
+		$subForm->setLegend("Alta de Estado");
+		
         $eEstado = new Zend_Form_Element_Text('estado');
-		$eEstado->setLabel('Nombre:');
+		$eEstado->setLabel('Estado:');
 		$eEstado->setAttrib("class", "form-control");
 		
+		$eCapital = new Zend_Form_Element_Text('capital');
+		$eCapital->setLabel('Capital:');
+		$eCapital->setAttrib("class", "form-control");
 		
 		$eAgregar = new Zend_Form_Element_Submit('agregar');
 		$eAgregar->setLabel('Agregar');
 		$eAgregar->setAttrib("class", "btn btn-primary");
 		
-		$this->addElement($eEstado);
-		$this->addElement($eAgregar);
+		$subForm->addElements(array($eEstado, $eCapital, $eAgregar));
+		
+		//$this->addSubForm($subForm, "alta");
+		//$this->addElement($eEstado);
+		//$this->addElement($eAgregar);
+		$this->addElements(array($eEstado, $eCapital, $eAgregar));
     }
 
 

@@ -8,81 +8,83 @@ class Encuesta_Model_Grupo
 {
 	private $idGrupo;
 
-    function getIdGrupo() {
+    public function getIdGrupo() {
         return $this->idGrupo;
     }
     
-    function setIdGrupo($idGrupo) {
+    public function setIdGrupo($idGrupo) {
         $this->idGrupo = $idGrupo;
     }
-
+	
 	private $idSeccion;
 
-    function getIdSeccion() {
+    public function getIdSeccion() {
         return $this->idSeccion;
     }
     
-    function setIdSeccion($idSeccion) {
+    public function setIdSeccion($idSeccion) {
         $this->idSeccion = $idSeccion;
     }
-	
-	private $nombre;
 
-    function getNombre() {
+    private $nombre;
+
+    public function getNombre() {
         return $this->nombre;
     }
     
-    function setNombre($nombre) {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
-	
-	private $tipo;
 
-    function getTipo() {
+    private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+    }
+
+    private $tipo;
+
+    public function getTipo() {
         return $this->tipo;
     }
     
-    function setTipo($tipo) {
+    public function setTipo($tipo) {
         $this->tipo = $tipo;
     }
-	
-	private $elementos;
-	
-	public function getElementos()
-	{
-		return $this->elementos;
-	}
-	
-	public function setElementos($elementos)
-	{
-		$this->elementos = $elementos;
-	}
 
-	private $orden;
+    private $orden;
 
-    function getOrden() {
+    public function getOrden() {
         return $this->orden;
     }
     
-    function setOrden($orden) {
+    public function setOrden($orden) {
         $this->orden = $orden;
     }
-	
-	function __construct(array $datos) {
+
+    private $elementos;
+
+    public function getElementos() {
+        return $this->elementos;
+    }
+    
+    public function setElementos($elementos) {
+        $this->elementos = $elementos;
+    }
+
+    public function __construct(array $datos) {
 		
-		$this->idSeccion = $datos["idSeccion"];
+		//$this->idGrupo = $datos["idGrupo"];
+		//$this->idSeccion = $datos["idSeccion"];
 		$this->nombre = $datos["nombre"];
 		$this->tipo = $datos["tipo"];
-		
-		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
-		if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
-		
-		if(array_key_exists("idGrupo", $datos)){
-			$this->idGrupo = $datos["idGrupo"];
-		} else {
-			$conjunto = $this->idSeccion . $this->nombre . $this->tipo;
-			$this->idGrupo = hash("adler32", $conjunto);
-		}
+		$this->fecha = $datos["fecha"];
+		//if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
+		//if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
 	}
 	
 	public function toArray()
@@ -93,6 +95,7 @@ class Encuesta_Model_Grupo
 		$datos["idSeccion"] = $this->idSeccion;
 		$datos["nombre"] = $this->nombre;
 		$datos["tipo"] = $this->tipo;
+		$datos["fecha"] = $this->fecha;
 		$datos["orden"] = $this->orden;
 		$datos["elementos"] = $this->elementos;
 		

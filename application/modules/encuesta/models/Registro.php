@@ -16,16 +16,6 @@ class Encuesta_Model_Registro
         $this->idRegistro = $idRegistro;
     }
 
-    private $claveRegistro;
-
-    public function getClaveRegistro() {
-        return $this->claveRegistro;
-    }
-    
-    public function setClaveRegistro($claveRegistro) {
-        $this->claveRegistro = $claveRegistro;
-    }
-
     private $referencia;
 
     public function getReferencia() {
@@ -46,14 +36,14 @@ class Encuesta_Model_Registro
         $this->tipo = $tipo;
     }
 
-    private $fechaAlta;
+    private $fecha;
 
-    public function getFechaAlta() {
-        return $this->fechaAlta;
+    public function getFecha() {
+        return $this->fecha;
     }
     
-    public function setFechaAlta($fechaAlta) {
-        $this->fechaAlta = $fechaAlta;
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
     }
 
     private $nombres;
@@ -78,13 +68,10 @@ class Encuesta_Model_Registro
 
     public function __construct(array $datos)
     {
-    	if(array_key_exists("idRegistro", $datos)){
-    		$this->idRegistro = $datos["idRegistro"];
-			$this->claveRegistro = Util_Secure::generateKey($datos, "sha1");
-    	}
+    	//$this->idRegistro = $datos["idRegistro"];
 		$this->referencia = $datos["referencia"];
 		$this->tipo = $datos["tipo"];
-		$this->fechaAlta = $datos["fechaAlta"];
+		$this->fecha = $datos["fecha"];
 		$this->nombres = $datos["nombres"];
 		$this->apellidos = $datos["apellidos"];
     }
@@ -94,10 +81,9 @@ class Encuesta_Model_Registro
 		$datos = array();
 		
 		$datos["idRegistro"] = $this->idRegistro;
-		$datos["claveRegistro"] = $this->claveRegistro;
 		$datos["referencia"] = $this->referencia;
 		$datos["tipo"] = $this->tipo;
-		$datos["fechaAlta"] = $this->fechaAlta;
+		$datos["fecha"] = $this->fecha;
 		$datos["nombres"] = $this->nombres;
 		$datos["apellidos"] = $this->apellidos;
 		

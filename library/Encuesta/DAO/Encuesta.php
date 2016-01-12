@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Encuesta_DAO_Encuesta implements Zazil_Interfaces_IEncuesta {
+class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
 	
@@ -16,27 +16,31 @@ class Encuesta_DAO_Encuesta implements Zazil_Interfaces_IEncuesta {
 	/**
 	 * @method obtenerEncuestaId Obtiene una encuesta en base a un id proporcionado.
 	 * @param int $idEncuesta
-	 * @return Zazil_Model_Encuesta $encuestaM
+	 * @return Encuesta_Model_Encuesta $encuestaM
 	 */
 	public function obtenerEncuestaId($idEncuesta) {
-		$tabla = $this->tablaEncuesta;
-		$select = $tabla->select()->from($tabla)->where("idEncuesta = ?", $idEncuesta);
-		$encuesta = $tabla->fetchRow($select);
+		$tablaEncuesta = $this->tablaEncuesta;
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+		$encuesta = $tablaEncuesta->fetchRow($select);
 		
-		$encuestaM = New Zazil_Model_Encuesta($encuesta->toArray());
+		$encuestaM = New Encuesta_Model_Encuesta($encuesta->toArray());
+		$encuestaM->setIdEncuesta($encuesta->idEncuesta);
+		
 		return $encuestaM;
 	}
 	
 	/**
 	 * @method obtenerEncuestas Obtiene todas las encuestas existentes.
-	 * @return array Zazil_Model_Encuesta
+	 * @return array Encuesta_Model_Encuesta
 	 */
 	public function obtenerEncuestas() {
-		$tabla = $this->tablaEncuesta;
-		$encuestas = $tabla->fetchAll();
+		$tablaEncuesta = $this->tablaEncuesta;
+		$encuestas = $tablaEncuesta->fetchAll();
 		$encuestasArray = array();
 		foreach ($encuestas as $encuesta) {
-			$encuestaModel = new Zazil_Model_Encuesta($encuesta->toArray());
+			$encuestaModel = new Encuesta_Model_Encuesta($encuesta->toArray());
+			$encuestaModel->setIdEncuesta($$encuesta->idEncuesta);
+			
 			$encuestasArray[] = $encuestaModel;
 		}
 		
@@ -46,23 +50,23 @@ class Encuesta_DAO_Encuesta implements Zazil_Interfaces_IEncuesta {
 	
 	/**
 	 * @method crearEncuesta Crea una encuesta pasandole un model.
-	 * @param Zazil_Model_Encuesta $encuesta
+	 * @param Encuesta_Model_Encuesta $encuesta
 	 */
-	public function crearEncuesta(Zazil_Model_Encuesta $encuesta) {
-		$tabla = $this->tablaEncuesta;
-		$tabla->insert($encuesta->toArray());
+	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta) {
+		$tablaEncuesta = $this->tablaEncuesta;
+		$tablaEncuesta->insert($encuesta->toArray());
 	}
 	//          =========================================================================   >>>   Actualizar
-	public function editarEncuesta($idEncuesta, Zazil_Model_Encuesta $encuesta) {
-		$tabla = $this->tablaEncuesta;
-		$select = $tabla->select()->from($tabla)->where("idEncuesta = ?", $idEncuesta);
-		$tabla->update($encuesta->toArray(), $select);
+	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta) {
+		$tablaEncuesta = $this->tablaEncuesta;
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+		$tablaEncuesta->update($encuesta->toArray(), $select);
 	}
 	//          =========================================================================   >>>   Eliminar
 	public function eliminarEncuesta($idEncuesta) {
-		$tabla = $this->tablaEncuesta;
-		$select = $tabla->select()->from($tabla)->where("idEncuesta = ?", $idEncuesta);
-		$tabla->delete($select);
+		$tablaEncuesta = $this->tablaEncuesta;
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+		$tablaEncuesta->delete($select);
 	}
 	
 }

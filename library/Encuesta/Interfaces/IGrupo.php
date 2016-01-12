@@ -9,9 +9,9 @@ interface Encuesta_Interfaces_IGrupo{
 	public function obtenerGrupoId($idGrupo);
 	public function obtenerGrupos($idSeccion);
 	// =====================================================================================>>>   Crear
-	public function crearGrupo(Zazil_Model_Grupo $grupo);
+	public function crearGrupo(Encuesta_Model_Grupo $grupo);
 	// =====================================================================================>>>   Editar
-	public function editarGrupo($idGrupo, Zazil_Model_Grupo $grupo);
+	public function editarGrupo($idGrupo, Encuesta_Model_Grupo $grupo);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarGrupo($idGrupo);
 }
