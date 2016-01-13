@@ -33,12 +33,12 @@ $application = new Zend_Application(
 		'password' => 'admin',
 		'dbname' => 'general',
 	);
-/*$connlocaldos = array(
+ $connlocaldos = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
 		'dbname' => 'generaldos',
-	);	*/
+	);
 $connserver = array(
 		'host' => '192.168.1.5',
 		'username' => 'inventario',
