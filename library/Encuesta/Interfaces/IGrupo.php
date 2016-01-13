@@ -4,10 +4,11 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-interface Encuesta_Interfaces_IGrupo{
+interface Encuesta_Interfaces_IGrupo {
 	// =====================================================================================>>>   Buscar
-	public function obtenerGrupoId($idGrupo);
+	public function obtenerGrupo($idGrupo);
 	public function obtenerGrupos($idSeccion);
+	public function obtenerPreguntas($idGrupo);
 	// =====================================================================================>>>   Crear
 	public function crearGrupo(Encuesta_Model_Grupo $grupo);
 	// =====================================================================================>>>   Editar

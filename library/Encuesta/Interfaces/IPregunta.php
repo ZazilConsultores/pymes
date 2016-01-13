@@ -6,12 +6,16 @@
  */
 interface Encuesta_Interfaces_IPregunta{
 	// =====================================================================================>>>   Buscar
-	public function obtenerPreguntaId($idPregunta);
+	public function obtenerPregunta($idPregunta);
 	public function obtenerPreguntas($idPadre, $tipoPadre);
 	// =====================================================================================>>>   Crear
 	public function crearPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta);
+	//public function crearPreguntaGrupo($idGrupo, Encuesta_Model_Pregunta $pregunta);
+	//public function crearPreguntaSeccion($idSeccion, Encuesta_Model_Pregunta $pregunta);
 	// =====================================================================================>>>   Editar
-	public function editarPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta);
+	public function editarPregunta($idPregunta, Encuesta_Model_Pregunta $pregunta);
+	//public function editarPreguntaSeccion($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta);
 	// =====================================================================================>>>   Eliminar
-	public function eliminarPregunta($idPadre, $tipoPadre, $idPregunta);
+	public function eliminarPregunta($idPregunta);
+	//public function eliminarPreguntaSeccion($idSeccion, $idPregunta);
 }

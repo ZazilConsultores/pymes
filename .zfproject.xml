@@ -101,6 +101,14 @@
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="encuestadet"/>
+              <actionMethod actionName="secciones"/>
+              <actionMethod actionName="seccionesdet"/>
+              <actionMethod actionName="grupos"/>
+              <actionMethod actionName="grupodet"/>
+              <actionMethod actionName="secciondet"/>
+              <actionMethod actionName="preguntas"/>
+              <actionMethod actionName="preguntadet"/>
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
@@ -279,6 +287,30 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Categoria">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="encuestadet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="secciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="seccionesdet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="grupos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="grupodet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="secciondet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="preguntas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="preguntadet"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -501,6 +533,14 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="encuestadet"/>
+                <testApplicationActionMethod forActionName="secciones"/>
+                <testApplicationActionMethod forActionName="seccionesdet"/>
+                <testApplicationActionMethod forActionName="grupos"/>
+                <testApplicationActionMethod forActionName="grupodet"/>
+                <testApplicationActionMethod forActionName="secciondet"/>
+                <testApplicationActionMethod forActionName="preguntas"/>
+                <testApplicationActionMethod forActionName="preguntadet"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>

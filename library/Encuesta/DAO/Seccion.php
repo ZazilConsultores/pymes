@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Encuesta_DAO_Seccion implements Zazil_Interfaces_ISeccion {
+class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 	
 	private $tablaEncuesta;
 	private $tablaSeccion;
@@ -18,13 +18,17 @@ class Encuesta_DAO_Seccion implements Zazil_Interfaces_ISeccion {
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 	}
 	// =====================================================================================>>>   Buscar
-	public function obtenerSeccionId($idSeccion) {
+	public function obtenerSeccion($idSeccion) {
 		$tablaSeccion = $this->tablaSeccion;
 		
 		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
 		$rowSeccion = $tablaSeccion->fetchRow($select);
 		
 		$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
+		$modelSeccion->setIdSeccion($rowSeccion->idSeccion);
+		$modelSeccion->setIdEncuesta($rowSeccion->idEncuesta);
+		$modelSeccion->setOrden($rowSeccion->orden);
+		$modelSeccion->setElementos($rowSeccion->elementos);
 		
 		return $modelSeccion;
 	}
@@ -38,6 +42,11 @@ class Encuesta_DAO_Seccion implements Zazil_Interfaces_ISeccion {
 		
 		foreach ($rowsSecciones as $rowSeccion) {
 			$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
+			$modelSeccion->setIdSeccion($rowSeccion->idSeccion);
+			$modelSeccion->setIdEncuesta($rowSeccion->idEncuesta);
+			$modelSeccion->setOrden($rowSeccion->orden);
+			$modelSeccion->setElementos($rowSeccion->elementos);
+			
 			$modelSecciones[] = $modelSeccion;
 		}
 		
@@ -83,23 +92,25 @@ class Encuesta_DAO_Seccion implements Zazil_Interfaces_ISeccion {
 		$tablaSeccion = $this->tablaSeccion;
 		//Seleccionamos todas las secciones de la encuesta
 		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta = ?", $seccion->getIdEncuesta());
-		$orden = count($tabla->fetchAll($select));
+		$orden = count($tablaSeccion->fetchAll($select));
 		$orden++;
 		$seccion->setOrden($orden);
 		
-		$tabla->insert($seccion->toArray());
+		$tablaSeccion->insert($seccion->toArray());
 	}
 	// =====================================================================================>>>   Editar
 	public function editarSeccion($idSeccion, Encuesta_Model_Seccion $seccion) {
 		$tablaSeccion = $this->tablaSeccion;
-		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion); 
-		$tabla->update($seccion->toArray(), $select);
+		$where = $tablaSeccion->getAdapter()->quoteInto("idSeccion = ?", $idSeccion);
+		//$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion); 
+		$tabla->update($seccion->toArray(), $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarSeccion($idSeccion) {
 		$tablaSeccion = $this->tablaSeccion;
-		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
-		$tablaSeccion->delete($select);
+		$where = $tablaSeccion->getAdapter()->quoteInto("idSeccion = ?", $idSeccion);
+		//$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
+		$tablaSeccion->delete($where);
 	}
 	
 	

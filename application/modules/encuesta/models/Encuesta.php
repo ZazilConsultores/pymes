@@ -26,7 +26,17 @@ class Encuesta_Model_Encuesta
         $this->nombre = $nombre;
     }
 	
-	private $descripcion;
+	private $nombreClave;
+
+    public function getNombreClave() {
+        return $this->nombreClave;
+    }
+    
+    public function setNombreClave($nombreClave) {
+        $this->nombreClave = $nombreClave;
+    }
+
+    private $descripcion;
 
     public function getDescripcion() {
         return $this->descripcion;
@@ -79,7 +89,7 @@ class Encuesta_Model_Encuesta
     public function __construct(array $datos) {
 		
 		$this->nombre = $datos["nombre"];
-		$this->detalle = $datos["detalle"];
+		$this->nombreClave = $datos["nombreClave"];
 		$this->descripcion = $datos["descripcion"];
 		$this->fecha = $datos["fecha"];
 		$this->fechaInicio = $datos["fechaInicio"];
@@ -92,9 +102,9 @@ class Encuesta_Model_Encuesta
 		
 		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["nombre"] = $this->nombre;
-		$datos["detalle"] = $this->detalle;
+		$datos["nombreClave"] = $this->nombreClave;
 		$datos["descripcion"] = $this->descripcion;
-		$datos["fechaRegistro"] = $this->fechaRegistro;
+		$datos["fecha"] = $this->fecha;
 		$datos["fechaInicio"] = $this->fechaInicio;
 		$datos["fechaFin"] = $this->fechaFin;
 		$datos["estatus"] = $this->estatus;

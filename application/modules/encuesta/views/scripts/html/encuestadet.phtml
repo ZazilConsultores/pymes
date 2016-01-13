@@ -1,0 +1,37 @@
+<?php $encuesta = $this->encuesta; 
+	$estatus = Zend_Registry::get("estatus");
+?>
+<section class="row">
+	<header>
+		<h3><?php echo $encuesta->getNombre(); ?>
+			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "encuesta", "action" => "admin", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-default">
+				Administrar
+				<span class="glyphicon glyphicon-cog"></span>
+			</a>
+			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "generador", "action" => "index", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-success">
+				Generar
+				<span class="glyphicon glyphicon-cog"></span>
+			</a>
+			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "encuesta", "action" => "eliminar", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-default">
+				Eliminar
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</h3>
+	</header>
+	<table class="table table-striped">
+		<tbody>
+			<tr>
+				<td>Descripcion: </td>
+				<td colspan="5"><?php echo $encuesta->getDescripcion(); ?></td>
+			</tr>
+			<tr>
+				<td>Estatus: </td>
+				<td><?php echo $estatus[$encuesta->getEstatus()]; ?></td>
+				<td>Fecha Inicio: </td>
+				<td><?php echo $encuesta->getFechaInicio(); ?></td>
+				<td>Fecha Término: </td>
+				<td><?php echo $encuesta->getFechaFin(); ?></td>
+			</tr>
+		</tbody>
+		</table>
+</section>
