@@ -6,26 +6,23 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
-        $estatus = Zend_Registry::get('estatusEncuesta');
+        $estatus = Zend_Registry::get('estatus');
         
 		$eNombre = new Zend_Form_Element_Text("nombre");
 		$eNombre->setLabel("Nombre de la Encuesta: ");
 		$eNombre->setAttrib("class", "form-control");
 		
-		$eDetalle = new Zend_Form_Element_Text("detalle");
-		$eDetalle->setLabel("Breve identificador de la encuesta: (Máximo 20 caracteres)");
+		$eDetalle = new Zend_Form_Element_Text("nombreClave");
+		$eDetalle->setLabel("Nombre clave de la encuesta: (Máximo 20 caracteres)");
 		$eDetalle->setAttrib("class", "form-control");
 		
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");
-		$eDescripcion->setLabel("Objetivo de la encuesta");
+		$eDescripcion->setLabel("Objetivo de la encuesta: ");
 		$eDescripcion->setAttrib("class", "form-control");
 		
 		$eEstatus = new Zend_Form_Element_Select("estatus");
 		$eEstatus->setLabel("Estatus de la encuesta");
 		foreach ($estatus as $clave => $valor) {
-			if($clave > 2){
-				break;
-			}
 			$eEstatus->addMultiOption($clave, $valor);
 		}
 		$eEstatus->setAttrib("class", "form-control");

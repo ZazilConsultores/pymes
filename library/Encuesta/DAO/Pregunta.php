@@ -10,135 +10,68 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 	private $tablaGrupo;
 	private $tablaPregunta;
 	
-	private $tablaPreguntasSeccion;
-	private $tablaPreguntasGrupo;
-	
 	function __construct() {
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
 		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
-		
-		$this->tablaPreguntasSeccion = new Encuesta_Model_DbTable_PreguntasSeccion;
-		$this->tablaPreguntasGrupo = new Encuesta_Model_DbTable_PreguntasGrupo;
 	}
-	
-	public function obtenerPreguntaId($idPregunta) {
+	// =====================================================================================>>>   Buscar
+	public function obtenerPregunta($idPregunta) {
 		$tabla = $this->tablaPregunta;
 		
 		$select = $tabla->select()->from($tabla)->where("idPregunta = ?", $idPregunta);
-		$pregunta = $tabla->fetchRow($select);
-		$preguntaM = new Zazil_Model_Pregunta($pregunta->toArray());
+		$rowPregunta = $tabla->fetchRow($select);
+		$modelPregunta = new Encuesta_Model_Pregunta($rowPregunta->toArray());
 		
-		return $preguntaM;
-	}
-	
-	public function crearPregunta($idPadre, $tipoPadre, Zazil_Model_Pregunta $pregunta) {
-		$tablaSeccion = $this->tablaSeccion;
-		$tablaGrupo = $this->tablaGrupo;
-		
-		$tabla = null;
-		$tablaPregunta = $this->tablaPregunta;
-		
-		$registro = array();
-		$registro["idPregunta"] = $pregunta->getIdPregunta();
-		$numeroPreguntas = null;
-		switch ($tipoPadre) {
-			case 'seccion':	//Aqui se crean las preguntas de la seccion
-				$tabla = $this->tablaPreguntasSeccion;
-				$registro["idSeccion"] = $idPadre;
-				
-				$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idPadre);
-				$seccion = $tablaSeccion->fetchRow($select);
-				$numeroPreguntas = $seccion->elementos;
-				$seccion->elementos++;
-				$seccion->save();
-				//$numeroPreguntas = count($this->obtenerPreguntas($idPadre, "seccion"));
-				break;
-			case 'grupo': //aqui se crean las preguntas del grupo
-				$tabla = $this->tablaPreguntasGrupo;
-				$registro["idGrupo"] = $idPadre;
-				
-				$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idPadre);
-				$grupo = $tablaGrupo->fetchRow($select);
-				$numeroPreguntas = $grupo->elementos;
-				$grupo->elementos++;
-				$grupo->save();
-				//$numeroPreguntas = count($this->obtenerPreguntas($idPadre, "grupo"));
-				break;
-		}
-		$pregunta->setOrden($numeroPreguntas);
-		//print_r($registro);
-		//print_r($numeroPreguntas);
-		//print_r("<br />");
-		//print_r($pregunta->toArray());
-		$tablaPregunta->insert($pregunta->toArray());
-		$tabla->insert($registro);
-		//$tabla->insert($registro);
-		//$tablaPregunta->insert($pregunta->toArray());
-	}
-	
-	public function editarPregunta($idPadre, $tipoPadre, Zazil_Model_Pregunta $pregunta) {
-		$tabla = $this->tablaPregunta;
-		
-		$select = $tabla->select()->from($tabla)->where("idPregunta = ?", $pregunta->getIdPregunta());
-		//$pregunta = $tabla->fetchRow($select);
-		//$preguntaM = new Zazil_Model_Pregunta($pregunta->toArray());
-		$tabla->update($pregunta, $select);
-		//return $preguntaM;
-	}
-	
-	public function eliminarPregunta($idPadre, $tipoPadre, $idPregunta) {
-		$tabla = null;
-		$tablaPregunta = $this->tablaPregunta;
-		//$registro = array();
-		//$registro["idPregunta"] = $idPregunta;
-		switch ($tipoPadre) {
-			case 'seccion':
-				$tabla = $this->tablaPreguntasSeccion;
-				//$registro["idSeccion"] = $idPadre;
-				break;
-			case 'grupo':
-				$tabla = $this->tablaPreguntasGrupo;
-				//$registro["idGrupo"] = $idPadre;
-				break;
-		}
-		$where = $tabla->select()->from($tabla)->where("idPregunta = ?", $idPregunta);
-		$whereP = $tablaPregunta->select()->from($tablaPregunta)->where("idPregunta = ?", $tablaPregunta);
-		$tabla->delete($where);
-		$tablaPregunta->delete($whereP);
-		//$tabla->insert($registro);
-		//$tablaPregunta->insert($pregunta->toArray());
+		return $modelPregunta;
 	}
 	
 	public function obtenerPreguntas($idPadre, $tipoPadre) {
-		$tablaPregunta = $this->tablaPregunta;
-		$tabla = null;
-		$condicion = "pregunta.idPregunta = t.idPregunta";
-		switch ($tipoPadre) {
-			case 'seccion':
-				$tabla = "preguntasseccion";
-				break;
-			case 'grupo':
-				$tabla = "preguntasgrupo";
-				break;
-		}
 		
-		$select = $tablaPregunta->select()
-			->setIntegritycheck(FALSE)
-			->from($tablaPregunta, array("idPregunta", "nombre", "orden", "tipo"))
-			->join(array('t' => $tabla), $condicion, array())
-			->where("id".ucfirst($tipoPadre)." = ?", $idPadre)
-			->order("orden");
-		//print_r($select->__toString());
-		
-		$preguntas = $tablaPregunta->fetchAll($select);
-		
-		$preguntasM = array();
-		foreach ($preguntas as $pregunta) {
-			$preguntaM = new Zazil_Model_Pregunta($pregunta->toArray());
-			$preguntasM[] = $preguntaM;
-		}
-		
-		return $preguntasM;
 	}
+	// =====================================================================================>>>   Crear
+	public function crearPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta) {
+			
+		if($tipoPadre === "S"){
+			$tablaSeccion = $this->tablaSeccion;
+			$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idPadre);
+			$rowSeccion = $tablaSeccion->fetchRow($tablaSeccion);
+			
+			$pregunta->setIdOrigen($rowSeccion->idSeccion);
+			$pregunta->setOrigen("S");
+			$pregunta->setOrden($rowSeccion->elementos);
+			$rowSeccion->elementos++;
+			$rowSeccion->save();
+			
+		}elseif($tipoPadre === "G"){
+			$tablaGrupo = $this->tablaGrupo;
+			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idPadre);
+			$rowGrupo = $tablaGrupo->fetchRow($select);
+			
+			$pregunta->setIdOrigen($rowGrupo->idGrupo);
+			$pregunta->setOrigen("G");
+			$pregunta->setOrden($rowGrupo->elementos);
+			$rowGrupo->elementos++;
+			$rowGrupo->save();
+		}
+		
+		$tablaPregunta = $this->tablaPregunta;
+		$tablaPregunta->insert($pregunta->toArray());
+	}
+	// =====================================================================================>>>   Editar
+	public function editarPregunta($idPregunta, Encuesta_Model_Pregunta $pregunta) {
+		$tablaPregunta = $this->tablaPregunta;
+		$where = $tablaPregunta->getAdapter()->quoteInto("idPregunta = ?", $idPregunta);
+		
+		$tabla->update($pregunta, $where);
+	}
+	// =====================================================================================>>>   Eliminar
+	public function eliminarPregunta($idPregunta) {
+		$tablaPregunta = $this->tablaPregunta;
+		$where = $tablaPregunta->getAdapter()->quoteInto("idPregunta = ?", $idPregunta);
+		
+		$tablaPregunta->delete($where);
+	}
+	
+	
 }

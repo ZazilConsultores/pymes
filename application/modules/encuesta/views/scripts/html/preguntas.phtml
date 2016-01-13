@@ -1,0 +1,27 @@
+<?php 
+	$tipo = (is_null($this->seccion)) ? "grupo" : "seccion";
+	$objeto = (is_null($this->seccion)) ? $this->grupo : $this->seccion;
+	$metodo = "getId" . ucfirst($tipo) . "()";
+	$preguntas = $this->preguntas;
+	$contador = 1;
+?>
+<table class="table table-condensed">
+	<tbody>
+		<tr>
+			<td>
+				<a id="nuevaPregunta" class="btn btn-block btn-success" href="<?php echo $this->url(array("controller" => "pregunta", "action" => "alta", "id" . ucfirst($tipo) => ($tipo === "seccion") ? $objeto->getIdSeccion() : $objeto->getIdGrupo() ), null, true) ?>">
+					<span class="glyphicon glyphicon-plus"></span> Nueva
+				</a>
+			</td>
+		</tr>
+		<?php foreach ($preguntas as $pregunta) : ?>
+		<tr>
+			<td>
+				<button type="button" class="btn btn-block btn-default" tipo="pregunta" padre="<?php echo ($tipo === "seccion") ? $objeto->getIdSeccion() : $objeto->getIdGrupo(); ?>" tpadre="<?php echo $tipo; ?>" hash="<?php echo $pregunta->getIdPregunta(); ?>" >
+					<span class="glyphicon glyphicon-question-sign"></span> Pregunta - <?php echo $contador; $contador++; ?> - <?php echo $pregunta->getOrden();?>
+				</button>
+			</td>
+		</tr>
+		<?php endforeach ?>
+	</tbody>
+</table>

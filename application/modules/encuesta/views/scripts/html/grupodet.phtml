@@ -1,0 +1,30 @@
+<?php $grupo = $this->grupo; 
+	//$estatus = Zend_Registry::get("estatusEncuesta");
+	$tipo = Zend_Registry::get("tipo");
+	//print_r($seccion);
+	if(! is_null($grupo)){ ?>
+	<section class="col-xs-12">
+		<header>
+			<h3><?php echo $grupo->getNombre(); ?>
+				<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "grupo", "action" => "admin", "idGrupo" => $grupo->getIdGrupo()), null, true) ?>" class="btn btn-default">
+					Administrar
+					<span class="glyphicon glyphicon-cog"></span>
+				</a>
+				<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "grupo", "action" => "baja", "idGrupo" => $grupo->getIdGrupo()), null, true) ?>" class="btn btn-default">
+					Eliminar
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
+			</h3>
+		</header>
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td>Tipo: </td>
+					<td><?php echo $tipo[$grupo->getTipo()]; ?></td>
+					<td>Orden: </td>
+					<td><?php echo $grupo->getOrden(); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+<?php }?>

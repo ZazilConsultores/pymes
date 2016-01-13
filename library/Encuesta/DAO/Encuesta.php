@@ -18,15 +18,15 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * @param int $idEncuesta
 	 * @return Encuesta_Model_Encuesta $encuestaM
 	 */
-	public function obtenerEncuestaId($idEncuesta) {
+	public function obtenerEncuesta($idEncuesta) {
 		$tablaEncuesta = $this->tablaEncuesta;
 		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
-		$encuesta = $tablaEncuesta->fetchRow($select);
+		$rowEncuesta = $tablaEncuesta->fetchRow($select);
 		
-		$encuestaM = New Encuesta_Model_Encuesta($encuesta->toArray());
-		$encuestaM->setIdEncuesta($encuesta->idEncuesta);
+		$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
+		$modelEncuesta->setIdEncuesta($rowEncuesta->idEncuesta);
 		
-		return $encuestaM;
+		return $modelEncuesta;
 	}
 	
 	/**
@@ -35,16 +35,16 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 */
 	public function obtenerEncuestas() {
 		$tablaEncuesta = $this->tablaEncuesta;
-		$encuestas = $tablaEncuesta->fetchAll();
-		$encuestasArray = array();
-		foreach ($encuestas as $encuesta) {
-			$encuestaModel = new Encuesta_Model_Encuesta($encuesta->toArray());
-			$encuestaModel->setIdEncuesta($$encuesta->idEncuesta);
+		$rowsEncuestas = $tablaEncuesta->fetchAll();
+		$modelEncuestas = array();
+		foreach ($rowsEncuestas as $rowEncuesta) {
+			$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
+			$modelEncuesta->setIdEncuesta($rowEncuesta->idEncuesta);
 			
-			$encuestasArray[] = $encuestaModel;
+			$modelEncuestas[] = $modelEncuesta;
 		}
 		
-		return $encuestasArray;
+		return $modelEncuestas;
 	}
 	//          =========================================================================   >>>   Insertar
 	
@@ -59,14 +59,16 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	//          =========================================================================   >>>   Actualizar
 	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta) {
 		$tablaEncuesta = $this->tablaEncuesta;
-		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
-		$tablaEncuesta->update($encuesta->toArray(), $select);
+		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
+		//$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+		$tablaEncuesta->update($encuesta->toArray(), $where);
 	}
 	//          =========================================================================   >>>   Eliminar
 	public function eliminarEncuesta($idEncuesta) {
 		$tablaEncuesta = $this->tablaEncuesta;
-		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
-		$tablaEncuesta->delete($select);
+		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
+		//$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+		$tablaEncuesta->delete($where);
 	}
 	
 }

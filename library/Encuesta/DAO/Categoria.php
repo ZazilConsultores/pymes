@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Encuesta_DAO_Categoria implements Zazil_Interfaces_ICategoria {
+class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 	
 	private $tablaCategoria;
 	private $tablaOpcion;
@@ -18,46 +18,64 @@ class Encuesta_DAO_Categoria implements Zazil_Interfaces_ICategoria {
 	public function obtenerCategoriaId($idCategoria){
 		$tablaCategoria = $this->tablaCategoria;
 		$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
-		$categoria = $tablaCategoria->fetchRow($select);
+		$rowCategoria = $tablaCategoria->fetchRow($select);
 		
-		//$categoriaM = new Zazil_Model_Categoria($categoria->toArray());
 		$categoriaM = new Encuesta_Model_Categoria($categoria->toArray());
-		//$categoriaM->setIdCategoria($categoria->idCategoria);
+		$categoriaM->setIdCategoria($categoria->idCategoria);
 		
 		return $categoriaM;
 	}
-	//@TODO
+
 	public function obtenerOpciones($idCategoria){
 		$tablaOpcion = $this->tablaOpcion;
 		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
-		$opciones = $tablaOpcion->fetchAll($select);
-		//return $opciones;
+		$rowOpciones = $tablaOpcion->fetchAll($select);
+		
+		$opcionesModel = array();
+		foreach ($rowOpciones as $rowOpcion) {
+			$opcionModel = new Encuesta_Model_Opcion($rowOpcion->toArray());
+			$opcionModel->setIdOpcion($rowOpcion->idOpcion);
+			$opcionModel->setIdCategoria($rowOpcion->idCategoria);
+			
+			$opcionesModel[] = $opcionModel;
+		}
+		
+		return $opcionesModel;
 	}
 	
 	public function obtenerCategorias() {
 		$tablaCategoria = $this->tablaCategoria;
-		$categorias = $tablaCategoria->fetchAll();
-		$categoriasM = array();
-		foreach ($categorias as $categoria) {
-			$elemento = new Zazil_Model_Categoria($categoria->toArray());
-			$categoriasM[] = $elemento;
+		$rowCategorias = $tablaCategoria->fetchAll();
+		
+		$modelCategorias = array();
+		
+		foreach ($rowCategorias as $rowCategoria) {
+			$modelCategoria = new Encuesta_Model_Categoria($rowCategoria->toArray());
+			$modelCategoria->setIdCategoria($rowCategoria->idCategoria);
+			
+			$modelCategorias[] = $modelCategoria;
 		}
-		return $categoriasM;
+		
+		return $modelCategorias;
 	}
 	
 	// =====================================================================================>>>   Insertar
-	public function crearCategoria(Zazil_Model_Categoria $categoria){
-		$this->tablaCategoria->insert($categoria->toArray());
+	public function crearCategoria(Encuesta_Model_Categoria $categoria){
+		$tablaCategoria = $this->tablaCategoria; 
+		$tablaCategoria->insert($categoria->toArray());
 	}
 	// =====================================================================================>>>   Actualizar
-	public function editarCategoria($idCategoria, Zazil_Model_Categoria $categoria){
+	public function editarCategoria($idCategoria, Encuesta_Model_Categoria $categoria) {
 		$tablaCategoria = $this->tablaCategoria;
-		$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
-		$tablaCategoria->update($categoria->toArray(), $select);
+		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoria = ?", $idCategoria);
+		//$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
+		$tablaCategoria->update($categoria->toArray(), $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarCategoria($idCategoria){
-		
+		$tablaCategoria = $this->tablaCategoria;
+		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoria = ?", $idCategoria);
+		$tablaCategoria->delete($where);
 	}
 	
 	

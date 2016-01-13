@@ -1,0 +1,29 @@
+<?php $pregunta = $this->pregunta; ?>
+<section class="col-xs-12">
+	<header>
+		<h3> Pregunta 
+			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "pregunta", "action" => "admin", "idPregunta" => $pregunta->getIdPregunta()), null, true) ?>" class="btn btn-default">
+				Administrar
+				<span class="glyphicon glyphicon-cog"></span>
+			</a>
+			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "pregunta", "action" => "baja", "idPregunta" => $pregunta->getIdPregunta()), null, true) ?>" class="btn btn-default">
+				Eliminar
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</h3>
+	</header>
+	<div>
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td>
+						<?php echo $pregunta->getNombre(); ?>
+					</td>
+					<td>
+						<?php echo $pregunta->getOrden(); ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>  
+	</div>
+</section>

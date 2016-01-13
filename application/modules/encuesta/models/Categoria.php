@@ -45,9 +45,9 @@ class Encuesta_Model_Categoria
 	public function toArray() {
 		$datos = array();
 		
-		$datos["idCategoria"] = $this->getIdCategoria();
-		$datos["categoria"] = $this->getCategoria();
-		$datos["descripcion"] = $this->getDescripcion();
+		if(!is_null($this->idCategoria)) $datos["idCategoria"] = $this->idCategoria;
+		$datos["categoria"] = $this->categoria;
+		$datos["descripcion"] = $this->descripcion;
 		
 		return $datos;
 	}

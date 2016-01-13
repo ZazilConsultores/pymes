@@ -8,7 +8,7 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	
 	private $tablaSeccion;
 	private $tablaGrupo;
-	private $tablaPreguntas;
+	private $tablaPregunta;
 		
 	function __construct() {
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
@@ -17,17 +17,53 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		
 	}
 	
-	public function obtenerGrupoId($idGrupo) {
+	public function obtenerGrupo($idGrupo) {
 		$tablaGrupo = $this->tablaGrupo;
 		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
-		$grupo = $tablaGrupo->fetchRow($select);
-		$grupoM = new Encuesta_Model_Grupo($grupo->toArray());
-		$grupoM->setIdGrupo($grupo->idGrupo);
-		$grupoM->setIdSeccion($grupo->idSeccion);
-		$grupoM->setOrden($grupo->orden);
-		$grupoM->setElementos($grupo->elementos);
+		$rowGrupo = $tablaGrupo->fetchRow($select);
 		
-		return $grupoM;
+		$modelGrupo = new Encuesta_Model_Grupo($rowGrupo->toArray());
+		
+		$modelGrupo->setIdGrupo($rowGrupo->idGrupo);
+		$modelGrupo->setIdSeccion($rowGrupo->idSeccion);
+		$modelGrupo->setOrden($rowGrupo->orden);
+		$modelGrupo->setElementos($rowGrupo->elementos);
+		
+		return $modelGrupo;
+	}
+	
+	public function obtenerGrupos($idSeccion) {
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
+		$rowsGrupos = $tablaGrupo->fetchAll($select);
+		$modelGrupos = array();
+		foreach ($rowsGrupos as $rowGrupo) {
+			$modelGrupo = new Encuesta_Model_Grupo($rowGrupo->toArray());
+			$modelGrupo->setIdGrupo($rowGrupo->idGrupo);
+			$modelGrupo->setIdSeccion($rowGrupo->idSeccion);
+			$modelGrupo->setOrden($rowGrupo->orden);
+			$modelGrupo->setElementos($rowGrupo->elementos);
+			
+			$modelGrupos[] = $modelGrupo;
+		} 
+		return $modelGrupos;
+	}
+	
+	public function obtenerPreguntas($idGrupo){
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
+		
+		$rowsPreguntas = $tablaPregunta->fetchAll($select);
+		$modelPreguntas = array();
+		
+		foreach ($rowsPreguntas as $rowPregunta) {
+			$modelPregunta = new Encuesta_Model_Pregunta($rowPregunta->toArray());
+			$modelPregunta->setIdPregunta($rowPregunta->idPregunta);
+			
+			$modelPreguntas[] = $modelPregunta;
+		}
+		
+		return $modelPreguntas;
 	}
 	
 	public function crearGrupo(Encuesta_Model_Grupo $grupo) {
@@ -59,23 +95,5 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		$tablaGrupo = $this->tablaGrupo;
 		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
 		$tablaGrupo->delete($select);
-	}
-	
-	public function obtenerGrupos($idSeccion) {
-		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
-		$grupos = $tablaGrupo->fetchAll($select);
-		$gruposM = array();
-		foreach ($grupos as $grupo) {
-			$grupoM = new Encuesta_Model_Grupo($grupo->toArray());
-			$grupoM->setIdGrupo($grupo->idGrupo);
-			$grupoM->setIdSeccion($grupo->idSeccion);
-			$grupoM->setOrden($grupo->orden);
-			$grupoM->setElementos($grupo->elementos);
-			//print_r($grupo->toArray());
-			//print_r($grupoM);
-			$gruposM[] = $grupoM;
-		} 
-		return $gruposM;
 	}
 }

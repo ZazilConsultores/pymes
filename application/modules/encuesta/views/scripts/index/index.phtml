@@ -11,16 +11,16 @@
 				<tbody>
 					<tr>
 						<td>
-							<button type="button" class="btn btn-block btn-success" href="#nuevaEncuestaF" data-toggle="modal">
+							<a type="button" class="btn btn-block btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index", "action"=>"alta"), null, true) ?>" data-toggle="modal">
 								<span class="glyphicon glyphicon-plus"></span> Nueva
-							</button>
+							</a>
 						</td>
 					</tr>
 					<?php foreach ($encuestas as $encuesta) : ?>
 					<tr>
 						<td>
 							<button type="button" class="btn btn-block btn-default" tipo="encuesta" hash="<?php echo $encuesta->getIdEncuesta(); ?>">
-								<span class="glyphicon glyphicon-list-alt"></span> <?php echo $encuesta->getDetalle(); ?>
+								<span class="glyphicon glyphicon-list-alt"></span> <?php echo $encuesta->getNombreClave(); ?>
 							</button>
 						</td>
 					</tr>
@@ -62,7 +62,7 @@
 <section class="row">
 	<div id="contentDet" class="panel panel-info">
 		<div class="panel-heading">
-			<h4>Detalles</h4>
+			<h3 class="panel-title">Detalles</h3>
 		</div>
 		<div id="detalles" class="panel-body">
 		</div>
