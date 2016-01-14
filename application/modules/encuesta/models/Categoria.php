@@ -36,7 +36,17 @@ class Encuesta_Model_Categoria
         $this->descripcion = $descripcion;
     }
 	
-	private $hash;
+	private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+    }
+
+    private $hash;
 
     public function getHash() {
     	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
@@ -51,6 +61,7 @@ class Encuesta_Model_Categoria
     	if(array_key_exists("idCategoria", $datos)) $this->idCategoria = $datos["idCategoria"];
     	$this->categoria = $datos["categoria"];
 		$this->descripcion = $datos["descripcion"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 		
 	}
@@ -61,6 +72,7 @@ class Encuesta_Model_Categoria
 		$datos["idCategoria"] = $this->idCategoria;
 		$datos["categoria"] = $this->categoria;
 		$datos["descripcion"] = $this->descripcion;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

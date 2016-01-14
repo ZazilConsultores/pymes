@@ -20,9 +20,9 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 		$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
 		$rowCategoria = $tablaCategoria->fetchRow($select);
 		
-		$categoriaM = new Encuesta_Model_Categoria($categoria->toArray());
+		$modelCategoria = new Encuesta_Model_Categoria($categoria->toArray());
 		
-		return $categoriaM;
+		return $modelCategoria;
 	}
 
 	public function obtenerOpciones($idCategoria){

@@ -57,7 +57,7 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		if($tipoPadre === "S"){
 			$tablaSeccion = $this->tablaSeccion;
 			$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idPadre);
-			$rowSeccion = $tablaSeccion->fetchRow($tablaSeccion);
+			$rowSeccion = $tablaSeccion->fetchRow($select);
 			
 			//$pregunta->setIdOrigen($rowSeccion->idSeccion);
 			//$pregunta->setOrigen("S");
