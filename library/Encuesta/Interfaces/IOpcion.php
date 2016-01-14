@@ -4,16 +4,15 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-interface Encuesta_Interfaces_IEncuesta{
+interface Encuesta_Interfaces_IOpcion{
 	// =====================================================================================>>>   Buscar
-	public function obtenerEncuesta($idEncuesta);
-	public function obtenerEncuestaHash($hash);
-	public function obtenerEncuestas();
+	public function obtenerOpcion($idOpcion);
+	public function obtenerOpcionHash($hash);
+	public function obtenerOpciones();
 	// =====================================================================================>>>   Insertar
-	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
+	public function crearOpcion(Encuesta_Model_Opcion $opcion);
 	// =====================================================================================>>>   Actualizar
-	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta);
+	public function editarOpcion($idCategoria, Encuesta_Model_Opcion $opcion);
 	// =====================================================================================>>>   Eliminar
-	public function eliminarEncuesta($idEncuesta);
-	
+	public function eliminarOpcion($idOpcion);
 }

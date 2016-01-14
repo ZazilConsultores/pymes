@@ -1,4 +1,44 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>admin</b></p>
-</div>
+<?php	
+	$encuesta = $this->encuesta;
+	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"index", "action" => "edita", "idEncuesta"=>$encuesta->getIdEncuesta()), null, true));
+	$secciones = $this->secciones;
+	$seccionDAO = new Encuesta_DAO_Seccion;
+	$tipo = Zend_Registry::get("tipo");
+?>
+<section class="row">
+	<article class="col-md-12">
+		<header>
+			<h3>Encuesta: <?php echo $encuesta->getNombre(); ?></h3>
+		</header>
+	</article>
+	<article class="col-md-6" style="background-color: #87CEEB">
+		<header>
+			<h3>Editar Encuesta</h3>
+		</header>
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+	</article>
+	<article class="col-md-6" style="background-color: #FF6347">
+		<header>
+			<h3>Finalizar Encuesta</h3>
+		</header>
+		<div>
+			<p>
+				Una encuesta jamás se elimina, por ejemplo, 
+				usted necesita reutilizar esta encuesta cada cierto periodo, 
+				lo unico que hace usted es activarla y des-activarla.
+			</p>
+			<p>
+				Al final de su vida útil usted puede extraer una copia de los datos
+				de la encuesta antes de desactivarla nuevamente.
+			</p>
+			<br />
+			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"baja","idEncuesta"=>$encuesta->getIdEncuesta(),)) ?>">
+				Finalizar
+			</a>
+			<br /><br />
+		</div>		
+	</article>
+</section>

@@ -1,0 +1,32 @@
+<?php
+	$categoria = $this->categoria;
+	$formulario = $this->formulario; 
+	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"categoria", "action" => "edita", "idCategoria"=>$categoria->getIdCategoria()), null, true));
+?>
+<section class="row">
+	<article class="col-md-12">
+		
+	</article>
+	<article class="col-md-12" style="background-color: #87CEEB">
+		<header>
+			Editar Categoria
+		</header>
+		<div>
+			<?php echo $formulario ?>
+		</div>
+	</article>
+	<article class="col-md-12" style="background-color: #FF6347">
+		<header>
+			Eliminar Categoria
+		</header>
+		<div>
+			<p>
+				¿Esta seguro de eliminar esta categoría y sus opciones asociadas?
+			</p>
+			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"baja","idCategoria"=>$categoria->getIdCategoria()), null, true) ?>">
+				Eliminar
+			</a>
+			<br /><br />
+		</div>
+	</article>
+</section>

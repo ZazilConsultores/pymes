@@ -1,4 +1,43 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Grupo</b> and script/action name <b>index</b></p>
-</div>
+<?php 
+	$grupo = $this->grupo;
+	$preguntas = $this->preguntas;
+	$tipo = Zend_Registry::get("tipo");
+?>
+<section class="row">
+	<header>
+		<h3>
+			Preguntas del grupo: <?php echo $grupo->getNombre(); ?>
+		</h3>
+	</header>
+	<div>
+		<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"alta","idGrupo"=>$grupo->getIdGrupo()), null, true) ?>">
+			<span class="glyphicon glyphicon-plus"></span> Pregunta
+		</a>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>IdPregunta</th>
+					<th>Pregunta</th>
+					<th>Tipo</th>
+					<th>Orden</th>
+					<th>Configurar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($preguntas as $pregunta) : ?>
+				<tr>
+					<td><?php echo $pregunta->getIdPregunta(); ?></td>
+					<td><?php echo $pregunta->getPregunta(); ?></td>
+					<td><?php echo $tipo[$pregunta->getTipo()]; ?></td>
+					<td><?php echo $pregunta->getOrden(); ?></td>
+					<td>
+						<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "admin", "idPregunta" => $pregunta->getIdPregunta()), null, false); ?>" class="btn btn-success">
+							Editar
+						</a>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+</section>

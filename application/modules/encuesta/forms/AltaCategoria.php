@@ -6,9 +6,9 @@ class Encuesta_Form_AltaCategoria extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
-         $eNombre = new Zend_Form_Element_Text("nombre");
-		$eNombre->setLabel("Categoria");
-		$eNombre->setAttrib("class", "form-control");
+        $eCategoria = new Zend_Form_Element_Text("categoria");
+		$eCategoria->setLabel("Categoria");
+		$eCategoria->setAttrib("class", "form-control");
 		
 		$eDescripcion = new Zend_Form_Element_Textarea("descripcion");
 		$eDescripcion->setLabel("Agregue una descripcion de esta categoria");
@@ -19,7 +19,7 @@ class Encuesta_Form_AltaCategoria extends Zend_Form
 		$eSubmit->setLabel("Guardar Categoria");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
-		$this->addElements(array($eNombre, $eDescripcion, $eSubmit));
+		$this->addElements(array($eCategoria, $eDescripcion, $eSubmit));
     }
 
 

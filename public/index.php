@@ -75,12 +75,12 @@ Zend_Db_Table_Abstract::setDefaultAdapter($db);
 date_default_timezone_set('America/Mexico_City');
 setlocale(LC_MONETARY, 'es_MX.UTF-8');
 //============================================================================ CONSTANTES GENERALES
-$estatusEncuesta = array('0' => 'CREADO', '1' => 'PUBLICADO', '2' => 'ACTIVO', '3' => 'FINALIZADO');
+//$estatusEncuesta = array('0' => 'CREADO', '1' => 'PUBLICADO', '2' => 'ACTIVO', '3' => 'FINALIZADO');
 $tipo = array('AB' => 'ABIERTAS', 'SS' => 'SIMPLE SELECCION', 'MS' => 'MULTIPLE SELECCION');
 $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
 
-Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
+//Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('padre', $padre);
 Zend_Registry::set('estatus', $estatus);

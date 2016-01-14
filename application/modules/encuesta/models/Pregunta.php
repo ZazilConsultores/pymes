@@ -55,6 +55,16 @@ class Encuesta_Model_Pregunta
     public function setTipo($tipo) {
         $this->tipo = $tipo;
     }
+	
+	private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+    }
 
     private $orden;
 
@@ -65,17 +75,32 @@ class Encuesta_Model_Pregunta
     public function setOrden($orden) {
         $this->orden = $orden;
     }
+	
+	private $hash;
 
-    public function __construct(array $datos) {
-    	//$this->idPregunta = $datos["idPregunta"];
+    public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
+        return $this->hash;
+    }
+    
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
+
+    public function __construct(array $datos)
+    {
+    	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
 		$this->pregunta = $datos["pregunta"];
 		$this->origen = $datos["origen"];
 		$this->idOrigen = $datos["idOrigen"];
 		$this->tipo = $datos["tipo"];
-		$this->orden = $datos["orden"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
+		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
-	public function toArray() {
+	public function toArray()
+	{
 		$datos = array();
 		
 		$datos["idPregunta"] = $this->idPregunta;
@@ -83,7 +108,9 @@ class Encuesta_Model_Pregunta
 		$datos["origen"] = $this->origen;
 		$datos["idOrigen"] = $this->idOrigen;
 		$datos["tipo"] = $this->tipo;
+		$datos["fecha"] = $this->fecha;
 		$datos["orden"] = $this->orden;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

@@ -75,16 +75,28 @@ class Encuesta_Model_Grupo
     public function setElementos($elementos) {
         $this->elementos = $elementos;
     }
+	
+	private $hash;
+
+    public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
+        return $this->hash;
+    }
+    
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
 
     public function __construct(array $datos) {
 		
-		//$this->idGrupo = $datos["idGrupo"];
-		//$this->idSeccion = $datos["idSeccion"];
+		if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
+		if(array_key_exists("idSeccion", $datos)) $this->idSeccion = $datos["idSeccion"];
 		$this->nombre = $datos["nombre"];
 		$this->tipo = $datos["tipo"];
-		$this->fecha = $datos["fecha"];
-		//if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
-		//if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
+		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
+		if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
 	public function toArray()
@@ -98,6 +110,7 @@ class Encuesta_Model_Grupo
 		$datos["fecha"] = $this->fecha;
 		$datos["orden"] = $this->orden;
 		$datos["elementos"] = $this->elementos;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

@@ -1,0 +1,49 @@
+<div class="container-fluid">
+	<header>
+		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main">
+						<span class="sr-only">Desplegar / Ocultar Menu</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="<?php echo $this->url(array("action" => "index", "controller" => "index"), null, true); ?>" class="navbar-brand">
+						Applicacion General
+					</a>
+					
+				</div>
+				<div id="main" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="<?php echo $this->url(array("module" => "sistema", "controller" => "index", "action" => "index"), null, true) ?>">
+								Sistema
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo $this->url(array("module" => "contabilidad", "controller" => "index", "action" => "index"), null, true) ?>">
+								Contabilidad
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo $this->url(array("module" => "inventario", "controller" => "index", "action" => "index"), null, true) ?>">
+								Inventario
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo $this->url(array("module" => "soporte", "controller" => "index", "action" => "index"), null, true) ?>">
+								Soporte
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "index", "action" => "index"), null, true) ?>">
+								Encuesta
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+</div>

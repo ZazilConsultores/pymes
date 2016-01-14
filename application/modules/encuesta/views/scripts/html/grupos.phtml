@@ -6,7 +6,7 @@
 	<tbody>
 		<tr>
 			<td>
-				<a class="btn btn-block btn-success" href="<?php echo $this->url(array("controller" => "grupo", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true) ?>">
+				<a class="btn btn-block btn-success" href="<?php echo $this->url(array("module" => "encuesta","controller" => "grupo", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true) ?>">
 					<span class="glyphicon glyphicon-plus"></span> Nueva
 				</a>
 			</td>
@@ -14,7 +14,7 @@
 		<?php foreach ($grupos as $grupo) : ?>
 		<tr>
 			<td>
-				<button type="button" class="btn btn-block btn-default" tipo="grupo" numero="<?php echo $grupo->getIdGrupo(); ?>" padre="<?php echo $seccion->getIdSeccion(); ?>" hash="<?php echo $grupo->getIdGrupo(); ?>" >
+				<button type="button" class="btn btn-block btn-default" tipo="grupo" numero="<?php echo $grupo->getIdGrupo(); ?>" padre="<?php echo $seccion->getIdSeccion(); ?>" hash="<?php echo $grupo->getHash(); ?>" >
 					<span class="glyphicon glyphicon-th-large"></span> <?php echo $grupo->getNombre(); ?>
 				</button>
 			</td>

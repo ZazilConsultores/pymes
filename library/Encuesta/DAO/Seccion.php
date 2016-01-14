@@ -25,10 +25,21 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$rowSeccion = $tablaSeccion->fetchRow($select);
 		
 		$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
-		$modelSeccion->setIdSeccion($rowSeccion->idSeccion);
-		$modelSeccion->setIdEncuesta($rowSeccion->idEncuesta);
-		$modelSeccion->setOrden($rowSeccion->orden);
-		$modelSeccion->setElementos($rowSeccion->elementos);
+		//$modelSeccion->setIdSeccion($rowSeccion->idSeccion);
+		//$modelSeccion->setIdEncuesta($rowSeccion->idEncuesta);
+		//$modelSeccion->setOrden($rowSeccion->orden);
+		//$modelSeccion->setElementos($rowSeccion->elementos);
+		
+		return $modelSeccion;
+	}
+	
+	public function obtenerSeccionHash($hash){
+		$tablaSeccion = $this->tablaSeccion;
+		
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("hash = ?", $hash);
+		$rowSeccion = $tablaSeccion->fetchRow($select);
+		
+		$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
 		
 		return $modelSeccion;
 	}
@@ -42,10 +53,10 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		
 		foreach ($rowsSecciones as $rowSeccion) {
 			$modelSeccion = new Encuesta_Model_Seccion($rowSeccion->toArray());
-			$modelSeccion->setIdSeccion($rowSeccion->idSeccion);
-			$modelSeccion->setIdEncuesta($rowSeccion->idEncuesta);
-			$modelSeccion->setOrden($rowSeccion->orden);
-			$modelSeccion->setElementos($rowSeccion->elementos);
+			//$modelSeccion->setIdSeccion($rowSeccion->idSeccion);
+			//$modelSeccion->setIdEncuesta($rowSeccion->idEncuesta);
+			//$modelSeccion->setOrden($rowSeccion->orden);
+			//$modelSeccion->setElementos($rowSeccion->elementos);
 			
 			$modelSecciones[] = $modelSeccion;
 		}
@@ -67,10 +78,10 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		
 		foreach ($gruposSeccion as $grupo) {
 			$grupoModel = new Encuesta_Model_Grupo($grupo->toArray());
-			$grupoModel->setIdGrupo($grupo->idGrupo);
-			$grupoModel->setIdSeccion($grupo->idSeccion);
-			$grupoModel->setOrden($grupo->orden);
-			$grupoModel->setElementos($grupo->elementos);
+			//$grupoModel->setIdGrupo($grupo->idGrupo);
+			//$grupoModel->setIdSeccion($grupo->idSeccion);
+			//$grupoModel->setOrden($grupo->orden);
+			//$grupoModel->setElementos($grupo->elementos);
 			
 			$elementos[$grupo->orden] = $grupoModel; 
 		}
@@ -95,6 +106,8 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$orden = count($tablaSeccion->fetchAll($select));
 		$orden++;
 		$seccion->setOrden($orden);
+		$seccion->setElementos("0");
+		$seccion->setHash($seccion->getHash());
 		
 		$tablaSeccion->insert($seccion->toArray());
 	}

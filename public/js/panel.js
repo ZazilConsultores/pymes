@@ -4,15 +4,15 @@
 $().ready(function(){
 	$urlEncuesta = "/General/public/encuesta/";
 	$("button[tipo='encuesta']").click(function(){
-		//console.log($(this).attr("hash"));
+		console.log($(this).attr("hash"));
 		$hash = $(this).attr("hash");
 		$hashContainer = $("div#detalles").attr("hash");
 		$tipo = "encuesta";
 		$tipoContainer = $("div#detalles").attr("tipo");
 		
-		if(($tipo != $tipoContainer) && ($hash != $hashContainer)){
+		if($hash != $hashContainer){
 			$.ajax({
-				url: $urlEncuesta + "html/encuestadet/idEncuesta/" + $hash,
+				url: $urlEncuesta + "html/encuestadet/hash/" + $hash,
 				dataType: "html",
 				success: function(data){
 					$("div#detalles").html(data);
@@ -22,7 +22,7 @@ $().ready(function(){
 			});
 			// =======================================   >>> Cargamos las secciones
 			$.ajax({
-				url: $urlEncuesta + "html/secciones/idEncuesta/" + $hash,
+				url: $urlEncuesta + "html/secciones/hash/" + $hash,
 				dataType: "html",
 				success: function(data){
 					$("div#contenedorSecciones").html(data);
@@ -45,9 +45,9 @@ $().ready(function(){
 		console.log($tipo);
 		console.log($tipoContainer);
 		
-		if(($tipo != $tipoContainer) || ($hash != $hashContainer)){
+		if($hash != $hashContainer){
 			//============================================================================================== Detalles Seccion
-			$urlDetallesSeccion = $urlEncuesta + "html/secciondet/idSeccion/" + $hash;
+			$urlDetallesSeccion = $urlEncuesta + "html/secciondet/hash/" + $hash;
 			$.ajax({
 				url: $urlDetallesSeccion,
 				dataType: "html",
@@ -60,7 +60,7 @@ $().ready(function(){
 			});
 			//============================================================================================== Grupos
 			//console.log("Lanzando peticion de grupos");
-			$urlGrupos = $urlEncuesta + "html/grupos/idSeccion/" + $hash;
+			$urlGrupos = $urlEncuesta + "html/grupos/hash/" + $hash;
 			console.log($urlGrupos);
 			$.ajax({
 				url: $urlGrupos,
@@ -71,7 +71,7 @@ $().ready(function(){
 			});
 			//============================================================================================== Preguntas
 			//console.log("Lanzando peticion de preguntas");
-			$urlPreguntas = $urlEncuesta + "html/preguntas/idSeccion/" + $hash;
+			$urlPreguntas = $urlEncuesta + "html/preguntas/hashSeccion/" + $hash;
 			$.ajax({
 				url: $urlPreguntas,
 				dataType: "html",
@@ -91,9 +91,9 @@ $().ready(function(){
 		$tipo = "grupo";
 		$tipoContainer = $("div#detalles").attr("tipo");
 		
-		if(($tipo != $tipoContainer) && ($hash != $hashContainer)){
+		if($hash != $hashContainer){
 			//============================================================================================== Detalles Grupo
-			$urlDetallesGrupo = $urlEncuesta + "html/grupodet/idGrupo/" + $hash;
+			$urlDetallesGrupo = $urlEncuesta + "html/grupodet/hash/" + $hash;
 			$.ajax({
 				url: $urlDetallesGrupo,
 				dataType: "html",
@@ -106,7 +106,7 @@ $().ready(function(){
 			});
 			//============================================================================================== Preguntas
 			console.log("Lanzando peticion de preguntas");
-			$urlPreguntas = $urlEncuesta + "html/preguntas/idGrupo/" + $hash;
+			$urlPreguntas = $urlEncuesta + "html/preguntas/hashGrupo/" + $hash;
 			$.ajax({
 				url: $urlPreguntas,
 				dataType: "html",
@@ -128,8 +128,8 @@ $().ready(function(){
 		$tipo = "grupo";
 		$tipoContainer = $("div#detalles").attr("tipo");
 		
-		if(($tipo != $tipoContainer) && ($hash != $hashContainer)){
-			$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/idPregunta/"+$hash;
+		if($hash != $hashContainer){
+			$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/hash/"+$hash;
 			console.log($urlDetallesPregunta);
 			$.ajax({
 				url: $urlDetallesPregunta,

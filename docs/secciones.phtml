@@ -1,0 +1,46 @@
+<section>
+	<article class="col-md-12">
+		<header>
+			<h3>Secciones de la Encuesta</h3>
+		</header>
+		<div>
+			<a href="<?php echo $this->url(array("module" => "encuesta","controller" => "seccion", "action" => "alta", "idEncuesta" => $encuesta->getIdEncuesta()), null, false); ?>" class="btn btn-success">
+				<span class="glyphicon glyphicon-plus"></span>  Agregar sección
+			</a>
+			<?php if(! is_null($secciones) && count($secciones)){ ?>
+			<table class="table table-stripped">
+				<thead>
+					<th>Nombre</th>
+					<th>Orden</th>
+					<th>Elementos</th>
+					<th>Configuración</th>
+				</thead>
+				<tbody>
+					<?php foreach ($secciones as $seccion) : 
+						$elementos = $seccionDAO->obtenerElementos($seccion->getIdSeccion());
+						?>
+					<tr>
+						<td><?php echo $seccion->getNombre(); ?></td>
+						<td><?php echo $seccion->getOrden(); ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "seccion", "action" => "index", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>">
+								<span class="badge"><?php echo count($elementos); ?></span> Elemento(s)
+							</a>
+						</td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "seccion", "action" => "admin", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>">
+								<span class="glyphicon glyphicon-search"></span> Administrar
+							</a>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<?php	}else { ?>
+				<h3>No existen secciones para esta encuesta.</h3>
+			<?php 
+				}
+			?>
+		</div>
+	</article>
+</section>

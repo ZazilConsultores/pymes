@@ -7,6 +7,7 @@
 interface Encuesta_Interfaces_IGrupo {
 	// =====================================================================================>>>   Buscar
 	public function obtenerGrupo($idGrupo);
+	public function obtenerGrupoHash($hash);
 	public function obtenerGrupos($idSeccion);
 	public function obtenerPreguntas($idGrupo);
 	// =====================================================================================>>>   Crear

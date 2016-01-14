@@ -25,7 +25,7 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 			$this->view->elementos = $this->seccionDAO->obtenerElementos($idSeccion);
 		}else{
 			//Redirect
-			$this->_helper->redirector->gotoSimple("admin", "encuesta", "default");
+			$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 		}
     }
 
@@ -34,12 +34,20 @@ class Encuesta_SeccionController extends Zend_Controller_Action
         // action body
         $idSeccion = $this->getParam("idSeccion");
 		if(! is_null($idSeccion)) {
-			$this->view->seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
+			$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
+			$this->view->seccion = $seccion;
 			$this->view->grupos = $this->grupoDAO->obtenerGrupos($idSeccion);
 			$this->view->preguntas = $this->preguntaDAO->obtenerPreguntas($idSeccion, "S");
+			
+			
+			$formulario = new Encuesta_Form_AltaSeccion;
+			$formulario->getElement("nombre")->setValue($seccion->getNombre());
+			$formulario->getElement("submit")->setLabel("Actualizar seccion");
+			
+			$this->view->formulario = $formulario;
 		}else{
 			//Redirect
-			$this->_helper->redirector->gotoSimple("admin", "encuesta", "default");
+			$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 		}
     }
 
@@ -56,19 +64,16 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 				$this->view->encuesta = $encuesta;
 				$this->view->formulario = $formulario;
 			}else{
-				$this->_helper->redirector->gotoSimple("admin", "encuesta", "default");
+				$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 			}
 		}else if($request->isPost()) {
 			if($formulario->isValid($request->getPost())) {
 				
 				$datos = $formulario->getValues();
-				//$datos["idEncuesta"] = $idEncuesta;
-				$datos["fecha"] = date("Y-m-d", time());;
-				//$datos["elementos"] = 0;
 				
 				$seccion = new Encuesta_Model_Seccion($datos);
 				$seccion->setIdEncuesta($idEncuesta);
-				$seccion->setElementos("0");
+				$seccion->setFecha(date("Y-m-d H:i:s", time()));
 				
 				$this->seccionDAO->crearSeccion($seccion);
 				

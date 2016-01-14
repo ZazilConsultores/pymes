@@ -19,7 +19,7 @@ class Encuesta_Form_AltaGrupo extends Zend_Form
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Agregar Grupo");
 		//$eTipo->setAttrib("class", "btn btn-primary");
-		$eSubmit->setAttrib("class", "btn btn-primary");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		$this->addElement($eNombre);
 		$this->addElement($eTipo);
