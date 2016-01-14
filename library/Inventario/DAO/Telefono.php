@@ -5,11 +5,12 @@
  * @version 1.0.0
  */
 class Inventario_DAO_Telefono implements Inventario_Interfaces_ITelefono {
-	private $tablaEstado;
+	private $tablaTelefono;
 	
 	public function __construct()
 	{
-		$this->tablaEstado = new Application_Model_DbTable_Estado;
+		$this->tablaTelefono = new Application_Model_DbTable_Telefono
+		;
 	}
 	
 	public function obtenerTelefono($idTelefono){
@@ -17,10 +18,45 @@ class Inventario_DAO_Telefono implements Inventario_Interfaces_ITelefono {
 		$select = $tablaTelefono->select()->from($tablaTelefono)->where("idTelefono = ?", $idTelefono);
 		$rowTelefono = $tablaTelefono->fetchRow($select);
 	
-		$telefonoModel = new Application_Model_Telefono($rowEstado->toArray());
-		$telefonoModel->setIdTelefono($rowTelefono->idTelefono);
+		$telefonoModel = new Application_Model_Telefono($rowTelefono->toArray());
+		//$telefonoModel->setIdTelefono($rowTelefono->idTelefono);
 		
 		return $telefonoModel;
+	}
+	public function obtenerTelefonos(){
+		$tablaTelefono = $this->tablaTelefono;
+		$rowTelefonos = $tablaTelefono->fetchAll();
+		
+		$modelTelefonos = array();
+		
+		foreach ($rowTelefonos as $rowTelefono) {
+			$modelTelefono = new Application_Model_Telefono($rowTelefono->toArray());
+			//$modelTelefono->setIdTelefono($rowTelefono->idTelefono);
+			
+			$modelTelefonos[] = $modelTelefono;
+		}
+		
+		return $modelTelefonos;
+	}
+	
+	
+	public function crearTelefono(Application_Model_Telefono $telefono){
+		$tablaTelefono = $this->tablaTelefono;
+		$tablaTelefono->insert($telefono->toArray());
+	}
+	
+	public function editarTelefono($idTelefono, Application_Model_Telefono $telefono){
+		$tablaTelefono = $this->tablaTelefono;
+		$where = $tablaTelefono->getAdapter()->quoteInto("idTelefono = ?", $idTelefono);
+			
+		$tablaTelefono->update($telefono->toArray(), $where);
+	}
+	
+	public function eliminarTelefono($idTelefono){
+		$tablaTelefono = $this->tablaTelefono;
+		$where = $tablaTelefono->getAdapter()->quoteInto("idTelefono = ?", $idTelefono);
+		
+		$tablaTelefono->delete($where);
 	}
 	
 }
