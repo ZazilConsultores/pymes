@@ -85,9 +85,21 @@ class Encuesta_Model_Encuesta
     public function setEstatus($estatus) {
         $this->estatus = $estatus;
     }
+	
+	private $hash;
+
+    public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
+        return $this->hash;
+    }
+    
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
 
     public function __construct(array $datos) {
 		
+		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
 		$this->nombre = $datos["nombre"];
 		$this->nombreClave = $datos["nombreClave"];
 		$this->descripcion = $datos["descripcion"];
@@ -95,6 +107,7 @@ class Encuesta_Model_Encuesta
 		$this->fechaInicio = $datos["fechaInicio"];
 		$this->fechaFin = $datos["fechaFin"];
 		$this->estatus = $datos["estatus"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
 	public function toArray() {
@@ -108,6 +121,7 @@ class Encuesta_Model_Encuesta
 		$datos["fechaInicio"] = $this->fechaInicio;
 		$datos["fechaFin"] = $this->fechaFin;
 		$datos["estatus"] = $this->estatus;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

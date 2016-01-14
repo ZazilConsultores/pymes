@@ -7,6 +7,7 @@
 interface Encuesta_Interfaces_IEncuesta{
 	// =====================================================================================>>>   Buscar
 	public function obtenerEncuesta($idEncuesta);
+	public function obtenerEncuestaHash($hash);
 	public function obtenerEncuestas();
 	// =====================================================================================>>>   Insertar
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);

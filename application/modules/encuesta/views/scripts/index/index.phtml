@@ -19,7 +19,7 @@
 					<?php foreach ($encuestas as $encuesta) : ?>
 					<tr>
 						<td>
-							<button type="button" class="btn btn-block btn-default" tipo="encuesta" hash="<?php echo $encuesta->getIdEncuesta(); ?>">
+							<button type="button" class="btn btn-block btn-default" tipo="encuesta" hash="<?php echo $encuesta->getHash(); ?>">
 								<span class="glyphicon glyphicon-list-alt"></span> <?php echo $encuesta->getNombreClave(); ?>
 							</button>
 						</td>

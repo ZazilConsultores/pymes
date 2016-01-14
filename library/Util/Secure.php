@@ -6,10 +6,10 @@
  */
 class Util_Secure {
 	
-	public static function generateKey(array $datos, $algo)
+	public static function generateKey(array $datos)
 	{
 		$firma = implode(",", $datos);
-		$hash = hash($algo, $firma);
+		$hash = hash("md5", $firma);
 		
 		return $hash;
 	}

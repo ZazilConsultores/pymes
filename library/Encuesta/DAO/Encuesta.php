@@ -8,7 +8,8 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
 	
-	function __construct() {
+	function __construct()
+	{
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
 	}
 	
@@ -18,13 +19,24 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * @param int $idEncuesta
 	 * @return Encuesta_Model_Encuesta $encuestaM
 	 */
-	public function obtenerEncuesta($idEncuesta) {
+	public function obtenerEncuesta($idEncuesta)
+	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
 		$rowEncuesta = $tablaEncuesta->fetchRow($select);
 		
 		$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
-		$modelEncuesta->setIdEncuesta($rowEncuesta->idEncuesta);
+		
+		return $modelEncuesta;
+	}
+	
+	public function obtenerEncuestaHash($hash)
+	{
+		$tablaEncuesta = $this->tablaEncuesta;
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("hash = ?", $hash);
+		$rowEncuesta = $tablaEncuesta->fetchRow($select);
+		
+		$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
 		
 		return $modelEncuesta;
 	}
@@ -33,15 +45,14 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * @method obtenerEncuestas Obtiene todas las encuestas existentes.
 	 * @return array Encuesta_Model_Encuesta
 	 */
-	public function obtenerEncuestas() {
+	public function obtenerEncuestas()
+	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		$rowsEncuestas = $tablaEncuesta->fetchAll();
 		$modelEncuestas = array();
 		foreach ($rowsEncuestas as $rowEncuesta) {
 			$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
-			$modelEncuesta->setIdEncuesta($rowEncuesta->idEncuesta);
-			
-			$modelEncuestas[] = $modelEncuesta;
+			if($rowEncuesta->estatus != 2) $modelEncuestas[] = $modelEncuesta;
 		}
 		
 		return $modelEncuestas;
@@ -52,22 +63,25 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * @method crearEncuesta Crea una encuesta pasandole un model.
 	 * @param Encuesta_Model_Encuesta $encuesta
 	 */
-	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta) {
+	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta)
+	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		$tablaEncuesta->insert($encuesta->toArray());
 	}
 	//          =========================================================================   >>>   Actualizar
-	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta) {
+	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta)
+	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
-		//$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+
 		$tablaEncuesta->update($encuesta->toArray(), $where);
 	}
 	//          =========================================================================   >>>   Eliminar
-	public function eliminarEncuesta($idEncuesta) {
+	public function eliminarEncuesta($idEncuesta)
+	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
-		//$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+
 		$tablaEncuesta->delete($where);
 	}
 	

@@ -1,4 +1,43 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Grupo</b> and script/action name <b>admin</b></p>
+<?php 
+	//$encuesta = $this->encuesta; 
+	$seccion = $this->seccion;
+	$grupos = $this->grupos;
+	$tipo = Zend_Registry::get("tipo");
+?>
+<header>
+	<h3>Grupos de la seccion: <?php echo $seccion->getNombre(); ?></h3>
+</header>
+<div>
+	<a href="<?php echo $this->url(array("controller" => "grupo", "action" => "alta"), null, false); ?>" class="btn btn-primary">
+		<span class="glyphicon glyphicon-plus"></span> 
+		Agregar Grupo
+	</a>
 </div>
+<?php if(! is_null($grupos) && count($grupos)){ ?>
+<table class="table table-stripped">
+	<thead>
+		<th>Grupo</th>
+		<th>Tipo Preguntas</th>
+		<th>Orden Grupo</th>
+		<th>Preguntas</th>
+	</thead>
+	<tbody>
+		<?php foreach ($grupos as $grupo) : ?>
+		<tr>
+			<td><?php echo $grupo->getNombre(); ?></td>
+			<td><?php echo $tipo[$grupo->getTipo()]; ?></td>
+			<td><?php echo $grupo->getOrden(); ?></td>
+			<td>
+				<a class="btn btn-warning" href="<?php echo $this->url(array("controller" => "pregunta", "action" => "admin", "grupo" => $grupo->getIdGrupo()), null, TRUE); ?>">
+					<span class="glyphicon glyphicon-search"></span> Administrar
+				</a>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+<?php	}else { ?>
+	<h3>No existen grupos para esta seccion.</h3>
+<?php 
+	}
+?>

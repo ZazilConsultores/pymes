@@ -37,7 +37,7 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$eFechaFin->setAttrib("class", "form-control fecha");
 		$eFechaFin->setAttrib("tipo", "fecha");
 		
-		$eSubmit = new Zend_Form_Element_Submit("eSubmit");
+		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Generar Encuesta");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		

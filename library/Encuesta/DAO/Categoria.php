@@ -21,7 +21,6 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 		$rowCategoria = $tablaCategoria->fetchRow($select);
 		
 		$categoriaM = new Encuesta_Model_Categoria($categoria->toArray());
-		$categoriaM->setIdCategoria($categoria->idCategoria);
 		
 		return $categoriaM;
 	}
@@ -34,8 +33,6 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 		$opcionesModel = array();
 		foreach ($rowOpciones as $rowOpcion) {
 			$opcionModel = new Encuesta_Model_Opcion($rowOpcion->toArray());
-			$opcionModel->setIdOpcion($rowOpcion->idOpcion);
-			$opcionModel->setIdCategoria($rowOpcion->idCategoria);
 			
 			$opcionesModel[] = $opcionModel;
 		}
@@ -51,7 +48,6 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 		
 		foreach ($rowCategorias as $rowCategoria) {
 			$modelCategoria = new Encuesta_Model_Categoria($rowCategoria->toArray());
-			$modelCategoria->setIdCategoria($rowCategoria->idCategoria);
 			
 			$modelCategorias[] = $modelCategoria;
 		}
@@ -68,13 +64,14 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 	public function editarCategoria($idCategoria, Encuesta_Model_Categoria $categoria) {
 		$tablaCategoria = $this->tablaCategoria;
 		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoria = ?", $idCategoria);
-		//$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
+		
 		$tablaCategoria->update($categoria->toArray(), $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarCategoria($idCategoria){
 		$tablaCategoria = $this->tablaCategoria;
 		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoria = ?", $idCategoria);
+		
 		$tablaCategoria->delete($where);
 	}
 	

@@ -35,19 +35,33 @@ class Encuesta_Model_Categoria
     function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
     }
+	
+	private $hash;
+
+    public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
+        return $this->hash;
+    }
     
-    function __construct(array $datos) {
-    	//$this->idCategoria = $datos["idCategoria"];
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
+
+    public function __construct(array $datos) {
+    	if(array_key_exists("idCategoria", $datos)) $this->idCategoria = $datos["idCategoria"];
     	$this->categoria = $datos["categoria"];
 		$this->descripcion = $datos["descripcion"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		
 	}
 	
 	public function toArray() {
 		$datos = array();
 		
-		if(!is_null($this->idCategoria)) $datos["idCategoria"] = $this->idCategoria;
+		$datos["idCategoria"] = $this->idCategoria;
 		$datos["categoria"] = $this->categoria;
 		$datos["descripcion"] = $this->descripcion;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

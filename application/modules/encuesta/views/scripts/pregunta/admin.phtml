@@ -1,4 +1,39 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Pregunta</b> and script/action name <b>admin</b></p>
-</div>
+<?php 
+	$seccion = $this->seccion;
+	$grupo = $this->grupo;
+	$preguntas = $this->preguntas;
+	
+	if(is_null($grupo)){
+?>
+	<header>
+		<h3>Preguntas de la Seccion: <?php echo $seccion->getNombre() ?></h3>
+	</header>
+	<table class="table table-condensed table-striped">
+		<tbody>
+			<?php foreach ($preguntas as $pregunta) { ?>
+			<tr>
+				<td>Pregunta: </td>
+				<td><?php echo $pregunta->getNombre(); ?></td>
+			</tr>	
+			<?php }?>
+			
+		</tbody>
+	</table>
+<?php }else { ?>
+	<header>
+		<h3>Preguntas del Grupo: <?php echo $grupo->getNombre() ?></h3>
+	</header>
+	<table>
+		<tbody>
+			<?php foreach ($preguntas as $pregunta) { ?>
+			<tr>
+				<td>Pregunta: </td>
+				<td><?php echo $pregunta->getNombre(); ?></td>
+				<td>Tipo: </td>
+				<td><?php echo $grupo->getTipo(); ?></td>
+			</tr>	
+			<?php }?>
+			
+		</tbody>
+	</table>
+<?php } ?>

@@ -26,8 +26,30 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		return $modelPregunta;
 	}
 	
-	public function obtenerPreguntas($idPadre, $tipoPadre) {
+	public function obtenerPreguntaHash($hash){
+		$tabla = $this->tablaPregunta;
 		
+		$select = $tabla->select()->from($tabla)->where("hash = ?", $hash);
+		$rowPregunta = $tabla->fetchRow($select);
+		$modelPregunta = new Encuesta_Model_Pregunta($rowPregunta->toArray());
+		
+		return $modelPregunta;
+	}
+	
+	public function obtenerPreguntas($idPadre, $tipoPadre) {
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", $tipoPadre)->where("idOrigen = ?", $idPadre);
+		$rowsPreguntas = $tablaPregunta->fetchAll($select);
+		
+		$modelPreguntas = array();
+		foreach ($rowsPreguntas as $rowPregunta) {
+			$modelPregunta = new Encuesta_Model_Pregunta($rowPregunta->toArray());
+			$modelPregunta->setIdPregunta($rowPregunta->idPregunta);
+			
+			$modelPreguntas[] = $modelPregunta;
+		}
+		
+		return $modelPreguntas;
 	}
 	// =====================================================================================>>>   Crear
 	public function crearPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta) {
@@ -37,24 +59,26 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 			$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idPadre);
 			$rowSeccion = $tablaSeccion->fetchRow($tablaSeccion);
 			
-			$pregunta->setIdOrigen($rowSeccion->idSeccion);
-			$pregunta->setOrigen("S");
-			$pregunta->setOrden($rowSeccion->elementos);
+			//$pregunta->setIdOrigen($rowSeccion->idSeccion);
+			//$pregunta->setOrigen("S");
+			//$pregunta->setOrden($rowSeccion->elementos);
 			$rowSeccion->elementos++;
 			$rowSeccion->save();
+			$pregunta->setOrden($rowSeccion->elementos);
 			
 		}elseif($tipoPadre === "G"){
 			$tablaGrupo = $this->tablaGrupo;
 			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idPadre);
 			$rowGrupo = $tablaGrupo->fetchRow($select);
 			
-			$pregunta->setIdOrigen($rowGrupo->idGrupo);
-			$pregunta->setOrigen("G");
-			$pregunta->setOrden($rowGrupo->elementos);
+			//$pregunta->setIdOrigen($rowGrupo->idGrupo);
+			//$pregunta->setOrigen("G");
+			//$pregunta->setOrden($rowGrupo->elementos);
 			$rowGrupo->elementos++;
 			$rowGrupo->save();
+			$pregunta->setOrden($rowGrupo->elementos);
 		}
-		
+		//print_r($pregunta->toArray());
 		$tablaPregunta = $this->tablaPregunta;
 		$tablaPregunta->insert($pregunta->toArray());
 	}

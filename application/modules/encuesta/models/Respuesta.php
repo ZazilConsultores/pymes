@@ -35,12 +35,24 @@ class Encuesta_Model_Respuesta
     public function setRespuesta($respuesta) {
         $this->respuesta = $respuesta;
     }
+	
+	private $hash;
+
+    public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
+        return $this->hash;
+    }
+    
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
 
     public function __construct(array $datos)
     {
-    	//$this->idRespuesta = $datos["idRespuesta"];
-        //$this->idPregunta = $datos["idPregunta"];
+        if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
+        if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
 		$this->respuesta = $datos["respuesta"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray()
@@ -50,6 +62,7 @@ class Encuesta_Model_Respuesta
 		$datos["idRespuesta"] = $this->idRespuesta;
 		$datos["idPregunta"] = $this->idPregunta;
 		$datos["respuesta"] = $this->respuesta;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

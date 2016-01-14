@@ -1,4 +1,43 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Pregunta</b> and script/action name <b>index</b></p>
-</div>
+<?php $pregunta = $this->pregunta; 
+	$tipo = Zend_Registry::get("tipo");
+	?>
+<section class="row">
+	<br />
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Pregunta
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>IdPregunta</th>
+						<th>Nombre</th>
+						<th>Orden</th>
+						<th>Tipo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php echo $pregunta->getIdPregunta() ?></td>
+						<td><?php echo $pregunta->getNombre() ?></td>
+						<td><?php echo $pregunta->getOrden() ?></td>
+						<td><?php echo $tipo[$pregunta->getTipo()] ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Editar Pregunta
+			</h3>
+		</div>
+		<div class="panel-body">
+			<?php echo $this->formulario; ?>
+		</div>
+	</div>
+</section>

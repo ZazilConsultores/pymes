@@ -14,7 +14,7 @@
 		<?php foreach ($secciones as $seccion) : ?>
 		<tr>
 			<td>
-				<button class="btn btn-block btn-default" tipo="seccion" hash="<?php echo $seccion->getIdSeccion(); ?>">
+				<button class="btn btn-block btn-default" tipo="seccion" hash="<?php echo $seccion->getHash(); ?>">
 					<span class="glyphicon glyphicon-th-list"></span> <?php echo $seccion->getNombre(); ?>
 				</button>
 			</td>
