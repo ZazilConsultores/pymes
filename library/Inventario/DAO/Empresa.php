@@ -14,7 +14,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	
 	function __construct() {
 		$this->tablaEmpresa = new Application_Model_DbTable_Empresa;
-		
+	
 		$this->tablaEmpresas = new Application_Model_DbTable_Empresas;
 		$this->tablaClientes = new Application_Model_DbTable_Clientes;
 		$this->tablaProveedores = new Application_Model_DbTable_Proveedores;

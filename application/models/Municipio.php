@@ -16,7 +16,7 @@ class Application_Model_Municipio
         $this->idMunicipio = $idMunicipio;
     }
 
-	/*private $idEstado;
+    private $idEstado;
 
     public function getIdEstado() {
         return $this->idEstado;
@@ -24,19 +24,9 @@ class Application_Model_Municipio
     
     public function setIdEstado($idEstado) {
         $this->idEstado = $idEstado;
-    }*/
-    
-   private $claveMunicipio;
+    }
 
-    public function getClaveMunicipio() {
-        return $this->claveMunicipio;
-    }
-    
-    public function setClaveMunicipio($claveMunicipio) {
-        $this->claveMunicipio = $claveMunicipio;
-    }
-	
-	private $municipio;
+    private $municipio;
 
     public function getMunicipio() {
         return $this->municipio;
@@ -45,12 +35,10 @@ class Application_Model_Municipio
     public function setMunicipio($municipio) {
         $this->municipio = $municipio;
     }
-	
-	public function __construct(array $datos)
+    
+    public function __construct(array $datos)
     {
-        $this->claveMunicipio = $datos["claveMunicipio"];
-		$this->estado = $datos["municipio"];
-	
+        $this->municipio = $datos["municipio"];
     }
 	
 	public function toArray()
@@ -58,13 +46,11 @@ class Application_Model_Municipio
 		$datos = array();
 		
 		$datos["idMunicipio"] = $this->idMunicipio;
-		$datos["claveMunicipio"] = $this->claveMunicipio; 
+		$datos["idEstado"] = $this->idEstado; 
 		$datos["municipio"] = $this->municipio;
 				
 		return $datos;
 	}
-	
 
- 
 }
 

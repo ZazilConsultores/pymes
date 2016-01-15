@@ -1,4 +1,37 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Municipios</b> and script/action name <b>index</b></p>
-</div>
+<?php 	$estado = $this->estado;
+		$municipios = $this->municipios;
+		$formulario = $this->formulario;
+		$formulario->setAction($this->url(array("module"=>"sistema", "controller"=>"municipios", "action" => "alta"), null, true));
+?>
+<section class="row">
+	<article>
+		<header>
+			<h3>
+				Municipios del estado: <?php echo $estado->getEstado() ?>.
+			</h3>
+		</header>
+		<?php echo $formulario; ?>
+		<table class="table table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Estado</th>
+					<th>Municipio</th>
+					<th>Administrar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($municipios as $municipio) : ?>
+				<tr>
+					<td><?php echo $estado->getEstado() ?></td>
+					<td><?php echo $municipio->getMunicipio() ?></td>
+					<td>
+						<a class="btn btn-block btn-warning" href="<?php echo $this->url(array("module"=>"sistema", "controller"=>"municipios", "action" => "admin", "idMunicipio" => $municipio->getIdMunicipio()), null, true); ?>">
+							Administrar
+						</a>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</article>
+</section>

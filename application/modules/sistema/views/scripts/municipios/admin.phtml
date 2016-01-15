@@ -1,0 +1,45 @@
+<?php 	$municipio = $this->municipio; 
+		$formulario = $this->formulario;
+		$formulario->setAction($this->url(array("module"=>"sistema", "controller"=>"municipios", "action" => "edita", "idMunicipio"=>$municipio->getIdMunicipio()), null, true));
+?>
+<section class="row">
+	<article>
+		<header>
+			<h3>
+				Detalle Municipio: <?php echo $municipio->getMunicipio(); ?>
+			</h3>
+		</header>
+		
+		<table class="table table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Municipio</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr>
+					<td><?php echo $municipio->getMunicipio() ?></td>
+	
+				</tr>
+			</tbody>
+		</table>
+	</article>
+</section>
+<section class="row">
+	<article class="col-md-6" style="background-color: #87CEEB">
+		<header>
+			<h3>Editar</h3>
+		</header>
+		<?php echo $formulario; ?>
+	</article>
+	<article class="col-md-6" style="background-color: #FF6347">
+		<header>
+			<h3>Eliminar</h3>
+		</header>
+		<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"municipios", "action"=>"baja", "idMunicipio"=>$municipio->getIdMunicipio()), null, true) ?>">
+			Eliminar Municipio
+		</a>
+		<br /><br />
+	</article>
+</section>
