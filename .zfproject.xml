@@ -126,6 +126,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="opciones"/>
             </controllerFile>
             <controllerFile controllerName="Pregunta">
               <actionMethod actionName="index"/>
@@ -133,6 +134,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="opciones"/>
             </controllerFile>
             <controllerFile controllerName="Respuesta">
               <actionMethod actionName="index"/>
@@ -157,6 +159,7 @@
             </controllerFile>
             <controllerFile controllerName="Generador">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -166,6 +169,7 @@
             <formFile formName="AltaPregunta"/>
             <formFile formName="AltaCategoria"/>
             <formFile formName="AltaOpcion"/>
+            <formFile formName="AltaSeleccion"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -333,6 +337,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Generador">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Generador">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="opciones"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -580,6 +593,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="opciones"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Pregunta">
                 <testApplicationActionMethod forActionName="index"/>
@@ -587,6 +601,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="opciones"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Respuesta">
                 <testApplicationActionMethod forActionName="index"/>
@@ -611,6 +626,7 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Generador">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

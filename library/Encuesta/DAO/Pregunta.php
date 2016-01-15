@@ -81,6 +81,9 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		//print_r($pregunta->toArray());
 		$tablaPregunta = $this->tablaPregunta;
 		$tablaPregunta->insert($pregunta->toArray());
+		
+		$pregunta = $this->obtenerPreguntaHash($pregunta->getHash());
+		return $pregunta;
 	}
 	// =====================================================================================>>>   Editar
 	public function editarPregunta($idPregunta, Encuesta_Model_Pregunta $pregunta) {

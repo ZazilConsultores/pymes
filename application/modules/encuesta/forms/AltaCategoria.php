@@ -13,7 +13,7 @@ class Encuesta_Form_AltaCategoria extends Zend_Form
 		$eDescripcion = new Zend_Form_Element_Textarea("descripcion");
 		$eDescripcion->setLabel("Agregue una descripcion de esta categoria");
 		$eDescripcion->setAttrib("class", "form-control");
-		$eDescripcion->setAttrib("rows", "5");
+		$eDescripcion->setAttrib("rows", "2");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Guardar Categoria");

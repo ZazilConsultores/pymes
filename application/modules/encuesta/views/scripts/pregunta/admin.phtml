@@ -1,39 +1,51 @@
 <?php 
-	$seccion = $this->seccion;
-	$grupo = $this->grupo;
-	$preguntas = $this->preguntas;
-	
-	if(is_null($grupo)){
+	$pregunta = $this->pregunta;
+	$formulario = $this->formulario;
 ?>
-	<header>
-		<h3>Preguntas de la Seccion: <?php echo $seccion->getNombre() ?></h3>
-	</header>
-	<table class="table table-condensed table-striped">
-		<tbody>
-			<?php foreach ($preguntas as $pregunta) { ?>
-			<tr>
-				<td>Pregunta: </td>
-				<td><?php echo $pregunta->getNombre(); ?></td>
-			</tr>	
-			<?php }?>
-			
-		</tbody>
-	</table>
-<?php }else { ?>
-	<header>
-		<h3>Preguntas del Grupo: <?php echo $grupo->getNombre() ?></h3>
-	</header>
-	<table>
-		<tbody>
-			<?php foreach ($preguntas as $pregunta) { ?>
-			<tr>
-				<td>Pregunta: </td>
-				<td><?php echo $pregunta->getNombre(); ?></td>
-				<td>Tipo: </td>
-				<td><?php echo $grupo->getTipo(); ?></td>
-			</tr>	
-			<?php }?>
-			
-		</tbody>
-	</table>
-<?php } ?>
+<section class="row">
+	<article>
+		<header>
+			<h3>Detalle de la pregunta: <?php echo $pregunta->getPregunta() ?></h3>
+		</header>
+		<div>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<th>Pregunta</th>
+					<th>Creación</th>
+					<th>Tipo</th>
+					<th>Orden</th>
+					<th>Contenedor</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php echo $pregunta->getPregunta() ?></td>
+						<td><?php echo $pregunta->getFecha() ?></td>
+						<td><?php echo $pregunta->getTipo() ?></td>
+						<td><?php echo $pregunta->getOrden() ?></td>
+						<td><?php echo $origen = ($pregunta->getOrigen() == "S") ? "SECCION" : "GRUPO" ; ?></td>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</article>
+	<article class="col-md-6">
+		<header>
+			<h3>Editar Pregunta</h3>
+		</header>
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+	</article>
+	<article class="col-md-6">
+		<header>
+			<h3>Eliminar Pregunta</h3>
+		</header>
+		<div>
+			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"baja","idPregunta"=>$pregunta->getIdPregunta(),), null, true) ?>">
+				Eliminar Pregunta
+			</a>
+			<br /><br />
+		</div>
+	</article>
+</section>

@@ -2,9 +2,12 @@
 
 class Encuesta_GrupoController extends Zend_Controller_Action
 {
-	private $grupoDAO;
-	private $seccionDAO;
-	private $preguntaDAO;
+
+    private $grupoDAO = null;
+
+    private $seccionDAO = null;
+
+    private $preguntaDAO = null;
 
     public function init()
     {
@@ -33,13 +36,22 @@ class Encuesta_GrupoController extends Zend_Controller_Action
         // action body
         $idGrupo = $this->getParam("idGrupo");
 		
+		
 		if(!is_null($idGrupo)){
 			$grupo = $this->grupoDAO->obtenerGrupo($idGrupo);
 			$seccion = $this->seccionDAO->obtenerSeccion($grupo->getIdSeccion());
+			$preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "G");
+			$t = Zend_Registry::get("tipo");
+			$formulario = new Encuesta_Form_AltaGrupo;
+			$formulario->getElement("nombre")->setValue($grupo->getNombre());
+			//$formulario->getElement("tipo")->setMultiOptions($t);
+			$formulario->getElement("submit")->setLabel("Actualizar Grupo");
+			$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 			
-			$this->view->seccion = $seccion;
 			$this->view->grupo = $grupo;
-			
+			$this->view->seccion = $seccion;
+			$this->view->preguntas = $preguntas;
+			$this->view->formulario = $formulario;
 		}else{
 			$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 		}
@@ -78,7 +90,12 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 				//$grupo->setElementos("0");
 				$this->grupoDAO->crearGrupo($grupo);
 				//$this->grupoDAO->crearGrupo($grupo);
-				$this->_helper->redirector->gotoSimple("index", "seccion", "encuesta", array("idSeccion" => $idSeccion));
+				if($grupo->getTipo() == "AB"){
+					$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
+				}else{
+					$this->_helper->redirector->gotoSimple("opciones", "grupo", "encuesta", array("idGrupo"=>$grupo->getIdGrupo()));
+				}
+				//$this->_helper->redirector->gotoSimple("index", "seccion", "encuesta", array("idSeccion" => $idSeccion));
 			}
 		}
     }
@@ -93,8 +110,15 @@ class Encuesta_GrupoController extends Zend_Controller_Action
         // action body
     }
 
+    public function opcionesAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

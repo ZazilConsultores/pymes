@@ -15,12 +15,12 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 	}
 	
 	// =====================================================================================>>>   Buscar
-	public function obtenerCategoriaId($idCategoria){
+	public function obtenerCategoria($idCategoria){
 		$tablaCategoria = $this->tablaCategoria;
 		$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
 		$rowCategoria = $tablaCategoria->fetchRow($select);
 		
-		$modelCategoria = new Encuesta_Model_Categoria($categoria->toArray());
+		$modelCategoria = new Encuesta_Model_Categoria($rowCategoria->toArray());
 		
 		return $modelCategoria;
 	}

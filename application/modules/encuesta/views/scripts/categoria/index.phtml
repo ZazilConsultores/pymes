@@ -7,6 +7,10 @@
 			<h3>Categorias en el Módulo de Encuestas:</h3>
 		</header>
 		<div>
+			<p>
+				Al crear preguntas que sean de opcion, ya sean simple o múltiple, se necesita al menos contar con una categoría 
+				que contenga opciones seleccionables para la pregunta.
+			</p>
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"alta"), null, true) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Categoria
 			</a>
@@ -14,8 +18,9 @@
 				<thead>
 					<tr>
 						<th>Nombre</th>
-						<th>Creacion</th>
-						<th>Descripcion</th>
+						<th>Creación</th>
+						<th>Descripción</th>
+						<th>Configuración</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -24,6 +29,11 @@
 						<td><?php echo $categoria->getCategoria() ?></td>
 						<td><?php echo $categoria->getFecha() ?></td>
 						<td><?php echo $categoria->getDescripcion() ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"admin","idCategoria"=>$categoria->getIdCategoria() ), null, true) ?>">
+								<span class="glyphicon glyphicon-cog"></span> Configuracion
+							</a>
+						</td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

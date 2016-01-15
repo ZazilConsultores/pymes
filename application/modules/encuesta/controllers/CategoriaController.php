@@ -20,6 +20,19 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
     {
         // action body
         $idCategoria = $this->getParam("idCategoria");
+		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
+		$formulario = new Encuesta_Form_AltaCategoria();
+		$opciones = $this->categoriaDAO->obtenerOpciones($idCategoria);
+		
+		$formulario->getElement("categoria")->setValue($categoria->getCategoria());
+		$formulario->getElement("descripcion")->setValue($categoria->getDescripcion());
+		$formulario->getElement("submit")->setLabel("Actualizar Categoria");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		
+		$this->view->categoria = $categoria;
+		$this->view->opciones = $opciones;
+		$this->view->formulario = $formulario;
+		
     }
 
     public function altaAction()
@@ -39,7 +52,7 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 				$categoria->setHash($categoria->getHash());
 				$this->categoriaDAO->crearCategoria($categoria);
 				//$tablaCategoria->insert($datos);
-				$this->_helper->redirector->gotoSimple("alta", "categoria", "default");
+				$this->_helper->redirector->gotoSimple("index", "categoria", "encuesta");
 			}
 		}
     }

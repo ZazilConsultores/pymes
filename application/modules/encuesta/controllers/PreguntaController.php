@@ -2,9 +2,10 @@
 
 class Encuesta_PreguntaController extends Zend_Controller_Action
 {
-	private $preguntaDAO;
-	private $seccionDAO;
-	private $grupoDAO;
+
+    private $preguntaDAO = null;
+    private $seccionDAO = null;
+    private $grupoDAO = null;
 
     public function init()
     {
@@ -33,6 +34,17 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
     public function adminAction()
     {
         // action body
+        $idPregunta = $this->getParam("idPregunta");
+		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$t = Zend_Registry::get("tipo");
+		
+		$formulario = new Encuesta_Form_AltaPregunta();
+		$formulario->getElement("tipo")->setMultiOptions(array($pregunta->getTipo() => $t[$pregunta->getTipo()] ));
+		$formulario->getElement("submit")->setLabel("Actualizar Pregunta");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$this->view->formulario = $formulario;
+		$this->view->pregunta = $pregunta;
+		/*
         $idSeccion = $this->getParam("idSeccion");
 		$idGrupo = $this->getParam("idGrupo");
 		$preguntaDAO = $this->preguntaDAO;
@@ -54,7 +66,7 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 			$this->view->grupo = $grupo;
 			$this->view->preguntas = $preguntas;
 		}
-		
+		*/
     }
 
     public function altaAction()
@@ -102,9 +114,13 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 				print_r($pregunta->toArray());
 				//no sabemos si es grupo o pregunta y su id
 				//$pregunta->setIdOrigen($idOrigen);
-				$preguntaDAO->crearPregunta($idObj, $t, $pregunta);
+				$p = $preguntaDAO->crearPregunta($idObj, $t, $pregunta);
+				if($pregunta->getTipo() == "AB"){
+					$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
+				}else{
+					$this->_helper->redirector->gotoSimple("opciones", "pregunta", "encuesta", array("idPregunta" => $p->getIdPregunta()));
+				}
 				
-				$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 			}
 		}
     }
@@ -119,14 +135,46 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
         // action body
     }
 
+    public function opcionesAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        $idPregunta = $this->getParam("idPregunta");
+		
+		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);		
+        $formulario = new Encuesta_Form_AltaSeleccion;
+		$this->view->pregunta = $pregunta;
+		
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+			
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				//$this->view->opciones =$formulario->getValues();
+				$categorias = $formulario->getValues();
+				$opciones = array();
+				
+				foreach ($categorias as $categoria) {
+					foreach ($categoria as $elemento) {
+						if(!is_null($elemento)){
+							foreach ($elemento as $indice => $id) {
+								$opciones[] = $id;
+							}
+						}
+					}
+				}
+				
+				$this->opc;
+				
+				
+				
+				$this->view->opciones =$formulario->getValues();
+				//$datos = $formulario->getValues();
+				
+				
+			}
+		}
+    }
+
 
 }
-
-
-
-
-
-
-
-
-

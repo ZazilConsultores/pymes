@@ -1,4 +1,15 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Generador</b> and script/action name <b>index</b></p>
-</div>
+<?php 
+	$encuesta = $this->encuesta;
+	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"encuesta","controller"=>"generador","action"=>"alta","idEncuesta"=>$encuesta->getIdEncuesta())));
+?>
+<section class="row">
+	<article class="col-md-12">
+		<header>
+			<h3>Encuesta: <?php echo $encuesta->getNombre()  ?></h3>
+		</header>
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+	</article>
+</section>

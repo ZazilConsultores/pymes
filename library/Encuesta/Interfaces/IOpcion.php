@@ -8,7 +8,8 @@ interface Encuesta_Interfaces_IOpcion{
 	// =====================================================================================>>>   Buscar
 	public function obtenerOpcion($idOpcion);
 	public function obtenerOpcionHash($hash);
-	public function obtenerOpciones();
+	public function obtenerOpcionesCategoria($idCategoria);
+	public function obtenerOpcionesPregunta($idPregunta);
 	// =====================================================================================>>>   Insertar
 	public function crearOpcion(Encuesta_Model_Opcion $opcion);
 	// =====================================================================================>>>   Actualizar

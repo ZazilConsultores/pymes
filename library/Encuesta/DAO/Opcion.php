@@ -8,10 +8,12 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	
 	private $tablaCategoria;
 	private $tablaOpcion;
+	private $tablaOpcionesPregunta;
 	
 	public function __construct() {
 		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
 		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
+		$this->tablaOpcionesPregunta = new Encuesta_Model_DbTable_OpcionesPregunta;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -35,9 +37,25 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		return $modelOpcion;
 	}
 	
-	public function obtenerOpciones(){
-		$tablaOpcion = $this->tablaOpcion;
-		$rowsOpciones = $tablaOpcion->fetchAll();
+	public function obtenerOpcionesCategoria($idCategoria)
+	{
+		
+	}
+	
+	public function obtenerOpcionesPregunta($idPregunta){
+		$tablaOpciones = $this->tablaOpcionesPregunta;
+		$select = $tablaOpciones->select()->from($tablaOpciones)->where("idPregunta = ?", $idPregunta);
+		$rowOpciones = $tablaOpciones->fetchRow($select);
+		
+		$objOpciones = explode(",", $rowOpciones->opciones);
+		$modelOpciones = array();
+		
+		foreach ($objOpciones as $idOpcion) {
+			$modelOpcion = $this->obtenerOpcion($idOpcion);
+			$modelOpciones[] = $modelOpcion;
+		}
+		
+		/*
 		$modelOpciones = array();
 		
 		foreach ($rowsOpciones as $rowOpcion) {
@@ -45,13 +63,18 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 			
 			$modelOpciones[] = $modelOpcion;
 		}
-		
+		*/
 		return $modelOpciones;
 	}
 	
 	// =====================================================================================>>>   Insertar
 	public function crearOpcion(Encuesta_Model_Opcion $opcion){
 		$tablaOpcion = $this->tablaOpcion;
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $opcion->getIdCategoria());
+		$numero = count($tablaOpcion->fetchAll($select));
+		$numero++;
+		$opcion->setOrden($numero);
+		
 		$tablaOpcion->insert($opcion->toArray());
 	}
 	
