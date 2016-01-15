@@ -57,18 +57,23 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 			$modelOpciones[] = $modelOpcion;
 		}
 		
-		/*
-		$modelOpciones = array();
-		
-		foreach ($rowsOpciones as $rowOpcion) {
-			$modelOpcion = new Encuesta_Model_Opcion($rowOpcion->toArray());
-			
-			$modelOpciones[] = $modelOpcion;
-		}
-		*/
 		return $modelOpciones;
 	}
 	
+	public function obtenerOpcionesGrupo($idGrupo){
+		$tablaOpcionesGrupo = $this->tablaOpcionesGrupo;
+		$select = $tablaOpcionesGrupo->select()->from($tablaOpcionesGrupo)->where("idGrupo = ?", $idGrupo);
+		$rowOpcionesGrupo = $tablaOpcionesGrupo->fetchRow($select);
+		$opciones = explode(",", $rowOpcionesGrupo->opciones);
+		$modelOpciones = array();
+		
+		foreach ($opciones as $opcion) {
+			$modelOpcion = $this->obtenerOpcion($opcion);
+			$modelOpciones[] = $modelOpcion;
+		}
+		
+		return $modelOpciones;
+	}
 	// =====================================================================================>>>   Insertar
 	public function crearOpcion(Encuesta_Model_Opcion $opcion){
 		$tablaOpcion = $this->tablaOpcion;
@@ -112,9 +117,9 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$vector = implode(",", $opciones);
 		
 		$obj = array();
-		$obj["idPregunta"] = $idPregunta;
+		$obj["idGrupo"] = $idGrupo;
 		$obj["opciones"] = $vector;
 		
-		$tablaOpcionesPregunta->insert($obj);
+		$tablaOpcionesGrupo->insert($obj);
 	}
 }

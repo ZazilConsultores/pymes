@@ -82,7 +82,7 @@ class Encuesta_Model_Seccion
 		if(array_key_exists("idSeccion", $datos)) $this->idSeccion = $datos["idSeccion"];
 		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
 		$this->nombre = $datos["nombre"];
-		$this->fecha = $datos["fecha"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
 		if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];

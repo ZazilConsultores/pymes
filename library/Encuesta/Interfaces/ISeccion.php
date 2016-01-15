@@ -15,8 +15,10 @@ interface Encuesta_Interfaces_ISeccion{
 	// =====================================================================================>>>   Crear
 	public function crearSeccion(Encuesta_Model_Seccion $seccion);
 	// =====================================================================================>>>   Editar
-	public function editarSeccion($idSeccion, Encuesta_Model_Seccion $seccion);
+	public function editarSeccion($idSeccion, array $seccion);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarSeccion($idSeccion);
+	public function eliminarPreguntas($idSeccion);
+	public function eliminarGrupos($idSeccion);
 	
 }

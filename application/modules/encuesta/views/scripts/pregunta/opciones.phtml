@@ -1,7 +1,6 @@
 <?php 
 	$pregunta = $this->pregunta;
 	$formulario = $this->formulario;
-	$opciones = $this->opciones;
 ?>
 <section class="row">
 	<article class="col-md-12">
@@ -10,37 +9,6 @@
 		</header>
 		<div>
 			<?php echo $formulario; ?>
-		</div>
-		<div>
-			<?php 
-				$arrayOpciones = array();
-				foreach ($opciones as $opcion) {
-					foreach ($opcion as $key => $value) {
-						if(!is_null($value)){
-							foreach ($value as $k => $v) {
-								array_push($arrayOpciones, $v);
-								//echo $v . "<br />";
-							}
-						}
-						
-						//echo $value . "<br />";
-					}
-					//print_r($opcion);
-				}
-				
-				print_r($arrayOpciones);
-				
-				$arrayOpciones = array();
-				$categorias = $opciones;
-				foreach ($categorias as $elementos) {
-					foreach ($elementos as $elemento) {
-						//print_r($elemento);
-						//$var = array_values($elemento)
-						//if(!is_null($elemento))
-					}
-				}
-			//print_r($opciones); 
-			?>
 		</div>
 	</article>
 </section>

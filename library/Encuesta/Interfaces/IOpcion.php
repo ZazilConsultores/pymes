@@ -9,14 +9,16 @@ interface Encuesta_Interfaces_IOpcion{
 	public function obtenerOpcion($idOpcion);
 	public function obtenerOpcionHash($hash);
 	public function obtenerOpcionesCategoria($idCategoria);
+	// =========================================== Pregunta y Grupo
 	public function obtenerOpcionesPregunta($idPregunta);
+	public function obtenerOpcionesGrupo($idGrupo);
 	// =====================================================================================>>>   Insertar
 	public function crearOpcion(Encuesta_Model_Opcion $opcion);
 	// =====================================================================================>>>   Actualizar
 	public function editarOpcion($idCategoria, Encuesta_Model_Opcion $opcion);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarOpcion($idOpcion);
-	// =====================================================================================>>>   Asociar
+	// =====================================================================================>>>   Asociar con Pregunta y Grupo
 	public function asociarOpcionesPregunta($idPregunta, array $opciones);
 	public function asociarOpcionesGrupo($idGrupo, array $opciones);
 }

@@ -98,6 +98,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="secciones"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -156,6 +157,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="opciones"/>
             </controllerFile>
             <controllerFile controllerName="Generador">
               <actionMethod actionName="index"/>
@@ -345,6 +347,12 @@
                 <viewScriptFile forActionName="opciones"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="secciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
                 <viewScriptFile forActionName="opciones"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -589,6 +597,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="secciones"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
@@ -647,6 +656,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="opciones"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Generador">
                 <testApplicationActionMethod forActionName="index"/>

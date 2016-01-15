@@ -12,7 +12,7 @@ interface Encuesta_Interfaces_IEncuesta{
 	// =====================================================================================>>>   Insertar
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
 	// =====================================================================================>>>   Actualizar
-	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta);
+	public function editarEncuesta($idEncuesta, array $encuesta);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarEncuesta($idEncuesta);
 	

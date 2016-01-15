@@ -39,10 +39,10 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 			$this->view->grupos = $this->grupoDAO->obtenerGrupos($idSeccion);
 			$this->view->preguntas = $this->preguntaDAO->obtenerPreguntas($idSeccion, "S");
 			
-			
 			$formulario = new Encuesta_Form_AltaSeccion;
 			$formulario->getElement("nombre")->setValue($seccion->getNombre());
 			$formulario->getElement("submit")->setLabel("Actualizar seccion");
+			$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 			
 			$this->view->formulario = $formulario;
 		}else{
@@ -85,6 +85,16 @@ class Encuesta_SeccionController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
+        $request = $this->getRequest();
+		$idSeccion = $this->getParam("idSeccion");
+		$post = $request->getPost();
+		unset($post["submit"]);
+		//print_r($post);
+		//$seccion = new Encuesta_Model_Seccion($post);
+		//print_r($estadoModel->toArray());
+		//$this->encuestaDAO->editarEncuesta($idEncuesta, $encuestaModel);
+		$this->seccionDAO->editarSeccion($idSeccion, $post);
+		$this->_helper->redirector->gotoSimple("admin", "seccion", "encuesta", array("idSeccion"=>$idSeccion));
     }
 
     public function bajaAction()

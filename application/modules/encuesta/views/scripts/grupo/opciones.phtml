@@ -1,4 +1,14 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Grupo</b> and script/action name <b>opciones</b></p>
-</div>
+<?php 
+	$grupo = $this->grupo;
+	$formulario = $this->formulario;
+?>
+<section class="row">
+	<article class="col-md-12">
+		<header>
+			<h3>Asociando Opciones al Grupo: <?php echo $grupo->getNombre(); ?></h3>
+		</header>
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+	</article>
+</section>

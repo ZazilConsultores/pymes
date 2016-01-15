@@ -3,9 +3,10 @@
 class Encuesta_PreguntaController extends Zend_Controller_Action
 {
 
-    private $preguntaDAO = null;
-    private $seccionDAO = null;
-    private $grupoDAO = null;
+    private $preguntaDAO;
+    private $seccionDAO;
+    private $grupoDAO;
+	private $opcionDAO;
 
     public function init()
     {
@@ -13,60 +14,35 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
         $this->seccionDAO = new Encuesta_DAO_Seccion;
 		$this->grupoDAO = new Encuesta_DAO_Grupo;
         $this->preguntaDAO = new Encuesta_DAO_Pregunta;
+		$this->opcionDAO = new Encuesta_DAO_Opcion;
     }
 
     public function indexAction()
     {
         // action body
-        $idPregunta = $this->getParam("idPregunta");
-		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
-		$formulario = new Encuesta_Form_AltaPregunta;
-		$formulario->getElement("nombre")->setValue($pregunta->getNombre());
-		$formulario->getElement("submit")->setLabel("Editar Pregunta");
-		$opciones = null;
-		if($pregunta->getTipo() != "AB") {
-			//$opciones = $this->tablaOpGrupo->
-		}
-		$this->view->pregunta = $pregunta;
-		$this->view->formulario = $formulario;
+        $this->_helper->redirector->gotoSimple("index", "index", "encuesta");
     }
 
     public function adminAction()
     {
         // action body
         $idPregunta = $this->getParam("idPregunta");
-		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
 		$t = Zend_Registry::get("tipo");
-		
-		$formulario = new Encuesta_Form_AltaPregunta();
-		$formulario->getElement("tipo")->setMultiOptions(array($pregunta->getTipo() => $t[$pregunta->getTipo()] ));
+		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$formulario = new Encuesta_Form_AltaPregunta;
+		$formulario->getElement("pregunta")->setValue($pregunta->getPregunta());
 		$formulario->getElement("submit")->setLabel("Actualizar Pregunta");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
-		$this->view->formulario = $formulario;
-		$this->view->pregunta = $pregunta;
-		/*
-        $idSeccion = $this->getParam("idSeccion");
-		$idGrupo = $this->getParam("idGrupo");
-		$preguntaDAO = $this->preguntaDAO;
-		//Enviamos las preguntas de la seccion o grupo segun sea el caso
-		if(!is_null($idSeccion)){
-			
-			$seccionDAO = $this->seccionDAO;
-			$seccion = $seccionDAO->obtenerSeccion($idSeccion);
-			$preguntas = $preguntaDAO->obtenerPreguntas($idSeccion, "S");
-			$this->view->seccion = $seccion;
-			$this->view->preguntas = $preguntas;
-			
-		}elseif(!is_null($idGrupo)){
-			
-			$grupoDAO = $this->grupoDAO;
-			$grupo = $grupoDAO->obtenerGrupo($idGrupo);
-			$preguntas = $preguntaDAO->obtenerPreguntas($idGrupo, "G");
-			
-			$this->view->grupo = $grupo;
-			$this->view->preguntas = $preguntas;
+		
+		$opciones = null;
+		if($pregunta->getTipo() != "AB") {
+			$formulario->getElement("tipo")->setMultiOptions(array($pregunta->getTipo() => $t[$pregunta->getTipo()]));
+			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());
+			$this->view->opciones = $opciones;
 		}
-		*/
+		
+		$this->view->pregunta = $pregunta;
+		$this->view->formulario = $formulario;
     }
 
     public function altaAction()
@@ -111,14 +87,30 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 				$pregunta->setFecha(date("Y-m-d H:i:s", time()));
 				$pregunta->setHash($pregunta->getHash());
 				
-				print_r($pregunta->toArray());
+				//print_r($pregunta->toArray());
 				//no sabemos si es grupo o pregunta y su id
 				//$pregunta->setIdOrigen($idOrigen);
 				$p = $preguntaDAO->crearPregunta($idObj, $t, $pregunta);
 				if($pregunta->getTipo() == "AB"){
 					$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 				}else{
-					$this->_helper->redirector->gotoSimple("opciones", "pregunta", "encuesta", array("idPregunta" => $p->getIdPregunta()));
+					// La pregunta ya se creo, ahora solo verificamos donde se dio de alta la pregunta, 
+					//si fue de una seccion le asociamos opciones, si fue de un grupo regresamos a grupo:admin
+					if($p->getOrigen() == "S"){
+						$this->_helper->redirector->gotoSimple("opciones", "pregunta", "encuesta", array("idPregunta" => $p->getIdPregunta()));
+					}elseif($p->getOrigen() == "G"){
+						//antes de regresar a grupo admin debemos asociar las opciones del grupo a la pregunta creada
+						$opcionesGrupo = $this->opcionDAO->obtenerOpcionesGrupo($p->getIdOrigen());
+						$opciones = array();
+						
+						foreach ($opcionesGrupo as $opcionGrupo) {
+							$opciones[] = $opcionGrupo->getIdOpcion();
+						}
+						
+						$this->opcionDAO->asociarOpcionesPregunta($p->getIdPregunta(), $opciones);
+						$this->_helper->redirector->gotoSimple("admin", "grupo", "encuesta", array("idGrupo" => $p->getIdOrigen()));
+					}
+					
 				}
 				
 			}
@@ -133,6 +125,10 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
     public function bajaAction()
     {
         // action body
+        $idPregunta = $this->getParam("idPregunta");
+		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$this->preguntaDAO->eliminarPregunta($idPregunta);
+		$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
     }
 
     public function opcionesAction()
@@ -150,7 +146,7 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 			
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				//$this->view->opciones =$formulario->getValues();
+				
 				$categorias = $formulario->getValues();
 				$opciones = array();
 				
@@ -164,14 +160,8 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 					}
 				}
 				
-				$this->opc;
-				
-				
-				
-				$this->view->opciones =$formulario->getValues();
-				//$datos = $formulario->getValues();
-				
-				
+				$this->opcionDAO->asociarOpcionesPregunta($idPregunta, $opciones);
+				$this->_helper->redirector->gotoSimple("admin", "pregunta", "encuesta", array("idPregunta"=>$idPregunta));
 			}
 		}
     }

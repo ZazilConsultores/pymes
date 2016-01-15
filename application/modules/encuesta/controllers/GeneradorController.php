@@ -15,6 +15,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 	private $formDecorators;
 	
 	private $decoratorsPregunta;
+	private $decoratorsPreguntaS;
 	private $decoratorsGrupo;
 	private $decoratorsSeccion;
 
@@ -29,6 +30,14 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$this->opcionDAO = new Encuesta_DAO_Opcion;
 		
 		$this->decoratorsPregunta = array(
+			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper', 
+			array(array('element' => 'HtmlTag'), array('tag' => 'td')), 
+			array('Label', array('tag' => 'td') ), 
+			//array('Description', array('tag' => 'td', 'class' => 'label')), 
+			array(array('row' => 'HtmlTag'), array('tag' => 'tr'))
+		);
+		
+		$this->decoratorsPreguntaS = array(
 			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper', 
 			array(array('element' => 'HtmlTag'), array('tag' => 'td')), 
 			array('Label', array('tag' => 'td') ), 
@@ -120,21 +129,23 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 	{
 		$ePregunta = null;
 		if($pregunta->getTipo() == "AB"){
-			$ePregunta = new Zend_Form_Element_Text($pregunta->getHash());
-			$ePregunta->setLabel($pregunta->getPregunta());
+			$ePregunta = new Zend_Form_Element_Text($pregunta->getIdPregunta());
 		}else{
 			//Obtenemos las Opciones
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());
 			if($pregunta->getTipo() == "SS"){
-				$ePregunta = new Zend_Form_Element_Radio($pregunta->getHash());
+				$ePregunta = new Zend_Form_Element_Radio($pregunta->getIdPregunta());
+				
 			}elseif($pregunta->getTipo() == "MS"){
-				$ePregunta = new Zend_Form_Element_MultiCheckbox();
+				$ePregunta = new Zend_Form_Element_MultiCheckbox($pregunta->getIdPregunta());
 			}
+			
 			foreach ($opciones as $opcion) {
-				$ePregunta->addMultiOption($opcion->getIdOpcion(), $opcion->getOpcion());
+				$ePregunta->addMultiOption($opcion->getIdOpcion(), $opcion->getOpcion())->setSeparator("");
 			}
 		}
-		$ePregunta->setAttrib("class", "form-control");
+		$ePregunta->setLabel($pregunta->getPregunta());
+		//$ePregunta->setAttrib("class", "form-control");
 		$ePregunta->setDecorators($this->decoratorsPregunta);
 		$contenedor->addElement($ePregunta);
 		

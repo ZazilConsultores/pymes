@@ -138,11 +138,24 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$tablaSeccion->insert($seccion->toArray());
 	}
 	// =====================================================================================>>>   Editar
-	public function editarSeccion($idSeccion, Encuesta_Model_Seccion $seccion) {
+	public function editarSeccion($idSeccion, array $seccion) {
 		$tablaSeccion = $this->tablaSeccion;
+		/*
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
+		$rowSeccion = $tablaSeccion->fetchRow($select);
+		
+		$seccion->setIdSeccion($idSeccion);
+		$seccion->setIdEncuesta($rowSeccion->idEncuesta);
+		$seccion->setFecha($rowSeccion->fecha);
+		$seccion->setOrden($rowSeccion->orden);
+		$seccion->setElementos($rowSeccion->elementos);
+		$seccion->setHash($seccion->getHash());
+		*/
 		$where = $tablaSeccion->getAdapter()->quoteInto("idSeccion = ?", $idSeccion);
+		
+		//print_r($seccion->toArray());
 		//$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion); 
-		$tabla->update($seccion->toArray(), $where);
+		$tablaSeccion->update($seccion, $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarSeccion($idSeccion) {
@@ -152,5 +165,17 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$tablaSeccion->delete($where);
 	}
 	
+	public function eliminarPreguntas($idSeccion){
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
+		
+		$tablaSeccion->delete($select);
+	}
 	
+	public function eliminarGrupos($idSeccion){
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
+		//antes de borrar los grupos cerciorarse de que esten vacios.
+		$tablaGrupo->delete($select);
+	}
 }

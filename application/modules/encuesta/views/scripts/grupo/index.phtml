@@ -16,23 +16,25 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>IdPregunta</th>
 					<th>Pregunta</th>
-					<th>Tipo</th>
-					<th>Orden</th>
-					<th>Configurar</th>
+					<th>Tipo Pregunta</th>
+					<th>Creación</th>
+					<th>Contenedor</th>
+					<th>Orden en contenedor</th>
+					<th>Configuración</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach ($preguntas as $pregunta) : ?>
 				<tr>
-					<td><?php echo $pregunta->getIdPregunta(); ?></td>
 					<td><?php echo $pregunta->getPregunta(); ?></td>
 					<td><?php echo $tipo[$pregunta->getTipo()]; ?></td>
+					<td><?php echo $pregunta->getFecha(); ?></td>
+					<td><?php echo $contenedor = ($pregunta->getOrigen() == "S") ? "Sección" : "Grupo" ; ?></td>
 					<td><?php echo $pregunta->getOrden(); ?></td>
 					<td>
-						<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "admin", "idPregunta" => $pregunta->getIdPregunta()), null, false); ?>" class="btn btn-success">
-							Editar
+						<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "admin", "idPregunta" => $pregunta->getIdPregunta()), null, true); ?>" class="btn btn-success">
+							<span class="glyphicon glyphicon-pencil"></span> Editar
 						</a>
 					</td>
 				</tr>

@@ -3,11 +3,10 @@
 class Encuesta_GrupoController extends Zend_Controller_Action
 {
 
-    private $grupoDAO = null;
-
-    private $seccionDAO = null;
-
-    private $preguntaDAO = null;
+    private $grupoDAO;
+    private $seccionDAO;
+    private $preguntaDAO;
+	private $opcionDAO;
 
     public function init()
     {
@@ -15,6 +14,7 @@ class Encuesta_GrupoController extends Zend_Controller_Action
         $this->grupoDAO = new Encuesta_DAO_Grupo;
 		$this->seccionDAO = new Encuesta_DAO_Seccion;
 		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
+		$this->opcionDAO = new Encuesta_DAO_Opcion;
     }
 
     public function indexAction()
@@ -25,7 +25,8 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 		if(!is_null($idGrupo)){
 			
 			$this->view->grupo = $this->grupoDAO->obtenerGrupo($idGrupo);
-			$this->view->preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "grupo");
+			//$this->view->preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "grupo");
+			$this->view->preguntas = $this->grupoDAO->obtenerPreguntas($idGrupo);
 		}else{
 			//Redirect
 		}
@@ -52,6 +53,11 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 			$this->view->seccion = $seccion;
 			$this->view->preguntas = $preguntas;
 			$this->view->formulario = $formulario;
+			
+			if($grupo->getTipo() != "AB"){
+				$opcionesGrupo = $this->opcionDAO->obtenerOpcionesGrupo($idGrupo);
+				$this->view->opciones = $opcionesGrupo;
+			}
 		}else{
 			$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 		}
@@ -88,12 +94,12 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 				$grupo->setHash($grupo->getHash());
 				
 				//$grupo->setElementos("0");
-				$this->grupoDAO->crearGrupo($grupo);
+				$idGrupo = $this->grupoDAO->crearGrupo($grupo);
 				//$this->grupoDAO->crearGrupo($grupo);
 				if($grupo->getTipo() == "AB"){
 					$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 				}else{
-					$this->_helper->redirector->gotoSimple("opciones", "grupo", "encuesta", array("idGrupo"=>$grupo->getIdGrupo()));
+					$this->_helper->redirector->gotoSimple("opciones", "grupo", "encuesta", array("idGrupo"=>$idGrupo));
 				}
 				//$this->_helper->redirector->gotoSimple("index", "seccion", "encuesta", array("idSeccion" => $idSeccion));
 			}
@@ -108,11 +114,43 @@ class Encuesta_GrupoController extends Zend_Controller_Action
     public function bajaAction()
     {
         // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$this->grupoDAO->eliminarGrupo($idGrupo);
+		$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
     }
 
     public function opcionesAction()
     {
         // action body
+        $request = $this->getRequest();
+        $idGrupo = $this->getParam("idGrupo");
+		$grupo = $this->grupoDAO->obtenerGrupo($idGrupo);
+		$formulario = new Encuesta_Form_AltaSeleccion;
+		if($request->isGet()){
+			$this->view->grupo = $grupo;
+			$this->view->formulario = $formulario;
+			
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				
+				$categorias = $formulario->getValues();
+				$opciones = array();
+				
+				foreach ($categorias as $categoria) {
+					foreach ($categoria as $elemento) {
+						if(!is_null($elemento)){
+							foreach ($elemento as $indice => $id) {
+								$opciones[] = $id;
+							}
+						}
+					}
+				}
+				
+				//$this->opcionDAO->asociarOpcionesPregunta($idPregunta, $opciones);
+				$this->opcionDAO->asociarOpcionesGrupo($idGrupo, $opciones);
+				$this->_helper->redirector->gotoSimple("admin", "grupo", "encuesta", array("idGrupo"=>$idGrupo));
+			}
+		}
     }
 
 

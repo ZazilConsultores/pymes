@@ -2,7 +2,8 @@
 
 class Encuesta_CategoriaController extends Zend_Controller_Action
 {
-	private $categoriaDAO;
+
+    private $categoriaDAO = null;
 
     public function init()
     {
@@ -21,8 +22,9 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
         // action body
         $idCategoria = $this->getParam("idCategoria");
 		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
-		$formulario = new Encuesta_Form_AltaCategoria();
 		$opciones = $this->categoriaDAO->obtenerOpciones($idCategoria);
+		
+		$formulario = new Encuesta_Form_AltaCategoria();
 		
 		$formulario->getElement("categoria")->setValue($categoria->getCategoria());
 		$formulario->getElement("descripcion")->setValue($categoria->getDescripcion());
@@ -67,8 +69,22 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
         // action body
     }
 
+    public function opcionesAction()
+    {
+        // action body
+        $idCategoria = $this->getParam("idCategoria");
+		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
+		$opciones = $this->categoriaDAO->obtenerOpciones($idCategoria);
+		
+		$this->view->categoria = $categoria;
+		$this->view->opciones = $opciones;
+		//$this->view->formulario = $formulario;
+    }
+
 
 }
+
+
 
 
 
