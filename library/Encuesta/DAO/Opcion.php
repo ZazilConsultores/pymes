@@ -9,11 +9,13 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	private $tablaCategoria;
 	private $tablaOpcion;
 	private $tablaOpcionesPregunta;
+	private $tablaOpcionesGrupo;
 	
 	public function __construct() {
 		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
 		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
 		$this->tablaOpcionesPregunta = new Encuesta_Model_DbTable_OpcionesPregunta;
+		$this->tablaOpcionesGrupo = new Encuesta_Model_DbTable_OpcionesGrupo;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -92,5 +94,27 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$where = $tablaOpcion->getAdapter()->quoteInto("idOpcion", $idOpcion);
 		
 		$tablaOpcion->update($opcion->toArray(), $where);
+	}
+	// =====================================================================================>>>   Asociar
+	public function asociarOpcionesPregunta($idPregunta, array $opciones){
+		$tablaOpcionesPregunta = $this->tablaOpcionesPregunta;
+		$vector = implode(",", $opciones);
+		
+		$obj = array();
+		$obj["idPregunta"] = $idPregunta;
+		$obj["opciones"] = $vector;
+		
+		$tablaOpcionesPregunta->insert($obj);
+	}
+	
+	public function asociarOpcionesGrupo($idGrupo, array $opciones){
+		$tablaOpcionesGrupo = $this->tablaOpcionesGrupo;
+		$vector = implode(",", $opciones);
+		
+		$obj = array();
+		$obj["idPregunta"] = $idPregunta;
+		$obj["opciones"] = $vector;
+		
+		$tablaOpcionesPregunta->insert($obj);
 	}
 }

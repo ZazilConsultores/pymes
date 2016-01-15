@@ -10,6 +10,8 @@ interface Encuesta_Interfaces_ISeccion{
 	public function obtenerSeccionHash($hash);
 	public function obtenerSecciones($idEncuesta);
 	public function obtenerElementos($idEncuesta);
+	public function obtenerPreguntas($idSeccion);
+	public function obtenerGrupos($idSeccion);
 	// =====================================================================================>>>   Crear
 	public function crearSeccion(Encuesta_Model_Seccion $seccion);
 	// =====================================================================================>>>   Editar
