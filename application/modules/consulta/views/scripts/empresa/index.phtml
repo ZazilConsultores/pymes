@@ -1,29 +1,46 @@
-<?php
-	$empresas = $this->empresas;
-	$clientes = $this->clientes;
-	$proveedores = $this->proveedores;
- ?>
+<?php 
+	$informacion = $this->informacion;
+?>
 <section class="row">
-	<table>
-		<tbody>
-			<?php foreach ($empresas as $empresa): ?>
-			<tr>
-				<td><?php echo $empresa->getRfc() ?></td>
-				<td><?php echo $empresa->getRazonSocial() ?></td>
-				<td>Empresa</td>
-				<td>
-					<a class="btn btn-warning btn-block" href="<?php echo $this->url(array("module" => "consulta", "controller" => "fiscales", "action" => "index", "idFiscales" => $empresa->getIdFiscales())) ?>">
-						Administrar
-					</a>
-				</td>
-			</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Empresa: <?php echo $informacion["razonSocial"] ?>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<th>RAZON SOCIAL</th>
+					<th>RFC</th>
+					<th>CALLE</th>
+					<th>NUMERO INTERIOR</th>
+					<th>NUMERO EXTERIOR</th>
+					<th>COLONIA</th>
+					<th>CODIGO POSTAL</th>
+					<th>MUNICIPIO</th>
+					<th>ESTADO</th>
+					<th>TELEFONO</th>
+					<th>EMAIL</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php echo $informacion["razonSocial"] ?></td>
+						<td><?php echo $informacion["rfc"] ?></td>
+						<td><?php echo $informacion["calle"] ?></td>
+						<td><?php echo $informacion["numeroInterior"] ?></td>
+						<td><?php echo $informacion["numeroExterior"] ?></td>
+						<td><?php echo $informacion["colonia"] ?></td>
+						<td><?php echo $informacion["codigoPostal"] ?></td>
+						<td><?php echo $informacion["Municipio"] ?></td>
+						<td><?php echo $informacion["Estado"] ?></td>						
+						<td><?php echo $informacion["telefono"] ?></td>
+						<td><?php echo $informacion["email"] ?></td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </section>
-<section class="row">
-	
-</section>
-<section class="row">
-	
-</section>
+
