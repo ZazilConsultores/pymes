@@ -10,11 +10,15 @@ interface Encuesta_Interfaces_ISeccion{
 	public function obtenerSeccionHash($hash);
 	public function obtenerSecciones($idEncuesta);
 	public function obtenerElementos($idEncuesta);
+	public function obtenerPreguntas($idSeccion);
+	public function obtenerGrupos($idSeccion);
 	// =====================================================================================>>>   Crear
 	public function crearSeccion(Encuesta_Model_Seccion $seccion);
 	// =====================================================================================>>>   Editar
-	public function editarSeccion($idSeccion, Encuesta_Model_Seccion $seccion);
+	public function editarSeccion($idSeccion, array $seccion);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarSeccion($idSeccion);
+	public function eliminarPreguntas($idSeccion);
+	public function eliminarGrupos($idSeccion);
 	
 }

@@ -69,12 +69,12 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$tablaEncuesta->insert($encuesta->toArray());
 	}
 	//          =========================================================================   >>>   Actualizar
-	public function editarEncuesta($idEncuesta, Encuesta_Model_Encuesta $encuesta)
+	public function editarEncuesta($idEncuesta, array $encuesta)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
 
-		$tablaEncuesta->update($encuesta->toArray(), $where);
+		$tablaEncuesta->update($encuesta, $where);
 	}
 	//          =========================================================================   >>>   Eliminar
 	public function eliminarEncuesta($idEncuesta)

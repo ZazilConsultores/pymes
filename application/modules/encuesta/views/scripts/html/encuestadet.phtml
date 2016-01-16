@@ -4,11 +4,7 @@
 ?>
 <section class="row">
 	<header>
-		<h3><?php echo $encuesta->getNombre(); ?>
-			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "admin", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-info">
-				Administrar
-				<span class="glyphicon glyphicon-cog"></span>
-			</a>
+		<h3>Encuesta: <?php echo $encuesta->getNombre(); ?>  
 			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "generador", "action" => "index", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-success">
 				Generar
 				<span class="glyphicon glyphicon-cog"></span>
@@ -16,18 +12,30 @@
 		</h3>
 	</header>
 	<table class="table table-striped">
+		<thead>
+			<th>Nombre</th>
+			<th>Inicio Encuesta</th>
+			<th>Término Encuesta</th>
+			<th>Estatus</th>
+			<th>Administrar</th>
+			<th>Secciones</th>
+		</thead>
 		<tbody>
 			<tr>
-				<td>Descripcion: </td>
-				<td colspan="5"><?php echo $encuesta->getDescripcion(); ?></td>
-			</tr>
-			<tr>
-				<td>Estatus: </td>
-				<td><?php echo $estatus[$encuesta->getEstatus()]; ?></td>
-				<td>Fecha Inicio: </td>
+				<td><?php echo $encuesta->getNombre(); ?></td>
 				<td><?php echo $encuesta->getFechaInicio(); ?></td>
-				<td>Fecha Término: </td>
 				<td><?php echo $encuesta->getFechaFin(); ?></td>
+				<td><?php echo $estatus[$encuesta->getEstatus()]; ?></td>
+				<td>
+					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "admin", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-info">
+						<span class="glyphicon glyphicon-cog"></span>  Administrar
+					</a>
+				</td>
+				<td>
+					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-info">
+						<span class="glyphicon glyphicon-cog"></span>  Secciones
+					</a>
+				</td>
 			</tr>
 		</tbody>
 		</table>

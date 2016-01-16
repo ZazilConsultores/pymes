@@ -74,18 +74,24 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		//Verificamos que este grupo no se repita
 		$modelGrupos = $this->obtenerGrupos($grupo->getIdSeccion());
 		$existe = false;
+		$idGrupo = null;
 		foreach ($modelGrupos as $modelGrupo) {
-			if($grupo->getHash() === $modelGrupo->getHash()) $existe = true;
+			if($grupo->getHash() === $modelGrupo->getHash()){
+				 $existe = true;
+				$idGrupo = $modelGrupo->getIdGrupo();
+			}
 		}
 		
 		if($existe){
-			
+			return $idGrupo;
 		}else{
 			$seccion->elementos++;
 			$seccion->save();
 			
 			$grupo->setOrden($seccion->elementos);
 			$tablaGrupo->insert($grupo->toArray());
+			$modelGrupo = $this->obtenerGrupoHash($grupo->getHash());
+			return $modelGrupo->getIdGrupo();
 		}
 	}
 	

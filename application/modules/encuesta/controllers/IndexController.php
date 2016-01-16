@@ -6,8 +6,9 @@
  */
 class Encuesta_IndexController extends Zend_Controller_Action
 {
-	private $encuestaDAO;
-	private $seccionDAO;
+
+    private $encuestaDAO = null;
+    private $seccionDAO = null;
 
     public function init()
     {
@@ -57,10 +58,10 @@ class Encuesta_IndexController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$datos["fecha"] = date("Y-m-d H:i:s", time());
-				$fechaInicio = new Zend_Date($datos["fechaInicio"], 'yyyy-MM-dd');
-				$fechaFin = new Zend_Date($datos["fechaFin"], 'yyyy-MM-dd');
-				$datos["fechaInicio"] = $fechaInicio->toString('yyyy-MM-dd');
-				$datos["fechaFin"] = $fechaFin->toString('yyyy-MM-dd');
+				$fechaInicio = new Zend_Date($datos["fechaInicio"], 'yyyy-MM-dd hh-mm-ss');
+				$fechaFin = new Zend_Date($datos["fechaFin"], 'yyyy-MM-dd hh-mm-ss');
+				$datos["fechaInicio"] = $fechaInicio->toString('yyyy-MM-dd hh-mm-ss');
+				$datos["fechaFin"] = $fechaFin->toString('yyyy-MM-dd hh-mm-ss');
 				$encuesta = new Encuesta_Model_Encuesta($datos);
 				$encuesta->setHash($encuesta->getHash());
 				
@@ -78,11 +79,15 @@ class Encuesta_IndexController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$idEncuesta = $this->getParam("idEncuesta");
 		$post = $request->getPost();
-		
-		$encuestaModel = new Encuesta_Model_Encuesta($post);
+		$fInicio = new Zend_Date($post["fechaInicio"], 'yyyy-MM-dd hh-mm-ss');
+		$fFin = new Zend_Date($post["fechaFin"], 'yyyy-MM-dd hh-mm-ss');
+		$post['fechaInicio'] = $fInicio->toString('yyyy-MM-dd hh-mm-ss');
+		$post['fechaFin'] = $fFin->toString('yyyy-MM-dd hh-mm-ss');
+		unset($post["submit"]);
+		//$encuestaModel = new Encuesta_Model_Encuesta($post);
 		//print_r($estadoModel->toArray());
-		$this->encuestaDAO->editarEncuesta($idEncuesta, $encuestaModel);
-		$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
+		$this->encuestaDAO->editarEncuesta($idEncuesta, $post);
+		$this->_helper->redirector->gotoSimple("admin", "index", "encuesta", array("idEncuesta" => $idEncuesta));
     }
 
     public function bajaAction()
@@ -93,14 +98,16 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
     }
 
+    public function seccionesAction()
+    {
+        // action body
+        $idEncuesta = $this->getParam("idEncuesta");
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
+		$this->view->secciones = $secciones;
+		$this->view->encuesta = $encuesta;
+    }
+
 
 }
-
-
-
-
-
-
-
-
 

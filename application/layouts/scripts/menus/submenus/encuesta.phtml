@@ -1,0 +1,19 @@
+<!-- Menú de operaciones de consulta -->
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		Encuesta
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'index', 'action' => 'index'), null, true); ?>">
+				Encuestas Activas 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'categoria', 'action' => 'index'), null, true); ?>">
+				Categorias 
+			</a>
+		</li>
+	</ul>
+</li>

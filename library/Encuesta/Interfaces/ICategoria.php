@@ -6,7 +6,7 @@
  */
 interface Encuesta_Interfaces_ICategoria{
 	// =====================================================================================>>>   Buscar
-	public function obtenerCategoriaId($idCategoria);
+	public function obtenerCategoria($idCategoria);
 	public function obtenerOpciones($idCategoria);
 	public function obtenerCategorias();
 	// =====================================================================================>>>   Insertar
