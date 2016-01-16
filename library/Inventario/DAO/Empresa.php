@@ -112,8 +112,8 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			->join('Estado',"Estado.idEstado = Municipio.idEstado", array('Estado'));
 			//->where("Fiscales.idFiscales = ?", $rowEmpresa->idFiscales);
 			
-		return $select->__toString();
-		return $this->fetchAll($select);
+		//	return $select->__toString();
+		return $tablaFiscales->fetchAll($select);
 		
 	}
 }

@@ -39,11 +39,13 @@ class Consulta_EmpresaController extends Zend_Controller_Action
 
 		
 		$empresaDAO = $this->empresaDAO;
-		$idEmpresa = 6;
+		//$idEmpresa = 6;
 		//$rowset = $empresaDAO->obtenerInformacionEmpresas();
-		$rowset = $empresaDAO->obtenerInformacion($idEmpresa);
+		//$rowset = $empresaDAO->obtenerInformacion($idEmpresa);
 		$this->view->query = $rowset;
-		$this->view->informacion = $empresaDAO->obtenerInformacion($idEmpresa);
+		//$this->view->informacion = $empresaDAO->obtenerInformacionEmpresas();
+		$this->view->informaciones = $empresaDAO->obtenerInformacionEmpresas();
+		
         
     }
 
