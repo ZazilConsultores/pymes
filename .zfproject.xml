@@ -163,6 +163,10 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
             </controllerFile>
+            <controllerFile controllerName="Registro">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -172,6 +176,7 @@
             <formFile formName="AltaCategoria"/>
             <formFile formName="AltaOpcion"/>
             <formFile formName="AltaSeleccion"/>
+            <formFile formName="AltaRegistro"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -354,6 +359,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Categoria">
                 <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Registro">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Registro">
+                <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -659,6 +670,10 @@
                 <testApplicationActionMethod forActionName="opciones"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Generador">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Registro">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>

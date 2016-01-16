@@ -77,7 +77,18 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
 		
 		$formulario = new Zend_Form($encuesta->getHash());
+		//debemos agregar a este formulario campos para identificar quien es el que esta llenando esta encuesta
+		$eSubCabecera = new Zend_Form_SubForm();
+		$eSubCabecera->setLegend("Datos Personales: ");
 		
+		$eReferencia = new Zend_Form_Element_Text("referencia");
+		$eReferencia->setLabel("Boleta o Clave : ");
+		$eReferencia->setAttrib("class", "form-control");
+		$eReferencia->setDecorators($this->decoratorsPregunta);
+		
+		$eSubCabecera->addElement($eReferencia);
+		$eSubCabecera->setDecorators($this->decoratorsSeccion);
+		$formulario->addSubForm($eSubCabecera, "referencia");
 		
 		//============================================= Iteramos a traves de las secciones del grupo
 		foreach ($secciones as $seccion) {
@@ -130,6 +141,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$ePregunta = null;
 		if($pregunta->getTipo() == "AB"){
 			$ePregunta = new Zend_Form_Element_Text($pregunta->getIdPregunta());
+			$ePregunta->setAttrib("class", "form-control");
 		}else{
 			//Obtenemos las Opciones
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());

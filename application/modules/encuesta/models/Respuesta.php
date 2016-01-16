@@ -6,7 +6,27 @@
  */
 class Encuesta_Model_Respuesta
 {
-	private $idRespuesta;
+	private $idRegistro;
+
+    public function getIdRegistro() {
+        return $this->idRegistro;
+    }
+    
+    public function setIdRegistro($idRegistro) {
+        $this->idRegistro = $idRegistro;
+    }
+
+    private $idEncuesta;
+
+    public function getIdEncuesta() {
+        return $this->idEncuesta;
+    }
+    
+    public function setIdEncuesta($idEncuesta) {
+        $this->idEncuesta = $idEncuesta;
+    }
+
+    private $idRespuesta;
 
     public function getIdRespuesta() {
         return $this->idRespuesta;
@@ -49,6 +69,8 @@ class Encuesta_Model_Respuesta
 
     public function __construct(array $datos)
     {
+    	if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
+		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
         if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
         if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
 		$this->respuesta = $datos["respuesta"];
@@ -59,6 +81,8 @@ class Encuesta_Model_Respuesta
 	{
 		$datos = array();
 		
+		$datos["idRegistro"] = $this->idRegistro;
+		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["idRespuesta"] = $this->idRespuesta;
 		$datos["idPregunta"] = $this->idPregunta;
 		$datos["respuesta"] = $this->respuesta;
