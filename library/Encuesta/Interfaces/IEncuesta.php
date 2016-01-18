@@ -6,9 +6,12 @@
  */
 interface Encuesta_Interfaces_IEncuesta{
 	// =====================================================================================>>>   Buscar
+	// ============================================================= Simple elemento
 	public function obtenerEncuesta($idEncuesta);
 	public function obtenerEncuestaHash($hash);
+	// ============================================================= Conjunto de elementos
 	public function obtenerEncuestas();
+	public function obtenerSecciones($idEncuesta);
 	// =====================================================================================>>>   Insertar
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
 	// =====================================================================================>>>   Actualizar

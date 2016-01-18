@@ -35,7 +35,7 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		
 		return $modelGrupo;
 	}
-	
+	/*
 	public function obtenerGrupos($idSeccion) {
 		$tablaGrupo = $this->tablaGrupo;
 		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
@@ -48,7 +48,7 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		} 
 		return $modelGrupos;
 	}
-	
+	*/
 	public function obtenerPreguntas($idGrupo) {
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
@@ -67,13 +67,20 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	
 	public function crearGrupo(Encuesta_Model_Grupo $grupo) {
 		$tablaSeccion = $this->tablaSeccion;
-		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $grupo->getIdSeccion());
+		$seccion = $tablaSeccion->fetchRow($select);
 		
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("hash = ?", $grupo->getHash());
+		$rowGrupo =$tablaGrupo->fetchRow($select);
+		$existe = false;
+		if(!is_null($rowGrupo)) $existe = true;
+		/*
 		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $grupo->getIdSeccion());
 		$seccion = $tablaSeccion->fetchRow($select);
 		//Verificamos que este grupo no se repita
 		$modelGrupos = $this->obtenerGrupos($grupo->getIdSeccion());
-		$existe = false;
+		
 		$idGrupo = null;
 		foreach ($modelGrupos as $modelGrupo) {
 			if($grupo->getHash() === $modelGrupo->getHash()){
@@ -81,9 +88,9 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 				$idGrupo = $modelGrupo->getIdGrupo();
 			}
 		}
-		
+		*/
 		if($existe){
-			return $idGrupo;
+			return $rowGrupo->idGrupo;
 		}else{
 			$seccion->elementos++;
 			$seccion->save();
@@ -108,5 +115,12 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		$where = $tablaGrupo->getAdapter()->quoteInto("idGrupo = ?", $idGrupo);
 		//$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
 		$tablaGrupo->delete($where);
+	}
+	
+	public function eliminarPreguntas($idGrupo){
+		$tablaPregunta = $this->tablaPregunta;
+		$where = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
+		//$where = $tablaPregunta->getAdapter()->quoteInto("idOrigen = ?", $idGrupo);
+		$tablaPregunta->delete($where);
 	}
 }

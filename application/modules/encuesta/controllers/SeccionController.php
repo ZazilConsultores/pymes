@@ -34,10 +34,14 @@ class Encuesta_SeccionController extends Zend_Controller_Action
         // action body
         $idSeccion = $this->getParam("idSeccion");
 		if(! is_null($idSeccion)) {
-			$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
+			$seccionDAO = $this->seccionDAO;
+			$seccion = $seccionDAO->obtenerSeccion($idSeccion);
+			$grupos = $seccionDAO->obtenerGrupos($idSeccion);
+			$preguntas = $seccionDAO->obtenerPreguntas($idSeccion);
+			//$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
 			$this->view->seccion = $seccion;
-			$this->view->grupos = $this->grupoDAO->obtenerGrupos($idSeccion);
-			$this->view->preguntas = $this->preguntaDAO->obtenerPreguntas($idSeccion, "S");
+			$this->view->grupos = $grupos;
+			$this->view->preguntas = $preguntas;
 			
 			$formulario = new Encuesta_Form_AltaSeccion;
 			$formulario->getElement("nombre")->setValue($seccion->getNombre());

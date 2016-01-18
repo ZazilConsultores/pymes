@@ -7,10 +7,12 @@
 class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
+	private $tablaSeccion;
 	
 	function __construct()
 	{
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
+		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
 	}
 	
 	//          =========================================================================   >>>   Buscar
@@ -56,6 +58,11 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		}
 		
 		return $modelEncuestas;
+	}
+	
+	public function obtenerSecciones($idEncuesta)
+	{
+		
 	}
 	//          =========================================================================   >>>   Insertar
 	

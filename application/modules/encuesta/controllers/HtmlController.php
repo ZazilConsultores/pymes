@@ -71,11 +71,12 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 		$hash = $this->getParam("hash");
 		//if($request->isXmlHttpRequest()) {
 			$seccionDAO = $this->seccionDAO;
-			$grupoDAO = $this->grupoDAO;
+			
 			$seccion = $seccionDAO->obtenerSeccionHash($hash);
+			$grupos = $seccionDAO->obtenerGrupos($seccion->getIdSeccion());
 			
 			$this->view->seccion = $seccion;
-			$this->view->grupos = $grupoDAO->obtenerGrupos($seccion->getIdSeccion());
+			$this->view->grupos = $grupos;
 		//}
     }
 

@@ -37,7 +37,7 @@ $application = new Zend_Application(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'general',
+		'dbname' => 'generaldos',
 	);
 $connserver = array(
 		'host' => '192.168.1.5',
