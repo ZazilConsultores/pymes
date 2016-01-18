@@ -1,5 +1,5 @@
 <?php 	$telefonos = $this->telefonos; 
-		print_r($telefonos);
+		//print_r($telefonos);
 		$formulario = $this->formulario;
 		$formulario->setAction($this->url(array("module"=>"sistema", "controller"=>"telefono", "action" => "alta"), null, true));
 ?>
@@ -7,7 +7,7 @@
 	<article>
 		<header>
 			<h3>
-				Telefonos dados de alta en el sistema.
+				Telefonos datos de alta en el sistema.
 			</h3>
 		</header>
 		<?php echo $formulario; ?>
@@ -15,23 +15,19 @@
 			<thead>
 				<tr>
 					<th>Numero Telefono</th>
-					<th>Tipo</th>
 					<th>Lada</th>
 					<th>Telefono</th>
 					<th>Extensiones</th>
-					<th>Descripcion</th>
-					
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach ($telefonos as $telefono) : ?>
 				<tr>
 					<td><?php echo $telefono->getIdTelefono() ?></td>
-					<td><?php echo $telefono->getTipo() ?></td>
 					<td><?php echo $telefono->getLada() ?></td>
 					<td><?php echo $telefono->getTelefono() ?></td>
 					<td><?php echo $telefono->getExtensiones() ?></td>
-					<td><?php echo $telefono->getDescripcion() ?></td>
+					
 					<td>
 						<a class="btn btn-block btn-warning" href="<?php echo $this->url(array("module"=>"sistema", "controller"=>"telefono", "action" => "admin", "idTelefono" => $telefono->getIdTelefono()), null, true); ?>">
 							Administrar

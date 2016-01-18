@@ -1,4 +1,4 @@
-<?php 	$email = $this->email; 
+<?php 	$emails = $this->emails; 
 		$formulario = $this->formulario;
 		$formulario->setAction($this->url(array("module"=>"sistema", "controller"=>"email", "action" => "alta"), null, true));
 ?>
@@ -6,7 +6,7 @@
 	<article>
 		<header>
 			<h3>
-				Email datos de alta en el sistema.
+				Email  de alta en el sistema.
 			</h3>
 		</header>
 		<?php echo $formulario; ?>
@@ -18,7 +18,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($email as $email) : ?>
+					<?php foreach ($emails as $email): ?>
 				<tr>
 					<td><?php echo $email->getIdEmail() ?></td>
 					<td><?php echo $email->getEmail() ?></td>

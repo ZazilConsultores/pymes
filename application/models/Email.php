@@ -33,10 +33,15 @@ class Application_Model_Email
 	
 	public function toArray()
 	{
+		//$datos = array();
+		//$datos["email"] = $this->email;
+		//return $datos;
+		
 		$datos = array();
 		
+		if(!is_null($this->idEmail)) $datos["idEmail"] = $this->idEmail;
 		$datos["email"] = $this->email;
-		
+				
 		return $datos;
 	}
 

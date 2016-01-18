@@ -16,7 +16,7 @@ class Application_Model_Telefono
         $this->idTelefono = $idTelefono;
     }
 	
-	private $tipo;
+	/*private $tipo;
 
     public function getTipo() {
         return $this->tipo;
@@ -24,7 +24,7 @@ class Application_Model_Telefono
     
     public function setTipo($tipo) {
         $this->tipo = $tipo;
-    }
+    }*/
 
 	private $lada;
 
@@ -56,7 +56,7 @@ class Application_Model_Telefono
         $this->extensiones = $extensiones;
     }
 	
-	private $descripcion;
+	/*private $descripcion;
 
     public function getDescripcion() {
         return $this->descripcion;
@@ -64,17 +64,17 @@ class Application_Model_Telefono
     
     public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
-    }
+    }*/
 
     public function __construct(array $datos)
     {
     	if(array_key_exists("idTelefono", $datos)) $this->idTelefono = $datos["idTelefono"];
     	//$this->idTelefono = $datos["idTelefono"];
-		$this->tipo = $datos["tipo"];
+		//$this->tipo = $datos["tipo"];
     	$this->lada= $datos["lada"];
     	$this->telefono = $datos["telefono"];
 		$this->extensiones = $datos["extensiones"];
-		$this->descripcion =$datos["descripcion"];
+		//$this->descripcion =$datos["descripcion"];
 	
     }
 	
@@ -82,11 +82,11 @@ class Application_Model_Telefono
 	{
 		$datos = array();	
 		$datos["idTelefono"] = $this->idTelefono;
-		$datos["tipo"] = $this->tipo;
+		//$datos["tipo"] = $this->tipo;
 		$datos["lada"] = $this->lada; 
 		$datos["telefono"] = $this->telefono;
 		$datos["extensiones"] = $this->extensiones;
-		$datos["descripcion"] = $this->descripcion;
+		//$datos["descripcion"] = $this->descripcion;
 	
 		return $datos;
 	}
