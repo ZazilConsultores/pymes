@@ -7,6 +7,7 @@
 interface Encuesta_Interfaces_IRegistro{
 	// =====================================================================================>>>   Buscar
 	public function obtenerRegistro($idRegistro);
+	public function obtenerRegistroReferencia($referencia);
 	public function obtenerRegistros();
 	// =====================================================================================>>>   Insertar
 	public function crearRegistro(Encuesta_Model_Registro $registro);

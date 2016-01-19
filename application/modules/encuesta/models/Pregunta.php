@@ -15,8 +15,8 @@ class Encuesta_Model_Pregunta
     public function setIdPregunta($idPregunta) {
         $this->idPregunta = $idPregunta;
     }
-
-    private $pregunta;
+	
+	private $pregunta;
 
     public function getPregunta() {
         return $this->pregunta;
@@ -56,14 +56,14 @@ class Encuesta_Model_Pregunta
         $this->tipo = $tipo;
     }
 	
-	private $fecha;
+	private $opciones;
 
-    public function getFecha() {
-        return $this->fecha;
+    public function getOpciones() {
+        return $this->opciones;
     }
     
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
+    public function setOpciones($opciones) {
+        $this->opciones = $opciones;
     }
 
     private $orden;
@@ -74,6 +74,16 @@ class Encuesta_Model_Pregunta
     
     public function setOrden($orden) {
         $this->orden = $orden;
+    }
+	
+	private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
     }
 	
 	private $hash;
@@ -94,8 +104,9 @@ class Encuesta_Model_Pregunta
 		$this->origen = $datos["origen"];
 		$this->idOrigen = $datos["idOrigen"];
 		$this->tipo = $datos["tipo"];
-		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
+		if(array_key_exists("opciones", $datos)) $this->opciones = $datos["opciones"];
 		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
@@ -104,12 +115,14 @@ class Encuesta_Model_Pregunta
 		$datos = array();
 		
 		$datos["idPregunta"] = $this->idPregunta;
+		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["pregunta"] = $this->pregunta;
 		$datos["origen"] = $this->origen;
 		$datos["idOrigen"] = $this->idOrigen;
 		$datos["tipo"] = $this->tipo;
-		$datos["fecha"] = $this->fecha;
+		$datos["opciones"] = $this->opciones;
 		$datos["orden"] = $this->orden;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

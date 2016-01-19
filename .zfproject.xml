@@ -11,6 +11,9 @@
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
+        <controllerFile controllerName="Resultados">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -166,6 +169,10 @@
             <controllerFile controllerName="Registro">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Resultado">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="grafica"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -365,6 +372,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Registro">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Resultado">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Resultado">
+                <viewScriptFile forActionName="grafica"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -567,6 +580,9 @@
           <viewControllerScriptsDirectory forControllerName="Error">
             <viewScriptFile forActionName="error"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Resultados">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -602,6 +618,9 @@
       <testApplicationDirectory>
         <testApplicationControllerDirectory>
           <testApplicationControllerFile forControllerName="Index">
+            <testApplicationActionMethod forActionName="index"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Resultados">
             <testApplicationActionMethod forActionName="index"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
@@ -693,6 +712,10 @@
               <testApplicationControllerFile forControllerName="Registro">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Resultado">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="grafica"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

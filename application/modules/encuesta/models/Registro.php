@@ -36,16 +36,6 @@ class Encuesta_Model_Registro
         $this->tipo = $tipo;
     }
 
-    private $fecha;
-
-    public function getFecha() {
-        return $this->fecha;
-    }
-    
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
-    }
-
     private $nombres;
 
     public function getNombres() {
@@ -66,7 +56,17 @@ class Encuesta_Model_Registro
         $this->apellidos = $apellidos;
     }
 	
-	private $hash;
+	private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+    }
+
+    private $hash;
 
     public function getHash() {
     	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
@@ -82,9 +82,9 @@ class Encuesta_Model_Registro
     	if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
 		$this->referencia = $datos["referencia"];
 		$this->tipo = $datos["tipo"];
-		$this->fecha = $datos["fecha"];
 		$this->nombres = $datos["nombres"];
 		$this->apellidos = $datos["apellidos"];
+		$this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
@@ -95,9 +95,9 @@ class Encuesta_Model_Registro
 		$datos["idRegistro"] = $this->idRegistro;
 		$datos["referencia"] = $this->referencia;
 		$datos["tipo"] = $this->tipo;
-		$datos["fecha"] = $this->fecha;
 		$datos["nombres"] = $this->nombres;
 		$datos["apellidos"] = $this->apellidos;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

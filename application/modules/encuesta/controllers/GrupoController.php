@@ -41,7 +41,8 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 		if(!is_null($idGrupo)){
 			$grupo = $this->grupoDAO->obtenerGrupo($idGrupo);
 			$seccion = $this->seccionDAO->obtenerSeccion($grupo->getIdSeccion());
-			$preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "G");
+			//$preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "G");
+			$preguntas = $this->grupoDAO->obtenerPreguntas($grupo->getIdGrupo());
 			$t = Zend_Registry::get("tipo");
 			$formulario = new Encuesta_Form_AltaGrupo;
 			$formulario->getElement("nombre")->setValue($grupo->getNombre());

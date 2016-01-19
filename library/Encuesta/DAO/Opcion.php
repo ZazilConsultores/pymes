@@ -8,14 +8,14 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	
 	private $tablaCategoria;
 	private $tablaOpcion;
-	private $tablaOpcionesPregunta;
-	private $tablaOpcionesGrupo;
+	private $tablaPregunta;
+	private $tablaGrupo;
 	
 	public function __construct() {
 		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
 		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
-		$this->tablaOpcionesPregunta = new Encuesta_Model_DbTable_OpcionesPregunta;
-		$this->tablaOpcionesGrupo = new Encuesta_Model_DbTable_OpcionesGrupo;
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
+		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -39,32 +39,45 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		return $modelOpcion;
 	}
 	
-	public function obtenerOpcionesCategoria($idCategoria)
-	{
+	public function obtenerOpcionesCategoria($idCategoria) {
+		$tablaOpcion = $this->tablaOpcion;
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
+		$rowsCategoria = $tablaOpcion->fetchAll($tablaOpcion);
+		$modelOpciones = array();
 		
+		if(!is_null($rowsCategoria)){
+			foreach ($rowsCategoria as $row) {
+				$modelOpcion = new Encuesta_Model_Opcion($row->toArray());
+				$modelOpciones[] = $modelOpcion;
+			}
+		}
+		
+		return $modelOpciones;
 	}
 	
 	public function obtenerOpcionesPregunta($idPregunta){
-		$tablaOpciones = $this->tablaOpcionesPregunta;
-		$select = $tablaOpciones->select()->from($tablaOpciones)->where("idPregunta = ?", $idPregunta);
-		$rowOpciones = $tablaOpciones->fetchRow($select);
-		
-		$objOpciones = explode(",", $rowOpciones->opciones);
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("idPregunta = ?", $idPregunta);
+		$rowOpciones = $tablaPregunta->fetchRow($select);
 		$modelOpciones = array();
-		
-		foreach ($objOpciones as $idOpcion) {
-			$modelOpcion = $this->obtenerOpcion($idOpcion);
-			$modelOpciones[] = $modelOpcion;
+		//Si no es nulo traemos las opciones
+		if(!is_null($rowOpciones)){
+			$opciones = explode(",", $rowOpciones->opciones);
+			
+			foreach ($opciones as $opcion) {
+				$modelOpcion = $this->obtenerOpcion($opcion);
+				$modelOpciones[] = $modelOpcion;
+			}
 		}
 		
 		return $modelOpciones;
 	}
 	
 	public function obtenerOpcionesGrupo($idGrupo){
-		$tablaOpcionesGrupo = $this->tablaOpcionesGrupo;
-		$select = $tablaOpcionesGrupo->select()->from($tablaOpcionesGrupo)->where("idGrupo = ?", $idGrupo);
-		$rowOpcionesGrupo = $tablaOpcionesGrupo->fetchRow($select);
-		$opciones = explode(",", $rowOpcionesGrupo->opciones);
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
+		$rowGrupo = $tablaGrupo->fetchRow($select);
+		$opciones = explode(",", $rowGrupo->opciones);
 		$modelOpciones = array();
 		
 		foreach ($opciones as $opcion) {
@@ -75,22 +88,24 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		return $modelOpciones;
 	}
 	// =====================================================================================>>>   Insertar
-	public function crearOpcion(Encuesta_Model_Opcion $opcion){
+	public function crearOpcion($idCategoria, Encuesta_Model_Opcion $opcion){
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $opcion->getIdCategoria());
-		$numero = count($tablaOpcion->fetchAll($select));
-		$numero++;
-		$opcion->setOrden($numero);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
+		$orden = count($tablaOpcion->fetchAll($select));
+		$orden++;
+		$opcion->setOrden($orden);
+		$opcion->setHash($opcion->getHash());
+		$opcion->setFecha(date("Y-m-d H:i:s", time()));
 		
 		$tablaOpcion->insert($opcion->toArray());
 	}
 	
 	// =====================================================================================>>>   Actualizar
-	public function editarOpcion($idOpcion, Encuesta_Model_Opcion $opcion){
+	public function editarOpcion($idOpcion, array $opcion){
 		$tablaOpcion = $this->tablaOpcion;
 		$where = $tablaOpcion->getAdapter()->quoteInto("idOpcion", $idOpcion);
 		
-		$tablaOpcion->update($opcion->toArray(), $where);
+		$tablaOpcion->update($opcion, $where);
 	}
 	
 	// =====================================================================================>>>   Eliminar
@@ -102,14 +117,15 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	}
 	// =====================================================================================>>>   Asociar
 	public function asociarOpcionesPregunta($idPregunta, array $opciones){
-		$tablaOpcionesPregunta = $this->tablaOpcionesPregunta;
+		$tablaPregunta = $this->tablaPregunta;
+		$where = $tablaPregunta->getAdapter()->quoteInto("idPregunta = ?", $idPregunta);
+		
 		$vector = implode(",", $opciones);
 		
-		$obj = array();
-		$obj["idPregunta"] = $idPregunta;
-		$obj["opciones"] = $vector;
+		$data = array();
+		$data["opciones"] = $vector;
 		
-		$tablaOpcionesPregunta->insert($obj);
+		$tablaPregunta->update($data, $where);
 	}
 	
 	public function asociarOpcionesGrupo($idGrupo, array $opciones){

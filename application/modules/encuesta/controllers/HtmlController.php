@@ -107,12 +107,14 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 				$seccion = $seccionDAO->obtenerSeccionHash($hashSeccion);
 				
 				$this->view->seccion = $seccion;
-				$this->view->preguntas = $preguntaDAO->obtenerPreguntas($seccion->getIdSeccion(), "S");
+				//$this->view->preguntas = $preguntaDAO->obtenerPreguntas($seccion->getIdSeccion(), "S");
+				$this->view->preguntas = $seccionDAO->obtenerPreguntas($seccion->getIdSeccion());
 			}else if(!is_null($hashGrupo)) {
 				$grupoDAO = $this->grupoDAO;
 				$grupo = $grupoDAO->obtenerGrupoHash($hashGrupo);
 				$this->view->grupo = $grupo;
-				$this->view->preguntas = $preguntaDAO->obtenerPreguntas($grupo->getIdGrupo(), "G");
+				//$this->view->preguntas = $preguntaDAO->obtenerPreguntas($grupo->getIdGrupo(), "G");
+				$this->view->preguntas = $grupoDAO->obtenerPreguntas($grupo->getIdGrupo());
 			}
 		}
     }
@@ -132,20 +134,3 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

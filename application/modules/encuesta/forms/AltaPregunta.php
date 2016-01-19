@@ -8,7 +8,7 @@ class Encuesta_Form_AltaPregunta extends Zend_Form
         /* Form Elements & Other Definitions Here ... */
         $tipo = Zend_Registry::get("tipo");
 		
-		$eId = new Zend_Form_Element_Hidden("idOrigen");
+		//$eId = new Zend_Form_Element_Hidden("idOrigen");
 		
         $ePregunta = new Zend_Form_Element_Text("pregunta");
 		$ePregunta->setLabel("Pregunta:");
@@ -26,7 +26,7 @@ class Encuesta_Form_AltaPregunta extends Zend_Form
 		$eSubmit->setLabel("Crear pregunta");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
-		$this->addElement($eId);
+		//$this->addElement($eId);
 		$this->addElement($ePregunta);
 		$this->addElement($eTipo);
 		$this->addElement($eSubmit);

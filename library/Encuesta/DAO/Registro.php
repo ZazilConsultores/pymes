@@ -21,6 +21,17 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 		
 		return $modelRegistro;
 	}
+	
+	public function obtenerRegistroReferencia($referencia){
+		$tablaRegistro = $this->tablaRegistro;
+		$select = $tablaRegistro->select()->from($tablaRegistro)->where("referencia = ?", $referencia);
+		$rowRegistro = $tablaRegistro->fetchRow($select);
+		
+		$modelRegistro = new Encuesta_Model_Registro($rowRegistro->toArray());
+		
+		return $modelRegistro;
+	}
+	
 	public function obtenerRegistros(){
 		$tablaRegistro = $this->tablaRegistro;
 		$rowsRegistros = $tablaRegistro->fetchAll();

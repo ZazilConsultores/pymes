@@ -1,6 +1,8 @@
 <?php 
 	$pregunta = $this->pregunta;
 	$opciones = $this->opciones;
+	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"edita","idPregunta"=>$pregunta->getIdPregunta())));
 	$tipo = Zend_Registry::get("tipo");
 ?>
 <section class="row">
@@ -19,6 +21,7 @@
 						<th>Creación</th>
 						<th>Contenedor</th>
 						<th>Orden en Contenedor</th>
+						<th>Navegar</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,12 +31,22 @@
 						<td><?php echo $pregunta->getFecha() ?></td>
 						<td><?php echo $contenedor = ($pregunta->getOrigen() == "S") ? "Sección" : "Grupo" ; ?></td>
 						<td><?php echo $pregunta->getOrden() ?></td>
+						<td>
+							<?php 
+								$controller = ($pregunta->getOrigen() == "G") ? "grupo" : "seccion" ;
+								$idDestino = ($pregunta->getOrigen() == "G") ? "idGrupo" : "idSeccion" ;; 
+							?>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>$controller,"action"=>"admin",$idDestino=>$pregunta->getIdOrigen()),null,true) ?>">
+								Ir al Contenedor
+							</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 	
+	<?php if($pregunta->getTipo() != "AB"){ ?>
 	<div class="panel panel-info">
 		<div class="panel-heading">
 			<h3 class="panel-title">
@@ -78,7 +91,7 @@
 			</table>
 		</div>
 	</div>
-	
+	<?php } ?>
 	<div class="panel panel-warning">
 		<div class="panel-heading">
 			<h3 class="panel-title">
@@ -86,7 +99,7 @@
 			</h3>
 		</div>
 		<div class="panel-body">
-			<?php echo $this->formulario; ?>
+			<?php echo $formulario; ?>
 		</div>
 	</div>
 	

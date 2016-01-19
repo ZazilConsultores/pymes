@@ -13,9 +13,11 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	{
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 	}
 	
-	//          =========================================================================   >>>   Buscar
+	// =====================================================================================>>>   Buscar
+	// ============================================================= Simple elemento
 	/**
 	 * @method obtenerEncuestaId Obtiene una encuesta en base a un id proporcionado.
 	 * @param int $idEncuesta
@@ -42,30 +44,41 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 		return $modelEncuesta;
 	}
-	
+	// ============================================================= Conjunto de elementos
 	/**
 	 * @method obtenerEncuestas Obtiene todas las encuestas existentes.
 	 * @return array Encuesta_Model_Encuesta
 	 */
-	public function obtenerEncuestas()
-	{
+	public function obtenerEncuestas() {
 		$tablaEncuesta = $this->tablaEncuesta;
 		$rowsEncuestas = $tablaEncuesta->fetchAll();
 		$modelEncuestas = array();
-		foreach ($rowsEncuestas as $rowEncuesta) {
-			$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
-			if($rowEncuesta->estatus != 2) $modelEncuestas[] = $modelEncuesta;
+		if(!is_null($rowsEncuestas)){
+			foreach ($rowsEncuestas as $rowEncuesta) {
+				$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
+				if($rowEncuesta->estatus != 2) $modelEncuestas[] = $modelEncuesta;
+			}
 		}
 		
 		return $modelEncuestas;
 	}
 	
-	public function obtenerSecciones($idEncuesta)
-	{
+	public function obtenerSecciones($idEncuesta) {
+		$tablaSeccion = $this->tablaSeccion;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta = ?", $idEncuesta);
+		$rowsSecciones = $tablaSeccion->fetchAll($select);
+		$modelSecciones = array();
 		
+		if(!is_null($rowsSecciones)){
+			foreach ($rowsSecciones as $row) {
+				$modelSeccion = new Encuesta_Model_Seccion($row->toArray());
+				$modelSecciones[] = $modelSeccion;
+			}
+		}
+		
+		return $modelSecciones;
 	}
-	//          =========================================================================   >>>   Insertar
-	
+	// =====================================================================================>>>   Insertar
 	/**
 	 * @method crearEncuesta Crea una encuesta pasandole un model.
 	 * @param Encuesta_Model_Encuesta $encuesta
