@@ -36,54 +36,35 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		return $modelGrupo;
 	}
 	
-	public function obtenerGrupos($idSeccion) {
-		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
-		$rowsGrupos = $tablaGrupo->fetchAll($select);
-		$modelGrupos = array();
-		foreach ($rowsGrupos as $rowGrupo) {
-			$modelGrupo = new Encuesta_Model_Grupo($rowGrupo->toArray());
-
-			$modelGrupos[] = $modelGrupo;
-		} 
-		return $modelGrupos;
-	}
-	
 	public function obtenerPreguntas($idGrupo) {
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
-		
 		$rowsPreguntas = $tablaPregunta->fetchAll($select);
 		$modelPreguntas = array();
 		
-		foreach ($rowsPreguntas as $rowPregunta) {
-			$modelPregunta = new Encuesta_Model_Pregunta($rowPregunta->toArray());
-			
-			$modelPreguntas[] = $modelPregunta;
+		if(!is_null($rowsPreguntas)){
+			foreach ($rowsPreguntas as $rowPregunta) {
+				$modelPregunta = new Encuesta_Model_Pregunta($row->toArray());
+				$modelPreguntas[] = $modelPregunta;
+			}
 		}
 		
 		return $modelPreguntas;
 	}
 	
-	public function crearGrupo(Encuesta_Model_Grupo $grupo) {
+	public function crearGrupo($idSeccion, Encuesta_Model_Grupo $grupo) {
 		$tablaSeccion = $this->tablaSeccion;
-		$tablaGrupo = $this->tablaGrupo;
-		
-		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $grupo->getIdSeccion());
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idSeccion);
 		$seccion = $tablaSeccion->fetchRow($select);
-		//Verificamos que este grupo no se repita
-		$modelGrupos = $this->obtenerGrupos($grupo->getIdSeccion());
+		
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("hash = ?", $grupo->getHash());
+		$rowGrupo =$tablaGrupo->fetchRow($select);
 		$existe = false;
-		$idGrupo = null;
-		foreach ($modelGrupos as $modelGrupo) {
-			if($grupo->getHash() === $modelGrupo->getHash()){
-				 $existe = true;
-				$idGrupo = $modelGrupo->getIdGrupo();
-			}
-		}
+		if(!is_null($rowGrupo)) $existe = true;
 		
 		if($existe){
-			return $idGrupo;
+			return $rowGrupo->idGrupo;
 		}else{
 			$seccion->elementos++;
 			$seccion->save();
@@ -95,18 +76,24 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		}
 	}
 	
-	public function editarGrupo($idGrupo, Encuesta_Model_Grupo $grupo) {
+	public function editarGrupo($idGrupo, array $grupo) {
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $grupo->getIdGrupo())->where("idSeccion = ?", $grupo->getIdSeccion());
-		$grupo->setIdGrupo($idGrupo);
-
-		$tablaGrupo->update($grupo, $select);
+		$where = $tablaGrupo->getAdapter()->quoteInto("idGrupo = ?", $idGrupo);
+		
+		$tablaGrupo->update($grupo, $where);
 	}
 	
 	public function eliminarGrupo($idGrupo) {
 		$tablaGrupo = $this->tablaGrupo;
 		$where = $tablaGrupo->getAdapter()->quoteInto("idGrupo = ?", $idGrupo);
-		//$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
+		
 		$tablaGrupo->delete($where);
+	}
+	
+	public function eliminarPreguntas($idGrupo){
+		$tablaPregunta = $this->tablaPregunta;
+		$where = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
+		
+		$tablaPregunta->delete($where);
 	}
 }

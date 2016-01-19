@@ -29,7 +29,7 @@
 						<td><?php echo $pregunta->getOrden(); ?></td>
 						<td><?php echo $t[$pregunta->getTipo()]; ?></td>
 						<td>
-							<a class="btn btn-default" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"admin","idPregunta"=>$pregunta->getIdPregunta()), null, true) ?>">
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"admin","idPregunta"=>$pregunta->getIdPregunta()), null, true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>

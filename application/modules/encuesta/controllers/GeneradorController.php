@@ -8,6 +8,8 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 	private $preguntaDAO;
 	private $categoriaDAO;
 	private $opcionDAO;
+	private $registroDAO;
+	private $respuestaDAO;
 	
 	private $elementDecorators;
 	private $elementButtonDecorators;
@@ -28,6 +30,8 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
 		$this->categoriaDAO = new Encuesta_DAO_Categoria;
 		$this->opcionDAO = new Encuesta_DAO_Opcion;
+		$this->registroDAO = new Encuesta_DAO_Registro;
+		$this->respuestaDAO = new Encuesta_DAO_Respuesta;
 		
 		$this->decoratorsPregunta = array(
 			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper', 
@@ -77,7 +81,22 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
 		
 		$formulario = new Zend_Form($encuesta->getHash());
+		//debemos agregar a este formulario campos para identificar quien es el que esta llenando esta encuesta
+		$eSubCabecera = new Zend_Form_SubForm();
+		$eSubCabecera->setLegend("Datos Personales: ");
 		
+		$eEncuesta = new Zend_Form_Element_Hidden("idEncuesta");
+		$eEncuesta->setValue($idEncuesta);
+		
+		$eReferencia = new Zend_Form_Element_Text("referencia");
+		$eReferencia->setLabel("Boleta o Clave : ");
+		$eReferencia->setAttrib("class", "form-control");
+		$eReferencia->setDecorators($this->decoratorsPregunta);
+		
+		$eSubCabecera->addElements(array($eEncuesta, $eReferencia));
+		$eSubCabecera->setDecorators($this->decoratorsSeccion);
+		
+		$formulario->addSubForm($eSubCabecera, "referencia");
 		
 		//============================================= Iteramos a traves de las secciones del grupo
 		foreach ($secciones as $seccion) {
@@ -123,6 +142,42 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$idEncuesta = $this->getParam("idEncuesta");
 		$post = $request->getPost();
 		$this->view->post = $post;
+		
+		if($request->isPost()){
+			//Aqui hacemos el alta de preguntas al sistema
+			$post = $request->getPost();
+			$numContenedores = count($post);
+			$numContenedores--;
+			
+			$secciones = array_values($post);
+			$encabezado = $secciones[0];
+			$idEncuesta = $encabezado["idEncuesta"];
+			$registro = $this->registroDAO->obtenerRegistroReferencia($encabezado["referencia"]);
+			
+			//Recorremos todas las secciones
+			for ($index = 1; $index <= $numContenedores; $index++) {
+				//tomamos una seccion
+				$seccion = $secciones[$index];
+				foreach ($seccion as $idPregunta => $resp) {
+					$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+					
+					$respuesta = array();
+					
+					$respuesta["idRegistro"] = $registro->getIdRegistro();
+					$respuesta["idEncuesta"] = $idEncuesta;
+					$respuesta["idPregunta"] = $idPregunta;
+					$respuesta["respuesta"] = $resp;
+					
+					$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
+					$modelRespuesta->setHash($modelRespuesta->getHash());
+					$modelRespuesta->setFecha(date("Y-m-d H:i:s", time()));
+					
+					$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+				}
+				
+			}
+			
+		}
 	}
 	
 	public function agregarPregunta(Zend_Form $contenedor, Encuesta_Model_Pregunta $pregunta)
@@ -130,6 +185,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$ePregunta = null;
 		if($pregunta->getTipo() == "AB"){
 			$ePregunta = new Zend_Form_Element_Text($pregunta->getIdPregunta());
+			$ePregunta->setAttrib("class", "form-control");
 		}else{
 			//Obtenemos las Opciones
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());

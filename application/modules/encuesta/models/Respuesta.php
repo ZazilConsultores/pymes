@@ -11,12 +11,12 @@ class Encuesta_Model_Respuesta
     public function getIdRespuesta() {
         return $this->idRespuesta;
     }
-    
-    public function setIdRespuesta($idRespuesta) {
+	
+	public function setIdRespuesta($idRespuesta) {
         $this->idRespuesta = $idRespuesta;
     }
-
-    private $idPregunta;
+	
+	private $idPregunta;
 
     public function getIdPregunta() {
         return $this->idPregunta;
@@ -24,6 +24,16 @@ class Encuesta_Model_Respuesta
     
     public function setIdPregunta($idPregunta) {
         $this->idPregunta = $idPregunta;
+    }
+	
+	private $idRegistro;
+
+    public function getIdRegistro() {
+        return $this->idRegistro;
+    }
+    
+    public function setIdRegistro($idRegistro) {
+        $this->idRegistro = $idRegistro;
     }
 
     private $respuesta;
@@ -34,6 +44,16 @@ class Encuesta_Model_Respuesta
     
     public function setRespuesta($respuesta) {
         $this->respuesta = $respuesta;
+    }
+	
+	private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
     }
 	
 	private $hash;
@@ -49,9 +69,11 @@ class Encuesta_Model_Respuesta
 
     public function __construct(array $datos)
     {
-        if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
-        if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
+    	if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
+    	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
+        if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
 		$this->respuesta = $datos["respuesta"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
@@ -61,7 +83,9 @@ class Encuesta_Model_Respuesta
 		
 		$datos["idRespuesta"] = $this->idRespuesta;
 		$datos["idPregunta"] = $this->idPregunta;
+		$datos["idRegistro"] = $this->idRegistro;
 		$datos["respuesta"] = $this->respuesta;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

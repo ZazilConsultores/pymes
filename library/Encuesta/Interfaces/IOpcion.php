@@ -13,9 +13,9 @@ interface Encuesta_Interfaces_IOpcion{
 	public function obtenerOpcionesPregunta($idPregunta);
 	public function obtenerOpcionesGrupo($idGrupo);
 	// =====================================================================================>>>   Insertar
-	public function crearOpcion(Encuesta_Model_Opcion $opcion);
+	public function crearOpcion($idCategoria, Encuesta_Model_Opcion $opcion);
 	// =====================================================================================>>>   Actualizar
-	public function editarOpcion($idCategoria, Encuesta_Model_Opcion $opcion);
+	public function editarOpcion($idCategoria, array $opcion);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarOpcion($idOpcion);
 	// =====================================================================================>>>   Asociar con Pregunta y Grupo

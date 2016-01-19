@@ -18,6 +18,7 @@
 					<th>Fecha Creacion</th>
 					<th>Orden</th>
 					<th>Elementos</th>
+					<th>Navegar</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,6 +27,11 @@
 					<td><?php echo $seccion->getFecha(); ?></td>
 					<td><?php echo $seccion->getOrden(); ?></td>
 					<td><?php echo $seccion->getElementos(); ?></td>
+					<td>
+						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"index","idSeccion"=>$seccion->getIdSeccion()),null,true) ?>">
+							Ir a los Elementos
+						</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>

@@ -36,6 +36,16 @@ class Encuesta_Model_Opcion
         $this->opcion = $opcion;
     }
 	
+	private $orden;
+
+    public function getOrden() {
+        return $this->orden;
+    }
+    
+    public function setOrden($orden) {
+        $this->orden = $orden;
+    }
+	
 	private $fecha;
 
     public function getFecha() {
@@ -44,16 +54,6 @@ class Encuesta_Model_Opcion
     
     public function setFecha($fecha) {
         $this->fecha = $fecha;
-    }
-
-    private $orden;
-
-    public function getOrden() {
-        return $this->orden;
-    }
-    
-    public function setOrden($orden) {
-        $this->orden = $orden;
     }
 	
 	private $hash;
@@ -72,8 +72,8 @@ class Encuesta_Model_Opcion
     	if(array_key_exists("idOpcion", $datos)) $this->idOpcion = $datos["idOpcion"];
 		if(array_key_exists("idCategoria", $datos)) $this->idCategoria = $datos["idCategoria"];
 		$this->opcion = $datos["opcion"];
-		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		$this->orden = $datos["orden"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
@@ -83,8 +83,8 @@ class Encuesta_Model_Opcion
 		$datos["idOpcion"] = $this->idOpcion;
 		$datos["idCategoria"] = $this->idCategoria;
 		$datos["opcion"] = $this->opcion;
-		$datos["fecha"] = $this->fecha;
 		$datos["orden"] = $this->orden;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

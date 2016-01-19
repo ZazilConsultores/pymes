@@ -8,12 +8,12 @@ interface Encuesta_Interfaces_IGrupo {
 	// =====================================================================================>>>   Buscar
 	public function obtenerGrupo($idGrupo);
 	public function obtenerGrupoHash($hash);
-	public function obtenerGrupos($idSeccion);
 	public function obtenerPreguntas($idGrupo);
 	// =====================================================================================>>>   Crear
-	public function crearGrupo(Encuesta_Model_Grupo $grupo);
+	public function crearGrupo($idSeccion, Encuesta_Model_Grupo $grupo);
 	// =====================================================================================>>>   Editar
-	public function editarGrupo($idGrupo, Encuesta_Model_Grupo $grupo);
+	public function editarGrupo($idGrupo, array $grupo);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarGrupo($idGrupo);
+	public function eliminarPreguntas($idGrupo);
 }

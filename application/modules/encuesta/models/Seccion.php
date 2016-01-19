@@ -36,16 +36,6 @@ class Encuesta_Model_Seccion
         $this->nombre = $nombre;
     }
 
-    private $fecha;
-
-    public function getFecha() {
-        return $this->fecha;
-    }
-    
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
-    }
-
     private $orden;
 
     public function getOrden() {
@@ -66,6 +56,16 @@ class Encuesta_Model_Seccion
         $this->elementos = $elementos;
     }
 	
+	private $fecha;
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+    
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+    }
+	
 	private $hash;
 
     public function getHash() {
@@ -82,9 +82,9 @@ class Encuesta_Model_Seccion
 		if(array_key_exists("idSeccion", $datos)) $this->idSeccion = $datos["idSeccion"];
 		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
 		$this->nombre = $datos["nombre"];
-		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
 		if(array_key_exists("elementos", $datos)) $this->elementos = $datos["elementos"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
@@ -94,9 +94,9 @@ class Encuesta_Model_Seccion
 		$datos["idSeccion"] = $this->idSeccion;
 		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["nombre"] = $this->nombre;
-		$datos["fecha"] = $this->fecha;
 		$datos["orden"] = $this->orden;
 		$datos["elementos"] = $this->elementos;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

@@ -37,7 +37,7 @@ $application = new Zend_Application(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'general',
+		'dbname' => 'generaldos',
 	);
 $connserver = array(
 		'host' => '192.168.1.5',
@@ -79,9 +79,11 @@ setlocale(LC_MONETARY, 'es_MX.UTF-8');
 $tipo = array('AB' => 'ABIERTAS', 'SS' => 'SIMPLE SELECCION', 'MS' => 'MULTIPLE SELECCION');
 $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
+$tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
 
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 Zend_Registry::set('tipo', $tipo);
+Zend_Registry::set('tUsuario', $tUsuario);
 Zend_Registry::set('padre', $padre);
 Zend_Registry::set('estatus', $estatus);
 

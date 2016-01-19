@@ -35,22 +35,6 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		
 		return $modelPregunta;
 	}
-	
-	public function obtenerPreguntas($idPadre, $tipoPadre) {
-		$tablaPregunta = $this->tablaPregunta;
-		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", $tipoPadre)->where("idOrigen = ?", $idPadre);
-		$rowsPreguntas = $tablaPregunta->fetchAll($select);
-		
-		$modelPreguntas = array();
-		foreach ($rowsPreguntas as $rowPregunta) {
-			$modelPregunta = new Encuesta_Model_Pregunta($rowPregunta->toArray());
-			$modelPregunta->setIdPregunta($rowPregunta->idPregunta);
-			
-			$modelPreguntas[] = $modelPregunta;
-		}
-		
-		return $modelPreguntas;
-	}
 	// =====================================================================================>>>   Crear
 	public function crearPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta) {
 			
@@ -59,9 +43,6 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 			$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccion = ?", $idPadre);
 			$rowSeccion = $tablaSeccion->fetchRow($select);
 			
-			//$pregunta->setIdOrigen($rowSeccion->idSeccion);
-			//$pregunta->setOrigen("S");
-			//$pregunta->setOrden($rowSeccion->elementos);
 			$rowSeccion->elementos++;
 			$rowSeccion->save();
 			$pregunta->setOrden($rowSeccion->elementos);
@@ -71,14 +52,14 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idPadre);
 			$rowGrupo = $tablaGrupo->fetchRow($select);
 			
-			//$pregunta->setIdOrigen($rowGrupo->idGrupo);
-			//$pregunta->setOrigen("G");
-			//$pregunta->setOrden($rowGrupo->elementos);
 			$rowGrupo->elementos++;
 			$rowGrupo->save();
 			$pregunta->setOrden($rowGrupo->elementos);
 		}
-		//print_r($pregunta->toArray());
+		
+		$pregunta->setHash($pregunta->getHash());
+		$pregunta->setFecha(date("Y-m-d H:i:s", time()));
+		
 		$tablaPregunta = $this->tablaPregunta;
 		$tablaPregunta->insert($pregunta->toArray());
 		
@@ -86,11 +67,11 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		return $pregunta;
 	}
 	// =====================================================================================>>>   Editar
-	public function editarPregunta($idPregunta, Encuesta_Model_Pregunta $pregunta) {
+	public function editarPregunta($idPregunta, array $pregunta) {
 		$tablaPregunta = $this->tablaPregunta;
 		$where = $tablaPregunta->getAdapter()->quoteInto("idPregunta = ?", $idPregunta);
 		
-		$tabla->update($pregunta, $where);
+		$tablaPregunta->update($pregunta, $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarPregunta($idPregunta) {
