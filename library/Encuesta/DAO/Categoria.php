@@ -75,6 +75,10 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 		$tablaCategoria->delete($where);
 	}
 	
-	
-	
+	public function eliminarOpciones($idCategoria){
+		$tablaOpcion = $this->tablaOpcion;
+		$select = $tablaOpcion->select()->where("idCategoria = ?", $idCategoria);
+		
+		$tablaOpcion->delete($select);
+	}
 }

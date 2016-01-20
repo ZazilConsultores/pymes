@@ -115,7 +115,6 @@ class Encuesta_Model_Pregunta
 		$datos = array();
 		
 		$datos["idPregunta"] = $this->idPregunta;
-		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["pregunta"] = $this->pregunta;
 		$datos["origen"] = $this->origen;
 		$datos["idOrigen"] = $this->idOrigen;

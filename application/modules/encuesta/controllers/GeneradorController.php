@@ -103,8 +103,22 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 			//============================================= Cada seccion es una subforma
 			$subFormSeccion = new Zend_Form_SubForm($seccion->getHash());
 			$subFormSeccion->setLegend("Sección: " .$seccion->getNombre());
-			//============================================= Obtenemos los elemntos de la seccion
-			$elementos = $this->seccionDAO->obtenerElementos($seccion->getIdSeccion());
+			//============================================= Obtenemos los elementos de la seccion
+			$grupos = $this->seccionDAO->obtenerGrupos($seccion->getIdSeccion());
+			$preguntas = $this->seccionDAO->obtenerPreguntas($seccion->getIdSeccion());
+			
+			$elementos = array();
+			
+			foreach ($grupos as $grupo) {
+				$elementos[$grupo->getOrden()] = $grupo;
+			}
+			
+			foreach ($preguntas as $pregunta) {
+				$elementos[$pregunta->getOrden()] = $pregunta;
+			}
+			
+			ksort($elementos);
+			
 			foreach ($elementos as $elemento) {
 				//============================================= Verificamos que tipo de elemento es
 				if($elemento instanceof Encuesta_Model_Pregunta){

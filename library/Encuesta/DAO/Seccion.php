@@ -61,11 +61,9 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$rowsPreguntas = $tablaPregunta->fetchAll($select);
 		$modelPreguntas = array();
 		
-		if(!is_null($rowsPreguntas)){
-			foreach ($rowsPreguntas as $row) {
-				$modelPregunta = new Encuesta_Model_Pregunta($row->toArray());
-				$modelPreguntas[] = $modelPregunta;
-			}
+		foreach ($rowsPreguntas as $row) {
+			$modelPregunta = new Encuesta_Model_Pregunta($row->toArray());
+			$modelPreguntas[] = $modelPregunta;
 		}
 		
 		return $modelPreguntas;
@@ -76,11 +74,10 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion = ?", $idSeccion);
 		$rowsGrupos = $tablaGrupo->fetchAll($select);
 		$modelGrupos = array();
-		if(!is_null($rowsGrupos)){
-			foreach ($rowsGrupos as $rowGrupo) {
-				$modelGrupo = new Encuesta_Model_Grupo($row->toArray());
-				$modelGrupos[] = $modelGrupo;
-			}
+		
+		foreach ($rowsGrupos as $rowGrupo) {
+			$modelGrupo = new Encuesta_Model_Grupo($row->toArray());
+			$modelGrupos[] = $modelGrupo;
 		}
 		
 		return $modelGrupos;

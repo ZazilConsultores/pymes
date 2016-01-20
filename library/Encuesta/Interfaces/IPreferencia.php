@@ -4,16 +4,16 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-interface Encuesta_Interfaces_ICategoria{
+interface Encuesta_Interfaces_IPreferencia {
 	// =====================================================================================>>>   Buscar
-	public function obtenerCategoria($idCategoria);
-	public function obtenerOpciones($idCategoria);
-	public function obtenerCategorias();
+	public function obtenerPreferenciasPregunta($idPregunta);
+	
+	
 	// =====================================================================================>>>   Insertar
-	public function crearCategoria(Encuesta_Model_Categoria $categoria);
+	public function crearPreferenciaPregunta($idPregunta, Encuesta_Model_PreferenciaSimple $preferencia);
 	// =====================================================================================>>>   Actualizar
-	public function editarCategoria($idCategoria, Encuesta_Model_Categoria $categoria);
+	
 	// =====================================================================================>>>   Eliminar
-	public function eliminarCategoria($idCategoria);
-	public function eliminarOpciones($idCategoria);
+	
+	
 }

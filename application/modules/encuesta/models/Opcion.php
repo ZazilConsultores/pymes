@@ -72,7 +72,7 @@ class Encuesta_Model_Opcion
     	if(array_key_exists("idOpcion", $datos)) $this->idOpcion = $datos["idOpcion"];
 		if(array_key_exists("idCategoria", $datos)) $this->idCategoria = $datos["idCategoria"];
 		$this->opcion = $datos["opcion"];
-		$this->orden = $datos["orden"];
+		if(array_key_exists("orden", $datos)) $this->orden = $datos["orden"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}

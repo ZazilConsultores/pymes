@@ -4,11 +4,13 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 {
 
     private $categoriaDAO = null;
+	private $opcionDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->categoriaDAO = new Encuesta_DAO_Categoria;
+		$this->opcionDAO = new Encuesta_DAO_Opcion;
     }
 
     public function indexAction()
@@ -46,14 +48,12 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$tablaCategoria = new Encuesta_Model_DbTable_Categoria;
 				$datos = $formulario->getValues();
 				$datos["fecha"] = date("Y-m-d H:i:s", time());
 				
 				$categoria = new Encuesta_Model_Categoria($datos);
 				$categoria->setHash($categoria->getHash());
 				$this->categoriaDAO->crearCategoria($categoria);
-				//$tablaCategoria->insert($datos);
 				$this->_helper->redirector->gotoSimple("index", "categoria", "encuesta");
 			}
 		}
@@ -62,11 +62,22 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
+        $request = $this->getRequest();
+		$idCategoria = $this->getParam("idCategoria");
+        $post = $request->getPost();
+		//eliminamos este elemento pues genera errores por que se toma como columna a editar
+        unset($post["submit"]);
+		$this->categoriaDAO->editarCategoria($idCategoria, $post);
+		$this->_helper->redirector->gotoSimple("index", "categoria", "encuesta");
     }
 
     public function bajaAction()
     {
         // action body
+        $request = $this->getRequest();
+		$idCategoria = $this->getParam("idCategoria");
+		//$this->categoriaDAO->
+        
     }
 
     public function opcionesAction()

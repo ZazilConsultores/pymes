@@ -22,7 +22,22 @@ class Encuesta_SeccionController extends Zend_Controller_Action
         $idSeccion = $this->getParam("idSeccion");
 		if(! is_null($idSeccion)) {
 			$this->view->seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
-			$this->view->elementos = $this->seccionDAO->obtenerElementos($idSeccion);
+			$grupos = $this->seccionDAO->obtenerGrupos($idSeccion);
+			$preguntas = $this->seccionDAO->obtenerPreguntas($idSeccion);
+			
+			$elementos = array();
+			
+			foreach ($grupos as $grupo) {
+				$elementos[$grupo->getOrden()] = $grupo;
+			}
+			
+			foreach ($preguntas as $pregunta) {
+				$elementos[$pregunta->getOrden()] = $pregunta;
+			}
+			
+			ksort($elementos);
+			
+			$this->view->elementos = $elementos;
 		}else{
 			//Redirect
 			$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
