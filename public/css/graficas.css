@@ -1,9 +1,9 @@
-#canvas-holder {
+.canvas-holder {
     width: 100%;
     margin-top: 50px;
     text-align: center;
 }
-#chartjs-tooltip {
+.chartjs-tooltip {
     opacity: 1;
     position: absolute;
     background: rgba(0, 0, 0, .7);
@@ -16,11 +16,11 @@
     -webkit-transform: translate(-50%, 0);
     transform: translate(-50%, 0);
 }
-#chartjs-tooltip.below {
+.chartjs-tooltip.below {
     -webkit-transform: translate(-50%, 0);
     transform: translate(-50%, 0);
 }
-#chartjs-tooltip.below:before {
+.chartjs-tooltip.below:before {
     border: solid;
     border-color: #111 transparent;
     border-color: rgba(0, 0, 0, .8) transparent;
@@ -34,11 +34,11 @@
     -webkit-transform: translate(-50%, -100%);
     transform: translate(-50%, -100%);
 }
-#chartjs-tooltip.above {
+.chartjs-tooltip.above {
     -webkit-transform: translate(-50%, -100%);
     transform: translate(-50%, -100%);
 }
-#chartjs-tooltip.above:before {
+.chartjs-tooltip.above:before {
     border: solid;
     border-color: #111 transparent;
     border-color: rgba(0, 0, 0, .8) transparent;

@@ -69,6 +69,8 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	// =====================================================================================>>>   Insertar
 	public function crearRespuesta($idEncuesta, Encuesta_Model_Respuesta $respuesta){
 		$tablaRespuesta = $this->tablaRespuesta;
+		$respuesta->setHash($respuesta->getHash());
+		$respuesta->setFecha($respuesta->getFecha());
 		
 		$tablaRespuesta->insert($respuesta->toArray());
 	}

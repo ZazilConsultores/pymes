@@ -31,11 +31,11 @@ class Encuesta_Util_Normalize {
 		foreach ($rowsPreguntas as $rowP) {
 			//Obtenemos los id's de las opciones de la pregunta
 			$idOpciones = explode(",", $rowP->opciones);
-			print_r("idOpciones Pregunta: ");
-			print_r($rowP->pregunta);
-			print_r("<br />");
-			print_r($idOpciones);	//idOpciones ordenadas de 0 a N 
-			print_r("<br />");
+			//print_r("idOpciones Pregunta: ");
+			//print_r($rowP->pregunta);
+			//print_r("<br />");
+			//print_r($idOpciones);	//idOpciones ordenadas de 0 a N 
+			//print_r("<br />");
 			//Obtenemos todas las respuestas de la pregunta
 			$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("idPregunta = ?", $rowP->idPregunta);
 			$rowsRP = $tablaRespuesta->fetchAll($select);
@@ -45,50 +45,62 @@ class Encuesta_Util_Normalize {
 			foreach ($idOpciones as $idOpcion) {
 				$preferencia[$idOpcion] = 0;
 			}
-			//print_r($rowsRP->toArray());
+			
 			print_r("<br />");
 			foreach ($rowsRP as $rowRP) {
-				//De las respuestas que trajimos filtramos por opcion seleccionada
-				//print_r($rowRP->toArray());
-				$idOpcion = $rowRP->respuesta; 
-				print_r($idOpcion);
-				print_r("<br />");
+				$idOpcion = $rowRP->respuesta;
 				foreach ($preferencia as $id => $numero) {
 					
 					if($id == $idOpcion){
-						//$numero++;
-						//$preferencia[$id] = $numero;
 						$preferencia[$id]++;
 					}
-					
-					print_r($id);
-					print_r(" --- ");
-					print_r($numero);
-					print_r("<br />");
 				}
-				
-				
-				
-				/*
-				$preferencia[$rowRP->respuesta]++;
-				print_r($preferencia[$rowRP->respuesta]);
-				print_r("<br />");*/
-				/*
-				foreach ($preferencia as $idOpcion => $veces) {
-					if($idOpcion == $rowRP->respuesta) {
-						$preferencia[$idOpcion] = $veces++;
-					}
-				}
-				*/
 			}
-			/* Aqui ya preferencia tiene */
 			
-			print_r("Preferencia");
-			print_r("<br />");
-			print_r($preferencia);
-			print_r("<br />");
-			print_r("===================================================");
-			print_r("<br />");
+			//$data = array();
+			//$data["idOpcion"] = $val;
+			//$data[""] = $val2;
+			// ============================================================================
+			foreach ($preferencia as $idOpcion => $numero) {
+				//print_r($numero);
+				//print_r("<br />");
+				$select = $tablaPreferenciaSimple->select()->from($tablaPreferenciaSimple)->where("idPregunta = ?", $rowP->idPregunta)->where("idOpcion = ?", $idOpcion);
+				$datos = array();
+				$datos["idPregunta"] = $rowP->idPregunta;
+				$datos["idOpcion"] = $idOpcion;
+				$datos["preferencia"] = $numero;
+				
+				try{
+					//Tratamos de insertar si falla tratamos de actualizar
+					$tablaPreferenciaSimple->insert($datos);
+				}catch(Exception $ex){
+					print_r($ex->toString());
+					//fallo, tratamos de actualizar
+					$where = $tablaPreferenciaSimple->getAdapter()->quoteInto("idPregunta = ?", $rowP->idPregunta);
+					$tablaPreferenciaSimple->delete($where);
+					$tablaPreferenciaSimple->insert($datos);
+					
+				}
+			}
+			
+			//preferencia
+			/* Aqui ya preferencia tiene */
+			/*
+			try{
+				$tablaPreferenciaSimple->insert($data);
+			}catch(Exception $ex){
+				$select = $tablaPreferenciaSimple->select()->from($tablaPreferenciaSimple)->where("idPregunta = ?", $idPregunta)->where("idOpcion = ?", $idOpcion);
+				
+				$tablaPreferenciaSimple->update($data, $select);
+			}
+			 * 
+			 */
+			//print_r("Preferencia");
+			//print_r("<br />");
+			//print_r($preferencia);
+			//print_r("<br />");
+			//print_r("===================================================");
+			//print_r("<br />");
 		}
 	}
 }

@@ -183,8 +183,8 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 					$respuesta["respuesta"] = $resp;
 					
 					$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
-					$modelRespuesta->setHash($modelRespuesta->getHash());
-					$modelRespuesta->setFecha(date("Y-m-d H:i:s", time()));
+					//$modelRespuesta->setHash($modelRespuesta->getHash());
+					//$modelRespuesta->setFecha(date("Y-m-d H:i:s", time()));
 					
 					$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
 				}

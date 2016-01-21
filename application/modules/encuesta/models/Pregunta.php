@@ -16,7 +16,17 @@ class Encuesta_Model_Pregunta
         $this->idPregunta = $idPregunta;
     }
 	
-	private $pregunta;
+	private $idEncuesta;
+
+    public function getIdEncuesta() {
+        return $this->idEncuesta;
+    }
+    
+    public function setIdEncuesta($idEncuesta) {
+        $this->idEncuesta = $idEncuesta;
+    }
+
+    private $pregunta;
 
     public function getPregunta() {
         return $this->pregunta;
@@ -100,6 +110,7 @@ class Encuesta_Model_Pregunta
     public function __construct(array $datos)
     {
     	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
+		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
 		$this->pregunta = $datos["pregunta"];
 		$this->origen = $datos["origen"];
 		$this->idOrigen = $datos["idOrigen"];
@@ -115,6 +126,7 @@ class Encuesta_Model_Pregunta
 		$datos = array();
 		
 		$datos["idPregunta"] = $this->idPregunta;
+		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["pregunta"] = $this->pregunta;
 		$datos["origen"] = $this->origen;
 		$datos["idOrigen"] = $this->idOrigen;

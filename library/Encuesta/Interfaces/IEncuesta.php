@@ -12,6 +12,7 @@ interface Encuesta_Interfaces_IEncuesta{
 	// ============================================================= Conjunto de elementos
 	public function obtenerEncuestas();
 	public function obtenerSecciones($idEncuesta);
+	public function obtenerPreguntas($idEncuesta);
 	// =====================================================================================>>>   Insertar
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
 	// =====================================================================================>>>   Actualizar
