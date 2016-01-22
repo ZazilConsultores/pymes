@@ -453,7 +453,20 @@
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Telefono"/>
+              <dbTableFile dbTableName="Email"/>
+              <dbTableFile dbTableName="Domicilio"/>
+              <dbTableFile dbTableName="Estado"/>
+              <dbTableFile dbTableName="Municipio"/>
+              <dbTableFile dbTableName="Fiscales"/>
+            </dbTableDirectory>
+            <modelFile modelName="Domicilio"/>
+            <modelFile modelName="Telefono"/>
+            <modelFile modelName="Email"/>
+            <modelFile modelName="Estado"/>
+            <modelFile modelName="Fiscal"/>
+            <modelFile modelName="Municipio"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

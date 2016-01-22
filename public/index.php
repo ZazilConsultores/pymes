@@ -29,8 +29,8 @@ $application = new Zend_Application(
  //============================================================== >>> Arrays de conexion a bd: usados para las clases de Zend_Db
  $connlocal = array(
 		'host' => 'localhost',
-		'username' => 'zazil',
-		'password' => 'admin',
+		'username' => 'root',
+		'password' => 'zazil',
 		'dbname' => 'general',
 	);
  $connlocaldos = array(
@@ -64,7 +64,7 @@ Zend_Registry::set('connnancy', $connnancy);
 Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
-$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
+$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
 Zend_Db_Table_Abstract::setDefaultAdapter($db);
