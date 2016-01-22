@@ -47,10 +47,10 @@ class Encuesta_OpcionController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$datos["idCategoria"] =$idCategoria;
-				$datos["fecha"] = date("Y-m-d H:i:s", time());
+				//$datos["fecha"] = date("Y-m-d H:i:s", time());
 				$opcion = new Encuesta_Model_Opcion($datos);
-				$opcion->setHash($opcion->getHash());
-				$this->opcionDAO->crearOpcion($opcion);
+				//$opcion->setHash($opcion->getHash());
+				$this->opcionDAO->crearOpcion($idCategoria, $opcion);
 				/*
 				$tablaOpcion = new Encuesta_Model_DbTable_Opcion;
 				$datos = $formulario->getValues();

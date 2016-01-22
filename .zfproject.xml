@@ -201,6 +201,7 @@
               <dbTableFile dbTableName="Respuesta"/>
               <dbTableFile dbTableName="Categoria"/>
               <dbTableFile dbTableName="Opcion"/>
+              <dbTableFile dbTableName="PreferenciaSimple"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -210,6 +211,7 @@
             <modelFile modelName="Respuesta"/>
             <modelFile modelName="Categoria"/>
             <modelFile modelName="Opcion"/>
+            <modelFile modelName="PreferenciaSimple"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

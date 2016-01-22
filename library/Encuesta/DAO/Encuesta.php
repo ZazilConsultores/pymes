@@ -78,6 +78,22 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 		return $modelSecciones;
 	}
+	
+	public function obtenerPreguntas($idEncuesta){
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("idEncuesta = ?", $idEncuesta);
+		
+		$rowsPregunta = $tablaPregunta->fetchAll($select);
+		$modelPreguntas = array();
+		
+		foreach ($rowsPregunta as $row) {
+			$modelPregunta = new Encuesta_Model_Pregunta($row->toArray());
+			$modelPreguntas[] = $modelPregunta;
+		}
+		
+		return $modelPreguntas;
+	}
+	
 	// =====================================================================================>>>   Insertar
 	/**
 	 * @method crearEncuesta Crea una encuesta pasandole un model.

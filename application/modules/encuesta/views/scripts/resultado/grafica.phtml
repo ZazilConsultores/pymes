@@ -1,5 +1,8 @@
 <?php 
 	$encuesta = $this->encuesta;
+	$preguntas = $this->preguntas;
+	$jsonobjs = $this->jsonobjs;
+	
 ?>
 <section class="row">
 	<article>
@@ -7,20 +10,23 @@
 			<h3>Resultados de la Encuesta:<?php echo $encuesta->getNombre() ?></h3> 
 		</header>
 		<div>
-			<div id="canvas-holder">
-		        <canvas id="chart-area2" width="300" height="300" />
-		    </div>
-		
-		    <div id="chartjs-tooltip"></div>
+			<?php foreach ($preguntas as $pregunta) : ?>
+			<div pregunta="p<?php echo $pregunta->getIdPregunta() ?>">
+				<h3><?php echo $pregunta->getPregunta() ?></h3>
+				<div class="canvas-holder">
+					<canvas id="p<?php echo $pregunta->getIdPregunta() ?>" width="300" height="300" />
+				</div>
+				<div class="chartjs-tooltip"></div>
+			</div>
+			<?php endforeach; ?>
 		</div>
-		
 	</article>	
 </section>
 <script>
 	Chart.defaults.global.customTooltips = function(tooltip) {
 
     	// Tooltip Element
-        var tooltipEl = $('#chartjs-tooltip');
+        var tooltipEl = $('.chartjs-tooltip');
 
         // Hide if no tooltip
         if (!tooltip) {
@@ -55,29 +61,16 @@
             fontStyle: tooltip.fontStyle,
         });
     };
-
-    var pieData = [{
-        value: 20,
-        color: "#F7464A",
-        highlight: "#FF5A5E",
-        label: "No"
-    }, {
-        value: 3,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
-        label: "Si"
-    }, {
-        value: 100,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "Yellow"
-    }];
-
-    window.onload = function() {
-        //var ctx1 = document.getElementById("chart-area1").getContext("2d");
-        //window.myPie = new Chart(ctx1).Pie(pieData);
-
-        var ctx2 = document.getElementById("chart-area2").getContext("2d");
-        window.myPie = new Chart(ctx2).Pie(pieData);
+    
+	window.onload = function() {
+		<?php foreach ($preguntas as $pregunta) : ?>
+        	var ctx<?php echo $pregunta->getIdPregunta() ?> = document.getElementById("<?php echo "p".$pregunta->getIdPregunta() ?>").getContext("2d");
+        	<?php echo "\n"; ?>
+        	var data<?php echo $pregunta->getIdPregunta() ?> = <?php echo $jsonobjs[$pregunta->getIdPregunta()] ?>;
+        	<?php echo "\n"; ?>
+        	window.myPie<?php echo $pregunta->getIdPregunta() ?> = new Chart(ctx<?php echo $pregunta->getIdPregunta() ?>).Pie(data<?php echo $pregunta->getIdPregunta() ?>);
+        	<?php echo "\n"; ?>
+        <?php endforeach ?>
     };
 </script>
+
