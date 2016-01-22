@@ -38,6 +38,8 @@ class Sistema_Model_Municipio
     
     public function __construct(array $datos)
     {
+    	if(array_key_exists("idMunicipio", $datos)) $this->idMunicipio = $datos["idMunicipio"];
+		if(array_key_exists("idEstado", $datos)) $this->idEstado = $datos["idEstado"];
         $this->municipio = $datos["municipio"];
     }
 	

@@ -30,7 +30,7 @@ class Inventario_DAO_Estado implements Inventario_Interfaces_IEstado {
 		$modelEstados = array();
 		
 		foreach ($rowEstados as $rowEstado) {
-			$modelEstado = new Application_Model_Estado($rowEstado->toArray());
+			$modelEstado = new Sistema_Model_Estado($rowEstado->toArray());
 			$modelEstado->setIdEstado($rowEstado->idEstado);
 			
 			$modelEstados[] = $modelEstado;

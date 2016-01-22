@@ -19,7 +19,7 @@ class Inventario_DAO_Municipio implements Inventario_Interfaces_IMunicipio {
 		$select = $tablaMunicipio->select()->from($tablaMunicipio)->where("idMunicipio = ?",$idMunicipio);
 		$rowMunicipio = $tablaMunicipio->fetchRow($select);
 		
-		$municipioModel = new Application_Model_Municipio($rowMunicipio->toArray());
+		$municipioModel = new Sistema_Model_Municipio($rowMunicipio->toArray());
 		$municipioModel->setIdMunicipio($rowMunicipio->idMunicipio);
 		
 		return $municipioModel;
@@ -34,9 +34,9 @@ class Inventario_DAO_Municipio implements Inventario_Interfaces_IMunicipio {
 		$modelMunicipios = array();
 		
 		foreach ($rowsMunicipio as $rowMunicipio) {
-			$modelMunicipio = new Application_Model_Municipio($rowMunicipio->toArray());
-			$modelMunicipio->setIdMunicipio($rowMunicipio->idMunicipio);
-			$modelMunicipio->setIdEstado($rowMunicipio->idEstado);
+			$modelMunicipio = new Sistema_Model_Municipio($rowMunicipio->toArray());
+			//$modelMunicipio->setIdMunicipio($rowMunicipio->idMunicipio);
+			//$modelMunicipio->setIdEstado($rowMunicipio->idEstado);
 			$modelMunicipios[] = $modelMunicipio;
 		}
 		

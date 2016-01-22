@@ -1,0 +1,2 @@
+Codificando JSON en peticion AJAX
+http://www.stoimen.com/blog/2010/08/13/returning-json-in-a-zend-controllers-action/

@@ -12,6 +12,9 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	private $tablaClientes;
 	private $tablaProveedores;
 	private $tablaFiscales;
+	private $tablaDomicilio;
+	private $tablaTelefono;
+	private $tablaEmail;
 	
 	function __construct() {
 		$this->tablaEmpresa = new Application_Model_DbTable_Empresa;
@@ -20,10 +23,13 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$this->tablaClientes = new Application_Model_DbTable_Clientes;
 		$this->tablaProveedores = new Application_Model_DbTable_Proveedores;
 		
-		$this->tablaFiscales = new Application_Model_DbTable_Fiscales;
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
+		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 	}
 	
-	public function obtenerEmpresas(){
+	public function obtenerEmpresas($tipo){
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $tablaEmpresas->fetchAll();
 		print_r($rowsEmpresas);
@@ -116,4 +122,43 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		return $tablaFiscales->fetchAll($select);
 		
 	}
+	
+	public function crearEmpresa($tipo, Sistema_Model_Fiscal $fiscal, Sistema_Model_Domicilio $domicilio, Sistema_Model_Telefono $telefono, Sistema_Model_Email $email){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$tablaFiscales = $this->tablaFiscales;
+		$tablaDomicilio = $this->tablaDomicilio;
+		$tablaTelefono = $this->tablaTelefono;
+		$tablaEmail = $this->tablaEmail;
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$tablaClientes = $this->tablaClientes;
+		$tablaProveedores = $this->tablaProveedores;
+		//   ============================================================ Insertamos Fiscales
+		$hashFiscal = $fiscal->getHash();
+		$fiscal->setHash($hashFiscal);
+		$tablaFiscales->insert($fiscal->toArray());
+		
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("hash = ?", $hashFiscal);
+		$rowFiscal = $tablaFiscales->fetchRow($select);
+		
+		
+		
+		switch ($tipo) {
+			case 'EM':
+				
+				break;
+			case 'CL':
+				
+				break;
+			case 'PR':
+				
+				break;
+		}
+		
+	}
 }
+
+
+
+
+
