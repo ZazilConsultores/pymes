@@ -25,21 +25,41 @@
 		
 	}
 	public function obtenerDomicilios(){
+		$tablaDomicilio = $this->tablaDomicilio;
+		$rowDomicilios = $tablaDomicilio->fetchAll();
+		
+		$modelDomicilios = array();
+		
+		foreach ($rowDomicilios as $rowDomicilio) {
+			$modelDomicilio = new Sistema_Model_Domicilio($rowDomicilio->toArray());
+			$modelDomicilio->setIdDomicilio($rowDomicilio->idDomicilio);
+			
+			$modelDomicilios[] = $modelDomicilio;
+		}
+		
+		return $modelDomicilios;
 		
 	}
 	public function obtenerMunicipio($idEstado,$idDomicilio){
 		
 	}
 	public function obtenerEstado($idEstado,$idMunicipio, $idDomicilio){
-		
+
 	}
 	public function crearDomicilio(Sistema_Model_Domicilio $domicilio){
+		$tablaDomicilio = $this->tablaDomicilio;
+		$tablaDomicilio->insert($domicilio->toArray());
 		
 	}
 	public function editarDomicilio($idDomiclio, array $domicilio){
+		$tablaDomicilio = $this->tablaDomicilio;
+		$where = $tablaDomicilio->getAdapter()->quoteInto("idDomicilio = ?", $idDomiclio);
+		$tablaDomicilio->update($domicilio->toArray(), $where);
 		
 	}
-	public function eliminarDomicilio($idDomiclio){
-		
+	public function eliminarDomicilio($idDomicilio){
+		$tablaDomicilio = $this->tablaDomicilio;
+		$where = $tablaDomicilio->getAdapter()->quoteInto("idDomicilio = ?", $idDomicilio);
+		$tablaDomicilio->delete($where);
 	}
  }

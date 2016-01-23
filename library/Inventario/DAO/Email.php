@@ -9,7 +9,7 @@ class Inventario_DAO_Email implements Inventario_Interfaces_IEmail{
 	
 	public function __construct()
 	{
-		$this->tablaEmail = new Application_Model_DbTable_Email;
+		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 	}
 	
 	public function obtenerEmail($idEmail){
@@ -17,7 +17,7 @@ class Inventario_DAO_Email implements Inventario_Interfaces_IEmail{
 		$select = $tablaEmail->select()->from($tablaEmail)->where("idEmail = ?", $idEmail);
 		$rowEmail = $tablaEmail->fetchRow($select);
 		
-		$emailModel = new Application_Model_Email($rowEmail->toArray());
+		$emailModel = new Sistema_Model_Email($rowEmail->toArray());
 		$emailModel->setIdEmail($rowEmail->idEmail);
 		
 		return $emailModel;
@@ -30,7 +30,7 @@ class Inventario_DAO_Email implements Inventario_Interfaces_IEmail{
 		$modelEmails = array();
 		
 		foreach ($rowEmails as $rowEmail) {
-			$modelEmail = new Application_Model_Email($rowEmail->toArray());
+			$modelEmail = new Sistema_Model_Email($rowEmail->toArray());
 			$modelEmail->setIdEmail($rowEmail->idEmail);
 			
 			$modelEmails[] = $modelEmails;
@@ -39,12 +39,12 @@ class Inventario_DAO_Email implements Inventario_Interfaces_IEmail{
 		return $modelEmails;
 	}
 	
-	public function crearEmail(Application_Model_Email $email){
+	public function crearEmail(Sistema_Model_Email $email){
 		$tablaEmail = $this->tablaEmail;
 		$tablaEmail->insert($email->toArray());
 	}
 	
-	public function editarEmail($idEmail, Application_Model_Email $email){
+	public function editarEmail($idEmail, Sistema_Model_Email $email){
 		$tablaEmail = $this->tablaEmail;
 		$where = $tablaEmail->getAdapter()->quoteInto("idEmail = ?", $idEmail);
 		
