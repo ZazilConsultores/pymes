@@ -81,6 +81,7 @@ $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
 $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
+$tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","MA"=>"Mantenimiento Antivirus","RO"=>"Registro Observaciones");
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);

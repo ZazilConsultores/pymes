@@ -7,6 +7,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader = Zend_Loader_Autoloader::getInstance();
 		$autoloader->registerNamespace('Inventario_');
 		$autoloader->registerNamespace('Encuesta_');
+		$autoloader->registerNamespace('Sistema_');
 		$autoloader->registerNamespace('Util_');
 	}
 
