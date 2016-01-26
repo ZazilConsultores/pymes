@@ -16,21 +16,21 @@ class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 	private $tablaFiscalesEmails;
 	
 	function __construct() {
-		$this->tablaFiscales = new Application_Model_DbTable_Fiscales;
-		$this->tablaDomicilio = new Application_Model_DbTable_Domicilio;
-		$this->tablaTelefono = new Application_Model_DbTable_Telefono;
-		$this->tablaEmail = new Application_Model_DbTable_Email;
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
+		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 		
-		$this->tablaFiscalesDomicilio = new Application_Model_DbTable_FiscalesDomicilio;
-		$this->tablaFiscalesTelefonos = new Application_Model_DbTable_FiscalesTelefonos;
-		$this->tablaFiscalesEmails = new Application_Model_DbTable_FiscalesEmail;
+		$this->tablaFiscalesDomicilio = new Sistema_Model_DbTable_FiscalesDomicilio;
+		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos;
+		$this->tablaFiscalesEmails = new Sistema_Model_DbTable_FiscalesEmail;
 	}
 	
 	public function obtenerFiscales($idFiscales){
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $idFiscales);
 		$fiscales = $tablaFiscales->fetchRow($select);
-		$fiscalesModel = new Application_Model_Fiscales($fiscales->toArray());
+		$fiscalesModel = new Sistema_Model_Fiscales($fiscales->toArray());
 		$fiscalesModel->setIdFiscales($fiscales->idFiscales);
 		
 		return $fiscalesModel;
@@ -47,7 +47,7 @@ class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 			$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $referencia->idDomicilio);
 			$rowDomicilio = $tablaDomicilio->fetchRow($select);
 			
-			$domicilioModel = new Application_Model_Domicilio($rowDomicilio->toArray());
+			$domicilioModel = new Sistema_Model_Domicilio($rowDomicilio->toArray());
 			$domicilioModel->setIdDomicilio($rowDomicilio->idDomicilio);
 			$domicilioModel->setIdEstado($rowDomicilio->idEstado);
 			$domicilioModel->setIdMunicipio($rowDomicilio->idMunicipio);
@@ -68,7 +68,7 @@ class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 			$select = $tablaTelefono->select()->from($tablaTelefono)->where("idTelefono = ?", $referencia->idTelefono);
 			$rowTelefono = $tablaTelefono->fetchRow($select);
 			
-			$telefonoModel = new Application_Model_Telefono($rowTelefono->toArray());
+			$telefonoModel = new Sistema_Model_Telefono($rowTelefono->toArray());
 			$telefonoModel->setIdTelefono($rowTelefono->idTelefono);
 			$telefonos[] = $telefonoModel;
 		}
@@ -87,7 +87,7 @@ class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 			$select = $tablaEmail->select()->from($tablaEmail)->where("idEmail = ?", $referencia->idEmail);
 			$rowEmail= $tablaEmail->fetchRow($select);
 			
-			$emailModel = new Application_Model_Email($rowEmail->toArray());
+			$emailModel = new Sistema_Model_Email($rowEmail->toArray());
 			$emailModel->setIdEmail($rowEmail->idEmail);
 			$email[] = $emailModel;
 		}

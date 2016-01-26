@@ -9,7 +9,7 @@ class Inventario_DAO_Municipio implements Inventario_Interfaces_IMunicipio {
 	
 	public function __construct()
 	{
-		$this->tablaMunicipio = new Application_Model_DbTable_Municipio;
+		$this->tablaMunicipio = new Sistema_Model_DbTable_Municipio;
 		
 	}
 	
@@ -43,12 +43,12 @@ class Inventario_DAO_Municipio implements Inventario_Interfaces_IMunicipio {
 		return $modelMunicipios;
 		
 	}
-	public function crearMunicipio(Application_Model_Municipio $idMunicipio)
+	public function crearMunicipio(Sistema_Model_Municipio $idMunicipio)
 	{
 		$tablaMunicipio = $this->tablaMunicipio;
 		$tablaMunicipio->insert($municipio->toArray());
 	}
-	public function editarMunicipio($idMunicipio, Application_Model_Municipio $municipio)
+	public function editarMunicipio($idMunicipio, Sistema_Model_Municipio $municipio)
 	{
 		$tablaMunicipio = $this->tablaMunicipio;
 		$where = $tablaMunicipio->getAdapter()->quoteInto("idMunicipio = ?", $idMunicipio);
