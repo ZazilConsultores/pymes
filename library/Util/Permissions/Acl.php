@@ -2,7 +2,7 @@
 /**
  * 
  */
-class Zazil_Permissions_Acl extends Zend_Acl {
+class Util_Permissions_Acl extends Zend_Acl {
 	
 	public function __construct($file)  {
         // Carga los roles del archivo INI

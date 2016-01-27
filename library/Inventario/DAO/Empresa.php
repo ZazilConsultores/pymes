@@ -7,10 +7,10 @@
 class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	
 	private $tablaEmpresa;
-	
 	private $tablaEmpresas;
 	private $tablaClientes;
 	private $tablaProveedores;
+	
 	private $tablaFiscales;
 	private $tablaDomicilio;
 	private $tablaTelefono;
@@ -28,37 +28,25 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
 		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 	}
-	/*
-	public function obtenerEmpresas($tipo){
->>>>>>> ce080738c32b84f0d46ecc7da6c43896c08c33b3
-		$tablaEmpresas = $this->tablaEmpresas;
-		$rowsEmpresas = $tablaEmpresas->fetchAll();
-		print_r($rowsEmpresas);
-		$empresas = array();
-		foreach ($rowsEmpresas as $rowEmpresa) {
-			//print_r($rowEmpresa);
-			$empresaModel = new Sistema_Model_Empresas($rowEmpresa->toArray());
-			$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
-			
-			$empresas[] = $empresaModel;
-		}
-		print_r($empresas);
-		return $empresas;
-	}*/
 	
 	public function obtenerEmpresas() {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $tablaEmpresas->fetchAll();
-		//print_r($rowsEmpresas);
+		
+		$tablaFiscal = $this->tablaFiscales;
+		$tablaDomicilio = $this->tablaDomicilio;
+		
+		
 		$empresas = array();
 		foreach ($rowsEmpresas as $rowEmpresa) {
-			//print_r($rowEmpresa);
 			$empresaModel = new Sistema_Model_Empresas($rowEmpresa->toArray());
 			$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
+			// ==========================================================================
+			
 			
 			$empresas[] = $empresaModel;
 		}
-		//print_r($empresas);
+		
 		return $empresas;
 	}
 	
