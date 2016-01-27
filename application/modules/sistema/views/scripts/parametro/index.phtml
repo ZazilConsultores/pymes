@@ -1,0 +1,37 @@
+<?php 
+	$parametros = $this->parametros;
+?>
+<section class="row">
+	<article>
+		<header>
+			<h3>Parámetros y Subparámetros en el Sistema</h3>
+		</header>
+		<div>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"parametro","action"=>"alta"),null,true); ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Parametro
+			</a>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<th>Parámetro</th>
+					<th>Creación</th>
+					<th>Descripción</th>
+					<th>Subparámetros</th>
+				</thead>
+				<tbody>
+					<?php foreach ($parametros as $parametro) : ?>
+					<tr>
+						<td><?php echo $parametro->getParametro(); ?></td>
+						<td><?php echo $parametro->getFecha(); ?></td>
+						<td><?php echo $parametro->getDescripcion(); ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"index","idParametro"=>$parametro->getIdParametro()),null,true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Subparametros
+							</a>
+						</td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+	</article>
+</section>

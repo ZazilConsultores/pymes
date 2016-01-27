@@ -1,0 +1,35 @@
+<?php 
+	$roles = $this->roles;
+?>
+<section>
+	<article>
+		<header>
+			<h3>Roles y Usuarios en el Sistema</h3>
+		</header>
+		<div>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"rol","action"=>"alta"),null,true) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Rol
+			</a>
+			<table class="table table-condensed table-striped">
+				<tbody>
+					<thead>
+						<th>Rol</th>
+						<th>Creación</th>
+						<th>Usuarios</th>
+					</thead>
+					<?php foreach ($roles as $rol) : ?>
+					<tr>
+						<td><?php echo $rol->getRol() ?></td>
+						<td><?php echo $rol->getFecha() ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"usuario","action"=>"index","idRol"=>$rol->getIdRol()),null,true) ?>">
+								<span class="glyphicon glyphicon-cog"></span>Usuarios
+							</a>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</article>
+</section>

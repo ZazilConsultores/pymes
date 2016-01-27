@@ -1,0 +1,12 @@
+<?php
+/**
+ * @author Hector Giovanni Rodriguez Ramos
+ * @copyright 2016, Zazil Consultores S.A. de C.V.
+ * @version 1.0.0
+ */
+interface Inventario_Interfaces_IParametro {
+	public function obtenerParametros();
+	public function obtenerSubparametros($idParametro);
+	
+	public function crearParametro(Sistema_Model_Parametro $parametro);
+}
