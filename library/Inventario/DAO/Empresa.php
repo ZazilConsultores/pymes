@@ -28,7 +28,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
 		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 	}
-	
+	/*
 	public function obtenerEmpresas($tipo){
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $tablaEmpresas->fetchAll();
@@ -42,6 +42,22 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			$empresas[] = $empresaModel;
 		}
 		print_r($empresas);
+		return $empresas;
+	}*/
+	
+	public function obtenerEmpresas(){
+		$tablaEmpresas = $this->tablaEmpresas;
+		$rowsEmpresas = $tablaEmpresas->fetchAll();
+		//print_r($rowsEmpresas);
+		$empresas = array();
+		foreach ($rowsEmpresas as $rowEmpresa) {
+			//print_r($rowEmpresa);
+			$empresaModel = new Sistema_Model_Empresas($rowEmpresa->toArray());
+			$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
+			
+			$empresas[] = $empresaModel;
+		}
+		//print_r($empresas);
 		return $empresas;
 	}
 	
@@ -65,7 +81,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		
 		$proveedor = array();
 		foreach ($rowProveedores as $rowProveedor){
-			$proveedorModel = new Sistema_Model_DbTable_Proveedores($rowProveedor->toArray());
+			$proveedorModel = new Sistema_Model_Proveedor($rowProveedor->toArray());
 			$proveedorModel->setIdProveedor($rowProveedor->idProveedor);
 			
 			$proveedor[] = $proveedorModel;

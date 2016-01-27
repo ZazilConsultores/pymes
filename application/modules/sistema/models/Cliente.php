@@ -25,6 +25,46 @@ class Sistema_Model_Cliente
     public function setIdEmpresa($idEmpresa) {
         $this->idEmpresa = $idEmpresa;
     }
+	
+	private $fiscales;
+
+    public function getFiscales() {
+        return $this->fiscales;
+    }
+    
+    public function setFiscales($fiscales) {
+        $this->fiscales = $fiscales;
+    }
+
+    private $domicilio;
+
+    public function getDomicilio() {
+        return $this->domicilio;
+    }
+    
+    public function setDomicilio($domicilio) {
+        $this->domicilio = $domicilio;
+    }
+
+    private $telefono;
+
+    public function getTelefono() {
+        return $this->telefono;
+    }
+    
+    public function setTelefono($telefono) {
+        $this->telefono = $telefono;
+    }
+
+    private $email;
+
+    public function getEmail() {
+        return $this->email;
+    }
+    
+    public function setEmail($email) {
+        $this->email = $email;
+    }
 
     public function __construct(array $datos)
     {

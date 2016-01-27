@@ -1,4 +1,20 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Empresa</b> and script/action name <b>index</b></p>
-</div>
+<section class="row">
+	<article>
+		<header>
+			<h3>
+				Empresas, Clientes y Proveedores en el Sistema.  
+			</h3>
+		</header>
+		<div>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=> "empresas","action" =>"index"),null,true) ?>">
+				Empresas
+			</a>
+			<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=> "clientes","action" =>"index"),null,true) ?>">
+				Clientes
+			</a>
+			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"sistema","controller"=> "proveedores","action" =>"index"),null,true) ?>">
+				Proveedores
+			</a>
+		</div>
+	</article>
+</section>

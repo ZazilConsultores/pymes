@@ -2,15 +2,19 @@
 
 class Sistema_EmpresaController extends Zend_Controller_Action
 {
+	private $empresaDAO;
 
     public function init()
     {
         /* Initialize action controller here */
+        $this->empresaDAO = new Inventario_DAO_Empresa;
     }
 
     public function indexAction()
     {
         // action body
+        //$empresas = $this->empresaDAO->o
+        
     }
 
     public function altaAction()
@@ -25,12 +29,9 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				//---
 				$empresa = new Sistema_Model_Fiscal($datos);
-				$this->empresasDAO->crearEmpresa();
+				$this->empresasDAO->crearEmpresa($empresa);
 				print_r($datos);
 			}
 		}
     }
 }
-
-
-
