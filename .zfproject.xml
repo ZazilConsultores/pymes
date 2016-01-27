@@ -466,6 +466,15 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
             </controllerFile>
+            <controllerFile controllerName="Empresas">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Clientes">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Proveedores">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaFiscales"/>
@@ -492,6 +501,12 @@
               <dbTableFile dbTableName="Municipio"/>
               <dbTableFile dbTableName="Fiscales"/>
               <dbTableFile dbTableName="Empresa"/>
+              <dbTableFile dbTableName="FiscalesDomicilios"/>
+              <dbTableFile dbTableName="FiscalesEmail"/>
+              <dbTableFile dbTableName="FiscalesTelefonos"/>
+              <dbTableFile dbTableName="Empresas"/>
+              <dbTableFile dbTableName="Proveedores"/>
+              <dbTableFile dbTableName="Clientes"/>
               <dbTableFile dbTableName="Parametro"/>
               <dbTableFile dbTableName="Subparametro"/>
               <dbTableFile dbTableName="Rol"/>
@@ -504,6 +519,11 @@
             <modelFile modelName="Fiscal"/>
             <modelFile modelName="Municipio"/>
             <modelFile modelName="Empresa"/>
+            <modelFile modelName="Empresas"/>
+            <modelFile modelName="Clientes"/>
+            <modelFile modelName="Proveedores"/>
+            <modelFile modelName="Proveedor"/>
+            <modelFile modelName="Cliente"/>
             <modelFile modelName="Parametro"/>
             <modelFile modelName="Subparametro"/>
             <modelFile modelName="Rol"/>
@@ -619,6 +639,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Usuario">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresas">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedores">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -870,6 +899,15 @@
               <testApplicationControllerFile forControllerName="Usuario">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Empresas">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Clientes">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Proveedores">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
