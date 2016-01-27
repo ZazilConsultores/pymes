@@ -21,8 +21,8 @@ class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
 		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 		
-		$this->tablaFiscalesDomicilio = new Sistema_Model_DbTable_FiscalesDomicilio;
-		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos;
+		$this->tablaFiscalesDomicilio = new Sistema_Model_DbTable_FiscalesDomicilios;
+		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos;	
 		$this->tablaFiscalesEmails = new Sistema_Model_DbTable_FiscalesEmail;
 	}
 	

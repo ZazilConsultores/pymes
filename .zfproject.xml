@@ -472,6 +472,12 @@
               <dbTableFile dbTableName="Municipio"/>
               <dbTableFile dbTableName="Fiscales"/>
               <dbTableFile dbTableName="Empresa"/>
+              <dbTableFile dbTableName="FiscalesDomicilios"/>
+              <dbTableFile dbTableName="FiscalesEmail"/>
+              <dbTableFile dbTableName="FiscalesTelefonos"/>
+              <dbTableFile dbTableName="Empresas"/>
+              <dbTableFile dbTableName="Proveedores"/>
+              <dbTableFile dbTableName="Clientes"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -480,6 +486,11 @@
             <modelFile modelName="Fiscal"/>
             <modelFile modelName="Municipio"/>
             <modelFile modelName="Empresa"/>
+            <modelFile modelName="Empresas"/>
+            <modelFile modelName="Clientes"/>
+            <modelFile modelName="Proveedores"/>
+            <modelFile modelName="Proveedor"/>
+            <modelFile modelName="Cliente"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
