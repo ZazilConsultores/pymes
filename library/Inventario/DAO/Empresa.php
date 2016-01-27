@@ -29,7 +29,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 	}
 	
-	public function obtenerEmpresas($tipo){
+	public function obtenerEmpresas($tipo) {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $tablaEmpresas->fetchAll();
 		print_r($rowsEmpresas);

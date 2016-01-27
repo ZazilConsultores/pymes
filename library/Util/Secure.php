@@ -6,8 +6,7 @@
  */
 class Util_Secure {
 	
-	public static function generateKey(array $datos)
-	{
+	public static function generateKey(array $datos) {
 		$firma = implode(",", $datos);
 		$hash = hash("md5", $firma);
 		

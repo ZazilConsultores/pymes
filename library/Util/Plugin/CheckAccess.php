@@ -29,7 +29,7 @@ class Zazil_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
 	
 	public static function getInstance() {
 		if (is_null(self::$instance)) {
-			self::$instance = new Zazil_Plugin_CheckAccess();
+			self::$instance = new Util_Plugin_CheckAccess();
 		}
 		return self::$instance;
 	}

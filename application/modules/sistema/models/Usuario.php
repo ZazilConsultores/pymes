@@ -32,7 +32,27 @@ class Sistema_Model_Usuario
         $this->usuario = $usuario;
     }
 	
-	private $fecha;
+	private $nombres;
+
+    function getNombres() {
+        return $this->nombres;
+    }
+    
+    function setNombres($nombres) {
+        $this->nombres = $nombres;
+    }
+    
+    private $apellidos;
+
+    function getApellidos() {
+        return $this->apellidos;
+    }
+    
+    function setApellidos($apellidos) {
+        $this->apellidos = $apellidos;
+    }
+    
+    private $fecha;
 
     public function getFecha() {
         return $this->fecha;
@@ -57,6 +77,8 @@ class Sistema_Model_Usuario
         if(array_key_exists("idUsuario", $datos)) $this->idUsuario = $datos["idUsuario"];
 		if(array_key_exists("idRol", $datos)) $this->idRol = $datos["idRol"];
 		$this->usuario = $datos["usuario"];
+		$this->nombres = $datos["nombres"];
+		$this->apellidos = $datos["apellidos"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
@@ -67,6 +89,8 @@ class Sistema_Model_Usuario
 		$datos["idUsuario"] = $this->idUsuario;
 		$datos["idRol"] = $this->idRol;
 		$datos["usuario"] = $this->usuario;
+		$datos["nombres"] = $this->nombres;
+		$datos["apellidos"] = $this->apellidos;
 		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
