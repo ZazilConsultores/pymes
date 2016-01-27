@@ -11,7 +11,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$estados = $estadoDAO->obtenerEstados();
 		$municipioDAO = new Inventario_DAO_Municipio;
         
-        $subFiscales = new Zend_Form_SubForm;
+        $subFiscales = new Zend_Form_SubForm("fiscal");
 		$subFiscales->setLegend("Datos Fiscales");
 
         //   ===============================================================
@@ -30,7 +30,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
         
         $subFiscales->addElements(array($eRazonSocial,$eRFC,$eTipoEmpresa));
 		//   ===============================================================
-		$subDomicilio = new Zend_Form_SubForm;
+		$subDomicilio = new Zend_Form_SubForm("subDomicilio");
 		$subDomicilio->setLegend("Domicilio");
 		
 		$eEstado = new Zend_Form_Element_Select("idEstado");
@@ -47,7 +47,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eMunicipio->setLabel("Seleccione Municipio: ");
 		$eMunicipio->setAttrib("class", "form-control");
 		foreach ($municipios as $municipio) {
-			//$eMunicipio->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
+			$eMunicipio->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
 		}
 		//$eMunicipio->setMultiOptions(array("0"=>"Seleccione Estado"));
 		
@@ -73,12 +73,8 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		
 		$subDomicilio->addElements(array($eEstado,$eMunicipio,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
 		//   ===============================================================
-		$subContacto = new Zend_Form_SubForm;
-		$subContacto->setLegend("Contacto");
-		
-		$eEmail = new Zend_Form_Element_Text("email");
-		$eEmail->setLabel("Email");
-		$eEmail->setAttrib("class","form-control");
+		$subTelefono = new Zend_Form_SubForm("subTelefono");
+		$subTelefono->setLegend("Telefono");
 		
 		$eLada = new Zend_Form_Element_Text("lada");
 		$eLada->setLabel("Lada");
@@ -92,9 +88,19 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eExtensiones->setLabel("Extension");
 		$eExtensiones->setAttrib("class", "form-control");
 		
-		$subContacto->addElements(array($eEmail,$eLada,$eTelefono,$eExtensiones));
+		$subTelefono->addElements(array($eLada,$eTelefono,$eExtensiones));
 		//   ===============================================================
-		$this->addSubForms(array($subFiscales,$subDomicilio,$subContacto));
+		$subEmail = new Zend_Form_SubForm("subEmail");
+		$subEmail->setLegend("Email");
+		
+		$eEmail = new Zend_Form_Element_Text("email");
+		$eEmail->setLabel("Email");
+		$eEmail->setAttrib("class","form-control");
+		
+		$subEmail->addElements(array($eEmail));
+		
+		//   ===============================================================
+		$this->addSubForms(array($subFiscales,$subDomicilio,$subTelefono,$subEmail));
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Crear Empresa");
 		$eSubmit->setAttrib("class", "btn btn-success");

@@ -22,16 +22,6 @@ class Sistema_Model_Domicilio
         $this->idMunicipio = $idMunicipio;
     }
 
-    private $idEstado;
-
-    public function getIdEstado() {
-        return $this->idEstado;
-    }
-    
-    public function setIdEstado($idEstado) {
-        $this->idEstado = $idEstado;
-    }
-
     private $calle;
 
     public function getCalle() {
@@ -81,36 +71,42 @@ class Sistema_Model_Domicilio
     public function setNumeroExterior($numeroExterior) {
         $this->numeroExterior = $numeroExterior;
     }
+	
+	private $hash;
 
-    public function __construct(array $datos)
-    {
-    	
-        //$this->idMunicipio = $datos["idMunicipio"];
-		//$this->idEstado = $datos["idEstado"];
+    function getHash() {
+    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
+        return $this->hash;
+    }
+    
+    function setHash($hash) {
+        $this->hash = $hash;
+    }
+    
+    public function __construct(array $datos) {
+		if(array_key_exists("idDomicilio", $datos)) $this->idDomicilio = $datos["idDomicilio"];
+		if(array_key_exists("idMunicipio", $datos)) $this->idMunicipio = $datos["idMunicipio"];
 		$this->calle = $datos["calle"];
 		$this->colonia = $datos["colonia"];
 		$this->codigoPostal = $datos["codigoPostal"];
 		$this->numeroInterior = $datos["numeroInterior"];
 		$this->numeroExterior = $datos["numeroExterior"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
-	public function toArray()
-	{
+	public function toArray() {
 		$datos = array();
 		
 		$datos["idDomicilio"] = $this->idDomicilio;
 		$datos["idMunicipio"] = $this->idMunicipio;
-		$datos["idEstado"] = $this->idEstado;
 		$datos["calle"] = $this->calle;
 		$datos["colonia"] = $this->colonia;
 		$datos["codigoPostal"] = $this->codigoPostal;
 		$datos["numeroInterior"] = $this->numeroInterior;
 		$datos["numeroExterior"] = $this->numeroExterior;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}
-	
-
-
 }
 

@@ -2,7 +2,7 @@
 /**
  * 
  */
-class Zazil_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
+class Util_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
 	
 	private $_auth;
 	private $_acl;
@@ -17,7 +17,7 @@ class Zazil_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
 	
 	public function __construct() {
 		$this->_auth = Zend_Auth::getInstance();
-		$this->_acl = new Zazil_Permissions_Acl(APPLICATION_PATH . '/configs/permissions.ini');
+		$this->_acl = new Util_Permissions_Acl(APPLICATION_PATH . '/configs/permissions.ini');
 	}
 	
 	protected function _init(Zend_Controller_Request_Abstract $request) {
@@ -44,7 +44,7 @@ class Zazil_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
     	$rolStr = 'guest';
     	if($this->_auth->hasIdentity()){
     		$numRol = $this->_auth->getIdentity()->rol;
-			$tablaRol = new Zend_Db_Table('roles');
+			$tablaRol = new Zend_Db_Table('rol');
 			$rol = $tablaRol->fetchRow($tablaRol->select()->from($tablaRol)->where('idRol = ?', $numRol));
 			$rolStr = $rol['rol'];
     	}
