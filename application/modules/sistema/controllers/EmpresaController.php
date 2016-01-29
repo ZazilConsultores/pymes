@@ -27,7 +27,7 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//---
+				
 				$empresa = new Sistema_Model_Fiscal($datos);
 				$this->empresasDAO->crearEmpresa($empresa);
 				print_r($datos);
