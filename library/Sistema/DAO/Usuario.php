@@ -8,7 +8,7 @@ class Sistema_DAO_Usuario implements Sistema_Interfaces_IUsuario {
 	
 	private $tablaUsuario;
 	
-	function __construct($argument) {
+	function __construct() {
 		$this->tablaUsuario = new Sistema_Model_DbTable_Usuario;
 	}
 	
@@ -22,6 +22,14 @@ class Sistema_DAO_Usuario implements Sistema_Interfaces_IUsuario {
 		}
 		
 		return $modelUsuarios;
+	}
+	
+	public function obtenerUsuario($idUsuario){
+		$select = $this->tablaUsuario->select()->from($this->tablaUsuario)->where("idUsuario = ?", $idUsuario);
+		$rowUsuario = $this->tablaUsuario->fetchRow($select);
+		$modelUsuario = new Sistema_Model_Usuario($rowUsuario->toArray());
+		
+		return $modelUsuario;
 	}
 	
 	public function crearUsuario(Sistema_Model_Usuario $usuario){

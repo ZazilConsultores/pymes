@@ -32,6 +32,7 @@ class Sistema_RolController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$rol = new Sistema_Model_Rol($datos[0]);
 				$this->rolDAO->crearRol($rol);
+				$this->_helper->redirector->gotoSimple("index", "rol", "sistema");
 			}
 		}
     }

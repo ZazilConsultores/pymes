@@ -64,7 +64,7 @@ Zend_Registry::set('connnancy', $connnancy);
 Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
 Zend_Db_Table_Abstract::setDefaultAdapter($db);
@@ -81,7 +81,7 @@ $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
 $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
-$tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","MA"=>"Mantenimiento Antivirus","RO"=>"Registro Observaciones");
+$tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);

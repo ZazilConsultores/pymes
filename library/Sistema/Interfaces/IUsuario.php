@@ -6,5 +6,6 @@
  */
 interface Sistema_Interfaces_IUsuario {
 	public function obtenerUsuarios($idRol);
+	public function obtenerUsuario($idUsuario);
 	public function crearUsuario(Sistema_Model_Usuario $usuario);
 }
