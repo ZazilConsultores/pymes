@@ -130,11 +130,12 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	
 	public function asociarOpcionesGrupo($idGrupo, array $opciones) {
 		$tablaGrupo = $this->tablaGrupo;
+		$where = $tablaGrupo->getAdapter()->quoteInto("idGrupo = ?", $idGrupo);
 		$vector = implode(",", $opciones);
 		
 		$data = array();
 		$data["opciones"] = $vector;
 		
-		$tablaOpcionesGrupo->insert($data);
+		$tablaGrupo->update($data, $where);
 	}
 }

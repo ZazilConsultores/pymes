@@ -53,8 +53,10 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 			$rowGrupo = $tablaGrupo->fetchRow($select);
 			
 			$rowGrupo->elementos++;
-			$rowGrupo->save();
+			$pregunta->setOpciones($rowGrupo->opciones);
 			$pregunta->setOrden($rowGrupo->elementos);
+			
+			$rowGrupo->save();
 		}
 		
 		$pregunta->setHash($pregunta->getHash());
