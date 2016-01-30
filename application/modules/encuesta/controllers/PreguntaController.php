@@ -86,14 +86,15 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 				$pregunta = new Encuesta_Model_Pregunta($datos);
 				
 				$pregunta = $this->preguntaDAO->crearPregunta($datos["idOrigen"], $datos["origen"], $pregunta);
-				if($pregunta->getTipo() != "AB"){
+				
+				if($pregunta->getTipo() == "AB"){
 					//Navegamos al alta de opciones de seleccion
-					$this->_helper->redirector->gotoSimple("opciones", "pregunta", "encuesta", array("idPregunta" => $pregunta->getIdPregunta()));
+					$this->_helper->redirector->gotoSimple("index", "seccion", "encuesta", array("idSeccion" => $pregunta->getIdOrigen()));
+					
 				}else{
 					if($datos["origen"] == "S"){
-						$this->_helper->redirector->gotoSimple("index", "seccion", "encuesta", array("idSeccion" => $pregunta->getIdOrigen()));
+						$this->_helper->redirector->gotoSimple("opciones", "pregunta", "encuesta", array("idPregunta" => $pregunta->getIdPregunta()));
 					}elseif($datos["origen"] == "G"){
-						
 						$this->_helper->redirector->gotoSimple("index", "grupo", "encuesta", array("idGrupo" => $pregunta->getIdOrigen()));
 					}
 				}

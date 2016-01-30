@@ -95,7 +95,7 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 				$grupo->setHash($grupo->getHash());
 				
 				//$grupo->setElementos("0");
-				$idGrupo = $this->grupoDAO->crearGrupo($grupo);
+				$idGrupo = $this->grupoDAO->crearGrupo($idSeccion,$grupo);
 				//$this->grupoDAO->crearGrupo($grupo);
 				if($grupo->getTipo() == "AB"){
 					$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
