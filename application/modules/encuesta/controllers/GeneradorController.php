@@ -169,9 +169,26 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 			$registro = $this->registroDAO->obtenerRegistroReferencia($encabezado["referencia"]);
 			
 			//Recorremos todas las secciones
-			for ($index = 1; $index <= $numContenedores; $index++) {
+			for ($index = 1; $index < $numContenedores; $index++) {
 				//tomamos una seccion
 				$seccion = $secciones[$index];
+				//print_r($seccion);
+				//print_r("<br />");
+				//print_r("====================");
+				foreach ($seccion as $preguntas) {
+					foreach ($preguntas as $idPregunta => $idRespuesta) {
+						$respuesta = array();
+						
+						$respuesta["idRegistro"] = $registro->getIdRegistro();
+						$respuesta["idEncuesta"] = $idEncuesta;
+						$respuesta["idPregunta"] = $idPregunta;
+						$respuesta["respuesta"] = $idRespuesta;
+						
+						$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
+						$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+					}
+				}
+				/*
 				foreach ($seccion as $idPregunta => $resp) {
 					$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
 					
@@ -180,7 +197,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 					$respuesta["idRegistro"] = $registro->getIdRegistro();
 					$respuesta["idEncuesta"] = $idEncuesta;
 					$respuesta["idPregunta"] = $idPregunta;
-					$respuesta["respuesta"] = $resp;
+					$respuesta["respuesta"] = implode(",", $resp);
 					
 					$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
 					//$modelRespuesta->setHash($modelRespuesta->getHash());
@@ -188,9 +205,9 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 					
 					$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
 				}
-				
+				*/
 			}
-			
+			$this->_helper->redirector->gotoSimple("index", "resultado", "encuesta");
 		}
 	}
 	
