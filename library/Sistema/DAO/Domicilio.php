@@ -1,18 +1,20 @@
 <?php
 /**
- * @author Areli Morales Palma
+ * @author Hector Giovanni Rodriguez Ramos
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
  class Sistema_DAO_Domicilio implements Sistema_Interfaces_IDomicilio {
  	
 	private $tablaDomicilio;
-	private $tablaFiscalesDomicilios;
+	private $tablaFiscales;
+	//private $tablaFiscalesDomicilios;
 	
 	public function __construct()
 	{
 		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
+		//$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
 	}
 	
 	public function obtenerDomicilio($idDomicilio) {
@@ -26,10 +28,10 @@
 	
 	public function obtenerDomicilioFiscal($idFiscal) {
 		$tablaDomicilio = $this->tablaDomicilio;
-		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
-		$select = $tablaFiscalesDomicilio->select()->from($tablaFiscalesDomicilio)->where("idFiscal = ?", $idFiscal);
-		$rowFiscalesDomicilio = $tablaFiscalesDomicilio->fetchRow($select);
-		$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $rowFiscalesDomicilio->idDomicilio);
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscal = ?", $idFiscal);
+		$rowFiscales = $tablaFiscales->fetchRow($select);
+		$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $rowFiscales->idDomicilio);
 		$rowDomicilio = $tablaDomicilio->fetchRow($select);
 		$modelDomicilio = new Sistema_Model_Domicilio($rowDomicilio->toArray());
 		
@@ -38,11 +40,11 @@
 	
 	public function obtenerDomiciliosFiscales() {
 		$tablaDomicilio = $this->tablaDomicilio;
-		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
-		$rowsFiscalesDomicilio = $tablaFiscalesDomicilio->fetchAll();
+		$tablaFiscales = $this->tablaFiscales;
+		$rowsFiscales = $tablaFiscales->fetchAll();
 		$modelDomicilios = array();
 		
-		foreach ($rowsFiscalesDomicilio as $row) {
+		foreach ($rowsFiscales as $row) {
 			$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $row->idDomicilio);
 			$rowDomicilio = $tablaDomicilio->fetchRow($select);
 			$modelDomicilio = new Sistema_Model_Domicilio($rowDomicilio->toArray());
@@ -60,11 +62,16 @@
 		$tablaDomicilio = $this->tablaDomicilio;
 		$domicilio->setHash($domicilio->getHash());
 		$tablaDomicilio->insert($domicilio->toArray());
+		$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("hash = ?",$domicilio->getHash());
+		$rowDomicilio = $tablaDomicilio->fetchRow($select);
+		$modelDomicilio = new Sistema_Model_Domicilio($rowDomicilio->toArray());
+		
+		return $modelDomicilio;
 	}
 	
 	public function crearDomicilioFiscal($idFiscal, Sistema_Model_Domicilio $domicilio) {
 		$tablaDomicilio = $this->tablaDomicilio;
-		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
+		$tablaFiscales = $this->tablaFiscales;
 		//Creamos el domicilio en la tabla domicilio
 		$domicilio->setHash($domicilio->getHash());
 		$tablaDomicilio->insert($domicilio->toArray());
@@ -74,10 +81,11 @@
 		
 		$datos = array();
 		$datos["idDomicilio"] = $rowDomicilio->idDomicilio;
-		$datos["idFiscales"] = $idFiscal;
-		$datos["esSucursal"] = "N";
-		
-		$tablaFiscalesDomicilio->insert($datos);
+		//$datos["idFiscales"] = $idFiscal;
+		//$datos["esSucursal"] = "N";
+		$where = $tablaFiscales->getAdapter()->quoteInto("idFiscales = ?", $idFiscal);
+		$tablaFiscales->update($datos, $where);
+		//$tablaFiscalesDomicilio->insert($datos);
 	}
 	
 	public function editarDomicilio($idDomiclio, array $domicilio){}

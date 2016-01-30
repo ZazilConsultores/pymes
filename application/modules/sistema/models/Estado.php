@@ -39,10 +39,8 @@ class Sistema_Model_Estado
 	
 	public function __construct(array $datos)
 	{
-		//$this->idEstado = $datos["idEstado"];
 		if(array_key_exists("idEstado", $datos)) $this->idEstado = $datos["idEstado"];
 		$this->estado = $datos["estado"];
-		//$this->capital = $datos["capital"];
 		if(array_key_exists("capital", $datos)) $this->capital = $datos["capital"];
 	}
 	

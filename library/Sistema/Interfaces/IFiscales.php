@@ -1,8 +1,17 @@
 <?php
-
+/**
+ * @author Hector Giovanni Rodriguez Ramos
+ * @copyright 2016, Zazil Consultores S.A. de C.V.
+ * @version 1.0.0
+ */
 interface Sistema_Interfaces_IFiscales {
+	public function obtenerFiscales($idFiscales);
+	
 	public function obtenerFiscalesEmpresa();
 	public function obtenerFiscalesCliente();
 	public function obtenerFiscalesProveedor();
-	public function crearEmpresa(Sistema_Model_Empresa $empresa);
+	
+	public function crearFiscales(Sistema_Model_Fiscal $fiscal);
+	public function editarFiscales($idFiscal, array $fiscales);
+	public function eliminarFiscales($idFiscal);
 }

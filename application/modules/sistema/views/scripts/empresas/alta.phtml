@@ -11,3 +11,29 @@
 		</div>
 	</article>
 </section>
+<script>
+	$().ready(function(){
+		$("select#1-idEstado").on('change', function(){
+			console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/sistema/json/municipios/idEstado/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#1-idMunicipio").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#1-idMunicipio").append($("<option></option>").attr("value",data[i].idMunicipio).text(data[i].municipio));
+						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
+					});
+					
+				}
+			});
+		});
+		
+	});
+</script>

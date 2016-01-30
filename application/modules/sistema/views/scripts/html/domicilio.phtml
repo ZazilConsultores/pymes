@@ -1,0 +1,27 @@
+<?php 
+	$domicilio = $this->domicilio;
+	$estado = $this->estado;
+	$municipio = $this->municipio;
+?>
+<table class="table table-condensed table-striped">
+	<thead>
+		<th>Estado</th>
+		<th>Municipio</th>
+		<th>Colonia</th>
+		<th>C.P.</th>
+		<th>Calle</th>
+		<th>Exterior</th>
+		<th>Interior</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td><?php echo $estado->getEstado() ?></td>
+			<td><?php echo $municipio->getMunicipio() ?></td>
+			<td><?php echo $domicilio->getColonia() ?></td>
+			<td><?php echo $domicilio->getCodigoPostal() ?></td>
+			<td><?php echo $domicilio->getCalle() ?></td>
+			<td><?php echo $domicilio->getNumeroExterior() ?></td>
+			<td><?php echo $domicilio->getNumeroInterior() ?></td>
+		</tr>
+	</tbody>
+</table>

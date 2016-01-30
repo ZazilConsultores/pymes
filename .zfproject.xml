@@ -476,6 +476,13 @@
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Html">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="municipios"/>
+              <actionMethod actionName="domicilio"/>
+              <actionMethod actionName="telefonos"/>
+              <actionMethod actionName="emails"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaFiscales"/>
@@ -652,6 +659,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Empresas">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="municipios"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="domicilio"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="telefonos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="emails"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -913,6 +935,13 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Html">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="municipios"/>
+                <testApplicationActionMethod forActionName="domicilio"/>
+                <testApplicationActionMethod forActionName="telefonos"/>
+                <testApplicationActionMethod forActionName="emails"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
