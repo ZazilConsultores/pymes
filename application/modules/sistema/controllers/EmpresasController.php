@@ -6,8 +6,7 @@
  */
 class Sistema_EmpresasController extends Zend_Controller_Action
 {
-	private $empresaDAO = null;
-	
+	private $empresaDAO;
 	private $domicilioDAO;
 	private $fiscalesDAO;
 	private $telefonoDAO;
