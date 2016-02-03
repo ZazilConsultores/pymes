@@ -8,7 +8,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 {
 	private $empresaDAO;
 	private $domicilioDAO;
-	private $fiscalesDAO;
+	private $fiscalDAO;
 	private $telefonoDAO;
 	private $emailDAO;
     
@@ -17,7 +17,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->empresaDAO = new Sistema_DAO_Empresa;
-		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		$this->fiscalDAO = new Sistema_DAO_Fiscal;
 		$this->domicilioDAO = new Sistema_DAO_Domicilio;
 		$this->telefonoDAO = new Sistema_DAO_Telefono;
 		$this->emailDAO = new Sistema_DAO_Email;
@@ -26,7 +26,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $fiscales = $this->fiscalesDAO->obtenerFiscalesEmpresa();
+        $fiscales = $this->fiscalDAO->obtenerFiscalEmpresa();
 		$this->view->fiscales = $fiscales;
     }
 
@@ -49,9 +49,9 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 				$datosEmail = $contenedor[3];
 				
 				$modelFiscales = new Sistema_Model_Fiscal($datosFiscales);
-				$fiscales = $this->fiscalesDAO->crearFiscales($modelFiscales);
+				$fiscales = $this->fiscalDAO->crearFiscales($modelFiscales);
 				$modelDomicilio = new Sistema_Model_Domicilio($datosDomicilio);
-				$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscales(), $modelDomicilio);
+				$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscal(), $modelDomicilio);
 				$modelTelefono = new Sistema_Model_Telefono($datosTelefono);
 				$this->telefonoDAO->crearTelefonoFiscal($fiscales->getIdFiscales(), $modelTelefono);
 				$modelEmail = new Sistema_Model_Email($datosEmail);
@@ -65,7 +65,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 				$modelEmpresa = new Sistema_Model_Empresa($datos);
 				$this->empresaDAO->crearEmpresa($modelEmpresa);
 				
-				$this->_helper->redirector->gotoSimple("index", "empresas", "sistema");
+				$this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
 			}
 		}
 		

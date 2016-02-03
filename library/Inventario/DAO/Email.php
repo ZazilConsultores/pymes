@@ -4,11 +4,11 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Inventario_DAO_Email implements Inventario_Interfaces_IEmail{
+class Inventario_DAO_Email implements Inventario_Interfaces_IEmail {
+	
 	private $tablaEmail;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->tablaEmail = new Sistema_Model_DbTable_Email;
 	}
 	

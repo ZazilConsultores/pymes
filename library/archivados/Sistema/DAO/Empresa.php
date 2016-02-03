@@ -22,21 +22,65 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		return $modelEmpresa;
 	}
 	
-	public function obtenerEmpresaIdFiscales($idFiscales){
+	public function obtenerEmpresas(){
 		$tablaEmpresa = $this->tablaEmpresa;
-		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales = ?", $idFiscales);
-		$rowEmpresa = $tablaEmpresa->fetchRow($select);
-		$modelEmpresa = new Sistema_Model_Empresa($rowEmpresa->toArray());
-		return $modelEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("esEmpresa = ?", "S"); 
+		$rowsEmpresas = $tablaEmpresa->fetchAll($select);
+		$modelEmpresas = array();
+		foreach ($rowsEmpresas as $row) {
+			$modelEmpresa = new Sistema_Model_Empresa($row->toArray());
+			$modelEmpresas[] = $modelEmpresa;
+		}
+		
+		return $modelEmpresas;
 	}
 	
-	public function obtenerEmpresas(){}
+	public function obtenerClientes(){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("esCliente = ?", "S"); 
+		$rowsEmpresas = $tablaEmpresa->fetchAll($select);
+		$modelEmpresas = array();
+		foreach ($rowsEmpresas as $row) {
+			$modelEmpresa = new Sistema_Model_Empresa($row->toArray());
+			$modelEmpresas[] = $modelEmpresa;
+		}
+		
+		return $modelEmpresas;
+	}
+	
+	public function obtenerProveedores(){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("esProveedor = ?", "S"); 
+		$rowsEmpresas = $tablaEmpresa->fetchAll($select);
+		$modelEmpresas = array();
+		foreach ($rowsEmpresas as $row) {
+			$modelEmpresa = new Sistema_Model_Empresa($row->toArray());
+			$modelEmpresas[] = $modelEmpresa;
+		}
+		
+		return $modelEmpresas;
+	}
+	
 	public function crearEmpresa(Sistema_Model_Empresa $empresa){
 		$tablaEmpresa = $this->tablaEmpresa;
 		$empresa->setHash($empresa->getHash());
+		$empresa->setFecha(date("Y-m-d H:i:s", time()));
 		$tablaEmpresa->insert($empresa->toArray());
 	}
 	
+	public function editarEmpresa($idEmpresa, array $empresa){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$where = $tablaEmpresa->getAdapter()->quoteInto("idEmpresa = ?", $idEmpresa);
+		$tablaEmpresa->update($empresa, $where);
+	}
+	
+	public function eliminarEmpresa($idEmpresa){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$where = $tablaEmpresa->getAdapter()->quoteInto("idEmpresa = ?", $idEmpresa);
+		$tablaEmpresa->delete($where);
+	}
+	
+	/*
 	public function crearEmpresaFiscales(Sistema_Model_Fiscal $fiscal, Sistema_Model_Domicilio $domicilio, Sistema_Model_Telefono $telefono,Sistema_Model_Email $email) {
 		
 		//Insertar email, telefono y domicilio
@@ -81,4 +125,6 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$resFiscal = $db->query($sql);
 		//Insertar empresa
 	}
+	 * 
+	 */
 }

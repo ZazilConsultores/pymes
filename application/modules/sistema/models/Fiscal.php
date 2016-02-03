@@ -2,14 +2,14 @@
 
 class Sistema_Model_Fiscal
 {
-	private $idFiscales;
+	private $idFiscal;
 
-    public function getIdFiscales() {
-        return $this->idFiscales;
+    public function getIdFiscal() {
+        return $this->idFiscal;
     }
     
-    public function setIdFiscales($idFiscales) {
-        $this->idFiscales = $idFiscales;
+    public function setIdFiscal($idFiscal) {
+        $this->idFiscal = $idFiscal;
     }
 	
 	private $rfc;
@@ -85,7 +85,7 @@ class Sistema_Model_Fiscal
 
 	 public function __construct(array $datos)
     {
-    	if(array_key_exists("idFiscales", $datos)) $this->idFiscales = $datos["idFiscales"];
+    	if(array_key_exists("idFiscal", $datos)) $this->idFiscal = $datos["idFiscal"];
     	$this->rfc= $datos["rfc"];
     	$this->razonSocial = $datos["razonSocial"];
 		if(array_key_exists("idDomicilio", $datos)) $this->idDomicilio = $datos["idDomicilio"];
@@ -99,7 +99,7 @@ class Sistema_Model_Fiscal
 	{
 		$datos = array();
 			
-		$datos["idFiscales"] = $this->idFiscales;
+		$datos["idFiscal"] = $this->idFiscal;
 		$datos["rfc"] = $this->rfc; 
 		$datos["razonSocial"] = $this->razonSocial;
 		$datos["idDomicilio"] = $this->idDomicilio;

@@ -2,12 +2,21 @@
 
 class Sistema_EmpresaController extends Zend_Controller_Action
 {
-	private $empresaDAO;
+
+    private $empresaDAO = null;
+	private $domicilioDAO;
+	private $fiscalDAO;
+	private $telefonoDAO;
+	private $emailDAO;
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->empresaDAO = new Inventario_DAO_Empresa;
+        $this->empresaDAO = new Sistema_DAO_Empresa;
+		$this->fiscalDAO = new Sistema_DAO_Fiscal;
+		$this->domicilioDAO = new Sistema_DAO_Domicilio;
+		$this->telefonoDAO = new Sistema_DAO_Telefono;
+		$this->emailDAO = new Sistema_DAO_Email;
     }
 
     public function indexAction()
@@ -34,4 +43,33 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 			}
 		}
     }
+
+    public function empresasAction()
+    {
+        // action body
+        $fiscales = $this->fiscalDAO->obtenerFiscalesEmpresa();
+		$this->view->fiscales = $fiscales;
+    }
+
+    public function clientesAction()
+    {
+        // action body
+        $fiscales = $this->fiscalDAO->obtenerFiscalesCliente();
+		$this->view->fiscales = $fiscales;
+    }
+
+    public function proveedoresAction()
+    {
+        // action body
+        $fiscales = $this->fiscalDAO->obtenerFiscalesProveedor();
+		$this->view->fiscales = $fiscales;
+    }
+
+
 }
+
+
+
+
+
+
