@@ -1,4 +1,5 @@
 <?php 
+	$encuesta = $this->encuesta;
 	$seccion = $this->seccion;
 	$elementos = $this->elementos;
 	$tipo = Zend_Registry::get("tipo");
@@ -8,10 +9,16 @@
 		<h3>Grupos y preguntas de la sección: <?php echo $seccion->getNombre(); ?></h3>
 	</header>
 	<div>
-		<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "grupo", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>" class="btn btn-success">
+		<a class="btn btn-info" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true); ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Secciones
+		</a>
+		<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"admin","idSeccion"=>$seccion->getIdSeccion()), null, true) ?>">
+			<span class="glyphicon glyphicon-cog"></span> Administrar Sección
+		</a>
+		<a class="btn btn-success" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "grupo", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>">
 			<span class="glyphicon glyphicon-plus"></span> Agregar grupo
 		</a>
-		<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>" class="btn btn-success">
+		<a class="btn btn-success" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>">
 			<span class="glyphicon glyphicon-plus"></span> Agregar pregunta
 		</a>
 	</div>
@@ -33,7 +40,7 @@
 		<?php foreach ($elementos as $elemento) : 
 			$t = ($elemento instanceof Encuesta_Model_Grupo) ? "grupo" : "pregunta";
 			$id = ($elemento instanceof Encuesta_Model_Grupo) ? $elemento->getIdGrupo() : $elemento->getIdPregunta();
-			$url = $this->url(array("module" => "encuesta", "controller" => $t, "action" => "admin", "id".ucfirst($t) => $id), null, true);
+			$url = $this->url(array("module" => "encuesta", "controller" => $t, "action" => "index", "id".ucfirst($t) => $id), null, true);
 			?>
 		<tr>
 			<td><?php echo ucfirst($t); ?></td>

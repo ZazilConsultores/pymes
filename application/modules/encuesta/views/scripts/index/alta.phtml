@@ -9,6 +9,8 @@
 </section>
 <script>
 	$().ready(function(){
-		$("input[tipo=fecha]").datepicker();
+		$("input[tipo=fecha]").datepicker({
+			minDate: 0
+		});
 	});
 </script>
