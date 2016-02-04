@@ -11,10 +11,12 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$eNombre = new Zend_Form_Element_Text("nombre");
 		$eNombre->setLabel("Nombre de la Encuesta: ");
 		$eNombre->setAttrib("class", "form-control");
+		$eNombre->setAttrib("required", "required");
 		
 		$eDetalle = new Zend_Form_Element_Text("nombreClave");
 		$eDetalle->setLabel("Nombre clave de la encuesta: (Máximo 20 caracteres)");
 		$eDetalle->setAttrib("class", "form-control");
+		$eDetalle->setAttrib("required", "required");
 		
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");
 		$eDescripcion->setLabel("Objetivo de la encuesta: ");
@@ -31,11 +33,13 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$eFechaInicio->setLabel("Inicio de la encuesta");
 		$eFechaInicio->setAttrib("class", "form-control fecha");
 		$eFechaInicio->setAttrib("tipo", "fecha");
+		$eFechaInicio->setAttrib("required", "required");
 		
 		$eFechaFin = new Zend_Form_Element_Text("fechaFin");
 		$eFechaFin->setLabel("Término de la encuesta");
 		$eFechaFin->setAttrib("class", "form-control fecha");
 		$eFechaFin->setAttrib("tipo", "fecha");
+		$eFechaFin->setAttrib("required", "required");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Generar Encuesta");
