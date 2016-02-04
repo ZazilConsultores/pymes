@@ -3,16 +3,11 @@
 class Sistema_HtmlController extends Zend_Controller_Action
 {
 
-    private $domicilioDAO = null;
-
-    private $estadoDAO = null;
-
-    private $municipioDAO = null;
-
-    private $fiscalesDAO = null;
-	
+    private $domicilioDAO;
+    private $estadoDAO;
+    private $municipioDAO;
+    private $fiscalesDAO;
 	private $emailDAO;
-	
 	private $telefonoDAO;
 
     public function init()

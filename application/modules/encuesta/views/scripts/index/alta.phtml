@@ -7,3 +7,10 @@
 		<?php echo $this->formulario; ?>
 	</article>
 </section>
+<script>
+	$().ready(function(){
+		$("input[tipo=fecha]").datepicker({
+			minDate: 0
+		});
+	});
+</script>

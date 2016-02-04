@@ -1,17 +1,20 @@
 <?php
 /**
- * @author Hector Giovanni Rodriguez Ramos
- * @copyright 2016, Zazil Consultores S.A. de C.V.
- * @version 1.0.0
+ * 
  */
-interface Sistema_Interfaces_IFiscales {
-	public function obtenerFiscales($idFiscales);
+class Sistema_Interfaces_IFiscales {
 	
-	public function obtenerFiscalesEmpresa();
-	public function obtenerFiscalesCliente();
-	public function obtenerFiscalesProveedor();
+	public function obtenerDomicilioFiscal($idFiscales);
+	public function obtenerTelefonosFiscales($idFiscales);
+	public function obtenerEmailsFiscales($idFiscales);
+	//public function obtenerTelefonosEmails($idFiscales);
 	
-	public function crearFiscales(Sistema_Model_Fiscal $fiscal);
-	public function editarFiscales($idFiscal, array $fiscales);
-	public function eliminarFiscales($idFiscal);
+	public function crearFiscales(Sistema_Model_Fiscales $fiscales);
+	
+	public function agregarDomicilioFiscal($idFiscales, Sistema_Model_Domicilio $domicilio);
+	public function agregarTelefonoFiscal($idFiscales, Sistema_Model_Telefono $telefono);
+	public function agregarEmailFiscal($idFiscales, Sistema_Model_Email $email);
+	
+	//public function crearDomicilioFiscal(Sistema_Model_Fiscales $fiscales);
+	
 }

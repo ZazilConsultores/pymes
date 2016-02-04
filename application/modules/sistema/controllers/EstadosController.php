@@ -26,7 +26,7 @@ class Sistema_EstadosController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Sistema_Form_AltaEstado;
-		
+		$this->view->formulario = $formulario;
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
@@ -34,7 +34,6 @@ class Sistema_EstadosController extends Zend_Controller_Action
 				$this->estadosDAO->crearEstado($estado);
 				$this->_helper->redirector->gotoSimple("index", "estados", "sistema");
 			}
-		}else{
 			$this->_helper->redirector->gotoSimple("index", "estados", "sistema");
 		}
     }

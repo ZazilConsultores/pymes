@@ -8,13 +8,13 @@
  	
 	private $tablaDomicilio;
 	private $tablaFiscales;
-	//private $tablaFiscalesDomicilios;
+	private $tablaFiscalesDomicilios;
 	
 	public function __construct()
 	{
 		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		//$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
+		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
 	}
 	
 	public function obtenerDomicilio($idDomicilio) {

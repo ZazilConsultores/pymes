@@ -1,0 +1,140 @@
+<?php 
+	$fiscales = $this->fiscales;
+	$empresaDAO = new Sistema_DAO_Empresa;
+?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Clientes en el Sistema
+		</h3>
+	</div>
+	<div class="panel-body">
+		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresa","action"=>"index",),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Inicio
+		</a>
+		<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"clientes","action"=>"alta",),null,true) ?>">
+			<span class="glyphicon glyphicon-plus"></span> Nuevo Cliente
+		</a>
+		<br /><br />
+		<table class="table table-striped table-condensed">
+			<thead>
+				<th>Razon Social</th>
+				<th>Creación</th>
+				<th>Administrar</th>
+				<th>Datos</th>
+			</thead>
+			<tbody>
+				<?php foreach ($fiscales as $fiscal) : 
+					$empresa = $empresaDAO->obtenerEmpresaIdFiscales($fiscal->getIdFiscal());
+				?>
+				<tr>
+					<td><?php echo $fiscal->getRazonSocial() ?></td>
+					<td><?php echo $fiscal->getFecha() ?></td>
+					<td>
+						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"clientes","action"=>"index","idEmpresa"=>$empresa->getIdEmpresa()),null,true) ?>">
+							<span class="glyphicon glyphicon-cog"></span> Administrar Cliente
+						</a>
+					</td>
+					<td>
+						<button class="btn btn-info" fiscales="<?php echo $fiscal->getIdFiscal() ?>">
+							<span class="glyphicon glyphicon-cog"></span> Domicilio, Telefonos, e Emails
+						</button>
+					</td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+		</table>
+	</div>
+</section>
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Domicilio
+		</h3>
+	</div>
+	<div class="panel-body domicilio">
+		
+	</div>
+</section>
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Telefonos
+		</h3>
+	</div>
+	<div class="panel-body telefonos">
+		
+	</div>
+</section>
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Emails
+		</h3>
+	</div>
+	<div class="panel-body emails">
+		
+	</div>
+</section>
+<script>
+	$(document).ready(function() {
+		//===================================================================================
+	    $('table.table').dataTable( {
+	       "pagingType": "full_numbers",
+	        "language": {
+	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
+	        }
+	    } );
+	    //===================================================================================
+	    $("button.btn-info").on('click', function() {
+			//console.log(this.value);
+			$idFiscal = $(this).attr("fiscales");
+			console.log($idFiscal);
+			//Obtengo los municipios del estado
+			
+			$url = "/General/public/sistema/html/domicilio/idFiscales/" + $idFiscal;
+			console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "html",
+				success: function(data){
+					console.log($url);
+					//console.dir(data);
+					$("div.domicilio").html(data);
+					
+				}
+			});
+			
+			$url = "/General/public/sistema/html/telefonos/idFiscales/" + $idFiscal;
+			console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "html",
+				success: function(data){
+					console.log($url);
+					//console.dir(data);
+					$("div.telefonos").html(data);
+					
+				}
+			});
+			
+			$url = "/General/public/sistema/html/emails/idFiscales/" + $idFiscal;
+			console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "html",
+				success: function(data){
+					console.log($url);
+					//console.dir(data);
+					$("div.emails").html(data);
+					
+				}
+			});
+			
+		});
+	    
+	} );
+</script>

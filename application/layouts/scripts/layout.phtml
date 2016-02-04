@@ -2,39 +2,46 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-
-		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
-		Remove this if you use the .htaccess -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-		<title>General</title>
+		<title>General Application</title>
 		<meta name="description" content="">
 		<meta name="author" content="Hector Rodriguez">
-
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-		<link rel="shortcut icon" href="<?php echo $this->baseUrl() ?>/images/favicon.jpg">
-		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/favicon.jpg">
-		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
-		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
+		<link rel="shortcut icon" href="<?php echo $this->baseUrl() ?>/images/icono.png">
+		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/engranes.jpg">
 		
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
+		
 		
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
-		<script src="<?php echo $this->baseUrl(); ?>/js/bootstrap.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-ui.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/bootstrap.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.dataTables.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.bootstrap.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.responsive.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/responsive.bootstrap.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.validate.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/additional-methods.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
 		
 
 	</head>
 
 	<body>
 		<!-- Menu principal -->
-		<?php echo $this->partial("menus/principal.phtml"); ?>
-		
-		<div class="container">
+		<header>
+			<?php echo $this->partial("menus/principal.phtml"); ?>
+		</header>
+		<!-- Contenido Web -->
+		<div id="mainLayout" class="container">
 			<?php echo $this->layout()->content; ?>
 		</div>
 		<script src="<?php echo $this->baseUrl(); ?>/js/panel.js"></script>

@@ -1,100 +1,103 @@
 <?php
 /**
- * @author Hector Giovanni Rodriguez Ramos
- * @copyright 2016, Zazil Consultores S.A. de C.V.
- * @version 1.0.0
+ * 
  */
 class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	
-	
 	private $tablaFiscales;
-	private $tablaEmpresa;
+	
+	private $tablaFiscalesDomicilios;
+	private $tablaDomicilio;
+	private $tablaFiscalesTelefonos;
+	private $tablaTelefono;
+	private $tablaFiscalesEmail;
+	private $tablaEmail;
 	
 	public function __construct() {
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
+		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
+		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos;
+		$this->tablaEmail = new Sistema_Model_DbTable_Email;
+		$this->tablaFiscalesEmail = new Sistema_Model_DbTable_FiscalesEmail;
 	}
 	
-	public function obtenerFiscales($idFiscales){
-		$tablaFiscales = $this->tablaFiscales;
-		$select  = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $idFiscales);
-		$rowFiscales = $tablaFiscales->fetchRow($select);
-		$modelFiscales = new Sistema_Model_Fiscal($rowFiscales->toArray());
-		return $modelFiscales;
+	public function obtenerDomicilioFiscal($idFiscales){
+		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
+		$select = $tablaFiscalesDomicilio->select()->from($tablaFiscalesDomicilio)->where("idFiscales = ?", $idFiscales);
+		$rowDF = $tablaFiscalesDomicilio->fetchRow($select);
+		//---------------------------------------------------------
+		$tablaDomicilio = $this->tablaDomicilio;
+		$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $rowDF->idDomicilio);
+		$rowD = $tablaDomicilio->fetchRow($select);
+		$modelDomicilio = new Sistema_Model_Domicilio($rowD->toArray());
+		return $modelDomicilio;
 	}
 	
-	public function obtenerFiscalesEmpresa() {
-		
-		$tablaEmpresa = $this->tablaEmpresa;
-		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("esEmpresa = ?", "S");
-		$rowsEmpresas = $tablaEmpresa->fetchAll($select);
-		
-		$tablaFiscales = $this->tablaFiscales;
-		$modelFiscales = array();
-		foreach ($rowsEmpresas as $row) {
-			$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $row->idFiscales);
-			$rowF = $tablaFiscales->fetchRow($select);
-			
-			$modelFiscal = new Sistema_Model_Fiscal($rowF->toArray());
-			$modelFiscales[] = $modelFiscal;
+	public function obtenerTelefonosFiscales($idFiscales){
+		$tablaFiscalesTelefonos = $this->tablaFiscalesTelefonos;
+		$select = $tablaFiscalesTelefonos->select()->from($tablaFiscalesTelefonos)->where("idFiscales = ?", $idFiscales);
+		$rowsTF = $tablaFiscalesTelefonos->fetchAll($select);
+		//---------------------------------------------------------
+		$tablaTelefono = $this->tablaTelefono;
+		$modelsTelefonos = array();
+		foreach ($rowsTF as $row) {
+			$select = $tablaTelefono->select()->from($tablaTelefono)->where("idTelefono = ?",$row->idTelefono);
+			$rowT = $tablaTelefono->fetchRow($select);
+			$modelTelefono = new Sistema_Model_Telefono($rowT->toArray());
+			$modelsTelefonos[] = $modelTelefono;
 		}
 		
-		return $modelFiscales;
+		return $modelsTelefonos;
 	}
 	
-	public function obtenerFiscalesCliente() {
-		$tablaFiscales = $this->tablaFiscales;
-		$tablaEmpresa = $this->tablaEmpresa;
-		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("esCliente = ?", "S");
-		$rowsEmpresas = $tablaEmpresa->fetchAll($select);
-		
-		$modelFiscales = array();
-		foreach ($rowsEmpresas as $row) {
-			$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $row->idFiscales);
-			$rowF = $tablaFiscales->fetchRow($select);
-			
-			$modelFiscal = new Sistema_Model_Fiscal($rowF->toArray());
-			$modelFiscales[] = $modelFiscal;
+	public function obtenerEmailsFiscales($idFiscales){
+		$tablaFiscalesEmails = $this->tablaFiscalesEmail;
+		$select = $tablaFiscalesEmails->select()->from($tablaFiscalesEmails)->where("idFiscales = ?", $idFiscales);
+		$rowsEF = $tablaFiscalesEmails->fetchAll($select);
+		//---------------------------------------------------------
+		$tablaEmails = $this->tablaEmail;
+		$modelsEmails = array();
+		foreach ($rowsEF as $row) {
+			$modelEmail = new Sistema_Model_Email($row->toArray());
+			$modelsEmails[] = $modelEmail;
 		}
-		
-		return $modelFiscales;
+		return $modelsEmails;
 	}
 	
-	public function obtenerFiscalesProveedor() {
+	public function crearFiscales(Sistema_Model_Fiscales $fiscales){
 		$tablaFiscales = $this->tablaFiscales;
-		$tablaEmpresa = $this->tablaEmpresa;
-		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("esProveedor = ?", "S");
-		$rowsEmpresas = $tablaEmpresa->fetchAll($select);
-		
-		$modelFiscales = array();
-		foreach ($rowsEmpresas as $row) {
-			$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $row->idFiscales);
-			$rowF = $tablaFiscales->fetchRow($select);
-			
-			$modelFiscal = new Sistema_Model_Fiscal($rowF->toArray());
-			$modelFiscales[] = $modelFiscal;
-		}
-		
-		return $modelFiscales;
+		$fiscales->setHash($fiscales->getHash());
+		$tablaFiscales->insert($fiscales->toArray());
 	}
 	
-	public function crearFiscales(Sistema_Model_Fiscal $fiscal){
-		$tablaFiscales = $this->tablaFiscales;
-		$fiscal->setHash($fiscal->getHash());
-		$fiscal->setFecha(date("Y-m-d H:i:s", time()));
+	public function agregarDomicilioFiscal($idFiscales, Sistema_Model_Domicilio $domicilio){
+		$tablaFiscalesDomicilios = $this->tablaFiscalesDomicilios;
+		$registro = array();
+		$registro["idFiscales"] = $idFiscales;
+		$registro["idDomicilio"] = $domicilio->getIdDomicilio();
+		$registro["esSucursal"] = "N";
 		
-		$tablaFiscales->insert($fiscal->toArray());
-		$select = $tablaFiscales->select()->from($tablaFiscales)->where("hash = ?", $fiscal->getHash());
-		$rowFiscal = $tablaFiscales->fetchRow($select);
-		$modelFiscal = new Sistema_Model_Fiscal($rowFiscal->toArray());
-		return $modelFiscal;
+		$tablaFiscalesDomicilios->insert($registro);
 	}
 	
-	public function editarFiscales($idFiscal, array $fiscales){
+	public function agregarTelefonoFiscal($idFiscales, Sistema_Model_Telefono $telefono){
+		$tablaFiscalesTelefonos = $this->tablaFiscalesTelefonos;
+		$registro = array();
+		$registro["idFiscales"] = $idFiscales;
+		$registro["idTelefono"] = $telefono->getIdTelefono();
 		
+		$tablaFiscalesTelefonos->insert($registro);
 	}
 	
-	public function eliminarFiscales($idFiscal){
+	public function agregarEmailFiscal($idFiscales, Sistema_Model_Email $email){
+		$tablaFiscalesEmail = $this->tablaFiscalesEmail;
+		$registro = array();
+		$registro["idFiscales"] = $idFiscales;
+		$registro["idEmail"] = $email->getIdEmail();
 		
+		$tablaFiscalesEmail->insert($registro);
 	}
+	
 }

@@ -8,8 +8,16 @@
 		<header>
 			<h3>Encuesta: <?php echo $encuesta->getNombre()  ?></h3>
 		</header>
-		<div>
-			<?php echo $formulario; ?>
-		</div>
 	</article>
 </section>
+<section class="row">
+	<article class="col-md-4"></article>
+	<article class="col-md-4"><img src="<?php echo $this->baseUrl() . "/images/Logo.png" ?>" /></article>
+	<article class="col-md-4"></article>
+</section>
+<section class="row">
+	<article class="col-md-12">
+		<?php echo $formulario; ?>
+	</article>
+</section>
+<br /><br /><br />

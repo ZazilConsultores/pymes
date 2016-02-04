@@ -55,17 +55,17 @@ class Sistema_Model_Empresa
     public function setEsProveedor($esProveedor) {
         $this->esProveedor = $esProveedor;
     }
-    
-    private $idsBancos;
+	
+	private $fecha;
 
-    public function getIdsBancos() {
-        return $this->idsBancos;
+    public function getFecha() {
+        return $this->fecha;
     }
     
-    public function setIdsBancos($idsBancos) {
-        $this->idsBancos = $idsBancos;
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
     }
-    
+	
     private $hash;
 
     public function getHash() {
@@ -84,6 +84,7 @@ class Sistema_Model_Empresa
 		if(array_key_exists("esCliente", $datos)) $this->esCliente = $datos["esCliente"];
 		if(array_key_exists("esProveedor", $datos)) $this->esProveedor = $datos["esProveedor"];
 		if(array_key_exists("idsBancos", $datos)) $this->idsBancos = $datos["idsBancos"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
@@ -95,7 +96,7 @@ class Sistema_Model_Empresa
 		$datos["esEmpresa"] = $this->esEmpresa;
 		$datos["esCliente"] = $this->esCliente;
 		$datos["esProveedor"] = $this->esProveedor;
-		$datos["idsBancos"] = $this->idsBancos;
+		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;
