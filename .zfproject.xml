@@ -486,6 +486,9 @@
               <dbTableFile dbTableName="Rol"/>
               <dbTableFile dbTableName="Usuario"/>
               <dbTableFile dbTableName="Fiscal"/>
+              <dbTableFile dbTableName="FiscalesDomicilios"/>
+              <dbTableFile dbTableName="FiscalesTelefonos"/>
+              <dbTableFile dbTableName="FiscalesEmail"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -498,6 +501,7 @@
             <modelFile modelName="Subparametro"/>
             <modelFile modelName="Rol"/>
             <modelFile modelName="Usuario"/>
+            <modelFile modelName="Fiscales"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

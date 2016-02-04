@@ -8,7 +8,8 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 {
 	private $empresaDAO;
 	private $domicilioDAO;
-	private $fiscalDAO;
+	//private $fiscalDAO;
+	private $fiscalesDAO;
 	private $telefonoDAO;
 	private $emailDAO;
     
@@ -17,7 +18,8 @@ class Sistema_EmpresasController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->empresaDAO = new Sistema_DAO_Empresa;
-		$this->fiscalDAO = new Sistema_DAO_Fiscal;
+		//$this->fiscalDAO = new Sistema_DAO_Fiscal;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
 		$this->domicilioDAO = new Sistema_DAO_Domicilio;
 		$this->telefonoDAO = new Sistema_DAO_Telefono;
 		$this->emailDAO = new Sistema_DAO_Email;
