@@ -9,6 +9,9 @@
 			<h3>Secciones de la Encuesta: <?php echo $encuesta->getNombre() ?></h3>
 		</header>
 		<div>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"seccion","action"=>"alta","idEncuesta"=>$encuesta->getIdEncuesta(),), null, true) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nueva Sección
+			</a>
 			<table class="table table-striped table-condensed">
 				<thead>
 					<th>Sección</th>
