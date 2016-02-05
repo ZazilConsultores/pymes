@@ -149,6 +149,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar Encuesta");
 		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("disabled", "disabled");
 		
 		$formulario->addElement($eSubmit);
 		$formulario->setDecorators($this->formDecorators);

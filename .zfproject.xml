@@ -84,6 +84,7 @@
               <actionMethod actionName="secciondet"/>
               <actionMethod actionName="preguntas"/>
               <actionMethod actionName="preguntadet"/>
+              <actionMethod actionName="registro"/>
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
@@ -348,6 +349,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Resultado">
                 <viewScriptFile forActionName="grafica"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="registro"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -782,6 +786,7 @@
                 <testApplicationActionMethod forActionName="secciondet"/>
                 <testApplicationActionMethod forActionName="preguntas"/>
                 <testApplicationActionMethod forActionName="preguntadet"/>
+                <testApplicationActionMethod forActionName="registro"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>

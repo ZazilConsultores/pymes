@@ -1,5 +1,18 @@
 USE generaldos;
 
+select * from registro;
+select * from respuesta;
+select * from preferenciasimple;
+select distinct idRegistro from respuesta where idEncuesta = 1;
+delete from preferenciasimple where idPregunta = 4;
+
+SELECT `Registro`.* FROM `Registro` WHERE (referencia = '20160129TOMT');
+SELECT `Registro`.* FROM `Registro` WHERE (referencia = '20160129TOMT');
+select * from registro;
+select * from respuesta where idEncuesta = 3 and idRegistro = 11;
+select * from respuesta where idEncuesta = 3 and idRegistro = 4;
+select * from respuesta where idEncuesta = 3 and idRegistro = 2;
+
 INSERT INTO `estado` VALUES 
 (1,'Aguascalientes','Aguascalientes'),(2,'Baja California','Mexicali'),(3,'Baja California Sur','La Paz'),
 (4,'Campeche','Campeche'),(5,'Chiapas','Tuxtla Gutiérrez'),(6,'Chihuahua','Chihuahua'),
