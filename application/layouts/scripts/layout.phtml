@@ -20,6 +20,7 @@
 		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
 		
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.css" />
 		
@@ -33,7 +34,25 @@
 	<body>
 		<!-- Menu principal -->
 		<?php echo $this->partial("menus/principal.phtml"); ?>
-		
+		<!--Prueba -->
+		<br />
+		<div class="container-fluid">
+			<section class="main row">
+				<aside class="col-md-3">
+					<header>
+						<h3></h3>
+					</header>
+					<?php if (!is_null($this->links)){?>
+					<?php echo $this->partial("partials/menus/menuAside.phtml", array("links" => $this->links)); ?>
+					<?php } ?>
+				</aside>
+				<article class="col-md-20">
+					<?php echo $this->layout()->content; ?>
+				</article>
+			</section>
+		</div>
+			
+		<!-- Prueba -->
 		<div class="container">
 			<?php echo $this->layout()->content; ?>
 		</div>

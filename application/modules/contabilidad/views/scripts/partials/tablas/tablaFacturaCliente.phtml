@@ -1,0 +1,82 @@
+<?php
+	//tabla::rowset, tipo, empresa, cliente, proveedor, formulario	
+	$tabla = $this->tabla;
+	$tipo = $this->tipo;
+	$empresa = $this->empresa;
+	$cliente = $this->cliente;
+	$formulario = $this->formulario;
+	//Formato numeros mexico
+	$formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
+	
+	$tablaCuentasxc = new Application_Model_DbTable_Cuentasxc;
+	//================================================================ >>>
+	$emp = $empresa["CveEmp"];		//empresa
+	$ndestino = $cliente["Cliente"];	//numero de cliente o proveedor
+	//$tdestino = null;	//numero cliente o proveedor --- NO SE USA
+	$nmovto = null;		//numero de factura o remision
+	$tmovto = $formulario["tipo"];	//factura o remision FC|RC - FP|RP
+	
+	$tablaArray = $tabla->toArray();
+	$columnas = array();
+	
+	if(! is_null($tablaArray)) {
+		foreach ($tablaArray as $fila) :
+			//echo 'Columnas de la tabla: <br />';
+			foreach ($fila as $columna => $celda) {
+				//$columnas[] = $columna;
+				$columnas[] = Zazil_Util_Text::normalizeTextHeader($columna);
+				//echo $columna . '<br />';
+			}
+			break;
+		endforeach;
+	}
+	
+?>
+<table id="table" class="display table table-striped table-condensed ">
+	<thead>
+		<tr>
+			<?php foreach ($columnas as $columna): ?>
+			<th><?php echo $columna ?></th>	
+			<?php endforeach; ?>
+			<th>DETALLE PAGOS</th>
+			<th>REPORTES</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($tabla as $fila) : 
+				$nmovto = $fila['factura'];
+		?>
+		<tr>
+			<?php foreach ($fila as $columna => $valor): ?>
+				<td>
+					<?php
+						$nombreColumna = strtolower($columna);
+						if('fecha_impresion' === $nombreColumna) $valor = date("d-m-Y", strtotime($valor));
+						if($nombreColumna === "total" || $nombreColumna === "abono" || $nombreColumna === "saldo") {
+							if($valor < 1) $valor = 0;
+							$valor = $formatter->format($valor);
+						}
+						echo $this->escape($valor); 
+					?>
+				</td>
+			<?php endforeach; ?>
+			<td>
+				<?php
+					$datos = array("module" => "consulta", "controller" => "movtos", "empresa" => $emp, "ndestino" => $ndestino, "nmovto" => $nmovto, "tmovto" => $tmovto);
+					$numeroPagos = count($tablaCuentasxc->obtenerPagosFactura($nmovto, $ndestino, $emp));
+				?>
+				<a target="_blank" class="btn btn-warning" 
+					href="<?php $datos["action"] = "process"; echo $this->url($datos, null, true); ?>">
+					Pagos asociados <span class="badge"><?php echo $numeroPagos; ?></span>
+				</a>
+			</td>
+			<td>
+				<a target="_blank" class="btn btn-success" 
+					href="<?php $datos["action"] = "pdf"; echo $this->url($datos, null, true); ?>">
+					Imprimir Reporte
+				</a>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
