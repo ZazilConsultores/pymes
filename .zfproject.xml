@@ -23,25 +23,10 @@
       </layoutsDirectory>
       <modelsDirectory>
         <dbTableDirectory>
-          <dbTableFile dbTableName="Estado"/>
-          <dbTableFile dbTableName="Municipio"/>
-          <dbTableFile dbTableName="Domicilio"/>
-          <dbTableFile dbTableName="FiscalesDomicilio"/>
-          <dbTableFile dbTableName="Fiscales"/>
-          <dbTableFile dbTableName="FiscalesTelefonos"/>
-          <dbTableFile dbTableName="Telefono"/>
-          <dbTableFile dbTableName="Email"/>
-          <dbTableFile dbTableName="FiscalesEmail"/>
           <dbTableFile dbTableName="Banco"/>
           <dbTableFile dbTableName="BancosEmpresa"/>
-          <dbTableFile dbTableName="Empresa"/>
-          <dbTableFile dbTableName="Clientes"/>
-          <dbTableFile dbTableName="Empresas"/>
           <dbTableFile dbTableName="Factura"/>
-          <dbTableFile dbTableName="Proveedores"/>
           <dbTableFile dbTableName="FacturaDetalle"/>
-          <dbTableFile dbTableName="Parametro"/>
-          <dbTableFile dbTableName="Subparametro"/>
           <dbTableFile dbTableName="TipoProveedor"/>
           <dbTableFile dbTableName="Multiplos"/>
           <dbTableFile dbTableName="Producto"/>
@@ -51,28 +36,14 @@
           <dbTableFile dbTableName="Vendedor"/>
         </dbTableDirectory>
         <modelFile modelName="Banco"/>
-        <modelFile modelName="Clientes"/>
-        <modelFile modelName="Cliente"/>
         <modelFile modelName="Divisa"/>
-        <modelFile modelName="Domicilio"/>
-        <modelFile modelName="Email"/>
-        <modelFile modelName="Empresa"/>
-        <modelFile modelName="Empresas"/>
-        <modelFile modelName="Estado"/>
         <modelFile modelName="Factura"/>
         <modelFile modelName="FacturaDetalle"/>
-        <modelFile modelName="Fiscales"/>
         <modelFile modelName="Impuesto"/>
         <modelFile modelName="Multiplos"/>
-        <modelFile modelName="Municipio"/>
-        <modelFile modelName="Parametro"/>
         <modelFile modelName="Producto"/>
-        <modelFile modelName="Proveedores"/>
-        <modelFile modelName="Subparametro"/>
-        <modelFile modelName="Telefono"/>
         <modelFile modelName="TipoProveedor"/>
         <modelFile modelName="Vendedor"/>
-        <modelFile modelName="Proveedor"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -113,6 +84,7 @@
               <actionMethod actionName="secciondet"/>
               <actionMethod actionName="preguntas"/>
               <actionMethod actionName="preguntadet"/>
+              <actionMethod actionName="registro"/>
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
@@ -190,13 +162,10 @@
           </layoutsDirectory>
           <modelsDirectory>
             <dbTableDirectory>
-              <dbTableFile dbTableName="Realizadas"/>
               <dbTableFile dbTableName="Encuesta"/>
               <dbTableFile dbTableName="Seccion"/>
               <dbTableFile dbTableName="Grupo"/>
-              <dbTableFile dbTableName="OpcionesGrupo"/>
               <dbTableFile dbTableName="Registro"/>
-              <dbTableFile dbTableName="OpcionesPregunta"/>
               <dbTableFile dbTableName="Pregunta"/>
               <dbTableFile dbTableName="Respuesta"/>
               <dbTableFile dbTableName="Categoria"/>
@@ -381,6 +350,9 @@
               <viewControllerScriptsDirectory forControllerName="Resultado">
                 <viewScriptFile forActionName="grafica"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="registro"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -471,6 +443,9 @@
             <controllerFile controllerName="Empresa">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="empresas"/>
+              <actionMethod actionName="clientes"/>
+              <actionMethod actionName="proveedores"/>
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
@@ -498,9 +473,18 @@
             </controllerFile>
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Html">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="municipios"/>
+              <actionMethod actionName="domicilio"/>
+              <actionMethod actionName="telefonos"/>
+              <actionMethod actionName="emails"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -526,18 +510,15 @@
               <dbTableFile dbTableName="Domicilio"/>
               <dbTableFile dbTableName="Estado"/>
               <dbTableFile dbTableName="Municipio"/>
-              <dbTableFile dbTableName="Fiscales"/>
               <dbTableFile dbTableName="Empresa"/>
-              <dbTableFile dbTableName="FiscalesDomicilios"/>
-              <dbTableFile dbTableName="FiscalesEmail"/>
-              <dbTableFile dbTableName="FiscalesTelefonos"/>
-              <dbTableFile dbTableName="Empresas"/>
-              <dbTableFile dbTableName="Proveedores"/>
-              <dbTableFile dbTableName="Clientes"/>
               <dbTableFile dbTableName="Parametro"/>
               <dbTableFile dbTableName="Subparametro"/>
               <dbTableFile dbTableName="Rol"/>
               <dbTableFile dbTableName="Usuario"/>
+              <dbTableFile dbTableName="Fiscal"/>
+              <dbTableFile dbTableName="FiscalesDomicilios"/>
+              <dbTableFile dbTableName="FiscalesTelefonos"/>
+              <dbTableFile dbTableName="FiscalesEmail"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -546,15 +527,11 @@
             <modelFile modelName="Fiscal"/>
             <modelFile modelName="Municipio"/>
             <modelFile modelName="Empresa"/>
-            <modelFile modelName="Empresas"/>
-            <modelFile modelName="Clientes"/>
-            <modelFile modelName="Proveedores"/>
-            <modelFile modelName="Proveedor"/>
-            <modelFile modelName="Cliente"/>
             <modelFile modelName="Parametro"/>
             <modelFile modelName="Subparametro"/>
             <modelFile modelName="Rol"/>
             <modelFile modelName="Usuario"/>
+            <modelFile modelName="Fiscales"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -677,6 +654,36 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Empresas">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="municipios"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="domicilio"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="telefonos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="emails"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresa">
+                <viewScriptFile forActionName="empresas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresa">
+                <viewScriptFile forActionName="clientes"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresa">
+                <viewScriptFile forActionName="proveedores"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedores">
                 <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -805,6 +812,7 @@
                 <testApplicationActionMethod forActionName="secciondet"/>
                 <testApplicationActionMethod forActionName="preguntas"/>
                 <testApplicationActionMethod forActionName="preguntadet"/>
+                <testApplicationActionMethod forActionName="registro"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
@@ -909,6 +917,9 @@
               <testApplicationControllerFile forControllerName="Empresa">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="empresas"/>
+                <testApplicationActionMethod forActionName="clientes"/>
+                <testApplicationActionMethod forActionName="proveedores"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
@@ -936,9 +947,18 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Html">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="municipios"/>
+                <testApplicationActionMethod forActionName="domicilio"/>
+                <testApplicationActionMethod forActionName="telefonos"/>
+                <testApplicationActionMethod forActionName="emails"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

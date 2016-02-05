@@ -1,8 +1,10 @@
 <?php
-
+/**
+ * 
+ */
 interface Sistema_Interfaces_IDomicilio {
-	public function obtenerDomicilio($idDomicilio);
 	
+	public function obtenerDomicilio($idDomicilio);
 	public function obtenerDomicilioFiscal($idFiscal);
 	public function obtenerDomiciliosFiscales();
 	

@@ -2,10 +2,14 @@
 
 class Encuesta_HtmlController extends Zend_Controller_Action
 {
-	private $encuestaDAO;
-	private $seccionDAO;
-	private $grupoDAO;
-	private $preguntaDAO;
+
+    private $encuestaDAO = null;
+
+    private $seccionDAO = null;
+
+    private $grupoDAO = null;
+
+    private $preguntaDAO = null;
 
     public function init()
     {
@@ -132,5 +136,46 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 		}
     }
 
+    public function registroAction()
+    {
+        // action body
+        $idEncuesta = $this->getParam("idEncuesta");
+        $referencia = $this->getParam("referencia");
+		
+		$tablaRegistro = new Encuesta_Model_DbTable_Registro;
+		$select = $tablaRegistro->select()->from($tablaRegistro)->where("referencia = ?", $referencia);
+		//print_r($select->__toString());
+		$rowRef = $tablaRegistro->fetchRow($select);
+		if(is_null($rowRef)){
+			$this->view->messageUser = "Usuario con referencia: " .  $referencia ." no esta registrado o es inválido.";
+			//print_r($rowRef);
+			//print_r("==========");
+			return;
+		}
+		
+		$tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
+		$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("idEncuesta = ?", $idEncuesta)->where("idRegistro = ?", $rowRef->idRegistro);
+		$rowsRespuestas = $tablaRespuesta->fetchAll($select);
+		$numeroRespuestas = count($rowsRespuestas);
+		//print_r("<br />");
+		//print_r($select->__toString());
+		//print_r("<br />");
+		//print_r($rowsRespuestas->toArray());
+		//print_r("<br />");
+		//print_r($numeroRespuestas);
+		//print_r("<br />");
+		if($numeroRespuestas == 0){
+			$this->view->messageSuccess = "Usuario : <strong>" . $rowRef->apellidos .", " . $rowRef->nombres ."</strong> puede contestar esta encuesta";
+			return;
+		}else{
+			$this->view->messageComplete = "Usuario : <strong>" . $rowRef->apellidos .", " . $rowRef->nombres ."</strong> ya ha contestado esta encuesta";
+			return;
+		}
+		
+		//print_r("==========");
+    }
+
 
 }
+
+

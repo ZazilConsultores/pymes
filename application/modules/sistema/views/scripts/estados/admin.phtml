@@ -3,52 +3,61 @@
 		$formulario->setAction($this->url(array("module"=>"sistema", "controller"=>"estados", "action" => "edita", "idEstado"=>$estado->getIdEstado()), null, true));
 ?>
 <section class="row">
-	<article>
-		<header>
-			<h3>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
 				Detalle Estado: <?php echo $estado->getEstado(); ?>
 			</h3>
-		</header>
-		
-		<table class="table table-striped table-condensed">
-			<thead>
-				<tr>
-					<th>Numero Estado</th>
-					<th>Estado</th>
-					<th>Capital</th>
-					<th>Municipios</th>
-				</tr>
-			</thead>
-			<tbody>
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Numero Estado</th>
+						<th>Estado</th>
+						<th>Capital</th>
+						<th>Municipios</th>
+					</tr>
+				</thead>
+				<tbody>
+	
+					<tr>
+						<td><?php echo $estado->getIdEstado() ?></td>
+						<td><?php echo $estado->getEstado() ?></td>
+						<td><?php echo $estado->getCapital() ?></td>
+						<td>
+							<a class="btn btn-block btn-info" href="<?php echo $this->url(array("module"=>"sistema", "controller"=>"municipios", "action" => "index", "idEstado" => $estado->getIdEstado()), null, true); ?>">
+								Municipios
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Editar Estado
+			</h3>
+		</div>
+		<div class="panel-body">
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+	
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Eliminar Estado
+			</h3>
+		</div>
+		<div class="panel-body">
+			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"estados", "action"=>"baja", "idEstado"=>$estado->getIdEstado()), null, true) ?>">
+				Eliminar Estado
+			</a>
+		</div>
+	</div>
+</section>
 
-				<tr>
-					<td><?php echo $estado->getIdEstado() ?></td>
-					<td><?php echo $estado->getEstado() ?></td>
-					<td><?php echo $estado->getCapital() ?></td>
-					<td>
-						<a class="btn btn-block btn-info" href="<?php echo $this->url(array("module"=>"sistema", "controller"=>"municipios", "action" => "index", "idEstado" => $estado->getIdEstado()), null, true); ?>">
-							Municipios
-						</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</article>
-</section>
-<section class="row">
-	<article class="col-md-6" style="background-color: #87CEEB">
-		<header>
-			<h3>Editar</h3>
-		</header>
-		<?php echo $formulario; ?>
-	</article>
-	<article class="col-md-6" style="background-color: #FF6347">
-		<header>
-			<h3>Eliminar</h3>
-		</header>
-		<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"estados", "action"=>"baja", "idEstado"=>$estado->getIdEstado()), null, true) ?>">
-			Eliminar Estado
-		</a>
-		<br /><br />
-	</article>
-</section>

@@ -21,7 +21,10 @@ class Encuesta_SeccionController extends Zend_Controller_Action
         // action body
         $idSeccion = $this->getParam("idSeccion");
 		if(! is_null($idSeccion)) {
-			$this->view->seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
+			$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
+			$encuesta = $this->encuestaDAO->obtenerEncuesta($seccion->getIdEncuesta());
+			$this->view->seccion = $seccion;
+			$this->view->encuesta = $encuesta;
 			$grupos = $this->seccionDAO->obtenerGrupos($idSeccion);
 			$preguntas = $this->seccionDAO->obtenerPreguntas($idSeccion);
 			

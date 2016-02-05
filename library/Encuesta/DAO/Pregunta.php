@@ -9,11 +9,13 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 	private $tablaSeccion;
 	private $tablaGrupo;
 	private $tablaPregunta;
+	private $tablaPreferenciaSimple;
 	
 	function __construct() {
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
 		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
+		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple;
 	}
 	// =====================================================================================>>>   Buscar
 	public function obtenerPregunta($idPregunta) {
@@ -53,8 +55,10 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 			$rowGrupo = $tablaGrupo->fetchRow($select);
 			
 			$rowGrupo->elementos++;
-			$rowGrupo->save();
+			$pregunta->setOpciones($rowGrupo->opciones);
 			$pregunta->setOrden($rowGrupo->elementos);
+			
+			$rowGrupo->save();
 		}
 		
 		$pregunta->setHash($pregunta->getHash());
@@ -75,6 +79,15 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarPregunta($idPregunta) {
+		//Primero eliminamos de la tabla preferencia simple
+		$tablaPreferenciaSimple = $this->tablaPreferenciaSimple;
+		$where = $tablaPreferenciaSimple->getAdapter()->quoteInto("idPregunta = ?", $idPregunta);
+		try{
+			$tablaPreferenciaSimple->delete($where);
+		}catch(Exception $ex){
+			
+		}
+		
 		$tablaPregunta = $this->tablaPregunta;
 		$where = $tablaPregunta->getAdapter()->quoteInto("idPregunta = ?", $idPregunta);
 		

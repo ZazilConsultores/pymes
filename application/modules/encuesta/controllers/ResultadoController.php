@@ -31,6 +31,7 @@ class Encuesta_ResultadoController extends Zend_Controller_Action
 		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
 		$opcionDAO = $this->opcionDAO;
 		$this->view->encuesta = $encuesta;
+		//Condicion para normalizar o no las preguntas: que todos los usuarios ya hayan contestado encuesta o encuesta este finalizada
 		Encuesta_Util_Normalize::normalizePreguntasSS($idEncuesta);
 		//Ya esta todo listo para trabajar graficas
 		//Obtenemos preguntas de la encuesta

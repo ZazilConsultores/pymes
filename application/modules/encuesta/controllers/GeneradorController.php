@@ -88,6 +88,11 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$eEncuesta = new Zend_Form_Element_Hidden("idEncuesta");
 		$eEncuesta->setValue($idEncuesta);
 		
+		$eLogo = new Zend_Form_Element_Image("logo");
+		$eLogo->setImage($this->view->baseUrl() . "/images/Logo.png");
+		$eLogo->setDecorators($this->decoratorsPregunta);
+		//$formulario->addElement($eLogo);
+		
 		$eReferencia = new Zend_Form_Element_Text("referencia");
 		$eReferencia->setLabel("Boleta o Clave : ");
 		$eReferencia->setAttrib("class", "form-control");
@@ -102,7 +107,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		foreach ($secciones as $seccion) {
 			//============================================= Cada seccion es una subforma
 			$subFormSeccion = new Zend_Form_SubForm($seccion->getHash());
-			$subFormSeccion->setLegend("Sección: " .$seccion->getNombre());
+			//$subFormSeccion->setLegend("Sección: " .$seccion->getNombre());
 			//============================================= Obtenemos los elementos de la seccion
 			$grupos = $this->seccionDAO->obtenerGrupos($seccion->getIdSeccion());
 			$preguntas = $this->seccionDAO->obtenerPreguntas($seccion->getIdSeccion());
@@ -127,7 +132,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 				}elseif($elemento instanceof Encuesta_Model_Grupo){
 					//============================================= un grupo es otra subform
 					$subFormGrupo = new Zend_Form_SubForm($elemento->getHash());
-					$subFormGrupo->setLegend("Grupo: " . $elemento->getNombre());
+					//$subFormGrupo->setLegend("Grupo: " . $elemento->getNombre());
 					$preguntasGrupo = $this->grupoDAO->obtenerPreguntas($elemento->getIdGrupo());
 					foreach ($preguntasGrupo as $pregunta) {
 						//============================================= Aqui ya la agregamos al grupo
@@ -144,6 +149,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar Encuesta");
 		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("disabled", "disabled");
 		
 		$formulario->addElement($eSubmit);
 		$formulario->setDecorators($this->formDecorators);
@@ -169,9 +175,26 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 			$registro = $this->registroDAO->obtenerRegistroReferencia($encabezado["referencia"]);
 			
 			//Recorremos todas las secciones
-			for ($index = 1; $index <= $numContenedores; $index++) {
+			for ($index = 1; $index < $numContenedores; $index++) {
 				//tomamos una seccion
 				$seccion = $secciones[$index];
+				//print_r($seccion);
+				//print_r("<br />");
+				//print_r("====================");
+				foreach ($seccion as $preguntas) {
+					foreach ($preguntas as $idPregunta => $idRespuesta) {
+						$respuesta = array();
+						
+						$respuesta["idRegistro"] = $registro->getIdRegistro();
+						$respuesta["idEncuesta"] = $idEncuesta;
+						$respuesta["idPregunta"] = $idPregunta;
+						$respuesta["respuesta"] = $idRespuesta;
+						
+						$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
+						$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+					}
+				}
+				/*
 				foreach ($seccion as $idPregunta => $resp) {
 					$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
 					
@@ -180,7 +203,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 					$respuesta["idRegistro"] = $registro->getIdRegistro();
 					$respuesta["idEncuesta"] = $idEncuesta;
 					$respuesta["idPregunta"] = $idPregunta;
-					$respuesta["respuesta"] = $resp;
+					$respuesta["respuesta"] = implode(",", $resp);
 					
 					$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
 					//$modelRespuesta->setHash($modelRespuesta->getHash());
@@ -188,9 +211,9 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 					
 					$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
 				}
-				
+				*/
 			}
-			
+			$this->_helper->redirector->gotoSimple("index", "resultado", "encuesta");
 		}
 	}
 	
@@ -211,7 +234,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 			}
 			
 			foreach ($opciones as $opcion) {
-				$ePregunta->addMultiOption($opcion->getIdOpcion(), $opcion->getOpcion())->setSeparator("");
+				$ePregunta->addMultiOption($opcion->getIdOpcion(), $opcion->getOpcion());//->setSeparator("");
 			}
 		}
 		$ePregunta->setLabel($pregunta->getPregunta());

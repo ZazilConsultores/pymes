@@ -43,7 +43,7 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		$modelPreguntas = array();
 		
 		if(!is_null($rowsPreguntas)){
-			foreach ($rowsPreguntas as $rowPregunta) {
+			foreach ($rowsPreguntas as $row) {
 				$modelPregunta = new Encuesta_Model_Pregunta($row->toArray());
 				$modelPreguntas[] = $modelPregunta;
 			}

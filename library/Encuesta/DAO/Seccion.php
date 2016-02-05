@@ -75,7 +75,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$rowsGrupos = $tablaGrupo->fetchAll($select);
 		$modelGrupos = array();
 		
-		foreach ($rowsGrupos as $rowGrupo) {
+		foreach ($rowsGrupos as $row) {
 			$modelGrupo = new Encuesta_Model_Grupo($row->toArray());
 			$modelGrupos[] = $modelGrupo;
 		}

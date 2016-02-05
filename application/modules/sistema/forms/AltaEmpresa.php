@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Hector Giovanni Rodriguez Ramos
+ * @copyright 2016, Zazil Consultores S.A. de C.V.
+ * @version 1.0.0
+ */
 class Sistema_Form_AltaEmpresa extends Zend_Form
 {
     public function init()
@@ -11,7 +15,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$estados = $estadoDAO->obtenerEstados();
 		$municipioDAO = new Inventario_DAO_Municipio;
         
-        $subFiscales = new Zend_Form_SubForm("fiscal");
+        $subFiscales = new Zend_Form_SubForm();
 		$subFiscales->setLegend("Datos Fiscales");
 
         //   ===============================================================
@@ -30,12 +34,13 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
         
         $subFiscales->addElements(array($eRazonSocial,$eRFC,$eTipoEmpresa));
 		//   ===============================================================
-		$subDomicilio = new Zend_Form_SubForm("subDomicilio");
+		$subDomicilio = new Zend_Form_SubForm();
 		$subDomicilio->setLegend("Domicilio");
 		
 		$eEstado = new Zend_Form_Element_Select("idEstado");
 		$eEstado->setLabel("Seleccione Estado: ");
 		$eEstado->setAttrib("class", "form-control");
+		$eEstado->setRegisterInArrayValidator(FALSE);
 		foreach ($estados as $estado) {
 			$eEstado->addMultiOption($estado->getIdEstado(),$estado->getEstado());
 		}
@@ -46,6 +51,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eMunicipio = new Zend_Form_Element_Select("idMunicipio");
 		$eMunicipio->setLabel("Seleccione Municipio: ");
 		$eMunicipio->setAttrib("class", "form-control");
+		$eMunicipio->setRegisterInArrayValidator(FALSE);
 		foreach ($municipios as $municipio) {
 			$eMunicipio->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
 		}
@@ -73,12 +79,18 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		
 		$subDomicilio->addElements(array($eEstado,$eMunicipio,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
 		//   ===============================================================
-		$subTelefono = new Zend_Form_SubForm("subTelefono");
+		$subTelefono = new Zend_Form_SubForm();
 		$subTelefono->setLegend("Telefono");
+		$tipoTelefono = Zend_Registry::get("tipoTelefono");
 		
 		$eLada = new Zend_Form_Element_Text("lada");
 		$eLada->setLabel("Lada");
 		$eLada->setAttrib("class", "form-control");
+		
+		$eTipoTelefono = new Zend_Form_Element_Select("tipo");
+		$eTipoTelefono->setLabel("Tipo de Telefono: ");
+		$eTipoTelefono->setAttrib("class", "form-control");
+		$eTipoTelefono->setMultiOptions($tipoTelefono);
 		
 		$eTelefono = new Zend_Form_Element_Text("telefono");
 		$eTelefono->setLabel("Telefono");
@@ -88,16 +100,26 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eExtensiones->setLabel("Extension");
 		$eExtensiones->setAttrib("class", "form-control");
 		
-		$subTelefono->addElements(array($eLada,$eTelefono,$eExtensiones));
+		$eTelefonoDescripcion = new Zend_Form_Element_Textarea("descripcion");
+		$eTelefonoDescripcion->setLabel("Descripcion: ");
+		$eTelefonoDescripcion->setAttrib("class", "form-control");
+		$eTelefonoDescripcion->setAttrib("rows", "2");
+		
+		$subTelefono->addElements(array($eLada,$eTipoTelefono,$eTelefono,$eTelefonoDescripcion,$eExtensiones));
 		//   ===============================================================
-		$subEmail = new Zend_Form_SubForm("subEmail");
+		$subEmail = new Zend_Form_SubForm();
 		$subEmail->setLegend("Email");
 		
 		$eEmail = new Zend_Form_Element_Text("email");
 		$eEmail->setLabel("Email");
 		$eEmail->setAttrib("class","form-control");
 		
-		$subEmail->addElements(array($eEmail));
+		$eEmailDescripcion = new Zend_Form_Element_Textarea("descripcion");
+		$eEmailDescripcion->setLabel("Descripcion: ");
+		$eEmailDescripcion->setAttrib("class", "form-control");
+		$eEmailDescripcion->setAttrib("rows", "2");
+		
+		$subEmail->addElements(array($eEmail,$eEmailDescripcion));
 		
 		//   ===============================================================
 		$this->addSubForms(array($subFiscales,$subDomicilio,$subTelefono,$subEmail));

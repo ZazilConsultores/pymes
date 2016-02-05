@@ -1,0 +1,26 @@
+<?php 
+	$telefonos = $this->telefonos;
+	$tipoTelefono = Zend_Registry::get("tipoTelefono");
+?>
+<table class="table table-condensed table-striped">
+	<thead>
+		<th>Tipo</th>
+		<th>Lada</th>
+		<th>Telefono</th>
+		<th>Extensiones</th>
+		<th>Creación</th>
+		<th>Descripción</th>
+	</thead>
+	<tbody>
+		<?php foreach ($telefonos as $telefono) : ?>
+		<tr>
+			<td><?php echo $tipoTelefono[$telefono->getTipo()] ?></td>
+			<td><?php echo $telefono->getLada() ?></td>
+			<td><?php echo $telefono->getTelefono() ?></td>
+			<td><?php echo $telefono->getExtensiones() ?></td>
+			<td><?php echo $telefono->getFecha() ?></td>
+			<td><?php echo $telefono->getDescripcion() ?></td>
+		</tr>
+		<?php endforeach ?>
+	</tbody>
+</table>
