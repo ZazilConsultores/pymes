@@ -493,6 +493,9 @@
               <dbTableFile dbTableName="FiscalesDomicilios"/>
               <dbTableFile dbTableName="FiscalesTelefonos"/>
               <dbTableFile dbTableName="FiscalesEmail"/>
+              <dbTableFile dbTableName="Empresas"/>
+              <dbTableFile dbTableName="Clientes"/>
+              <dbTableFile dbTableName="Proveedores"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
