@@ -14,19 +14,11 @@
 		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/engranes.jpg">
 		
 		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
-		
-<<<<<<< HEAD
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.min.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.css" />
-=======
->>>>>>> 3dc7fcaa223173fde66e8f756c40fbfee2d5d876
 		
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-ui.min.js"></script>
@@ -44,13 +36,12 @@
 
 	<body>
 		<!-- Menu principal -->
-<<<<<<< HEAD
-		<?php echo $this->partial("menus/principal.phtml"); ?>
+		<?php echo $this->partial("partials/menus/principal.phtml"); ?>
 		<!--Prueba -->
 		<br />
-		<div class="container-fluid">
+		<div class="container">
 			<section class="main row">
-				<aside class="col-md-3">
+				<aside class="col-md-2">
 					<header>
 						<h3></h3>
 					</header>
@@ -58,23 +49,13 @@
 					<?php echo $this->partial("partials/menus/menuAside.phtml", array("links" => $this->links)); ?>
 					<?php } ?>
 				</aside>
-				<article class="col-md-20">
+				<!-- Contenido Web -->
+				<article class="col-md-10">
 					<?php echo $this->layout()->content; ?>
 				</article>
 			</section>
 		</div>
-			
-		<!-- Prueba -->
-		<div class="container">
-=======
-		<header>
-			<?php echo $this->partial("menus/principal.phtml"); ?>
-		</header>
-		<!-- Contenido Web -->
-		<div id="mainLayout" class="container">
->>>>>>> 3dc7fcaa223173fde66e8f756c40fbfee2d5d876
-			<?php echo $this->layout()->content; ?>
-		</div>
+		
 		<script src="<?php echo $this->baseUrl(); ?>/js/panel.js"></script>
 	</body>
 </html>
