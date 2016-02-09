@@ -1,25 +1,37 @@
 <?php
 
-class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
+class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 {
 
     public function init()
     {
-    	/*Empresa*/
-		$columnas = array('idFiscales', 'razonSocial');
-		$tablaFiscales = new Contabilidad_Model_DbTable_Fiscales();
-		$rowset = $tablaFiscales->obtenerColumnas($columnas);
+    	$etipo = new Zend_Form_Element_Select('tipoMovto');
+		$etipo->setLabel('Seleccionar Tipo de Remision: ');
+		$etipo->setAttrib("class", "form-control");
 		
+    	//foreach ($rowset as $fila) {
+			//$etipo->addMultiOption($fila->idFiscales, $fila->razonSocial);
+		//}
 		
-		$eEmpresa = new Zend_Form_Element_Select('empresa');
-		$eEmpresa->setLabel('Seleccionar Empresa: ');
+		$eFolio = new Zend_Form_Element_Text('folio');
+		$eFolio->setLabel('Folio: ');
+		$eFolio->setAttrib("class", "form-control");
+		
+		$eFecfac = new Zend_Form_Element_Text('fecfac');
+		$eFecfac->setLabel('Fecha Remision: ');
+		$eFecfac->setAttrib("class", "form-control");
+		
+		$columnas = array('idFiscales','razonSocial');
+		$tablasFiscales = new Contabilidad_Model_DbTable_Fiscales();
+		$rowset = $tablasFiscales->obtenerColumnas($columnas);
+		
+    	$eEmpresa =  new Zend_Form_Element_Select('empresa');
+        $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
-		
-    	
 		
 		$eCliente =  new Zend_Form_Element_Select('cliente');
         $eCliente->setLabel('Seleccionar Cliente: ');
@@ -28,11 +40,6 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		//foreach ($rowset as $fila) {
 			
 		//}
-		
-		$eFactura =  new Zend_Form_Element_Select('factura');
-        $eFactura->setLabel('Numero Factura: ');
-		$eFactura->setAttrib("class", "form-control");
-		
 		$eProyecto =  new Zend_Form_Element_Select('proyecto');
         $eProyecto->setLabel('Seleccionar Proyecto: ');
 		$eProyecto->setAttrib("class", "form-control");
@@ -40,34 +47,23 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		//foreach ($rowset as $fila) {
 			
 		//}
-		/*Divisa*/
-		$columnas = array('claveDivisa', 'descripcion');
+		$columnas=array('claveDivisa','descripcion');
 		$tablaDivisa = new Contabilidad_Model_DbTable_Divisa();
 		$rowset = $tablaDivisa->obtenerColumnas($columnas);
 		
-		
-		$eDivisa = new Zend_Form_Element_Select('divisa');
-		$eDivisa->setLabel('Seleccionar Divisa: ');
+		$eDivisa =  new Zend_Form_Element_Select('divisa');
+        $eDivisa->setLabel('Seleccionar Divisa: ');
 		$eDivisa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
 			$eDivisa->addMultiOption($fila->claveDivisa, $fila->descripcion);
-		}
-		
-		$eVendedor = new Zend_Form_Element_Select('vendedor');
-        $eVendedor->setLabel('Seleccionar Vendedor:');
-		$eVendedor->setAttrib("class", "form-control");
-		
-		//foreach ($rowset as $fila) {
 			
-		//}
-		$eFechaFac =  new Zend_Form_Element_Text('fechafac');
-        $eFechaFac->setLabel('Fecha Factura: ');
-		$eFechaFac->setAttrib("class", "form-control");
+		}
 		
 		$eClave =  new Zend_Form_Element_Text('clave');
         $eClave->setLabel('Clave: ');
 		$eClave->setAttrib("class", "form-control");
+		
 		
 		$eCodigoBarra =  new Zend_Form_Element_Text('codigoBarra');
         $eCodigoBarra->setLabel('Codigo de Barra: ');
@@ -98,12 +94,14 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-warning");
 		
 		//Encabezado
+		$this->addElement($etipo);
+		$this->addElement($eFolio);
+		$this->addElement($eFecfac);
 		$this->addElement($eEmpresa);
 		$this->addElement($eCliente);
-		$this->addElement($eVendedor);
 		$this->addElement($eProyecto);
 		$this->addElement($eDivisa);
-		$this->addElement($eFechaFac);
+
 		
 		//Cuerpo
 		$this->addElement($eClave);

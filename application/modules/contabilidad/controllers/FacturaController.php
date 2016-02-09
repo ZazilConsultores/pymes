@@ -31,10 +31,11 @@ class Contabilidad_FacturaController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->tablaEmpresa = new Application_Model_DbTable_Empresa;
-		$this->tablaClientes = new Application_Model_DbTable_Clientes;
-		$this->tablaProveedores = new Application_Model_DbTable_Proveedores;
-		$this->tablaFactura = new Application_Model_DbTable_Factura;
+        //$this->tablaEmpresa = new Application_Model_DbTable_Empresa;
+        
+		//$this->tablaClientes = new Application_Model_DbTable_Clientes;
+		//$this->tablaProveedores = new Application_Model_DbTable_Proveedores;
+		//$this->tablaFactura = new Application_Model_DbTable_Factura;
 
 		$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		$this->view->links = $this->links;    }
