@@ -9,6 +9,7 @@
       <controllersDirectory>
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="login"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Resultados">
@@ -16,6 +17,7 @@
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
+        <formFile formName="Login"/>
         <formFile formName="AgregarRemisionCliente"/>
       </formsDirectory>
       <layoutsDirectory>
@@ -835,6 +837,9 @@
           <viewControllerScriptsDirectory forControllerName="Resultados">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="login"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -871,6 +876,7 @@
         <testApplicationControllerDirectory>
           <testApplicationControllerFile forControllerName="Index">
             <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="login"/>
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Resultados">
             <testApplicationActionMethod forActionName="index"/>
