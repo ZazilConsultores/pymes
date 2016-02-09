@@ -14,12 +14,11 @@
 		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/engranes.jpg">
 		
 		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
-		
 		
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-ui.min.js"></script>
@@ -37,13 +36,26 @@
 
 	<body>
 		<!-- Menu principal -->
-		<header>
-			<?php echo $this->partial("menus/principal.phtml"); ?>
-		</header>
-		<!-- Contenido Web -->
-		<div id="mainLayout" class="container">
-			<?php echo $this->layout()->content; ?>
+		<?php echo $this->partial("partials/menus/principal.phtml"); ?>
+		<!--Prueba -->
+		<br />
+		<div class="container">
+			<section class="main row">
+				<aside class="col-md-2">
+					<header>
+						<h3></h3>
+					</header>
+					<?php if (!is_null($this->links)){?>
+					<?php echo $this->partial("partials/menus/menuAside.phtml", array("links" => $this->links)); ?>
+					<?php } ?>
+				</aside>
+				<!-- Contenido Web -->
+				<article class="col-md-10">
+					<?php echo $this->layout()->content; ?>
+				</article>
+			</section>
 		</div>
+		
 		<script src="<?php echo $this->baseUrl(); ?>/js/panel.js"></script>
 	</body>
 </html>
