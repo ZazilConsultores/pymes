@@ -50,12 +50,15 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 				$datosTelefono = $contenedor[2];
 				$datosEmail = $contenedor[3];
 				
-				$modelFiscales = new Sistema_Model_Fiscal($datosFiscales);
-				$fiscales = $this->fiscalDAO->crearFiscales($modelFiscales);
+				$modelFiscales = new Sistema_Model_Fiscales($datosFiscales);
+				$fiscales = $this->fiscalesDAO->crearFiscales($modelFiscales);
+
 				$modelDomicilio = new Sistema_Model_Domicilio($datosDomicilio);
-				$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscal(), $modelDomicilio);
+				$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscales(), $modelDomicilio);
+				
 				$modelTelefono = new Sistema_Model_Telefono($datosTelefono);
 				$this->telefonoDAO->crearTelefonoFiscal($fiscales->getIdFiscales(), $modelTelefono);
+				
 				$modelEmail = new Sistema_Model_Email($datosEmail);
 				$this->emailDAO->crearEmailFiscales($fiscales->getIdFiscales(), $modelEmail);
 				
