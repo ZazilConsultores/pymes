@@ -13,6 +13,11 @@ class Sistema_Form_AltaUsuario extends Zend_Form
 		$eUsuario->setLabel("Usuario: ");
 		$eUsuario->setAttrib("class", "form-control");
 		
+		$ePassword = new Zend_Form_Element_Password("password");
+		$ePassword->setLabel("Password: ");
+		$ePassword->setAttrib("class", "form-control");
+		
+		
 		$eNombres = new Zend_Form_Element_Text("nombres");
 		$eNombres->setLabel("Nombres: ");
 		$eNombres->setAttrib("class", "form-control");
@@ -21,7 +26,7 @@ class Sistema_Form_AltaUsuario extends Zend_Form
 		$eApellidos->setLabel("Apellidos: ");
 		$eApellidos->setAttrib("class", "form-control");
 		
-		$sub->addElements(array($eUsuario, $eNombres, $eApellidos));
+		$sub->addElements(array($eUsuario, $ePassword, $eNombres, $eApellidos));
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Crear Usuario");
