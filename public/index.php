@@ -59,7 +59,7 @@ $connlocalOrigen = array(
 	);
 
 Zend_Registry::set('connlocal', $connlocal);
-Zend_Registry::set('connserver', $connserver);
+//Zend_Registry::set('connserver', $connserver);
 Zend_Registry::set('connnancy', $connnancy);
 Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost

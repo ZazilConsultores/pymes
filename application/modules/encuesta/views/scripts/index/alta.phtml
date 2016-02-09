@@ -12,5 +12,25 @@
 		$("input[tipo=fecha]").datepicker({
 			minDate: 0
 		});
+		$("form").validate({
+			errorClass: "error",
+			focusCleanup: true,
+			focusInvalid: true,
+			onkeyup: true,
+			rules: {
+				nombre: "required",
+				nombreClave: "required",
+				descripcion: "required",
+				fechaInicio: "required",
+				fechaFin: "required"
+			},
+			messages: {
+				nombre: "Nombre de la encuesta requerido",
+				nombreClave: "Nombre Clave de encuesta requerido",
+				descripcion: "Agregue una descripcion acerca de esta encuesta",
+				fechaInicio: "Especifique la fecha de inicio de aplicacion de esta Encuesta",
+				fechaFin: "Especifique la fecha de fin de aplicacion de esta Encuesta"
+			}
+		});
 	});
 </script>

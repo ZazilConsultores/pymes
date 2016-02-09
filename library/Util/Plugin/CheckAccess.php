@@ -58,8 +58,8 @@ class Util_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
 			
 		}else{
 			if($controlleName != 'login'){
-				$request->setControllerName('login');
-				$request->setActionName('index');
+				$request->setControllerName('index');
+				$request->setActionName('login');
 			}
 		}
 	}

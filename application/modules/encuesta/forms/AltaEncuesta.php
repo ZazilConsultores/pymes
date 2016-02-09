@@ -21,6 +21,7 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");
 		$eDescripcion->setLabel("Objetivo de la encuesta: ");
 		$eDescripcion->setAttrib("class", "form-control");
+		$eDescripcion->setAttrib("required", "required");
 		
 		$eEstatus = new Zend_Form_Element_Select("estatus");
 		$eEstatus->setLabel("Estatus de la encuesta");
