@@ -421,6 +421,7 @@
             <formFile formName="CancelarFacturaCliente"/>
             <formFile formName="CancelarRemisionliente"/>
             <formFile formName="CancelarRemisionCliente"/>
+            <formFile formName="EmpresaClienteFR"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -797,7 +798,16 @@
               <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory enabled="false"/>
+          <formsDirectory>
+            <formFile formName="EmpresaClienteFR"/>
+            <formFile formName="EmpresasClienteFR"/>
+            <formFile formName="EmpresasClientesFR"/>
+            <formFile formName="EmpresaProveedorFR"/>
+            <formFile formName="EmpresasProveedorFR"/>
+            <formFile formName="EmpresasProveedoresFR"/>
+            <formFile formName="EmpresaClientesFR"/>
+            <formFile formName="EmpresaProveedores"/>
+          </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
