@@ -35,7 +35,7 @@ class Encuesta_Model_Opcion
     public function setOpcion($opcion) {
         $this->opcion = $opcion;
     }
-	
+    
 	private $orden;
 
     public function getOrden() {

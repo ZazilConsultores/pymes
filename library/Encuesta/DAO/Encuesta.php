@@ -102,6 +102,9 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
+		$encuesta->setHash($encuesta->getHash());
+		$encuesta->setFecha(date("Y-m-d H:i:s", time()));
+		print_r($encuesta->toArray());
 		$tablaEncuesta->insert($encuesta->toArray());
 	}
 	//          =========================================================================   >>>   Actualizar

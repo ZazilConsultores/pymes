@@ -1,0 +1,84 @@
+Encuesta Estatica: es decir por maestro se repite la misma encuesta nuevamente.
+
+Encuestas Activas:
+# Maximo de encuestas contestadas: configurado "in situ".
+La encuesta se desactiva en un tiempo configurado...
+La encuesta se desactiva cuando todos los participantes terminen de contestar.
+Las respuestas se apilan una sobre otra al instante de ser contestadas.
+-------------------------------------------------------------------------
+Encuestas dinamicas: Se configuran ciertas condiciones en las cuales la encuesta con sus preguntas se reutilizan
+
+Sea una encuesta
+
+Sea un conjunto de maestros
+
+La misma encuesta se aplica contra los maestros de un grupo
+
+Participantes:
+============================================================================
+Grupo: 
+(N alumnas)
+(M maestros)
+Total de encuestas: M x N
+============================================================================
+Base de datos:
+TablaGrupo --- Datos basicos del grupo ()
+	-idGrupo
+	-grupo
+	-alumnas
+	-numeroMaterias
+	-numeroProfesores
+
+TablaProfesor --- Datos basicos del maestro ()
+	-idProfesor
+	-nombres
+	-apellidos
+	-activo // flag que nos indica si esta activo o inactivo.
+	-fechaRegistro
+	
+TablaMateria --- Datos basicos de la materia ()
+	-idMateria
+	-materia
+	-creditos //si los hubiese
+
+TablaMateriasGrupo --- materias del grupo
+	-idGrupo
+	-idMateria
+	
+TablaGruposProfesor --- grupos que el profesor atiende
+	-idProfesor
+	-idGrupo
+	-idMateria
+============================================================================
+Programacion:
+	
+
+
+============================================================================
+Opciones de Clima
+
+	-Nunca
+	-Casi nunca
+	-En ocasiones
+	-Casi siempre
+	-Siempre
+
+Opciones Tecnico-Pedagogicas
+
+	-Marginal
+	-Insuficiente
+	-Adecuado
+	-Superior
+	-Excelente
+
+
+
+
+
+
+
+
+
+
+
+
