@@ -5,16 +5,16 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 
     public function init()
     {
-     	$eNumCuenta = new Zend_Form_Element_Text('numCuenta');
+     	$eNumCuenta = new Zend_Form_Element_Text('cuenta');
 		$eNumCuenta->setLabel('Numero de Cuenta: ');
 		$eNumCuenta->setAttrib("class", "form-control");
 		
-		$eBanco = new Zend_Form_Element_Text('nombreBanco');
+		$eBanco = new Zend_Form_Element_Text('banco');
 		$eBanco->setLabel('Nombre Banco: ');
 		$eBanco->setAttrib("class", "form-control");
 		
 		/*Divisa*/
-		$columnas = array('claveDivisa', 'descripcion');
+		$columnas = array('idDivisa', 'divisa');
 		$tablaDivisa = new Contabilidad_Model_DbTable_Divisa();
 		$rowset = $tablaDivisa->obtenerColumnas($columnas);
 		
@@ -24,28 +24,27 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		$eDivisa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eDivisa->addMultiOption($fila->claveDivisa, $fila->descripcion);
+			$eDivisa->addMultiOption($fila->idDivisa, $fila->divisa);
 		}
 		
-		// me falta traer mi divisa
 		
-		$eCtaContable = new Zend_Form_Element_Text('ctaContable');
-		$eCtaContable->setLabel('Cuenta Contable:');
-		$eCtaContable->setAttrib("class", "form-control");
-		
-		$eTipoBanco= new Zend_Form_Element_Select('tipoBanco');
+		$eTipoBanco= new Zend_Form_Element_Select('tipo');
 		$eTipoBanco->setLabel('Tipo Banco:');
 		$eTipoBanco->setAttrib("class", "form-control");
-			// me falta traer tipo\
+			
 		
 		$etTipoBanco = array(
 			'CA' => 'Caja',
 			'IN' => 'Inversiones',
 			'OP' => 'Operacion'
 		);
-		foreach ($etTipoBanco as $key => $value) {
-			$eTipoBanco->addMultiOption($key, $value);
-		}	
+		
+		$eCuentaContable= new Zend_Form_Element_Text('cuentaContable');
+		$eCuentaContable->setLabel('Cuenta Contable:');
+		$eCuentaContable->setAttrib("class", "form-control");
+		
+		$eTipoBanco->setMultiOptions($etTipoBanco);
+		
 		$eFecha= new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Fecha:');
 		$eFecha->setAttrib("class", "form-control");
@@ -61,7 +60,7 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		$this->addElement($eNumCuenta);
 		$this->addElement($eBanco);
 		$this->addElement($eDivisa);
-		$this->addElement($eCtaContable);
+		$this->addElement($eCuentaContable);
 		$this->addElement($eTipoBanco);
 		$this->addElement($eFecha);
 		$this->addElement($eSaldo);

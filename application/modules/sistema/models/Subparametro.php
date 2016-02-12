@@ -32,17 +32,17 @@ class Sistema_Model_Subparametro
         $this->subparametro = $subparametro;
     }
 
-    private $descripcion;
+    private $claveSubparametro;
 
-    public function getDescripcion() {
-        return $this->descripcion;
+    public function getClaveSubparametro() {
+        return $this->claveSubparametro;
     }
     
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
+    public function setClaveSubparametro($claveSubparametro) {
+        $this->claveSubparametro = $claveSubparametro;
     }
-	
-	private $fecha;
+
+    private $fecha;
 
     public function getFecha() {
         return $this->fecha;
@@ -68,7 +68,7 @@ class Sistema_Model_Subparametro
     	if(array_key_exists("idSubparametro", $datos)) $this->idSubparametro = $datos["idSubparametro"];
         if(array_key_exists("idParametro", $datos)) $this->idParametro = $datos["idParametro"];
 		$this->subparametro = $datos["subparametro"];
-		$this->descripcion = $datos["descripcion"];
+		$this->claveSubparametro = $datos["claveSubparametro"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
@@ -79,7 +79,7 @@ class Sistema_Model_Subparametro
 		$datos["idSubparametro"] = $this->idSubparametro;
 		$datos["idParametro"] = $this->idParametro;
 		$datos["subparametro"] = $this->subparametro;
-		$datos["descripcion"] = $this->descripcion;
+		$datos["claveSubparametro"] = $this->claveSubparametro;
 		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;
 		
