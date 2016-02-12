@@ -33,16 +33,6 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		}
 		$eEstatus->setAttrib("class", "form-control");
 		
-		$eFechaInicio = new Zend_Form_Element_Text("fechaInicio");
-		$eFechaInicio->setLabel("Inicio de la encuesta");
-		$eFechaInicio->setAttrib("class", "form-control fechaInicio");
-		$eFechaInicio->setAttrib("required", "required");
-		
-		$eFechaFin = new Zend_Form_Element_Text("fechaFin");
-		$eFechaFin->setLabel("Término de la encuesta");
-		$eFechaFin->setAttrib("class", "form-control fechaFin");
-		$eFechaFin->setAttrib("required", "required");
-		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Generar Encuesta");
 		$eSubmit->setAttrib("class", "btn btn-success");
@@ -50,8 +40,6 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$this->addElement($eNombre);
 		$this->addElement($eDetalle);
 		$this->addElement($eDescripcion);
-		$this->addElement($eFechaInicio);
-		$this->addElement($eFechaFin);
 		$this->addElement($eEstatus);
 		
 		$this->addElement($eSubmit);

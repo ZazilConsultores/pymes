@@ -6,11 +6,9 @@
  */
 interface Encuesta_Interfaces_IPreferencia {
 	// =====================================================================================>>>   Buscar
-	public function obtenerPreferenciasPregunta($idPregunta);
-	
-	
+	//public function obtenerPreferenciasPregunta($idPregunta);
 	// =====================================================================================>>>   Insertar
-	public function crearPreferenciaPregunta($idPregunta, Encuesta_Model_PreferenciaSimple $preferencia);
+	public function agregarPreferenciaPregunta($idPregunta, $idOpcion);
 	// =====================================================================================>>>   Actualizar
 	
 	// =====================================================================================>>>   Eliminar

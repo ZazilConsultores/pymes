@@ -19,18 +19,28 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	}
 	
 	// =====================================================================================>>>   Buscar
-	public function obtenerPreferenciasPregunta($idPregunta){
-		$tablaPreferenciaSimple = $this->tablaPreferenciaSimple;
-		$select = $tablaPreferenciaSimple->select()->from($tablaPreferenciaSimple)->where("idPregunta = ?", $idPregunta);
-		$rowsPreferencias = $tablaPreferenciaSimple->fetchRow($select);
-		
-		foreach ($rowsPreferencias as $row) {
-			
-		}
-	}
 	
 	// =====================================================================================>>>   Insertar
-	
+	public function agregarPreferenciaPregunta($idPregunta, $idOpcion){
+		$tablaPS = $this->tablaPreferenciaSimple;
+		$select = $tablaPS->select()->from($tablaPS)->where("idPreferencia = ?", $idPregunta)->where("idOpcion = ?", $idOpcion);
+		$rowPreferencia = $tablaPS->fetchRow($select);
+		
+		if(is_null($rowPreferencia)){
+			$objPreferencia = array();
+			$objPreferencia["idPregunta"] = $idPregunta;
+			$objPreferencia["idOpcion"] = $idOpcion;
+			$objPreferencia["preferencia"] = 1;
+			
+			$tablaPS->insert($objPreferencia);
+		}else{
+			$rowPreferencia->preferencia++;
+			$rowPreferencia->save();
+		}
+		
+		
+		
+	}
 	// =====================================================================================>>>   Actualizar
 	
 	// =====================================================================================>>>   Eliminar

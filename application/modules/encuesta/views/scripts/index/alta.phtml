@@ -10,16 +10,8 @@
 <script>
 	$().ready(function(){
 		
-		$("input.fechaInicio").datepicker({
-			minDate: 0
-		});
-		
-		$("input.fechaFin").datepicker({
-			minDate: +1
-		});
-		
 		jQuery.validator.setDefaults({
-			debug: true,
+			//debug: true,
 			success: "valido",
 			//animation: true,
 			//placement: 'right',
@@ -40,8 +32,6 @@
 					rangelength: [15,20],
 				},
 				descripcion: "required",
-				fechaInicio: "required",
-				fechaFin: "required"
 			},
 			messages: {
 				nombre: "Nombre de la encuesta requerido",
@@ -49,13 +39,7 @@
 					required: "Nombre Clave de encuesta requerido",
 					rangelength: "Este campo debe tener entre 15 y 20 caracteres"
 				},
-				descripcion: "Agregue una descripcion acerca de esta encuesta",
-				fechaInicio: {
-					required: "Especifique la fecha de inicio de aplicacion de esta Encuesta"
-				},
-				fechaFin: {
-					required: "Especifique la fecha de fin de aplicacion de esta Encuesta"
-				}
+				descripcion: "Agregue una descripcion acerca de esta encuesta"
 			}
 		});
 		
