@@ -6,6 +6,7 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $this->setAttrib("id", "altaEncuesta");
         $estatus = Zend_Registry::get('estatus');
         
 		$eNombre = new Zend_Form_Element_Text("nombre");
@@ -16,11 +17,14 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$eDetalle = new Zend_Form_Element_Text("nombreClave");
 		$eDetalle->setLabel("Nombre clave de la encuesta: (Máximo 20 caracteres)");
 		$eDetalle->setAttrib("class", "form-control");
+		$eDetalle->setAttrib("minlenght", "15");
+		$eDetalle->setAttrib("maxlenght", "20");
 		$eDetalle->setAttrib("required", "required");
 		
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");
 		$eDescripcion->setLabel("Objetivo de la encuesta: ");
 		$eDescripcion->setAttrib("class", "form-control");
+		$eDescripcion->setAttrib("required", "required");
 		
 		$eEstatus = new Zend_Form_Element_Select("estatus");
 		$eEstatus->setLabel("Estatus de la encuesta");
@@ -31,14 +35,12 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		
 		$eFechaInicio = new Zend_Form_Element_Text("fechaInicio");
 		$eFechaInicio->setLabel("Inicio de la encuesta");
-		$eFechaInicio->setAttrib("class", "form-control fecha");
-		$eFechaInicio->setAttrib("tipo", "fecha");
+		$eFechaInicio->setAttrib("class", "form-control fechaInicio");
 		$eFechaInicio->setAttrib("required", "required");
 		
 		$eFechaFin = new Zend_Form_Element_Text("fechaFin");
 		$eFechaFin->setLabel("Término de la encuesta");
-		$eFechaFin->setAttrib("class", "form-control fecha");
-		$eFechaFin->setAttrib("tipo", "fecha");
+		$eFechaFin->setAttrib("class", "form-control fechaFin");
 		$eFechaFin->setAttrib("required", "required");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
