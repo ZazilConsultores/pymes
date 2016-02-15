@@ -20,6 +20,7 @@
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
 		
+		
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.validate.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/additional-methods.js"></script>
@@ -31,7 +32,25 @@
 		<script src="<?php echo $this->baseUrl(); ?>/js/responsive.bootstrap.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
 		
-
+		<style>
+			.error{
+				color: #FF7F00;
+				font-family: monospace;
+			}
+			.optional{
+				font-family: monospace;
+				color: #005580;
+			}
+		</style>
+		<script>
+			$().ready(function(){
+				jQuery.validator.setDefaults({
+					wrapper: "div",
+					errorElement: "label"
+				});
+				
+			});
+		</script>
 	</head>
 
 	<body>

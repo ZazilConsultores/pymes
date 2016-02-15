@@ -1,30 +1,19 @@
 <?php $formulario = $this->formulario; ?>
 <section class="row"><section>
-	<article class="col-md-6">
+	<article class="col-md-8">
 		<header>
 			<h3>Alta de nueva Encuesta</h3>
 		</header>
+		<div id="errorContainerGeneral"></div>
+		<div class="errorContainerLabel"></div>
 		<?php echo $this->formulario; ?>
 	</article>
 </section>
 <script>
 	$().ready(function(){
 		
-		jQuery.validator.setDefaults({
-			//debug: true,
-			success: "valido",
-			//animation: true,
-			//placement: 'right',
-			
-		});
-		
 		var form = $("#altaEncuesta");
 		form.validate({
-			//errorClass: "error",
-			//focusCleanup: true,
-			//focusInvalid: true,
-			//onkeyup: true,
-			//animation: true,
 			rules: {
 				nombre: "required",
 				nombreClave: {
@@ -43,13 +32,9 @@
 			}
 		});
 		
-		//form.validate();
-		
 		$("#submit").click(function(){
 			console.log("" + form.valid());
 		});
-		
-		//$("form#altaEncuesta").validate();
 		
 	});
 </script>
