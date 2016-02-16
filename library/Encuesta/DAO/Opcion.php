@@ -96,7 +96,7 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$opcion->setOrden($orden);
 		$opcion->setHash($opcion->getHash());
 		$opcion->setFecha(date("Y-m-d H:i:s", time()));
-		
+		//print_r($opcion->toArray());
 		$tablaOpcion->insert($opcion->toArray());
 	}
 	
