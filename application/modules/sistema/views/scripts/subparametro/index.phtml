@@ -1,4 +1,39 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Subparametro</b> and script/action name <b>index</b></p>
-</div>
+<?php 
+	$parametro = $this->parametro;
+	$subparametros = $this->subparametros;
+?>
+<section class="row">
+	<article>
+		<header>
+			<h3>Subparámetros en el Sistema</h3>
+		</header>
+		<div>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"alta","idParametro"=>$parametro->getIdParametro()),null,true); ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Subparametro
+			</a>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<th>SubParametro</th>
+					<th>Descripcion</th>
+					<th>Clave</th>
+					<th>Fecha</th>
+				</thead>
+				<tbody>
+					<?php foreach ($subparametros as $subparametro) : ?>
+					<tr>
+						<td><?php echo $subparametro->getSubParametro(); ?></td>
+						<td><?php echo $subparametro->getDescripcion(); ?></td>
+						<td><?php echo $subparametro->getClaveSubparametro(); ?></td>
+						<td><?php echo $subparametro->getFecha(); ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"admin","idSubParametro"=>$subparametro->getIdSubParametro()),null,true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Administrar
+							</a>
+						</td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+	</article>
+</section>

@@ -14,6 +14,15 @@ class Inventario_DAO_Parametro implements Inventario_Interfaces_IParametro{
 		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
 	}
 	
+	public function obtenerParametro($idParametro){
+		$tablaParametro = $this->tablaParametro;
+		$select = $tablaParametro->select()->from($tablaParametro)->where("idParametro = ?", $idParametro);
+		$rowParametro = $tablaParametro->fetchRow($select);
+		$modelParametro = new Sistema_Model_Parametro($rowParametro->toArray());
+		
+		return $modelParametro;
+	}
+	
 	public function obtenerParametros(){
 		$tablaParametro = $this->tablaParametro;
 		$rowsParametros = $tablaParametro->fetchAll();
@@ -46,8 +55,15 @@ class Inventario_DAO_Parametro implements Inventario_Interfaces_IParametro{
 		$select = $tablaParametro->select()->from($tablaParametro)->where("hash = ?", $parametro->getHash());
 		$row = $tablaParametro->fetchRow($select);
 		
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Parámetro " . $parametro->getParametro() . "duplicado en el sistema");
-		
+		if(!is_null($row)) throw new Util_Exception_BussinessException("Parámetro: <strong>" . $parametro->getParametro() . "</strong> duplicado en el sistema");
+		$parametro->setHash($parametro->getHash());
+		$parametro->setFecha(date("Y-m-d H:i:s", time()));
 		$tablaParametro->insert($parametro->toArray());
+	}
+	
+	public function editarParametro($idParametro, array $parametro){
+		$tablaParametro = $this->tablaParametro;
+		$where = $tablaParametro->getAdapter()->quoteInto("idParametro = ?", $idParametro);
+		$tablaParametro->update($parametro, $where);
 	}
 }

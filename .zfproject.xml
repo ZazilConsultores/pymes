@@ -58,14 +58,26 @@
             </controllerFile>
             <controllerFile controllerName="Producto">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Inventario">
+              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory enabled="false"/>
+          <formsDirectory>
+            <formFile formName="Alta"/>
+            <formFile formName="AltaProducto"/>
+          </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Inventario"/>
+              <dbTableFile dbTableName="Producto"/>
+            </dbTableDirectory>
+            <modelFile modelName="Inventario"/>
+            <modelFile modelName="Producto"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -75,6 +87,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Producto">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Producto">
+                <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -434,6 +452,7 @@
             <formFile formName="CancelarFacturaCliente"/>
             <formFile formName="CancelarRemisionliente"/>
             <formFile formName="CancelarRemisionCliente"/>
+            <formFile formName="EmpresaClienteFR"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -553,6 +572,9 @@
             <controllerFile controllerName="Parametro">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
             </controllerFile>
             <controllerFile controllerName="Subparametro">
               <actionMethod actionName="index"/>
@@ -791,6 +813,15 @@
               <viewControllerScriptsDirectory forControllerName="Proveedores">
                 <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Parametro">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Parametro">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Parametro">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -810,7 +841,16 @@
               <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory enabled="false"/>
+          <formsDirectory>
+            <formFile formName="EmpresaClienteFR"/>
+            <formFile formName="EmpresasClienteFR"/>
+            <formFile formName="EmpresasClientesFR"/>
+            <formFile formName="EmpresaProveedorFR"/>
+            <formFile formName="EmpresasProveedorFR"/>
+            <formFile formName="EmpresasProveedoresFR"/>
+            <formFile formName="EmpresaClientesFR"/>
+            <formFile formName="EmpresaProveedores"/>
+          </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
@@ -1049,6 +1089,9 @@
               <testApplicationControllerFile forControllerName="Parametro">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="edita"/>
+                <testApplicationActionMethod forActionName="baja"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Subparametro">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1127,6 +1170,10 @@
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Producto">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Inventario">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>

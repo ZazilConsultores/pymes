@@ -4,10 +4,12 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
+
 class Sistema_ParametroController extends Zend_Controller_Action
 {
-	private $parametroDAO;
-	
+
+    private $parametroDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -44,8 +46,37 @@ class Sistema_ParametroController extends Zend_Controller_Action
 		}
     }
 
+    public function adminAction()
+    {
+        // action body
+        $idParametro = $this->getParam("idParametro");
+		$parametro = $this->parametroDAO->obtenerParametro($idParametro);
+        $formulario = new Sistema_Form_AltaParametro;
+		$formulario->getSubForm("0")->getElement("parametro")->setValue($parametro->getParametro());
+        $formulario->getSubForm("0")->getElement("descripcion")->setValue($parametro->getDescripcion());
+		$formulario->getElement("submit")->setLabel("Actualizar Parametro");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$this->view->formulario = $formulario;
+		$this->view->parametro = $parametro;
+    }
+
+    public function editaAction()
+    {
+        // action body
+        $idParametro = $this->getParam("idParametro");
+		$datos = $this->getRequest()->getPost();
+		unset($datos["submit"]);
+		
+		$this->parametroDAO->editarParametro($idParametro, $datos);
+		//print_r($datos);
+		$this->_helper->redirector->gotoSimple("admin", "parametro", "sistema", array("idParametro"=>$idParametro));
+    }
+
+    public function bajaAction()
+    {
+        // action body
+    }
+
 
 }
-
-
 

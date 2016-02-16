@@ -40,7 +40,7 @@ class Sistema_Model_Parametro
     
     public function setFecha($fecha) {
         $this->fecha = $fecha;
-    }
+	}
 
     private $hash;
 
