@@ -91,6 +91,9 @@
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
               <actionMethod actionName="secciones"/>
+              <actionMethod actionName="tipos"/>
+              <actionMethod actionName="altae"/>
+              <actionMethod actionName="altas"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -371,6 +374,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Html">
                 <viewScriptFile forActionName="registro"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="tipos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="altae"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="altas"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -907,6 +919,9 @@
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
                 <testApplicationActionMethod forActionName="secciones"/>
+                <testApplicationActionMethod forActionName="tipos"/>
+                <testApplicationActionMethod forActionName="altae"/>
+                <testApplicationActionMethod forActionName="altas"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>

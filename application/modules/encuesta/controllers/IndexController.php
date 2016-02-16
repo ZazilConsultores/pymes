@@ -4,10 +4,12 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
+
 class Encuesta_IndexController extends Zend_Controller_Action
 {
 
     private $encuestaDAO = null;
+
     private $seccionDAO = null;
 
     public function init()
@@ -95,6 +97,23 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
 		$this->view->secciones = $secciones;
 		$this->view->encuesta = $encuesta;
+    }
+
+    public function tiposAction()
+    {
+        // action body
+    }
+
+    public function altaeAction()
+    {
+        // action body
+        $formulario = new Encuesta_Form_AltaEncuestaEvaluativa;
+		$this->view->formulario = $formulario;
+    }
+
+    public function altasAction()
+    {
+        // action body
     }
 
 

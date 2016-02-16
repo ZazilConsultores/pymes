@@ -1,0 +1,66 @@
+Elements
+
+ViewHelper
+Errors
+HtmlTag (<dd>)
+Label + HtmlTag(<dt>)
+
+Forms
+
+FormElements
+HtmlTag (dl)
+Form
+
+Subform & DisplayGroups
+
+FormElements
+Fieldset
+DtDdWrapper (<dt>Vacio</dt><dd>Fieldset</dd>)
+
+
+<tr>
+	<td><label /></td>
+	<td><input /></td>
+</tr>
+
+//text form element table decorators
+$textFETDecorators = array(
+	'ViewHelper',//array('ViewHelper', array('tag' => 'td')),
+	'Errors',
+	array(array('data'=>'HtmlTag'), array('tag'=>'td', "class"=>"element"))
+	array('Label', array('tag'=>'td')),
+	array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
+);
+//button form element table decorators
+$buttonFETDecorators = array(
+	'ViewHelper',//array('ViewHelper', array('tag' => 'td')),
+	array(array('data'=>'HtmlTag'), array('tag'=>'td', "class"=>"element"))
+	array('Label', array('tag'=>'td','placement'=>'prepend')),
+	array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
+);
+
+//text subform element table decorators
+$textSETDecorators = array(
+	array('ViewHelper', array('tag' => 'td')),
+	array('Label', array('tag'=>'td')),
+	array('HtmlTag', array('tag'=>'tr'))
+);
+
+$buttonDecorators = array(
+	'ViewHelper',
+	
+);
+
+//subform table decorators
+$subformTDecorators = array(
+	'FormElements',
+	array('HtmlTag',array('tag'=>'tr')),
+
+);
+
+//form table decorators
+$formTDecorators = array(
+	'FormElements',
+	array('HtmlTag',array('tag'=>'table','class'=>'table table-striped table-condensed')),
+	'Form'
+);
