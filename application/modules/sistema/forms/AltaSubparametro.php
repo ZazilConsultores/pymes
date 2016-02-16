@@ -12,14 +12,14 @@ class Sistema_Form_AltaSubparametro extends Zend_Form
         $eSubparametro = new Zend_Form_Element_Text("subparametro");
 		$eSubparametro->setLabel("Subparametro: ");
 		$eSubparametro->setAttrib("class", "form-control");
-		$eSubparametro->setAttrib("required");
+		//$eSubparametro->setAttrib("required");
 		
 		$eClaveSubparametro = new Zend_Form_Element_Text("claveSubparametro");
 		$eClaveSubparametro->setLabel("Clave (2 Caracteres): ");
 		$eClaveSubparametro->setAttrib("class", "form-control");
-		$eClaveSubparametro->setAttrib("required");
-		$eClaveSubparametro->setAttrib("minlength", "2");
-		$eClaveSubparametro->setAttrib("maxlength", "2");
+		//$eClaveSubparametro->setAttrib("required");
+		//$eClaveSubparametro->setAttrib("minlength", "2");
+		//$eClaveSubparametro->setAttrib("maxlength", "2");
 		
 		$subWrapper->addElements(array($eSubparametro,$eClaveSubparametro));
         

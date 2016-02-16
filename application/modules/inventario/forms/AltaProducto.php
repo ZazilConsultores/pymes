@@ -103,16 +103,12 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$eLargo->setAttrib('class','form-control');
 		$eLargo->addMultiOption("", "Seleccionar...");
 		
-		//foreach ($rowset as $fila) {
-			//$eLargo->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
 		
 		//===========array de encabezado========================================================
 		$subEncabezado->addElements(array($eTipoArticulo,$eSubtipo,$eMarcas,$eMedidas,$eColores,$eModelo,$eLargo));
 		//===================================================================================>>>>
 		$subDescripcion = new Zend_Form_SubForm();
 		$subDescripcion->setAttrib('title', 'Descripcion');
-		//$subDescripcion->setLegend('Descripcion:');
 	
 		$eProducto = new Zend_Form_Element_Text('producto');
 		$eProducto->setLabel('Descripcion:');
@@ -122,47 +118,13 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$eClaveProducto->setLabel('Clave Producto:');
 		$eClaveProducto->setAttrib('class','form-control');
 	
-		//$eConfirm->setAttrib('class', 'required');	
-			
-		
 		$eCodigoBarras = new Zend_Form_Element_Text('codigoBarras');
 		$eCodigoBarras->setLabel('Codigo de Barras:');
 		$eCodigoBarras->setValue('-');
 		$eCodigoBarras->setAttrib('class','form-control');
 		//===========array Descripcion========================================================
 		$subDescripcion->addElements(array($eProducto,$eClaveProducto, $eCodigoBarras));
-		//===================================================================================>>>>
-		//===================================================================================>>>>
-		$decoratorTitle = new Are_Decorator_Subform_Title;
-       
-		//=====================Decorators=======================================================
-		 $elementDecorators=array(
-			'viewHelper',
-			'label'
-		);
 		
-		$subformDecorators = array(
-			'FormElements',
-			array('HtmlTag', array('tag'=>'section')),
-			$decoratorTitle
-		);
-		
-		
-		$formDecorators = array(
-			'FormElements',
-			//'HtmlTag',genera los tag 'div'
-			'Form'
-		);
-		//================Agregamos la subform========================================
-		$subEncabezado->setElementDecorators($elementDecorators);
-        $subDescripcion->setElementDecorators($elementDecorators);
-		
-		
-		$subEncabezado->setDecorators($subformDecorators);
-		$subDescripcion->setDecorators($subformDecorators);
-		
-		$this->setElementDecorators($elementDecorators);
-		$this->setDecorators($formDecorators);
 		
 		$this->addSubForms(array($subEncabezado, $subDescripcion));
 		

@@ -82,9 +82,6 @@ class Contabilidad_Model_Banco
         $this->saldo = $saldo;
     }
 
-    
-        
-	
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idBanco", $datos)) $this->idBanco = $datos["idBanco"];

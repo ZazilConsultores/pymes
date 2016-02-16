@@ -22,19 +22,19 @@ class Inventario_ProductoController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$formulario = new Inventario_Form_AltaProducto;
 		$this->view->formulario = $formulario;
-		if($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				print_r($datos);
+		//if($request->isPost()){
+		//	if($formulario->isValid($request->getPost())){
+		//		$datos = $formulario->getValues();
+		//		print_r($datos);
 				//print_r("=================");
-				$producto = new Inventario_Model_Producto($datos);
-				print_r($producto->toArray());
-				$this->productoDAO->crearProducto($producto);
-				print_r($producto);
+		//		$producto = new Inventario_Model_Producto($datos);
+		//		print_r($producto->toArray());
+		//		$this->productoDAO->crearProducto($producto);
+		//		print_r($producto);
 				//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
-			}
+		//	}
 			//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
-		}	
+		//}	
         
     }
 

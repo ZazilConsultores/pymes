@@ -42,4 +42,5 @@ class Sistema_DAO_Parametro implements Sistema_Interfaces_IParametro {
 		
 		$this->tablaParametro->insert($parametro->toArray());
 	}
+
 }
