@@ -93,3 +93,5 @@ INSERT INTO `seccion` VALUES (1,1,'Habilidades',1,1,'2016-01-29 20:40:25','29a67
 INSERT INTO `grupo` VALUES (1,1,'Claridad','SS','1,2,3,4,5',1,2,'2016-01-29 20:45:30','4823146c63df792b24c0c5482e58f67b');
 INSERT INTO `pregunta` VALUES (1,1,'¿Es importante lo que estás aprendiendo y comprendes cómo se relaciona con otras materias y temas?','G','1','SS','1,2,3,4,5',1,'2016-01-29 20:45:57','93606223302833ff478d310ff7822de0'),(2,1,'¿En esta materia fue clara la forma de evaluación?','G','1','SS','1,2,3,4,5',2,'2016-01-29 20:46:27','1f926ab6b48be91ee6a1d2fd734391de');
 
+
+
