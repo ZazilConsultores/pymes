@@ -1,11 +1,14 @@
 <?php 
 	$parametro = $this->parametro;
 	$subparametros = $this->subparametros;
+	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"sistema", "controller"=>"subparametro", "action" => "alta"), null, true));
+	
 ?>
 <section class="row">
 	<article>
 		<header>
-			<h3>Subparámetros en el Sistema</h3>
+			<h3>Subparámetros:  <?php echo $parametro->getParametro() ?></h3>
 		</header>
 		<div>
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"alta","idParametro"=>$parametro->getIdParametro()),null,true); ?>">
@@ -14,19 +17,18 @@
 			<table class="table table-condensed table-striped">
 				<thead>
 					<th>SubParametro</th>
-					<th>Descripcion</th>
-					<th>Clave</th>
-					<th>Fecha</th>
+					<th>ClaveSubParametro</th>
+					<th>fecha</th>
+					
 				</thead>
 				<tbody>
 					<?php foreach ($subparametros as $subparametro) : ?>
 					<tr>
-						<td><?php echo $subparametro->getSubParametro(); ?></td>
-						<td><?php echo $subparametro->getDescripcion(); ?></td>
+						<td><?php echo $subparametro->getSubparametro(); ?></td>
 						<td><?php echo $subparametro->getClaveSubparametro(); ?></td>
 						<td><?php echo $subparametro->getFecha(); ?></td>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"admin","idSubParametro"=>$subparametro->getIdSubParametro()),null,true); ?>">
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"admin","idSubparametro"=>$subparametro->getIdSubparametro()),null,true); ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>
@@ -37,3 +39,7 @@
 		</div>
 	</article>
 </section>
+
+
+
+

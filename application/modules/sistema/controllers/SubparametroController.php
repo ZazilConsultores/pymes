@@ -2,9 +2,10 @@
 
 class Sistema_SubparametroController extends Zend_Controller_Action
 {
-	private $subParametrosDAO;
-	private $parametroDAO;
-	
+
+    private $subParametrosDAO = null;
+
+    private $parametroDAO = null;
 
     public function init()
     {
@@ -21,8 +22,8 @@ class Sistema_SubparametroController extends Zend_Controller_Action
      	
      	$this->view->formulario = $formulario;
         $this->view->parametro = $this->parametroDAO->obtenerParametro($idParametro);
-		
-    }	
+	
+    }
 
     public function altaAction()
     {
@@ -43,18 +44,55 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 				try{
 					$this->subParametrosDAO->crearSubparametro($subparametro);
 					//print_r($subparametro->toArray());
-					//$mensaje = "SubParametro <strong>" . $subparametro->getSubParametro() . "</strong> creado exitosamente";
+					$mensaje = "SubParametro <strong>" . $subparametro->getSubParametro() . "</strong> creado exitosamente";
 					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}
 			}
-		}
-	
-			
+		}	
+    }
+
+    public function adminAction()
+    {
+    	$idSubparametro = $this->getParam("idSubparametro");
+		$subParametro = $this->subParametrosDAO->obtenerSubparametro($idSubparametro);
+		$this->view->subParametro = $subParametro;
+		
+		$formulario = new Sistema_Form_AltaSubparametro;
+		$formulario->getSubForm("0")->getElement("subparametro")->setValue($subParametro->getSubparametro());
+		$formulario->getSubForm("0")->getElement("claveSubparametro")->setValue($subParametro->getClaveSubparametro());
+		$formulario->getElement("submit")->setLabel("Actualizar Subparametro");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		
+		$this->view->formulario = $formulario;
 	}
 
+    public function bajaAction()
+	    {
+        // action body
+    }
+
+    public function editaAction()
+    {
+    	$idSubparametro = $this->getParam("idSubparametro");
+		
+		$datos = $this->getRequest()->getPost();
+		unset($datos["submit"]);
+		
+		$this->subParametrosDAO->editarSubparametro($idSubparametro, $datos);
+		
+		
+		$this->_helper->redirector->gotoSimple("admin", "subparametro", "sistema", array("idSubparametro"=>$idSubparametro));
+    	
+    }
 }
+
+
+
+
+
+
 
 
 

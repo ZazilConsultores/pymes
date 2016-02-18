@@ -9,13 +9,14 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	{
 
 		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
-		$this->tablaParametro = new Sistema_Model_DbTable_Parametro;
+		//$this->tablaParametro = new Sistema_Model_DbTable_Parametro;
+	
 	}
 		
-	public function obtenerSubparametros($idParametro)
+	public function obtenerSubparametros($idparametro)
 	{
 		$tablaSubparametro= $this->tablaSubparametro;
-		$where = $tablaSubparametro->getAdapter()->quoteInto("idParametro = ?", $idParametro);
+		$where = $tablaSubparametro->getAdapter()->quoteInto("idparametro = ?", $idparametro);
 		$rowsSubParametro = $tablaSubparametro->fetchAll($where);
 		
 		$modelSubParametros = array();
@@ -28,18 +29,28 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 		return $modelSubParametros;
 		
-		
 	}
 	
-	public function obtenerSubparametro($idParametro){
+	public function obtenerSubparametro($idSubparametro){
+			
 		$tablaSubparametro = $this->tablaSubparametro;
-		$select = $tablaSubparametro->select()->from($tablaSubparametro)->where("idSubparametro = ?",$idSubparametro);
+		$select = $tablaSubparametro->select()->from($tablaSubparametro)->where("idSubparametro = ?", $idSubparametro);
 		$rowSubparametro = $tablaSubparametro->fetchRow($select);
 		
 		$subparametroModel = new Sistema_Model_Subparametro($rowSubparametro->toArray());
-		$subparametroModel->setIdSubparametro($rowSubparametro->idSubparametro);
+		//$subparametroModel->setIdSubparametro($rowSubparametro->$idSubparametro);
 		
 		return $subparametroModel;
+		/*	
+		$tablaMunicipio = $this->tablaMunicipio;
+		$select = $tablaMunicipio->select()->from($tablaMunicipio)->where("idMunicipio = ?",$idMunicipio);
+		$rowMunicipio = $tablaMunicipio->fetchRow($select);
+		
+		$municipioModel = new Sistema_Model_Municipio($rowMunicipio->toArray());
+		$municipioModel->setIdMunicipio($rowMunicipio->idMunicipio);
+		
+		return $municipioModel;
+		*/
 		
 	}
 	public function crearSubparametro(Sistema_Model_Subparametro $subparametro)
@@ -54,10 +65,17 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$tablasubparametro->insert($subparametro->toArray());
 		
 	}
-	public function editarSubparametro(Sistema_Model_Subparametro $idSubParametro)
+	
+	public function editarSubparametro($idSubparametro, array $subParametro){
 	{
+		$tablaSubparametro = $this->tablaSubparametro;
+		$where = $tablaSubparametro->getAdapter()->quoteInto("idSubparametro = ?", $idSubparametro);
+		$tablaSubparametro->update($subParametro, $where);
+	}
+	
+		
 		
 	}
 		
-	}
+}
 

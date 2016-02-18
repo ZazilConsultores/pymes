@@ -567,6 +567,9 @@
             <controllerFile controllerName="Subparametro">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Rol">
               <actionMethod actionName="index"/>
@@ -809,6 +812,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Parametro">
                 <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Subparametro">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Subparametro">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Subparametro">
+                <viewScriptFile forActionName="edita"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1081,6 +1093,9 @@
               <testApplicationControllerFile forControllerName="Subparametro">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Rol">
                 <testApplicationActionMethod forActionName="index"/>

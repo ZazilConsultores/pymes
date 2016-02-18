@@ -64,11 +64,9 @@ Zend_Registry::set('connnancy', $connnancy);
 Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
-<<<<<<< HEAD
 $db = Zend_Db::factory('PDO_MYSQL', $connlocal);
-=======
-$db = Zend_Db::factory('PDO_MYSQL', $connserver);
->>>>>>> 596b54e096f03680828c1b09e3bd3baba8f7e879
+//$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
+//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
 Zend_Db_Table_Abstract::setDefaultAdapter($db);

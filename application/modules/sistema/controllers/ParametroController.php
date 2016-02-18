@@ -42,6 +42,7 @@ class Sistema_ParametroController extends Zend_Controller_Action
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}
+				$this->_helper->redirector->gotoSimple("index", "parametro", "sistema", array("idParametro"=>$idParametro));
 			}
 		}
     }
