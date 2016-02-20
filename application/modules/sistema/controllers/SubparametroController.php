@@ -36,7 +36,7 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$subparametro = new Sistema_Model_Subparametro($datos[0]);
+				$subparametro = new Sistema_Model_Subparametro($datos);
 				$subparametro->setIdParametro($idParametro);
 				//print_r($datos);		
 				//$subparametro->setHash($subparametro->getHash());

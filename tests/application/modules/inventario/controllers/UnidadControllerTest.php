@@ -1,6 +1,6 @@
 <?php
 
-class Inventario_ProductoControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class Inventario_UnidadControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
@@ -11,24 +11,7 @@ class Inventario_ProductoControllerTest extends Zend_Test_PHPUnit_ControllerTest
 
     public function testIndexAction()
     {
-        $params = array('action' => 'index', 'controller' => 'Producto', 'module' => 'inventario');
-        $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
-        // assertions
-        $this->assertModule($urlParams['module']);
-        $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
-    }
-
-    public function testAltaAction()
-    {
-        $params = array('action' => 'alta', 'controller' => 'Producto', 'module' => 'inventario');
+        $params = array('action' => 'index', 'controller' => 'Unidad', 'module' => 'inventario');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -45,7 +28,24 @@ class Inventario_ProductoControllerTest extends Zend_Test_PHPUnit_ControllerTest
 
     public function testAdminAction()
     {
-        $params = array('action' => 'admin', 'controller' => 'Producto', 'module' => 'inventario');
+        $params = array('action' => 'admin', 'controller' => 'Unidad', 'module' => 'inventario');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
+    public function testAltaAction()
+    {
+        $params = array('action' => 'alta', 'controller' => 'Unidad', 'module' => 'inventario');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -62,7 +62,7 @@ class Inventario_ProductoControllerTest extends Zend_Test_PHPUnit_ControllerTest
 
     public function testBajaAction()
     {
-        $params = array('action' => 'baja', 'controller' => 'Producto', 'module' => 'inventario');
+        $params = array('action' => 'baja', 'controller' => 'Unidad', 'module' => 'inventario');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -79,7 +79,7 @@ class Inventario_ProductoControllerTest extends Zend_Test_PHPUnit_ControllerTest
 
     public function testEditaAction()
     {
-        $params = array('action' => 'edita', 'controller' => 'Producto', 'module' => 'inventario');
+        $params = array('action' => 'edita', 'controller' => 'Unidad', 'module' => 'inventario');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);

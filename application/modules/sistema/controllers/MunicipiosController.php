@@ -23,6 +23,7 @@ class Sistema_MunicipiosController extends Zend_Controller_Action
 		//Envio a la vista el formulario de Alta de Estado, si el usuario lo llega se recibe la informacion en altaAction
 		$this->view->formulario = $formulario;
 		$this->view->estado = $this->estadoDAO->obtenerEstado($idEstado);
+		
     }
 
     public function altaAction()

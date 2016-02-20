@@ -6,110 +6,76 @@ class Inventario_Form_AltaProducto extends Zend_Form
     public function init()
     {
         //===================================================================================>>>>
-		$subEncabezado = new Zend_Form_SubForm();
-        //$subEncabezado->setLegend('Seleccionar Parametro:');
+		$subForm = new Zend_Form_SubForm();
+		$subForm->setLegend("Alta de Producto");
 		
-		$this->setAttrib("id", "altaProducto");
-		$subEncabezado->setAttrib('title', 'Elegir parametros');
-	
-        //$columnas = array('Clave', 'Descripcion');
-		//$tablaTipoArticulo = new Inventario_Model_DbTable_TipoArticulo();
-		//$rowset = $tablaTipoArticulo->obtenerColumnas($columnas);
+		$parametroDAO = new Inventario_DAO_Parametro;
+		$subparametroDAO = new Sistema_DAO_Subparametro;
 		
+		$parametros = $parametroDAO->obtenerParametros();
+		
+		foreach ($parametros as $parametro) {
+			$subparametros = $subparametroDAO->obtenerSubparametros($parametro->getIdParametro());
+			$elemento = new Zend_Form_Element_Select($parametro->getIdParametro());
+			$elemento->setLabel($parametro->getParametro());
+			$elemento->setAttrib("class", "form-control");
+			$elemento->addMultiOption("0","Seleccione opcion");
+			foreach ($subparametros as $subparametro) {
+				$elemento->addMultiOption($subparametro->getIdSubparametro(),$subparametro->getSubparametro());
+			}
+			$subForm->addElement($elemento);
+		}
+        /*
 		$eTipoArticulo = new Zend_Form_Element_Select('tipoArticulo');
 		$eTipoArticulo->setLabel('Tipo articulo: ');
-		$eTipoArticulo->setAttrib('id', 'tipo');
 		$eTipoArticulo->setAttrib('class','form-control');
 		$eTipoArticulo->addMultiOption("", "Seleccionar...");
-		//foreach ($rowset as $fila) {
-			//$eTipoArticulo->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
-		
+		*/
 		/* Subtipo */
-		$columnas = array('Clave', 'Descripcion');
-		//$tablaSubtipo = new Inventario_Model_DbTable_Subtipo();
-		//$rowset = $tablaSubtipo->obtenerColumnas($columnas);
-		
+		/*		
 		$eSubtipo = new Zend_Form_Element_Select('subtipo');
 		$eSubtipo->setLabel('Subtipo: ');
 		$eSubtipo->setAttrib('class','form-control');
 		$eSubtipo->addMultiOption("", "Seleccionar...");
-		
-		
-		//foreach ($rowset as $fila) {
-			//$eSubtipo->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
-				/* Marcas */
-		
-		$columnas = array('Clave', 'Descripcion');
-		//$tablaMarcas = new Inventario_Model_DbTable_Marcas();
-		//$rowset = $tablaMarcas->obtenerColumnas($columnas);
-		
+		*/
+		/* Marcas */
+		/*
 		$eMarcas = new Zend_Form_Element_Select('marcas');
 		$eMarcas->setLabel('Marca: ');
 		$eMarcas->setAttrib('class','form-control');
 		$eMarcas->addMultiOption("", "Seleccionar...");
-		
-		//foreach ($rowset as $fila) {
-			//$eMarcas->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
-		
-				/* medidas */
-		$columnas = array('Clave', 'Descripcion');
-		//$tablaMedidas = new Inventario_Model_DbTable_Medidas();
-		//$rowset = $tablaMedidas->obtenerColumnas($columnas);
-		
+		*/
+			
+		/* medidas */
+		/*
 		$eMedidas = new Zend_Form_Element_Select('medidas');
 		$eMedidas->setLabel('Medidas: ');
 		$eMedidas->setAttrib('class','form-control');
 		$eMedidas->addMultiOption("", "Seleccionar...");
-		
-		//foreach ($rowset as $fila) {
-			//$eMedidas->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
-				/* colores */
-		$columnas = array('Clave', 'Descripcion');
-		//$tablaColores = new Inventario_Model_DbTable_Colores();
-		//$rowset = $tablaColores->obtenerColumnas($columnas);
-		
+		*/	
+		/* colores */
+		/*
 		$eColores = new Zend_Form_Element_Select('colores');
 		$eColores->setLabel('Colores: ');
 		$eColores->setAttrib('class','form-control');
 		$eColores->addMultiOption("", "Seleccionar...");
-		
-		//foreach ($rowset as $fila) {
-			//$eColores->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
-				/* modelo */
-		$columnas = array('Clave', 'Descripcion');
-		//$tablaModelo = new Inventario_Model_DbTable_Modelo();
-		//$rowset = $tablaModelo->obtenerColumnas($columnas);
-		
+		*/
+		/* modelo */
+		/*
 		$eModelo = new Zend_Form_Element_Select('modelo');
 		$eModelo->setLabel('Modelo: ');
 		$eModelo->setAttrib('class','form-control');
 		$eModelo->addMultiOption("", "Seleccionar...");
-		
-		//foreach ($rowset as $fila) {
-			//$eModelo->addMultiOption($fila->Clave, $fila->Descripcion);
-		//}
-				/* largo */
-		$columnas = array('Clave', 'Descripcion');
-		//$tablaLargo = new Inventario_Model_DbTable_Largo();
-		//$rowset = $tablaLargo->obtenerColumnas($columnas);
-		
+		*/
+		/* largo */
+		/*
 		$eLargo = new Zend_Form_Element_Select('largo');
 		$eLargo->setLabel('Largo: ');
 		$eLargo->setAttrib('class','form-control');
 		$eLargo->addMultiOption("", "Seleccionar...");
-		
-		
-		//===========array de encabezado========================================================
-		$subEncabezado->addElements(array($eTipoArticulo,$eSubtipo,$eMarcas,$eMedidas,$eColores,$eModelo,$eLargo));
-		//===================================================================================>>>>
-		$subDescripcion = new Zend_Form_SubForm();
-		$subDescripcion->setAttrib('title', 'Descripcion');
-	
+		*/
+		/*Descripcion */
+		/*
 		$eProducto = new Zend_Form_Element_Text('producto');
 		$eProducto->setLabel('Descripcion:');
 		$eProducto->setAttrib('class','form-control');
@@ -122,11 +88,20 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$eCodigoBarras->setLabel('Codigo de Barras:');
 		$eCodigoBarras->setValue('-');
 		$eCodigoBarras->setAttrib('class','form-control');
-		//===========array Descripcion========================================================
-		$subDescripcion->addElements(array($eProducto,$eClaveProducto, $eCodigoBarras));
 		
 		
-		$this->addSubForms(array($subEncabezado, $subDescripcion));
+		*/
+		$eAgregar = new Zend_Form_Element_Submit('agregar');
+		$eAgregar->setLabel('Agregar');
+		$eAgregar->setAttrib("class", "btn btn-primary");
+		
+		//$subForm->addElements(array($eTipoArticulo, $eSubtipo,$eMarcas, $eMedidas,$eColores,$eModelo,$eLargo,$eProducto,$eClaveProducto,$eCodigoBarras,$eAgregar));
+	
+		$this->addSubForms(array($subForm));
+		//$this->addElement($eEstado);
+		$this->addElement($eAgregar);
+		//$this->addElements(array($eTipoArticulo, $eSubtipo, $eMarcas,$eMedidas,$eColores,$eModelo,$eLargo,$eProducto,$eClaveProducto, $eCodigoBarras,$eAgregar));
+
 		
 	}
 		

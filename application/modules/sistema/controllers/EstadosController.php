@@ -45,6 +45,7 @@ class Sistema_EstadosController extends Zend_Controller_Action
 		$estado = $this->estadosDAO->obtenerEstado($idEstado);
 		
 		$formulario = new Sistema_Form_AltaEstado;
+		
 		$formulario->getElement("estado")->setValue($estado->getEstado());
 		$formulario->getElement("capital")->setValue($estado->getCapital());
 		$formulario->getElement("agregar")->setLabel("Actualizar");

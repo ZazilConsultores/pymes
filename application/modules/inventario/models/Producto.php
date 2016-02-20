@@ -45,6 +45,7 @@ class Inventario_Model_Producto
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idProducto", $datos)) $this->idProducto = $datos["idProducto"];
+	
 		$this->producto = $datos["producto"];
 		$this->claveProducto = $datos["claveProducto"];
 		$this->codigoBarras = $datos["codigoBarras"];
@@ -53,12 +54,17 @@ class Inventario_Model_Producto
 	public function toArray()
 	{
 		$datos = Array();
+		
 		$datos["idProducto"] = $this->idProducto;
 		$datos["producto"] = $this->producto;
 		$datos["claveProducto"] = $this->claveProducto;
 		$datos["codigoBarras"] = $this->codigoBarras;
+		
+		return $datos;
+		
 		 
 	}
+
     
 }
 

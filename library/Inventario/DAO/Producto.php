@@ -21,6 +21,7 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		$productoModel->setIdProducto($rowProducto->idProducto);
 		
 		return $productoModel;
+		
 	}
 	
 	public function obtenerProductos(){
@@ -33,11 +34,26 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 			$modelProducto = new Inventario_Model_Producto($rowProducto->toArray());
 			$modelProducto->setIdProducto($rowProducto->idProducto);
 			
-			$modelProductos[] = $modelProductos;
+			$modelProductos[] = $modelProducto;
 			
 		}
 		
 		return $modelProductos;
+		
+		$tablaEstado = $this->tablaEstado;
+		$rowEstados = $tablaEstado->fetchAll();
+		
+		$modelEstados = array();
+		
+		foreach ($rowEstados as $rowEstado) {
+			$modelEstado = new Sistema_Model_Estado($rowEstado->toArray());
+			$modelEstado->setIdEstado($rowEstado->idEstado);
+			
+			$modelEstados[] = $modelEstado;
+		}
+		
+		return $modelEstados;
+		
 	}
 	
 	public function crearProducto(Inventario_Model_Producto $producto){
