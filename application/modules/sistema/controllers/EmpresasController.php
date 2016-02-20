@@ -50,27 +50,29 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 				$datosTelefono = $contenedor[2];
 				$datosEmail = $contenedor[3];
 				
-				$modelFiscales = new Sistema_Model_Fiscales($datosFiscales);
-				$fiscales = $this->fiscalesDAO->crearFiscales($modelFiscales);
+				//$modelFiscales = new Sistema_Model_Fiscales($datosFiscales);
+				//$fiscales = $this->fiscalesDAO->crearFiscales($modelFiscales);
 
-				$modelDomicilio = new Sistema_Model_Domicilio($datosDomicilio);
-				$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscales(), $modelDomicilio);
+				//$modelDomicilio = new Sistema_Model_Domicilio($datosDomicilio);
+				//$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscales(), $modelDomicilio);
 				
-				$modelTelefono = new Sistema_Model_Telefono($datosTelefono);
-				$this->telefonoDAO->crearTelefonoFiscal($fiscales->getIdFiscales(), $modelTelefono);
+				//$modelTelefono = new Sistema_Model_Telefono($datosTelefono);
+				///$this->telefonoDAO->crearTelefonoFiscal($fiscales->getIdFiscales(), $modelTelefono);
 				
-				$modelEmail = new Sistema_Model_Email($datosEmail);
-				$this->emailDAO->crearEmailFiscales($fiscales->getIdFiscales(), $modelEmail);
+				//$modelEmail = new Sistema_Model_Email($datosEmail);
+				//$this->emailDAO->crearEmailFiscales($fiscales->getIdFiscales(), $modelEmail);
 				
 				$datos = array();
-				$datos["idFiscales"] = $fiscales->getIdFiscales();
+				//$datos["idFiscales"] = $fiscales->getIdFiscales();
 				$datos["esEmpresa"] = "S";
 				$datos["esCliente"] = "N";
 				$datos["esProveedor"] = "N";
-				$modelEmpresa = new Sistema_Model_Empresa($datos);
-				$this->empresaDAO->crearEmpresa($modelEmpresa);
+				//$modelEmpresa = new Sistema_Model_Empresa($datos);
 				
-				$this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
+				print_r($contenedor);
+				//$this->empresaDAO->crearEmpresa($modelEmpresa);
+				
+				//$this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
 			}
 		}
 		
