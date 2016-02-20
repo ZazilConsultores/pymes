@@ -18,29 +18,23 @@
 		<br /><br />
 		<table class="table table-striped table-condensed">
 			<thead>
+				<th>R.F.C</th>
 				<th>Razon Social</th>
-				<th>Creación</th>
-				<th>Es Cliente</th>
-				<th>Es Proveedor</th>
 				<th>Administrar</th>
 				<th>Datos</th>
 			</thead>
 			<tbody>
-				<?php foreach ($fiscales as $fiscal) : 
-					$empresa = $empresaDAO->obtenerEmpresaIdFiscales($fiscal->getIdFiscal());
-					?>
+				<?php foreach ($fiscales as $fiscal) : ?>
 				<tr>
+					<td><?php echo $fiscal->getRfc() ?></td>
 					<td><?php echo $fiscal->getRazonSocial() ?></td>
-					<td><?php echo $fiscal->getFecha() ?></td>
-					<td><?php echo $cliente = ($empresa->getEsCliente()) == "S" ? "Si" : "No" ; ?></td>
-					<td><?php echo $proveedor = ($empresa->getEsProveedor()) == "S" ? "Si" : "No" ; ?></td>
 					<td>
-						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresas","action"=>"index","idEmpresa"=>$empresa->getIdEmpresa()),null,true) ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresas","action"=>"admin","idFiscales"=>$fiscal->getIdFiscales()),null,true) ?>">
 							<span class="glyphicon glyphicon-cog"></span> Administrar Empresa
 						</a>
 					</td>
 					<td>
-						<button class="btn btn-info" fiscales="<?php echo $fiscal->getIdFiscal() ?>">
+						<button class="btn btn-info" fiscales="<?php echo $fiscal->getIdFiscales() ?>">
 							<span class="glyphicon glyphicon-cog"></span> Domicilio, Telefonos, e Emails
 						</button>
 					</td>

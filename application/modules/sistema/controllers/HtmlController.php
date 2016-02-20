@@ -38,7 +38,8 @@ class Sistema_HtmlController extends Zend_Controller_Action
         // action body
         $idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
-		$domicilio = $this->domicilioDAO->obtenerDomicilio($fiscales->getIdDomicilio());
+		//$domicilio = $this->domicilioDAO->obtenerDomicilio($fiscales->getIdDomicilio());
+		$domicilio = $this->fiscalesDAO->obtenerDomicilioFiscal($idFiscales);
 		$municipio = $this->municipioDAO->obtenerMunicipio($domicilio->getIdMunicipio());
 		$estado = $this->estadoDAO->obtenerEstado($municipio->getIdEstado());
 		$this->view->domicilio = $domicilio;
@@ -51,12 +52,16 @@ class Sistema_HtmlController extends Zend_Controller_Action
         // action body
         $idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		$telefonos = $this->fiscalesDAO->obtenerTelefonosFiscales($idFiscales);
+		/*
 		$idsTelefonos = $fiscales->getIdsTelefonos();
 		$idsTelefonos = explode(",", $idsTelefonos);
 		$telefonos = array();
 		foreach ($idsTelefonos as $idTelefono) {
 			$telefonos[] = $this->telefonoDAO->obtenerTelefono($idTelefono);
 		}
+		 * 
+		 */
 		$this->view->telefonos = $telefonos;
     }
 
@@ -65,12 +70,15 @@ class Sistema_HtmlController extends Zend_Controller_Action
         // action body
         $idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		$emails = $this->fiscalesDAO->obtenerEmailsFiscales($idFiscales);
+		/*
 		$idsEmails = $fiscales->getIdsEmails();
 		$idsEmails = explode(",", $idsEmails);
 		$emails = array();
 		foreach ($idsEmails as $idEmail) {
 			$emails[] = $this->emailDAO->obtenerEmail($idEmail);
 		}
+		*/
 		$this->view->emails = $emails;
     }
 

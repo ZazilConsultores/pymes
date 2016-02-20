@@ -2,13 +2,17 @@
 
 class Sistema_TelefonoController extends Zend_Controller_Action
 {
-	private $telefonoDAO = null;	
+
+    private $telefonoDAO = null;
+	private $fiscalesDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         //Iniciamos el DAO
         $this->telefonosDAO = new Inventario_DAO_Telefono;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		
     }
 
     public function indexAction()
@@ -55,8 +59,19 @@ class Sistema_TelefonoController extends Zend_Controller_Action
         // action body
     }
 
+    public function fiscalAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		//$telefonos = $this->
+		
+		
+    }
+
 
 }
+
+
 
 
 

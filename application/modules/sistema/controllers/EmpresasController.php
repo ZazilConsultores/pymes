@@ -4,15 +4,19 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
+
 class Sistema_EmpresasController extends Zend_Controller_Action
 {
-	private $empresaDAO;
-	private $domicilioDAO;
-	//private $fiscalDAO;
-	private $fiscalesDAO;
-	private $telefonoDAO;
-	private $emailDAO;
-    
+
+    private $empresaDAO = null;
+
+    private $domicilioDAO = null;
+
+    private $fiscalesDAO = null;
+
+    private $telefonoDAO = null;
+
+    private $emailDAO = null;
 
     public function init()
     {
@@ -28,7 +32,10 @@ class Sistema_EmpresasController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $fiscales = $this->fiscalDAO->obtenerFiscalEmpresa();
+        $idFiscales = $this->getParam("idFiscales");
+		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+        //$fiscales = $this->fiscalDAO->obtenerFiscalEmpresa();
+		//$fiscalesEmpresas = $this->empresaDAO->obtenerIdFiscalesEmpresas();
 		$this->view->fiscales = $fiscales;
     }
 
@@ -43,43 +50,36 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$contenedor = $formulario->getValues();
-				//Se guarda Domicilio, Telefono, Email y al Final Fiscales
 				
-				$datosFiscales = $contenedor[0];
-				$datosDomicilio = $contenedor[1];
-				$datosTelefono = $contenedor[2];
-				$datosEmail = $contenedor[3];
+				//print_r($contenedor);
+				$this->empresaDAO->crearEmpresa($contenedor);
 				
-				//$modelFiscales = new Sistema_Model_Fiscales($datosFiscales);
-				//$fiscales = $this->fiscalesDAO->crearFiscales($modelFiscales);
-
-				//$modelDomicilio = new Sistema_Model_Domicilio($datosDomicilio);
-				//$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscales(), $modelDomicilio);
-				
-				//$modelTelefono = new Sistema_Model_Telefono($datosTelefono);
-				///$this->telefonoDAO->crearTelefonoFiscal($fiscales->getIdFiscales(), $modelTelefono);
-				
-				//$modelEmail = new Sistema_Model_Email($datosEmail);
-				//$this->emailDAO->crearEmailFiscales($fiscales->getIdFiscales(), $modelEmail);
-				
-				$datos = array();
-				//$datos["idFiscales"] = $fiscales->getIdFiscales();
-				$datos["esEmpresa"] = "S";
-				$datos["esCliente"] = "N";
-				$datos["esProveedor"] = "N";
-				//$modelEmpresa = new Sistema_Model_Empresa($datos);
-				
-				print_r($contenedor);
-				//$this->empresaDAO->crearEmpresa($modelEmpresa);
-				
-				//$this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
+				$this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
 			}
 		}
 		
     }
 
+    public function adminAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		//$formulario = new Sistema_Form_AltaEmpresa;
+		$formulario = new Sistema_Form_AltaFiscales;
+		$formulario->getElement("rfc")->setValue($fiscales->getRfc());
+		$formulario->getElement("razonSocial")->setValue($fiscales->getRazonSocial());
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		
+		$this->view->fiscales = $fiscales;
+		$this->view->formulario = $formulario;
+    }
+
+    public function editaAction()
+    {
+        // action body
+    }
+
 
 }
-
-
 

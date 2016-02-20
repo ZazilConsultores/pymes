@@ -26,19 +26,64 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function crearEmpresa(array $datos){
 		
-		
-		
-		$fiscal = $datos[0];
-		$mFiscal = new Sistema_Model_Fiscales($fiscal);
-		
-		$domicilio = $datos[1];
-		$mDomicilio = new Sistema_Model_Domicilio($domicilio);
-		
-		$telefono = $datos[2];
-		$mTelefono = new Sistema_Model_Telefono($telefono);
-		
-		$email = $datos[3];
-		$mEmail = new Sistema_Model_Email($email);
+		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$bd->beginTransaction();
+		try{
+			$fiscal = $datos[0];
+			$mFiscal = new Sistema_Model_Fiscales($fiscal);
+			$mFiscal->setHash($mFiscal->getHash());
+			$bd->insert("Fiscales", $mFiscal->toArray());
+			$idFiscales = $bd->lastInsertId("Fiscales","idFiscales");
+			$bd->insert("Empresa", array("idFiscales"=>$idFiscales));
+			$idEmpresa = $bd->lastInsertId("Empresa", "idEmpresa");
+			//Insertamos en empresa, cliente o proveedor
+			switch ($fiscal['tipo']) {
+				case 'EM':
+					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
+					break;
+				case 'CL':
+					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa));
+					break;
+				case 'PR':
+					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$fiscal["tipoProveedor"]));
+					break;
+			}
+			//Insertamos en domicilio
+			$domicilio = $datos[1];
+			$mDomicilio = new Sistema_Model_Domicilio($domicilio);
+			$mDomicilio->setHash($mDomicilio->getHash());
+			$bd->insert("Domicilio", $mDomicilio->toArray());
+			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			$bd->insert("FiscalesDomicilios", array("idDomicilio"=>$idDomicilio,"idFiscales"=>$idFiscales,"esSucursal"=>"N"));
+			//Insertamos en telefono
+			$telefono = $datos[2];
+			$mTelefono = new Sistema_Model_Telefono($telefono);
+			$mTelefono->setHash($mTelefono->getHash());
+			$bd->insert("Telefono", $mTelefono->toArray());
+			$idTelefono = $bd->lastInsertId("Telefono", "idTelefono");
+			$bd->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono));
+			//Insertamos en email
+			$email = $datos[3];
+			$mEmail = new Sistema_Model_Email($email);
+			$mEmail->setHash($mEmail->getHash());
+			$mEmail->setFecha(date("Y-m-d H:i:s", time()));
+			$bd->insert("Email", $mEmail->toArray());
+			$idEmail = $bd->lastInsertId("Email","idEmail");
+			$bd->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
+			$bd->commit();
+		}catch(Exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$bd->rollBack();
+		}
 	}
 	
 	public function obtenerIdFiscalesEmpresas(){
