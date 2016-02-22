@@ -60,8 +60,8 @@ $connlocalOrigen = array(
 
 Zend_Registry::set('connlocal', $connserver);
 //Zend_Registry::set('connserver', $connserver);
-Zend_Registry::set('connnancy', $connnancy);
-Zend_Registry::set('connlocalorigen', $connlocalOrigen);
+//Zend_Registry::set('connnancy', $connnancy);
+//Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 $db = Zend_Db::factory('PDO_MYSQL', $connserver);
