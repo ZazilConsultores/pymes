@@ -43,7 +43,7 @@ $connserver = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'GeneralSagrado',
+		'dbname' => 'General',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',
