@@ -540,6 +540,7 @@
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="fiscal"/>
             </controllerFile>
             <controllerFile controllerName="Fiscales">
               <actionMethod actionName="index"/>
@@ -846,6 +847,9 @@
               <viewControllerScriptsDirectory forControllerName="Telefono">
                 <viewScriptFile forActionName="fiscal"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Email">
+                <viewScriptFile forActionName="fiscal"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -1081,6 +1085,7 @@
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="fiscal"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Fiscales">
                 <testApplicationActionMethod forActionName="index"/>

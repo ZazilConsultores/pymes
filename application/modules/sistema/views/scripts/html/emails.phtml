@@ -1,6 +1,9 @@
 <?php 
 	$emails = $this->emails;
 ?>
+<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"email","action"=>"alta"),null,true) ?>">
+	<span class="glyphicon glyphicon-plus"></span> Agregar Email
+</a>
 <table class="table table-condensed table-striped">
 	<thead>
 		<th>Email</th>

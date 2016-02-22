@@ -21,7 +21,6 @@
 				<th>R.F.C</th>
 				<th>Razon Social</th>
 				<th>Administrar</th>
-				<th>Datos</th>
 			</thead>
 			<tbody>
 				<?php foreach ($fiscales as $fiscal) : ?>
@@ -33,45 +32,10 @@
 							<span class="glyphicon glyphicon-cog"></span> Administrar Empresa
 						</a>
 					</td>
-					<td>
-						<button class="btn btn-info" fiscales="<?php echo $fiscal->getIdFiscales() ?>">
-							<span class="glyphicon glyphicon-cog"></span> Domicilio, Telefonos, e Emails
-						</button>
-					</td>
 				</tr>
 				<?php endforeach ?>
 			</tbody>
 		</table>
-	</div>
-</section>
-<section class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title">
-			Domicilio
-		</h3>
-	</div>
-	<div class="panel-body domicilio">
-		
-	</div>
-</section>
-<section class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title">
-			Telefonos
-		</h3>
-	</div>
-	<div class="panel-body telefonos">
-		
-	</div>
-</section>
-<section class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title">
-			Emails
-		</h3>
-	</div>
-	<div class="panel-body emails">
-		
 	</div>
 </section>
 <script>
