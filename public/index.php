@@ -131,6 +131,7 @@ Zend_Registry::set('padre', $padre);
 Zend_Registry::set('estatus', $estatus);
 Zend_Registry::set('tipoEmpresa', $tipoEmpresa);
 Zend_Registry::set('tipoTelefono', $tipoTelefono);
+Zend_Registry::set('tipoBanco', $tipoBanco);
 
 $application->bootstrap()
             ->run();

@@ -5,8 +5,7 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 
     public function init()
     {
-    	//tipoBanco
-		$tipoBanco = Zend_Registry::get("tipoBanco");
+    	
 		
      	$eNumCuenta = new Zend_Form_Element_Text('cuenta');
 		$eNumCuenta->setLabel('Numero de Cuenta: ');
@@ -31,10 +30,8 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		}
 		
 		
-		$eTipoBanco= new Zend_Form_Element_Select('tipo');
-		$eTipoBanco->setLabel('Tipo Banco:');
-		$eTipoBanco->setAttrib("class", "form-control");
-			
+		//tipoBanco
+		$tipoBanco = Zend_Registry::get("tipoBanco");	
 		
 		$eTipoBanco = new Zend_Form_Element_Select("tipo");
 		$eTipoBanco->setLabel("Tipo Banco: ");
