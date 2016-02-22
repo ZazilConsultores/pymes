@@ -41,7 +41,21 @@ class Inventario_UnidadController extends Zend_Controller_Action
 
     public function altaAction()
     {
-        // action body
+        $request = $this->getRequest();
+		$idMultiplos = $this->getParam("idMultiplos");
+		$formulario = new Inventario_Form_AltaUnidad;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$unidad = new Inventario_Model_DbTable_Unidad($datos);
+				$this->unidadDAO->crearUnidad($unidad);
+				$this->_helper->redirector->gotoSimple("index", "multiplos", "sistema", array("idMultiplos"=>$idMultiplos));
+			}
+		}else{
+			$this->_helper->redirector->gotoSimple("index", "multiplos", "sistema");
+		}
+		
     }
 
     public function bajaAction()

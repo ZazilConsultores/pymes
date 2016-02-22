@@ -48,7 +48,21 @@ class Inventario_MultiplosController extends Zend_Controller_Action
 
     public function altaAction()
     {
-        // action body
+        $request = $this->getRequest();
+		$idProducto = $this->getParam("idProducto");
+		$formulario = new Inventario_Form_AltaMultiplos;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$multiplos = new Inventario_Model_Multiplos($datos);
+				$this->multiploDAO->crearMultiplos($multiplos) ;
+				$this->_helper->redirector->gotoSimple("index", "muliplos", "sistema", array("idProducto"=>$idProducto));
+			}
+		}else{
+			$this->_helper->redirector->gotoSimple("index", "multiplos", "sistema");
+		}
+		
     }
 
     public function editaAction()
