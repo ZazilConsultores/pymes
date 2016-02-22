@@ -56,7 +56,7 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		
 	}
 	
-	public function eliminarMultiplos($idMultiplos)
+	public function eliminarMultiplo($idMultiplos)
 	{
 		$tablaMultiplo = $this->tablaMultiplo;
 		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos = ?", $idMultiplos);		

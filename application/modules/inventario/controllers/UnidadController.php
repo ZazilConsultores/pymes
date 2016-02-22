@@ -50,10 +50,10 @@ class Inventario_UnidadController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$unidad = new Inventario_Model_DbTable_Unidad($datos);
 				$this->unidadDAO->crearUnidad($unidad);
-				$this->_helper->redirector->gotoSimple("index", "multiplos", "sistema", array("idMultiplos"=>$idMultiplos));
+				$this->_helper->redirector->gotoSimple("index", "multiplos", "inventario", array("idMultiplos"=>$idMultiplos));
 			}
 		}else{
-			$this->_helper->redirector->gotoSimple("index", "multiplos", "sistema");
+			$this->_helper->redirector->gotoSimple("index", "multiplos", "inventario");
 		}
 		
     }
@@ -65,7 +65,15 @@ class Inventario_UnidadController extends Zend_Controller_Action
 
     public function editaAction()
     {
-        // action body
+        $idUnidad = $this->getParam("idUnidad");
+		
+		$datos = $this->getRequest()->getPost();
+		unset($datos["submit"]);
+		
+		$this->unidadDAO->editarUnidad($idUnidad, $datos);
+		
+		
+		$this->_helper->redirector->gotoSimple("admin", "unidad", "inventario", array("idUnidad"=>$idUnidad));
     }
 
 

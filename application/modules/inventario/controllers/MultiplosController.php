@@ -67,7 +67,15 @@ class Inventario_MultiplosController extends Zend_Controller_Action
 
     public function editaAction()
     {
-        // action body
+        $idMultiplos = $this->getParam("idMultiplos");
+		
+		$datos = $this->getRequest()->getPost();
+		unset($datos["submit"]);
+		
+		$this->multiploDAO->editarMultiplo($idMultiplos, $datos);
+		
+		
+		$this->_helper->redirector->gotoSimple("admin", "multiplos", "invemtario", array("idMultiplos"=>$idMultiplos));
     }
 
 
