@@ -66,10 +66,13 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$select = $tablaFiscalesEmails->select()->from($tablaFiscalesEmails)->where("idFiscales = ?", $idFiscales);
 		$rowsEF = $tablaFiscalesEmails->fetchAll($select);
 		//---------------------------------------------------------
+		//print_r($rowsEF->toArray());
 		$tablaEmails = $this->tablaEmail;
 		$modelsEmails = array();
 		foreach ($rowsEF as $row) {
-			$modelEmail = new Sistema_Model_Email($row->toArray());
+			$select = $tablaEmails->select()->from($tablaEmails)->where("idEmail = ?",$row->idEmail);
+			$rowE = $tablaEmails->fetchRow($select);
+			$modelEmail = new Sistema_Model_Email($rowE->toArray());
 			$modelsEmails[] = $modelEmail;
 		}
 		return $modelsEmails;

@@ -49,6 +49,7 @@ class Sistema_EmpresaController extends Zend_Controller_Action
     {
         // action body
         $idFiscales = $this->empresaDAO->obtenerIdFiscalesEmpresas();
+		//$idFiscales = $this->empresaDAO->obtenerIdFiscalesEmpresas();
 		$fiscales = array();
 		foreach ($idFiscales as $id) {
 			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
