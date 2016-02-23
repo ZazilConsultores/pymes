@@ -19,6 +19,7 @@
       <formsDirectory>
         <formFile formName="Login"/>
         <formFile formName="AgregarRemisionCliente"/>
+        <formFile formName="AltaNivel"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -186,6 +187,7 @@
               <actionMethod actionName="preguntas"/>
               <actionMethod actionName="preguntadet"/>
               <actionMethod actionName="registro"/>
+              <actionMethod actionName="grupo"/>
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
@@ -258,6 +260,7 @@
             <formFile formName="AltaSeleccion"/>
             <formFile formName="AltaRegistro"/>
             <formFile formName="AltaEncuestaEvaluativa"/>
+            <formFile formName="AltaNivel"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -273,6 +276,12 @@
               <dbTableFile dbTableName="Categoria"/>
               <dbTableFile dbTableName="Opcion"/>
               <dbTableFile dbTableName="PreferenciaSimple"/>
+              <dbTableFile dbTableName="MateriaC"/>
+              <dbTableFile dbTableName="GrupoC"/>
+              <dbTableFile dbTableName="ProfesorC"/>
+              <dbTableFile dbTableName="PeriodoC"/>
+              <dbTableFile dbTableName="NivelC"/>
+              <dbTableFile dbTableName="NivelE"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -283,6 +292,7 @@
             <modelFile modelName="Categoria"/>
             <modelFile modelName="Opcion"/>
             <modelFile modelName="PreferenciaSimple"/>
+            <modelFile modelName="Nivel"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -463,6 +473,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="altas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="grupo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1064,6 +1077,7 @@
                 <testApplicationActionMethod forActionName="preguntas"/>
                 <testApplicationActionMethod forActionName="preguntadet"/>
                 <testApplicationActionMethod forActionName="registro"/>
+                <testApplicationActionMethod forActionName="grupo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
