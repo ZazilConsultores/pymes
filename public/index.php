@@ -40,10 +40,11 @@ $application = new Zend_Application(
 		'dbname' => 'generaldos',
 	);
 $connserver = array(
-		'host' => 'localhost',
+		'host' => '192.168.1.5',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'General',
+		//'dbname' => 'General',
+		'dbname' => 'GeneralSagrado',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',
