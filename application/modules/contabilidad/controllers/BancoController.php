@@ -3,6 +3,7 @@
 class Contabilidad_BancoController extends Zend_Controller_Action
 {
 	private $bancoDAO = null;
+	private $divisaDAO = null;
 	
 
     public function init()

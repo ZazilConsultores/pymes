@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
  class Inventario_DAO_Banco implements Inventario_Interfaces_IBanco {
+ 
 
 	private $tablaBanco;
 	
