@@ -76,6 +76,5 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		$this->addElement($eSubmit);	
     }
 
-
 }
 

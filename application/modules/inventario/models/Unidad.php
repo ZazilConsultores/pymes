@@ -12,16 +12,6 @@ class Inventario_Model_Unidad
         $this->idUnidad = $idUnidad;
     }
 	
-	private $idMultiplos;
-
-    public function getIdMultiplos() {
-        return $this->idMultiplos;
-    }
-    
-    public function setIdMultiplos($idMultiplos) {
-        $this->idMultiplos = $idMultiplos;
-    }
-	
 	private $unidad;
 
     public function getUnidad() {
@@ -32,32 +22,31 @@ class Inventario_Model_Unidad
         $this->unidad = $unidad;
     }
 	
-	private $abrevitura;
+	private $abreviatura;
 
-    public function getAbrevitura() {
-        return $this->abrevitura;
+    public function getAbreviatura() {
+        return $this->abreviatura;
     }
     
-    public function setAbrevitura($abrevitura) {
-        $this->abrevitura = $abrevitura;
+    public function setAbreviatura($abreviatura) {
+        $this->abreviatura = $abreviatura;
     }
 
+    
 	
 	public function __construct(array $datos)
 	{
 		if (array_key_exists("idUnidad", $datos)) $this->idUnidad = $datos["idUnidad"];
-		if (array_key_exists("idMultiplos", $datos)) $this->idMultiplos = $datos["idMultiplos"];
 		$this->unidad = $datos["unidad"];
-		$this->abrevitura = $datos["abreviatura"];
+		$this->abreviatura = $datos["abreviatura"];
 	}
 	public function toArray()
 	{
 		$datos = Array();
 		
 		$datos["idUnidad"] = $this->idUnidad;
-		$datos["idMultiplos"] = $this->idMultiplos;
 		$datos["unidad"] = $this->unidad;
-		$datos["abreviatura"] = $this->abrevitura;
+		$datos["abreviatura"] = $this->abreviatura;
 		
 		return $datos;
 		

@@ -10,14 +10,12 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 	}
 
 	public function indexAction() {
+		//Hay que traer el formulario
+		$formulario = new Inventario_Form_AltaUnidad;
 		
-		//$idMultiplo = $this -> getParam("idMultiplos");
-		//$formulario = new Inventario_Form_AltaUnidad;
-		//Obtengo lista de unidad y los envio a la vista
-		//$this->view->unidades = $this->unidadDAO->obtenerUnidades($idMultiplo);
-
+		$this->view->unidad = $this->unidadDAO->obtenerUnidades();
+		
 		$this->view->formulario = $formulario;
-		//$this->view->Multiplo = $this->multiploDAO->obtenerMultiplo($idMultiplos);
 
 	}
 
@@ -27,7 +25,7 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 
 		$formulario = new Inventario_Form_AltaUnidad;
 		$formulario -> getSubForm("0") -> getElement("unidad") -> setValue($unidad -> getUnidad());
-		$formulario -> getSubForm("0") -> getElement("abreviatura") -> setValue($unidad -> getAbrevitura());
+		$formulario -> getSubForm("0") -> getElement("abreviatura") -> setValue($unidad -> getAbreviatura());
 		$formulario -> getElement("submit") -> setLabel("Actualizar");
 		$formulario -> getElement("submit") -> setAttrib("class", "btn btn-warning");
 
@@ -36,21 +34,19 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 	}
 
 	public function altaAction() {
-		$request = $this -> getRequest();
-		$idMultiplos = $this -> getParam("idMultiplos");
+		$request = $this->getRequest();
 		$formulario = new Inventario_Form_AltaUnidad;
-
-		if ($request -> isPost()) {
-			if ($formulario -> isValid($request -> getPost())) {
-				$datos = $formulario -> getValues();
-				$unidad = new Inventario_Model_DbTable_Unidad($datos);
-				$this -> unidadDAO -> crearUnidad($unidad);
-				$this -> _helper -> redirector -> gotoSimple("index", "multiplos", "inventario", array("idMultiplos" => $idMultiplos));
-			}
-		} else {
-			$this -> _helper -> redirector -> gotoSimple("index", "multiplos", "inventario");
-		}
-
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$unidad = new Inventario_Model_Unidad($datos[0]);
+				
+					$this->unidadDAO->crearUnidad($unidad);
+				}
+				$this->_helper->redirector->gotoSimple("index", "unidad", "inventario");
+			
+		}	
 	}
 
 	public function bajaAction() {
@@ -58,14 +54,16 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 	}
 
 	public function editaAction() {
-		$idUnidad = $this -> getParam("idUnidad");
-
-		$datos = $this -> getRequest() -> getPost();
+		
+		$idUnidad = $this->getParam("idUnidad");
+		
+		$datos = $this->getRequest()->getPost();
 		unset($datos["submit"]);
-
-		$this -> unidadDAO -> editarUnidad($idUnidad, $datos);
-
-		$this -> _helper -> redirector -> gotoSimple("admin", "unidad", "inventario", array("idUnidad" => $idUnidad));
-	}
-
+		
+		$this->unidadDAO->editarUnidad($idUnidad, $datos);
+		
+		
+		$this->_helper->redirector->gotoSimple("admin", "unidad", "inventario", array("idUnidad"=>$idUnidad));
+    	
+		}
 }
