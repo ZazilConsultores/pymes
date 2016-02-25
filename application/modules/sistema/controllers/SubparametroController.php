@@ -36,7 +36,7 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$subparametro = new Sistema_Model_Subparametro($datos);
+				$subparametro = new Sistema_Model_Subparametro($datos[0]);
 				$subparametro->setIdParametro($idParametro);
 				//print_r($datos);		
 				//$subparametro->setHash($subparametro->getHash());
@@ -48,8 +48,7 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
-				}
-			}
+				}			}
 		}	
     }
 

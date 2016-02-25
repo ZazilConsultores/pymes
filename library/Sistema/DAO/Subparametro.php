@@ -7,10 +7,28 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	
 	function __construct()
 	{
-
 		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
-		//$this->tablaParametro = new Sistema_Model_DbTable_Parametro;
+		//$this->tablaParametro = new Sistema_Model_DbTable_Parametro;	
+	}
 	
+	public function generarClaveProducto(array $claves){
+		$tablaSubparametro= $this->tablaSubparametro;
+		$claveProducto = "";
+		$idsSubparametro = "";
+		
+		foreach ($claves as $idParametro => $idSubparametro) {
+			if($idSubparametro <> "0"){
+				$sub = $this->obtenerSubparametro($idSubparametro);
+				$claveProducto .= $sub->getClaveSubparametro();
+				$idsSubparametro .=  $sub->getIdSubparametro() . ",";
+			}
+		}
+		
+		print_r($claveProducto);
+		print_r("<br />");
+		print_r($idsSubparametro);
+		
+		return $claveProducto;
 	}
 		
 	public function obtenerSubparametros($idparametro)
