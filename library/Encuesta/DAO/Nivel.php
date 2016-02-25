@@ -10,7 +10,15 @@ class Encuesta_DAO_Nivel implements Encuesta_Interfaces_INivel {
 	
 	public function __construct() {
 		$this->tablaNivel = new Encuesta_Model_DbTable_NivelE;
+	}
+	
+	public function obtenerNivel($idNivel){
+		$tablaNivel = $this->tablaNivel;
+		$select = $tablaNivel->select()->from($tablaNivel)->where("idNivel = ?",$idNivel);
+		$rowNivel = $tablaNivel->fetchRow($select);
+		$modelNivel = new Encuesta_Model_Nivel($rowNivel->toArray());
 		
+		return $modelNivel;
 	}
 	
 	public function obtenerNiveles(){
@@ -27,7 +35,15 @@ class Encuesta_DAO_Nivel implements Encuesta_Interfaces_INivel {
 	
 	public function crearNivel(Encuesta_Model_Nivel $nivel){
 		$tablaNivel = $this->tablaNivel;
-		$tablaNivel->insert($nivel->toArray());
+		$nivel->setHash($nivel->getHash());
+		$select = $tablaNivel->select()->from($tablaNivel)->where("hash = ?", $nivel->getHash());
+		$row = $tablaNivel->fetchRow($select);
+		if(!is_null($row)) throw new Util_Exception_BussinessException("Nivel: <strong>" . $nivel->getNivel() . "</strong> duplicado en el sistema");
+		try{
+			$tablaNivel->insert($nivel->toArray());
+		}catch(Exception $ex){
+			throw new Util_Exception_BussinessException("<strong>" . $ex->getMessage() . "</strong>");
+		}
 	}
 	
 	public function editarNivel($idNivel, array $datos){

@@ -1,5 +1,17 @@
 USE generaldos;
 
+select * from nivele;
+select * from gradoe;
+
+select * from empresas;
+select * from empresa;
+select * from fiscales;
+
+select * from domicilio;
+select * from telefono;
+select * from fiscalesemail;
+select * from email;
+
 select * from registro;
 select * from respuesta;
 select * from preferenciasimple;
@@ -13,7 +25,11 @@ select * from respuesta where idEncuesta = 3 and idRegistro = 11;
 select * from respuesta where idEncuesta = 3 and idRegistro = 4;
 select * from respuesta where idEncuesta = 3 and idRegistro = 2;
 
-INSERT INTO `estado` VALUES 
+select * from estado where idEstado = 6;
+select * from municipio where idEstado = 9;
+select * from municipio where idEstado = 32;
+
+INSERT INTO `estado` (idEstado,estado,capital) VALUES 
 (1,'Aguascalientes','Aguascalientes'),(2,'Baja California','Mexicali'),(3,'Baja California Sur','La Paz'),
 (4,'Campeche','Campeche'),(5,'Chiapas','Tuxtla Gutiérrez'),(6,'Chihuahua','Chihuahua'),
 (7,'Coahuila','Saltillo'),(8,'Colima','Colima'),(9,'Distrito Federal','Ciudad de México'),
@@ -25,7 +41,7 @@ INSERT INTO `estado` VALUES
 (25,'Sinaloa','Culiacán'),(26,'Sonora','Hermosillo'),(27,'Tabasco','Villahermosa'),
 (28,'Tamauilipas','Ciudad Victoria'),(29,'Tlaxcala','Tlaxcala'),(30,'Veracruz','Xalapa'),
 (31,'Yucatán','Mérida'),(32,'Zacatecas','Zacatecas');
-INSERT INTO `municipio` VALUES 
+INSERT INTO `municipio` (idMunicipio,idEstado,municipio)VALUES 
 (1,1,'Aguascalientes'),(2,1,'Asientos'),(3,1,'Calvillo'),(4,1,'Cosío'),(5,1,'El Llano'),(6,1,'Jesús María'),(7,1,'Pabellón de Arteaga'),
 (8,1,'Rincón de Romos'),(9,1,'San Francisco de los Romo'),(10,1,'San José de Gracia'),(11,1,'Tepezalá'),(12,2,'Ensenada'),(13,2,'Mexicali'),(14,2,'Playas de Rosarito'),
 (15,2,'Tecate'),(16,2,'Tijuana'),(17,3,'Comondú'),(18,3,'La Paz'),(19,3,'Loreto'),(20,3,'Los Cabos'),(21,3,'Mulegé'),
@@ -93,5 +109,7 @@ INSERT INTO `seccion` VALUES (1,1,'Habilidades',1,1,'2016-01-29 20:40:25','29a67
 INSERT INTO `grupo` VALUES (1,1,'Claridad','SS','1,2,3,4,5',1,2,'2016-01-29 20:45:30','4823146c63df792b24c0c5482e58f67b');
 INSERT INTO `pregunta` VALUES (1,1,'¿Es importante lo que estás aprendiendo y comprendes cómo se relaciona con otras materias y temas?','G','1','SS','1,2,3,4,5',1,'2016-01-29 20:45:57','93606223302833ff478d310ff7822de0'),(2,1,'¿En esta materia fue clara la forma de evaluación?','G','1','SS','1,2,3,4,5',2,'2016-01-29 20:46:27','1f926ab6b48be91ee6a1d2fd734391de');
 
-
-
+select * from fiscales;
+select * from fiscalesdomicilios;
+select * from fiscalestelefonos;
+select * from fiscalesemails;
