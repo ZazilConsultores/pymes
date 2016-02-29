@@ -19,7 +19,7 @@ class Encuesta_Form_AltaNivel extends Zend_Form
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Agregar Nivel Educativo");
-		$eSubmit->setAttrib("class", "form-control");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		
         $this->addElements(array($eNivel,$eDescripcion,$eSubmit));
     }

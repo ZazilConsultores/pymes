@@ -35,12 +35,24 @@ class Encuesta_Model_Nivel
     public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
     }
+	
+	private $hash;
+
+    public function getHash() {
+    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey(array("nivel"=>strtolower($this->nivel)));
+        return $this->hash;
+    }
+    
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
 
     public function __construct(array $datos)
     {
-        if(array_key_exists("idNivel", $datos)) $this->idNivel = $datos["idNivel"];
+		if(array_key_exists("idNivel", $datos)) $this->idNivel = $datos["idNivel"];
 		$this->nivel = $datos["nivel"];
-		if(array_key_exists("descripcion", $datos)) $this->descripcion = $datos["descripcion"];
+		$this->descripcion = $datos["descripcion"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray()
@@ -50,6 +62,7 @@ class Encuesta_Model_Nivel
 		$datos["idNivel"] = $this->idNivel;
 		$datos["nivel"] = $this->nivel;
 		$datos["descripcion"] = $this->descripcion;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

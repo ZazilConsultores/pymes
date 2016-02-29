@@ -1,0 +1,39 @@
+<?php 
+	$ciclos = $this->ciclos;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Ciclos Escolares
+			</h3>
+		</div>
+		<div class="panel-body">
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"alta"),null,true) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Ciclo
+			</a><br /><br />
+			<table class="table table-striped table-condensed">
+				<thead>
+					<th>Ciclo</th>
+					<th>Configuración</th>
+					<th>Anotaciones</th>
+				</thead>
+				<tbody>
+					<?php foreach ($ciclos as $ciclo) : ?>
+					<tr>
+						<td><?php echo $ciclo->getCiclo() ?></td>
+						<td>
+							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo->getIdCiclo()),null,true) ?>">
+								<span class="glyphicon glyphicon-cog"></span> Configurar 
+							</a>
+						</td>
+						<td><?php echo $ciclo->getAnotaciones() ?></td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	
+</section>

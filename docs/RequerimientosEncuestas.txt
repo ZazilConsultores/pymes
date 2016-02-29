@@ -1,0 +1,38 @@
+Reporte de Avance de Encuestas.
+
+Los nuevos requerimientos plantearon un escenario un poco mas complejo, inverti en desarrollar ahora para no tener que agregar despues. Mi escenario propuesto es el siguente:
+
+El centro educativo (o Colegio Sagrado Corazón) consta de niveles escolares:
+- Preescolar
+- Primaria
+- Secundaria
+- Preparatoria
+
+Cada nivel tiene sus grados educativos.
+Ejemplo: Primaria
+- 1°
+- 2°
+- 3°
+- 4°
+- 5°
+- 6°
+
+Cada grado tiene un conjunto de materias a cursar en su duración:
+Ejemplo: 1° de Secundaria
+- Español
+- Matematicas
+- Biologia
+- Quimica
+- Fisica
+- E.F.
+- Idioma
+
+Una ultima condicion es que este escenario se repite estos son los ciclos escolares, entonces mis requerimientos en un enunciado seria el siguiente:
+
+Generar una ENCUESTA donde los alumnos evaluaran las competencias de los maestros sobre su desempeño en clase durante el CICLO escolar.
+
+
+Nota: Un GRUPO esta en un GRADO educativo y este Grado pertenece a un NIVEL educativo, además el GRUPO se cursa durante un CICLO escolar.
+
+
+

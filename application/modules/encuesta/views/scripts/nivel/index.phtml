@@ -1,0 +1,38 @@
+<?php
+	$niveles = $this->niveles;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Niveles Educativos
+			</h3>
+		</div>
+		<div class="panel-body">
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"nivel","action"=>"alta"),null,true) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Nivel
+			</a><br /><br />
+			<table class="table table-condensed table-striped">
+				<thead>
+					<th>Nivel</th>
+					<th>Descripción</th>
+					<th>Grados Educativos</th>
+				</thead>
+				<tbody>
+					<?php foreach ($niveles as $nivel) : ?>
+					<tr>
+						<td><?php echo $nivel->getNivel() ?></td>
+						<td><?php echo $nivel->getDescripcion() ?></td>
+						<td>
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"index","idNivel"=>$nivel->getIdNivel()),null,true) ?>">
+								Grados
+							</a>
+						</td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+			<br /><br />
+		</div>
+	</div>
+</section>
