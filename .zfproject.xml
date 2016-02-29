@@ -81,6 +81,10 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
             </controllerFile>
+            <controllerFile controllerName="JsonController">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="unidades"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="Alta"/>
@@ -156,6 +160,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Multiplos">
                 <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="JsonController">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="JsonController">
+                <viewScriptFile forActionName="unidades"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="jsonController">
+                <viewScriptFile forActionName="unidades"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="json">
+                <viewScriptFile forActionName="unidades"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1303,6 +1319,10 @@
                 <testApplicationActionMethod forActionName="baja"/>
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="JsonController">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="unidades"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

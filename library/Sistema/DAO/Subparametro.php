@@ -56,19 +56,9 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$rowSubparametro = $tablaSubparametro->fetchRow($select);
 		
 		$subparametroModel = new Sistema_Model_Subparametro($rowSubparametro->toArray());
-		//$subparametroModel->setIdSubparametro($rowSubparametro->$idSubparametro);
 		
 		return $subparametroModel;
-		/*	
-		$tablaMunicipio = $this->tablaMunicipio;
-		$select = $tablaMunicipio->select()->from($tablaMunicipio)->where("idMunicipio = ?",$idMunicipio);
-		$rowMunicipio = $tablaMunicipio->fetchRow($select);
 		
-		$municipioModel = new Sistema_Model_Municipio($rowMunicipio->toArray());
-		$municipioModel->setIdMunicipio($rowMunicipio->idMunicipio);
-		
-		return $municipioModel;
-		*/
 		
 	}
 	public function crearSubparametro(Sistema_Model_Subparametro $subparametro)
@@ -80,6 +70,9 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		if(!is_null($row)) throw new Util_Exception_BussinessException("Subparámetro: <strong>" . $subparametro->getSubparametro() . "</strong> duplicado en el sistema");
 		$subparametro->setHash($subparametro->getHash());
 		$subparametro->setFecha(date("Y-m-d H:i:s", time()));
+		
+		$subparametro->setClaveSubparametro($claveSubparametro);
+		
 		$tablasubparametro->insert($subparametro->toArray());
 		
 	}
