@@ -41,7 +41,7 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$ciclo->setHash($ciclo->getHash());
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("hash = ?",$ciclo->getHash());
 		$row = $tablaCiclo->fetchRow($select);
-		if(is_null($row)) throw new Util_Exception_BussinessException("Error Ciclo: <strong>" . $ciclo->getCiclo() ."</strong> duplicado en el Sistema");
+		if(!is_null($row)) throw new Util_Exception_BussinessException("Error Ciclo: <strong>" . $ciclo->getCiclo() ."</strong> duplicado en el Sistema.");
 		
 		try{
 			$tablaCiclo->insert($ciclo->toArray());

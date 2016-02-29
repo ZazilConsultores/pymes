@@ -22,14 +22,34 @@ class Encuesta_Model_Ciclo
         $this->ciclo = $ciclo;
     }
 
-    private $anotaciones;
+    private $inicio;
 
-    public function getAnotaciones() {
-        return $this->anotaciones;
+    public function getInicio() {
+        return $this->inicio;
     }
     
-    public function setAnotaciones($anotaciones) {
-        $this->anotaciones = $anotaciones;
+    public function setInicio($inicio) {
+        $this->inicio = $inicio;
+    }
+
+    private $termino;
+
+    public function getTermino() {
+        return $this->termino;
+    }
+    
+    public function setTermino($termino) {
+        $this->termino = $termino;
+    }
+
+    private $descripcion;
+
+    public function getDescripcion() {
+        return $this->descripcion;
+    }
+    
+    public function setDescripcion($descripcion) {
+        $this->descripcion = $descripcion;
     }
 
     private $hash;
@@ -47,7 +67,9 @@ class Encuesta_Model_Ciclo
 	{
 		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
 		$this->ciclo = $datos["ciclo"];
-		$this->anotaciones = $datos["anotaciones"];
+		$this->inicio = $datos["inicio"];
+		$this->termino = $datos["termino"];
+		$this->descripcion = $datos["descripcion"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
@@ -57,7 +79,9 @@ class Encuesta_Model_Ciclo
 		
 		$datos["idCiclo"] = $this->idCiclo;
 		$datos["ciclo"] = $this->ciclo;
-		$datos["anotaciones"] = $this->anotaciones;
+		$datos["inicio"] = $this->inicio;
+		$datos["termino"] = $this->termino;
+		$datos["descripcion"] = $this->descripcion;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

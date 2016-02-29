@@ -268,6 +268,13 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
             </controllerFile>
+            <controllerFile controllerName="GrupoE">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Grupos">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="consulta"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -282,6 +289,7 @@
             <formFile formName="AltaNivel"/>
             <formFile formName="AltaGrado"/>
             <formFile formName="AltaCiclo"/>
+            <formFile formName="ConsultaGrupos"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -316,6 +324,7 @@
             <modelFile modelName="Nivel"/>
             <modelFile modelName="Grado"/>
             <modelFile modelName="Ciclo"/>
+            <modelFile modelName="Grupoe"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -538,6 +547,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Ciclo">
                 <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="GrupoE">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="consulta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1219,6 +1237,13 @@
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="GrupoE">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Grupos">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="consulta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

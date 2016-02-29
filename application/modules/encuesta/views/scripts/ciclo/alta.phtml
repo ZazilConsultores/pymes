@@ -1,8 +1,56 @@
 <?php 
 	$formulario = $this->formulario;
+	$messageSuccess = $this->messageSuccess;
+	$messageFail = $this->messageFail;
 ?>
 <section class="row">
-	<div>
-		<?php echo $formulario ?>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Nuevo Ciclo Escolar
+			</h3>
+		</div>
+		<div class="panel-body">
+			<?php if(!is_null($messageSuccess)){ ?>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php } ?>
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index"), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Ciclos Escolares.
+			</a><br /><br />
+			<?php echo $formulario ?>
+		</div>
 	</div>
 </section>
+<script>
+	$().ready(function(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "es" ] );
+		//$("input.fechaInicio").datepicker( $.datepicker.regional[ "es" ] );
+		//$("input.fechaTermino").datepicker( $.datepicker.regional[ "es" ] );
+		$("input.fechaInicio").datepicker({
+			//showOn: "both",
+			//minDate: 0,
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: "dd/mm/yy"
+		});
+		$("input.fechaTermino").datepicker({
+			//showOn: "both",
+			minDate: 0,
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: "dd/mm/yy"
+		});
+	});
+</script>
