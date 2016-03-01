@@ -41,32 +41,18 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		
 		return $modelProductos;
 		
-		$tablaEstado = $this->tablaEstado;
-		$rowEstados = $tablaEstado->fetchAll();
-		
-		$modelEstados = array();
-		
-		foreach ($rowEstados as $rowEstado) {
-			$modelEstado = new Sistema_Model_Estado($rowEstado->toArray());
-			$modelEstado->setIdEstado($rowEstado->idEstado);
-			
-			$modelEstados[] = $modelEstado;
-		}
-		
-		return $modelEstados;
-		
 	}
 	
 	public function crearProducto(Inventario_Model_Producto $producto){
 		//idsSubparametro 
 		$subparametro= new Sistema_DAO_Subparametro;	
 		$subparametro->generarClaveProducto($claves);
+		$claveProducto = $subparametro->generarClaveProducto($claveSubproducto);
+		$idsSubparametro =$subparametro->generarClaveProducto($idsSubparametro);
 		
-		$claveProducto = $subparametro->setClaveSubparametro();
-		$idsSubparametro =  $subparametro->setIdSubparametro() . ",";
 		
-		$tablaProducto = $this->tablaProducto;
-		$tablaProducto->insert($producto->toArray());
+		//$tablaProducto = $this->tablaProducto;
+		//$tablaProducto->insert($producto->toArray());
 		
 		
 		

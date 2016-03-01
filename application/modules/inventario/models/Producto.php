@@ -74,7 +74,6 @@ class Inventario_Model_Producto
 		$datos["idsSubparametro"]=$this->idsSubparametro;
 		
 		return $datos;
-		
 		 
 	}
 }

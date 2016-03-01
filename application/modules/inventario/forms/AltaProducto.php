@@ -76,7 +76,7 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$subPresentacion->addElements(array($eCantidad,$ePresentacion));
 		//$subForm->addElements(array($eTipoArticulo, $eSubtipo,$eMarcas, $eMedidas,$eColores,$eModelo,$eLargo,$eProducto,$eClaveProducto,$eCodigoBarras,$eAgregar));
 	
-		$this->addSubForms(array($subConfiguracion,$subDetalle, $subPresentacion));
+		$this->addSubForms(array($subConfiguracion /*,$subDetalle, $subPresentacion*/));
 		
 		$this->addElement($eAgregar);
 		

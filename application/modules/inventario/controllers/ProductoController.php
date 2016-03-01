@@ -30,15 +30,15 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos[0]);
+				//print_r($datos[0]);
 				print_r("<br />");
-				$claveProducto = $this->subparametroDAO->generarClaveProducto($datos[0]);
+				//$claveProducto = $this->subparametroDAO->generarClaveProducto($datos[0]);
 				/*
 				//print_r("<br />");
 				//print_r($claveProducto);
 				//print_r("<br />");
 				*/
-				/*
+				
 				$producto = new Inventario_Model_Producto($datos[0]);
 				$producto->setIdProducto($idProducto);
 				try{
@@ -48,7 +48,7 @@ class Inventario_ProductoController extends Zend_Controller_Action
 					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
-				}*/
+				}
 				
 			}
 		}

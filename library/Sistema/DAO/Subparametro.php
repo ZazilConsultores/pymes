@@ -76,7 +76,7 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$tablasubparametro->insert($subparametro->toArray());
 		
 	}
-	
+	 
 	public function editarSubparametro($idSubparametro, array $subParametro){
 	{
 		$tablaSubparametro = $this->tablaSubparametro;
