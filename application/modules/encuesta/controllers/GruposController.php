@@ -2,11 +2,15 @@
 
 class Encuesta_GruposController extends Zend_Controller_Action
 {
-	private $gradoDAO;
-	private $cicloDAO;
-	private $gruposDAO;
-	private $nivelDAO;
-	
+
+    private $gradoDAO = null;
+
+    private $cicloDAO = null;
+
+    private $gruposDAO = null;
+
+    private $nivelDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -51,8 +55,32 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		
     }
 
+    public function altaAction()
+    {
+        // action body
+        $request = $this->getRequest();
+		$idGrado = $this->getParam("idGrado");
+		$grado = $this->gradoDAO->obtenerGrado($idGrado);
+		
+		$formulario = new Encuesta_Form_AltaGrupoE;
+        
+		$this->view->formulario = $formulario;
+		$this->view->grado = $grado;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				
+				
+				
+			}
+		}
+		
+    }
+
 
 }
+
+
 
 
 

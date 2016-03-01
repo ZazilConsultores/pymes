@@ -7,9 +7,11 @@
 class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	private $tablaGrupo;
+	private $tablaCiclo;
 	
 	function __construct() {
 		$this->tablaGrupo = new Encuesta_Model_DbTable_GrupoE;
+		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloE;
 	}
 	
 	public function obtenerGrupos($idGrado,$idCiclo){
