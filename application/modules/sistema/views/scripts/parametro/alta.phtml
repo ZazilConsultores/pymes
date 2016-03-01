@@ -4,24 +4,33 @@
 	$messageFail = $this->messageFail;
 ?>
 <section class="row">
-	<article>
-		<div>
-			<?php echo $formulario; ?>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Alta de Parámetro.
+			</h3>
 		</div>
-		<?php if(!is_null($messageSuccess)){ ?>
-		<div class="alert alert-success" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-			<?php echo $messageSuccess; ?>
+		<div class="panel-body">
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"parametro","action"=>"index"), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Parámetros.
+			</a>
+			<?php if(!is_null($messageSuccess)){ ?>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php } ?>
+			<br /><br />
+			<?php echo $formulario ?>
 		</div>
-		<?php }elseif(!is_null($messageFail)){ ?>
-		<div class="alert alert-danger" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-			<?php echo $messageFail; ?>
-		</div>
-		<?php } ?>
-	</article>
+	</div>
 </section>

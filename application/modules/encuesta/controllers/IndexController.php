@@ -41,6 +41,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$formulario->getElement("descripcion")->setValue($encuesta->getDescripcion());
 		$formulario->getElement("estatus")->setValue($encuesta->getEstatus());
 		$formulario->getElement("submit")->setLabel("Actualizar Encuesta");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
 		$this->view->formulario = $formulario;
 		
