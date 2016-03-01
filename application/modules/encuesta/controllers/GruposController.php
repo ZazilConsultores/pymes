@@ -63,6 +63,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$grado = $this->gradoDAO->obtenerGrado($idGrado);
 		
 		$formulario = new Encuesta_Form_AltaGrupoE;
+		$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
         
 		$this->view->formulario = $formulario;
 		$this->view->grado = $grado;

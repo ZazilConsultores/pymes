@@ -16,13 +16,18 @@
 			<table class="table table-condensed table-striped">
 				<thead>
 					<th>Grado</th>
+					<th>Grupos</th>
 					<th>Descripción</th>
 				</thead>
 				<tbody>
 					<tr>
 						<td><?php echo $grado->getGrado() ?></td>
+						<td>
+							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta"),null,true) ?>">
+								<span class="glyphicon glyphicon-search"></span> Grupos
+							</a>
+						</td>
 						<td><?php echo $grado->getDescripcion() ?></td>
-						
 					</tr>
 				</tbody>
 			</table>
