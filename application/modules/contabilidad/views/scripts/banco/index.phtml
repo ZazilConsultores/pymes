@@ -1,6 +1,7 @@
 <?php 	$bancos = $this->bancos; 
 		$formulario = $this->formulario;
 		$formulario->setAction($this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "alta"), null, true));
+	$tipoBanco = Zend_Registry::get("tipoBanco");
 ?>
 
 <section class="row">
@@ -33,7 +34,8 @@
 						<td><?php echo $banco->getCuenta() ?></td>
 						<td><?php echo $banco->getBanco() ?></td>
 						<td><?php echo $banco->getCuentaContable() ?></td>
-						<td><?php echo $banco->getTipo() ?></td>
+						<td><?php echo $tipoBanco[$banco->getTipo()] ?></td>
+							
 						<td><?php echo $banco->getFecha() ?></td>
 						<td><?php echo $banco->getSaldo() ?></td>
 						<td>
