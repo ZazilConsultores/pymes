@@ -175,7 +175,18 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 		//print_r("==========");
     }
 
+    public function grupoAction()
+    {
+        // action body
+        $idNivel = $this->getParam("idNivel");
+		//$tablaNivel = new Encuesta_Model
+		
+		
+    }
+
 
 }
+
+
 
 

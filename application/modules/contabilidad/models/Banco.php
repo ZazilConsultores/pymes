@@ -85,7 +85,7 @@ class Contabilidad_Model_Banco
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idBanco", $datos)) $this->idBanco = $datos["idBanco"];
-		if(array_key_exists("idDvisa", $datos)) $this->idDivisa = $datos["idDivisa"];
+		if(array_key_exists("idDivisa", $datos)) $this->idDivisa = $datos["idDivisa"];
 		$this->cuenta = $datos["cuenta"];
 		$this->banco = $datos["banco"];
 		$this->cuentaContable = $datos["cuentaContable"];

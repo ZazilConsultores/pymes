@@ -15,34 +15,20 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		$eBanco = new Zend_Form_Element_Text('banco');
 		$eBanco->setLabel('Nombre Banco: ');
 		$eBanco->setAttrib("class", "form-control");
-		
-		$divisa = new Contabilidad_DAO_Divisa;
-		/*Divisa*/
-		/*$columnas = array('idDivisa', 'divisa');
-		$tablaDivisa = new Contabilidad_Model_DbTable_Divisa();
-		$rowset = $tablaDivisa->obtenerColumnas($columnas);
-		
-		
-		$eDivisa = new Zend_Form_Element_Select('divisa');
-		$eDivisa->setLabel('Divisa: ');
-		$eDivisa->setAttrib("class", "form-control");
-		
-		foreach ($rowset as $fila) {
-			$eDivisa->addMultiOption($fila->idDivisa, $fila->divisa);
-		}*/
-		
-		
-		$eDivisa = new Zend_Form_Element_Select("divisa");
+			
+		$eDivisa = new Zend_Form_Element_Select("idDivisa");
 		$eDivisa->setLabel("Seleccione Divisa: ");
 		$eDivisa->setAttrib("class", "form-control");
-	
-		foreach ($divisas as $divisa) {
-			$eDivisa->addMultiOption($divisa->getIdDivisa(),$divisa->getDivisa());
-		}	
 		
+		foreach ($divisas as $divisa)
+		{
+			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDivisa());		
+		}
+	
+
 		//tipoBanco
 		$tipoBanco = Zend_Registry::get("tipoBanco");	
-		
+		//$tipoBanco = Zend_Registry::get(tipoBanco);
 		$eTipoBanco = new Zend_Form_Element_Select("tipo");
 		$eTipoBanco->setLabel("Tipo Banco: ");
 		$eTipoBanco->setAttrib("class", "form-control");
@@ -75,7 +61,6 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		$this->addElement($eSaldo);
 		$this->addElement($eSubmit);	
     }
-
 
 }
 

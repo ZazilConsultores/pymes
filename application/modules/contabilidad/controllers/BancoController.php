@@ -29,28 +29,21 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 
     public function altaAction()
     {
-        //$formularioAgregarBanco = new Contabilidad_Form_AltaBanco;
-       	// $this->view->formulario = $formularioAgregarBanco;
        	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AltaBanco;
 		$this->view->formulario = $formulario;
+		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
-				//print_r("=================");
 				$banco = new Contabilidad_Model_Banco($datos);
-				print_r($banco->toArray());
 				$this->bancoDAO->crearBanco($banco);
-				print_r($banco);
-				//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
+				print_r($datos);
 			}
-			//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
-		}	
-    }
-
-
-}
+			$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
+			}
+		}
+ }
 
 
 

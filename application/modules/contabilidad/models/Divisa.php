@@ -57,7 +57,8 @@ class Contabilidad_Model_Divisa
 	
 	public function __construct(array $datos)
 	{
-		if(array_key_exists("idDivisa", $datos)) $this->idDivisa = $datos["idDivisa"];
+		if(array_key_exists("idDvisa", $datos)) $this->idDivisa = $datos["idDivisa"];
+		
 		$this->divisa = $datos["divisa"];
 		$this->claveDivisa = $datos["claveDivisa"];
 		$this->descripcion = $datos["descripcion"];

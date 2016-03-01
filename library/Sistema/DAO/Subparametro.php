@@ -7,10 +7,28 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	
 	function __construct()
 	{
-
 		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
-		//$this->tablaParametro = new Sistema_Model_DbTable_Parametro;
+		//$this->tablaParametro = new Sistema_Model_DbTable_Parametro;	
+	}
 	
+	public function generarClaveProducto(array $claves){
+		$tablaSubparametro= $this->tablaSubparametro;
+		$claveProducto = "";
+		$idsSubparametro = "";
+		
+		foreach ($claves as $idParametro => $idSubparametro) {
+			if($idSubparametro <> "0"){
+				$sub = $this->obtenerSubparametro($idSubparametro);
+				$claveProducto .= $sub->getClaveSubparametro();
+				$idsSubparametro .=  $sub->getIdSubparametro() . ",";
+			}
+		}
+		
+		print_r($claveProducto);
+		print_r("<br />");
+		print_r($idsSubparametro);
+		
+		return $claveProducto;
 	}
 		
 	public function obtenerSubparametros($idparametro)
@@ -38,19 +56,9 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$rowSubparametro = $tablaSubparametro->fetchRow($select);
 		
 		$subparametroModel = new Sistema_Model_Subparametro($rowSubparametro->toArray());
-		//$subparametroModel->setIdSubparametro($rowSubparametro->$idSubparametro);
 		
 		return $subparametroModel;
-		/*	
-		$tablaMunicipio = $this->tablaMunicipio;
-		$select = $tablaMunicipio->select()->from($tablaMunicipio)->where("idMunicipio = ?",$idMunicipio);
-		$rowMunicipio = $tablaMunicipio->fetchRow($select);
 		
-		$municipioModel = new Sistema_Model_Municipio($rowMunicipio->toArray());
-		$municipioModel->setIdMunicipio($rowMunicipio->idMunicipio);
-		
-		return $municipioModel;
-		*/
 		
 	}
 	public function crearSubparametro(Sistema_Model_Subparametro $subparametro)
@@ -62,6 +70,9 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		if(!is_null($row)) throw new Util_Exception_BussinessException("Subparámetro: <strong>" . $subparametro->getSubparametro() . "</strong> duplicado en el sistema");
 		$subparametro->setHash($subparametro->getHash());
 		$subparametro->setFecha(date("Y-m-d H:i:s", time()));
+		
+		$subparametro->setClaveSubparametro($claveSubparametro);
+		
 		$tablasubparametro->insert($subparametro->toArray());
 		
 	}

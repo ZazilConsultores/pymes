@@ -2,14 +2,14 @@
 
 class Inventario_Model_Multiplos
 {
-	private $Multiplos;
+	private $idMultiplos;
 
-    public function getMultiplos() {
-        return $this->Multiplos;
+    public function getIdMultiplos() {
+        return $this->idMultiplos;
     }
     
-    public function setMultiplos($Multiplos) {
-        $this->Multiplos = $Multiplos;
+    public function setIdMultiplos($idMultiplos) {
+        $this->idMultiplos = $idMultiplos;
     }
 	
 	private $idProducto;
@@ -51,17 +51,40 @@ class Inventario_Model_Multiplos
     public function setAbreviatura($abreviatura) {
         $this->abreviatura = $abreviatura;
     }
+	
+	private $hash;
 
+    public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey(array($this->unidad)));
+        return $this->hash;
+    }
     
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
 
-    
-
-    
-
-    
-
-    
-
-
+	public function __construct(array $datos) {
+	    if(array_key_exists("idMultiplos", $datos)) $this->idMultiplos = $datos["idMultiplos"];
+		if(array_key_exists("idProducto", $datos)) $this->idProducto = $datos["idProducto"];
+		$this->cantidad = $datos["cantidad"];
+		
+		$this->unidad = $datos["unidad"];
+		$this->abreviatura = $datos["abreviatura"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+    }
+	
+	public function toArray() {
+		$datos = array();
+		
+		$datos["idMultiplos"] = $this->idMultiplos;
+		$datos["idProducto"] = $this->idProducto;
+		$datos["cantidad"] = $this->cantidad;
+		$datos["unidad"] = $this->unidad;
+		$datos["abreviatura"] = $this->abreviatura;
+		$datos["hash"] = $this->hash;	
+		
+		return $datos;
+	}
+	
 }
 

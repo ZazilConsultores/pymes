@@ -42,24 +42,29 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		return $modelMultiplos;
 		
 	}
-	
-	public function crearMultiplos(Inventario_Model_Multiplos $idMultiplos)
+
+	public function crearMultiplos(Inventario_Model_Multiplos $multiplo)
 	{
 		$tablaMultiplo = $this->tablaMultiplo;
+		$select = $tablaMultiplo->select()->from($tablaMultiplo)->where( "hash = ? ", $multiplo->getHash());
+		$row = $tablaMultiplo->fetchRow($select);
+		
+		if(!is_null($row)) throw new Util_Exception_BussinessException("Multiplo: <strong>" . $multiplo->getUnidad() . "</strong> duplicado en el sistema");
+		//$multiplo->setHash($multiplo->getHash());
+		
 		$tablaMultiplo->insert($multiplo->toArray());
 	}
 	
-	public function editarMultiplo($idMultiplos,Inventario_Model_Multiplos $multiplo)
+	public function editarMultiplo($idMultiplos, array $multiplo)
 	{
 		$tablaMultiplo = $this->tablaMultiplo;
-		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos= ?", $idMultiplos);
+		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos = ?", $idMultiplos);
+		$tablaMultiplo->update($multiplo, $where);
 		
 	}
 	
 	public function eliminarMultiplo($idMultiplos)
 	{
-		$tablaMultiplo = $this->tablaMultiplo;
-		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos = ?", $idMultiplos);		
-		$tablaMultiplo->delete($where);
+		
 	}
 }

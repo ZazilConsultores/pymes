@@ -1,0 +1,31 @@
+Preescolar
+Nivel educativo que se cursa en 2 años desde los 4 a 6 años de edad
+Grados
+-- Primer Grado Escolar: Se cursa de los 4 a los 5 años de edad: El estudiante desarrolla las siguientes habilidades:. 
+-- Segundo Grado Escolar: Se cursa de los 5 a los 6 años de edad: El estudiante desarrolla las siguientes habilidades.
+
+
+Primaria
+Nivel educativo que se cursa en 6 años desde los 6 a 12 años de edad
+-- Primer Grado Escolar: Se cursa de los 6 a los 7 años de edad.
+-- Segundo Grado Escolar: Se cursa de los 7 a los 8 años de edad.
+-- Tercer Grado Escolar: Se cursa de los 8 a los 9 años de edad.
+-- Cuarto Grado Escolar: Se cursa de los 9 a los 10 años de edad.
+-- Quinto Grado Escolar: Se cursa de los 10 a los 11 años de edad.
+-- Sexto Grado Escolar: Se cursa de los 11 a los 12 años de edad.
+
+Secundaria
+Nivel educativo que se cursa en 3 años desde los 12 a 15 años de edad
+-- Primer Grado Escolar: Se cursa de los 12 a los 13 años de edad.
+-- Segundo Grado Escolar: Se cursa de los 13 a los 14 años de edad.
+-- Tercer Grado Escolar: Se cursa de los 14 a los 15 años de edad.
+
+Preparatoria
+Nivel educativo que se cursa en 3 años desde los 15 a 18 años de edad
+-- Primer Semestre Escolar: Se cursa en medio año.
+-- Segundo Semestre Escolar: Se cursa en medio año.
+-- Tercer Semestre Escolar: Se cursa en medio año.
+-- Cuarto Semestre Escolar: Se cursa en medio año.
+-- Quinto Semestre Escolar: Se cursa en medio año.
+-- Sexto Semestre Escolar: Se cursa en medio año.
+
