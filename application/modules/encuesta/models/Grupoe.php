@@ -49,6 +49,7 @@ class Encuesta_Model_Grupoe
     private $hash;
 
     public function getHash() {
+    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
         return $this->hash;
     }
     
