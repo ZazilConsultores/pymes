@@ -23,17 +23,17 @@
 					<th>Nivel</th>
 					<th>Grado</th>
 					<th>Grupo</th>
-					<th>Operaciones</th>
+					<th>Administración</th>
 				</thead>
 				<tbody>
 					<?php foreach ($grupos as $grupo) : ?>
 					<tr>
-						<td><?php $ciclo->getCiclo() ?></td>
-						<td><?php $nivel->getNivel() ?></td>
-						<td><?php $grado->getGrado() ?></td>
-						<td><?php $grupo->getGrupo() ?></td>
+						<td><?php echo $ciclo->getCiclo() ?></td>
+						<td><?php echo $nivel->getNivel() ?></td>
+						<td><?php echo $grado->getGrado() ?></td>
+						<td><?php echo $grupo->getGrupo() ?></td>
 						<td>
-							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"operaciones"),null,true) ?>">
+							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"opciones","idGrupo"=>$grupo->getIdGrupo()),null,true) ?>">
 								Opciones del Grupo
 							</a>
 						</td>
