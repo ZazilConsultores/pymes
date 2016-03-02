@@ -1,4 +1,18 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Ciclo</b> and script/action name <b>admin</b></p>
-</div>
+<?php 
+	$ciclo = $this->ciclo;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Ciclo Escolar: <strong><?php echo $ciclo->getCiclo(); ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index"), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Ciclos Escolares.
+			</a><br /><br />
+			<?php echo $formulario ?>
+		</div>
+	</div>
+</section>

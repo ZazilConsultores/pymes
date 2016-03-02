@@ -1,7 +1,15 @@
 USE generaldos;
 
+INSERT INTO `cicloe` VALUES (1,'2017A','2016-01-25 12:00:00','2016-07-28 12:00:00','Grado prueba','fdc93a2d1969482db67c774b93fa1ac7');
+INSERT INTO `nivele` VALUES (1,'Preescolar','Nivel educativo que se cursa en 2 años desde los 4 a 6 años de edad','db459b6176646bd2534fed18f6454155'),(2,'Primaria','Nivel educativo que se cursa en 6 años desde los 6 a 12 años de edad','7b99555169c487e737f0e98bac011bd8'),(3,'Secundaria','Nivel educativo que se cursa en 3 años desde los 12 a 15 años de edad','e6305f57bf72dbef5de2fc10aa057200'),(4,'Preparatoria','Nivel educativo que se cursa en 3 años desde los 15 a 18 años de edad','5134ff606971ff92b7584d459dcd3027');
+INSERT INTO `gradoe` VALUES (1,1,'Primer Grado Escolar','1','Se cursa de los 4 a los 5 años de edad','2c3e61dcef4f5e36538140a05fb38c0d'),(2,1,'Segundo Grado Escolar','2','Se cursa de los 5 a los 6 años de edad','e55e2d7ec32fb4906b502da2c328f34b'),(3,2,'Primer Grado Escolar','1','Se cursa de los 6 a los 7 años de edad.','9a3cca275768ac8f24ac85cadb15092b'),(4,2,'Segundo Grado Escolar','2','Se cursa de los 7 a los 8 años de edad.','b9a9523a5944b096367f301a2e6a8e21'),(5,2,'Tercer Grado Escolar','3','Se cursa de los 8 a los 9 años de edad.','e124769ea6789a5a168d3146311df56f'),(6,2,'Cuarto Grado Escolar','4','Se cursa de los 9 a los 10 años de edad.','b3732dbc87e25b2cdec62081866360f6'),(7,2,'Quinto Grado Escolar','5','Se cursa de los 10 a los 11 años de edad.','f659c809a6e561c2170f81dd39f85ba8'),(8,2,'Sexto Grado Escolar','6','Se cursa de los 11 a los 12 años de edad.','476ba64c9dc63fc6cef0871f73d2c562'),(9,3,'Primer Grado Escolar','1','Se cursa de los 12 a los 13 años de edad.','5276ec572c1e7eb92716865c983e79b7'),(10,3,'Segundo Grado Escolar','2','Se cursa de los 13 a los 14 años de edad.','f23699df22fe5366356ba739ab5be89d'),(11,3,'Tercer Grado Escolar','3','Se cursa de los 14 a los 15 años de edad.','2584172095d847afc16ee4714ce15226'),(12,4,'Primer Semestre Escolar','1','Se cursa en medio año.','737d49a5a8cd8a733a79962666198f84'),(13,4,'Segundo Semestre Escolar','2','Se cursa en medio año.','0f0efbdb038c6c1164e90ab2ac7de87a'),(14,4,'Tercer Semestre Escolar','3','Se cursa en medio año.','2c3becff875b6eda8adf395f5b637c45'),(15,4,'Cuarto Semestre Escolar','4','Se cursa en medio año.','5f428c10b144d29c997a9b6206197abe'),(16,4,'Quinto Semestre Escolar','5','Se cursa en medio año.','5ec3794f8daba2f47f71144203ac12e2'),(17,4,'Sexto Semestre Escolar','6','Se cursa en medio año.','b0d0d1342ddcad68f4474cddb23bff22');
+
+
+
+
 select * from nivele;
 select * from gradoe;
+select * from cicloe;
 
 select * from empresas;
 select * from empresa;

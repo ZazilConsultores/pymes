@@ -1,6 +1,8 @@
 <?php 
 	$nivel = $this->nivel;
 	$grados = $this->grados;
+	//print_r($grados);
+	
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -16,10 +18,13 @@
 			
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"alta","idNivel"=>$nivel->getIdNivel()),null,true) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Agregar Grado
-			</a><br /><br />
+			</a>
+			<a class="btn btn-info <?php if(empty($grados)) echo "disabled" ?>" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta","idNivel"=>$nivel->getIdNivel()),null,true) ?>">
+				<span class="glyphicon glyphicon-search"></span> Búsqueda de Grupos Escolares
+			</a>
+			<br /><br />
 			<table class="table table-condensed table-striped">
 				<thead>
-					<th>Nivel</th>
 					<th>Grado</th>
 					<th>Descripción</th>
 					<th>Configuración</th>
@@ -27,11 +32,10 @@
 				<tbody>
 					<?php foreach ($grados as $grado) : ?>
 					<tr>
-						<td><?php echo $nivel->getNivel() ?></td>
 						<td><?php echo $grado->getGrado() ?></td>
 						<td><?php echo $grado->getDescripcion() ?></td>
 						<td>
-							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()),null,true) ?>">
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>

@@ -14,7 +14,9 @@
 		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/engranes.jpg">
 		
 		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.structure.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.theme.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
@@ -25,6 +27,7 @@
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.validate.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/additional-methods.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-ui.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/datepicker-es.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/bootstrap.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.dataTables.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.bootstrap.min.js"></script>
@@ -59,20 +62,25 @@
 	<body>
 		<!-- Menu principal -->
 		<?php echo $this->partial("partials/menus/principal.phtml"); ?>
+		<?php
+			$anchoLateral = "col-md-2";
+			$anchoPrincipal = "col-md-10";
+			$anchoTotal = "col-md-12";
+		 ?>
 		<!--Prueba -->
 		<br />
 		<div class="container">
 			<section class="main row">
-				<aside class="col-md-2">
+				<aside class="<?php echo $clase = (is_null($this->links)) ? "hidden" : $anchoLateral ; ?>">
 					<header>
 						<h3></h3>
 					</header>
 					<?php if (!is_null($this->links)){?>
-					<?php echo $this->partial("partials/menus/menuAside.phtml", array("links" => $this->links)); ?>
+						<?php echo $this->partial("partials/menus/menuAside.phtml", array("links" => $this->links)); ?>
 					<?php } ?>
 				</aside>
 				<!-- Contenido Web -->
-				<article class="col-md-10">
+				<article class="<?php echo $clase = (is_null($this->links)) ? $anchoTotal : $anchoLateral ; ?>">
 					<?php echo $this->layout()->content; ?>
 				</article>
 			</section>

@@ -10,7 +10,15 @@ class Encuesta_DAO_Grado implements Encuesta_Interfaces_IGrado {
 	
 	public function __construct() {
 		$this->tablaGrado = new Encuesta_Model_DbTable_GradoE;
+	}
+	
+	public function obtenerGrado($idGrado){
+		$tablaGrado = $this->tablaGrado;
+		$select = $tablaGrado->select()->from($tablaGrado)->where("idGrado = ?",$idGrado);
+		$rowGrado = $tablaGrado->fetchRow($select);
+		$modelGrado = new Encuesta_Model_Grado($rowGrado->toArray());
 		
+		return $modelGrado;
 	}
 	
 	public function obtenerGrados($idNivel){

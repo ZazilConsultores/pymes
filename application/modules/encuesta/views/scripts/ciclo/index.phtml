@@ -15,19 +15,21 @@
 			<table class="table table-striped table-condensed">
 				<thead>
 					<th>Ciclo</th>
+					<th>Inicio</th>
+					<th>Término</th>
 					<th>Configuración</th>
-					<th>Anotaciones</th>
 				</thead>
 				<tbody>
 					<?php foreach ($ciclos as $ciclo) : ?>
 					<tr>
 						<td><?php echo $ciclo->getCiclo() ?></td>
+						<td><?php echo $ciclo->getInicio() ?></td>
+						<td><?php echo $ciclo->getTermino() ?></td>
 						<td>
-							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo->getIdCiclo()),null,true) ?>">
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo->getIdCiclo()),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar 
 							</a>
 						</td>
-						<td><?php echo $ciclo->getAnotaciones() ?></td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

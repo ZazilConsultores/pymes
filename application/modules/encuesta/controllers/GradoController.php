@@ -54,6 +54,19 @@ class Encuesta_GradoController extends Zend_Controller_Action
     public function adminAction()
     {
         // action body
+        //$idNivel = $this->getParam("idNivel");
+		//$nivel = $this->nivelDAO->obtenerNivel($idNivel);
+		
+		$idGrado = $this->getParam("idGrado");
+		$grado = $this->gradoDAO->obtenerGrado($idGrado);
+		$formulario = new Encuesta_Form_AltaGrado;
+		$formulario->getElement("grado")->setValue($grado->getGrado());
+		$formulario->getElement("descripcion")->setValue($grado->getDescripcion());
+		$formulario->getElement("objetivo")->setValue($grado->getAbreviatura());
+		
+		$this->view->grado = $grado;
+		$this->view->formulario = $formulario;
+		
     }
 
     public function editaAction()

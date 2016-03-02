@@ -1,34 +1,43 @@
 <?php 
-	$nivel = $this->nivel;
+	$grado = $this->grado;
 	$formulario = $this->formulario;
 ?>
 <section class="row">
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Nivel: <?php echo $nivel->getNivel(); ?>
+				Grado: <strong><?php echo $grado->getGrado(); ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"alta","idGrado"=>$grado->getIdGrado()),null,true) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Grupo
+			</a>
 			<table class="table table-condensed table-striped">
 				<thead>
-					<th>Nivel</th>
+					<th>Grado</th>
+					<th>Grupos</th>
 					<th>Descripción</th>
 				</thead>
 				<tbody>
 					<tr>
-						<td><?php $nivel->getNivel() ?></td>
-						<td><?php $nivel->getDescripcion() ?></td>
+						<td><?php echo $grado->getGrado() ?></td>
+						<td>
+							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta","idNivel"=>$grado->getIdNivel()),null,true) ?>">
+								<span class="glyphicon glyphicon-search"></span> Grupos
+							</a>
+						</td>
+						<td><?php echo $grado->getDescripcion() ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 	
-	<div class="panel panel-success">
+	<div class="panel panel-warning">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Editar Nivel: <?php echo $nivel->getNivel(); ?>
+				Editar Grado: <strong><?php echo $grado->getGrado(); ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">

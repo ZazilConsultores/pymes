@@ -5,9 +5,9 @@ class Inventario_Form_AltaProducto extends Zend_Form
 
     public function init()
     {
-        //===================================================================================>>>>
-		$subConfiguracion = new Zend_Form_SubForm();
+    	$subConfiguracion = new Zend_Form_SubForm();
 		$subConfiguracion->setLegend("Configuracion de Producto");
+ //===================================================================================>>>>
 		
 		$parametroDAO = new Inventario_DAO_Parametro;
 		$subparametroDAO = new Sistema_DAO_Subparametro;
@@ -19,34 +19,43 @@ class Inventario_Form_AltaProducto extends Zend_Form
 			$subparametros = $subparametroDAO->obtenerSubparametros($parametro->getIdParametro());
 			$elemento = new Zend_Form_Element_Select($parametro->getIdParametro());
 			$elemento->setLabel($parametro->getParametro());
-			$elemento->setAttrib("class", "form-control");
 			$elemento->addMultiOption("0","Seleccione opcion");
-			foreach ($subparametros as $subparametro) {
-				$elemento->addMultiOption($subparametro->getIdSubparametro(),$subparametro->getSubparametro());	
-				$elemento->setRegisterInArrayValidator(FALSE);
+			$elemento->setAttrib("class", "form-control");
+			$elemento->setRegisterInArrayValidator(FALSE);
+			
+			
+			
+			foreach ($subparametros as $subparametro) {	
+				$elemento->addMultiOption($subparametro->getIdSubparametro(),$subparametro->getSubparametro());
 			}
 			
-			
 			$subConfiguracion->addElement($elemento);
-			
 		}
+	
        	$subDetalle = new Zend_Form_SubForm();
 		$subDetalle->setLegend("Detalle Producto");
+//===================================================================================>>>>		
 		
 		/*Descripcion */
 		$eProducto = new Zend_Form_Element_Text('producto');
 		$eProducto->setLabel('Descripcion:');
 		$eProducto->setAttrib('class','form-control');
 		
+		$eClaveProducto = new Zend_Form_Element_Text('claveProducto');
+		$eClaveProducto->setLabel('Clave Producto:');
+		$eClaveProducto->setAttrib('class','form-control');
 	
 		$eCodigoBarras = new Zend_Form_Element_Text('codigoBarras');
 		$eCodigoBarras->setLabel('Codigo de Barras:');
 		$eCodigoBarras->setValue('-');
 		$eCodigoBarras->setAttrib('class','form-control');
 		
+		$subDetalle->addElements(array($eProducto,$eClaveProducto, $eCodigoBarras));
+		
 		/*Presentacion*/		
 		$subPresentacion = new Zend_Form_SubForm();
 		$subPresentacion->setLegend("Presentacion:");
+	//===================================================================================>>>>		
 		
 		$unidadDAO = new Inventario_DAO_Unidad;
 		$unidades = $unidadDAO->obtenerUnidades();
@@ -63,27 +72,16 @@ class Inventario_Form_AltaProducto extends Zend_Form
 			$ePresentacion->addMultiOption($unidad->getIdUnidad(),$unidad->getUnidad());
 		}
 		
-		$eAgregar = new Zend_Form_Element_Submit('submit');
+		$subPresentacion->addElements(array($eCantidad,$ePresentacion));
+ //===================================================================================>>>>
+       	$eAgregar = new Zend_Form_Element_Submit('submit');
 		$eAgregar->setLabel('Agregar Producto');
 		$eAgregar->setAttrib("class", "btn btn-success");
 		
-		$eClaveProducto = new Zend_Form_Element_Text('claveProducto');
-		$eClaveProducto->setLabel('Clave Producto:');
-		$eClaveProducto->setAttrib('class','form-control');	
-		//$eClaveProducto = $subparametro->getSubparametro();
-		//$subConfiguracion->addElements(array($eTipoArticulo));
-		$subDetalle->addElements(array( $eClaveProducto,$eProducto, $eCodigoBarras));
-		$subPresentacion->addElements(array($eCantidad,$ePresentacion));
-		//$subForm->addElements(array($eTipoArticulo, $eSubtipo,$eMarcas, $eMedidas,$eColores,$eModelo,$eLargo,$eProducto,$eClaveProducto,$eCodigoBarras,$eAgregar));
-	
-		$this->addSubForms(array($subConfiguracion,$subDetalle, $subPresentacion));
 		
+		$this->addSubForms(array($subConfiguracion, $subDetalle,$subPresentacion));	
 		$this->addElement($eAgregar);
+	}//cierra el public
 		
-		//$this->addElements(array($eTipoArticulo, $eSubtipo, $eMarcas,$eMedidas,$eColores,$eModelo,$eLargo,$eProducto,$eClaveProducto, $eCodigoBarras,$eAgregar));
-
-		
-	}
-		
-}
+}//cierra el Zend_Form
 

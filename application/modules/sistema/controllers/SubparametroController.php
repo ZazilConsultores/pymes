@@ -39,6 +39,7 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 				$subparametro = new Sistema_Model_Subparametro($datos[0]);
 				$subparametro->setIdParametro($idParametro);
 				//print_r($datos);		
+				//subparametro->setClaveSubparametro($claveSubparametro);
 				//$subparametro->setHash($subparametro->getHash());
 				//$subparametro->setFecha(date("Y-m-d H:i:s", time()));		
 				try{
