@@ -1,11 +1,13 @@
 <?php 
 	$grupo = $this->grupo;
+	$nivel = $this->nivel;
+	$grado = $this->grado;
 ?>
 <section class="row">
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Opciones del Grupo
+				Opciones del Grupo: <strong><?php echo $grupo->getGrupo() ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">

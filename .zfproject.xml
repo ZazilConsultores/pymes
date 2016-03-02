@@ -293,6 +293,12 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="opciones"/>
             </controllerFile>
+            <controllerFile controllerName="Materia">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Profesor">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -344,6 +350,8 @@
             <modelFile modelName="Grado"/>
             <modelFile modelName="Ciclo"/>
             <modelFile modelName="Grupoe"/>
+            <modelFile modelName="Materia"/>
+            <modelFile modelName="Profesor"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -581,6 +589,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Grupos">
                 <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Profesor">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1271,6 +1285,12 @@
                 <testApplicationActionMethod forActionName="consulta"/>
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="opciones"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Materia">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Profesor">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

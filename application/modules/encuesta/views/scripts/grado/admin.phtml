@@ -23,7 +23,7 @@
 					<tr>
 						<td><?php echo $grado->getGrado() ?></td>
 						<td>
-							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta","idNivel"=>$grado->getIdNivel()),null,true) ?>">
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta","idGrado"=>$grado->getIdGrado()),null,true) ?>">
 								<span class="glyphicon glyphicon-search"></span> Grupos
 							</a>
 						</td>

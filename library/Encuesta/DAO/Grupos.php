@@ -29,9 +29,19 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 		return $modelGrupos;
 	}
 	
+	public function obtenerGrupo($idGrupo){
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?",$idGrupo);
+		$rowGrupo = $tablaGrupo->fetchRow($select);
+		
+		$modelGrupo = new Encuesta_Model_Grupoe($rowGrupo->toArray());
+		
+		return $modelGrupo;
+	}
+	
 	public function crearGrupo($idGrado,$idCiclo,Encuesta_Model_Grupoe $grupo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrado = ?",$idGrado)->where("idCiclo = ?",$idCiclo);
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrado = ?",$idGrado)->where("idCiclo = ?",$idCiclo)->where("grupo = ?",$grupo->getGrupo());
 		$grupoe = $tablaGrupo->fetchRow($select);
 		
 		$grupo->setIdCiclo($idCiclo);
