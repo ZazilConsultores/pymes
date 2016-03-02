@@ -31,20 +31,20 @@ $application = new Zend_Application(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'general',
+		'dbname' => 'General',
 	);
  $connlocaldos = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'generaldos',
+		'dbname' => 'GeneralDos',
 	);
 $connserver = array(
 		'host' => '192.168.1.5',
 		'username' => 'zazil',
 		'password' => 'admin',
-		//'dbname' => 'General',
-		'dbname' => 'GeneralSagrado',
+		'dbname' => 'General',
+		//'dbname' => 'GeneralSagrado',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',
@@ -66,7 +66,7 @@ Zend_Registry::set('connlocal', $connlocal);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 
-$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
+$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
 //$db = Zend_Db::factory('PDO_MYSQL', $connserver);
