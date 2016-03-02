@@ -45,10 +45,10 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 	
 	public function crearProducto(Inventario_Model_Producto $producto){
 		//idsSubparametro 
-		$subparametro= new Sistema_DAO_Subparametro;	
-		$subparametro->generarClaveProducto($claves);
-		$claveProducto = $subparametro->generarClaveProducto($claveSubproducto);
-		$idsSubparametro =$subparametro->generarClaveProducto($idsSubparametro);
+		//$subparametro= new Sistema_DAO_Subparametro;	
+		//$subparametro->generarClaveProducto($claves);
+		//$claveProducto = $subparametro->generarClaveProducto($claveSubproducto);
+		//$idsSubparametro =$subparametro->generarClaveProducto($idsSubparametro);
 		
 		
 		//$tablaProducto = $this->tablaProducto;

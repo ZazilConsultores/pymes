@@ -24,11 +24,30 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 			}
 		}
 		
-		print_r($claveProducto);
-		print_r("<br />");
-		print_r($idsSubparametro);
+		//print_r($claveProducto);
+		//print_r("<br />");
+		//print_r($idsSubparametro);
 		
 		return $claveProducto;
+	}
+	
+	public function generarIdsSubparametro(array $claves)
+	
+	{
+		$tablaSubparametro= $this->tablaSubparametro;
+		$claveProducto = "";
+		$idsSubparametro = "";
+		
+		foreach ($claves as $idParametro => $idSubparametro) {
+			if($idSubparametro <> "0"){
+				$sub = $this->obtenerSubparametro($idSubparametro);
+				$claveProducto .= $sub->getClaveSubparametro();
+				$idsSubparametro .=  $sub->getIdSubparametro() . ",";
+			}
+		}
+		
+		return $idsSubparametro;
+		
 	}
 		
 	public function obtenerSubparametros($idparametro)
@@ -71,7 +90,7 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$subparametro->setHash($subparametro->getHash());
 		$subparametro->setFecha(date("Y-m-d H:i:s", time()));
 		
-		$subparametro->setClaveSubparametro($claveSubparametro);
+		//$subparametro->setClaveSubparametro($claveSubparametro);
 		
 		$tablasubparametro->insert($subparametro->toArray());
 		
