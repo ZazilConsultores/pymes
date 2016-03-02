@@ -1,1 +1,29 @@
-<?php echo $this->formulario ?>
+
+<?php 
+	$formulario = $this->formulario;
+	$messageSuccess = $this->messageSuccess;
+	$messageFail = $this->messageFail;
+?>
+<section class="row">
+	<article>
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+		<?php if(!is_null($messageSuccess)){ ?>
+		<div class="alert alert-success" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+			<?php echo $messageSuccess; ?>
+		</div>
+		<?php }elseif(!is_null($messageFail)){ ?>
+		<div class="alert alert-danger" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+			<?php echo $messageFail; ?>
+		</div>
+		
+		<?php } ?>
+	</article>
+</section>

@@ -7,8 +7,9 @@
 interface Inventario_Interfaces_IBanco{
 		
 	public function obtenerBancos();
+	public function obtenerBanco($idBanco);
 	public function crearBanco(Contabilidad_Model_Banco $idBanco);
-	public function editarBanco($idBanco);
+	public function editarBanco($idBanco,array $banco);
 	public function eliminarBanco($idBanco);
 	
 }
