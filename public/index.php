@@ -31,7 +31,7 @@ $application = new Zend_Application(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'general',
+		'dbname' => 'General',
 	);
  $connlocaldos = array(
 		'host' => 'localhost',
