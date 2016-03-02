@@ -32,6 +32,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$idCiclo = $this->getParam("idCiclo");
 		$idNivel = $this->getParam("idNivel");
 		
+		$request = $this->getRequest();
 		$formulario = new Encuesta_Form_ConsultaGrupos;
 		$grados = $this->gradoDAO->obtenerGrados($idNivel);
 		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
@@ -42,17 +43,23 @@ class Encuesta_GruposController extends Zend_Controller_Action
 			foreach ($grados as $grado) {
 				$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
 			}
-		}
-        
-		
-		
-		
+		}		
 		//$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $idCiclo);
 		
 		$this->view->formulario = $formulario;
 		$this->view->nivel = $nivel;
-		$this->view->grupos = array();
+		$this->view->ciclo = $this->cicloDAO->obtenerCicloActual();
+		//$this->view->grupos = array();
 		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$grupos = $this->gruposDAO->obtenerGrupos($datos["grado"], $datos["ciclo"]);
+				$this->view->grado = $this->gradoDAO->obtenerGrado($datos["grado"]);
+				$this->view->grupos = $grupos;
+			}
+		}
     }
 
     public function altaAction()
@@ -63,13 +70,26 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$grado = $this->gradoDAO->obtenerGrado($idGrado);
 		
 		$formulario = new Encuesta_Form_AltaGrupoE;
+		$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
         
 		$this->view->formulario = $formulario;
 		$this->view->grado = $grado;
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$datos["idCiclo"] = $datos["ciclo"];
+				$datos["idGrado"] = $datos["grado"];
+				$grupo = new Encuesta_Model_Grupoe($datos);
+				$grado->setHash($grupo->getHash());
+				//print_r("<br/>");
+				//print_r($grupo->toArray());
+				try{
+					$this->gruposDAO->crearGrupo($datos["idGrado"], $datos["idCiclo"], $grupo);
+				}catch(Exception $ex){
+					print_r($ex->getMessage());
+				}
 				
 				
 			}
@@ -77,8 +97,15 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		
     }
 
+    public function opcionesAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

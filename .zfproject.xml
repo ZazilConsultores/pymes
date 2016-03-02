@@ -291,6 +291,7 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="consulta"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="opciones"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -577,6 +578,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Grupos">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="opciones"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1274,6 +1278,7 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="consulta"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="opciones"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
