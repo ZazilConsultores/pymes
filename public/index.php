@@ -91,6 +91,7 @@ $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
+$gradosEscolares = array("1°","2°","3°","4°","5°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°","16°");
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 //============================================================================ DECORATORS
 //text form element table decorators
@@ -134,6 +135,6 @@ Zend_Registry::set('estatus', $estatus);
 Zend_Registry::set('tipoEmpresa', $tipoEmpresa);
 Zend_Registry::set('tipoTelefono', $tipoTelefono);
 Zend_Registry::set('tipoBanco', $tipoBanco);
-
+Zend_Registry::set('gradosEscolares', $gradosEscolares);
 $application->bootstrap()
             ->run();

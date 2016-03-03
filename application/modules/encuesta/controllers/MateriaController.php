@@ -13,6 +13,27 @@ class Encuesta_MateriaController extends Zend_Controller_Action
         // action body
     }
 
+    public function adminAction()
+    {
+        // action body
+    }
+
+    public function altaAction()
+    {
+        // action body
+    }
+
+    public function editaAction()
+    {
+        // action body
+    }
+
 
 }
+
+
+
+
+
+
 

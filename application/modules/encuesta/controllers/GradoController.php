@@ -62,7 +62,7 @@ class Encuesta_GradoController extends Zend_Controller_Action
 		$formulario = new Encuesta_Form_AltaGrado;
 		$formulario->getElement("grado")->setValue($grado->getGrado());
 		$formulario->getElement("descripcion")->setValue($grado->getDescripcion());
-		$formulario->getElement("objetivo")->setValue($grado->getAbreviatura());
+		//$formulario->getElement("objetivo")->setValue($grado->getObjetivo());
 		
 		$this->view->grado = $grado;
 		$this->view->formulario = $formulario;

@@ -295,6 +295,9 @@
             </controllerFile>
             <controllerFile controllerName="Materia">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Profesor">
               <actionMethod actionName="index"/>
@@ -595,6 +598,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Profesor">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="edita"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1296,6 +1308,9 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Materia">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Profesor">
                 <testApplicationActionMethod forActionName="index"/>
