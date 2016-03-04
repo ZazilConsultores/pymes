@@ -2,8 +2,10 @@
 
 class Encuesta_GradoController extends Zend_Controller_Action
 {
-	private $nivelDAO;
-	private $gradoDAO;
+
+    private $nivelDAO = null;
+
+    private $gradoDAO = null;
 
     public function init()
     {
@@ -79,8 +81,15 @@ class Encuesta_GradoController extends Zend_Controller_Action
         // action body
     }
 
+    public function materiasAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

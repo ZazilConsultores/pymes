@@ -1,4 +1,32 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Materia</b> and script/action name <b>alta</b></p>
-</div>
+<?php
+	$formulario = $this->formulario;
+?>
+<section class="row">
+	<?php echo $formulario; ?>
+</section>
+<script>
+	$().ready(function(){
+		$("select#nivel").on('change', function(){
+			console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/encuesta/json/grados/idNivel/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#grado").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#grado").append($("<option></option>").attr("value",data[i].idGrado).text(data[i].grado));
+						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
+					});
+					
+				}
+			});
+		});
+		
+	});
+</script>

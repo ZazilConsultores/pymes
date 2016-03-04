@@ -11,6 +11,7 @@ select * from nivele;
 select * from gradoe;
 select * from cicloe;
 select * from grupoe;
+select * from materiae;
 
 select * from empresas;
 select * from empresa;
