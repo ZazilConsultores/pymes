@@ -208,6 +208,7 @@
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
               <actionMethod actionName="grados"/>
+              <actionMethod actionName="grupos"/>
             </controllerFile>
             <controllerFile controllerName="Seccion">
               <actionMethod actionName="index"/>
@@ -627,6 +628,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Grupos">
                 <viewScriptFile forActionName="asociarp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="grupos"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1241,6 +1245,7 @@
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="grados"/>
+                <testApplicationActionMethod forActionName="grupos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Seccion">
                 <testApplicationActionMethod forActionName="index"/>

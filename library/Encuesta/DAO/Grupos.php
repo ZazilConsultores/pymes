@@ -64,27 +64,30 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 		$tablaProfesoresGrupo = $this->tablaProfesoresGrupo;
 		$select = $tablaProfesoresGrupo->select()->from($tablaProfesoresGrupo)->where("idGrupo=?",$idGrupo);
 		$profesores = $tablaProfesoresGrupo->fetchAll($select);
-		print_r($idGrupo);
-		print_r("<br />");
-		$materiaDAO = new Encuesta_DAO_Materia;
-		$registroDAO = new Encuesta_DAO_Registro;
+		$profesoresGrupo = array();
 		
-		$materiasGrupo = array();
-		//$materia["idGrupo"];
-		//$materia["materia"];
-		//$materia["profesor"];
-		foreach ($profesores as $profesor) {
-			$m = $materiaDAO->obtenerMateria($profesor->idMateria);
-			$p = $registroDAO->obtenerRegistro($profesor->idRegistro);
-			$obj = array();
-			$obj["idGrupo"] = $idGrupo;
-			$obj["materia"] = $m->getMateria();
-			$obj["profesor"] = $p->getApellidos().", " . $p->getNombres();
+		if(!is_null($profesores)){
+			$materiaDAO = new Encuesta_DAO_Materia;
+			$registroDAO = new Encuesta_DAO_Registro;
 			
-			$materiasGrupo[] = $obj;
+			foreach ($profesores as $profesor) {
+				$obj = $profesor->toArray();
+				$obj["materia"] = $materiaDAO->obtenerMateria($obj["idMateria"]); //Objeto Encuesta_Model_Materia;
+				$obj["profesor"] = $registroDAO->obtenerRegistro($profesor->idRegistro); //Objeto Encuesta_Model_Profesor
+				
+				$profesoresGrupo[$obj["idMateria"]] = $obj;
+			}
 		}
 		
-		return $materiasGrupo;
+		
+		return $profesoresGrupo;
+	}
+	
+	public function agregarDocenteGrupo(array $registro){
+		$tablaProfesoresGrupo = $this->tablaProfesoresGrupo;
+		if(!empty($registro)){
+			$tablaProfesoresGrupo->insert($registro);
+		}
 	}
 	
 }

@@ -27,14 +27,15 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
 		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
 		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
-		//$materias = $this->materiaDAO->obtenerMateriasGrupo($ciclo->getIdCiclo(), $grupo->getIdGrado());
+		$materias = $this->materiaDAO->obtenerMateriasGrupo($ciclo->getIdCiclo(), $grupo->getIdGrado());
+		
 		$this->view->nivel = $nivel;
 		$this->view->grado = $grado;
 		$this->view->grupo = $grupo;
-		//$this->view->materias = $materias;
-		
-		$materias = $this->gruposDAO->obtenerDocentes($idGrupo);
 		$this->view->materias = $materias;
+		
+		$profesores = $this->gruposDAO->obtenerDocentes($idGrupo);
+		$this->view->profesores = $profesores;
     }
 
     public function consultaAction()
@@ -147,6 +148,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
     public function asociarpAction()
     {
         // action body
+        $request = $this->getRequest();
         $idGrupo = $this->getParam("idGrupo");
 		$idMateria = $this->getParam("idMateria");
 		
@@ -159,6 +161,19 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		
 		$this->view->grupo = $grupo;
 		$this->view->formulario = $formulario;
+		if($request->getPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$registro = array();
+				$registro["idGrupo"] = $idGrupo;
+				$registro["idRegistro"] = $datos["idProfesor"];
+				$registro["idMateria"] = $datos["idMateria"];
+				$this->gruposDAO->agregarDocenteGrupo($registro);
+				//print_r($registro);
+			}
+		}
+		
     }
 
 

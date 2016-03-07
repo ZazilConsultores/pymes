@@ -8,8 +8,12 @@
 class Encuesta_IndexController extends Zend_Controller_Action
 {
 
+	private $gruposDAO = null;
+	private $gradoDAO = null;
+	private $cicloDAO = null;
+	private $nivelDAO = null;
+	
     private $encuestaDAO = null;
-
     private $seccionDAO = null;
 
     public function init()
@@ -17,6 +21,11 @@ class Encuesta_IndexController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->encuestaDAO = new Encuesta_DAO_Encuesta;
 		$this->seccionDAO = new Encuesta_DAO_Seccion;
+		
+		$this->gradoDAO = new Encuesta_DAO_Grado;
+		$this->nivelDAO = new Encuesta_DAO_Nivel;
+		$this->cicloDAO = new Encuesta_DAO_Ciclo;
+		$this->gruposDAO = new Encuesta_DAO_Grupos;
     }
 
     public function indexAction()
@@ -108,8 +117,17 @@ class Encuesta_IndexController extends Zend_Controller_Action
     public function altaeAction()
     {
         // action body
-        $formulario = new Encuesta_Form_AltaEncuestaEvaluativa;
+        $request = $this->getRequest();
+		$idGrupo = $this->getParam("idGrupo");
+		$formulario = new Encuesta_Form_AltaEncuestaEvaluativa;
+		if(!is_null($idGrupo)){
+			//$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+			//$formulario->getElement("")->clearMultiOptions();
+			
+		}
 		$this->view->formulario = $formulario;
+		
+		
     }
 
     public function altasAction()

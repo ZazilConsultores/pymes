@@ -3,7 +3,8 @@
 	$grado = $this->grado;
 	$grupo = $this->grupo;
 	$materias = $this->materias;
-	print_r($materias);
+	$profesores = $this->profesores;
+	
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -15,7 +16,11 @@
 		<div class="panel-body">
 			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grupo->getIdGrado()), null, true); ?>">
 				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grado: <strong><?php echo $grado->getGrado() ?></strong>
-			</a><br />
+			</a>
+			<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"altae","idGrupo"=>$grupo->getIdGrupo()), null, true); ?>">
+				<span class="glyphicon glyphicon-plus"></span> Registrar Encuesta Evaluativa
+			</a>
+			<br />
 			<table class="table table-striped table-condensed">
 				<thead>
 					<th>Materia</th>
@@ -26,15 +31,21 @@
 				<tbody>
 					<?php foreach ($materias as $materia) : ?>
 					<tr>
-						<td><?php echo $materia["materia"] ?></td>
+						<td><?php echo $materia->getMateria(); ?></td>
 						<td>
-							<?php if(!is_null($materia["profesor"])){ ?>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"asociarp","idGrupo"=>$grupo->getIdGrupo(),"idMateria"=>$materia->getIdMateria()),null,true) ?>">
-								<span class="glyphicon glyphicon-plus"></span> Asignar profesor
-							</a>
-							<?php }else{
-								 echo $materia["profesor"]; 
-							}?>
+							<?php
+								if(!empty($profesores)){
+									if(key_exists($materia->getIdMateria(), $profesores)){
+										$profesor = $profesores[$materia->getIdMateria()];
+										$docente = $profesor["profesor"]; 
+										echo $docente->getApellidos() . ", " . $docente->getNombres();
+									}else{?>
+											<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"asociarp","idGrupo"=>$grupo->getIdGrupo(),"idMateria"=>$materia->getIdMateria()),null,true) ?>">
+												<span class="glyphicon glyphicon-plus"></span> Asignar profesor
+											</a>
+							<?php	}
+								}
+							?>
 						</td>
 						<td></td>
 						<td></td>

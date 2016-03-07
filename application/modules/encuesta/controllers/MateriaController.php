@@ -47,6 +47,7 @@ class Encuesta_MateriaController extends Zend_Controller_Action
 		$formulario->getElement("idGrado")->clearMultiOptions();
 		$formulario->getElement("idGrado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
 		
+		$this->view->grado = $grado;
 		$this->view->formulario = $formulario;
 		
 		if($request->isPost()){

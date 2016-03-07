@@ -9,9 +9,11 @@
 				Asociando Materia con Profesor
 			</h3>
 		</div>
-		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"index","idGrupo"=>$grupo->getIdGrupo()),null,true) ?>">
-			<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grupo
-		</a>
-		<?php echo $formulario; ?>
+		<div class="panel-body">
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"index","idGrupo"=>$grupo->getIdGrupo()),null,true) ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grupo
+			</a><br /><br />
+			<?php echo $formulario; ?>
+		</div>
 	</div>
 </section>

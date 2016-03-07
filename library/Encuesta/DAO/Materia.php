@@ -15,7 +15,11 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 		$tablaMateria = $this->tablaMateria;
 		$select = $tablaMateria->select()->from($tablaMateria)->where("idMateria = ?",$idMateria);
 		$rowMateria = $tablaMateria->fetchRow($select);
-		$modelMateria = new Encuesta_Model_Materia($rowMateria->toArray());
+		$modelMateria = null;
+		
+		if(!is_null($rowMateria)){
+			$modelMateria = new Encuesta_Model_Materia($rowMateria->toArray());
+		}
 		
 		return $modelMateria;
 	}

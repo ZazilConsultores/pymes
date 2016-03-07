@@ -3,6 +3,7 @@
 class Encuesta_GradoController extends Zend_Controller_Action
 {
 
+	private $cicloDAO = null;
     private $nivelDAO = null;
     private $gradoDAO = null;
 	private $materiaDAO = null;
@@ -10,6 +11,7 @@ class Encuesta_GradoController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->cicloDAO = new Encuesta_DAO_Ciclo;
         $this->nivelDAO = new Encuesta_DAO_Nivel;
         $this->gradoDAO = new Encuesta_DAO_Grado;
 		$this->materiaDAO = new Encuesta_DAO_Materia;
@@ -91,11 +93,14 @@ class Encuesta_GradoController extends Zend_Controller_Action
         // action body
         $idGrado = $this->getParam("idGrado");
 		$grado = $this->gradoDAO->obtenerGrado($idGrado);
-		$formulario = new Encuesta_Form_AltaMateria;
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		//$ciclo = $this->cicloDAO->obtenerCiclo($grado->get)
+		//$formulario = new Encuesta_Form_AltaMateria;
 		$materias = $this->materiaDAO->obtenerMateriasGrado($idGrado);
 		
+		$this->view->nivel = $nivel;
 		$this->view->grado = $grado;
-		$this->view->formulario = $formulario;
+		//$this->view->formulario = $formulario;
 		$this->view->materias = $materias;
     }
 
