@@ -57,6 +57,7 @@ class Encuesta_Model_Materia
     private $hash;
 
     public function getHash() {
+    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey(array("idCiclo"=>$this->idCiclo,"idGrado"=>$this->idGrado,"materia"=>strtolower($this->materia)));
         return $this->hash;
     }
     
@@ -82,6 +83,7 @@ class Encuesta_Model_Materia
 		$datos["idGrado"] = $this->idGrado;
 		$datos["materia"] = $this->materia;
 		$datos["creditos"] = $this->creditos;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

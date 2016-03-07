@@ -4,14 +4,15 @@ class Encuesta_GradoController extends Zend_Controller_Action
 {
 
     private $nivelDAO = null;
-
     private $gradoDAO = null;
+	private $materiaDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->nivelDAO = new Encuesta_DAO_Nivel;
         $this->gradoDAO = new Encuesta_DAO_Grado;
+		$this->materiaDAO = new Encuesta_DAO_Materia;
     }
 
     public function indexAction()
@@ -61,12 +62,16 @@ class Encuesta_GradoController extends Zend_Controller_Action
 		
 		$idGrado = $this->getParam("idGrado");
 		$grado = $this->gradoDAO->obtenerGrado($idGrado);
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		
 		$formulario = new Encuesta_Form_AltaGrado;
 		$formulario->getElement("grado")->setValue($grado->getGrado());
 		$formulario->getElement("descripcion")->setValue($grado->getDescripcion());
-		//$formulario->getElement("objetivo")->setValue($grado->getObjetivo());
+		$formulario->getElement("submit")->setLabel("Actualizar Grado");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
 		$this->view->grado = $grado;
+		$this->view->nivel = $nivel;
 		$this->view->formulario = $formulario;
 		
     }
@@ -84,6 +89,14 @@ class Encuesta_GradoController extends Zend_Controller_Action
     public function materiasAction()
     {
         // action body
+        $idGrado = $this->getParam("idGrado");
+		$grado = $this->gradoDAO->obtenerGrado($idGrado);
+		$formulario = new Encuesta_Form_AltaMateria;
+		$materias = $this->materiaDAO->obtenerMateriasGrado($idGrado);
+		
+		$this->view->grado = $grado;
+		$this->view->formulario = $formulario;
+		$this->view->materias = $materias;
     }
 
 

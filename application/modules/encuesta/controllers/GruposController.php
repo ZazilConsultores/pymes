@@ -4,12 +4,10 @@ class Encuesta_GruposController extends Zend_Controller_Action
 {
 
     private $gradoDAO = null;
-
     private $cicloDAO = null;
-
     private $gruposDAO = null;
-
     private $nivelDAO = null;
+    private $materiaDAO = null;
 
     public function init()
     {
@@ -18,11 +16,25 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$this->cicloDAO = new Encuesta_DAO_Ciclo;
 		$this->gradoDAO = new Encuesta_DAO_Grado;
 		$this->nivelDAO = new Encuesta_DAO_Nivel;
+		$this->materiaDAO = new Encuesta_DAO_Materia;
     }
 
     public function indexAction()
     {
         // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
+		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		//$materias = $this->materiaDAO->obtenerMateriasGrupo($ciclo->getIdCiclo(), $grupo->getIdGrado());
+		$this->view->nivel = $nivel;
+		$this->view->grado = $grado;
+		$this->view->grupo = $grupo;
+		//$this->view->materias = $materias;
+		
+		$materias = $this->gruposDAO->obtenerDocentes($idGrupo);
+		$this->view->materias = $materias;
     }
 
     public function consultaAction()
@@ -121,12 +133,37 @@ class Encuesta_GruposController extends Zend_Controller_Action
         // action body
         $idGrupo = $this->getParam("idGrupo");
 		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
         
         $this->view->grupo = $grupo;
-        
-        
+        $this->view->grado = $grado;
+		$this->view->nivel = $nivel;
+        $this->view->ciclo = $ciclo;
         
     }
+
+    public function asociarpAction()
+    {
+        // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$idMateria = $this->getParam("idMateria");
+		
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$materia = $this->materiaDAO->obtenerMateria($idMateria);
+		
+		$formulario = new Encuesta_Form_MateriasProfesor;
+		$formulario->getElement("idMateria")->clearMultiOptions();
+		$formulario->getElement("idMateria")->addMultiOption($materia->getIdMateria(),$materia->getMateria());
+		
+		$this->view->grupo = $grupo;
+		$this->view->formulario = $formulario;
+    }
+
+
 }
+
+
 
 

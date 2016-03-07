@@ -4,8 +4,9 @@ INSERT INTO `cicloe` VALUES (1,'2017A','S','2016-01-25 12:00:00','2016-07-28 12:
 INSERT INTO `nivele` VALUES (1,'Preescolar','Nivel educativo que se cursa en 2 años desde los 4 a 6 años de edad','db459b6176646bd2534fed18f6454155'),(2,'Primaria','Nivel educativo que se cursa en 6 años desde los 6 a 12 años de edad','7b99555169c487e737f0e98bac011bd8'),(3,'Secundaria','Nivel educativo que se cursa en 3 años desde los 12 a 15 años de edad','e6305f57bf72dbef5de2fc10aa057200'),(4,'Preparatoria','Nivel educativo que se cursa en 3 años desde los 15 a 18 años de edad','5134ff606971ff92b7584d459dcd3027');
 INSERT INTO `gradoe` VALUES (1,1,'Primer Grado Escolar','1','Se cursa de los 4 a los 5 años de edad','2c3e61dcef4f5e36538140a05fb38c0d'),(2,1,'Segundo Grado Escolar','2','Se cursa de los 5 a los 6 años de edad','e55e2d7ec32fb4906b502da2c328f34b'),(3,2,'Primer Grado Escolar','1','Se cursa de los 6 a los 7 años de edad.','9a3cca275768ac8f24ac85cadb15092b'),(4,2,'Segundo Grado Escolar','2','Se cursa de los 7 a los 8 años de edad.','b9a9523a5944b096367f301a2e6a8e21'),(5,2,'Tercer Grado Escolar','3','Se cursa de los 8 a los 9 años de edad.','e124769ea6789a5a168d3146311df56f'),(6,2,'Cuarto Grado Escolar','4','Se cursa de los 9 a los 10 años de edad.','b3732dbc87e25b2cdec62081866360f6'),(7,2,'Quinto Grado Escolar','5','Se cursa de los 10 a los 11 años de edad.','f659c809a6e561c2170f81dd39f85ba8'),(8,2,'Sexto Grado Escolar','6','Se cursa de los 11 a los 12 años de edad.','476ba64c9dc63fc6cef0871f73d2c562'),(9,3,'Primer Grado Escolar','1','Se cursa de los 12 a los 13 años de edad.','5276ec572c1e7eb92716865c983e79b7'),(10,3,'Segundo Grado Escolar','2','Se cursa de los 13 a los 14 años de edad.','f23699df22fe5366356ba739ab5be89d'),(11,3,'Tercer Grado Escolar','3','Se cursa de los 14 a los 15 años de edad.','2584172095d847afc16ee4714ce15226'),(12,4,'Primer Semestre Escolar','1','Se cursa en medio año.','737d49a5a8cd8a733a79962666198f84'),(13,4,'Segundo Semestre Escolar','2','Se cursa en medio año.','0f0efbdb038c6c1164e90ab2ac7de87a'),(14,4,'Tercer Semestre Escolar','3','Se cursa en medio año.','2c3becff875b6eda8adf395f5b637c45'),(15,4,'Cuarto Semestre Escolar','4','Se cursa en medio año.','5f428c10b144d29c997a9b6206197abe'),(16,4,'Quinto Semestre Escolar','5','Se cursa en medio año.','5ec3794f8daba2f47f71144203ac12e2'),(17,4,'Sexto Semestre Escolar','6','Se cursa en medio año.','b0d0d1342ddcad68f4474cddb23bff22');
 
+INSERT INTO `registro` VALUES (1,'20160303001','DO','Erika','Arcos Lozano','2016-03-03 20:19:18','33bf1f010c1f32b7ee3b44996ba7107b'),(2,'20160303002','DO','Maria Elena','Amador Aguilar','2016-03-03 20:20:09','ac9c566279c76e2700e60fd1b2844a7a'),(3,'20160303003','DO','María del Carmen','Fonseca De la Rosa','2016-03-03 20:20:59','44487950c37c5144fe99347d850bde04'),(4,'20160303004','DO','Armando','Hernandez Rodríguez','2016-03-03 20:22:17','57dabc5558f171f77a983021f0cc0981'),(5,'20160303005','DO','Norma Alicia','Hernandez Rodríguez','2016-03-03 20:22:55','a52fdf5f4e54dbed1bb5ff706ae2c782'),(6,'20160303006','DO','Erik Alejandro','Pérez Rodríguez','2016-03-03 20:23:31','1ce34a3d7441a7e6619774abfd30d5e4'),(7,'20160303007','DO','Denisse','Barber Silva','2016-03-03 20:24:37','4361293ebc23821555f4537688d9375b'),(8,'20160303008','DO','María Dolores','Soto Hernandez','2016-03-03 20:29:08','5df8ba73fbcceefae9059e478076f19b'),(9,'20160303009','DO','Shaque','Vartougian Carrillo','2016-03-03 20:29:48','b9bac7ccb6075746f5e13fe04b634e3f'),(10,'20160303010','DO','Alberto','Cajas Torres','2016-03-03 20:30:17','9f2c25c6d592f153de5dfa564b297505'),(11,'20160303011','DO','María','Mijares Fernández','2016-03-03 20:31:34','87b944fd5c3bbbc4cec81dec46f9c472'),(12,'20160303012','DO','María Elena','Senties Laborde','2016-03-03 20:32:43','f7371d56b416fcc45105c65a09f63b0e'),(13,'20160303013','DO','Mónica','Gallastegui Brambilla','2016-03-03 20:33:42','0fbefe031518183ea5f479aa6e9ba1b6'),(14,'20160303014','DO','María Cristina','Cortés Izquierdo','2016-03-03 20:34:18','4198168c2647fb90c2bc938969561273');
 
-
+SELECT `MateriaE`.* FROM `MateriaE` WHERE (idCiclo='1') AND (idGrupo='1');
 
 select * from nivele;
 select * from gradoe;
@@ -13,9 +14,13 @@ select * from cicloe;
 select * from grupoe;
 select * from materiae;
 
+select * from grupoe;
+select * from profesoresgrupo;
+
 select * from empresas;
 select * from empresa;
 select * from fiscales;
+
 
 select * from domicilio;
 select * from telefono;

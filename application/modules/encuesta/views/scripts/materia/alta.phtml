@@ -1,12 +1,38 @@
 <?php
 	$formulario = $this->formulario;
+	$messageSuccess = $this->messageSuccess;
+	$messageFail = $this->messageFail;
 ?>
 <section class="row">
-	<?php echo $formulario; ?>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Alta de Materia.
+			</h3>
+		</div>
+			<div class="panel-body">
+				<?php if(!is_null($messageSuccess)){ ?>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php } ?>
+			<?php echo $formulario; ?>
+		</div>
+	</div>
 </section>
 <script>
 	$().ready(function(){
-		$("select#nivel").on('change', function(){
+		$("select#idNivel").on('change', function(){
 			console.log(this.value);
 			//Borro el contenido del select municipio
 			//Obtengo los municipios del estado
@@ -18,9 +44,9 @@
 				success: function(data){
 					console.log($url);
 					console.dir(data);
-					$("select#grado").empty();
+					$("select#idGrado").empty();
 					$.each(data, function(i,item){//function(key,value)		
-						$("select#grado").append($("<option></option>").attr("value",data[i].idGrado).text(data[i].grado));
+						$("select#idGrado").append($("<option></option>").attr("value",data[i].idGrado).text(data[i].grado));
 						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
 					});
 					

@@ -26,7 +26,6 @@
 			<table class="table table-condensed table-striped">
 				<thead>
 					<th>Grado</th>
-					<th>Materias</th>
 					<th>Configuración</th>
 					<th>Descripción</th>
 					
@@ -35,11 +34,6 @@
 					<?php foreach ($grados as $grado) : ?>
 					<tr>
 						<td><?php echo $grado->getGrado() ?></td>
-						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"materias","idGrado"=>$grado->getIdGrado()),null,true) ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
-							</a>
-						</td>
 						<td>
 							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar

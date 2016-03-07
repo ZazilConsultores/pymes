@@ -33,9 +33,21 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 		return $modelMaterias;
 	}
 	
-	public function obtenerMateriasGrupo($idCiclo,$idGrupo){
+	public function obtenerMateriasGrado($idGrado){
 		$tablaMateria = $this->tablaMateria;
-		$select = $tablaMateria->select()->from($tablaMateria)->where("idCiclo=?",$idCiclo)->where("idGrupo=?",$idGrupo);
+		$select = $tablaMateria->select()->from($tablaMateria)->where("idGrado=?",$idGrado);
+		$rowMaterias = $tablaMateria->fetchAll($select);
+		$modelMaterias = array();
+		foreach ($rowMaterias as $row) {
+			$modelMateria = new Encuesta_Model_Materia($row->toArray());
+			$modelMaterias[] = $modelMateria;
+		}
+		return $modelMaterias;
+	}
+	
+	public function obtenerMateriasGrupo($idCiclo,$idGrado){
+		$tablaMateria = $this->tablaMateria;
+		$select = $tablaMateria->select()->from($tablaMateria)->where("idCiclo=?",$idCiclo)->where("idGrado=?",$idGrado);
 		$rowsMaterias = $tablaMateria->fetchAll($select);
 		$modelMaterias = array();
 		foreach ($rowsMaterias as $row) {
@@ -49,12 +61,14 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 		$tablaMateria = $this->tablaMateria;
 		$materia->setHash($materia->getHash());
 		$select = $tablaMateria->select()->from($tablaMateria)->where("hash=?",$materia->getHash());
+		$row = $tablaMateria->fetchRow($select);
+		if(!is_null($row)) throw new Util_Exception_BussinessException("Materia: <strong>". $materia->getMateria() ."</strong> duplicada en el sistema.");
 		
 		try{
 			$tablaMateria->insert($materia->toArray());
 			
 		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("Materia: ". $materia->getMateria() ." duplicada en el sistema.\n<br />" . $ex->__toString());
+			throw new Util_Exception_BussinessException("Error: <strong>". $ex->getMessage() . "</strong>");
 		}
 		
 		

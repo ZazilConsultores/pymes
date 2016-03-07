@@ -9,5 +9,6 @@ interface Encuesta_Interfaces_IGrupos {
 	public function obtenerGrupos($idGrado,$idCiclo);
 	public function obtenerGrupo($idGrupo);
 	public function crearGrupo($idGrado,$idCiclo,Encuesta_Model_Grupoe $grupo);
+	public function obtenerDocentes($idGrupo);
 	
 }
