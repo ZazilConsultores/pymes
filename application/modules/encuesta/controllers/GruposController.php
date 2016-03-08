@@ -4,9 +4,13 @@ class Encuesta_GruposController extends Zend_Controller_Action
 {
 
     private $gradoDAO = null;
+
     private $cicloDAO = null;
+
     private $gruposDAO = null;
+
     private $nivelDAO = null;
+
     private $materiaDAO = null;
 
     public function init()
@@ -176,8 +180,37 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		
     }
 
+    public function aencuestaAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        $idGrupo = $this->getParam("idGrupo");
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
+		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		
+		
+		$formulario = new Encuesta_Form_AsociarEncuesta;
+		
+		$this->view->grupo = $grupo;
+		$this->view->grado = $grado;
+		$this->view->ciclo = $ciclo;
+		$this->view->nivel = $nivel;
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$datos["idGrupo"] = $idGrupo;
+				print_r($datos);
+			}
+		}
+    }
+
 
 }
+
+
 
 
 

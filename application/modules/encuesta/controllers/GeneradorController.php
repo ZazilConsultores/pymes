@@ -258,6 +258,41 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$contenedor->addElement($ePregunta);
 		
 		return $contenedor;
-	}	
+	}
+	
+	public function generaFormulario($value='')
+	{
+		$idEncuesta = $this->getParam("idEncuesta");
+		$idDocente = $this->getParam("idReferencia");
+		
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
+		
+		$formulario = new Zend_Form;
+		
+		$eSubCabecera = new Zend_Form_SubForm();
+		$eSubCabecera->setLegend("Evaluación de Docentes ");
+		
+		$eEncuesta = new Zend_Form_Element_Hidden("idEncuesta");
+		$eEncuesta->setValue($idEncuesta);
+		
+		$eLogo = new Zend_Form_Element_Image("logo");
+		$eLogo->setImage($this->view->baseUrl() . "/images/Logo.png");
+		$eLogo->setDecorators($this->decoratorsPregunta);
+		//$formulario->addElement($eLogo);
+		
+		$eReferencia = new Zend_Form_Element_Text("referencia");
+		$eReferencia->setLabel("Boleta o Clave : ");
+		$eReferencia->setAttrib("class", "form-control");
+		$eReferencia->setDecorators($this->decoratorsPregunta);
+		
+		$eSubCabecera->addElements(array($eEncuesta, $eReferencia));
+		$eSubCabecera->setDecorators($this->decoratorsSeccion);
+		
+		$formulario->addSubForm($eSubCabecera, "referencia");
+		
+		
+		return $formulario;
+	}
 }
 

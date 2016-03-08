@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: general
 -- ------------------------------------------------------
--- Server version	5.7.9-log
+-- Server version	5.6.22-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -781,7 +781,7 @@ CREATE TABLE `grupo` (
   PRIMARY KEY (`idGrupo`),
   KEY `fk_Grupo_Seccion1_idx` (`idSeccion`),
   CONSTRAINT `fk_Grupo_Seccion1` FOREIGN KEY (`idSeccion`) REFERENCES `seccion` (`idSeccion`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -790,7 +790,7 @@ CREATE TABLE `grupo` (
 
 LOCK TABLES `grupo` WRITE;
 /*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
-INSERT INTO `grupo` VALUES (1,1,'Claridad','SS','1,2,3,4,5',1,2,'2016-03-07 14:55:14','fa78fecd52e3a8e8cc445ef3bb2986c0'),(2,1,'Orden','SS','1,2,3,4,5',2,2,'2016-03-07 15:04:48','5f8059560f57bfc69fbe19df6ee9a21e'),(3,1,'Reto','SS','1,2,3,4,5',3,2,'2016-03-07 15:14:37','07485a0e28d1917b6d004602ecf90e15');
+INSERT INTO `grupo` VALUES (1,1,'Claridad','SS','1,2,3,4,5',1,2,'2016-03-07 14:55:14','fa78fecd52e3a8e8cc445ef3bb2986c0'),(2,1,'Orden','SS','1,2,3,4,5',2,2,'2016-03-07 15:04:48','5f8059560f57bfc69fbe19df6ee9a21e'),(3,1,'Reto','SS','1,2,3,4,5',3,2,'2016-03-07 15:14:37','07485a0e28d1917b6d004602ecf90e15'),(4,1,'Justicia','SS','1,2,3,4,5',4,2,'2016-03-07 17:50:03','4a508453bfea7668f4092426881d11e8'),(5,1,'Participación','SS','1,2,3,4,5',5,2,'2016-03-07 17:53:16','71ec8f4b3e7a2e3a373bf57773b5e295'),(6,1,'Apoyo','SS','1,2,3,4,5',6,2,'2016-03-07 17:55:57','c00654d1325daa6b961c3d18b42661dc'),(7,1,'Respeto e Inclusión','SS','1,2,3,4,5',7,2,'2016-03-07 17:57:55','02621e1da8f52388095caedfc3175ec6'),(8,1,'Motivación e Interés','SS','1,2,3,4,5',8,2,'2016-03-07 18:05:35','9b44f1c657d6f8f4394f9291b86433cc'),(9,1,'Espacio Físico','SS','1,2,3,4,5',9,2,'2016-03-07 18:07:30','2426d04ee1379e89e6dc6776266f4c23');
 /*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1243,7 +1243,7 @@ CREATE TABLE `pregunta` (
   PRIMARY KEY (`idPregunta`),
   KEY `fk_Pregunta_Encuesta1_idx` (`idEncuesta`),
   CONSTRAINT `fk_Pregunta_Encuesta1` FOREIGN KEY (`idEncuesta`) REFERENCES `encuesta` (`idEncuesta`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1252,7 +1252,7 @@ CREATE TABLE `pregunta` (
 
 LOCK TABLES `pregunta` WRITE;
 /*!40000 ALTER TABLE `pregunta` DISABLE KEYS */;
-INSERT INTO `pregunta` VALUES (1,1,'¿Entiendes a la maestra cuando explica un tema?','G','1','SS','1,2,3,4,5',1,'2016-03-07 14:59:58','7b07dc5c7076ebeb11c9f185f0141501'),(2,1,'¿Sabes por que es importante el tema que estas viendo?','G','1','SS','1,2,3,4,5',2,'2016-03-07 15:00:32','1c3fd690f800d961053bb402d9374fc3'),(3,1,'¿Conoces las reglas de comportamiento dentro del salón de clases?','G','2','SS','1,2,3,4,5',1,'2016-03-07 15:14:00','3fde53e1ad011b9b76db37293233df41'),(4,1,'¿Tu maestra aplica las reglas cuando alguien no se está portando bien?','G','2','SS','1,2,3,4,5',2,'2016-03-07 15:14:12','382bac672e2c0d011b5dfeb5ff6ff3b4'),(5,1,'¿Tu maestra te motiva para esforzarte al máximo?','G','3','SS','1,2,3,4,5',1,'2016-03-07 15:14:55','6aac9d7d9812f12ae3d20fbf2ce5595b'),(6,1,'¿Tu maestra te pone retos para que cada vez lo hagas mejor?','G','3','SS','1,2,3,4,5',2,'2016-03-07 15:16:01','aa99ec92b2f22a5d9332231d2b7629b4');
+INSERT INTO `pregunta` VALUES (1,1,'¿Entiendes a la maestra cuando explica un tema?','G','1','SS','1,2,3,4,5',1,'2016-03-07 14:59:58','7b07dc5c7076ebeb11c9f185f0141501'),(2,1,'¿Sabes por que es importante el tema que estas viendo?','G','1','SS','1,2,3,4,5',2,'2016-03-07 15:00:32','1c3fd690f800d961053bb402d9374fc3'),(3,1,'¿Conoces las reglas de comportamiento dentro del salón de clases?','G','2','SS','1,2,3,4,5',1,'2016-03-07 15:14:00','3fde53e1ad011b9b76db37293233df41'),(4,1,'¿Tu maestra aplica las reglas cuando alguien no se está portando bien?','G','2','SS','1,2,3,4,5',2,'2016-03-07 15:14:12','382bac672e2c0d011b5dfeb5ff6ff3b4'),(5,1,'¿Tu maestra te motiva para esforzarte al máximo?','G','3','SS','1,2,3,4,5',1,'2016-03-07 15:14:55','6aac9d7d9812f12ae3d20fbf2ce5595b'),(6,1,'¿Tu maestra te pone retos para que cada vez lo hagas mejor?','G','3','SS','1,2,3,4,5',2,'2016-03-07 15:16:01','aa99ec92b2f22a5d9332231d2b7629b4'),(7,1,'¿Crees que tu maestra le presta atención a quien más lo necesita?','G','4','SS','1,2,3,4,5',1,'2016-03-07 17:52:24','fc2f67fa5d5a13ccd8d81336c88aaed8'),(8,1,'¿Sientes que tu maestra reconoce tus logros y tus dificultades? ','G','4','SS','1,2,3,4,5',2,'2016-03-07 17:52:44','bce3413860da3ea4ba6843186ef5f776'),(9,1,'¿Tu maestra te escucha y te toma en cuenta?','G','5','SS','1,2,3,4,5',1,'2016-03-07 17:53:40','bd0bda9a0cf2cc151fa585e8459235b0'),(10,1,'¿Hay momentos para trabajar en equipo durante esta clase?','G','5','SS','1,2,3,4,5',2,'2016-03-07 17:53:57','6f8c00b5203309045d9600f00e42c099'),(11,1,'¿Te sientes en confianza en clase para hacer preguntas a la maestra?','G','6','SS','1,2,3,4,5',1,'2016-03-07 17:56:35','ca56103142c68210549a4977806052b5'),(12,1,'¿Tu maestra está cerca de ti cuando tienes un logro importante o cuando fallas en algo?','G','6','SS','1,2,3,4,5',2,'2016-03-07 17:56:55','369f5d791b7cbf84d81a5477022dde62'),(13,1,'¿Te sientes segura en el salón de clases porque sabes que nadie te va a molestar o lastimar?','G','7','SS','1,2,3,4,5',1,'2016-03-07 17:58:20','2598fd3b06b0cbd8e7119f3db38eb382'),(14,1,'¿Tu maestra y tus compañeras te respetan?','G','7','SS','1,2,3,4,5',2,'2016-03-07 17:58:34','24efb31d26a9264d37d46869a8176a91'),(15,1,'¿Te gusta lo que aprendes en la escuela?','G','8','SS','1,2,3,4,5',1,'2016-03-07 18:06:58','54847b52466c65d59e921ec25e6d7d5a'),(16,1,'¿Crees que tu maestra explica los temas de manera interesante y atractiva?','G','8','SS','1,2,3,4,5',2,'2016-03-07 18:07:13','cf6b68fb627341785ce5b98aef726674'),(17,1,'¿Tu maestra mantiene el salón de clases limpio y ordenado, para que todas nos sintamos a gusto para trabajar mejor?','G','9','SS','1,2,3,4,5',1,'2016-03-07 18:07:55','d4fb7f4d083945cf73bf2dbd079e2103'),(18,1,'¿Tu maestra hace cambios en el salón –mueve las bancas, abre ventanas, ilumina, utiliza las paredes para pegar cosas— para favorecer el aprendizaje?','G','9','SS','1,2,3,4,5',2,'2016-03-07 18:08:11','d972415a885924e76929400c0617e44a');
 /*!40000 ALTER TABLE `pregunta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1534,7 +1534,7 @@ CREATE TABLE `seccion` (
 
 LOCK TABLES `seccion` WRITE;
 /*!40000 ALTER TABLE `seccion` DISABLE KEYS */;
-INSERT INTO `seccion` VALUES (1,1,'Evaluacion Profesores',1,3,'2016-03-07 14:54:45','3244f392cfa82c82caa9a32b58c91894');
+INSERT INTO `seccion` VALUES (1,1,'Evaluacion Profesores',1,9,'2016-03-07 14:54:45','3244f392cfa82c82caa9a32b58c91894');
 /*!40000 ALTER TABLE `seccion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1719,4 +1719,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-07 16:56:47
+-- Dump completed on 2016-03-07 22:43:40

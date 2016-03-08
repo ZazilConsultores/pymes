@@ -296,6 +296,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="opciones"/>
               <actionMethod actionName="asociarp"/>
+              <actionMethod actionName="aencuesta"/>
             </controllerFile>
             <controllerFile controllerName="Materia">
               <actionMethod actionName="index"/>
@@ -326,6 +327,7 @@
             <formFile formName="ConsultaMateria"/>
             <formFile formName="AltaMateria"/>
             <formFile formName="MateriasProfesor"/>
+            <formFile formName="AsociarEncuesta"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -631,6 +633,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="grupos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="aencuesta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1333,6 +1338,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="opciones"/>
                 <testApplicationActionMethod forActionName="asociarp"/>
+                <testApplicationActionMethod forActionName="aencuesta"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Materia">
                 <testApplicationActionMethod forActionName="index"/>
