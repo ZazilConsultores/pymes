@@ -191,6 +191,7 @@
               <actionMethod actionName="tipos"/>
               <actionMethod actionName="altae"/>
               <actionMethod actionName="altas"/>
+              <actionMethod actionName="encuesta"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -207,6 +208,8 @@
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="grados"/>
+              <actionMethod actionName="grupos"/>
             </controllerFile>
             <controllerFile controllerName="Seccion">
               <actionMethod actionName="index"/>
@@ -277,6 +280,7 @@
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="materias"/>
             </controllerFile>
             <controllerFile controllerName="Ciclo">
               <actionMethod actionName="index"/>
@@ -292,6 +296,19 @@
               <actionMethod actionName="consulta"/>
               <actionMethod actionName="alta"/>
               <actionMethod actionName="opciones"/>
+              <actionMethod actionName="asociarp"/>
+              <actionMethod actionName="aencuesta"/>
+              <actionMethod actionName="encuestas"/>
+            </controllerFile>
+            <controllerFile controllerName="Materia">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="consulta"/>
+            </controllerFile>
+            <controllerFile controllerName="Profesor">
+              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -309,6 +326,10 @@
             <formFile formName="AltaCiclo"/>
             <formFile formName="ConsultaGrupos"/>
             <formFile formName="AltaGrupoE"/>
+            <formFile formName="ConsultaMateria"/>
+            <formFile formName="AltaMateria"/>
+            <formFile formName="MateriasProfesor"/>
+            <formFile formName="AsociarEncuesta"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -330,6 +351,8 @@
               <dbTableFile dbTableName="NivelE"/>
               <dbTableFile dbTableName="GradoE"/>
               <dbTableFile dbTableName="CicloE"/>
+              <dbTableFile dbTableName="ProfesoresGrupo"/>
+              <dbTableFile dbTableName="EncuestaGrupo"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -344,6 +367,8 @@
             <modelFile modelName="Grado"/>
             <modelFile modelName="Ciclo"/>
             <modelFile modelName="Grupoe"/>
+            <modelFile modelName="Materia"/>
+            <modelFile modelName="Profesor"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -581,6 +606,45 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Grupos">
                 <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Profesor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="grados"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="materias"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="asociarp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="grupos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="aencuesta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="encuestas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="encuesta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1178,6 +1242,7 @@
                 <testApplicationActionMethod forActionName="tipos"/>
                 <testApplicationActionMethod forActionName="altae"/>
                 <testApplicationActionMethod forActionName="altas"/>
+                <testApplicationActionMethod forActionName="encuesta"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1194,6 +1259,8 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="grados"/>
+                <testApplicationActionMethod forActionName="grupos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Seccion">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1264,6 +1331,7 @@
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="materias"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Ciclo">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1279,6 +1347,19 @@
                 <testApplicationActionMethod forActionName="consulta"/>
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="opciones"/>
+                <testApplicationActionMethod forActionName="asociarp"/>
+                <testApplicationActionMethod forActionName="aencuesta"/>
+                <testApplicationActionMethod forActionName="encuestas"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Materia">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="edita"/>
+                <testApplicationActionMethod forActionName="consulta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Profesor">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

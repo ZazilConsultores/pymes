@@ -43,8 +43,8 @@ $connserver = array(
 		'host' => '192.168.1.5',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'General',
-		//'dbname' => 'GeneralSagrado',
+		//'dbname' => 'General',
+		'dbname' => 'GeneralSagrado',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',
@@ -66,10 +66,10 @@ Zend_Registry::set('connlocal', $connlocal);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-//$db = Zend_Db::factory('PDO_MYSQL', $connserver);
+$db = Zend_Db::factory('PDO_MYSQL', $connserver);
 
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
@@ -91,6 +91,7 @@ $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
+$gradosEscolares = array("1°","2°","3°","4°","5°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°","16°");
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 //============================================================================ DECORATORS
 //text form element table decorators
@@ -134,6 +135,6 @@ Zend_Registry::set('estatus', $estatus);
 Zend_Registry::set('tipoEmpresa', $tipoEmpresa);
 Zend_Registry::set('tipoTelefono', $tipoTelefono);
 Zend_Registry::set('tipoBanco', $tipoBanco);
-
+Zend_Registry::set('gradosEscolares', $gradosEscolares);
 $application->bootstrap()
             ->run();

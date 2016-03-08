@@ -26,19 +26,20 @@
 			<table class="table table-condensed table-striped">
 				<thead>
 					<th>Grado</th>
-					<th>Descripción</th>
 					<th>Configuración</th>
+					<th>Descripción</th>
+					
 				</thead>
 				<tbody>
 					<?php foreach ($grados as $grado) : ?>
 					<tr>
 						<td><?php echo $grado->getGrado() ?></td>
-						<td><?php echo $grado->getDescripcion() ?></td>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>
+						<td><?php echo $grado->getDescripcion() ?></td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

@@ -11,9 +11,9 @@
 			</h3>
 		</div>
 		<div class="panel-body">
-			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"index","idNivel"=>$grado->getIdNivel()), null, true); ?>">
-				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Nivel Escolar
-			</a><br /><br />
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar Grado: <strong><?php echo $grado->getGrado() ?></strong>
+			</a><br />
 			<div>
 				<?php echo $this->formulario; ?>
 			</div>

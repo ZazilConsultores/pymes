@@ -8,12 +8,15 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
 	private $tablaSeccion;
+	private $tablaEncuestaGrupo;
+	private $tablaPregunta;
 	
-	function __construct()
+	public function __construct()
 	{
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
+		$this->tablaEncuestaGrupo = new Encuesta_Model_DbTable_EncuestaGrupo;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -63,6 +66,18 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		return $modelEncuestas;
 	}
 	
+	public function obtenerEncuestasGrupo($idGrupo){
+		$tablaEncuestaGrupo = $this->tablaEncuestaGrupo;
+		$select = $tablaEncuestaGrupo->select()->from($tablaEncuestaGrupo)->where("idGrupo=?",$idGrupo);
+		$rowsEncuestaG = $tablaEncuestaGrupo->fetchAll($select);
+		$modelEncuestas = array();
+		foreach ($rowsEncuestaG as $row) {
+			$modelEncuesta = $this->obtenerEncuesta($row->idEncuesta);
+			$modelEncuestas[] = $modelEncuesta;
+		}
+		return $modelEncuestas;
+	}
+	
 	public function obtenerSecciones($idEncuesta) {
 		$tablaSeccion = $this->tablaSeccion;
 		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta = ?", $idEncuesta);
@@ -106,6 +121,13 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$encuesta->setFecha(date("Y-m-d H:i:s", time()));
 		print_r($encuesta->toArray());
 		$tablaEncuesta->insert($encuesta->toArray());
+	}
+	
+	public function agregarEncuestaGrupo(array $registro){
+		$tablaEncuestaGrupo = $this->tablaEncuestaGrupo;
+		if(!empty($registro)){
+			$tablaEncuestaGrupo->insert($registro);
+		}
 	}
 	//          =========================================================================   >>>   Actualizar
 	public function editarEncuesta($idEncuesta, array $encuesta)

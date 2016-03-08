@@ -16,14 +16,13 @@
 				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Nivel: <strong><?php echo $nivel->getNivel() ?></strong>.
 			</a><br /><br />
 			<?php echo $this->formulario; ?>
-			<br /><br />
+			
 			<table class="table table-striped table-condensed">
 				<thead>
 					<th>Ciclo</th>
 					<th>Nivel</th>
 					<th>Grado</th>
-					<th>Grupo</th>
-					<th>Administración</th>
+					<th>Consulta</th>
 				</thead>
 				<tbody>
 					<?php foreach ($grupos as $grupo) : ?>
@@ -31,17 +30,16 @@
 						<td><?php echo $ciclo->getCiclo() ?></td>
 						<td><?php echo $nivel->getNivel() ?></td>
 						<td><?php echo $grado->getGrado() ?></td>
-						<td><?php echo $grupo->getGrupo() ?></td>
 						<td>
-							<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"opciones","idGrupo"=>$grupo->getIdGrupo()),null,true) ?>">
-								Opciones del Grupo
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"index","idGrupo"=>$grupo->getIdGrupo()),null,true) ?>">
+								<span class="glyphicon glyphicon-search"></span> Grupo: <strong><?php echo $grupo->getGrupo() ?></strong>
 							</a>
 						</td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-			<br /><br />
+			<br />
 		</div>
 	</div>
 	
@@ -60,9 +58,9 @@
 				success: function(data){
 					console.log($url);
 					console.dir(data);
-					$("select#1-idMunicipio").empty();
+					$("select#1-grado").empty();
 					$.each(data, function(i,item){//function(key,value)		
-						$("select#1-idMunicipio").append($("<option></option>").attr("value",data[i].idMunicipio).text(data[i].municipio));
+						$("select#1-grado").append($("<option></option>").attr("value",data[i].idGrado).text(data[i].grado));
 						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
 					});
 					

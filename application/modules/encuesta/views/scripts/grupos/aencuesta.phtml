@@ -1,0 +1,20 @@
+<?php 
+	$ciclo = $this->ciclo;
+	$nivel = $this->nivel;
+	$grado = $this->grado;
+	$grupo = $this->grupo;
+	$formulario = $this->formulario;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Nivel: <strong><?php echo $nivel->getNivel() ?></strong> >> Grado: <strong><?php echo $grado->getGrado() ?></strong> >> Grupo: <strong><?php echo $grupo->getGrupo() ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<?php echo $formulario ?>
+		</div>
+	</div>
+	
+</section>
