@@ -4,7 +4,8 @@
 	$grupo = $this->grupo;
 	$materias = $this->materias;
 	$profesores = $this->profesores;
-	
+	$docente = null;
+	$materiaD = null;
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -25,8 +26,7 @@
 				<thead>
 					<th>Materia</th>
 					<th>Profesor</th>
-					<th>Evaluación</th>
-					<th>Resultado</th>
+					<th>Encuestas</th>
 				</thead>
 				<tbody>
 					<?php foreach ($materias as $materia) : ?>
@@ -38,6 +38,7 @@
 									if(key_exists($materia->getIdMateria(), $profesores)){
 										$profesor = $profesores[$materia->getIdMateria()];
 										$docente = $profesor["profesor"]; 
+										$materiaD = $profesor["materia"];
 										echo $docente->getApellidos() . ", " . $docente->getNombres();
 									}else{?>
 											<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"asociarp","idGrupo"=>$grupo->getIdGrupo(),"idMateria"=>$materia->getIdMateria()),null,true) ?>">
@@ -47,8 +48,11 @@
 								}
 							?>
 						</td>
-						<td></td>
-						<td></td>
+						<td>
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"encuestas","idGrupo"=>$grupo->getIdGrupo(),"idDocente"=>$docente->getIdRegistro(),"idMateria"=>$materiaD->getIdMateria()),null,true) ?>">
+								<span class="glyphicon glyphicon-search"></span> Encuestas
+							</a>
+						</td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

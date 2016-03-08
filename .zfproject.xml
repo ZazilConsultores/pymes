@@ -191,6 +191,7 @@
               <actionMethod actionName="tipos"/>
               <actionMethod actionName="altae"/>
               <actionMethod actionName="altas"/>
+              <actionMethod actionName="encuesta"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -297,6 +298,7 @@
               <actionMethod actionName="opciones"/>
               <actionMethod actionName="asociarp"/>
               <actionMethod actionName="aencuesta"/>
+              <actionMethod actionName="encuestas"/>
             </controllerFile>
             <controllerFile controllerName="Materia">
               <actionMethod actionName="index"/>
@@ -350,6 +352,7 @@
               <dbTableFile dbTableName="GradoE"/>
               <dbTableFile dbTableName="CicloE"/>
               <dbTableFile dbTableName="ProfesoresGrupo"/>
+              <dbTableFile dbTableName="EncuestaGrupo"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -636,6 +639,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Grupos">
                 <viewScriptFile forActionName="aencuesta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="encuestas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="encuesta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1233,6 +1242,7 @@
                 <testApplicationActionMethod forActionName="tipos"/>
                 <testApplicationActionMethod forActionName="altae"/>
                 <testApplicationActionMethod forActionName="altas"/>
+                <testApplicationActionMethod forActionName="encuesta"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1339,6 +1349,7 @@
                 <testApplicationActionMethod forActionName="opciones"/>
                 <testApplicationActionMethod forActionName="asociarp"/>
                 <testApplicationActionMethod forActionName="aencuesta"/>
+                <testApplicationActionMethod forActionName="encuestas"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Materia">
                 <testApplicationActionMethod forActionName="index"/>

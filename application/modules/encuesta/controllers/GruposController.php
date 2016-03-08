@@ -13,6 +13,10 @@ class Encuesta_GruposController extends Zend_Controller_Action
 
     private $materiaDAO = null;
 
+    private $encuestaDAO = null;
+	
+	private $registroDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -21,6 +25,8 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$this->gradoDAO = new Encuesta_DAO_Grado;
 		$this->nivelDAO = new Encuesta_DAO_Nivel;
 		$this->materiaDAO = new Encuesta_DAO_Materia;
+		$this->encuestaDAO = new Encuesta_DAO_Encuesta;
+		$this->registroDAO = new Encuesta_DAO_Registro;
     }
 
     public function indexAction()
@@ -202,13 +208,40 @@ class Encuesta_GruposController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$datos["idGrupo"] = $idGrupo;
-				print_r($datos);
+				try{
+					$this->encuestaDAO->agregarEncuestaGrupo($datos);
+				}catch(Exception $ex){
+					print_r($ex->getMessage());
+				}
+				
 			}
 		}
     }
 
+    public function encuestasAction()
+    {
+        // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$idDocente = $this->getParam("idDocente");
+		$idMateria = $this->getParam("idMateria");
+		
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$materia = $this->materiaDAO->obtenerMateria($idMateria);
+		$docente = $this->registroDAO->obtenerRegistro($idDocente);
+		
+        $encuestas = $this->encuestaDAO->obtenerEncuestas();
+        
+		$this->view->grupo = $grupo;
+		$this->view->materia = $materia;
+		$this->view->docente = $docente;
+        $this->view->encuestas = $encuestas;
+		
+    }
+
 
 }
+
+
 
 
 

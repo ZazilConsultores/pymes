@@ -8,14 +8,20 @@
 class Encuesta_IndexController extends Zend_Controller_Action
 {
 
-	private $gruposDAO = null;
-	private $gradoDAO = null;
-	private $cicloDAO = null;
-	private $nivelDAO = null;
-	
-    private $encuestaDAO = null;
-    private $seccionDAO = null;
+    private $gruposDAO = null;
 
+    private $gradoDAO = null;
+
+    private $cicloDAO = null;
+
+    private $nivelDAO = null;
+
+    private $encuestaDAO = null;
+
+    private $seccionDAO = null;
+	
+	private $generador = null;
+	
     public function init()
     {
         /* Initialize action controller here */
@@ -26,6 +32,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$this->nivelDAO = new Encuesta_DAO_Nivel;
 		$this->cicloDAO = new Encuesta_DAO_Ciclo;
 		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		
+		$this->generador = new Encuesta_Util_Generator();
     }
 
     public function indexAction()
@@ -133,6 +141,30 @@ class Encuesta_IndexController extends Zend_Controller_Action
     public function altasAction()
     {
         // action body
+    }
+
+    public function encuestaAction()
+    {
+        // action body
+        $generador = $this->generador;
+		$request = $this->getRequest();
+		$idEncuesta = $this->getParam("idEncuesta");
+		$idGrupo = $this->getParam("idGrupo");
+		$idDocente = $this->getParam("idDocente");
+		$idMateria = $this->getParam("idMateria");
+		
+		$formulario = $generador->generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria);
+		
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}
+		
+		if ($request->isPost()) {
+			$post = $request->getPost();
+			$generador->procesarFormulario($idEncuesta,$idDocente,$post);
+			//print_r($post);
+		}
+		
     }
 
 

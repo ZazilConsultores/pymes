@@ -11,10 +11,12 @@ interface Encuesta_Interfaces_IEncuesta{
 	public function obtenerEncuestaHash($hash);
 	// ============================================================= Conjunto de elementos
 	public function obtenerEncuestas();
+	public function obtenerEncuestasGrupo($idGrupo);
 	public function obtenerSecciones($idEncuesta);
 	public function obtenerPreguntas($idEncuesta);
 	// =====================================================================================>>>   Insertar
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
+	public function agregarEncuestaGrupo(array $registro);
 	// =====================================================================================>>>   Actualizar
 	public function editarEncuesta($idEncuesta, array $encuesta);
 	// =====================================================================================>>>   Eliminar
