@@ -188,7 +188,7 @@ class Encuesta_Util_Generator {
 		//print_r("<br />");
 		//print_r("====================");
 		//print_r("<br />");
-			for ($index = 0; $index < $numContenedores; $index++) {
+			for ($index = 1; $index < $numContenedores; $index++) {
 				//tomamos una seccion
 				$seccion = $secciones[$index];
 				//print_r($seccion);
