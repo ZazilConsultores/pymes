@@ -46,6 +46,13 @@ $connserver = array(
 		//'dbname' => 'General',
 		'dbname' => 'GeneralSagrado',
 	);
+$connlocaltres = array(
+		'host' => 'localhost',
+		'username' => 'zazil',
+		'password' => 'admin',
+		//'dbname' => 'General',
+		'dbname' => 'GeneralSagrado',
+	);
 $connnancy = array(
 		'host' => '192.168.1.240',
 		'username' => 'areli',
