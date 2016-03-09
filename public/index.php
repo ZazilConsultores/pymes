@@ -29,21 +29,22 @@ $application = new Zend_Application(
  //============================================================== >>> Arrays de conexion a bd: usados para las clases de Zend_Db
  $connlocal = array(
 		'host' => 'localhost',
-		'username' => 'root',
-		'password' => 'zazil',
-		'dbname' => 'general',
+		'username' => 'zazil',
+		'password' => 'admin',
+		'dbname' => 'General',
 	);
  $connlocaldos = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'generaldos',
+		'dbname' => 'GeneralDos',
 	);
 $connserver = array(
 		'host' => '192.168.1.5',
-		'username' => 'inventario',
-		'password' => 'inventario',
-		'dbname' => 'inventarior',
+		'username' => 'zazil',
+		'password' => 'admin',
+		//'dbname' => 'General',
+		'dbname' => 'GeneralSagrado',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',
@@ -59,12 +60,17 @@ $connlocalOrigen = array(
 	);
 
 Zend_Registry::set('connlocal', $connlocal);
-Zend_Registry::set('connserver', $connserver);
-Zend_Registry::set('connnancy', $connnancy);
-Zend_Registry::set('connlocalorigen', $connlocalOrigen);
+//Zend_Registry::set('connserver', $connserver);
+//Zend_Registry::set('connnancy', $connnancy);
+//Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
-$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
+
+//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+//$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
+//$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
+$db = Zend_Db::factory('PDO_MYSQL', $connserver);
+
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
 Zend_Db_Table_Abstract::setDefaultAdapter($db);
@@ -81,16 +87,54 @@ $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
 $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
+$tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
+$gradosEscolares = array("1°","2°","3°","4°","5°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°","16°");
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
+//============================================================================ DECORATORS
+//text form element table decorators
+$textFETDecorators = array(
+	'ViewHelper',//array('ViewHelper', array('tag' => 'td')),
+	'Errors',
+	array(array('data'=>'HtmlTag'), array('tag'=>'td', "class"=>"element")),
+	array('Label', array('tag'=>'td')),
+	array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
+);
+//button form element table decorators
+$buttonFETDecorators = array(
+	'ViewHelper',//array('ViewHelper', array('tag' => 'td')),
+	array(array('data'=>'HtmlTag'), array('tag'=>'td', "class"=>"element")),
+	array('Label', array('tag'=>'td','placement'=>'prepend')),
+	array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
+);
+//text subform element table decorators
+$textSETDecorators = array(
+	array('ViewHelper', array('tag' => 'td')),
+	array('Label', array('tag'=>'td')),
+	array('HtmlTag', array('tag'=>'tr'))
+);
+//subform table decorators
+$subformTDecorators = array(
+	'FormElements',
+	array('HtmlTag',array('tag'=>'tr')),
+
+);
+//form table decorators
+$formTDecorators = array(
+	'FormElements',
+	array('HtmlTag',array('tag'=>'table','class'=>'table table-striped table-condensed')),
+	'Form'
+);
+//============================================================================ CONSTANTES GENERALES
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);
 Zend_Registry::set('padre', $padre);
 Zend_Registry::set('estatus', $estatus);
 Zend_Registry::set('tipoEmpresa', $tipoEmpresa);
 Zend_Registry::set('tipoTelefono', $tipoTelefono);
-
+Zend_Registry::set('tipoBanco', $tipoBanco);
+Zend_Registry::set('gradosEscolares', $gradosEscolares);
 $application->bootstrap()
             ->run();

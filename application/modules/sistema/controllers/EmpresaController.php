@@ -3,7 +3,7 @@
 class Sistema_EmpresaController extends Zend_Controller_Action
 {
 
-    private $empresaDAO = null;
+    private $empresaDAO;
 	private $domicilioDAO;
 	private $fiscalesDAO;
 	private $telefonoDAO;
@@ -37,7 +37,7 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//---
+				
 				$empresa = new Sistema_Model_Fiscal($datos);
 				$this->empresasDAO->crearEmpresa($empresa);
 				print_r($datos);
@@ -48,21 +48,37 @@ class Sistema_EmpresaController extends Zend_Controller_Action
     public function empresasAction()
     {
         // action body
-        $fiscales = $this->fiscalDAO->obtenerFiscalesEmpresa();
+        $idFiscales = $this->empresaDAO->obtenerIdFiscalesEmpresas();
+		//$idFiscales = $this->empresaDAO->obtenerIdFiscalesEmpresas();
+		$fiscales = array();
+		foreach ($idFiscales as $id) {
+			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
+		}
+        //$fiscales = $this->fiscalDAO->obtenerFiscalesEmpresa();
 		$this->view->fiscales = $fiscales;
     }
 
     public function clientesAction()
     {
         // action body
-        $fiscales = $this->fiscalDAO->obtenerFiscalesCliente();
+        $idFiscales = $this->empresaDAO->obtenerIdFiscalesClientes();
+		$fiscales = array();
+		foreach ($idFiscales as $id) {
+			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
+		}
+        //$fiscales = $this->fiscalDAO->obtenerFiscalesCliente();
 		$this->view->fiscales = $fiscales;
     }
 
     public function proveedoresAction()
     {
         // action body
-        $fiscales = $this->fiscalDAO->obtenerFiscalesProveedor();
+        $idFiscales = $this->empresaDAO->obtenerIdFiscalesProveedores();
+		$fiscales = array();
+		foreach ($idFiscales as $id) {
+			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
+		}
+        //$fiscales = $this->fiscalDAO->obtenerFiscalesProveedor();
 		$this->view->fiscales = $fiscales;
     }
 

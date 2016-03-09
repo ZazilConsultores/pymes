@@ -11,23 +11,21 @@
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Detalle Encuesta
+				Detalle Encuesta: <strong><?php echo $encuesta->getNombre(); ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
 			<table class="table table-condensed">
 				<thead>
-					<th>Nombre</th>
-					<th>Inicio Encuesta</th>
-					<th>Término Encuesta</th>
+					<th>Nombre Clave</th>
+					<th>Creación</th>
 					<th>Estatus</th>
 					<th>Secciones</th>
 				</thead>
 				<tbody>
 					<tr>
-						<td><?php echo $encuesta->getNombre(); ?></td>
-						<td><?php echo $encuesta->getFechaInicio(); ?></td>
-						<td><?php echo $encuesta->getFechaFin(); ?></td>
+						<td><?php echo $encuesta->getNombreClave(); ?></td>
+						<td><?php echo $encuesta->getFecha(); ?></td>
 						<td><?php echo $estatus[$encuesta->getEstatus()]; ?></td>
 						<td>
 							<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-info">
@@ -43,7 +41,7 @@
 	<div class="panel panel-warning">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Editar Encuesta
+				Editar Encuesta: <strong><?php echo $encuesta->getNombre(); ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
@@ -53,20 +51,13 @@
 	
 	<div class="panel panel-danger">
 		<div class="panel-heading">
-			<h3 class="panel-title">Finalizar Encuesta</h3>
+			<h3 class="panel-title">
+				Finalizar Encuesta: <strong><?php echo $encuesta->getNombre(); ?></strong>
+			</h3>
 		</div>
 		<div class="panel-body">
-			<p>
-				Una encuesta jamás se elimina, por ejemplo, 
-				usted necesita reutilizar esta encuesta cada cierto periodo, 
-				lo unico que hace usted es activarla y des-activarla.
-			</p>
-			<p>
-				Al final de su vida útil usted puede extraer una copia de los datos
-				de la encuesta antes de desactivarla nuevamente.
-			</p>
 			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"baja","idEncuesta"=>$encuesta->getIdEncuesta(),)) ?>">
-				Finalizar
+				Finalizar Encuesta
 			</a>
 		</div>
 	</div>

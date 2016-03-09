@@ -43,6 +43,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eEstado->setRegisterInArrayValidator(FALSE);
 		foreach ($estados as $estado) {
 			$eEstado->addMultiOption($estado->getIdEstado(),$estado->getEstado());
+		
 		}
 		$eEstado->setValue("9");
 		
@@ -83,7 +84,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$subTelefono->setLegend("Telefono");
 		$tipoTelefono = Zend_Registry::get("tipoTelefono");
 		
-		$eLada = new Zend_Form_Element_Text("lada");
+		$eLada	 = new Zend_Form_Element_Text("lada");
 		$eLada->setLabel("Lada");
 		$eLada->setAttrib("class", "form-control");
 		

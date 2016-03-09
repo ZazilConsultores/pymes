@@ -13,7 +13,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRazonSocial = new Zend_Form_Element_Text('razonSocial');
 		$eRazonSocial->setLabel('Razon Social:');
 		$eRazonSocial->setAttrib("class", "form-control");
-		
+		/*
 		$eRFCAlfa = new Zend_Form_Element_Text('rfcAlfa');
 		$eRFCAlfa->setLabel('RFCALFA:');
 		$eRFCAlfa->setAttrib("class", "form-control");
@@ -25,17 +25,19 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRFCHom= new Zend_Form_Element_Text('rfcHom');
 		$eRFCHom->setLabel('RFCHOM:');
 		$eRFCHom->setAttrib("class", "form-control");
-		
-		$eAgregar = new Zend_Form_Element_Submit('agregar');
-		$eAgregar->setLabel('Agregar');
-		$eAgregar->setAttrib("class", "btn btn-primary");
-		
+		*/
+		$eSubmit = new Zend_Form_Element_Submit('submit');
+		$eSubmit->setLabel('Agregar');
+		$eSubmit->setAttrib("class", "btn btn-success");
+		/*
 		$this->addElement($eRFC);
 		$this->addElement($eRazonSocial);
 		$this->addElement($eRFCAlfa);
 		$this->addElement($eRFCNum);
 		$this->addElement($eRFCHom);
-		$this->addElement($eAgregar);
+		*/
+		$this->addElements(array($eRFC,$eRazonSocial,$eSubmit));
+		//$this->addElement($eAgregar);
 		
     }
 

@@ -1,0 +1,23 @@
+<?php 
+	$grado = $this->grado;
+	
+	$formulario = $this->formulario;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Alta de Grupos en Grado: <strong><?php echo $grado->getGrado() ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar Grado: <strong><?php echo $grado->getGrado() ?></strong>
+			</a><br />
+			<div>
+				<?php echo $this->formulario; ?>
+			</div>
+			<br /><br />
+		</div>
+	</div>
+</section>

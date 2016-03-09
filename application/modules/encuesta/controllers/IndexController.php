@@ -4,17 +4,36 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
+
 class Encuesta_IndexController extends Zend_Controller_Action
 {
 
-    private $encuestaDAO = null;
-    private $seccionDAO = null;
+    private $gruposDAO = null;
 
+    private $gradoDAO = null;
+
+    private $cicloDAO = null;
+
+    private $nivelDAO = null;
+
+    private $encuestaDAO = null;
+
+    private $seccionDAO = null;
+	
+	private $generador = null;
+	
     public function init()
     {
         /* Initialize action controller here */
         $this->encuestaDAO = new Encuesta_DAO_Encuesta;
 		$this->seccionDAO = new Encuesta_DAO_Seccion;
+		
+		$this->gradoDAO = new Encuesta_DAO_Grado;
+		$this->nivelDAO = new Encuesta_DAO_Nivel;
+		$this->cicloDAO = new Encuesta_DAO_Ciclo;
+		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		
+		$this->generador = new Encuesta_Util_Generator();
     }
 
     public function indexAction()
@@ -37,10 +56,9 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$formulario->getElement("nombre")->setValue($encuesta->getNombre());
 		$formulario->getElement("nombreClave")->setValue($encuesta->getNombreClave());
 		$formulario->getElement("descripcion")->setValue($encuesta->getDescripcion());
-		$formulario->getElement("fechaInicio")->setValue($encuesta->getFechaInicio());
-		$formulario->getElement("fechaFin")->setValue($encuesta->getFechaFin());
 		$formulario->getElement("estatus")->setValue($encuesta->getEstatus());
 		$formulario->getElement("submit")->setLabel("Actualizar Encuesta");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
 		$this->view->formulario = $formulario;
 		
@@ -51,22 +69,14 @@ class Encuesta_IndexController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
         $formulario = new Encuesta_Form_AltaEncuesta;
-		//$formulario->setAction($this->view->url(array("controller" => "encuesta"), null, true));
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}else if($request->isPost()){
+		
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$datos["fecha"] = date("Y-m-d H:i:s", time());
-				$fechaInicio = new Zend_Date($datos["fechaInicio"], 'yyyy-MM-dd hh-mm-ss');
-				$fechaFin = new Zend_Date($datos["fechaFin"], 'yyyy-MM-dd hh-mm-ss');
-				$datos["fechaInicio"] = $fechaInicio->toString('yyyy-MM-dd hh-mm-ss');
-				$datos["fechaFin"] = $fechaFin->toString('yyyy-MM-dd hh-mm-ss');
-				$encuesta = new Encuesta_Model_Encuesta($datos);
-				$encuesta->setHash($encuesta->getHash());
 				
 				$encuesta = new Encuesta_Model_Encuesta($datos);
-				$encuesta->setHash($encuesta->getHash());
+				
 				$this->encuestaDAO->crearEncuesta($encuesta);
 				$this->_helper->redirector->gotoSimple("index", "index", "encuesta", array("idEncuesta" => $encuesta->getIdEncuesta()));
 			}
@@ -84,8 +94,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$post['fechaInicio'] = $fInicio->toString('yyyy-MM-dd hh-mm-ss');
 		$post['fechaFin'] = $fFin->toString('yyyy-MM-dd hh-mm-ss');
 		unset($post["submit"]);
-		//$encuestaModel = new Encuesta_Model_Encuesta($post);
-		//print_r($estadoModel->toArray());
+		
 		$this->encuestaDAO->editarEncuesta($idEncuesta, $post);
 		$this->_helper->redirector->gotoSimple("admin", "index", "encuesta", array("idEncuesta" => $idEncuesta));
     }
@@ -106,6 +115,56 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
 		$this->view->secciones = $secciones;
 		$this->view->encuesta = $encuesta;
+    }
+
+    public function tiposAction()
+    {
+        // action body
+    }
+
+    public function altaeAction()
+    {
+        // action body
+        $request = $this->getRequest();
+		$idGrupo = $this->getParam("idGrupo");
+		$formulario = new Encuesta_Form_AltaEncuestaEvaluativa;
+		if(!is_null($idGrupo)){
+			//$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+			//$formulario->getElement("")->clearMultiOptions();
+			
+		}
+		$this->view->formulario = $formulario;
+		
+		
+    }
+
+    public function altasAction()
+    {
+        // action body
+    }
+
+    public function encuestaAction()
+    {
+        // action body
+        $generador = $this->generador;
+		$request = $this->getRequest();
+		$idEncuesta = $this->getParam("idEncuesta");
+		$idGrupo = $this->getParam("idGrupo");
+		$idDocente = $this->getParam("idDocente");
+		$idMateria = $this->getParam("idMateria");
+		
+		$formulario = $generador->generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria);
+		
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}
+		
+		if ($request->isPost()) {
+			$post = $request->getPost();
+			$generador->procesarFormulario($idEncuesta,$idDocente,$post);
+			//print_r($post);
+		}
+		
     }
 
 

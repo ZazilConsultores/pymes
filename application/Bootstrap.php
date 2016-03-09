@@ -12,6 +12,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader->registerNamespace('Inventario_');
 		$autoloader->registerNamespace('Encuesta_');
 		$autoloader->registerNamespace('Sistema_');
+		$autoloader->registerNamespace('Contabilidad_');
 		$autoloader->registerNamespace('Util_');
 	}
 	

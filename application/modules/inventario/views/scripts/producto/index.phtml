@@ -1,0 +1,48 @@
+<?php 
+	$productos = $this->productos;
+?>
+<section class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Productos.
+			</h3>
+		</div>
+			<div class="panel-body">
+				<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"producto","action"=>"alta")) ?>">
+					<span class="glyphicon glyphicon-plus"></span> Nuevo Producto
+				</a>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Clave Producto</th>
+						<th>Descripcion</th>
+						<th>Codigo de Barras</th>
+						<th>Administrar</th>
+						<th>Multiplos</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($productos as $producto) : ?>
+					<tr>
+						<td><?php echo $producto->getclaveProducto() ?></td>
+						<td><?php echo $producto->getProducto() ?></td>
+						<td><?php echo $producto->getCodigoBarras() ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"inventario", "controller"=>"producto", "action" => "admin", "idProducto" => $producto->getIdProducto()), null, true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Administrar
+							</a>
+						<td>
+							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"inventario", "controller"=>"multiplos", "action" => "index", "idProducto" => $producto->getIdProducto()), null, true); ?>">
+								Multiplos
+							</a>
+						</td>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+

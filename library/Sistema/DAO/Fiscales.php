@@ -23,6 +23,15 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$this->tablaFiscalesEmail = new Sistema_Model_DbTable_FiscalesEmail;
 	}
 	
+	public function obtenerFiscales($idFiscales){
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $idFiscales);
+		$rowFiscal = $tablaFiscales->fetchRow($select);
+		$modelFiscal = new Sistema_Model_Fiscales($rowFiscal->toArray());
+		
+		return $modelFiscal;
+	}
+	
 	public function obtenerDomicilioFiscal($idFiscales){
 		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
 		$select = $tablaFiscalesDomicilio->select()->from($tablaFiscalesDomicilio)->where("idFiscales = ?", $idFiscales);
@@ -57,10 +66,13 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$select = $tablaFiscalesEmails->select()->from($tablaFiscalesEmails)->where("idFiscales = ?", $idFiscales);
 		$rowsEF = $tablaFiscalesEmails->fetchAll($select);
 		//---------------------------------------------------------
+		//print_r($rowsEF->toArray());
 		$tablaEmails = $this->tablaEmail;
 		$modelsEmails = array();
 		foreach ($rowsEF as $row) {
-			$modelEmail = new Sistema_Model_Email($row->toArray());
+			$select = $tablaEmails->select()->from($tablaEmails)->where("idEmail = ?",$row->idEmail);
+			$rowE = $tablaEmails->fetchRow($select);
+			$modelEmail = new Sistema_Model_Email($rowE->toArray());
 			$modelsEmails[] = $modelEmail;
 		}
 		return $modelsEmails;
@@ -70,6 +82,11 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaFiscales = $this->tablaFiscales;
 		$fiscales->setHash($fiscales->getHash());
 		$tablaFiscales->insert($fiscales->toArray());
+		
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("hash = ?", $fiscales->getHash());
+		$rowFiscal = $tablaFiscales->fetchRow($select);
+		$fiscales = new Sistema_Model_Fiscales($rowFiscal->toArray());
+		return $fiscales; 
 	}
 	
 	public function agregarDomicilioFiscal($idFiscales, Sistema_Model_Domicilio $domicilio){

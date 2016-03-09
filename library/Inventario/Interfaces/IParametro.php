@@ -6,7 +6,9 @@
  */
 interface Inventario_Interfaces_IParametro {
 	public function obtenerParametros();
+	public function obtenerParametro($idParametro);
 	public function obtenerSubparametros($idParametro);
 	
 	public function crearParametro(Sistema_Model_Parametro $parametro);
+	public function editarParametro($idParametro, array $parametro);
 }

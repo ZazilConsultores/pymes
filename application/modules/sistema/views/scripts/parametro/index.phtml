@@ -15,7 +15,7 @@
 					<th>Parámetro</th>
 					<th>Creación</th>
 					<th>Descripción</th>
-					<th>Subparámetros</th>
+					<th>Administración</th>
 				</thead>
 				<tbody>
 					<?php foreach ($parametros as $parametro) : ?>
@@ -24,8 +24,8 @@
 						<td><?php echo $parametro->getFecha(); ?></td>
 						<td><?php echo $parametro->getDescripcion(); ?></td>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"index","idParametro"=>$parametro->getIdParametro()),null,true); ?>">
-								<span class="glyphicon glyphicon-cog"></span> Subparametros
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"parametro","action"=>"admin","idParametro"=>$parametro->getIdParametro()),null,true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>
 					</tr>

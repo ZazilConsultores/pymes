@@ -10,6 +10,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 	private $opcionDAO;
 	private $registroDAO;
 	private $respuestaDAO;
+	private $preferenciaDAO;
 	
 	private $elementDecorators;
 	private $elementButtonDecorators;
@@ -32,6 +33,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$this->opcionDAO = new Encuesta_DAO_Opcion;
 		$this->registroDAO = new Encuesta_DAO_Registro;
 		$this->respuestaDAO = new Encuesta_DAO_Respuesta;
+		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
 		
 		$this->decoratorsPregunta = array(
 			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper', 
@@ -165,6 +167,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		
 		if($request->isPost()){
 			//Aqui hacemos el alta de preguntas al sistema
+			$preguntaDAO = $this->preguntaDAO;
 			$post = $request->getPost();
 			$numContenedores = count($post);
 			$numContenedores--;
@@ -173,6 +176,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 			$encabezado = $secciones[0];
 			$idEncuesta = $encabezado["idEncuesta"];
 			$registro = $this->registroDAO->obtenerRegistroReferencia($encabezado["referencia"]);
+			
 			
 			//Recorremos todas las secciones
 			for ($index = 1; $index < $numContenedores; $index++) {
@@ -183,6 +187,9 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 				//print_r("====================");
 				foreach ($seccion as $preguntas) {
 					foreach ($preguntas as $idPregunta => $idRespuesta) {
+						
+						$pregunta = $preguntaDAO->obtenerPregunta($idPregunta);
+						
 						$respuesta = array();
 						
 						$respuesta["idRegistro"] = $registro->getIdRegistro();
@@ -192,6 +199,14 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 						
 						$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
 						$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+						//Insertamos en la tabla PreferenciaSimple
+						if($pregunta->getTipo() != "AB"){
+							if($pregunta->getTipo() == "SS"){
+								//Quiza sea el primer registro, quiza sea un registro secundario
+								$this->preferenciaDAO->agregarPreferenciaPregunta($idPregunta, $idRespuesta);
+								
+							}
+						}
 					}
 				}
 				/*
@@ -243,6 +258,41 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		$contenedor->addElement($ePregunta);
 		
 		return $contenedor;
-	}	
+	}
+	
+	public function generaFormulario($value='')
+	{
+		$idEncuesta = $this->getParam("idEncuesta");
+		$idDocente = $this->getParam("idReferencia");
+		
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
+		
+		$formulario = new Zend_Form;
+		
+		$eSubCabecera = new Zend_Form_SubForm();
+		$eSubCabecera->setLegend("Evaluación de Docentes ");
+		
+		$eEncuesta = new Zend_Form_Element_Hidden("idEncuesta");
+		$eEncuesta->setValue($idEncuesta);
+		
+		$eLogo = new Zend_Form_Element_Image("logo");
+		$eLogo->setImage($this->view->baseUrl() . "/images/Logo.png");
+		$eLogo->setDecorators($this->decoratorsPregunta);
+		//$formulario->addElement($eLogo);
+		
+		$eReferencia = new Zend_Form_Element_Text("referencia");
+		$eReferencia->setLabel("Boleta o Clave : ");
+		$eReferencia->setAttrib("class", "form-control");
+		$eReferencia->setDecorators($this->decoratorsPregunta);
+		
+		$eSubCabecera->addElements(array($eEncuesta, $eReferencia));
+		$eSubCabecera->setDecorators($this->decoratorsSeccion);
+		
+		$formulario->addSubForm($eSubCabecera, "referencia");
+		
+		
+		return $formulario;
+	}
 }
 

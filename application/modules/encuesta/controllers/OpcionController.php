@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 
+ */
 class Encuesta_OpcionController extends Zend_Controller_Action
 {
 	private $opcionDAO;
@@ -39,28 +41,19 @@ class Encuesta_OpcionController extends Zend_Controller_Action
 		$idCategoria = $this->getParam("idCategoria");
 		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
 		$formulario = new Encuesta_Form_AltaOpcion();
-		if($request->isGet()){
-			$this->view->categoria = $categoria;
-			$this->view->formulario = $formulario;
-			 
-		}elseif($request->isPost()){
-			if($formulario->isValid($request->getPost())){
+		$this->view->categoria = $categoria;
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())) {
 				$datos = $formulario->getValues();
 				$datos["idCategoria"] =$idCategoria;
-				//$datos["fecha"] = date("Y-m-d H:i:s", time());
+				//print_r($datos);
 				$opcion = new Encuesta_Model_Opcion($datos);
-				//$opcion->setHash($opcion->getHash());
+				//print_r($opcion->toArray());
 				$this->opcionDAO->crearOpcion($idCategoria, $opcion);
-				/*
-				$tablaOpcion = new Encuesta_Model_DbTable_Opcion;
-				$datos = $formulario->getValues();
-				$datos["idOpcion"] = hash("adler32", $datos["nombre"]. $datos["idCategoria"]);
-				$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $datos["idCategoria"]);
-				$elementos = count($tablaOpcion->fetchAll($select));
-				$datos["orden"] = $elementos;
-				$tablaOpcion->insert($datos);
-				*/
-				$this->_helper->redirector->gotoSimple("alta", "opcion", "encuesta", array("idCategoria"=>$idCategoria));
+				
+				//$this->_helper->redirector->gotoSimple("alta", "opcion", "encuesta", array("idCategoria"=>$idCategoria));
 			}
 		}
     }
@@ -77,12 +70,3 @@ class Encuesta_OpcionController extends Zend_Controller_Action
 
 
 }
-
-
-
-
-
-
-
-
-

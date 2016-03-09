@@ -2,12 +2,17 @@
 
 class Sistema_EmailController extends Zend_Controller_Action
 {
-	private $emailDAO = null;
+
+    private $emailDAO = null;
+	private $fiscalesDAO;
+
     public function init()
     {
         /* Initialize action controller here */
-        $this->emailDAO = new Inventario_DAO_Email;
-        
+        //$this->emailDAO = new Inventario_DAO_Email;
+        $this->emailDAO = new Sistema_DAO_Email;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		
     }
 
     public function indexAction()
@@ -72,8 +77,22 @@ class Sistema_EmailController extends Zend_Controller_Action
         
     }
 
+    public function fiscalAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		$emails = $this->fiscalesDAO->obtenerEmailsFiscales($idFiscales);
+		
+		
+		$this->view->emails = $emails;
+		$this->view->fiscales = $fiscales;
+    }
+
 
 }
+
+
 
 
 

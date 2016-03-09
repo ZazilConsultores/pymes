@@ -1,7 +1,11 @@
 <?php 
+	$fiscales = $this->fiscales;
 	$telefonos = $this->telefonos;
 	$tipoTelefono = Zend_Registry::get("tipoTelefono");
 ?>
+<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"telefono","action"=>"alta"),null,true) ?>">
+	<span class="glyphicon glyphicon-plus"></span> Agregar Telefono
+</a>
 <table class="table table-condensed table-striped">
 	<thead>
 		<th>Tipo</th>

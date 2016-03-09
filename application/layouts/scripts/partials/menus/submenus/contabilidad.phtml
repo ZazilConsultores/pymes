@@ -1,0 +1,38 @@
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		Contabilidad
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'banco', 'action' => 'index'), null, true); ?>">
+				Bancos
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'index'), null, true); ?>">
+				Clientes
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'index'), null, true); ?>">
+				Proveedores
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'index'), null, true); ?>">
+				Tesoreria
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'poliza', 'action' => 'index'), null, true); ?>">
+				Poliza
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'guiaContable', 'action' => 'index'), null, true); ?>">
+				Guia Contable
+			</a>
+		</li>
+	</ul>
+</li>

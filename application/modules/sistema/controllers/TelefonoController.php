@@ -2,13 +2,17 @@
 
 class Sistema_TelefonoController extends Zend_Controller_Action
 {
-	private $telefonoDAO = null;	
+
+    private $telefonoDAO = null;
+	private $fiscalesDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         //Iniciamos el DAO
-        $this->telefonosDAO = new Inventario_DAO_Telefono;
+        //$this->telefonosDAO = new Inventario_DAO_Telefono;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		
     }
 
     public function indexAction()
@@ -27,14 +31,14 @@ class Sistema_TelefonoController extends Zend_Controller_Action
 		$request = $this->getRequest();
 		$formulario = new Sistema_Form_AltaTelefono;
 		
-		if($request->isPost()){
-			if($formulario->isValid($request->getPost())){
+		if($request->isPost()) {
+			if($formulario->isValid($request->getPost())) {
 				$datos = $formulario->getValues();
 				$telefono = new Application_Model_Telefono($datos);
 				$this->telefonosDAO->crearTelefono($telefono);
 				$this->_helper->redirector->gotoSimple("index", "telefono", "sistema");
 			}
-		}else{
+		}else {
 			$this->_helper->redirector->gotoSimple("index", "telefono", "sistema");
 		}
 		
@@ -55,8 +59,25 @@ class Sistema_TelefonoController extends Zend_Controller_Action
         // action body
     }
 
+    public function fiscalAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		//$telefonos = $this->
+		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		$telefonos = $this->fiscalesDAO->obtenerTelefonosFiscales($fiscales->getIdFiscales());
+		$formulario = new Sistema_Form_AltaTelefono;
+		
+		$this->view->fiscales = $fiscales;
+		$this->view->formulario = $formulario;
+		$this->view->telefonos = $telefonos;
+		
+    }
+
 
 }
+
+
 
 
 

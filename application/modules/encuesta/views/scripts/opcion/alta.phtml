@@ -3,12 +3,14 @@
 	$formulario = $this->formulario;
 ?>
 <section class="row">
-	<article class="col-md-9">
-		<header>
-			<h3>Nueva Opción en la Categoría: <?php echo $categoria->getCategoria(); ?></h3>
-		</header>
-		<div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Nueva Opción en la Categoría: <strong><?php echo $categoria->getCategoria(); ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
 			<?php echo $formulario; ?>
 		</div>
-	</article>
+	</div>
 </section>

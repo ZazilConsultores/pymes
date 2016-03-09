@@ -6,7 +6,17 @@
  */
 class Encuesta_Model_Respuesta
 {
-	private $idPregunta;
+	private $idRespuesta;
+
+    public function getIdRespuesta() {
+        return $this->idRespuesta;
+    }
+    
+    public function setIdRespuesta($idRespuesta) {
+        $this->idRespuesta = $idRespuesta;
+    }
+    
+    private $idPregunta;
 
     public function getIdPregunta() {
         return $this->idPregunta;
@@ -69,9 +79,11 @@ class Encuesta_Model_Respuesta
 
     public function __construct(array $datos)
     {
-    	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
-		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
+    	if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
+    	if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
         if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
+    	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
+		
 		$this->respuesta = $datos["respuesta"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
@@ -81,9 +93,11 @@ class Encuesta_Model_Respuesta
 	{
 		$datos = array();
 		
-		$datos["idPregunta"] = $this->idPregunta;
+		$datos["idRespuesta"] = $this->idRespuesta;
 		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["idRegistro"] = $this->idRegistro;
+		$datos["idPregunta"] = $this->idPregunta;
+		
 		$datos["respuesta"] = $this->respuesta;
 		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;

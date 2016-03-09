@@ -32,7 +32,17 @@ class Sistema_Model_Usuario
         $this->usuario = $usuario;
     }
 	
-	private $nombres;
+	private $password;
+
+    public function getPassword() {
+        return $this->password;
+    }
+    
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
+    private $nombres;
 
     function getNombres() {
         return $this->nombres;
@@ -77,6 +87,7 @@ class Sistema_Model_Usuario
         if(array_key_exists("idUsuario", $datos)) $this->idUsuario = $datos["idUsuario"];
 		if(array_key_exists("idRol", $datos)) $this->idRol = $datos["idRol"];
 		$this->usuario = $datos["usuario"];
+		$this->password = $datos["password"];
 		$this->nombres = $datos["nombres"];
 		$this->apellidos = $datos["apellidos"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
@@ -89,6 +100,7 @@ class Sistema_Model_Usuario
 		$datos["idUsuario"] = $this->idUsuario;
 		$datos["idRol"] = $this->idRol;
 		$datos["usuario"] = $this->usuario;
+		$datos["password"] = $this->password;
 		$datos["nombres"] = $this->nombres;
 		$datos["apellidos"] = $this->apellidos;
 		$datos["fecha"] = $this->fecha;
