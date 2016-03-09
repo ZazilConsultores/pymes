@@ -34,24 +34,23 @@
 						<td><?php echo $materia->getMateria(); ?></td>
 						<td>
 							<?php
-								if(!empty($profesores)){
-									if(key_exists($materia->getIdMateria(), $profesores)){
-										$profesor = $profesores[$materia->getIdMateria()];
-										$docente = $profesor["profesor"]; 
-										$materiaD = $profesor["materia"];
-										echo $docente->getApellidos() . ", " . $docente->getNombres();
-									}else{?>
+								if(!empty($profesores) && key_exists($materia->getIdMateria(), $profesores)){
+									$profesor = $profesores[$materia->getIdMateria()];
+									$docente = $profesor["profesor"]; 
+									$materiaD = $profesor["materia"];
+									echo $docente->getApellidos() . ", " . $docente->getNombres();
+								}else{?>
 											<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"asociarp","idGrupo"=>$grupo->getIdGrupo(),"idMateria"=>$materia->getIdMateria()),null,true) ?>">
 												<span class="glyphicon glyphicon-plus"></span> Asignar profesor
 											</a>
-							<?php	}
-								}
-							?>
+							<?php } ?>
 						</td>
 						<td>
+							<?php if(!empty($profesores) && key_exists($materia->getIdMateria(), $profesores)){ ?>
 							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"encuestas","idGrupo"=>$grupo->getIdGrupo(),"idDocente"=>$docente->getIdRegistro(),"idMateria"=>$materiaD->getIdMateria()),null,true) ?>">
 								<span class="glyphicon glyphicon-search"></span> Encuestas
 							</a>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php endforeach ?>

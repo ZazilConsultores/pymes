@@ -73,6 +73,11 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 		$respuesta->setFecha(date("Y-m-d H:i:s", time()));
 		
 		$tablaRespuesta->insert($respuesta->toArray());
+		
+		$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("hash=?",$respuesta->getHash());
+		$rowRes = $tablaRespuesta->fetchRow($select);
+		$modelRespuesta = new Encuesta_Model_Respuesta($rowRes);
+		return $modelRespuesta;
 	}
 	// =====================================================================================>>>   Actualizar
 	public function editarRespuesta($idEncuesta, $idRegistro, array $respuesta){
