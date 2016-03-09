@@ -15,6 +15,9 @@ class Encuesta_Util_Generator {
 	private $preferenciaDAO;
 	
 	private $materiaDAO;
+	private $gruposDAO;
+	private $gradoDAO;
+	private $nivelDAO;
 	
 	private $formDecorators;
 	private $decoratorsSeccion;
@@ -33,6 +36,9 @@ class Encuesta_Util_Generator {
 		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
 		
 		$this->materiaDAO = new Encuesta_DAO_Materia;
+		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		$this->gradoDAO = new Encuesta_DAO_Grado;
+		$this->nivelDAO = new Encuesta_DAO_Nivel;
 		
 		$this->formDecorators = array(
 			'FormElements',
@@ -70,6 +76,10 @@ class Encuesta_Util_Generator {
 	{
 		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
+		
+		$grupoe = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grado = $this->gradoDAO->obtenerGrado($grupoe->getIdGrado());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
 		$docente = $this->registroDAO->obtenerRegistro($idDocente);
 		$materia = $this->materiaDAO->obtenerMateria($idMateria);
 		
@@ -90,6 +100,20 @@ class Encuesta_Util_Generator {
 		//$eLogo->setDecorators($this->decoratorsPregunta);
 		//$formulario->addElement($eLogo);
 		
+		$eNivel = new Zend_Form_Element_Select("idNivel");
+		$eNivel->setLabel("Nivel: ");
+		$eNivel->setAttrib("class", "form-control");
+		$eNivel->setAttrib("disabled", "disabled");
+		$eNivel->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
+		$eNivel->setDecorators($this->decoratorsPregunta);
+		
+		$eGrado = new Zend_Form_Element_Select("idGrado");
+		$eGrado->setLabel("Grado: ");
+		$eGrado->setAttrib("class", "form-control");
+		$eGrado->setAttrib("disabled", "disabled");
+		$eGrado->addMultiOption($grado->getIdGrado(),$grado->getGrado());
+		$eGrado->setDecorators($this->decoratorsPregunta);
+		
 		$eReferencia = new Zend_Form_Element_Select("idRegistro");
 		$eReferencia->setLabel("Docente : ");
 		$eReferencia->addMultiOption($docente->getIdRegistro(),$docente->getApellidos().", ".$docente->getNombres());
@@ -106,7 +130,7 @@ class Encuesta_Util_Generator {
 		//$eMateria->setValue($materia->getMateria());
 		$eMateria->setDecorators($this->decoratorsPregunta);
 		
-		$eSubCabecera->addElements(array($eEncuesta,$eMateria,$eReferencia));
+		$eSubCabecera->addElements(array($eEncuesta,$eNivel,$eGrado,$eMateria,$eReferencia));
 		$eSubCabecera->setDecorators($this->decoratorsSeccion);
 		
 		$formulario->addSubForm($eSubCabecera, "referencia");
@@ -188,7 +212,7 @@ class Encuesta_Util_Generator {
 		//print_r("<br />");
 		//print_r("====================");
 		//print_r("<br />");
-			for ($index = 0; $index < $numContenedores; $index++) {
+			for ($index = 1; $index < $numContenedores; $index++) {
 				//tomamos una seccion
 				$seccion = $secciones[$index];
 				//print_r($seccion);
