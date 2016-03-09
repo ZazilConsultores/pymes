@@ -207,7 +207,7 @@ class Encuesta_Util_Generator {
 						$respuesta["respuesta"] = $idRespuesta;
 						
 						$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
-						$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+						$mRespuesta = $this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
 						//print_r($respuesta);
 						//print_r("<br />");
 						//Insertamos en la tabla PreferenciaSimple
@@ -249,8 +249,9 @@ class Encuesta_Util_Generator {
 	{
 		$ePregunta = null;
 		if($pregunta->getTipo() == "AB"){
-			$ePregunta = new Zend_Form_Element_Text($pregunta->getIdPregunta());
+			$ePregunta = new Zend_Form_Element_Textarea($pregunta->getIdPregunta());
 			$ePregunta->setAttrib("class", "form-control");
+			$ePregunta->setAttrib("rows", "2");
 		}else{
 			//Obtenemos las Opciones
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());
