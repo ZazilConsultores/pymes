@@ -22,6 +22,7 @@
 					<th>Encuesta</th>
 					<th>Evaluar</th>
 					<th>Resultados</th>
+					<th>Reiniciar</th>
 				</thead>
 				<tbody>
 					<?php foreach ($encuestas as $encuesta) : ?>
@@ -37,7 +38,11 @@
 							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resultado","idEncuesta"=>$encuesta->getIdEncuesta(),),null,true) ?>">
 								<span class="glyphicon glyphicon-search"></span> <?php echo $encuestaDAO->obtenerEncuestasRealizadas($registro) ?> Encuestas contestadas
 							</a>
-							
+						</td>
+						<td>
+							<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"respuesta","action"=>"baja","idEncuesta"=>$encuesta->getIdEncuesta(),"idGrupo"=>$grupo->getIdGrupo(),"idRegistro"=>$docente->getIdRegistro(),),null,true) ?>">
+								<span class="glyphicon glyphicon-search"></span> Reiniciar Encuesta (Borrar respuestas)
+							</a>
 						</td>
 					</tr>
 					<?php endforeach ?>

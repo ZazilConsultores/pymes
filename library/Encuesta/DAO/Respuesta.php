@@ -9,11 +9,15 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	private $tablaCategoria;
 	private $tablaOpcion;
 	private $tablaRespuesta;
+	private $tablaPreferenciaSimple;
+	private $tablaERealizadas;
 	
 	function __construct() {
 		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
 		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
 		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
+		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple;
+		$this->tablaERealizadas = new Encuesta_Model_DbTable_ERealizadas;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -86,5 +90,28 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	// =====================================================================================>>>   Eliminar
 	public function eliminarRespuesta($idRespuesta){
 		
+	}
+	
+	public function eliminarRespuestasGrupo($idEncuesta,$idGrupo,$idRegistro){
+		$tablaRespuesta = $this->tablaRespuesta;
+		$tablaPreferenciaS = $this->tablaPreferenciaSimple;
+		$tablaERealizadas = $this->tablaERealizadas;
+		
+		try{
+			$where = $tablaPreferenciaS->getAdapter()->quoteInto("idGrupo=?", $idGrupo);
+			$tablaPreferenciaS->delete($where);
+			//print_r($where);
+			//print_r("<br />");
+			$where = "idEncuesta=".$idEncuesta." and idGrupo=".$idGrupo." and idRegistro=".$idRegistro;
+			$tablaRespuesta->delete($where);
+			//print_r($where);
+			//print_r("<br />");
+			$where = "idEncuesta=".$idEncuesta." and idGrupo=".$idGrupo." and idRegistro=".$idRegistro;
+			$tablaERealizadas->delete($where);
+			//print_r($where);
+			//print_r("<br />");
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+		}
 	}
 }
