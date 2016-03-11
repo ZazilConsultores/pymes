@@ -1,10 +1,35 @@
+<?php 
+	$formulario = $this->formulario;
+	$messageSuccess = $this->messageSuccess;
+	$messageFail = $this->messageFail;
+?>
 <section class="row">
-	<header>
-		<h3>
-			Nueva Unidad
-		</h3>
-	</header>
-	<div class="col-md-6">
-		<?php echo $this->formulario; ?>
-	</div>
+	<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"unidad","action"=>"index",),null,true) ?>">
+		<span class="glyphicon glyphicon-chevron-left"></span> Regresar
+	</a>
+	<article>		
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+
+		<?php if(!is_null($messageSuccess)){ ?>
+		<div class="alert alert-success" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+			<?php echo $messageSuccess; ?>	
+		</div>
+		
+		<?php }elseif(!is_null($messageFail)){ ?>
+		<div class="alert alert-danger" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+			<?php echo $messageFail; ?>		
+		</div>
+		<?php } ?>
+		
+	</article>
+	
+	
 </section>

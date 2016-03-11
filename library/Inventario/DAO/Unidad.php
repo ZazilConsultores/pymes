@@ -41,11 +41,18 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 		return $modelUnidades;	
 	}
 	
-	
 	public function crearUnidad( Inventario_Model_Unidad $unidad)
 	{
 		$tablaUnidad = $this->tablaUnidad;
+		$select = $tablaUnidad->select()->from($tablaUnidad)->where( "hash = ? ", $unidad->getHash());
+		$row = $tablaUnidad->fetchRow($select);
+		//print_r("<br />");
+		//print_r($row->toArray());
+		if(!is_null($row)) throw new Util_Exception_BussinessException("Unidad: <strong>" . $unidad->getUnidad() . "</strong> duplicado en el sistema");
+		$unidad->setHash($unidad->getHash());
+		
 		$tablaUnidad->insert($unidad->toArray());
+	
 	}
 	
 

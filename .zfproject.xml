@@ -66,6 +66,8 @@
             </controllerFile>
             <controllerFile controllerName="Inventario">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Unidad">
               <actionMethod actionName="index"/>
@@ -91,6 +93,7 @@
             <formFile formName="AltaProducto"/>
             <formFile formName="AltaUnidad"/>
             <formFile formName="AltaMultiplos"/>
+            <formFile formName="AdminInventario"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -172,6 +175,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="json">
                 <viewScriptFile forActionName="unidades"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="edita"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1432,6 +1441,8 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Inventario">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Unidad">
                 <testApplicationActionMethod forActionName="index"/>

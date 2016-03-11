@@ -13,6 +13,18 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
 	}
 	
+	public function obtenerClaveProducto()
+	{
+		$tablaSubparametro = $this->tablaSubparametro;
+		$claveProducto = "";
+		
+		foreach($clave as $idParametro=>$idSubparametro){
+			$sub = $this->obtenerProducto($idProducto);
+		
+		}
+		
+	}
+	
 	public function obtenerProducto($idProducto){
 		$tablaProducto = $this->tablaProducto;
 		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $idProducto);
@@ -44,27 +56,27 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 	}
 	
 	public function crearProducto(Inventario_Model_Producto $producto){
-		//idsSubparametro 
-		//$subparametro= new Sistema_DAO_Subparametro;	
-		//$subparametro->generarClaveProducto($claves);
-		//$claveProducto = $subparametro->generarClaveProducto($claveSubproducto);
-		//$idsSubparametro =$subparametro->generarClaveProducto($idsSubparametro);
+					
+		$tablaProducto = $this->tablaProducto;
 		
+		$subparametroDAO = new Sistema_DAO_Subparametro;
 		
-		//$tablaProducto = $this->tablaProducto;
-		//$tablaProducto->insert($producto->toArray());
+			
+		//$subparametro->setHash($subparametro->getHash());
 		
-		
-		
-		
+	    
+		$tablaProducto->insert($producto->toArray());
+				
 	}
 	
-	public function editarProducto($idProducto, Inventario_Model_Producto $producto){
+	public function editarProducto($idProducto, array $producto)
+	{
 		$tablaProducto = $this->tablaProducto;
 		$where = $tablaProducto->getAdapter()->quoteInto("idProducto = ?", $idProducto);
-		
-		$tablaProducto->update($producto->toArray(), $where);
+		$tablaProducto->update($producto, $where);
 	}
+	
+	
 	
 	public function eliminarProducto($idProducto){
 		$tablaProducto = $this->tablaProducto;
