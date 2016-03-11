@@ -8,12 +8,17 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
 	private $tablaSeccion;
+	private $tablaEncuestaGrupo;
+	private $tablaPregunta;
+	private $tablaERealizadas;
 	
-	function __construct()
+	public function __construct()
 	{
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
+		$this->tablaEncuestaGrupo = new Encuesta_Model_DbTable_EncuestaGrupo;
+		$this->tablaERealizadas = new Encuesta_Model_DbTable_ERealizadas;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -63,6 +68,18 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		return $modelEncuestas;
 	}
 	
+	public function obtenerEncuestasGrupo($idGrupo){
+		$tablaEncuestaGrupo = $this->tablaEncuestaGrupo;
+		$select = $tablaEncuestaGrupo->select()->from($tablaEncuestaGrupo)->where("idGrupo=?",$idGrupo);
+		$rowsEncuestaG = $tablaEncuestaGrupo->fetchAll($select);
+		$modelEncuestas = array();
+		foreach ($rowsEncuestaG as $row) {
+			$modelEncuesta = $this->obtenerEncuesta($row->idEncuesta);
+			$modelEncuestas[] = $modelEncuesta;
+		}
+		return $modelEncuestas;
+	}
+	
 	public function obtenerSecciones($idEncuesta) {
 		$tablaSeccion = $this->tablaSeccion;
 		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta = ?", $idEncuesta);
@@ -94,6 +111,19 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		return $modelPreguntas;
 	}
 	
+	public function obtenerEncuestasRealizadas(array $registro){
+		$tablaERealizadas = $this->tablaERealizadas;
+		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$registro["idEncuesta"])->where("idRegistro=?",$registro["idRegistro"])->where("idGrupo=?",$registro["idGrupo"]);
+		//print_r($select->__toString());
+		$row = $tablaERealizadas->fetchRow($select);
+		
+		if(!is_null($row)){
+			return $row->realizadas;
+		}else{
+			return 0;
+		}
+	}
+	
 	// =====================================================================================>>>   Insertar
 	/**
 	 * @method crearEncuesta Crea una encuesta pasandole un model.
@@ -104,8 +134,33 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$tablaEncuesta = $this->tablaEncuesta;
 		$encuesta->setHash($encuesta->getHash());
 		$encuesta->setFecha(date("Y-m-d H:i:s", time()));
-		print_r($encuesta->toArray());
+		//print_r($encuesta->toArray());
 		$tablaEncuesta->insert($encuesta->toArray());
+	}
+	
+	public function agregarEncuestaGrupo(array $registro){
+		$tablaEncuestaGrupo = $this->tablaEncuestaGrupo;
+		//$select = $tablaEncuestaGrupo->select()->from($tablaEncuestaGrupo)->where("idGrupo=?",$registro["idGrupo"])->where("idEncuesta=?",$registro["idEncuesta"]);
+		//$row = $tablaEncuestaGrupo->fetchRow($select);
+		try{
+			$tablaEncuestaGrupo->insert($registro);
+		}catch(Exception $ex){
+			throw new Util_Exception_BussinessException("Error: <strong>Encuesta</strong> ya relacionada con este <strong>Grupo</strong>");
+		}
+	}
+	
+	public function agregarEncuestaRealizada(array $registro){
+		$tablaERealizadas = $this->tablaERealizadas;
+		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$registro["idEncuesta"])->where("idRegistro=?",$registro["idRegistro"])->where("idGrupo=?",$registro["idGrupo"]);
+		$row = $tablaERealizadas->fetchRow($select);
+		if(!is_null($row)){
+			$row->realizadas++;
+			$row->save();
+		}else{
+			$registro["realizadas"] = 1;
+			$tablaERealizadas->insert($registro);
+		}
+		
 	}
 	//          =========================================================================   >>>   Actualizar
 	public function editarEncuesta($idEncuesta, array $encuesta)

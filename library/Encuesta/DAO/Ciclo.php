@@ -38,7 +38,7 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	
 	public function obtenerCicloActual(){
 		$tablaCiclo = $this->tablaCiclo;
-		$select = $tablaCiclo->select()->from($tablaCiclo)->where("actual = ?","S");
+		$select = $tablaCiclo->select()->from($tablaCiclo)->where("actual = ?","1");
 		$row = $tablaCiclo->fetchRow($select);
 		
 		$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());

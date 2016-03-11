@@ -11,6 +11,12 @@ class Encuesta_GruposController extends Zend_Controller_Action
 
     private $nivelDAO = null;
 
+    private $materiaDAO = null;
+
+    private $encuestaDAO = null;
+	
+	private $registroDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -18,43 +24,79 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$this->cicloDAO = new Encuesta_DAO_Ciclo;
 		$this->gradoDAO = new Encuesta_DAO_Grado;
 		$this->nivelDAO = new Encuesta_DAO_Nivel;
+		$this->materiaDAO = new Encuesta_DAO_Materia;
+		$this->encuestaDAO = new Encuesta_DAO_Encuesta;
+		$this->registroDAO = new Encuesta_DAO_Registro;
     }
 
     public function indexAction()
     {
         // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
+		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		$materias = $this->materiaDAO->obtenerMateriasGrupo($ciclo->getIdCiclo(), $grupo->getIdGrado());
+		
+		$this->view->nivel = $nivel;
+		$this->view->grado = $grado;
+		$this->view->grupo = $grupo;
+		$this->view->materias = $materias;
+		
+		$profesores = $this->gruposDAO->obtenerDocentes($idGrupo);
+		$this->view->profesores = $profesores;
     }
 
     public function consultaAction()
     {
         // action body
-        $idGrado = $this->getParam("idGrado");
-		$idCiclo = $this->getParam("idCiclo");
-		$idNivel = $this->getParam("idNivel");
-		
-		$request = $this->getRequest();
+        $request = $this->getRequest();
 		$formulario = new Encuesta_Form_ConsultaGrupos;
-		$grados = $this->gradoDAO->obtenerGrados($idNivel);
-		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
-		if(!is_null($grados)){
-			$formulario->getElement("grado")->clearMultiOptions();
-			$formulario->getElement("nivel")->clearMultiOptions();
-			$formulario->getElement("nivel")->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
-			foreach ($grados as $grado) {
-				$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
+		
+		
+        $idGrado = $this->getParam("idGrado");
+		$idNivel = $this->getParam("idNivel");
+		$ciclo = $this->cicloDAO->obtenerCicloActual();
+		$this->view->ciclo = $ciclo;
+		
+		//Cuando viene la la vista encuesta/grado/admin/idGrado/valor
+		//No desplegamos formulario de consulta, traemos tabla con los grupos del grado del ciclo actual
+		if(!is_null($idGrado)){
+			$grado = $this->gradoDAO->obtenerGrado($idGrado);
+			$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+			
+			$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $ciclo->getIdCiclo());
+			
+			$this->view->nivel = $nivel;
+			$this->view->grado = $grado;
+			
+			$this->view->grupos = $grupos;
+			return;
+		}elseif(!is_null($idNivel)){
+			$nivel = $this->nivelDAO->obtenerNivel($idNivel);
+			$grados = $this->gradoDAO->obtenerGrados($idNivel);
+			
+			if(!is_null($grados)){
+				$formulario->getElement("grado")->clearMultiOptions();
+				$formulario->getElement("nivel")->clearMultiOptions();
+				$formulario->getElement("nivel")->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
+				foreach ($grados as $grado) {
+					$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
+				}
 			}
-		}		
-		//$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $idCiclo);
+			
+			$this->view->nivel = $nivel;
+			$this->view->grupos = array();
+		}
 		
 		$this->view->formulario = $formulario;
-		$this->view->nivel = $nivel;
-		$this->view->ciclo = $this->cicloDAO->obtenerCicloActual();
-		//$this->view->grupos = array();
+		//$this->view->ciclo = $this->cicloDAO->obtenerCicloActual();
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
+				
 				$grupos = $this->gruposDAO->obtenerGrupos($datos["grado"], $datos["ciclo"]);
 				$this->view->grado = $this->gradoDAO->obtenerGrado($datos["grado"]);
 				$this->view->grupos = $grupos;
@@ -87,8 +129,10 @@ class Encuesta_GruposController extends Zend_Controller_Action
 				//print_r($grupo->toArray());
 				try{
 					$this->gruposDAO->crearGrupo($datos["idGrado"], $datos["idCiclo"], $grupo);
-				}catch(Exception $ex){
-					print_r($ex->getMessage());
+					$this->view->messageSuccess = "Grupo: <strong>".$grupo->getGrupo()."</strong> dado de alta exitosamente";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+					//print_r($ex->getMessage());
 				}
 				
 				
@@ -100,10 +144,110 @@ class Encuesta_GruposController extends Zend_Controller_Action
     public function opcionesAction()
     {
         // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
+        
+        $this->view->grupo = $grupo;
+        $this->view->grado = $grado;
+		$this->view->nivel = $nivel;
+        $this->view->ciclo = $ciclo;
+        
+    }
+
+    public function asociarpAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        $idGrupo = $this->getParam("idGrupo");
+		$idMateria = $this->getParam("idMateria");
+		
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$materia = $this->materiaDAO->obtenerMateria($idMateria);
+		
+		$formulario = new Encuesta_Form_MateriasProfesor;
+		$formulario->getElement("idMateria")->clearMultiOptions();
+		$formulario->getElement("idMateria")->addMultiOption($materia->getIdMateria(),$materia->getMateria());
+		
+		$this->view->grupo = $grupo;
+		$this->view->formulario = $formulario;
+		if($request->getPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$registro = array();
+				$registro["idGrupo"] = $idGrupo;
+				$registro["idRegistro"] = $datos["idProfesor"];
+				$registro["idMateria"] = $datos["idMateria"];
+				try{
+					$this->gruposDAO->agregarDocenteGrupo($registro);
+					$this->view->messageSuccess = "Docente: ";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
+			}
+		}
+    }
+
+    public function aencuestaAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        $idGrupo = $this->getParam("idGrupo");
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
+		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+		
+		
+		$formulario = new Encuesta_Form_AsociarEncuesta;
+		
+		$this->view->grupo = $grupo;
+		$this->view->grado = $grado;
+		$this->view->ciclo = $ciclo;
+		$this->view->nivel = $nivel;
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$datos["idGrupo"] = $idGrupo;
+				try{
+					$this->encuestaDAO->agregarEncuestaGrupo($datos);
+					$this->view->messageSuccess = "Encuesta asociada correctamente con los profesores del grupo";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+					//print_r($ex->getMessage());
+				}
+				
+			}
+		}
+    }
+
+    public function encuestasAction()
+    {
+        // action body
+        $idGrupo = $this->getParam("idGrupo");
+		$idDocente = $this->getParam("idDocente");
+		$idMateria = $this->getParam("idMateria");
+		
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$materia = $this->materiaDAO->obtenerMateria($idMateria);
+		$docente = $this->registroDAO->obtenerRegistro($idDocente);
+		
+        $encuestas = $this->encuestaDAO->obtenerEncuestas();
+        
+		$this->view->grupo = $grupo;
+		$this->view->materia = $materia;
+		$this->view->docente = $docente;
+        $this->view->encuestas = $encuestas;
+		
     }
 
 
 }
+
 
 
 

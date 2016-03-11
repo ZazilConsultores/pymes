@@ -40,7 +40,7 @@ class Encuesta_Form_AltaGrado extends Zend_Form
 		$eSubmit->setLabel("Agregar Grado");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
-		$this->addElements(array($eGrado,$eAbreviatura,$eDescripcion,$eObjetivo,$eSubmit));
+		$this->addElements(array($eGrado,$eAbreviatura,$eDescripcion,$eSubmit));
     }
 }
 

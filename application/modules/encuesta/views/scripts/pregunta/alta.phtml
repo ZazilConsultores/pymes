@@ -1,32 +1,35 @@
+<?php 
+	$formulario = $this->formulario;
+?>
 <section class="row">
-	<article class="col-xs-9">
-		<header>
-			<h3>
-				Nueva Pregunta en <?php echo $this->mensaje; ?>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Nueva Pregunta en <strong><?php echo $this->mensaje; ?></strong>
 			</h3>
-		</header>
-		<div>
-			<?php echo $this->formulario; ?>
 		</div>
-	</article>
-	<?php if(!is_null($this->opciones)){ $opciones = $this->opciones; ?>
-	<article class="col-md-3">
-		<header>
-			<h3>
-				Opciones de la Pregunta:
-			</h3>
-		</header>
-		<div>
-			<table class="table table-striped table-condensed">
-				<tbody>
-					<?php foreach ($opciones as $key => $value) : ?>
-					<tr>
-						<td><?php echo $value; ?></td>
-					</tr>	
-					<?php endforeach; ?>
-				</tbody>
-			</table>
+		<div class="panel-body">			
+			<?php echo $formulario; ?>
+			<?php if(!is_null($this->opciones)){ $opciones = $this->opciones; ?>
+			<article class="col-md-3">
+				<header>
+					<h3>
+						Opciones de la Pregunta:
+					</h3>
+				</header>
+				<div>
+					<table class="table table-striped table-condensed">
+						<tbody>
+							<?php foreach ($opciones as $key => $value) : ?>
+							<tr>
+								<td><?php echo $value; ?></td>
+							</tr>	
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</article>
+			<?php }  ?>
 		</div>
-	</article>
-	<?php }  ?>
+	</div>
 </section>

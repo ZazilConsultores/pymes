@@ -41,7 +41,17 @@ class Encuesta_Model_Ciclo
     public function setTermino($termino) {
         $this->termino = $termino;
     }
+	
+	private $actual;
 
+    public function getActual() {
+        return $this->actual;
+    }
+    
+    public function setActual($actual) {
+        $this->actual = $actual;
+    }
+    
     private $descripcion;
 
     public function getDescripcion() {
@@ -69,6 +79,7 @@ class Encuesta_Model_Ciclo
 		$this->ciclo = $datos["ciclo"];
 		$this->inicio = $datos["inicio"];
 		$this->termino = $datos["termino"];
+		$this->actual = $datos["actual"];
 		$this->descripcion = $datos["descripcion"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
@@ -81,6 +92,7 @@ class Encuesta_Model_Ciclo
 		$datos["ciclo"] = $this->ciclo;
 		$datos["inicio"] = $this->inicio;
 		$datos["termino"] = $this->termino;
+		$datos["actual"] = $this->actual;
 		$datos["descripcion"] = $this->descripcion;
 		$datos["hash"] = $this->hash;
 		

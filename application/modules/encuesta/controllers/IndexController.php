@@ -8,15 +8,32 @@
 class Encuesta_IndexController extends Zend_Controller_Action
 {
 
+    private $gruposDAO = null;
+
+    private $gradoDAO = null;
+
+    private $cicloDAO = null;
+
+    private $nivelDAO = null;
+
     private $encuestaDAO = null;
 
     private $seccionDAO = null;
+
+    private $generador = null;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->encuestaDAO = new Encuesta_DAO_Encuesta;
 		$this->seccionDAO = new Encuesta_DAO_Seccion;
+		
+		$this->gradoDAO = new Encuesta_DAO_Grado;
+		$this->nivelDAO = new Encuesta_DAO_Nivel;
+		$this->cicloDAO = new Encuesta_DAO_Ciclo;
+		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		
+		$this->generador = new Encuesta_Util_Generator();
     }
 
     public function indexAction()
@@ -108,13 +125,67 @@ class Encuesta_IndexController extends Zend_Controller_Action
     public function altaeAction()
     {
         // action body
-        $formulario = new Encuesta_Form_AltaEncuestaEvaluativa;
+        $request = $this->getRequest();
+		$idGrupo = $this->getParam("idGrupo");
+		$formulario = new Encuesta_Form_AltaEncuestaEvaluativa;
+		if(!is_null($idGrupo)){
+			//$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+			//$formulario->getElement("")->clearMultiOptions();
+			
+		}
 		$this->view->formulario = $formulario;
+		
+		
     }
 
     public function altasAction()
     {
         // action body
+    }
+
+    public function encuestaAction()
+    {
+        // action body
+        $generador = $this->generador;
+		$request = $this->getRequest();
+		$idEncuesta = $this->getParam("idEncuesta");
+		$idGrupo = $this->getParam("idGrupo");
+		$idDocente = $this->getParam("idDocente");
+		$idMateria = $this->getParam("idMateria");
+		
+		//print_r($this->getAllParams());
+		
+		$formulario = $generador->generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria);
+		
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}
+		
+		if ($request->isPost()) {
+			$post = $request->getPost();
+			//print_r($_POST);
+			try{
+				
+				//print_r("<br />");
+				$generador->procesarFormulario($idEncuesta,$idDocente,$idGrupo,$post);
+				$this->view->messageSuccess = "Encuesta registrada correctamente";
+			}catch(Exception $ex){
+				$this->view->messageFail = "Error al Registrar la encuesta: " . $ex->getMessage();
+			}
+			
+			//print_r($post);
+		}
+		
+    }
+
+    public function resultadoAction()
+    {
+        // action body
+        $idEncuesta = $this->getParam("idEncuesta");
+		$idEncuesta = $this->getParam("idEncuesta");
+		
+		
+		
     }
 
 

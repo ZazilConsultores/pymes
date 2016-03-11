@@ -6,6 +6,10 @@ class Encuesta_Form_AltaEncuestaEvaluativa extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $cicloDAO = new Encuesta_DAO_Ciclo;
+		$nivelDAO = new Encuesta_DAO_Nivel;
+		$gradoDAO = new Encuesta_DAO_Grado;
+        
         $subFormDecorators = array(
 			"FormElements",
 			"Fieldset",
@@ -41,37 +45,42 @@ class Encuesta_Form_AltaEncuestaEvaluativa extends Zend_Form
 		$subGeneral->addElements(array($eNombreEncuesta,$eNombreClaveEncuesta,$eDescripcion));
 		// ==================================================================================
 		$subEvaluacion = new Zend_Form_SubForm;
-		$subEvaluacion->setLegend("Objetivos a Evaluar: ");
+		$subEvaluacion->setLegend("Grupo a Evaluar: ");
 		
-		$periodos = array();
-		$periodos[] = "2016A";
-		$periodos[] = "2016B";
-		$periodos[] = "2017A";
+		$eCiclo = new Zend_Form_Element_Select("idCiclo");
+		$eCiclo->setLabel("Ciclo Escolar");
+		$eCiclo->setAttrib("class", "form-control");
 		
-		$ePeriodos = new Zend_Form_Element_Select("periodo");
-		$ePeriodos->setLabel("Periodo Educativo");
-		$ePeriodos->setMultiOptions($periodos);
-		$ePeriodos->setAttrib("class", "form-control");
+		$ciclos = $cicloDAO->obtenerCiclos();
+		foreach ($ciclos as $ciclo) {
+			$eCiclo->addMultiOption($ciclo->getIdCiclo(),$ciclo->getCiclo());
+		}
 		
-		$niveles = array();
-		$niveles[] = "Primaria";
-		$niveles[] = "Secundaria";
-		$niveles[] = "Preparatoria";
+		$niveles = $nivelDAO->obtenerNiveles();
 		
-		$eNivel = new Zend_Form_Element_Select("nivel");
+		$eNivel = new Zend_Form_Element_Select("idNivel");
 		$eNivel->setLabel("Nivel Educativo");
-		$eNivel->setMultiOptions($niveles);
 		$eNivel->setAttrib("class", "form-control");
 		
-		$eGrado = new Zend_Form_Element_Select("grado");
+		foreach ($niveles as $nivel) {
+			$eNivel->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
+		}
+		
+		$grados = $gradoDAO->obtenerGrados("1");
+		
+		$eGrado = new Zend_Form_Element_Select("idGrado");
 		$eGrado->setLabel("Grado Educativo");
 		$eGrado->setAttrib("class", "form-control");
 		
-		$eGrupo = new Zend_Form_Element_Select("grupo");
+		foreach ($grados as $grado) {
+			$eGrado->addMultiOption($grado->getIdGrado(),$grado->getGrado());
+		}
+		
+		$eGrupo = new Zend_Form_Element_Select("idGrupo");
 		$eGrupo->setLabel("Grupo: ");
 		$eGrupo->setAttrib("class", "form-control");
 		
-		$subEvaluacion->addElements(array($ePeriodos,$eNivel,$eGrado,$eGrupo));
+		$subEvaluacion->addElements(array($eCiclo,$eNivel,$eGrado,$eGrupo));
         $this->addSubForms(array($subGeneral, $subEvaluacion));
         
 		$eSubmit = new Zend_Form_Element_Submit("submit");
