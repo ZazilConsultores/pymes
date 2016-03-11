@@ -192,6 +192,7 @@
               <actionMethod actionName="altae"/>
               <actionMethod actionName="altas"/>
               <actionMethod actionName="encuesta"/>
+              <actionMethod actionName="resultado"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -353,6 +354,7 @@
               <dbTableFile dbTableName="CicloE"/>
               <dbTableFile dbTableName="ProfesoresGrupo"/>
               <dbTableFile dbTableName="EncuestaGrupo"/>
+              <dbTableFile dbTableName="ERealizadas"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -645,6 +647,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="encuesta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="resultado"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1243,6 +1248,7 @@
                 <testApplicationActionMethod forActionName="altae"/>
                 <testApplicationActionMethod forActionName="altas"/>
                 <testApplicationActionMethod forActionName="encuesta"/>
+                <testApplicationActionMethod forActionName="resultado"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>

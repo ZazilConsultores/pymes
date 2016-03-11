@@ -85,8 +85,20 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	public function agregarDocenteGrupo(array $registro){
 		$tablaProfesoresGrupo = $this->tablaProfesoresGrupo;
-		if(!empty($registro)){
-			$tablaProfesoresGrupo->insert($registro);
+		//Si ya hay un registro de esta materia
+		$select = $tablaProfesoresGrupo->select()->from($tablaProfesoresGrupo)->where("idGrupo=?",$registro["idGrupo"])->where("idMateria=?",$registro["idMateria"]);
+		$row = $tablaProfesoresGrupo->fetchRow($select);
+		
+		if(!is_null($row)){
+			throw new Util_Exception_BussinessException("Error: <strong>Docente</strong> ya registrado en la <strong>Materia</strong> seleccionada");
+		}else{
+			try{
+				$tablaProfesoresGrupo->insert($registro);
+			}catch(Exception $ex){
+				throw new Util_Exception_BussinessException("Error: <strong>". $ex->getMessage()."</strong>");
+				
+			}
+			
 		}
 	}
 	
