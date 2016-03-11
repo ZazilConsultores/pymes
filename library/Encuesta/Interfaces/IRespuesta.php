@@ -18,4 +18,5 @@ interface Encuesta_Interfaces_IRespuesta{
 	public function editarRespuesta($idEncuesta, $idRegistro, array $respuesta);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarRespuesta($idRespuesta);
+	public function eliminarRespuestasGrupo($idEncuesta,$idGrupo,$idRegistro);
 }
