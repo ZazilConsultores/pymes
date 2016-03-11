@@ -21,15 +21,16 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	// =====================================================================================>>>   Buscar
 	
 	// =====================================================================================>>>   Insertar
-	public function agregarPreferenciaPregunta($idPregunta, $idOpcion){
+	public function agregarPreferenciaPregunta($idPregunta,$idOpcion,$idGrupo){
 		$tablaPS = $this->tablaPreferenciaSimple;
-		$select = $tablaPS->select()->from($tablaPS)->where("idPreferencia = ?", $idPregunta)->where("idOpcion = ?", $idOpcion);
+		$select = $tablaPS->select()->from($tablaPS)->where("idPregunta = ?", $idPregunta)->where("idOpcion = ?", $idOpcion)->where("idGrupo=?",$idGrupo);
 		$rowPreferencia = $tablaPS->fetchRow($select);
 		
 		if(is_null($rowPreferencia)){
 			$objPreferencia = array();
 			$objPreferencia["idPregunta"] = $idPregunta;
 			$objPreferencia["idOpcion"] = $idOpcion;
+			$objPreferencia["idGrupo"] = $idGrupo;
 			$objPreferencia["preferencia"] = 1;
 			
 			$tablaPS->insert($objPreferencia);

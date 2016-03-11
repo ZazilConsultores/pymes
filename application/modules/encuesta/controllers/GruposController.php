@@ -129,8 +129,10 @@ class Encuesta_GruposController extends Zend_Controller_Action
 				//print_r($grupo->toArray());
 				try{
 					$this->gruposDAO->crearGrupo($datos["idGrado"], $datos["idCiclo"], $grupo);
-				}catch(Exception $ex){
-					print_r($ex->getMessage());
+					$this->view->messageSuccess = "Grupo: <strong>".$grupo->getGrupo()."</strong> dado de alta exitosamente";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+					//print_r($ex->getMessage());
 				}
 				
 				
@@ -179,11 +181,14 @@ class Encuesta_GruposController extends Zend_Controller_Action
 				$registro["idGrupo"] = $idGrupo;
 				$registro["idRegistro"] = $datos["idProfesor"];
 				$registro["idMateria"] = $datos["idMateria"];
-				$this->gruposDAO->agregarDocenteGrupo($registro);
-				//print_r($registro);
+				try{
+					$this->gruposDAO->agregarDocenteGrupo($registro);
+					$this->view->messageSuccess = "Docente: ";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
 			}
 		}
-		
     }
 
     public function aencuestaAction()
@@ -210,8 +215,10 @@ class Encuesta_GruposController extends Zend_Controller_Action
 				$datos["idGrupo"] = $idGrupo;
 				try{
 					$this->encuestaDAO->agregarEncuestaGrupo($datos);
-				}catch(Exception $ex){
-					print_r($ex->getMessage());
+					$this->view->messageSuccess = "Encuesta asociada correctamente con los profesores del grupo";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+					//print_r($ex->getMessage());
 				}
 				
 			}

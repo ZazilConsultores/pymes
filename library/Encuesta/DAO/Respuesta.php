@@ -76,7 +76,7 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 		
 		$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("hash=?",$respuesta->getHash());
 		$rowRes = $tablaRespuesta->fetchRow($select);
-		$modelRespuesta = new Encuesta_Model_Respuesta($rowRes);
+		$modelRespuesta = new Encuesta_Model_Respuesta($rowRes->toArray());
 		return $modelRespuesta;
 	}
 	// =====================================================================================>>>   Actualizar
