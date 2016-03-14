@@ -23,7 +23,7 @@ class Inventario_MultiplosController extends Zend_Controller_Action
 		$this->view->multiplos = $this->multiploDAO->obtenerMultiplos($idProducto);
 		$this->view->formulario = $formulario;
 		$this->view->producto = $this->productoDAO->obtenerProducto($idProducto);
-		$this->view->unidad =$this->unidadDAO->obtenerUnidad($idUnidad);	
+		//$this->view->unidad =$this->unidadDAO->obtenerUnidad($idUnidad);	
     }
 
     public function adminAction()
