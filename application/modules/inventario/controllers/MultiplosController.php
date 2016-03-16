@@ -18,12 +18,24 @@ class Inventario_MultiplosController extends Zend_Controller_Action
     public function indexAction()
     {
         $idProducto = $this->getParam("idProducto");
+		$idUnidad = $this->getParam("idUnidad");
 		$formulario = new Inventario_Form_AltaMultiplos;
+		//$idUnidad = $this -> getParam("idUnidad");
 		
+		
+		//print_r($idUnidad);
 		$this->view->multiplos = $this->multiploDAO->obtenerMultiplos($idProducto);
 		$this->view->formulario = $formulario;
 		$this->view->producto = $this->productoDAO->obtenerProducto($idProducto);
+		//$unidad = $this -> unidadDAO -> obtenerUnidad($idUnidad);
+		/*$this->view->multiplos =$multiplos;
+		$this->view->unidad =$unidad;
 		//$this->view->unidad =$this->unidadDAO->obtenerUnidad($idUnidad);	
+		/*$idNivel = $this->getParam("idNivel");
+		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
+		$grados = $this->gradoDAO->obtenerGrados($idNivel);
+		$this->view->nivel = $nivel;
+		$this->view->grados = $grados;*/
     }
 
     public function adminAction()

@@ -24,6 +24,7 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 		return $unidadModel;
 	}
 	
+	
 	public function obtenerUnidades()
 	{
 		$tablaUnidad = $this->tablaUnidad;

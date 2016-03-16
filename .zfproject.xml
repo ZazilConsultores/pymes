@@ -713,6 +713,7 @@
             <formFile formName="CancelarRemisionliente"/>
             <formFile formName="CancelarRemisionCliente"/>
             <formFile formName="EmpresaClienteFR"/>
+            <formFile formName="NotaEntradaProveedor"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
