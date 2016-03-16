@@ -15,6 +15,36 @@ class Encuesta_Model_Respuesta
     public function setIdRespuesta($idRespuesta) {
         $this->idRespuesta = $idRespuesta;
     }
+	
+	private $idEncuesta;
+
+    public function getIdEncuesta() {
+        return $this->idEncuesta;
+    }
+    
+    public function setIdEncuesta($idEncuesta) {
+        $this->idEncuesta = $idEncuesta;
+    }
+	
+	private $idRegistro;
+
+    public function getIdRegistro() {
+        return $this->idRegistro;
+    }
+    
+    public function setIdRegistro($idRegistro) {
+        $this->idRegistro = $idRegistro;
+    }
+	
+	private $idGrupo;
+
+    public function getIdGrupo() {
+        return $this->idGrupo;
+    }
+    
+    public function setIdGrupo($idGrupo) {
+        $this->idGrupo = $idGrupo;
+    }
     
     private $idPregunta;
 
@@ -26,27 +56,7 @@ class Encuesta_Model_Respuesta
         $this->idPregunta = $idPregunta;
     }
 	
-	private $idEncuesta;
-
-    public function getIdEncuesta() {
-        return $this->idEncuesta;
-    }
-    
-    public function setIdEncuesta($idEncuesta) {
-        $this->idEncuesta = $idEncuesta;
-    }
-
-    private $idRegistro;
-
-    public function getIdRegistro() {
-        return $this->idRegistro;
-    }
-    
-    public function setIdRegistro($idRegistro) {
-        $this->idRegistro = $idRegistro;
-    }
-
-    private $respuesta;
+	private $respuesta;
 
     public function getRespuesta() {
         return $this->respuesta;
@@ -82,6 +92,7 @@ class Encuesta_Model_Respuesta
     	if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
     	if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
         if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
+    	if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
     	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
 		
 		$this->respuesta = $datos["respuesta"];
@@ -96,8 +107,8 @@ class Encuesta_Model_Respuesta
 		$datos["idRespuesta"] = $this->idRespuesta;
 		$datos["idEncuesta"] = $this->idEncuesta;
 		$datos["idRegistro"] = $this->idRegistro;
+		$datos["idGrupo"] = $this->idGrupo;
 		$datos["idPregunta"] = $this->idPregunta;
-		
 		$datos["respuesta"] = $this->respuesta;
 		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;

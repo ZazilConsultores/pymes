@@ -150,7 +150,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		}
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar Encuesta");
-		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("class", "btn btn-success"); 
 		$eSubmit->setAttrib("disabled", "disabled");
 		
 		$formulario->addElement($eSubmit);
@@ -236,8 +236,9 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 	{
 		$ePregunta = null;
 		if($pregunta->getTipo() == "AB"){
-			$ePregunta = new Zend_Form_Element_Text($pregunta->getIdPregunta());
+			$ePregunta = new Zend_Form_Element_Textarea($pregunta->getIdPregunta());
 			$ePregunta->setAttrib("class", "form-control");
+			$ePregunta->setAttrib("rows", "2");
 		}else{
 			//Obtenemos las Opciones
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());

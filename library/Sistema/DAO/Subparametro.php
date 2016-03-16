@@ -8,14 +8,15 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	function __construct()
 	{
 		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
-		//$this->tablaParametro = new Sistema_Model_DbTable_Parametro;	
+		$this->tablaParametro = new Sistema_Model_DbTable_Parametro;	
 	}
 	
 	public function generarClaveProducto(array $claves){
+		//print_r($claves);
 		$tablaSubparametro= $this->tablaSubparametro;
 		$claveProducto = "";
 		$idsSubparametro = "";
-		
+			
 		foreach ($claves as $idParametro => $idSubparametro) {
 			if($idSubparametro <> "0"){
 				$sub = $this->obtenerSubparametro($idSubparametro);
@@ -31,9 +32,11 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		return $claveProducto;
 	}
 	
+	
 	public function generarIdsSubparametro(array $claves)
 	
 	{
+		
 		$tablaSubparametro= $this->tablaSubparametro;
 		$claveProducto = "";
 		$idsSubparametro = "";
@@ -68,18 +71,19 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 	}
 	
-	public function obtenerSubparametro($idSubparametro){
-			
+	public function obtenerSubparametro($idSubparametro)
+	{
 		$tablaSubparametro = $this->tablaSubparametro;
 		$select = $tablaSubparametro->select()->from($tablaSubparametro)->where("idSubparametro = ?", $idSubparametro);
 		$rowSubparametro = $tablaSubparametro->fetchRow($select);
 		
 		$subparametroModel = new Sistema_Model_Subparametro($rowSubparametro->toArray());
+		$subparametroModel->setIdSubparametro($rowSubparametro->idSubparametro);
 		
 		return $subparametroModel;
 		
-		
 	}
+
 	public function crearSubparametro(Sistema_Model_Subparametro $subparametro)
 	{
 		$tablasubparametro = $this->tablaSubparametro;
@@ -96,16 +100,13 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 	}
 	 
-	public function editarSubparametro($idSubparametro, array $subParametro){
+	public function editarSubparametro($idSubparametro, array $subParametro)
 	{
 		$tablaSubparametro = $this->tablaSubparametro;
 		$where = $tablaSubparametro->getAdapter()->quoteInto("idSubparametro = ?", $idSubparametro);
 		$tablaSubparametro->update($subParametro, $where);
-	}
+	}	
 	
-		
-		
-	}
 		
 }
 

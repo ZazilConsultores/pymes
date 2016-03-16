@@ -19,9 +19,9 @@ class Encuesta_IndexController extends Zend_Controller_Action
     private $encuestaDAO = null;
 
     private $seccionDAO = null;
-	
-	private $generador = null;
-	
+
+    private $generador = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -153,6 +153,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$idDocente = $this->getParam("idDocente");
 		$idMateria = $this->getParam("idMateria");
 		
+		//print_r($this->getAllParams());
+		
 		$formulario = $generador->generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria);
 		
 		if($request->isGet()){
@@ -161,9 +163,28 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		
 		if ($request->isPost()) {
 			$post = $request->getPost();
-			$generador->procesarFormulario($idEncuesta,$idDocente,$post);
+			//print_r($_POST);
+			try{
+				
+				//print_r("<br />");
+				$generador->procesarFormulario($idEncuesta,$idDocente,$idGrupo,$post);
+				$this->view->messageSuccess = "Encuesta registrada correctamente";
+			}catch(Exception $ex){
+				$this->view->messageFail = "Error al Registrar la encuesta: " . $ex->getMessage();
+			}
+			
 			//print_r($post);
 		}
+		
+    }
+
+    public function resultadoAction()
+    {
+        // action body
+        $idEncuesta = $this->getParam("idEncuesta");
+		$idEncuesta = $this->getParam("idEncuesta");
+		
+		
 		
     }
 

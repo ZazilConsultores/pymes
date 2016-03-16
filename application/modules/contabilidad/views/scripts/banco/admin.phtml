@@ -47,17 +47,4 @@
 			<?php echo $formulario; ?>
 		</div>
 	</div>
-	
-	<div class="panel panel-danger">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Eliminar Banco
-			</h3>
-		</div>
-		<div class="panel-body">
-			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"banco", "action"=>"baja", "idBanco"=>$banco->getIdBanco()), null, true) ?>">
-				Eliminar Banco
-			</a>
-		</div>
-	</div>
 </section>

@@ -4,24 +4,38 @@ class Inventario_MultiplosController extends Zend_Controller_Action
 {
 	private $multiploDAO;
 	private $productoDAO;
+	private $unidadDAO;
 
     public function init()
     {
         $this->multiploDAO = new Inventario_DAO_Multiplo;
 		$this->productoDAO = new Inventario_DAO_Producto;
+		$this->unidadDAO = new Inventario_DAO_Unidad;
+		
+		
     }
 
     public function indexAction()
     {
-        
         $idProducto = $this->getParam("idProducto");
+		$idUnidad = $this->getParam("idUnidad");
 		$formulario = new Inventario_Form_AltaMultiplos;
+		//$idUnidad = $this -> getParam("idUnidad");
 		
+		
+		//print_r($idUnidad);
 		$this->view->multiplos = $this->multiploDAO->obtenerMultiplos($idProducto);
-	
 		$this->view->formulario = $formulario;
 		$this->view->producto = $this->productoDAO->obtenerProducto($idProducto);
-
+		//$unidad = $this -> unidadDAO -> obtenerUnidad($idUnidad);
+		/*$this->view->multiplos =$multiplos;
+		$this->view->unidad =$unidad;
+		//$this->view->unidad =$this->unidadDAO->obtenerUnidad($idUnidad);	
+		/*$idNivel = $this->getParam("idNivel");
+		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
+		$grados = $this->gradoDAO->obtenerGrados($idNivel);
+		$this->view->nivel = $nivel;
+		$this->view->grados = $grados;*/
     }
 
     public function adminAction()
@@ -50,6 +64,7 @@ class Inventario_MultiplosController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
 		$idProducto = $this->getParam("idProducto");
+	
 		$formulario = new Inventario_Form_AltaMultiplos;
 		$this->view->formulario = $formulario;
 
@@ -57,35 +72,31 @@ class Inventario_MultiplosController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$multiplo = new Inventario_Model_Multiplos($datos[0]);
 				//print_r($datos[0]);
+				//print_r($idProducto);
+	
+				$idUnidad = $this -> getParam("idUnidad");
+				$unidad = $this -> unidadDAO -> obtenerUnidad($idUnidad);
 				
+				$multiplo = new Inventario_Model_Multiplos($datos[0]);
 				$multiplo->setIdProducto($idProducto);
-				$multiplo->setHash($multiplo->getHash());
-				//print_r($formulario);
-				try{
-					$this->multiploDAO->crearMultiplos($multiplo);
-					$mensaje = "Multiplo <strong>" . $multiplo->getUnidad() . "</strong> creado exitosamente";
-					$this->view->messageSuccess = $mensaje;
-				}catch(Util_Exception_BussinessException $ex){
-					$this->view->messageFail = $ex->getMessage();
-				}
+				$multiplo->setIdUnidad($idUnidad);
 				
-				//$this->_helper->redirector->gotoSimple("index", "multiplos", "inventario", array("idProducto"=>$idProducto));
-		}else{
-				$this->_helper->redirector->gotoSimple("index", "multiplos", "inventario");
+				$this->multiploDAO->crearMultiplos($multiplo);		
+				//print_r($multiplo);
+				//$this->_helper->redirector->gotoSimple("index", "producto", "inventario");
+	
 			}
 		}
-		
-
-    }
-
+	}
+	 
     public function editaAction()
     {
-        $idMultiplos= $this->getParam("idMultiplos");
+        //$idMultiplos= $this->getParam("idMultiplos");
+		$idProduto= $this->getParam("idProducto");
 		
 		$datos = $this->getRequest()->getPost();
-		unset($datos["agregar"]);
+		unset($datos["submit"]);
 		
 		$this->multiploDAO->editarMultiplo($idMultiplos, $datos);
 		

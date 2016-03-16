@@ -21,6 +21,20 @@ class Encuesta_CicloController extends Zend_Controller_Action
     public function adminAction()
     {
         // action body
+        $idCiclo = $this->getParam("idCiclo");
+		$ciclo = $this->cicloDAO->obtenerCiclo($idCiclo);
+		
+		$formulario = new Encuesta_Form_AltaCiclo;
+		$formulario->getElement("ciclo")->setValue($ciclo->getCiclo());
+		$formulario->getElement("inicio")->setValue($ciclo->getInicio());
+		$formulario->getElement("termino")->setValue($ciclo->getTermino());
+		$formulario->getElement("actual")->setValue($ciclo->getActual());
+		$formulario->getElement("descripcion")->setValue($ciclo->getDescripcion());
+		$formulario->getElement("submit")->setValue("Actualizar Ciclo");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		
+		$this->view->ciclo = $ciclo;
+		$this->view->formulario = $formulario;
     }
 
     public function altaAction()

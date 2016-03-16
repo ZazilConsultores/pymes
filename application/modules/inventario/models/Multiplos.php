@@ -7,10 +7,11 @@ class Inventario_Model_Multiplos
     public function getIdMultiplos() {
         return $this->idMultiplos;
     }
-    
+
     public function setIdMultiplos($idMultiplos) {
         $this->idMultiplos = $idMultiplos;
     }
+	
 	
 	private $idProducto;
 
@@ -22,6 +23,7 @@ class Inventario_Model_Multiplos
         $this->idProducto = $idProducto;
     }
 	
+	
 	private $idUnidad;
 
     public function getIdUnidad() {
@@ -31,6 +33,7 @@ class Inventario_Model_Multiplos
     public function setIdUnidad($idUnidad) {
         $this->idUnidad = $idUnidad;
     }
+
 	
 	private $cantidad;
 
@@ -42,10 +45,11 @@ class Inventario_Model_Multiplos
         $this->cantidad = $cantidad;
     }
 	
+	
 	private $hash;
 
     public function getHash() {
-    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey(array($this->unidad)));
+    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
         return $this->hash;
     }
     
@@ -56,7 +60,7 @@ class Inventario_Model_Multiplos
 	public function __construct(array $datos) {
 	    if(array_key_exists("idMultiplos", $datos)) $this->idMultiplos = $datos["idMultiplos"];
 		if(array_key_exists("idProducto", $datos)) $this->idProducto = $datos["idProducto"];
-		if(array_key_exists("idUnidad", $datos)) $this->idProducto = $datos["idUnidad"];
+		if(array_key_exists("idUnidad", $datos)) $this->idUnidad = $datos["idUnidad"];
 		$this->cantidad = $datos["cantidad"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }

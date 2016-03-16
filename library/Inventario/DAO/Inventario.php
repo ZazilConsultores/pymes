@@ -14,6 +14,7 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 	
 	public function obtenerInventario(){
 		$tablaInventario = $this->tablaInventario;
+	
 		$rowInventario = $tablaInventario>fetchAll();
 		
 		$modelInventarios = array();
@@ -28,22 +29,12 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 		return $modelInventarios;
 	}
 	
-	public function crearEmail(Sistema_Model_Email $email){
-		$tablaEmail = $this->tablaEmail;
-		$tablaEmail->insert($email->toArray());
-	}
-	
-	public function editarEmail($idEmail, Sistema_Model_Email $email){
-		$tablaEmail = $this->tablaEmail;
+	public function editarInventario($idInventario, Sistema_Model_Inventario $inventario){
+		$tablaInventario = $this->tablaEmail;
 		$where = $tablaEmail->getAdapter()->quoteInto("idEmail = ?", $idEmail);
 		
 		$tablaEmail->update($email->toArray(), $where);
 	}
 	
-	public function eliminarEmail($idEmail){
-		$tablaEmail = $this->tablaEmail;
-		$where = $tablaEmail->getAdapter()->quoteInto("idEmail = ?", $idEmail);
-		
-		$tablaEmail->delete($where);
-	}
+
 }

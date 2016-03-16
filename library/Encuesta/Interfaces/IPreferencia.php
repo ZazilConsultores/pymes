@@ -8,7 +8,7 @@ interface Encuesta_Interfaces_IPreferencia {
 	// =====================================================================================>>>   Buscar
 	//public function obtenerPreferenciasPregunta($idPregunta);
 	// =====================================================================================>>>   Insertar
-	public function agregarPreferenciaPregunta($idPregunta, $idOpcion);
+	public function agregarPreferenciaPregunta($idPregunta,$idOpcion,$idGrupo);
 	// =====================================================================================>>>   Actualizar
 	
 	// =====================================================================================>>>   Eliminar

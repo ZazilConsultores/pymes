@@ -1,6 +1,7 @@
 <?php 
 	$producto = $this->producto;
-	$multiplos = $this->multiplos;
+	$multiplos = $this->multiplos; 
+	$unidad = $this->unidad;
 	$formulario = $this->formulario;
 	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"multiplos", "action" => "alta"), null, true));
 	
@@ -16,23 +17,20 @@
 			</a>
 			<table class="table table-condensed table-striped">
 				<thead>
+					<th>idMultiplos</th>
+					<th>idProducto</th>
+					<th>idUnidad</th>
 					<th>Cantidad</th>
-					<th>Unidad</th>
-					<th>Abreviatura</th>
-					<th>Administrar</th>
-					
 				</thead>
 				<tbody>
 					<?php foreach ($multiplos as $multiplo) : ?>
+					<!--<?php print_r($multiplo->toArray()) ?>
+					<!--<?php print_r("<br />") ?>-->
 					<tr>
-						<td><?php echo $multiplo->getCantidad(); ?></td>
-						<td><?php echo $multiplo->getUnidad(); ?></td>
-						<td><?php echo $multiplo->getAbreviatura(); ?></td>
-						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"multiplos","action"=>"admin","idMultiplos"=>$multiplo->getIdMultiplos()),null,true); ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
-							</a>
-						</td>
+						<td><?php echo $multiplo->getIdMultiplos() ?></td>
+						<td><?php echo $producto->getProducto() ?></td>				
+						<td><?php echo $multiplo->getIdUnidad() ?></td>
+						<td><?php echo $multiplo->getCantidad() ?></td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>
