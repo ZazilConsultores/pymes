@@ -35,6 +35,7 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 	public function altaAction() {
 			
 		$request = $this->getRequest();
+		$idUnidad = $this->getParam("idUnidad");
 		$formulario = new Inventario_Form_AltaUnidad;
 		$this->view->formulario = $formulario;
 		

@@ -96,12 +96,20 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		$subFormaPago = new Zend_Form_SubForm;
 		$subFormaPago->setLegend("Forma de Pago");
 		
+		$eAgregar = new Zend_Form_Element_Submit('guardar');
+		$eAgregar->setLabel('Agregar');
+		$eAgregar->setAttrib("class", "btn btn-success");		
+		
 		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa, $eProveedor, $eProyecto));
-        $subCuerpo->addElements(array($eCantidad,$eProducto, $eUnidad, $eCodigoBarras, $eDescripcion, $ePrecioU, $eImporte));
+        $subCuerpo->addElements(array($eCantidad,$eProducto, $eUnidad, $eCodigoBarras, $eDescripcion, $ePrecioU, $eImporte, $eAgregar));
 		$subFormaPago->addElements(array($eDivisa)); 
+		
+		$eGuardar = new Zend_Form_Element_Submit('guardar');
+		$eGuardar->setLabel('Guardar');
+		$eGuardar->setAttrib("class", "btn btn-warning");		
 		 
-	    $this->addSubForms(array($subEncabezado,$subCuerpo, $subFormaPago));
-         //$this->addElement($eNumeroFactura);
+	    $this->addSubForms(array($subEncabezado,$subCuerpo));
+        $this->addElement($eGuardar);
          
  
     }

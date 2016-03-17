@@ -90,6 +90,7 @@ setlocale(LC_MONETARY, 'es_MX.UTF-8');
 //============================================================================ CONSTANTES GENERALES
 //$estatusEncuesta = array('0' => 'CREADO', '1' => 'PUBLICADO', '2' => 'ACTIVO', '3' => 'FINALIZADO');
 $tipo = array('AB' => 'ABIERTAS', 'SS' => 'SIMPLE SELECCION', 'MS' => 'MULTIPLE SELECCION');
+$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI');
 $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
@@ -143,5 +144,6 @@ Zend_Registry::set('tipoEmpresa', $tipoEmpresa);
 Zend_Registry::set('tipoTelefono', $tipoTelefono);
 Zend_Registry::set('tipoBanco', $tipoBanco);
 Zend_Registry::set('gradosEscolares', $gradosEscolares);
+Zend_Registry::set('formaPago', $formaPago);
 $application->bootstrap()
             ->run();
