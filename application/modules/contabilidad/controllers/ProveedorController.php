@@ -2,50 +2,50 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
-	public $links = array(
+
+    public $links = array(
         'Inicio' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index'
             ),
-          'Nota Entrada' => array(
+        'Nota Entrada' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
             'tipo' => '1'
             ),
-          'Remision Proveedor' => array(
+        'Remision Proveedor' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
             'tipo' => '2'
-            ),   
+            ),
         'Factura Proveedor' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
             'tipo' => '3'
             ),
-        
-		'Cobro Factura' => array(
+        'Cobro Factura' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
             'tipo' => '4'
             ),
-		'Cancelar Factura' => array(
+        'Cancelar Factura' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
             'tipo' => '5'
             ),
-         'Cancelar Remision' => array(
+        'Cancelar Remision' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
             'tipo' => '6'
             )
-);
+        );
 
     public function init()
     {
@@ -101,6 +101,21 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}
 
-	}
+    }
+
+    public function agregarnotaentradaAction()
+    {
+        // action body
+    }
+
+
 }
+
+
+
+
+
+
+
+
 
