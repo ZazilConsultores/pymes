@@ -55,7 +55,7 @@ class Sistema_Model_Subparametro
     private $hash;
 
     public function getHash() {
-    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey(array($this->subparametro)));
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey(array($this->idParametro)));
         return $this->hash;
     }
     
