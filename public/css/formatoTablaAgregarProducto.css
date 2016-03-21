@@ -1,9 +1,7 @@
-table{
+#tablaNotaEntrada{
 	border: 1px solid black;
-	width:700px;
+	width:900px;
 	border-spacing:10px;
-	
-	
 	td,th{
 		border: 1px solid black;
 	}	
