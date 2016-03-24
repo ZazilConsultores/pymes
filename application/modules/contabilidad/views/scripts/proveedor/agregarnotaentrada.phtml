@@ -1,10 +1,48 @@
-<html>
-	<head>
-		<title>Tabla Agregar Producto</title>
-	</head>
-	<body>
+  <!--
+    <form action="/" method="post">
+        <div>
+            <label for="titulo">T&iacute;tulo:</label>
+            <input type="text" name="titulo" id="titulo" />
+        </div>
+        <div>
+            <label for="descripcion">Descripci&oacute;n:</label>
+            <textarea id="descripcion"></textarea>
+        </div>
+        <div>
+            <label for="tipo">Tipo:</label>
+            <select id="tipo">
+                <option value="1">Tipo 1</option>
+                <option value="2">Tipo 2</option>
+                <option value="3">Tipo 3</option>
+            </select>
+        </div>
+        <div>
+            <button type="button" id="agregar">Agregar</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th>Tipo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tabla-elementos">
+            
+        </tbody>
+    </table>
+    
+    
+
+		
+
+			---------------Genera tabla pero sin encabezado--------------
 		<input type="button" value="Genera una tabla" onclick="genera_tabla()">
-	<!--
+	
+	
 		<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor")) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Agregar 
 		</a>
@@ -13,13 +51,13 @@
 		<caption>Tabla Agregar Producto para Nota de Entrada</caption>
 		<tr>
 			
-			<th>Cantidad</th>
-			<th>Seleccionar Producto</th>
-			<th>Seleccionar Unidad</th>
-			<th>Codigo de Barras</th>
-			<th>Descripcion</th>
-			<th>Precio Unitario</th>
-			<th>Importe</th>
+				<th>Cantidad</th>
+				<th>Seleccionar Producto</th>
+				<th>Seleccionar Unidad</th>
+				<th>Codigo de Barras</th>
+				<th>Descripcion</th>
+				<th>Precio Unitario</th>
+				<th>Importe</th>
 		</tr>
 
 		
@@ -43,5 +81,55 @@
 		</tr>			
 		</table>
 	-->
+	
+<html>
+	<head>
+		<title> Agregar Filas una tabla</title>
+	</head>
+	<body>
+		<div id="divContenedor">
+			<h1>Productos</h1>
+			<div id="divContenedorTabla">
+				<table align="center" width="600">
+					<caption>Agregar Productos para nota de entrada</caption>
+					<thead>
+						<tr>
+							<th>Cantidad</th>
+							<th>Seleccionar Producto </th>
+							<th>Seleccionar Unidad</th>
+							<th>Codigo de Barras</th>
+							<th>Descripcion</th>
+							<th>Precio Unitario</th>
+							<th>Importe</th>
+							<th width="22">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td><input type="text" class="clsAnchoTotal" /></td>
+							<td align="right"><input type="button" value "-" class="clsEliminarFila"></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4" align="left">
+								<input type="button" value="Agregar" class="clsAgregarFila">
+								<input  type="button" value="Eliminar" class="clsEliminarFila">
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
 	</body>
 </html>
+	
+	
+	
+	

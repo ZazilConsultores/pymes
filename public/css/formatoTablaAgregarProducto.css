@@ -1,8 +1,60 @@
-#tablaNotaEntrada{
-	border: 1px solid black;
-	width:900px;
-	border-spacing:10px;
-	td,th{
-		border: 1px solid black;
-	}	
+body{
+	background: #FFFFFF;
+	color:#000000;
+	font: 12px normal Tahoma, Verdana, Arial, Sans-serif;
+	padding:0; margin:0;
+}
+
+h1{
+	text-align:center;
+	color:#FFFFFF;
+	font-weight:normal;
+}
+
+table{
+	background:#FFFFFF;
+	border-radius: 5px;
+	border-top-left-radius:0px;
+	border-top-right-radius:0px;
+	border: solid 1px #333333;
+	color:#000000;
+	border-top:none;
+	padding:10px;
+}
+	table caption{
+		text-indent:15px;
+		background: #FFFFFF;
+		text-align:left;
+		cursor: pointer;
+		padding:5px;
+		font-style:italic;
+		color:#000000;
+		border-radius:5px;
+		border:solid 1px #333333;
+		border-bottom-left-radius:0px;
+		border-bottom-right-radius: 0px;
+		border-bottom:none;
+		
+	}
+
+#divContenedor{
+	position:absolute;
+	left:50%;
+	margin-left:-470px;
+	top:0px;
+	width: 940px;
+	z-index:1000px;
+}
+	#divContenedorTabla{
+		padding:4px;
+		float:left;
+	}
+.clsAnchoTotal{
+	width: 95;
+}
+.clsExpandir{
+	background:#ff0000;
+}
+.cslContraer{
+	background:#ff0000;
 }
