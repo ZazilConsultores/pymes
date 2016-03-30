@@ -36,6 +36,7 @@
 		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.responsive.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/responsive.bootstrap.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/generarTabla.js"></script>
 		
 		<style>
 			body{
@@ -89,6 +90,35 @@
 		</div>
 		
 		<script src="<?php echo $this->baseUrl(); ?>/js/panel.js"></script>
+		<!--datepickeer-->
+					<script>
+			$(document).ready(function() {
+			    $('#table').dataTable( {
+			        "pagingType": "full_numbers"
+			    } );
+			} );
+			$(function() { 
+				$( "#fecha" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			$(function() { 
+				$( "#fechaInicial" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			
+			$(function() { 
+				$( "#fechaFinal" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+		</script>
+		<!--datepickeer-->
+
 	</body>
 </html>
 
