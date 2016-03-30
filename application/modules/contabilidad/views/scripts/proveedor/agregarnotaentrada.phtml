@@ -1,4 +1,4 @@
-  <!--
+<!--
     <form action="/" method="post">
         <div>
             <label for="titulo">T&iacute;tulo:</label>
@@ -84,18 +84,18 @@
 	
 <html>
 	<head>
-		<title> Agregar Filas una tabla</title>
+		<title> Agregar nueva nota de entrada</title>
 	</head>
 	<body>
 		<div id="divContenedor">
 			<h1>Productos</h1>
 			<div id="divContenedorTabla">
-				<table align="center" width="600">
+				<table id="tabla">
 					<caption>Agregar Productos para nota de entrada</caption>
 					<thead>
 						<tr>
 							<th>Cantidad</th>
-							<th>Seleccionar Producto </th>
+							<th>Seleccionar Producto</th>
 							<th>Seleccionar Unidad</th>
 							<th>Codigo de Barras</th>
 							<th>Descripcion</th>
@@ -105,22 +105,55 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td><input type="text" class="clsAnchoTotal" /></td>
-							<td align="right"><input type="button" value "-" class="clsEliminarFila"></td>
+						<!--Fila base-->
+						<tr class="filabase">
+							<td><input type="text" name="cantidad" id="cantidad" class="cantidad" /></td>
+							<td>
+								<select class= "producto">
+									<option value="">Seleccione Producto</option>
+									
+								</select>
+							</td>
+							
+							<td>
+								<select class= "unidad">
+									<option value="">Seleccione Unidad</option>
+								</select>
+							</td>
+							<td><input type="text" class="codigoBarra" /></td>
+							<td><input type="text" class="descripcion" /></td>
+							<td><input type="text" name="precioUnitario" id="precioUnitario" class="precioUnitario" /></td>
+							<td><input type="text" class="precioImporte" onclick="calcular"></td>
+							<td  class="eliminar">Eliminar</td>
 						</tr>
+						<!--Fin de filabase y filaConsecutiva ejemplo-->
+						<tr>
+							<td><input type="text" name="cantidad" id="cantidad" class="cantidad" /></td>
+							<td>
+								<select class= "producto">
+									<option value="">Seleccione Producto</option>
+									
+								</select>
+							</td>
+							
+							<td>
+								<select class= "unidad">
+									<option value="">Seleccione Unidad</option>
+								</select>
+							</td>
+							<td><input type="text" class="codigoBarra" /></td>
+							<td><input type="text" class="descripcion" /></td>
+							<td><input type="text" name="precioUnitario" id="precioUnitario" class="precioUnitario" /></td>
+							<td><input type="text" class="precioImporte" id="calcular" /></td>
+							<td  class="eliminar">Eliminar</td>
+						</tr>
+						<!--Fin de codigo: fila ejemplo-->
 					</tbody>
 					<tfoot>
 						<tr>
 							<td colspan="4" align="left">
-								<input type="button" value="Agregar" class="clsAgregarFila">
-								<input  type="button" value="Eliminar" class="clsEliminarFila">
+								<input type="button" value="Agregar Producto" id="agregar">
+								
 							</td>
 						</tr>
 					</tfoot>
@@ -129,7 +162,5 @@
 		</div>
 	</body>
 </html>
-	
-	
-	
-	
+
+    
