@@ -96,71 +96,89 @@
 						<tr>
 							<th>Cantidad</th>
 							<th>Seleccionar Producto</th>
-							<th>Seleccionar Unidad</th>
-							<th>Codigo de Barras</th>
+							<th>Codigo de Barras </th>
 							<th>Descripcion</th>
+							<th>Seleccionar Unidad</th>
 							<th>Precio Unitario</th>
 							<th>Importe</th>
 							<th width="22">&nbsp;</th>
 						</tr>
 					</thead>
+					
 					<tbody>
-						<!--Fila base-->
-						<tr class="filabase">
-							<td><input type="text" name="cantidad" id="cantidad" class="cantidad" /></td>
-							<td>
-								<select class= "producto">
-									<option value="">Seleccione Producto</option>
-									
-								</select>
-							</td>
-							
-							<td>
-								<select class= "unidad">
-									<option value="">Seleccione Unidad</option>
-								</select>
-							</td>
+						<!--Fila base -->
+						<tr class="celda">
+							<td><input type="text" name="cantidad" class="cantidad" /></td>
+							<td><input type="text" name="cantidad" class="cantidad" /></td>
+							<td><input type="text" name="cantidad" class="cantidad" /></td>
+						
 							<td><input type="text" class="codigoBarra" /></td>
 							<td><input type="text" class="descripcion" /></td>
-							<td><input type="text" name="precioUnitario" id="precioUnitario" class="precioUnitario" /></td>
-							<td><input type="text" class="precioImporte" onclick="calcular"></td>
-							<td  class="eliminar">Eliminar</td>
+							<td><input type="text" name="precioUnitario" class="precioUnitario" /></td>
+							<td><input type="text" name = "precioImporte" class="precioImporte" /></td>
+							<td><input type="button" class="boton" value="Eliminar" onClick="removeLastRow(event)"></td>
 						</tr>
 						<!--Fin de filabase y filaConsecutiva ejemplo-->
-						<tr>
-							<td><input type="text" name="cantidad" id="cantidad" class="cantidad" /></td>
-							<td>
-								<select class= "producto">
-									<option value="">Seleccione Producto</option>
-									
-								</select>
-							</td>
 							
-							<td>
-								<select class= "unidad">
-									<option value="">Seleccione Unidad</option>
-								</select>
-							</td>
-							<td><input type="text" class="codigoBarra" /></td>
-							<td><input type="text" class="descripcion" /></td>
-							<td><input type="text" name="precioUnitario" id="precioUnitario" class="precioUnitario" /></td>
-							<td><input type="text" class="precioImporte" id="calcular" /></td>
-							<td  class="eliminar">Eliminar</td>
+						<tr id="celda" class="celda">
+							<td><input type="text" name="cantidad" id="cantidad_0" class="cantidad"/></td>
+							<td><input type="text" name="clave" id="clave_0" class="cantidad"/></td>
+							
+							<td><input type="text" name="codigoBarras" id="codigoBarra_0" class="codigoBarra" /></td>
+							<td><input type="text" name ="descripcion" id ="descripcion_0" class="descripcion" /></td>							
+							
+							<td><input type="text" name="unidad" id="unidad_0" class="unidad"/></td>
+							
+							<td><input type="text" name="precioUnitario" id="precioUnitario_0" class="precioUnitario" /></td>
+							<td><input type="text" name ="precioImporte" id ="precioImporte_0"class="precioImporte"/></td>
+							<td><input type="button" class="boton" value="Eliminar" onClick="removeLastRow(event)"</td>
+							 
 						</tr>
 						<!--Fin de codigo: fila ejemplo-->
-					</tbody>
-					<tfoot>
+					
 						<tr>
 							<td colspan="4" align="left">
-								<input type="button" value="Agregar Producto" id="agregar">
+								<input type="button" value="Agregar Producto" onclick = "addNewRow(event)">
 								
 							</td>
 						</tr>
-					</tfoot>
+				
 				</table>
 			</div>
 		</div>
 	</body>
 </html>
+
+
+<!-- Ejemplo IDS
+<html>
+	<head>
+		<title> Agregar nueva nota de entrada</title>
+	</head>
+	
+<body>
+	<table border="0" id="tabla" width="100%"> 
+		<tr class="celda">
+			 <td  colspan="3">
+				Pulse [+] para añadir un examinador de archivos<br/> 
+				Pulse [-] para eliminar un examinador de archivos<br/> 
+				Desarrolladores => Pulse [v] para ver el contenido de los examinadores<br/> 
+			</td> 
+			<td> 
+				<input type="button" class="boton" value="[+]" onClick="addNewRow(event)" alt="Adicionar">&nbsp; 
+				<input type="button" class="boton" value="[-]" onClick="removeLastRow(event)" alt="Remover"> 
+				<input type="button" class="boton" value="[v]" onClick="verElementos(event)" alt="Ver elementos"> 
+			</td>
+		</tr> 
+		<tr id="celda" class="celda"> 
+			<td> <input id="file_0" name="files" type="file" size="50"> </td>
+			<td><input id="cantidad_0" name="cantidad" type="text" size="20" /></td>
+		
+		</tr>
+	</table> 
+</body> 
+</html>
+
+-->
 
     
