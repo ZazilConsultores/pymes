@@ -12,6 +12,20 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		$this->tablaMultiplo= new Inventario_Model_DbTable_Multiplos;
 		
 	}
+	public function obtenerUnidades($idUnidad)
+	{
+		$tablaMultiplo = $this->tablaMultiplo;
+		$where = $tablaMultiplo->getAdapter()->quoteInto("idUnidad = ?", $idUnidad);
+		$rowsMultiplo = $tablaMultiplo->fetchAll($where);
+		
+		$modelMultiplos = array();
+		
+		foreach ($rowsMultiplo as $rowMultiplo) {
+			$modelMultiplo = new Inventario_Model_Multiplos($rowMultiplo->toArray());
+			$modelMultiplo[] = $modelMultiplo;
+		}
+		return $modelMultiplos;
+	}
 	
 	public function obtenerMultiplo($idMultiplos)
 	{
@@ -32,10 +46,9 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		$rowsMultiplo = $tablaMultiplo->fetchAll($where);
 		
 		$modelMultiplos = array();
-		
 		foreach ($rowsMultiplo as $rowMultiplo) {
+		
 			$modelMultiplo = new Inventario_Model_Multiplos ($rowMultiplo->toArray());
-			
 			$modelMultiplos[] = $modelMultiplo;
 		}
 		
@@ -45,14 +58,15 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 
 	public function crearMultiplos(Inventario_Model_Multiplos $multiplo)
 	{
-		$tablaMultiplo = $this->tablaMultiplo;
+		$tablaMultiplo = $this->tablaMultiplo;	
 		$select = $tablaMultiplo->select()->from($tablaMultiplo)->where( "hash = ? ", $multiplo->getHash());
 		$row = $tablaMultiplo->fetchRow($select);
 		
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Multiplo: <strong>" . $multiplo->getUnidad() . "</strong> duplicado en el sistema");
-		//$multiplo->setHash($multiplo->getHash());
 		
+		$multiplo->setHash($multiplo->getHash());
+
 		$tablaMultiplo->insert($multiplo->toArray());
+		
 	}
 	
 	public function editarMultiplo($idMultiplos, array $multiplo)
@@ -60,11 +74,12 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		$tablaMultiplo = $this->tablaMultiplo;
 		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos = ?", $idMultiplos);
 		$tablaMultiplo->update($multiplo, $where);
-		
 	}
 	
 	public function eliminarMultiplo($idMultiplos)
 	{
 		
 	}
+	
+	
 }

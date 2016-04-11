@@ -13,6 +13,7 @@
 		<link rel="shortcut icon" href="<?php echo $this->baseUrl() ?>/images/icono.png">
 		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/engranes.jpg">
 		
+			
 		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.structure.css" />
@@ -20,8 +21,9 @@
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/formatoTablaAgregarProducto.css"  />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
-		
+	
 		
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.validate.js"></script>
@@ -34,6 +36,7 @@
 		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.responsive.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/responsive.bootstrap.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/generarTabla.js"></script>
 		
 		<style>
 			body{
@@ -86,13 +89,42 @@
 					<?php } ?>
 				</aside>
 				<!-- Contenido Web -->
-				<article class="<?php echo $clase = (is_null($this->links)) ? $anchoTotal : $anchoLateral ; ?>">
+				<article class="<?php echo $clase = (is_null($this->links)) ? $anchoTotal : $anchoPrincipal ; ?>">
 					<?php echo $this->layout()->content; ?>
 				</article>
 			</section>
 		</div>
 		
 		<script src="<?php echo $this->baseUrl(); ?>/js/panel.js"></script>
+		<!--datepickeer-->
+					<script>
+			$(document).ready(function() {
+			    $('#table').dataTable( {
+			        "pagingType": "full_numbers"
+			    } );
+			} );
+			$(function() { 
+				$( "#fecha" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			$(function() { 
+				$( "#fechaInicial" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			
+			$(function() { 
+				$( "#fechaFinal" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+		</script>
+		<!--datepickeer-->
+
 	</body>
 </html>
 

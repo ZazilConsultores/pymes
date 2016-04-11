@@ -12,11 +12,12 @@ class Inventario_Form_AltaUnidad extends Zend_Form
 		$eUnidad = new Zend_Form_Element_Text('unidad');
 		$eUnidad->setLabel('Unidad: ');
 		$eUnidad->setAttrib('class','form-control');
+		$eUnidad->setAttrib('required', 'required');
 		
 		$eAbreviacion = new Zend_Form_Element_Text('abreviatura');
 		$eAbreviacion->setLabel('Abreviatura: ');
 		$eAbreviacion->setAttrib('class','form-control');
-		
+		$eAbreviacion->setAttrib('required', 'required');
 		
 		$subCero->addElements(array($eUnidad,$eAbreviacion));
 		

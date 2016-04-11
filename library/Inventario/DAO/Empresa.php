@@ -112,7 +112,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()
 			->setIntegrityCheck(false)
-			->from($tablaFiscales, array('rfc', 'razonSocial'))
+			->from($tablaFiscales, array('idFiscales','rfc', 'razonSocial'))
 			->join('FiscalesDomicilios', 'Fiscales.idFiscales = FiscalesDomicilios.idFiscales', array())
 			->join('Domicilio', "Domicilio.idDomicilio = FiscalesDomicilios.idDomicilio", array('calle', "colonia", "codigoPostal", "numeroInterior", "numeroExterior"))
 			->join('FiscalesTelefonos', 'Fiscales.idFiscales = FiscalesTelefonos.idfiscales',array())

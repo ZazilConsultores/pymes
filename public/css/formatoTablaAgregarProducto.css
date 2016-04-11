@@ -1,0 +1,4 @@
+#tabla{	border: solid 1px #333;	width: 300px; }
+#tabla tbody tr{ background: #FFFFFF; }
+#tabla{border:solid 1px }
+.eliminar{ cursor: pointer; color: #000; }

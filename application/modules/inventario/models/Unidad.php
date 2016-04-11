@@ -32,6 +32,16 @@ class Inventario_Model_Unidad
         $this->abreviatura = $abreviatura;
     }
 
+	private $hash;
+	
+	public function getHash() {
+    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey(array(strtolower($this->unidad))));
+        return $this->hash;
+    }
+    
+    public function setHash($hash) {
+        $this->hash = $hash;
+    }
     
 	
 	public function __construct(array $datos)
@@ -39,6 +49,7 @@ class Inventario_Model_Unidad
 		if (array_key_exists("idUnidad", $datos)) $this->idUnidad = $datos["idUnidad"];
 		$this->unidad = $datos["unidad"];
 		$this->abreviatura = $datos["abreviatura"];
+		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	public function toArray()
 	{
@@ -47,6 +58,7 @@ class Inventario_Model_Unidad
 		$datos["idUnidad"] = $this->idUnidad;
 		$datos["unidad"] = $this->unidad;
 		$datos["abreviatura"] = $this->abreviatura;
+		$datos["hash"] = $this->hash;
 		
 		return $datos;
 		

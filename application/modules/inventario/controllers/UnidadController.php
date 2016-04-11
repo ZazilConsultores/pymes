@@ -10,7 +10,6 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 	}
 
 	public function indexAction() {
-		//Hay que traer el formulario
 		$formulario = new Inventario_Form_AltaUnidad;
 		
 		$this->view->unidad = $this->unidadDAO->obtenerUnidades();
@@ -34,19 +33,30 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 	}
 
 	public function altaAction() {
+			
 		$request = $this->getRequest();
+		$idUnidad = $this->getParam("idUnidad");
 		$formulario = new Inventario_Form_AltaUnidad;
 		$this->view->formulario = $formulario;
+		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$unidad = new Inventario_Model_Unidad($datos[0]);
-				
+				//print_r($datos[0]);
+				//print_r('<br />');
+				//print_r($unidad->toArray());
+				try{
 					$this->unidadDAO->crearUnidad($unidad);
+					$mensaje = "Unidad <strong>" . $unidad->getUnidad() . "</strong> creado exitosamente";
+					$this->view->messageSuccess = $mensaje;
+					
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();		
 				}
-				$this->_helper->redirector->gotoSimple("index", "unidad", "inventario");
-			
+			}			
 		}	
+
 	}
 
 	public function bajaAction() {

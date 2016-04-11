@@ -49,7 +49,8 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
-				}			}
+				}			
+			}
 		}	
     }
 

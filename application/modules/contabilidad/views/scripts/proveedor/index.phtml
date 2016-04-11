@@ -1,4 +1,40 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Proveedor</b> and script/action name <b>index</b></p>
-</div>
+<?php if(! is_null($this->formulario)) { ?>
+	<header>
+		<?php echo $this->mensajeFormulario; ?>
+	</header>
+	<div class="row">
+						
+	<section>	
+		<article class="col-md-0">
+						
+			<?php echo $this->formulario; ?>
+		</article>			
+	</section>	
+			
+	</div>
+			
+<?php			
+			
+		}
+		echo '<br />';
+?>
+<?php 
+	if(($this->rowset)){
+		echo $this->mensaje;
+		switch ($this->tipo) {
+			case '1':
+				
+				break;
+			case '2':
+				
+				break;
+			case '3':
+				
+				break;
+			
+		}
+		
+	}
+	
+	echo '<br />';
+?>

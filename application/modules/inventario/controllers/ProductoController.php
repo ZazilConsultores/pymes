@@ -22,6 +22,8 @@ class Inventario_ProductoController extends Zend_Controller_Action
 
     public function altaAction()
     {
+    	$subparametroDAO = new Sistema_DAO_Subparametro;
+		
         $request = $this->getRequest();
 		$idProducto = $this->getParam("idProducto");
 		$formulario = new Inventario_Form_AltaProducto;
@@ -30,51 +32,31 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos[0]);
-				//print_r("<br />");
-				// 1Paso
-				//$claveProducto = $this->subparametroDAO->generarClaveProducto($datos[0]);
-				//$idsSubparametro = $this->subparametroDAO->generarIdsSubparametro($datos[0]);
-				/*
-				//print_r("<br />");
-				//print_r($claveProducto);
-				//print_r("<br />");
-				*/
 				print_r($datos);
-				/*
-				$producto = new Inventario_Model_Producto($datos[0]);
-				$producto->setIdProducto($idProducto);
-				try{
-					$this->productoDAO->crearProducto($producto);
-					//print_r($subparametro->toArray());
-					$mensaje = "Producto <strong>" . $producto->getProducto() . "</strong> creado exitosamente";
-					$this->view->messageSuccess = $mensaje;
-				}catch(Util_Exception_BussinessException $ex){
-					$this->view->messageFail = $ex->getMessage();
-				}
-				*/
+		
+				$producto = new Inventario_Model_Producto($datos);
+				$producto->setClaveProducto($subparametroDAO->generarClaveProducto($datos['Configuracion']));
+				$producto->setIdsSubparametro($subparametroDAO->generarIdsSubparametro($datos['Configuracion']));
+				$this->productoDAO->crearProducto($producto);
+				$this->_helper->redirector->gotoSimple("index", "producto", "inventario");
 			}
 		}
+		
     }
 
     public function adminAction()
     {
-        $idProducto = $this->getParam("idProducto"); //1
-		$producto = $this->productoDAO->obtenerProducto($idProducto);
-		//print_r($idProducto);
-		//$this->view->producto = $producto;
-		
-		$formulario = new Inventario_Form_AltaProducto;
-	
-		$formulario->getElement("producto")->setValue($producto->getProducto());
-		$formulario->getElement("claveProducto")->setValue($producto->getClaveProducto());
-		$formulario->getElement("codigoBarras")->setValue($producto->getCodigoBarras());
+      
+		$idProducto = $this -> getParam("idProducto");
+		$producto = $this -> productoDAO ->obtenerProducto($idProducto);
 
-		$formulario->getElement("agregar")->setLabel("Actualizar");
+		$formulario = new Inventario_Form_AltaProducto;
+		$formulario->getElement("claveProducto")->setValue($producto->getClaveProducto());
+		$formulario->getElement("producto")->setValue($producto->getProducto());
+		$formulario -> getElement("submit") -> setLabel("Actualizar");
 		
-		//$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
-		$this->view->producto = $producto;
-		$this->view->formulario = $formulario;	
+		$this -> view -> producto = $producto;
+		$this -> view -> formulario = $formulario;	
 	 }
 
     public function bajaAction()
@@ -84,14 +66,15 @@ class Inventario_ProductoController extends Zend_Controller_Action
 
     public function editaAction()
     {
-        $request = $this->getRequest();
-		$idProducto = $this->getParam("idProducto");
-		$post = $request->getPost();
+       $idProducto= $this->getParam("idProducto");
 		
-		$productoModel = new Inventario_Model_Producto($post);
-		//print_r($estadoModel->toArray());
-		$this->productoDAO->editarProducto($idProducto, $productoModel);
-		$this->_helper->redirector->gotoSimple("index", "producto", "inventario");
+		$datos = $this->getRequest()->getPost();
+		unset($datos["submit"]);
+		
+		$this->productoDAO->editarProducto($idProducto, $datos);
+		
+		$this->productoDAO->editarProducto($idProducto, ($datos['Configuracion']));
+	
     }
 }
 

@@ -53,6 +53,9 @@ class Inventario_Model_Producto
     }
 
     
+
+   
+    
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idProducto", $datos)) $this->idProducto = $datos["idProducto"];
@@ -60,7 +63,8 @@ class Inventario_Model_Producto
 		$this->producto = $datos["producto"];
 		$this->claveProducto = $datos["claveProducto"];
 		$this->codigoBarras = $datos["codigoBarras"];
-		$this->idsSubparametro = $datos["idsSubparametro"];
+		$this->idsSubparametro=$datos["idsSubparametro"];
+
 	}
 	
 	public function toArray()
