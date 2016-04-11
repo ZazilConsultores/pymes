@@ -12,8 +12,12 @@ interface Encuesta_Interfaces_IOpcion{
 	// =========================================== Pregunta y Grupo
 	public function obtenerOpcionesPregunta($idPregunta);
 	public function obtenerOpcionesGrupo($idGrupo);
+	
+	public function obtenerValorOpcionMayor($idGrupo);
+	public function obtenerValorOpcionMenor($idGrupo);
 	// =====================================================================================>>>   Insertar
 	public function crearOpcion($idCategoria, Encuesta_Model_Opcion $opcion);
+	public function asignarValorOpcion($idOpcion, $valor);
 	// =====================================================================================>>>   Actualizar
 	public function editarOpcion($idCategoria, array $opcion);
 	// =====================================================================================>>>   Eliminar
@@ -21,4 +25,7 @@ interface Encuesta_Interfaces_IOpcion{
 	// =====================================================================================>>>   Asociar con Pregunta y Grupo
 	public function asociarOpcionesPregunta($idPregunta, array $opciones);
 	public function asociarOpcionesGrupo($idGrupo, array $opciones);
+	// =====================================================================================>>>   Normalizar
+	public function normalizarOpciones();
+	
 }

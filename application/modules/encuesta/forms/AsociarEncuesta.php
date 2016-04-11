@@ -9,7 +9,10 @@ class Encuesta_Form_AsociarEncuesta extends Zend_Form
         $encuestaDAO = new Encuesta_DAO_Encuesta;
 		$encuestas = $encuestaDAO->obtenerEncuestas();
 		
-		$eGrupo = new Zend_Form_Element_Select("id");
+		
+		$eAsignacion = new Zend_Form_Element_Select("idAsignacion");
+		$eAsignacion->setAttrib("class", "form-control");
+		$eAsignacion->setLabel("Seleccione Materia-Profesor: ");
 		
 		$eEncuesta = new Zend_Form_Element_Select("idEncuesta");
 		$eEncuesta->setLabel("Encuestas Disponibles: ");
@@ -20,10 +23,10 @@ class Encuesta_Form_AsociarEncuesta extends Zend_Form
 		}
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
-		$eSubmit->setLabel("Registrar Encuesta");
+		$eSubmit->setLabel("Asociar Encuesta con profesor");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
-		$this->addElements(array($eEncuesta,$eSubmit));
+		$this->addElements(array($eEncuesta, $eAsignacion,$eSubmit));
     }
 
 

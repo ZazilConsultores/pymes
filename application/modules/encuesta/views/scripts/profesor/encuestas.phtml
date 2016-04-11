@@ -1,0 +1,78 @@
+<?php
+	$docente = $this->docente;
+	$asignaciones = $this->asignaciones;
+	
+	$encuestaDAO = new Encuesta_DAO_Encuesta;
+	$materiaDAO = new Encuesta_DAO_Materia;
+	$gruposDAO = new Encuesta_DAO_Grupos;
+	
+	$asignacionDAO = new Encuesta_DAO_AsignacionGrupo;
+?>
+<section class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Evaluaciones Disponibles para el Docente: <strong><?php echo $docente->getApellidos().", ".$docente->getNombres() ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<h4>Reportes Grupales</h4>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<th>Grupo</th>
+					<th>Materia</th>
+					<th>Evaluación</th>
+					<th>Resultados</th>
+				</thead>
+				<tbody>
+					<?php foreach ($asignaciones as $asignacion) : 
+						$grupo = $gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
+						$materia = $materiaDAO->obtenerMateria($asignacion["idMateria"]);
+						$encuestaRealizada = $encuestaDAO->obtenerEncuestaRealizadaPorAsignacion($asignacion["idAsignacion"]);
+						$encuesta = $encuestaDAO->obtenerEncuesta($encuestaRealizada["idEncuesta"]);
+						//$asignacionDAO->obtenerEvaluacionGeneralDocente($docente->getIdRegistro(), $encuesta->getIdEncuesta());
+						?>
+					<tr>
+						<td><?php echo $grupo->getGrupo() ?></td>
+						<td><?php echo $materia->getMateria() ?></td>
+						<td><?php echo $encuesta->getNombre() ?></td> 
+						<td>
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resumen","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"])) ?>">
+								<span class="glyphicon glyphicon--pencil"></span> Detalle en Web
+							</a>
+						</td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+			<hr />
+			<?php 
+				//Obtenemos todos los idAsignaciones que derivan del idDocente.
+				$asignaciones = $asignacionDAO->obtenerAsignacionesDocente($docente->getIdRegistro());
+				//Obtenemos la relacion idAsignacion - idEncuesta de la tabla ERealizadas.
+				$listaEvaluaciones = array();
+				foreach ($asignaciones as $asignacion) {
+					$evaluaciones = $encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($asignacion["idAsignacion"]);
+					foreach ($evaluaciones as $evaluacion) {
+						print_r($evaluacion);
+						print_r("<br /><br />");
+						$listaEvaluaciones[$evaluacion["idEncuesta"]] [] = $evaluacion;
+					}
+				}
+				
+				print_r($listaEvaluaciones);
+				
+			?>
+			<h4>Reportes Generales</h4>
+				<table class="table table-striped table-condensed">
+					<thead>
+						<th>Evaluacion</th>
+						<th>Resultados</th>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+		</div>
+	</div>
+</section>

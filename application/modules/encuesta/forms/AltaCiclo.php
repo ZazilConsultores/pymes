@@ -42,8 +42,8 @@ class Encuesta_Form_AltaCiclo extends Zend_Form
         $eCiclo = new Zend_Form_Element_Text("ciclo");
 		$eCiclo->setLabel("Ciclo: ");
 		$eCiclo->setAttrib("class", "form-control");
-		$eCiclo->setAttrib("minlength", "5");
-		$eCiclo->setAttrib("maxlength", "5");
+		//$eCiclo->setAttrib("minlength", "5");
+		//$eCiclo->setAttrib("maxlength", "5");
 		//$eCiclo->setDecorators($decoratorsPregunta);
 		
 		$eInicio = new Zend_Form_Element_Text("inicio");

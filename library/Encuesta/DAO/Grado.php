@@ -50,7 +50,8 @@ class Encuesta_DAO_Grado implements Encuesta_Interfaces_IGrado {
 	
 	public function editarGrado($idGrado, array $datos){
 		$tablaGrado = $this->tablaGrado;
-		
+		$where = $tablaGrado->getAdapter()->quoteInto("idGrado=?", $idGrado);
+		$tablaGrado->update($datos, $where);
 	}
 	
 	public function eliminarGrado($idGrado){

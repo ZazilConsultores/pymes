@@ -2,9 +2,10 @@
 
 class IndexController extends Zend_Controller_Action
 {
-	
-	private $usuarioDAO;
-	private $rolDAO;
+
+    private $usuarioDAO = null;
+
+    private $rolDAO = null;
 
     public function init()
     {
@@ -67,8 +68,15 @@ class IndexController extends Zend_Controller_Action
 		}
     }
 
+    public function normalizeAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

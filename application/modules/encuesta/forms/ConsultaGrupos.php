@@ -27,9 +27,12 @@ class Encuesta_Form_ConsultaGrupos extends Zend_Form
 		);
 		
 		$this->setLegend("Consulta de Grupos");
+		
+		$planDAO = new Encuesta_DAO_Plan;
+		$plan = $planDAO->obtenerPlanEstudiosVigente();
         
         $cicloDAO = new Encuesta_DAO_Ciclo;
-		$ciclos = $cicloDAO->obtenerCiclos();
+		$ciclos = $cicloDAO->obtenerCiclos($plan["idPlanE"]);
 		
         $eCicloEscolar = new Zend_Form_Element_Select("ciclo");
         $eCicloEscolar->setLabel("Ciclo Escolar: ");

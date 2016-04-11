@@ -10,6 +10,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
 
     private $gruposDAO = null;
 
+    private $grupoDAO = null;
+
     private $gradoDAO = null;
 
     private $cicloDAO = null;
@@ -22,16 +24,35 @@ class Encuesta_IndexController extends Zend_Controller_Action
 
     private $generador = null;
 
+    private $preguntaDAO = null;
+
+    private $registroDAO = null;
+
+    private $respuestaDAO = null;
+
+    private $preferenciaDAO = null;
+
+    private $reporteDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
         $this->encuestaDAO = new Encuesta_DAO_Encuesta;
 		$this->seccionDAO = new Encuesta_DAO_Seccion;
+		$this->grupoDAO = new Encuesta_DAO_Grupo;
+		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
+		
+		$this->registroDAO = new Encuesta_DAO_Registro;
 		
 		$this->gradoDAO = new Encuesta_DAO_Grado;
 		$this->nivelDAO = new Encuesta_DAO_Nivel;
 		$this->cicloDAO = new Encuesta_DAO_Ciclo;
 		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		
+		$this->respuestaDAO = new Encuesta_DAO_Respuesta;
+		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
+		
+		$this->reporteDAO = new Encuesta_DAO_Reporte;
 		
 		$this->generador = new Encuesta_Util_Generator();
     }
@@ -146,16 +167,15 @@ class Encuesta_IndexController extends Zend_Controller_Action
     public function encuestaAction()
     {
         // action body
-        $generador = $this->generador;
-		$request = $this->getRequest();
+        $request = $this->getRequest();
+		$generador = $this->generador;
+		
 		$idEncuesta = $this->getParam("idEncuesta");
-		$idGrupo = $this->getParam("idGrupo");
-		$idDocente = $this->getParam("idDocente");
-		$idMateria = $this->getParam("idMateria");
+		$idAsignacion = $this->getParam("idAsignacion");
 		
-		//print_r($this->getAllParams());
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
 		
-		$formulario = $generador->generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria);
+		$formulario = $generador->generarFormulario($idEncuesta, $idAsignacion);
 		
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
@@ -163,17 +183,14 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		
 		if ($request->isPost()) {
 			$post = $request->getPost();
-			//print_r($_POST);
+			
 			try{
-				
-				//print_r("<br />");
 				$generador->procesarFormulario($idEncuesta,$idDocente,$idGrupo,$post);
 				$this->view->messageSuccess = "Encuesta registrada correctamente";
 			}catch(Exception $ex){
 				$this->view->messageFail = "Error al Registrar la encuesta: " . $ex->getMessage();
 			}
 			
-			//print_r($post);
 		}
 		
     }
@@ -182,9 +199,140 @@ class Encuesta_IndexController extends Zend_Controller_Action
     {
         // action body
         $idEncuesta = $this->getParam("idEncuesta");
-		$idEncuesta = $this->getParam("idEncuesta");
+		$idAsignacion = $this->getParam("idAsignacion");
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		
+		$idRegistro = $asignacion["idRegistro"];
+		$idMateria = $asignacion["idMateria"];
+		$idGrupo = $asignacion["idGrupo"];
+		
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
+		
+		$preguntas = $this->preguntaDAO->obtenerPreguntasEncuesta($idEncuesta);
+		$this->view->grupo = $grupo;
+		$this->view->docente = $registro;
+		$this->view->encuesta = $encuesta;
+		$this->view->preguntas = $preguntas;
+		
+    }
+
+    public function resumenAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        
+        $idEncuesta = $this->getParam("idEncuesta");
+		$idAsignacion = $this->getParam("idAsignacion");
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		
+		$idRegistro = $asignacion["idRegistro"];
+		$idGrupo = $asignacion["idGrupo"];
+		
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		
+		$this->view->encuesta = $encuesta;
+		$this->view->registro = $registro;
+		$this->view->grupo = $grupo;
+        $this->view->asignacion = $asignacion;
+		//=========================================================================
+		// Reporte
+		$fecha = date('d-m-Y', time());
+		$nombreArchivo = str_replace(' ', '', $encuesta->getNombre())."-" . $fecha."-".$grupo->getGrupo() . '.pdf';
+		$this->view->nombreArchivo = $nombreArchivo; //Mandado a la vista lo tomamos en un link y al dar clic vamos a vista del reporte
+		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/');
+		$page = $pdf->createPage(Zend_Pdf_Page::SIZE_LETTER);
+		$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_COURIER);
+		$font2 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/ubuntu/UbuntuMono-R.ttf");
+		$font3 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		//$page->setFont($font, 10);
+		//$page->setFont($font2, 12);
+		$page->setFont($font3, 10);
+		
+		$this->view->page = $page;
+		$this->view->pdf = $pdf;
 		
 		
+		//$pdf->addPage($page);
+		//$pdf->save();
+    }
+
+    public function rpreferenciaAction()
+    {
+        // action body
+        $idEncuesta = $this->getParam("idEncuesta");
+		$idAsignacion = $this->getParam("idAsignacion");
+		try{
+			$this->encuestaDAO->normalizarPreferenciaAsignacion($idEncuesta, $idAsignacion);
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+		}
+		
+    }
+
+    public function reporteAction()
+    {
+        // action body
+        $idReporte = $this->getParam("idReporte");
+		$reporte = $this->reporteDAO->obtenerReporte($idReporte);
+        /*
+        $reporte = new Zend_Pdf();
+		$paginaUno = new Zend_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER);
+		$paginaUno->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 10);
+		//$paginaUno->setFont(Zend_Pdf_Font::FONT_HELVETICA, 12);
+		$paginaUno->drawText("Reporte Evaluacion Docente", 50, 750, 'UTF-8');
+		
+		//$reporte->pages[] = new Zend_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER);
+		//$reporte->pages[] = $reporte->newPage(Zend_Pdf_Page::SIZE_LETTER);
+		$reporte->pages[] = $paginaUno;
+		$reporte->save("test.pdf");
+		*/
+		$this->view->reporte = $reporte;
+		$this->view->nombreReporte = $reporte["nombreReporte"];
+    }
+
+    public function reportepaAction()
+    {
+        // action body
+        $idEncuesta = $this->getParam("idEncuesta");
+		$idAsignacion = $this->getParam("idAsignacion");
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		
+		$idRegistro = $asignacion["idRegistro"];
+		$idGrupo = $asignacion["idGrupo"];
+		
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		
+		$this->view->encuesta = $encuesta;
+		$this->view->registro = $registro;
+		$this->view->grupo = $grupo;
+        $this->view->asignacion = $asignacion;
+		
+		$preguntasAbiertas = $this->preguntaDAO->obtenerPreguntasAbiertasEncuesta($idEncuesta, $idAsignacion);
+		
+		//$this->view->encuesta = $encuesta;
+		//$this->view->asignacion = $asignacion;
+		$this->view->preguntasAbiertas = $preguntasAbiertas;
+		//========================================================================= Reporte
+		$fecha = date('d-m-Y', time());
+		$nombreArchivo = str_replace(' ', '', $encuesta->getNombre())."-PA-".$grupo->getGrupo(). $fecha."-". '.pdf';
+		$this->view->nombreArchivo = $nombreArchivo; //Mandado a la vista lo tomamos en un link y al dar clic vamos a vista del reporte
+		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/pa/');
+		$page = $pdf->createPage(Zend_Pdf_Page::SIZE_LETTER);
+		$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_COURIER);
+		$font2 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/ubuntu/UbuntuMono-R.ttf");
+		$font3 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		//$page->setFont($font, 10);
+		//$page->setFont($font2, 12);
+		$page->setFont($font3, 10);
+		
+		$this->view->page = $page;
+		$this->view->pdf = $pdf;
 		
     }
 

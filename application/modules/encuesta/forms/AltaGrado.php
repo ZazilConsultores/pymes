@@ -6,6 +6,8 @@ class Encuesta_Form_AltaGrado extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $grados = Zend_Registry::get("gradosEscolares");
+        
         $abreviaturas = array(
 			"1" => "1°",
 			"2" => "2°",
@@ -25,7 +27,7 @@ class Encuesta_Form_AltaGrado extends Zend_Form
 		
 		$eAbreviatura = new Zend_Form_Element_Select("abreviatura");
 		$eAbreviatura->setLabel("Abreviatura: ");
-		$eAbreviatura->setMultiOptions($abreviaturas);
+		$eAbreviatura->setMultiOptions($grados);
 		$eAbreviatura->setAttrib("class", "form-control");
 		
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");

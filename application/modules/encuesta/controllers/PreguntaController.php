@@ -3,10 +3,19 @@
 class Encuesta_PreguntaController extends Zend_Controller_Action
 {
 
-    private $preguntaDAO;
-    private $seccionDAO;
-    private $grupoDAO;
-	private $opcionDAO;
+    private $preguntaDAO = null;
+
+    private $seccionDAO = null;
+
+    private $grupoDAO = null;
+
+    private $opcionDAO = null;
+	
+	private $gruposDAO = null;
+	
+	private $preferenciaDAO = null;
+	
+	private $registroDAO = null;
 
     public function init()
     {
@@ -15,6 +24,10 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 		$this->grupoDAO = new Encuesta_DAO_Grupo;
         $this->preguntaDAO = new Encuesta_DAO_Pregunta;
 		$this->opcionDAO = new Encuesta_DAO_Opcion;
+		
+		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
+		$this->registroDAO = new Encuesta_DAO_Registro;
     }
 
     public function indexAction()
@@ -189,5 +202,33 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 		}
     }
 
+    public function graficaAction()
+    {
+        // action body
+        $request = $this->getRequest();
+		$idGrupo = $this->getParam("idGrupo");
+		$idPregunta = $this->getParam("idPregunta");
+		$idRegistro = $this->getParam("idDocente");
+		
+		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
+		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		
+		$p = $this->preferenciaDAO->obtenerPreferenciaPregunta($idPregunta, $idGrupo);
+		//print_r($p);
+		
+		$this->view->docente = $registro;
+		$this->view->pregunta = $pregunta;
+		$this->view->grupo = $grupo;
+		$this->view->preferencias = $p;
+		
+		//$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		//$p = $this->preferenciaDAO->obtenerPreferenciasPregunta($idEncuesta, $idGrupo);
+		
+        
+    }
+
 
 }
+
+
