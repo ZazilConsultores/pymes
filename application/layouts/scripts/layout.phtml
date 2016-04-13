@@ -40,6 +40,9 @@
 			body{
 				padding-top: 50px;
 			}
+			textarea{
+				resize: none;
+			}
 			.error{
 				color: #FF7F00;
 				font-family: monospace;
@@ -51,10 +54,13 @@
 		</style>
 		<script>
 			$().ready(function(){
+				// Opciones default de jQuery Validator
 				jQuery.validator.setDefaults({
 					wrapper: "div",
 					errorElement: "label"
 				});
+				// Opciones default de ChartJS
+				//Chart.defaults.global.responsive = true;
 				
 			});
 		</script>

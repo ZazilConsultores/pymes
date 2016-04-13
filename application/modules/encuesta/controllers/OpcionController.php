@@ -4,8 +4,10 @@
  */
 class Encuesta_OpcionController extends Zend_Controller_Action
 {
-	private $opcionDAO;
-	private $categoriaDAO;
+
+    private $opcionDAO = null;
+	
+    private $categoriaDAO = null;
 
     public function init()
     {
@@ -51,7 +53,13 @@ class Encuesta_OpcionController extends Zend_Controller_Action
 				//print_r($datos);
 				$opcion = new Encuesta_Model_Opcion($datos);
 				//print_r($opcion->toArray());
-				$this->opcionDAO->crearOpcion($idCategoria, $opcion);
+				try{
+					$this->opcionDAO->crearOpcion($idCategoria, $opcion);
+					$this->view->messageSuccess = "Opcion: <strong>".$opcion->getOpcion()."</strong> dada de alta exitosamente en el sistema";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
+				
 				
 				//$this->_helper->redirector->gotoSimple("alta", "opcion", "encuesta", array("idCategoria"=>$idCategoria));
 			}
@@ -68,5 +76,39 @@ class Encuesta_OpcionController extends Zend_Controller_Action
         // action body
     }
 
+    public function avalorAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        
+        $idOpcion = $this->getParam("idOpcion");
+		$idCategoria = $this->getParam("idCategoria");
+		
+		$opcion = $this->opcionDAO->obtenerOpcion($idOpcion);
+		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
+		
+		$this->view->opcion = $opcion;
+		$this->view->categoria = $categoria;
+		
+		$formulario = new Encuesta_Form_AltaValor;
+		
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$datos["idOpcion"] = $idOpcion;
+				
+				try{
+					$this->opcionDAO->asignarValorOpcion($idOpcion, $datos);
+					$this->view->messageSuccess = "Valor: <strong>".$datos["valor"]." asignado a la Opcion: <strong>".$opcion->getOpcion()."</strong> exitosamente !!";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
+			}
+		}
+    }
+
 
 }
+

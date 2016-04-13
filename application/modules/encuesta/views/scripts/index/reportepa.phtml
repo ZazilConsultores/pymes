@@ -1,0 +1,96 @@
+<?php
+	$preguntasAbiertas = $this->preguntasAbiertas;
+	
+	$encuesta = $this->encuesta;
+	$asignacion = $this->asignacion;
+	$registro = $this->registro;
+	$grupo = $this->grupo;
+	
+	$page = $this->page;
+	$pdf = $this->pdf;
+	
+	$encuestaDAO = new Encuesta_DAO_Encuesta;
+	$seccionDAO = new Encuesta_DAO_Seccion;
+	$grupoDAO = new Encuesta_DAO_Grupo;
+	$preguntaDAO = new Encuesta_DAO_Pregunta;
+	$reporteDAO = new Encuesta_DAO_Reporte;
+	$respuestaDAO = new Encuesta_DAO_Respuesta;
+	
+	$preferenciaDAO = new Encuesta_DAO_Preferencia;
+	
+	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]); 
+	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
+	
+	$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
+	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical_2015-2016.png');
+	$page->drawImage($imgEncabezado, 50, 20, 580, 121);
+	$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
+	$page->drawText("Docente: ".$registro->getApellidos().", ".$registro->getNombres(), 165, 175);
+	$page->drawText("Grupo: ".$grupo->getGrupo(), 165, 190);
+?>
+<section class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<strong>Preguntas Abiertas de Encuesta.</strong> 
+			</h3>
+		</div>
+		<div class="panel-body">
+			<h4>Resultados de la Encuesta: <strong><?php echo $encuesta->getNombre() ?></strong></h4>
+			<h4>Grupo: <strong><?php echo $grupo->getGrupo() ?></strong></h4>
+			<h4>Docente: <strong><?php echo $registro->getApellidos().", ".$registro->getNombres() ?></strong></h4>
+			<h4>Alumnas: <strong><?php echo $realizadas ?></strong></h4>
+			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"reporte","idReporte"=>$idReporte),null,true) ?>">
+				<span class="glyphicon glyphicon-search"></span> Informe en PDF
+			</a>
+			<hr />
+			<h4>Preguntas Abiertas</h4>
+			<?php	foreach ($preguntasAbiertas as $preguntaAbierta) : 
+						echo "<h4>".$preguntaAbierta["pregunta"]."</h4>";
+						$respuestas = $respuestaDAO->obtenerRespuestasPreguntaAsignacion($preguntaAbierta["idEncuesta"], $asignacion["idAsignacion"], $preguntaAbierta["idPregunta"]);
+						$numeroPregunta = 0;
+						//Tabla con 2 columnas
+						$tablaPdf = new My_Pdf_Table(2);
+						
+				?>
+					<table class="table table-striped table-condensed">
+						<tbody>
+							<?php foreach ($respuestas as $respuesta) : 
+								$numeroPregunta++;
+								$row = new My_Pdf_Table_Row();
+								$columnas = array();
+								?>
+							<tr>
+								<td><?php echo $numeroPregunta;
+										  $col1 = new My_Pdf_Table_Column();
+										  $col1->setText($numeroPregunta);
+										  $columnas[] = $col1;
+									?></td>
+								<td><?php echo $respuesta["respuesta"];
+										  $col2  = new My_Pdf_Table_Column();
+										  $col2->setText($respuesta["respuesta"]);
+										  $columnas[] = $col2;
+								 ?></td>
+							</tr>
+							<?php 
+									$row->setColumns($columnas);
+									$row->setFont($this->font);
+									$row->setBorder(My_Pdf::TOP, new Zend_Pdf_Style());
+									$row->setBorder(My_Pdf::RIGHT, new Zend_Pdf_Style());
+									$row->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
+									$row->setBorder(My_Pdf::LEFT, new Zend_Pdf_Style());
+									$row->setCellPaddings(array(5, 5, 5, 5));
+									$tablaPdf->addRow($row);
+									endforeach ?>
+						</tbody>
+					</table>
+			<?php	
+					$page->addTable($tablaPdf,0,220);
+					endforeach; ?>
+			<?php 
+				$pdf->addPage($page);
+				$pdf->save();
+			?>
+		</div>
+	</div>
+</section>

@@ -72,16 +72,20 @@ class Encuesta_Util_Generator {
 		);
 	}
 	
-	public function generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria)
+	public function generarFormulario($idEncuesta, $idAsignacion)
 	{
+		
 		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		$ticket = $this->encuestaDAO->obtenerNumeroConjuntoAsignacion($idEncuesta, $idAsignacion);
+		
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
 		
-		$grupoe = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grupoe = $this->gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
 		$grado = $this->gradoDAO->obtenerGrado($grupoe->getIdGrado());
 		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
-		$docente = $this->registroDAO->obtenerRegistro($idDocente);
-		$materia = $this->materiaDAO->obtenerMateria($idMateria);
+		$docente = $this->registroDAO->obtenerRegistro($asignacion["idRegistro"]);
+		$materia = $this->materiaDAO->obtenerMateria($asignacion["idMateria"]);
 		
 		$formulario = new Zend_Form($encuesta->getHash());
 		
@@ -191,7 +195,11 @@ class Encuesta_Util_Generator {
 		$eSubmit->setAttrib("class", "btn btn-success");
 		//$eSubmit->setAttrib("disabled", "disabled");
 		
+		$eConjunto = new Zend_Form_Element_Hidden("conjunto");
+		$eConjunto->setValue($ticket);
+		
 		$formulario->addElement($eSubmit);
+		$formulario->addElement($eConjunto);
 		$formulario->setDecorators($this->formDecorators);
 		
 		return $formulario;

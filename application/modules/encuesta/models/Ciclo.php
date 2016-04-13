@@ -11,7 +11,17 @@ class Encuesta_Model_Ciclo
     public function setIdCiclo($idCiclo) {
         $this->idCiclo = $idCiclo;
     }
+	
+	private $idPlanE;
 
+    public function getIdPlanE() {
+        return $this->idPlanE;
+    }
+    
+    public function setIdPlanE($idPlanE) {
+        $this->idPlanE = $idPlanE;
+    }
+    
     private $ciclo;
 
     public function getCiclo() {
@@ -76,6 +86,7 @@ class Encuesta_Model_Ciclo
     public function __construct(array $datos)
 	{
 		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
+		if(array_key_exists("idPlanE", $datos)) $this->idPlanE = $datos["idPlanE"];
 		$this->ciclo = $datos["ciclo"];
 		$this->inicio = $datos["inicio"];
 		$this->termino = $datos["termino"];
@@ -89,6 +100,7 @@ class Encuesta_Model_Ciclo
 		$datos = array();
 		
 		$datos["idCiclo"] = $this->idCiclo;
+		$datos["idPlanE"] = $this->idPlanE;
 		$datos["ciclo"] = $this->ciclo;
 		$datos["inicio"] = $this->inicio;
 		$datos["termino"] = $this->termino;

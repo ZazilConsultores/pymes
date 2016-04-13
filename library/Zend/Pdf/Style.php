@@ -103,6 +103,8 @@ class Zend_Pdf_Style
             $this->_lineDashingPhase   = $anotherStyle->_lineDashingPhase;
             $this->_font               = $anotherStyle->_font;
             $this->_fontSize           = $anotherStyle->_fontSize;
+        }else{
+        	$this->_lineWidth = new Zend_Pdf_Element_Numeric(1);
         }
     }
 

@@ -37,6 +37,28 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		
 		return $modelPregunta;
 	}
+	
+	public function obtenerPreguntasEncuesta($idEncuesta){
+		$tabla = $this->tablaPregunta;
+		$select = $tabla->select()->from($tabla)->where("idEncuesta=?",$idEncuesta)->order(array("idPregunta ASC"));
+		$rowPreguntas = $tabla->fetchAll($select);
+		$modelPreguntas = array();
+		foreach ($rowPreguntas as $row) {
+			$modelPregunta = new Encuesta_Model_Pregunta($row->toArray());
+			$modelPreguntas[] = $modelPregunta;
+		}
+		
+		return $modelPreguntas;
+	}
+	
+	public function obtenerPreguntasAbiertasEncuesta($idEncuesta){
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("tipo=?","AB")->where("idEncuesta=?",$idEncuesta);
+		$preguntas = $tablaPregunta->fetchAll($select);
+		if(is_null($preguntas)) throw new Util_Exception_BussinessException("Error: No hay preguntas abiertas en esta encuesta", 1);
+		
+		return $preguntas->toArray();
+	}
 	// =====================================================================================>>>   Crear
 	public function crearPregunta($idPadre, $tipoPadre, Encuesta_Model_Pregunta $pregunta) {
 			

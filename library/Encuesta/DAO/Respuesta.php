@@ -70,6 +70,20 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 		
 		return $modelRespuestas;
 	}
+	
+	/**
+	 * 
+	 */
+	public function obtenerRespuestasPreguntaAsignacion($idEncuesta, $idAsignacion,$idPregunta){
+		$tablaRespuesta = $this->tablaRespuesta;
+		$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion=?",$idAsignacion)->where("idPregunta=?",$idPregunta);
+		$respuestas = $tablaRespuesta->fetchAll($select);
+		
+		if(is_null($respuestas)) throw new Util_Exception_BussinessException("Error: No hay respuestas para este conjunto de condiciones");
+		
+		return $respuestas->toArray();
+	}
+	
 	// =====================================================================================>>>   Insertar
 	public function crearRespuesta($idEncuesta, Encuesta_Model_Respuesta $respuesta){
 		$tablaRespuesta = $this->tablaRespuesta;

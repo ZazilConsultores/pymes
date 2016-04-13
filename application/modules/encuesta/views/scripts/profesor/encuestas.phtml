@@ -1,0 +1,105 @@
+<?php
+	$docente = $this->docente;
+	$asignaciones = $this->asignaciones;
+	
+	$encuestaDAO = new Encuesta_DAO_Encuesta;
+	$materiaDAO = new Encuesta_DAO_Materia;
+	$gruposDAO = new Encuesta_DAO_Grupos;
+	
+	$asignacionDAO = new Encuesta_DAO_AsignacionGrupo;
+?>
+<section class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Evaluaciones Disponibles para el Docente: <strong><?php echo $docente->getApellidos().", ".$docente->getNombres() ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<h4>Reportes Grupales</h4>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<th>Grupo</th>
+					<th>Materia</th>
+					<th>Evaluación</th>
+					<th>Resultados</th>
+				</thead>
+				<tbody>
+					<?php foreach ($asignaciones as $asignacion) : 
+						$grupo = $gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
+						$materia = $materiaDAO->obtenerMateria($asignacion["idMateria"]);
+						$encuestaRealizada = $encuestaDAO->obtenerEncuestaRealizadaPorAsignacion($asignacion["idAsignacion"]);
+						$encuesta = $encuestaDAO->obtenerEncuesta($encuestaRealizada["idEncuesta"]);
+						//$asignacionDAO->obtenerEvaluacionGeneralDocente($docente->getIdRegistro(), $encuesta->getIdEncuesta());
+						?>
+					<tr>
+						<td><?php echo $grupo->getGrupo() ?></td>
+						<td><?php echo $materia->getMateria() ?></td>
+						<td><?php echo $encuesta->getNombre() ?></td> 
+						<td>
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resumen","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"])) ?>">
+								<span class="glyphicon glyphicon--pencil"></span> Detalle en Web
+							</a>
+						</td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+			<hr />
+			<h4>Reportes Generales</h4>
+			<?php
+				//$encuestaDAO->obtenerObjetoEncuesta($en, $idAsignacion)
+				//print_r($asignaciones);
+				$lista = array();
+				foreach ($asignaciones as $asignacion) {
+					echo $asignacion["idAsignacion"] . "<br />";
+					$encuesta = array();
+					$erealizadas = $encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($asignacion["idAsignacion"]);
+					
+					foreach ($erealizadas as $erealizada) {
+						//print_r($erealizada);
+						//print_r("---");
+						//$encuesta[$erealizada["idEncuesta"]][] = $erealizada;
+						$lista[$erealizada["idEncuesta"]][] = $erealizada["idAsignacion"];
+					}
+					//$lista[] = $encuesta;
+					print_r("<br />");
+				}
+				
+				print_r($lista);
+				/*
+				foreach ($asignaciones as $asignacion) {
+					$erealizadas = $encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($asignacion["idAsignacion"]);
+					foreach ($erealizadas as $erealizada) {
+						$encuestaDAO->obtenerObjetoEncuesta($erealizada["idEncuesta"], $erealizada["idAsignacion"]);
+						print_r("<br />");
+						print_r("<br />");
+					}
+				}
+				*/
+			?>
+				<table class="table table-striped table-condensed">
+					<thead>
+						<th>Evaluacion</th>
+						<th>Resultados</th>
+					</thead>
+					<tbody>
+						<?php foreach ($lista as $idEncuesta => $asign) :
+							// $idEncuesta es el idEncuesta, $asign en un array ordenado de id's asignación.
+							$encuesta = $encuestaDAO->obtenerEncuesta($idEncuesta);
+							$numeroEncuestas = count($asign);
+							?>
+						<tr>
+							<td><?php echo $encuesta->getNombre() ?></td>
+							<td>
+								<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"",""=>""),null,true) ?>">
+									<span class="glyphicon glyphicon-link"></span>
+								</a>
+							</td>
+						</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+		</div>
+	</div>
+</section>
