@@ -8,19 +8,28 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
 	private $tablaSeccion;
-	private $tablaEncuestaGrupo;
+	private $tablaGrupo;
+	private $tablaRespuesta;
+	
+	//private $tablaEncuestaGrupo;
 	private $tablaPregunta;
 	private $tablaERealizadas;
+	private $tablaAsignacion;
 	private $tablaPreferenciaS;
+	
 	
 	public function __construct()
 	{
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
 		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
-		$this->tablaEncuestaGrupo = new Encuesta_Model_DbTable_EncuestaGrupo;
+		//$this->tablaEncuestaGrupo = new Encuesta_Model_DbTable_EncuestaGrupo;
 		$this->tablaERealizadas = new Encuesta_Model_DbTable_ERealizadas;
 		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple;
+		
+		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		$this->tablaAsignacion = new Encuesta_Model_DbTable_AsignacionGrupo;
+		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -192,7 +201,46 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 			$gruposSeccion = $tablaGrupo->fetchAll($select);
 			$grupos[$seccion->getIdSeccion()] = $gruposSeccion;
 		}
+	}
+	
+	public function obtenerObjetoEncuesta($idEncuesta, $idAsignacion){
+		$encuesta = array();
+		$tablaSeccion = $this->tablaSeccion;
+		$tablaGrupo = $this->tablaGrupo;
+		$tablaPregunta = $this->tablaPregunta;
+		$tablaPreferenciaS = $this->tablaPreferenciaS;
 		
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta=?",$idEncuesta);
+		$rows = $tablaSeccion->fetchAll($select);
+		$secciones = $rows->toArray();
+		//Recorremos las secciones
+		foreach ($secciones as $seccion) {
+			//Obtenemos los grupos de la seccion
+			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion=?",$seccion["idSeccion"]);
+			$rows = $tablaGrupo->fetchAll();
+			$grupos = $rows->toArray();
+			//Recorremos los grupos.
+			foreach ($grupos as $grupo) {
+				//Obtenemos las preguntas del grupo
+				$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen=?","G")->where("idOrigen=?",$grupo["idGrupo"]);
+				$rows = $tablaPregunta->fetchAll($select);
+				$preguntas = $rows->toArray();
+				//Recorremos preguntas y sacamos el conteo de preferencia por categoria.
+				foreach ($preguntas as $pregunta) {
+					$select = $tablaPreferenciaS->select()->from($tablaPreferenciaS)->where("idAsignacion=?",$idAsignacion)->where("idPregunta=?",$pregunta["idPregunta"]);
+					$rows = $tablaPreferenciaS->fetchAll($select);
+					$preferencias = $rows->toArray();
+					foreach ($preferencias as $preferencia) {
+						$encuesta[$seccion["idSeccion"]][$grupo["idGrupo"]] += $preferencia["total"];
+					}
+					//$encuesta[$seccion["idSeccion"]][$grupo["idGrupo"]] += $
+				}
+				
+			}
+			//$encuesta[$idSeccion] = 
+		}
+		
+		print_r($encuesta);
 		
 	}
 	// =====================================================================================>>>   Insertar
@@ -252,7 +300,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$tablaEncuesta->delete($where);
 	}
 	
-	public function normalizarPreferenciaAsignacion($idEncuesta, $idAsignacion){
+	public function normalizarPreferenciasEncuestaAsignacion($idEncuesta, $idAsignacion){
 		$tablaEncuesta = $this->tablaEncuesta;
 		$tablaPreferenciaS = $this->tablaPreferenciaS;
 		//Obtenemos preguntas de la encuesta

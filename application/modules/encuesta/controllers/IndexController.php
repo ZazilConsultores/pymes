@@ -211,6 +211,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
 		
 		$preguntas = $this->preguntaDAO->obtenerPreguntasEncuesta($idEncuesta);
+		$this->view->asignacion = $asignacion;
 		$this->view->grupo = $grupo;
 		$this->view->docente = $registro;
 		$this->view->encuesta = $encuesta;
@@ -313,20 +314,21 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$this->view->grupo = $grupo;
         $this->view->asignacion = $asignacion;
 		
-		$preguntasAbiertas = $this->preguntaDAO->obtenerPreguntasAbiertasEncuesta($idEncuesta, $idAsignacion);
+		$preguntasAbiertas = $this->preguntaDAO->obtenerPreguntasAbiertasEncuesta($idEncuesta);
 		
 		//$this->view->encuesta = $encuesta;
 		//$this->view->asignacion = $asignacion;
 		$this->view->preguntasAbiertas = $preguntasAbiertas;
 		//========================================================================= Reporte
 		$fecha = date('d-m-Y', time());
-		$nombreArchivo = str_replace(' ', '', $encuesta->getNombre())."-PA-".$grupo->getGrupo(). $fecha."-". '.pdf';
+		$nombreArchivo = 'pa/' . str_replace(' ', '', $encuesta->getNombre())."-PA-".$grupo->getGrupo(). $fecha.'.pdf';
 		$this->view->nombreArchivo = $nombreArchivo; //Mandado a la vista lo tomamos en un link y al dar clic vamos a vista del reporte
-		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/pa/');
+		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/');
 		$page = $pdf->createPage(Zend_Pdf_Page::SIZE_LETTER);
 		$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_COURIER);
 		$font2 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/ubuntu/UbuntuMono-R.ttf");
 		$font3 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		$this->view->font = $font3;
 		//$page->setFont($font, 10);
 		//$page->setFont($font2, 12);
 		$page->setFont($font3, 10);

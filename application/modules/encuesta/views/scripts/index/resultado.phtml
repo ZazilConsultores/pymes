@@ -1,4 +1,5 @@
 <?php
+	$asignacion = $this->asignacion;
 	$preguntas = $this->preguntas;
 	$encuesta = $this->encuesta;
 	$docente = $this->docente;
@@ -37,7 +38,7 @@
 						<td><?php echo $pregunta->getPregunta() ?></td>
 						<td>
 							<?php if ($pregunta->getTipo() != "AB"){  ?>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"grafica","idGrupo"=>$grupo->getIdGrupo(),"idPregunta"=>$pregunta->getIdPregunta(),"idDocente"=>$docente->getIdRegistro()),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"grafica","idPregunta"=>$pregunta->getIdPregunta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
 								<span class="glyphicon glyphicon-stats"></span> Gráfico
 							</a>
 							<?php }else{ ?>

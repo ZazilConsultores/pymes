@@ -39,6 +39,9 @@
 			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"reporte","idReporte"=>$idReporte),null,true) ?>">
 				<span class="glyphicon glyphicon-search"></span> Informe en PDF
 			</a>
+			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta", "controller"=>"index", "action"=>"reportepa","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
+				<span class="glyphicon glyphicon-search"></span> Ver Preguntas Abiertas
+			</a>
 			<hr />
 			<h4>Categorías</h4>
 			<?php 

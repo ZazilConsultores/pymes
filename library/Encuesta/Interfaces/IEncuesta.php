@@ -20,6 +20,7 @@ interface Encuesta_Interfaces_IEncuesta{
 	public function obtenerEncuestasVigentesRealizadas();
 	//public function obtenerEncuestasRealizadasPorProfesor($idAsignacion);
 	public function obtenerGruposEncuesta($idEncuesta);
+	public function obtenerObjetoEncuesta($idEncuesta, $idAsignacion);
 	// =====================================================================================>>>   Insertar
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
 	public function agregarEncuestaGrupo(array $registro);
@@ -29,6 +30,6 @@ interface Encuesta_Interfaces_IEncuesta{
 	// =====================================================================================>>>   Eliminar
 	public function eliminarEncuesta($idEncuesta);
 	// =====================================================================================>>>   Normalizar Preferencia
-	public function normalizarPreferenciaAsignacion($idEncuesta, $idAsignacion);
+	public function normalizarPreferenciasEncuestaAsignacion($idEncuesta, $idAsignacion);
 	
 }

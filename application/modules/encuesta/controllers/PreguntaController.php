@@ -206,15 +206,20 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
     {
         // action body
         $request = $this->getRequest();
-		$idGrupo = $this->getParam("idGrupo");
 		$idPregunta = $this->getParam("idPregunta");
-		$idRegistro = $this->getParam("idDocente");
+		$idAsignacion = $this->getParam("idAsignacion");
 		
-		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
 		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
-		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
 		
-		$p = $this->preferenciaDAO->obtenerPreferenciaPregunta($idPregunta, $idGrupo);
+		//$idGrupo = $this->getParam("idGrupo");
+		//$idRegistro = $this->getParam("idDocente");
+		
+		$registro = $this->registroDAO->obtenerRegistro($asignacion["idRegistro"]);
+		$grupo = $this->gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
+		//$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		
+		$p = $this->preferenciaDAO->obtenerPreferenciaPregunta($idPregunta, $idAsignacion);
 		//print_r($p);
 		
 		$this->view->docente = $registro;
