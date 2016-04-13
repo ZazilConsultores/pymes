@@ -1,4 +1,35 @@
-#tabla{	border: solid 1px #333;	width: 300px; }
-#tabla tbody tr{ background: #FFFFFF; }
-#tabla{border:solid 1px }
+/*#tabla{	 
+	border-style: solid; 1px;
+ 
+	}
+#tabla tbody tr{ background: #FFFFFF}
+ .celda{ display: none; } /*fila base oculta 
 .eliminar{ cursor: pointer; color: #000; }
+cell1.style.height="20px";
+cell1.style.width="100px";
+input[type="text"]{ width: 150px; }*/
+
+#contenedor {
+	width: 90%;
+	margin: auto;
+}
+#tabla {
+	width: 100%;
+	margin: auto;
+	border: 1px solid #a1a1a1;
+}
+#tabla thead tr {
+	background-color: #afafaf;
+}
+#tabla thead tr th, #tabla tbody tr td {
+	border: 1px solid #a1a1a1;
+	padding: 3px;
+}
+#tabla tbody tr td input {
+	padding: 3px;
+	border: 1px solid #717171;
+}
+#total {
+	font-size: 1.1em;
+	font-weight: bold;
+}
