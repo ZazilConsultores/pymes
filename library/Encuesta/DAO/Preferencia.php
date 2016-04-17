@@ -6,12 +6,14 @@
  */
 class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	
+	private $tablaGrupo;
 	private $tablaPregunta;
 	private $tablaOpcion;
 	
 	private $tablaPreferenciaSimple;
 	
 	function __construct() {
+		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
 		
@@ -117,6 +119,28 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 		}
 		
 		print_r($total);
+	}
+	
+	/**
+	 * Obtenemos las 
+	 */
+	public function obtenerTotalPreferenciaGrupo($idGrupo, $idAsignacion){
+		$tablaPregunta = $this->tablaPregunta;
+		$tablaPreferenciaS = $this->tablaPreferenciaSimple;
+		
+		$totalCategoria = 0;
+		
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen=?","G")->where("idOrigen=?",$idGrupo);
+		$preguntasGrupo = $tablaPregunta->fetchAll($select);
+		foreach ($preguntasGrupo as $pregunta) {
+			$select = $tablaPreferenciaS->select()->from($tablaPreferenciaS)->where("idPregunta=?",$pregunta["idPregunta"])->where("idAsignacion=?",$idAsignacion);
+			$preferencias = $tablaPreferenciaS->fetchAll($select);
+			foreach ($preferencias as $preferencia) {
+				$totalCategoria += $preferencia["total"];
+			}
+		}
+		
+		return $totalCategoria;
 	}
 	// =====================================================================================>>>   Insertar
 	public function agregarPreferenciaPregunta($idPregunta,$idOpcion,$idGrupo){

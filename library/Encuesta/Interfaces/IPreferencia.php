@@ -11,7 +11,8 @@ interface Encuesta_Interfaces_IPreferencia {
 	public function obtenerPreferenciaAsignacion($idAsignacion);
 	public function obtenerPreferenciaCategoria($idAsignacion, $idGrupo);
 	public function obtenerPreferenciaPregunta($idPregunta,$idAsignacion);
-	public function obtenerTotalCategoria($idEncuesta, $idGrupo, $idConjunto);
+	//public function obtenerTotalCategoria($idEncuesta, $idGrupo, $idConjunto);
+	public function obtenerTotalPreferenciaGrupo($idGrupo, $idAsignacion);
 	//public function obtenerPreferenciasPregunta($idPregunta);
 	// =====================================================================================>>>   Insertar
 	public function agregarPreferenciaPregunta($idPregunta,$idOpcion,$idGrupo);

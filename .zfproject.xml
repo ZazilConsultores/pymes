@@ -207,6 +207,7 @@
               <actionMethod actionName="rpreferencia"/>
               <actionMethod actionName="reporte"/>
               <actionMethod actionName="reportepa"/>
+              <actionMethod actionName="reporteg"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -727,6 +728,9 @@
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="reportepa"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reporteg"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -967,6 +971,10 @@
             <controllerFile controllerName="Normalize">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Reporte">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaFiscales"/>
@@ -980,6 +988,7 @@
             <formFile formName="AltaSubparametro"/>
             <formFile formName="AltaRol"/>
             <formFile formName="AltaUsuario"/>
+            <formFile formName="AltaReporte"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1003,6 +1012,8 @@
               <dbTableFile dbTableName="Empresas"/>
               <dbTableFile dbTableName="Clientes"/>
               <dbTableFile dbTableName="Proveedores"/>
+              <dbTableFile dbTableName="TipoReporte"/>
+              <dbTableFile dbTableName="Reporte"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -1206,6 +1217,12 @@
               <viewControllerScriptsDirectory forControllerName="Normalize">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -1356,6 +1373,7 @@
                 <testApplicationActionMethod forActionName="rpreferencia"/>
                 <testApplicationActionMethod forActionName="reporte"/>
                 <testApplicationActionMethod forActionName="reportepa"/>
+                <testApplicationActionMethod forActionName="reporteg"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1586,6 +1604,10 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Normalize">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Reporte">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
