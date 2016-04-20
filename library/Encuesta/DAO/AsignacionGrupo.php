@@ -70,6 +70,18 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 		return $asignaciones->toArray();
 	}
 	
+	public function obtenerAsignacionesGrupo($idGrupo){
+		$tablaAsignacion = $this->tablaAsignacionGrupo;
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idGrupo=?",$idGrupo);
+		
+		$asignaciones = $tablaAsignacion->fetchAll($select);
+		
+		if(is_null($asignaciones)) throw new Util_Exception_BussinessException("Error: No hay Asignaciones para el grupo con Id: <strong>".$idGrupo."</strong>", 1);
+		
+		return $asignaciones->toArray();
+		
+	}
+	
 	public function obtenerIdMateriasDocente($idDocente){
 		
 	}

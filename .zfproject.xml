@@ -340,6 +340,27 @@
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
             </controllerFile>
+            <controllerFile controllerName="Evaluacion">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="grupo"/>
+              <actionMethod actionName="capas"/>
+              <actionMethod actionName="acapa"/>
+            </controllerFile>
+            <controllerFile controllerName="4020">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+              <actionMethod actionName="c"/>
+              <actionMethod actionName="d"/>
+            </controllerFile>
+            <controllerFile controllerName="5030">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+              <actionMethod actionName="c"/>
+              <actionMethod actionName="d"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -362,6 +383,8 @@
             <formFile formName="AsociarEncuesta"/>
             <formFile formName="AltaValor"/>
             <formFile formName="AltaPlan"/>
+            <formFile formName="AltaEvaluacion"/>
+            <formFile formName="AltaCapa"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -390,6 +413,7 @@
               <dbTableFile dbTableName="PlanE"/>
               <dbTableFile dbTableName="AsignacionGrupo"/>
               <dbTableFile dbTableName="Reporte"/>
+              <dbTableFile dbTableName="ECapas"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -730,6 +754,51 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="reporteg"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="grupo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="capas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="acapa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="a"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="d"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="a"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="d"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1505,6 +1574,27 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Evaluacion">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="grupo"/>
+                <testApplicationActionMethod forActionName="capas"/>
+                <testApplicationActionMethod forActionName="acapa"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="4020">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="a"/>
+                <testApplicationActionMethod forActionName="b"/>
+                <testApplicationActionMethod forActionName="c"/>
+                <testApplicationActionMethod forActionName="d"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="5030">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="a"/>
+                <testApplicationActionMethod forActionName="b"/>
+                <testApplicationActionMethod forActionName="c"/>
+                <testApplicationActionMethod forActionName="d"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

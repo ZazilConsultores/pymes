@@ -20,7 +20,7 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	public function obtenerGrupos($idGrado,$idCiclo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrado = ?",$idGrado)->where("idCiclo = ?",$idCiclo);
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrado = ?",$idGrado)->where("idCiclo = ?",$idCiclo)->order("grupo ASC");
 		$grupos = $tablaGrupo->fetchAll($select);
 		
 		$modelGrupos = array();
