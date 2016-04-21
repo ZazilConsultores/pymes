@@ -38,7 +38,8 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 	
 	public function obtenerRegistros(){
 		$tablaRegistro = $this->tablaRegistro;
-		$rowsRegistros = $tablaRegistro->fetchAll();
+		$select = $tablaRegistro->select()->from($tablaRegistro)->order("apellidos");
+		$rowsRegistros = $tablaRegistro->fetchAll($select);
 		$modelRegistros = array();
 		foreach ($rowsRegistros as $rowRegistro) {
 			$modelRegistro = new Encuesta_Model_Registro($rowRegistro->toArray());
@@ -50,7 +51,7 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 	
 	public function obtenerDocentes(){
 		$tablaRegistro = $this->tablaRegistro;
-		$select = $tablaRegistro->select()->from($tablaRegistro)->where("tipo=?","DO");
+		$select = $tablaRegistro->select()->from($tablaRegistro)->where("tipo=?","DO")->order("apellidos");
 		$rowsDocentes = $tablaRegistro->fetchAll($select);
 		$modelDocentes = array();
 		foreach ($rowsDocentes as $row) {

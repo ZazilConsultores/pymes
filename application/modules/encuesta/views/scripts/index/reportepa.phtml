@@ -64,6 +64,7 @@
 								<td><?php echo $numeroPregunta;
 										  $col1 = new My_Pdf_Table_Column();
 										  $col1->setText($numeroPregunta);
+										  $col1->setWidth(30);
 										  $columnas[] = $col1;
 									?></td>
 								<td><?php echo $respuesta["respuesta"];
@@ -85,7 +86,7 @@
 						</tbody>
 					</table>
 			<?php	
-					$page->addTable($tablaPdf,0,220);
+					$page->addTable($tablaPdf,0,190);
 					endforeach; ?>
 			<?php 
 				$pdf->addPage($page);

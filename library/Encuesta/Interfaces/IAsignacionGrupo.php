@@ -6,6 +6,7 @@ interface Encuesta_Interfaces_IAsignacionGrupo {
 	public function obtenerMateriaAsignacion($idAsignacion);
 	
 	public function obtenerAsignacionesDocente($idDocente);
+	public function obtenerAsignacionesGrupo($idGrupo);
 	public function obtenerIdMateriasDocente($idDocente);
 	public function obtenerIdGruposDocente($idDocente);
 	

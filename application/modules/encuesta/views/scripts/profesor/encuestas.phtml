@@ -52,7 +52,7 @@
 				//print_r($asignaciones);
 				$lista = array();
 				foreach ($asignaciones as $asignacion) {
-					echo $asignacion["idAsignacion"] . "<br />";
+					//echo $asignacion["idAsignacion"] . "<br />";
 					$encuesta = array();
 					$erealizadas = $encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($asignacion["idAsignacion"]);
 					
@@ -63,10 +63,10 @@
 						$lista[$erealizada["idEncuesta"]][] = $erealizada["idAsignacion"];
 					}
 					//$lista[] = $encuesta;
-					print_r("<br />");
+					//print_r("<br />");
 				}
 				
-				print_r($lista);
+				//print_r($lista);
 				/*
 				foreach ($asignaciones as $asignacion) {
 					$erealizadas = $encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($asignacion["idAsignacion"]);
@@ -92,8 +92,8 @@
 						<tr>
 							<td><?php echo $encuesta->getNombre() ?></td>
 							<td>
-								<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"",""=>""),null,true) ?>">
-									<span class="glyphicon glyphicon-link"></span>
+								<a class="btn btn-warning" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"reporteg","idDocente"=>$docente->getIdRegistro(),"idEncuesta"=>$encuesta->getIdEncuesta()),null,true) ?>">
+									<span class="glyphicon glyphicon-search"></span> Ver en Web <span class="badge badge-important"><?php echo $numeroEncuestas ?></span> Grupos
 								</a>
 							</td>
 						</tr>

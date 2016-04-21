@@ -185,7 +185,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 			$post = $request->getPost();
 			
 			try{
-				$generador->procesarFormulario($idEncuesta,$idDocente,$idGrupo,$post);
+				$generador->procesarFormulario($idEncuesta,$idAsignacion,$post);
 				$this->view->messageSuccess = "Encuesta registrada correctamente";
 			}catch(Exception $ex){
 				$this->view->messageFail = "Error al Registrar la encuesta: " . $ex->getMessage();
@@ -336,6 +336,42 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$this->view->page = $page;
 		$this->view->pdf = $pdf;
 		
+    }
+
+    public function reportegAction()
+    {
+        // action body
+        $idDocente = $this->getParam("idDocente");
+		$idEncuesta = $this->getParam("idEncuesta");
+		
+		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$docente = $this->registroDAO->obtenerRegistro($idDocente);
+		
+		$this->view->idDocente = $idDocente;
+		$this->view->idEncuesta = $idEncuesta;
+		// =============================================
+		$this->view->encuestaDAO = $this->encuestaDAO;
+		$this->view->seccionDAO = $this->seccionDAO;
+		$this->view->grupoDAO = $this->grupoDAO;
+		$this->view->registroDAO = $this->registroDAO;
+		$this->view->gruposDAO = $this->gruposDAO;
+		// ============================================= Reporte
+		
+		$nombreArchivo = 'general/' . str_replace(' ', '', $encuesta->getNombre())."-GENERAL-".str_replace(' ', '', $docente->getApellidos()).",".str_replace(' ', '', $docente->getNombres()).'.pdf';
+		//Mandado a la vista lo tomamos en un link y al dar clic vamos a vista del reporte
+		$this->view->nombreArchivo = $nombreArchivo;
+		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/');
+		$page = $pdf->createPage(Zend_Pdf_Page::SIZE_LETTER);
+		$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_COURIER);
+		$font2 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/ubuntu/UbuntuMono-R.ttf");
+		$font3 = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		$this->view->font = $font3;
+		//$page->setFont($font, 10);
+		//$page->setFont($font2, 12);
+		$page->setFont($font3, 10);
+		
+		$this->view->page = $page;
+		$this->view->pdf = $pdf;
     }
 
 
