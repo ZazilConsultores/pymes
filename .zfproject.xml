@@ -361,6 +361,12 @@
               <actionMethod actionName="c"/>
               <actionMethod actionName="d"/>
             </controllerFile>
+            <controllerFile controllerName="6020">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+              <actionMethod actionName="c"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -799,6 +805,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="5030">
                 <viewScriptFile forActionName="d"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="a"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="c"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1595,6 +1613,12 @@
                 <testApplicationActionMethod forActionName="b"/>
                 <testApplicationActionMethod forActionName="c"/>
                 <testApplicationActionMethod forActionName="d"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="6020">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="a"/>
+                <testApplicationActionMethod forActionName="b"/>
+                <testApplicationActionMethod forActionName="c"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

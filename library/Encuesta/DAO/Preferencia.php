@@ -143,9 +143,12 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 		return $totalCategoria;
 	}
 	// =====================================================================================>>>   Insertar
-	public function agregarPreferenciaPregunta($idPregunta,$idOpcion,$idGrupo){
+	/**
+	 * 
+	 */
+	public function agregarPreferenciaPregunta($idPregunta,$idOpcion,$idAsignacion){
 		$tablaPS = $this->tablaPreferenciaSimple;
-		$select = $tablaPS->select()->from($tablaPS)->where("idPregunta = ?", $idPregunta)->where("idOpcion = ?", $idOpcion)->where("idGrupo=?",$idGrupo);
+		$select = $tablaPS->select()->from($tablaPS)->where("idPregunta = ?", $idPregunta)->where("idOpcion = ?", $idOpcion)->where("idAsignacion=?",$idAsignacion);
 		$rowPreferencia = $tablaPS->fetchRow($select);
 		
 		if(is_null($rowPreferencia)){

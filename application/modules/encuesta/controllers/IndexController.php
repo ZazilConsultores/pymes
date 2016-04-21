@@ -185,7 +185,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 			$post = $request->getPost();
 			
 			try{
-				$generador->procesarFormulario($idEncuesta,$idDocente,$idGrupo,$post);
+				$generador->procesarFormulario($idEncuesta,$idAsignacion,$post);
 				$this->view->messageSuccess = "Encuesta registrada correctamente";
 			}catch(Exception $ex){
 				$this->view->messageFail = "Error al Registrar la encuesta: " . $ex->getMessage();
