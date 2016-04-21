@@ -9,27 +9,37 @@ cell1.style.height="20px";
 cell1.style.width="100px";
 input[type="text"]{ width: 150px; }*/
 
-#contenedor {
+/*#contenedor {
 	width: 90%;
 	margin: auto;
-}
+}*/
 #tabla {
-	width: 100%;
+	width: 1150px;
 	margin: auto;
 	border: 1px solid #a1a1a1;
+	height: 28px;
+
 }
 #tabla thead tr {
-	background-color: #afafaf;
+	background-color: #009933;
+	width: 135px;
+	 	
 }
 #tabla thead tr th, #tabla tbody tr td {
 	border: 1px solid #a1a1a1;
 	padding: 3px;
+	width: 135px;
+	height: 28px;
 }
 #tabla tbody tr td input {
 	padding: 3px;
 	border: 1px solid #717171;
+	width: 135px;
+	height: 28px;
+
 }
 #total {
 	font-size: 1.1em;
 	font-weight: bold;
+	height: 28px;
 }
