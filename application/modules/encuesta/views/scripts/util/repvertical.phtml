@@ -1,0 +1,19 @@
+<?php
+	$nombreArchivo = "reporteBaseEncuestas.pdf";
+	$pdfBase = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/bases/');
+	$page = $pdfBase->createPage(Zend_Pdf_Page::SIZE_LETTER);
+	
+	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical20Abril.png');
+	//$page->drawImage($imgEncabezado, 30, 40, 0, 0);
+	$page->drawImage($imgEncabezado, 20, 30, 510.3, 108.3);
+	
+?>
+<section class="row">
+	Plantilla de Reporte Creada.
+</section>
+<?php
+	$pdfBase->addPage($page);
+	
+	$pdfBase->save();
+	//$pdfBase->save(PDF_PATH . '/reports/bases/' . $nombreArchivo,false);
+?>

@@ -103,7 +103,7 @@ class My_Pdf_Document extends My_Pdf{
 			$i++;
 		}
 
-		parent::save("{$this->_path}/{$this->_filename}", true);
+		parent::save("{$this->_path}/{$this->_filename}", FALSE);
 	}
 
 	private function _drawFooter(My_Pdf_Page $page,$currentPage){

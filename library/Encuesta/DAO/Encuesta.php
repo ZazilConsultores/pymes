@@ -16,6 +16,8 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	private $tablaERealizadas;
 	private $tablaAsignacion;
 	private $tablaPreferenciaS;
+	private $tablaRegistro;
+	private $tablaMateria;
 	
 	
 	public function __construct()
@@ -30,6 +32,9 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
 		$this->tablaAsignacion = new Encuesta_Model_DbTable_AsignacionGrupo;
 		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
+		
+		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro;
+		$this->tablaMateria = new Encuesta_Model_DbTable_MateriaE;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -163,17 +168,17 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	public function obtenerEncuestaRealizadaPorAsignacion($idAsignacion){
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idAsignacion=?",$idAsignacion);
-		$erealizadas = $tablaERealizadas->fetchRow($select);
-		if(is_null($erealizadas)) throw new Util_Exception_BussinessException("Error: No hay ", 1);
+		$erealizada = $tablaERealizadas->fetchRow($select);
+		//if(is_null($erealizadas)) throw new Util_Exception_BussinessException("Error: No hay encuesta relacionada con la asignacion grupo-materia-docente con idAsignacion: <strong>".$idAsignacion."</strong>", 1);
 		
-		return $erealizadas->toArray();
+		return $erealizada;
 	}
 	
 	public function obtenerEncuestasRealizadasPorAsignacion($idAsignacion){
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idAsignacion=?",$idAsignacion);
 		$erealizadas = $tablaERealizadas->fetchAll($select);
-		if(is_null($erealizadas)) throw new Util_Exception_BussinessException("Error: No hay relacion", 1);
+		if(is_null($erealizadas)) throw new Util_Exception_BussinessException("Error: No ninguna encuesta relacionada con esta asignacion: <strong>".$idAsignacion."</strong>", 1);
 		
 		return $erealizadas->toArray();
 	}
@@ -259,6 +264,23 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	public function agregarEncuestaGrupo(array $registro){
 		$tablaERealizadas = $this->tablaERealizadas;
+		
+		$tablaAsignacion = $this->tablaAsignacion;
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacion=?",$registro["idAsignacion"]);
+		$rowAsignacion = $tablaAsignacion->fetchRow($select);
+		
+		$tablaRegistro = $this->tablaRegistro;
+		$select = $tablaRegistro->select()->from($tablaRegistro)->where("idRegistro=?",$rowAsignacion->idRegistro);
+		$rowRegistro = $tablaRegistro->fetchRow($select);
+		
+		$tablaMateria = $this->tablaMateria;
+		$select = $tablaMateria->select()->from($tablaMateria)->where("idMateria=?",$rowAsignacion->idMateria);
+		$rowMateria = $tablaMateria->fetchRow($select);
+		
+		$tablaEncuesta = $this->tablaEncuesta; 
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta=?",$registro["idEncuesta"]);
+		$rowEncuesta = $tablaEncuesta->fetchRow($select);
+		
 		$registro["realizadas"] = 0;
 		//$tablaEncuestaGrupo = $this->tablaEncuestaGrupo;
 		//$select = $tablaEncuestaGrupo->select()->from($tablaEncuestaGrupo)->where("idGrupo=?",$registro["idGrupo"])->where("idEncuesta=?",$registro["idEncuesta"]);
@@ -266,7 +288,8 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		try{
 			$tablaERealizadas->insert($registro);
 		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("Error: " . $ex->getMessage());
+			$mensaje = "Error:<br /> Encuesta <strong>".$rowEncuesta->nombre ."</strong> ya esta asociada con <br />Docente-Materia <strong>".$rowRegistro->apellidos.", ".$rowRegistro->nombres." - ".$rowMateria->materia."</strong>";
+			throw new Util_Exception_BussinessException($mensaje);
 		}
 	}
 	
