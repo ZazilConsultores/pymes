@@ -28,20 +28,32 @@
 					<?php foreach ($asignaciones as $asignacion) : 
 						$grupo = $gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
 						$materia = $materiaDAO->obtenerMateria($asignacion["idMateria"]);
-						$encuestaRealizada = $encuestaDAO->obtenerEncuestaRealizadaPorAsignacion($asignacion["idAsignacion"]);
-						$encuesta = $encuestaDAO->obtenerEncuesta($encuestaRealizada["idEncuesta"]);
+						$encuestasRealizadas = $encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($asignacion["idAsignacion"]);
+						//$encuestaRealizada = $encuestaDAO->obtenerEncuestaRealizadaPorAsignacion($asignacion["idAsignacion"]);
+						
 						//$asignacionDAO->obtenerEvaluacionGeneralDocente($docente->getIdRegistro(), $encuesta->getIdEncuesta());
-						?>
-					<tr>
-						<td><?php echo $grupo->getGrupo() ?></td>
-						<td><?php echo $materia->getMateria() ?></td>
-						<td><?php echo $encuesta->getNombre() ?></td> 
-						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resumen","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"])) ?>">
-								<span class="glyphicon glyphicon--pencil"></span> Detalle en Web
-							</a>
-						</td>
-					</tr>
+						if(!is_null($encuestasRealizadas)){
+							foreach ($encuestasRealizadas as $erealizada) : 
+								$encuesta = $encuestaDAO->obtenerEncuesta($erealizada["idEncuesta"]);
+								$cssDisabled = "";
+								$cssBadge = "badge-info";
+								if($erealizada["realizadas"] <= 0){
+									$cssDisabled = "disabled";
+									$cssBadge = "badge-warning";
+								}
+							?>
+							<tr>
+								<td><?php echo $grupo->getGrupo() ?></td>
+								<td><?php echo $materia->getMateria() ?></td>
+								<td><?php echo $encuesta->getNombre() ?></td> 
+								<td>
+									<a target="_blank" class="btn btn-success <?php echo $cssDisabled; ?>" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resumen","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"])) ?>">
+										<span class="glyphicon glyphicon-check"></span> <span class="badge <?php echo $cssBadge; ?>"><?php echo $erealizada["realizadas"] ?></span> Detalle en Web 
+									</a>
+								</td>
+							</tr>			
+					<?php	endforeach; } ?>
+					
 					<?php endforeach ?>
 				</tbody>
 			</table>

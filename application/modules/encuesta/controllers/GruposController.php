@@ -200,13 +200,18 @@ class Encuesta_GruposController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
         $idGrupo = $this->getParam("idGrupo");
+		//$idAsignacion = $this->getParam("idAsignacion");
+		
 		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
 		$grado = $this->gradoDAO->obtenerGrado($grupo->getIdGrado());
 		$ciclo = $this->cicloDAO->obtenerCiclo($grupo->getIdCiclo());
 		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
 		
-		
+		//$docente = $this->registroDAO->obtenerRegistro($idDocente);
+		// En la vista no se puede hacer esto por que aun no hay asociacion, llegamos aqui ya despues de hacer una asociacion, no antes
+		//$formulario = new Encuesta_Form_AsociarEncuestaDocente; 
 		$formulario = new Encuesta_Form_AsociarEncuesta;
+		
 		$docentes = $this->gruposDAO->obtenerDocentes($idGrupo);
 		foreach ($docentes as $docente) {
 			$label = $docente["profesor"]->getApellidos().", ".$docente["profesor"]->getNombres()." -- ".$docente["materia"]->getMateria();
@@ -222,11 +227,19 @@ class Encuesta_GruposController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				//$datos["idGrupo"] = $idGrupo;
+				//print_r($datos);
+				$encuesta = $this->encuestaDAO->obtenerEncuesta($datos["idEncuesta"]);
+				$asignacion = $this->gruposDAO->obtenerAsignacion($datos["idAsignacion"]);
+				
+				$materia = $this->materiaDAO->obtenerMateria($asignacion["idMateria"]);
+				$docente = $this->registroDAO->obtenerRegistro($asignacion["idRegistro"]);
+				
 				try{
 					$this->encuestaDAO->agregarEncuestaGrupo($datos);
-					$this->view->messageSuccess = "Encuesta asociada correctamente.";
+					$mensaje = "Encuesta <strong>".$encuesta->getNombre()."</strong> asociada correctamente con Docente-Materia: <strong>".$docente->getApellidos().", ".$docente->getNombres()." - " . $materia->getMateria()."</strong>";
+					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
-					$this->view->messageFail = $ex->getMessage();
+					$this->view->messageFail = $ex->getMessage() ." en el grupo: <strong>".$grupo->getGrupo()."</strong>";
 					//print_r($ex->getMessage());
 				}
 				
