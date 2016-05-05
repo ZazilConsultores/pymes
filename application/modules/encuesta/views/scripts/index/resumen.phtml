@@ -18,8 +18,16 @@
 	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
 	
 	$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
-	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical_2015-2016.png');
-	$page->drawImage($imgEncabezado, 50, 20, 580, 121);
+	//$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical_2015-2016.png');
+	//$page->drawImage($imgEncabezado, 50, 20, 580, 121);
+	//=================================================================================================
+	$pdfMod = Zend_Pdf::load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf');
+	//$pdf = new My_Pdf_Document();
+	//$pdfMod = $pdf->load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf',0);
+	$page = $pdfMod->pages[0];
+	$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+	$page->setFont($font, 10);
+	
 	$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
 	$page->drawText("Docente: ".$registro->getApellidos().", ".$registro->getNombres(), 165, 175);
 	$page->drawText("Grupo: ".$grupo->getGrupo(), 165, 190);
@@ -118,8 +126,8 @@
 				$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedio) . " - " . $resultado, 165, $cY + 30);
 				
 				$pdf->addPage($page);
-				$pdf->save();
-				
+				//$pdf->save();
+				$pdf->save($nombreArchivo,false);
 				
 				?>
 				

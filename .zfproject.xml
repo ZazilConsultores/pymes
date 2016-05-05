@@ -368,6 +368,10 @@
               <actionMethod actionName="b"/>
               <actionMethod actionName="c"/>
             </controllerFile>
+            <controllerFile controllerName="Util">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="repvertical"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -818,6 +822,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="6020">
                 <viewScriptFile forActionName="c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Util">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Util">
+                <viewScriptFile forActionName="repvertical"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1651,6 +1661,10 @@
                 <testApplicationActionMethod forActionName="a"/>
                 <testApplicationActionMethod forActionName="b"/>
                 <testApplicationActionMethod forActionName="c"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Util">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="repvertical"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
