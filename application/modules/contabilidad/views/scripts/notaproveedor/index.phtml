@@ -7,8 +7,7 @@
 			</h3>
 		</div>
 		<div class="panel-body">
-			<br ><br />
-			<table id="tabla">
+			<table class="table table-striped table-condensed" id="tabla">
 			<thead>
 				<tr>
 					<th>Cantidad</th>
@@ -25,7 +24,7 @@
 
 				<tr id="celda" class="celda"> 
 					<td><input id="cantidad";type="text" name="cantidad" onChange="Calcular(this);" value="1" /></<td>
-					<td><input id="idProducto" type="text" name="idProducto"/></td>
+					<td><input id="idProducto" type="text" name="idProducto" /></td>
 					<!--<td>
 						<select id="idProducto" name = "idProducto"  >
 								
@@ -53,7 +52,10 @@
 					</td>-->
 					<td><input id="idUnidad" type="text" name="idUnidad"/></td>
 					<td><input id="codigoBarras" type="text" name="codigoBarras"/></td>
-					<td><input id="producto" type="text" name="producto"/></td>
+					<td>
+						<input id="producto" type="text" name="producto"/>
+					</td>
+					
 					<td><input id="costoUnitario" type="text" name="costoUnitario" onChange="Calcular(this);" value="1" /></td>
 					<td><input id="totalImporte" type="text" name="totalImporte" value="1" readonly  />
 					
@@ -61,16 +63,20 @@
 				</tr>
 			</tbody>
 						
-		</table>
-						
-
-								
+		</table>		
 		<!-- Botón para agregar filas-->
 		<a class="btn btn-success" ">
 		<tr>
-		<span class="glyphicon glyphicon-plus" onclick="AddItem()">  </span> 
+			<span class="glyphicon glyphicon-plus" onclick="AddItem()">  </span> 
 				Nuevo
 		</tr>
+		</a>
+		<a class="btn btn-primary">
+		<tr>
+			<span class="glyphicon glyphicon-envelope">  </span> 
+				Enviar
+		</tr>
+
 		</a>
 		
 

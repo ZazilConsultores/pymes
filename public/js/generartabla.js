@@ -1,3 +1,4 @@
+
 var numero = 0;
 var cantidad = 0, precUnitario = 0, precioImporte = 0;
 
@@ -20,20 +21,6 @@ function AddItem() {
 	}
 }
 
-        
-	
-	//if (tbody != null) {
-	// creamos una nueva fila
-  		/*var newRow = tabla.insertRow(-1);
- 		newRow.className = TROW.attributes['class'].value;
-        var newCell1 = newRow.insertCell(newRow.cells.length-1);
-		/*var newCell2 = newRow.insertCell(newRow.cells.length-1);
-		var newCell3 = newRow.insertCell(newRow.cells.length-1);
- 		var newCell4 = newRow.insertCell(newRow.cells.length-1);
- 		var newCell5 = newRow.insertCell(newRow.cells.length-1);
- 		var newCell6 = newRow.insertCell(newRow.cells.length-1);
-		var newCell7 = newRow.insertCell(newRow.cells.length-1);
- 		var newCell8 = newRow.insertCell(newRow.cells.length-1);*/
  		
  		var newRow = tabla.insertRow(-1);
  		newRow.className = TROW.attributes['class'].value;
@@ -47,15 +34,8 @@ function AddItem() {
    		var newcell7 = newRow.insertCell(-1);
    		var newcell8 = newRow.insertCell(-1);
  
-
-	//}
-	
-
- 
   // creamos una nueva ID para el examinador
-  newID1 = 'cantidad' + (++numero);
-  newID2 = 'idProducto' + (++numero);
-  newID3 = 'idUnidad' + (++numero);
+  newID1 = 'cantidad' + (++numero),newID2 = 'idProducto' + (++numero),newID3 = 'idUnidad' + (++numero);
   newID4 = 'codigoBarras' + (++numero);
   newID5 = 'producto' + (++numero);
   newID6 = 'costoUnitario' + (++numero);
@@ -97,12 +77,30 @@ function removeLastRow()
   // obtenemos la tabla
   var tabla = document.getElementById("tabla");
  
-  // si tenemos mas de una fila, borramos
+  // si tenemos mas de una fila, borramos3
+  
   if(tabla.rows.length > 2)
   {
   tabla.deleteRow(tabla.rows.length-1);
   --numero;
   }
+}
+
+// funcion buscar
+function buscar(){
+	  var claveProducto = $("#idProducto").val();
+	 //var claveProducto = document.getElementById("producto").value;
+	 if(claveProducto !=""){
+	 	$.post("nueva", {valorBusqueda: claveProducto}, function(mensaje) {
+	 		$("#producto").html(mensaje);
+
+	 	});
+	 }else{
+	 	("#producto").html('<p>Descripcion vacia</p>');
+	 	
+	 }	
+	 //alert($('claveProducto').val());
+			
 }
 
 function Calcular(ele) {
@@ -117,6 +115,7 @@ function Calcular(ele) {
 		if (nodes[x].firstChild.name == 'cantidad') {
 			cantidad = parseFloat(nodes[x].firstChild.value,10);
 		}
+		
 		if (nodes[x].firstChild.name == 'costoUnitario') {
 			precioUnitario = parseFloat(nodes[x].firstChild.value,10);
 		}
@@ -132,8 +131,3 @@ function Calcular(ele) {
 	total.innerHTML = parseFloat(total.innerHTML)+precioImporte;
 	
 }
-
-
-
-
-

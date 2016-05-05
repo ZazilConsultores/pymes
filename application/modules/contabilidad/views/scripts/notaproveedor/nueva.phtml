@@ -1,4 +1,103 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Notaproveedor</b> and script/action name <b>nueva</b></p>
-</div>
+<?php
+	
+?>
+<section class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Agregar Productos para Nota Entrada.
+			</h3>
+		</div>
+		<div class="panel-body">
+			<!-- -->
+			<!-- Botón para agregar filas-->
+			<button id="addRow" class="btn btn-success" >
+				<span class="glyphicon glyphicon-plus" ></span> Nuevo
+			</button><br />
+			<table id="productosNota" class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Cantidad</th>
+						<th>Seleccionar Producto</th>
+						<th>Seleccione Unidad</th>
+						<th>Codigo de Barras</th>
+						<th>Descripcion</th>
+						<th>Precio Unitario</th>
+						<th>Importe</th>
+						<th>Eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<br />
+			<a class="btn btn-primary">
+				<span class="glyphicon glyphicon-envelope"></span>Enviar
+			</a>
+		</div>
+	</div>
+</section>	
+<script>
+	$( document ).ready(function() {
+		console.log( "ready!" );
+		var jsonProductos = <?php echo $this->jsonProductos; ?>;
+		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+		console.dir(jsonProductos);
+		
+		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
+		$("button#addRow").on("click",function(){
+			var filasTabla = $("table#productosNota tbody > tr").length;
+			console.log(filasTabla);
+			// si filasTabla = 0 continuar
+			// si filasTabla <> 0 checar fila actual
+			filasTabla ++;
+			// generamos elementos de nueva fila
+			// cantidad
+			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
+			// idProducto
+			var selectProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+			$.each(jsonProductos,function(i,item){
+				selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+			});
+			// idUnidad
+			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
+			$.each(jsonUnidad,function(i,item){
+				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			});
+			// codigoBarras
+			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
+			// descripcion
+			var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			// precioUnitario
+			var inputPrecioUnitario = $('<input />').attr({'id': 'precioUnitario_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
+			// precioImporte
+			var inputPrecioImporte = $('<input />').attr({'id': 'precioImporte_' + filasTabla}).attr({'class':'form-control disabled'});
+			
+			// botonLimpiar
+			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
+			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
+
+			var tbody = $("table#productosNota").find('tbody');
+			tbody.append($('<tr>').
+				append($('<td>').append(inputCantidad)).
+				append($('<td>').append(selectProducto)).
+				append($('<td>').append(inputUnidad)).
+				append($('<td>').append(inputCodigoBarras)).
+				append($('<td>').append(inputDescripcion)).
+				append($('<td>').append(inputPrecioUnitario)).
+				append($('<td>').append(inputPrecioImporte)).
+				append($('<td>').append(buttonLimpiar))
+				
+			);
+		});//cierra el addRow
+
+		//input  cantidad
+		
+		$("input[id^='idCantidad_']").blur(function() {
+			//var idCantidad = (this).attr.split("_");
+			console.log('en input cantidad');
+			var idCantidad = $(this).attr('id');
+			console.log(idCantidad);
+ 		}); 
+	});//cierra document ready
+</script>

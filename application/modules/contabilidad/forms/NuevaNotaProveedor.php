@@ -63,11 +63,18 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDivisa());			
 		}
 		
+		$submit = new Zend_Form_Element_Submit('submit');
+		$submit->setLabel('Enviar');
+		$submit->setAttrib("class", "btn btn-primary");
+	
+		
 		//Agregamos los elementos correspondientes a la subformaEncabezado
 		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProveedor));
      	$this->addSubForms(array($subEncabezado))  ; 
-    }
+		$this->addElement($submit);
+		
 
-
+	}
 }
+
 

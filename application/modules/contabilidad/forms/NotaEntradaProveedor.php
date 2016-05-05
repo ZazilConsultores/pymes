@@ -32,6 +32,8 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		$eFecha->setLabel('Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		
+		
+		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresas();
@@ -72,6 +74,7 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		$eCantidad = new Zend_Form_Element_Text('cantidad');
 		$eCantidad->setLabel('Cantidad');
 		$eCantidad->setAttrib("class", "form-control");
+		//$eCantidad->setAttrib("class", "prinft('%.2f')");
 		
 		
 		$eProducto = new Zend_Form_Element_Select('idProducto');
@@ -106,10 +109,12 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		$ePrecioU = new Zend_Form_Element_Text('costoUnitario');
 		$ePrecioU->setLabel('Precio Unitario');
 		$ePrecioU->setAttrib("class", "form-control");
+		$ePrecioU->setAttrib("class", "prinft('%.2f')");
 		
 		$eImporte = new Zend_Form_Element_Text('totalImporte');
 		$eImporte->setLabel('Total Importe');
 		$eImporte->setAttrib("class", "form-control");
+		$eImporte->setAttrib("class", "prinft('%.2f')");
 		
 		$eSecuencial = new Zend_Form_Element_Text('secuencial');
 		$eSecuencial->setLabel("Secuencial");
@@ -142,8 +147,8 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Crear");
-		$eSubmit->setAttrib("class", "btn btn-success");	
-		 
+		$eSubmit->setAttrib("class", "btn btn-success");
+		
 	    //$this->addSubForm($subEncabezado, $encabezado); //$subCuerpo))
 	     $this->addElement($eNumeroFactura);
 		 $this->addElement($eTipoMovto);
