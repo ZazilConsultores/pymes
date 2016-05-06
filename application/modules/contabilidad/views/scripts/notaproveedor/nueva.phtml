@@ -68,6 +68,7 @@
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
 			var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+				
 			// precioUnitario
 			var inputPrecioUnitario = $('<input />').attr({'id': 'precioUnitario_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
 			// precioImporte
@@ -92,12 +93,46 @@
 		});//cierra el addRow
 
 		//input  cantidad
-		
-		$("input[id^='idCantidad_']").blur(function() {
-			//var idCantidad = (this).attr.split("_");
-			console.log('en input cantidad');
-			var idCantidad = $(this).attr('id');
-			console.log(idCantidad);
- 		}); 
+		$("table#productosNota").on("change","input[id^='idCantidad_']" ,function() {
+			var idCantidad= $(this).attr("id");
+			var arr = idCantidad.split('_');
+			var numFila =  arr[1];
+			
+			var precioUnitarioFila = $('input#precioUnitario_'+numFila);
+			
+			var precioImporte = $(this).val() * precioUnitarioFila.val();
+			console.log($(this).val());
+			console.log(precioUnitarioFila.val());
+			
+			console.log(precioImporte);
+			$('input#precioImporte_'+numFila).val(precioImporte);
+			
+			console.log(idCantidad)	;
+ 		}); //cierra input cantidad
+ 		
+ 		//input precioUnitario
+ 		$("table#productosNota").on("change", "input[id^='precioUnitario_']", function(){
+ 			var precioUnitario = $(this).attr("id");
+ 			var arr = precioUnitario.split('_');
+ 			var numFila = arr[1];
+ 			
+ 			var cantidadFila = $('input#idCantidad_'+numFila);
+ 			var precioImporte = $(this).val() * cantidadFila.val();
+ 			
+ 			$('input#precioImporte_'+numFila).val(precioImporte);
+ 		});//cierra input precioUnitario
+ 		
+ 		//Funcion Eliminar
+ 		$("table#productosNota").on("click", "input[id^='precioUnitario_']", function(){
+ 			var precioUnitario = $(this).attr("id");
+ 			var arr = precioUnitario.split('_');
+ 			var numFila = arr[1];
+ 			
+ 			var cantidadFila = $('input#idCantidad_'+numFila);
+ 			var precioImporte = $(this).val() * cantidadFila.val();
+ 			
+ 			$('input#precioImporte_'+numFila).val(precioImporte);
+ 		});//cierra input precioUnitario
+ 		
 	});//cierra document ready
 </script>
