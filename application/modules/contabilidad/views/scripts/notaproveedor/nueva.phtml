@@ -29,6 +29,17 @@
 				</thead>
 				<tbody>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><input id="total" class="form-control" /></td>
+					</tr>
+				</tfoot>
 			</table>
 			<br />
 			<a class="btn btn-primary">
@@ -47,7 +58,7 @@
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#productosNota tbody > tr").length;
-			console.log(filasTabla);
+			//console.log(filasTabla);
 			// si filasTabla = 0 continuar
 			// si filasTabla <> 0 checar fila actual
 			filasTabla ++;
@@ -91,6 +102,37 @@
 				
 			);
 		});//cierra el addRow
+		
+		//Funcion Eliminar #btnLimpiar_2
+ 		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
+ 			var numero=0;
+ 			var tabla = document.getElementById("productosNota");
+ 
+  			// si tenemos mas de una fila, borramos3
+  			if(tabla.rows.length > 2)
+  			{
+  				tabla.deleteRow(tabla.rows.length-1);
+  				--numero;
+  			}
+ 		});//cierra funcion eliminar
+ 		
+ 		//Funcion buscar descripcion del producto
+ 		$("table#productosNota").on("change", "select[id^='idProducto_']", function(){
+ 			var idProducto= $(this).attr("id");
+			var arr = idProducto.split('_');
+			var id = $(this).val();
+			//console.log(id);
+			var numFila =  arr[1];
+ 			
+ 			$.each(jsonProductos,function(i,item){
+ 				if(jsonProductos[i].idProducto == id){
+ 					$("input#descripcion_"+numFila).val(jsonProductos[i].producto);
+ 				}
+ 				
+				//selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+			});
+ 			
+ 		});//cierra funcion buscar descripcion del producto
 
 		//input  cantidad
 		$("table#productosNota").on("change","input[id^='idCantidad_']" ,function() {
@@ -99,31 +141,31 @@
 			var numFila =  arr[1];
 			
 			var precioUnitarioFila = $('input#precioUnitario_'+numFila);
-			
+			//console.log(precioUnitarioFila);
 			var precioImporte = $(this).val() * precioUnitarioFila.val();
-			console.log($(this).val());
-			console.log(precioUnitarioFila.val());
-			
-			console.log(precioImporte);
+			//console.log($(this).val());
+			//console.log(precioUnitarioFila.val());
+			//console.log(precioImporte);
 			$('input#precioImporte_'+numFila).val(precioImporte);
-			
-			console.log(idCantidad)	;
+			//console.log(idCantidad)	;
  		}); //cierra input cantidad
  		
+ 		//Funcion genera totalColumna
+		$("table#productosNota").on("click","input[id^='precioImporte_']" ,function() {
+			var precioImporte= $(this).attr("id");
+			var arr = precioImporte.split('_');
+			var numColumna =  arr[1];
+			
+			var total = $('input#precioImporte_'+numColumna);
+			var totalColumna = total.val() + total.val();
+			console.log(totalColumna);
+			//console.log($(this).val());
+			//totalColumna = precioImporte.val() + total;
+			//console.log(totalColumna);			
+ 		
+ 		});//cierra la funcion de genera columna
  		//input precioUnitario
  		$("table#productosNota").on("change", "input[id^='precioUnitario_']", function(){
- 			var precioUnitario = $(this).attr("id");
- 			var arr = precioUnitario.split('_');
- 			var numFila = arr[1];
- 			
- 			var cantidadFila = $('input#idCantidad_'+numFila);
- 			var precioImporte = $(this).val() * cantidadFila.val();
- 			
- 			$('input#precioImporte_'+numFila).val(precioImporte);
- 		});//cierra input precioUnitario
- 		
- 		//Funcion Eliminar
- 		$("table#productosNota").on("click", "input[id^='precioUnitario_']", function(){
  			var precioUnitario = $(this).attr("id");
  			var arr = precioUnitario.split('_');
  			var numFila = arr[1];
