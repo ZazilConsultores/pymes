@@ -185,7 +185,7 @@ class Encuesta_Util_Reporter {
 					$colrc1 = new My_Pdf_Table_Column;
 					$colrc1->setText($rowGrupo->nombre);
 					$colrc2 = new My_Pdf_Table_Column;
-					$colrc2->setText();
+					$colrc2->setText("");
 					$rowContent->setColumns(array($colrc1,$colrc2));
 					$rowContent->setFont($font);
 					$rowContent->setCellPaddings(array(5,5,5,5));
