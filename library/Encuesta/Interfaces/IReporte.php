@@ -1,5 +1,5 @@
 <?php
 interface Encuesta_Interfaces_IReporte {
-	public function agregarReporte($nombreReporte);
+	public function agregarReporteGrupal($nombreReporte,$idEncuesta,$idAsignacion);
 	public function obtenerReporte($idReporte);
 }

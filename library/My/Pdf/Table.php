@@ -98,9 +98,9 @@ class My_Pdf_Table {
 				$this->_pages[] = $page;
 				// Agregado el offset del header del documento
 				$y=$page->getMargin(My_Pdf::TOP) + $headerYOffset + 100;
-				print_r("<br />");
-				print_r($y);
-				print_r("<br />");
+				//print_r("<br />");
+				//print_r($y);
+				//print_r("<br />");
 
 				if($this->_headerRow && $this->_repeatHeader){
 					$header=$this->_rows[0];//pre-rendered header row (is first row)
