@@ -1,0 +1,85 @@
+<?php $formulario=$this->formulario; echo $formulario; ?>
+<section class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Agregar Productos para Nota Entrada.
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped table-condensed" id="tabla">
+			<thead>
+				<tr>
+					<th>Cantidad</th>
+					<th>Seleccionar Producto</th>
+					<th>Seleccione Unidad</th>
+					<th>Codigo de Barras</th>
+					<th>Descripcion</th>
+					<th>Precio Unitario</th>
+					<th>Importe</th>
+					<th>Eliminar</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr id="celda" class="celda"> 
+					<td><input id="cantidad";type="text" name="cantidad" onChange="Calcular(this);" value="1" /></<td>
+					<td><input id="idProducto" type="text" name="idProducto" /></td>
+					<!--<td>
+						<select id="idProducto" name = "idProducto"  >
+								
+									<option >
+										<?php 
+										$conexion=mysql_connect("localhost","zazil","admin");
+										mysql_select_db("General",$conexion);
+										$sql= ("select * from producto");
+										$query =mysql_query($sql);
+											
+										while($row=mysql_fetch_array($query))
+										{
+										  ?>
+									    
+									        <option value=" <?php echo $row['idProducto'] ?> " >
+									        <?php echo $row['claveProducto']; ?>
+									        </option>
+									        
+									        <?php
+										}
+										
+										?>
+									</option>
+						</select>
+					</td>-->
+					<td><input id="idUnidad" type="text" name="idUnidad"/></td>
+					<td><input id="codigoBarras" type="text" name="codigoBarras"/></td>
+					<td>
+						<input id="producto" type="text" name="producto"/>
+					</td>
+					
+					<td><input id="costoUnitario" type="text" name="costoUnitario" onChange="Calcular(this);" value="1" /></td>
+					<td><input id="totalImporte" type="text" name="totalImporte" value="1" readonly  />
+					
+					<td class="eliminar"  onClick="removeLastRow(event)">Eliminar</td>
+				</tr>
+			</tbody>
+						
+		</table>		
+		<!-- Botón para agregar filas-->
+		<a class="btn btn-success" ">
+		<tr>
+			<span class="glyphicon glyphicon-plus" onclick="AddItem()">  </span> 
+				Nuevo
+		</tr>
+		</a>
+		<a class="btn btn-primary">
+		<tr>
+			<span class="glyphicon glyphicon-envelope">  </span> 
+				Enviar
+		</tr>
+
+		</a>
+		
+
+		</div>
+	</div>
+</section>

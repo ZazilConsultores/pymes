@@ -40,7 +40,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			switch ($fiscal['tipo']) {
 				case 'EM':
 					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
-					break;
+					break;	
 				case 'CL':
 					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa));
 					break;
