@@ -18,7 +18,7 @@
 	
 	$preferenciaDAO = new Encuesta_DAO_Preferencia;
 	
-	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]); 
+	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
 	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
 	
 	$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);

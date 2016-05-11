@@ -7,7 +7,17 @@ class My_Pdf_Page extends Zend_Pdf_Page {
 	private $_pages = array();
 	private $_margin;
 	private $_defaultStyle;
+	// Nos traemos el YOffset para el Header del Documento, cuando una tabla se expande por varias paginas..
+	private $_headerYOffset;
 
+    public function get_headerYOffset() {
+        return $this->_headerYOffset;
+    }
+    
+    public function set_headerYOffset($_headerYOffset) {
+        $this->_headerYOffset = $_headerYOffset;
+    }
+    
 	/**
 	 * Get Default Page Style
 	 *

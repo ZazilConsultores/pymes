@@ -33,6 +33,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
     private $preferenciaDAO = null;
 
     private $reporteDAO = null;
+	
+	private $materiaDAO = null;
 
     public function init()
     {
@@ -55,6 +57,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$this->reporteDAO = new Encuesta_DAO_Reporte;
 		
 		$this->generador = new Encuesta_Util_Generator();
+		
+		$this->materiaDAO = new Encuesta_DAO_Materia;
     }
 
     public function indexAction()
@@ -230,19 +234,22 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		
 		$idRegistro = $asignacion["idRegistro"];
 		$idGrupo = $asignacion["idGrupo"];
+		$idMateria = $asignacion["idMateria"];
 		
 		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
 		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
 		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$materia = $this->materiaDAO->obtenerMateria($idMateria);
 		
 		$this->view->encuesta = $encuesta;
 		$this->view->registro = $registro;
 		$this->view->grupo = $grupo;
+		$this->view->materia = $materia;
         $this->view->asignacion = $asignacion;
 		//=========================================================================
 		// Reporte
 		$fecha = date('d-m-Y', time());
-		$nombreArchivo = str_replace(' ', '', $encuesta->getNombre())."-" . $fecha."-".$grupo->getGrupo() . '.pdf';
+		$nombreArchivo = $grupo->getGrupo() . "-" . str_replace(' ', '', $materia->getMateria()) . str_replace(' ', '', $encuesta->getNombre()) . '.pdf';
 		$this->view->nombreArchivo = $nombreArchivo; //Mandado a la vista lo tomamos en un link y al dar clic vamos a vista del reporte
 		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/');
 		$page = $pdf->createPage(Zend_Pdf_Page::SIZE_LETTER);
@@ -267,7 +274,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
         $idEncuesta = $this->getParam("idEncuesta");
 		$idAsignacion = $this->getParam("idAsignacion");
 		try{
-			$this->encuestaDAO->normalizarPreferenciaAsignacion($idEncuesta, $idAsignacion);
+			//$this->encuestaDAO->normalizarPreferenciaAsignacion($idEncuesta, $idAsignacion);
+			$this->encuestaDAO->normalizarPreferenciasEncuestaAsignacion($idEncuesta, $idAsignacion);
 		}catch(Exception $ex){
 			print_r($ex->getMessage());
 		}
