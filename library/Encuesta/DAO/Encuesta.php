@@ -340,7 +340,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 					$preferenciaDAO;
 				}
 				
-				print_r($respuestas);
+				//print_r($respuestas);
 			}
 			break;
 		}

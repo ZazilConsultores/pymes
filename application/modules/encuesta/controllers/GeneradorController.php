@@ -109,7 +109,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 		foreach ($secciones as $seccion) {
 			//============================================= Cada seccion es una subforma
 			$subFormSeccion = new Zend_Form_SubForm($seccion->getHash());
-			//$subFormSeccion->setLegend("Sección: " .$seccion->getNombre());
+			$subFormSeccion->setLegend("Sección: " .$seccion->getNombre());
 			//============================================= Obtenemos los elementos de la seccion
 			$grupos = $this->seccionDAO->obtenerGrupos($seccion->getIdSeccion());
 			$preguntas = $this->seccionDAO->obtenerPreguntas($seccion->getIdSeccion());
@@ -134,7 +134,7 @@ class Encuesta_GeneradorController extends Zend_Controller_Action
 				}elseif($elemento instanceof Encuesta_Model_Grupo){
 					//============================================= un grupo es otra subform
 					$subFormGrupo = new Zend_Form_SubForm($elemento->getHash());
-					//$subFormGrupo->setLegend("Grupo: " . $elemento->getNombre());
+					$subFormGrupo->setLegend("Grupo: " . $elemento->getNombre());
 					$preguntasGrupo = $this->grupoDAO->obtenerPreguntas($elemento->getIdGrupo());
 					foreach ($preguntasGrupo as $pregunta) {
 						//============================================= Aqui ya la agregamos al grupo

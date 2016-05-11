@@ -53,6 +53,11 @@ class My_Pdf_Table {
 	 * @return array(My_Pdf_Page)
 	 */
 	public function render(My_Pdf_Page $page, $posX,$posY,$inContentArea=true){
+		
+		$headerYOffset = $page->get_headerYOffset();
+		//$footerYOffset;
+		//print_r($headerYOffset);
+		//print_r("<br />");
 
 		if($this->_headerRow && $this->_rows){
 			//set header in front of rows
@@ -65,7 +70,7 @@ class My_Pdf_Table {
 
 		if($inContentArea){
 			$start_y=$posY + $page->getMargin(My_Pdf::TOP);
-			$max_y=$page->getHeight()- $page->getMargin(My_Pdf::BOTTOM)- $page->getMargin(My_Pdf::TOP);
+			$max_y=$page->getHeight()- $page->getMargin(My_Pdf::BOTTOM)- $page->getMargin(My_Pdf::TOP) - $headerYOffset;
 		}
 		else{
 			$start_y=  $posY;
@@ -91,7 +96,11 @@ class My_Pdf_Table {
 
 				$page=$nPage;
 				$this->_pages[] = $page;
-				$y=$page->getMargin(My_Pdf::TOP);
+				// Agregado el offset del header del documento
+				$y=$page->getMargin(My_Pdf::TOP) + $headerYOffset + 100;
+				print_r("<br />");
+				print_r($y);
+				print_r("<br />");
 
 				if($this->_headerRow && $this->_repeatHeader){
 					$header=$this->_rows[0];//pre-rendered header row (is first row)

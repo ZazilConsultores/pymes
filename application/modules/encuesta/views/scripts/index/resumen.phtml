@@ -3,6 +3,7 @@
 	$encuesta = $this->encuesta;
 	$registro = $this->registro;
 	$grupo = $this->grupo;
+	$materia = $this->materia;
 	$page = $this->page;
 	$pdf = $this->pdf;
 	
@@ -13,24 +14,105 @@
 	$reporteDAO = new Encuesta_DAO_Reporte;
 	
 	$preferenciaDAO = new Encuesta_DAO_Preferencia;
+	$reporteador = new Encuesta_Util_Reporter;
 	
-	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]); 
+	
+	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
 	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
 	
-	$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
+	//$reporteador->generarReporteGrupalEvaluacionAsignacion($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
+	
+	//$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
 	//$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical_2015-2016.png');
 	//$page->drawImage($imgEncabezado, 50, 20, 580, 121);
 	//=================================================================================================
-	$pdfMod = Zend_Pdf::load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf');
+	//$pdfTemplate = Zend_Pdf::load();
+	$pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf');
+	//$pdfTemplate = new My_Pdf_Document("reporteBaseEncuestas.pdf", PDF_PATH . '/reports/bases/');
+	
+	$pdfReport = new My_Pdf_Document($this->nombreArchivo, PDF_PATH . '/reports/encuesta/grupal/');
+	$pdfReport->setYHeaderOffset(120);
+	//echo PDF_PATH . "<br />";
+	//echo $pdfTemplate->properties['Title'] . '<br />';
+	//echo $pdfTemplate->properties['Author'] . '<br />';
+	
+	$pdfReport->properties['Title'] = "Reporte de evaluacion grupal";
+	$pdfReport->properties['Author'] = $pdfTemplate->properties['Author'];
+	
 	//$pdf = new My_Pdf_Document();
 	//$pdfMod = $pdf->load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf',0);
-	$page = $pdfMod->pages[0];
+	$pages = $pdfTemplate->pages;
+	
+	//print_r($pages);
+	//$page = clone $pages[0];
+	//Clonamos la pagina para sacarla del contexto de su documento principal
+	$pageZ = clone $pages[0];
+	// re-creamos un objeto My_Pdf_Page con el objeto clonado.
+	// My_Pdf_Page tiene metodos agregados que Zend_Pdf_Page no tiene por eso el clonado y re-instanciado
+	$page = new My_Pdf_Page($pageZ);
+	$page->set_headerYOffset(120);
+	//$page = new Zend_Pdf_Page($pages[0]);
+	//$page = $pdfMod->pages[0];
 	$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+	//$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
 	$page->setFont($font, 10);
 	
-	$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
-	$page->drawText("Docente: ".$registro->getApellidos().", ".$registro->getNombres(), 165, 175);
-	$page->drawText("Grupo: ".$grupo->getGrupo(), 165, 190);
+	//$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
+	//$page->drawText("Docente: ".$registro->getApellidos().", ".$registro->getNombres(), 165, 175);
+	//$page->drawText("Grupo: ".$grupo->getGrupo(), 165, 190);
+	
+	$tableHeader = new My_Pdf_Table(2);
+	$rowHeader1 = new My_Pdf_Table_Row();
+	$rowHeader2 = new My_Pdf_Table_Row();
+	$rowHeader3 = new My_Pdf_Table_Row();
+	$rowHeader4 = new My_Pdf_Table_Row();
+	$rowHeader5 = new My_Pdf_Table_Row();
+	
+	$coltH11 = new My_Pdf_Table_Column();
+	$coltH12 = new My_Pdf_Table_Column();
+	
+	$coltH11->setText("Resultados de la Encuesta: ");
+	$coltH12->setText($encuesta->getNombre());
+	$rowHeader1->setColumns(array($coltH11,$coltH12));
+	
+	$coltH21 = new My_Pdf_Table_Column();
+	$coltH22 = new My_Pdf_Table_Column();
+	
+	$coltH21->setText("Docente: ");
+	$coltH22->setText($registro->getApellidos().", ".$registro->getNombres());
+	$rowHeader2->setColumns(array($coltH21,$coltH22));
+	
+	$coltH31 = new My_Pdf_Table_Column();
+	$coltH32 = new My_Pdf_Table_Column();
+	
+	$coltH31->setText("Materia: ");
+	$coltH32->setText($materia->getMateria());
+	$rowHeader3->setColumns(array($coltH31,$coltH32));
+	
+	$coltH41 = new My_Pdf_Table_Column();
+	$coltH42 = new My_Pdf_Table_Column();
+	
+	$coltH41->setText("Grupo: ");
+	$coltH42->setText($grupo->getGrupo());
+	$rowHeader4->setColumns(array($coltH41,$coltH42));
+	
+	$rowHeader1->setFont($font);
+	$rowHeader1->setCellPaddings(array(5,5,5,5));
+	$rowHeader2->setFont($font);
+	$rowHeader2->setCellPaddings(array(5,5,5,5));
+	$rowHeader3->setFont($font);
+	$rowHeader3->setCellPaddings(array(5,5,5,5));
+	$rowHeader4->setFont($font);
+	$rowHeader4->setCellPaddings(array(5,5,5,5));
+	
+	$tableHeader->addRow($rowHeader1);
+	$tableHeader->addRow($rowHeader2);
+	$tableHeader->addRow($rowHeader3);
+	$tableHeader->addRow($rowHeader4);
+	
+	$pdfReport->setHeader($tableHeader);
+	
+	$table = new My_Pdf_Table(2);
 ?>
 <section class="row">
 	<div class="panel panel-info">
@@ -83,6 +165,72 @@
 						print_r("Puntaje Máximo: <strong>".$maximo."</strong>   ");
 						print_r("Puntaje Obtenido: <strong>".$valor."</strong>   ");
 						print_r("Calificación: <strong>".sprintf('%.2f', $calificacion)."</strong> <br />");
+						
+						$rowTableA = new My_Pdf_Table_Row();
+						$columnasA = array();
+						
+						$colA1 = new My_Pdf_Table_Column();
+						$colA2 = new My_Pdf_Table_Column();
+						$colA1->setText("Categoría: ".$grupoSeccion->getNombre());
+						$colA1->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
+						$colA2->setText("");
+						
+						$columnasA[] = $colA1;
+						$columnasA[] = $colA2;
+						$rowTableA->setColumns($columnasA);
+						$rowTableA->setFont($font);
+						$rowTableA->setCellPaddings(array(5,5,5,5));
+						
+						$rowTableB = new My_Pdf_Table_Row();
+						$columnasB = array();
+						
+						$colB1 = new My_Pdf_Table_Column();
+						$colB2 = new My_Pdf_Table_Column();
+						$colB1->setText("Puntaje Máximo: ".$maximo);
+						$colB2->setText("Puntaje Obtenido: ".$valor);
+						
+						$columnasB[] = $colB1;
+						$columnasB[] = $colB2;
+						$rowTableB->setColumns($columnasB);
+						$rowTableB->setFont($font);
+						$rowTableB->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
+						$rowTableB->setCellPaddings(array(5,5,5,5));
+						
+						$rowTableC = new My_Pdf_Table_Row();
+						$columnasC = array();
+						
+						$colC1 = new My_Pdf_Table_Column();
+						$colC2 = new My_Pdf_Table_Column();
+						$colC1->setText("");
+						$colC2->setText("Calificación Categoría: ".sprintf('%.2f', $calificacion));
+						$colC2->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
+						
+						$columnasC[] = $colC1;
+						$columnasC[] = $colC2;
+						$rowTableC->setFont($font);
+						$rowTableC->setColumns($columnasC);
+						$rowTableC->setCellPaddings(array(5,5,5,5));
+						
+						$rowTableD = new My_Pdf_Table_Row();
+						$columnasD = array();
+						
+						$colD1 = new My_Pdf_Table_Column();
+						$colD2 = new My_Pdf_Table_Column();
+						$colD1->setText("");
+						$colD2->setText("");
+						
+						$columnasD[] = $colD1;
+						$columnasD[] = $colD2;
+						$rowTableD->setFont($font);
+						$rowTableD->setColumns($columnasD);
+						$rowTableD->setCellPaddings(array(5,5,5,5));
+						
+						$table->addRow($rowTableA);
+						$table->addRow($rowTableB);
+						$table->addRow($rowTableC);
+						$table->addRow($rowTableD);
+						$table->addRow($rowTableD);
+						/*
 						$tY += $aY;
 						$page->drawText("Categoría: ".$grupoSeccion->getNombre(), $eX, $tY);
 						$tY += $aY;
@@ -94,7 +242,8 @@
 						$tY += 2*$aY;
 						$promedio += $calificacion; 
 						$cY = $tY;
-						
+						*/
+						$promedio += $calificacion;
 						//$preferenciaDAO->obtenerPreferenciaGrupo($grupoSeccion->getIdGrupo());
 						/*
 						//$opciones = explode(",", $grupoSeccion->getOpciones());
@@ -122,12 +271,13 @@
 				}elseif($promedio > 4.0){
 					$resultado = "DEFICIENTE";
 				}
+				$page->addTable($table, 40, 235);
+				//$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedio) . " - " . $resultado, 165, 205);
 				
-				$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedio) . " - " . $resultado, 165, $cY + 30);
-				
-				$pdf->addPage($page);
-				//$pdf->save();
-				$pdf->save($nombreArchivo,false);
+				$pdfReport->addPage($page);
+				$pdfReport->saveDocument();
+				//$pdf->saveD;
+				//$pdfReport->save($this->nombreArchivo,false);
 				
 				?>
 				

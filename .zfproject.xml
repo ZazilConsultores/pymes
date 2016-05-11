@@ -50,6 +50,7 @@
         <modelFile modelName="Producto"/>
         <modelFile modelName="TipoProveedor"/>
         <modelFile modelName="Vendedor"/>
+        <modelFile modelName="Inventario"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -873,6 +874,16 @@
             <controllerFile controllerName="GuiaContable">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="NuevaNotaProveedor">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="NotaProveedor">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Notaproveedor">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="nueva"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -886,6 +897,7 @@
             <formFile formName="CancelarRemisionCliente"/>
             <formFile formName="EmpresaClienteFR"/>
             <formFile formName="NotaEntradaProveedor"/>
+            <formFile formName="NuevaNotaProveedor"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -896,11 +908,19 @@
               <dbTableFile dbTableName="Divisa"/>
               <dbTableFile dbTableName="BancosEmpresa"/>
               <dbTableFile dbTableName="Fiscales"/>
+              <dbTableFile dbTableName="Movimientos"/>
+              <dbTableFile dbTableName="Inventario"/>
+              <dbTableFile dbTableName="Capas"/>
+              <dbTableFile dbTableName="TipoMovimiento"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
             <modelFile modelName="Fiscales"/>
             <modelFile modelName="Empresas"/>
+            <modelFile modelName="Movimientos"/>
+            <modelFile modelName="Inventario"/>
+            <modelFile modelName="Capas"/>
+            <modelFile modelName="TipoMovimiento"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -964,6 +984,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proveedor">
                 <viewScriptFile forActionName="agregarnotaentrada"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="NuevaNotaProveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="NotaProveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notaproveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notaproveedor">
+                <viewScriptFile forActionName="nueva"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1780,6 +1812,16 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="GuiaContable">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="NuevaNotaProveedor">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="NotaProveedor">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Notaproveedor">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="nueva"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
