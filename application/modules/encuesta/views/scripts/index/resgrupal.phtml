@@ -4,8 +4,8 @@
 	$registro = $this->registro;
 	$grupo = $this->grupo;
 	$materia = $this->materia;
-	$page = $this->page;
-	$pdf = $this->pdf;
+	//$page = $this->page;
+	//$pdf = $this->pdf;
 	
 	$encuestaDAO = new Encuesta_DAO_Encuesta;
 	$seccionDAO = new Encuesta_DAO_Seccion;
@@ -15,12 +15,18 @@
 	
 	$preferenciaDAO = new Encuesta_DAO_Preferencia;
 	$reporteador = new Encuesta_Util_Reporter;
-	
+	$idReporte = null;
 	
 	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
 	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
 	try{
-		//$reporteador->generarReporteGrupalEvaluacionAsignacion($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
+		//print_r($encuesta);
+		//print_r("<br />");
+		//print_r($asignacion);
+		//print_r("<br />");
+		$idReporte = $reporteador->generarReporteGrupalEvaluacionAsignacion($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
+		//print_r("<br />");
+		//print_r("FIN");
 	}catch(Exception $ex){
 		print_r($ex);
 	}
@@ -31,40 +37,40 @@
 	//$page->drawImage($imgEncabezado, 50, 20, 580, 121);
 	//=================================================================================================
 	//$pdfTemplate = Zend_Pdf::load();
-	$pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf');
+	//$pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf');
 	//$pdfTemplate = new My_Pdf_Document("reporteBaseEncuestas.pdf", PDF_PATH . '/reports/bases/');
 	
-	$pdfReport = new My_Pdf_Document($this->nombreArchivo, PDF_PATH . '/reports/encuesta/grupal/');
-	$pdfReport->setYHeaderOffset(120);
+	//$pdfReport = new My_Pdf_Document($this->nombreArchivo, PDF_PATH . '/reports/encuesta/grupal/');
+	//$pdfReport->setYHeaderOffset(120);
 	//echo PDF_PATH . "<br />";
 	//echo $pdfTemplate->properties['Title'] . '<br />';
 	//echo $pdfTemplate->properties['Author'] . '<br />';
 	
-	$pdfReport->properties['Title'] = "Reporte de evaluacion grupal";
-	$pdfReport->properties['Author'] = $pdfTemplate->properties['Author'];
+	//$pdfReport->properties['Title'] = "Reporte de evaluacion grupal";
+	//$pdfReport->properties['Author'] = $pdfTemplate->properties['Author'];
 	
 	//$pdf = new My_Pdf_Document();
 	//$pdfMod = $pdf->load(PDF_PATH . '/reports/bases/reporteBaseEncuestas.pdf',0);
-	$pages = $pdfTemplate->pages;
+	//$pages = $pdfTemplate->pages;
 	
 	//print_r($pages);
 	//$page = clone $pages[0];
 	//Clonamos la pagina para sacarla del contexto de su documento principal
-	$pageZ = clone $pages[0];
+	//$pageZ = clone $pages[0];
 	// re-creamos un objeto My_Pdf_Page con el objeto clonado.
 	// My_Pdf_Page tiene metodos agregados que Zend_Pdf_Page no tiene por eso el clonado y re-instanciado
-	$page = new My_Pdf_Page($pageZ);
-	$page->set_headerYOffset(120);
+	//$page = new My_Pdf_Page($pageZ);
+	//$page->set_headerYOffset(120);
 	//$page = new Zend_Pdf_Page($pages[0]);
 	//$page = $pdfMod->pages[0];
-	$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
 	//$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
-	$page->setFont($font, 10);
+	//$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+	//$page->setFont($font, 10);
 	
 	//$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
 	//$page->drawText("Docente: ".$registro->getApellidos().", ".$registro->getNombres(), 165, 175);
 	//$page->drawText("Grupo: ".$grupo->getGrupo(), 165, 190);
-	
+	/*
 	$tableHeader = new My_Pdf_Table(2);
 	$rowHeader1 = new My_Pdf_Table_Row();
 	$rowHeader2 = new My_Pdf_Table_Row();
@@ -117,6 +123,7 @@
 	$pdfReport->setHeader($tableHeader);
 	
 	$table = new My_Pdf_Table(2);
+	*/
 ?>
 <section class="row">
 	<div class="panel panel-info">
@@ -130,10 +137,10 @@
 			<h4>Grupo: <strong><?php echo $grupo->getGrupo() ?></strong></h4>
 			<h4>Docente: <strong><?php echo $registro->getApellidos().", ".$registro->getNombres() ?></strong></h4>
 			<h4>Alumnas: <strong><?php echo $realizadas ?></strong></h4>
-			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"reporte","idReporte"=>$idReporte),null,true) ?>">
+			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"repgrupal","idReporte"=>$idReporte),null,true) ?>">
 				<span class="glyphicon glyphicon-search"></span> Informe en PDF
 			</a>
-			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta", "controller"=>"index", "action"=>"reportepa","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
+			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta", "controller"=>"index", "action"=>"reppabiertas","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
 				<span class="glyphicon glyphicon-search"></span> Ver Preguntas Abiertas
 			</a>
 			<hr />
@@ -169,7 +176,7 @@
 						print_r("Puntaje Máximo: <strong>".$maximo."</strong>   ");
 						print_r("Puntaje Obtenido: <strong>".$valor."</strong>   ");
 						print_r("Calificación: <strong>".sprintf('%.2f', $calificacion)."</strong> <br />");
-						
+						/*
 						$rowTableA = new My_Pdf_Table_Row();
 						$columnasA = array();
 						
@@ -234,6 +241,7 @@
 						$table->addRow($rowTableC);
 						$table->addRow($rowTableD);
 						$table->addRow($rowTableD);
+						*/
 						/*
 						$tY += $aY;
 						$page->drawText("Categoría: ".$grupoSeccion->getNombre(), $eX, $tY);
@@ -275,11 +283,11 @@
 				}elseif($promedio > 4.0){
 					$resultado = "DEFICIENTE";
 				}
-				$page->addTable($table, 40, 235);
+				//$page->addTable($table, 40, 235);
 				//$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedio) . " - " . $resultado, 165, 205);
 				
-				$pdfReport->addPage($page);
-				$pdfReport->saveDocument();
+				//$pdfReport->addPage($page);
+				//$pdfReport->saveDocument();
 				//$pdf->saveD;
 				//$pdfReport->save($this->nombreArchivo,false);
 				

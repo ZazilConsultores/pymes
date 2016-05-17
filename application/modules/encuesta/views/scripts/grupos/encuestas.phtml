@@ -46,7 +46,7 @@
 						</td>
 						<td>
 							<?php $registro = array("idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]); ?>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resumen","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resgrupal","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
 								<span class="glyphicon glyphicon-search"></span>  Ver Resultados <?php echo $numeroEncuestasRealizadas ?> Encuestas
 							</a>
 						</td>

@@ -1,11 +1,16 @@
 <?php
 	$nombreArchivo = "reporteBaseEncuestas.pdf";
 	$pdfBase = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/bases/');
-	$page = $pdfBase->createPage(Zend_Pdf_Page::SIZE_LETTER);
+	$pdfBase->properties["Title"] = "Main Report Letter Vertical Template";
+	$pdfBase->properties["Author"] = "Zazil Consultores S.A. de C.V.";
 	
-	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical20Abril.png');
+	$page = new My_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER);
+	//$page = $pdfBase->createPage();
+	
+	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical02Mayo.png');
 	//$page->drawImage($imgEncabezado, 30, 40, 0, 0);
-	$page->drawImage($imgEncabezado, 20, 30, 510.3, 108.3);
+	//Imagen reducida al 65%
+	$page->drawImage($imgEncabezado, 30, 25, 535, 92);
 	
 ?>
 <section class="row">

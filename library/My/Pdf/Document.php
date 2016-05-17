@@ -11,6 +11,8 @@ class My_Pdf_Document extends My_Pdf{
 	private $_footer;
 	private $_filename = "document.pdf";
 	private $_path = "/";
+	// Nuevas propiedades agregadas
+	//private $_tableHeaderWidth = $page->getWidth()-$this->_margin[My_Pdf::LEFT] - $this->_margin[My_Pdf::RIGHT];
 
 	/**
 	 * Set Document Margin
@@ -94,7 +96,7 @@ class My_Pdf_Document extends My_Pdf{
 	 * (renders) and Saves the Document to the specified File
 	 *
 	 */
-	public function save(){
+	public function saveDocument(){
 		//add header/footer to each page
 		$i=1;
 		foreach ($this->pages as $page) {
@@ -146,6 +148,8 @@ class My_Pdf_Document extends My_Pdf{
 		if(!$this->_header) return;
 
 		if ($page instanceof My_Pdf_Page) {
+			
+			//$page->set_headerYOffset($this->_headerYOffset);
 
 			//set table width
 			$currHeader = clone $this->_header;
@@ -153,7 +157,7 @@ class My_Pdf_Document extends My_Pdf{
 			//check for special place holders
 			$rows=$currHeader->getRows();
 			foreach ($rows as $key=>$row) {
-				$row->setWidth($page->getWidth()-$this->_margin[My_Pdf::LEFT] - $this->_margin[My_Pdf::RIGHT]);
+				$row->setWidth($page->getWidth()- 3*$this->_margin[My_Pdf::LEFT] - 3*$this->_margin[My_Pdf::RIGHT]);
 				$cols=$row->getColumns();
 				$num=0;
 				foreach ($cols as $col) {
@@ -172,14 +176,21 @@ class My_Pdf_Document extends My_Pdf{
 
 
 			$page->addTable($currHeader,
-					$this->_margin[My_Pdf::LEFT],
+					3*$this->_margin[My_Pdf::LEFT],
 					+$this->_headerYOffset-$this->_margin[My_Pdf::TOP],
 					false
 					);
 		}
 	}
+	
+	/**
+	 * Incrementamos el espaciado vertical del Header 
+	 */
+	public function setYHeaderOffset($offset){
+		$this->_headerYOffset = $offset;
+	}
 
-	private function _debugTable(My_Pdf_Page $page){
+	public function _debugTable(My_Pdf_Page $page){
 
 		$style1=new Zend_Pdf_Style();
 		$style1->setLineColor(new Zend_Pdf_Color_Html("blue"));
@@ -196,8 +207,9 @@ class My_Pdf_Document extends My_Pdf{
 		$table=new My_Pdf_Table(5);
 
 		$header=new My_Pdf_Table_HeaderRow(array('H1','H2','H3','H4','H5'));
-
-		$table->addHeader($header);
+		
+		$table->setHeader($header);
+		//$table->addHeader($header);
 
 		$row=new My_Pdf_Table_Row();
 		$row->setBorder(My_Pdf::BOTTOM,$style1);
