@@ -17,7 +17,6 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 		
 		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo;
 		
-		
 	}
 	
 	/**

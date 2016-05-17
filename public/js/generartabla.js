@@ -103,31 +103,16 @@ function buscar(){
 			
 }
 
-function Calcular(ele) {
-	//var tbody = null;
-	var tabla = document.getElementById("tabla");
-	var nodes = tabla.childNodes;
+/*function calcularPrecioImporte(){
+ 		var importeTotal = 0;
+ 		$("table#productosNota > tbody > tr").each(function(){
+ 			
+ 			var iPrecioImporte = $(this).find("input#precioImporte_");
+ 			importeTotal += $iPrecioImporte;
+ 			
+ 		});	
+ 		console.log('ImporteTotal:'+importeTotal);
+ 	}*/
+	
 	
 
-	var tr = ele.parentNode.parentNode;
-	var nodes = tr.childNodes;
-	for (var x = 0; x<nodes.length;x++) {
-		if (nodes[x].firstChild.name == 'cantidad') {
-			cantidad = parseFloat(nodes[x].firstChild.value,10);
-		}
-		
-		if (nodes[x].firstChild.name == 'costoUnitario') {
-			precioUnitario = parseFloat(nodes[x].firstChild.value,10);
-		}
-		if (nodes[x].firstChild.name == 'totalImporte') {
-			precioImporte = parseFloat((precioUnitario*cantidad),10);
-			nodes[x].firstChild.value = precioImporte;
-		}
-	}
-	var total = document.getElementById("totalImporte");
-	if (total.innerHTML == 'NaN') {
-		total.innerHTML = 0;
-	}
-	total.innerHTML = parseFloat(total.innerHTML)+precioImporte;
-	
-}

@@ -102,6 +102,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			
 		return $tablaFiscales->fetchRow($select);			
 		//return $select->__toString();
+		
 	}
 
 	

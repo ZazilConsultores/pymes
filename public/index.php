@@ -97,7 +97,7 @@ setlocale(LC_MONETARY, 'es_MX.UTF-8');
 $tipo = array('AB' => 'ABIERTAS', 'SS' => 'SIMPLE SELECCION', 'MS' => 'MULTIPLE SELECCION');
 $formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI');
 $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
-$estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
+$estatus = array('A' => 'ACTIVO', 'C' => 'CANCELADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
 $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
 $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
