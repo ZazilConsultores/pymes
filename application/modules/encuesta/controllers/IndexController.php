@@ -345,7 +345,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
     {
         // action body
         $idReporte = $this->getParam("idReporte");
-		$reporte = $this->reporteDAO->obtenerReporte($idReporte);
+		$nombreReporte = $this->reporteDAO->obtenerReporte($idReporte);
         /*
         $reporte = new Zend_Pdf();
 		$paginaUno = new Zend_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER);
@@ -358,8 +358,9 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$reporte->pages[] = $paginaUno;
 		$reporte->save("test.pdf");
 		*/
-		$this->view->reporte = $reporte;
-		$this->view->nombreReporte = $reporte["nombreReporte"];
+		$this->view->nombreReporte = $nombreReporte;
+		
+		//$this->view->nombreReporte = $reporte["nombreReporte"];
     }
 
     public function reppabiertasAction()
