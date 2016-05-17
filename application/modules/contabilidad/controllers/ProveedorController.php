@@ -125,17 +125,23 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				print_r($datos);
 			}
     	}*/
-    	$formulario = new Contabilidad_Form_NotaEntradaProveedor;
+    	//$formulario = new Contabilidad_Form_NotaEntradaProveedor;
 		
 		//Obtengo lista de estados y los envio a la vista
 		//$this->view->bancos = $this->bancoDAO->obtenerBancos();
 		//Envio a la vista el formulario de Alta de Estado, si el usuario lo llega se recibe la informacion en altaAction
-		$this->view->formulario = $formulario;	
-
+		//$this->view->formulario = $formulario;
+		
+		$notaEntradaDAO = $this->notaEntradaDAO;
+	
+		$select = $notaEntradaDAO->obtenerNotaEntrada();
+		
     }
 
     public function agregarnotaentradaAction()
     {
+    		
+		
         // action body
         $request = $this->getRequest();
         $formulario = new Contabilidad_Form_NotaEntradaProveedor;
@@ -144,16 +150,20 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				
+				print_r($datos);
 				$notaentrada = new Contabilidad_Model_Movimientos($datos);
 				$this->notaEntradaDAO->crearNotaEntrada($datos);
-				print_r($datos);
+				//print_r($datos);
+				$notaentrada = new Contabilidad_Model_Movimientos($datos);
+				$this->notaEntradaDAO->crearNotaEntrada($datos);
 			}
 		}
+        		
+			
+				
+				
         
-
-	}
-}
+	}}
 
 
 
