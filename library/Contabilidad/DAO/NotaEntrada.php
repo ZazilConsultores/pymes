@@ -30,6 +30,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		
 			$mMovimiento = new Contabilidad_Model_Movimientos($datos);
 			$fecha = new Zend_Date($datos["fecha"],'yyyy-MM-dd hh-mm-ss');
+			
 			$bd->insert("Movimientos", $mMovimiento->toArray());
 			$mMovtos = array(
 					'idProducto' => $datos['idProducto'],
@@ -93,7 +94,6 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			print_r("<br />");
 			print_r("<br />");
 			$bd->rollBack();
-		
 		}
 	}
 }
