@@ -135,9 +135,9 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	public function obtenerNumeroEncuestasRealizadas($idEncuesta, $idAsignacion){
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion=?",$idAsignacion);
-		//print_r($select->__toString());
+		print_r($select->__toString());
 		$row = $tablaERealizadas->fetchRow($select);
-		
+		//$realizadas = 0;
 		if(is_null($row)){
 			return 0;
 		}else{

@@ -47,7 +47,7 @@
 								<td><?php echo $materia->getMateria() ?></td>
 								<td><?php echo $encuesta->getNombre() ?></td> 
 								<td>
-									<a target="_blank" class="btn btn-success <?php echo $cssDisabled; ?>" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resumen","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"])) ?>">
+									<a target="_blank" class="btn btn-success <?php echo $cssDisabled; ?>" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"resgrupal","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
 										<span class="glyphicon glyphicon-check"></span> <span class="badge <?php echo $cssBadge; ?>"><?php echo $erealizada["realizadas"] ?></span> Detalle en Web 
 									</a>
 								</td>
@@ -104,7 +104,7 @@
 						<tr>
 							<td><?php echo $encuesta->getNombre() ?></td>
 							<td>
-								<a class="btn btn-warning" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"reporteg","idDocente"=>$docente->getIdRegistro(),"idEncuesta"=>$encuesta->getIdEncuesta()),null,true) ?>">
+								<a class="btn btn-warning" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"repgeneral","idDocente"=>$docente->getIdRegistro(),"idEncuesta"=>$encuesta->getIdEncuesta()),null,true) ?>">
 									<span class="glyphicon glyphicon-search"></span> Ver en Web <span class="badge badge-important"><?php echo $numeroEncuestas ?></span> Grupos
 								</a>
 							</td>

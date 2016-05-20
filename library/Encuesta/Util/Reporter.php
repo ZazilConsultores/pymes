@@ -270,13 +270,13 @@ class Encuesta_Util_Reporter {
 		//print_r("Contenido creado, agregando...");
 		//print_r("<br />");
 		$resultado = "";
-		if($promedioFinal > 8.5){
+		if($promedioFinal >= 8.5){
 			$resultado = "EXCELENTE";
-		}elseif($promedio > 7.0){
+		}elseif($promedioFinal >= 7.0){
 			$resultado = "ADECUADO";
-		}elseif($promedio > 5.0){
+		}elseif($promedioFinal >= 5.0){
 			$resultado = "INSUFICIENTE";
-		}elseif($promedio > 4.0){
+		}elseif($promedio >= 4.0){
 			$resultado = "DEFICIENTE";
 		}
 		$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedioFinal) . " - " . $resultado, 215, 215);

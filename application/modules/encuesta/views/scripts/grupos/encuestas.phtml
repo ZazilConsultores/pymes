@@ -28,7 +28,8 @@
 					<th>Recalcular Preferencias</th>
 				</thead>
 				<tbody>
-					<?php foreach ($encuestas as $encuesta) : 
+					<?php foreach ($encuestas as $encuestar) :
+						$encuesta = $encuestaDAO->obtenerEncuesta($encuestar["idEncuesta"]); 
 						$numeroEncuestasRealizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
 						?>
 					<tr>

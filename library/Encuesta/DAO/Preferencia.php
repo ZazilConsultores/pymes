@@ -126,17 +126,24 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	 */
 	public function obtenerTotalPreferenciaGrupo($idGrupo, $idAsignacion){
 		$tablaPregunta = $this->tablaPregunta;
+		$tablaOpcion = $this->tablaOpcion;
 		$tablaPreferenciaS = $this->tablaPreferenciaSimple;
 		
 		$totalCategoria = 0;
 		
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen=?","G")->where("idOrigen=?",$idGrupo);
+		//print_r($select->__toString());
+		//print_r("<br />");
 		$preguntasGrupo = $tablaPregunta->fetchAll($select);
 		foreach ($preguntasGrupo as $pregunta) {
 			$select = $tablaPreferenciaS->select()->from($tablaPreferenciaS)->where("idPregunta=?",$pregunta["idPregunta"])->where("idAsignacion=?",$idAsignacion);
+			//print_r($select->__toString());
+			//print_r("<br />");
 			$preferencias = $tablaPreferenciaS->fetchAll($select);
 			foreach ($preferencias as $preferencia) {
-				$totalCategoria += $preferencia["total"];
+				$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcion=?",$preferencia["idOpcion"]);
+				$rowOpcion = $tablaOpcion->fetchRow($select); 
+				$totalCategoria += $preferencia["preferencia"] * $rowOpcion->vreal;
 			}
 		}
 		
