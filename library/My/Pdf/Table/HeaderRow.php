@@ -12,7 +12,7 @@ class My_Pdf_Table_HeaderRow extends My_Pdf_Table_Row {
 	}
 	
 	public function __construct($labels = array()){
-		
+		parent::__construct();
 		$cols = null;
 		foreach ($labels as $label) {
 			$col = new My_Pdf_Table_Column();
@@ -36,7 +36,7 @@ class My_Pdf_Table_HeaderRow extends My_Pdf_Table_Row {
 		$this->_fontSize = 12;
 	}
 	
-	public function preRender(My_Pdf_Page $page, $posX, $posY){
+	public function preRender(My_Pdf_Page $page, $posX, $posY,$inContentArea=true){
 		
 		foreach ($this->_cols AS $col){
 			//set default font
@@ -52,7 +52,7 @@ class My_Pdf_Table_HeaderRow extends My_Pdf_Table_Row {
 				$col->setAlignment($this->_align);
 		}
 		
-		parent::preRender($page, $posX, $posY);
+		parent::preRender($page, $posX, $posY,$inContentArea);
 	}
 }
 ?>

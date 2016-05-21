@@ -1,6 +1,6 @@
 <?php
 
-class Encuesta_UtilController extends Zend_Controller_Action
+class Encuesta_S1CController extends Zend_Controller_Action
 {
 
     public function init()
@@ -13,26 +13,34 @@ class Encuesta_UtilController extends Zend_Controller_Action
         // action body
     }
 
-    public function repverticalAction()
+    public function aAction()
     {
         // action body
     }
-	
-	public function rephorizontalAction()
+
+    public function bAction()
     {
         // action body
     }
-	
-	public function repmargenesAction()
+
+    public function cAction()
     {
         // action body
     }
-	
-	public function reptesttableAction()
-	{
-		
-	}
+
+    public function dAction()
+    {
+        // action body
+    }
+
+
 }
+
+
+
+
+
+
 
 
 

@@ -295,10 +295,156 @@ class Encuesta_Util_Reporter {
 		$idReporte = $this->reporteDAO->agregarReporteGrupal($nombreArchivo, $idEncuesta, $idAsignacion);
 		return $idReporte;
 	}
-	
-	public function generarReporteGeneralEvaluacionDocente($value='')
+	/**
+	 * Genera Reporte General del Docente para una Encuesta Identificada.
+	 * Este Reporte no hace diferencia entre materias. 
+	 * Se centra en el contenido de la encuesta.
+	 */
+	public function generarReporteGeneralEvaluacionDocente($idDocente, $idEncuesta)
 	{
+		$tablaEncuesta = $this->tablaEncuesta;
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta=?",$idEncuesta);
+		$rowEncuesta = $tablaEncuesta->fetchRow($select);
+		// ----------------------------------------------------------------------------
+		$tablaSeccion = $this->tablaSeccion;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta=?",$idEncuesta);
+		$rowsSecciones = $tablaSeccion->fetchAll($select);
+		// ----------------------------------------------------------------------------
+		$tablaRegistro = $this->tablaRegistro;
+		$select = $tablaRegistro->select()->from($tablaRegistro)->where("idRegistro=?",$idDocente);
+		$rowDocente = $tablaRegistro->fetchRow($select);
+		// ---------------------------------------------------------------------------- Asignaciones
+		$tablaAsignacion = $this->tablaAsignacionG;
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idRegistro=?",$idDocente);
+		print_r("Query: " . $select->__toString());
+		print_r("<br />");
+		$rowsAsignaciones = $tablaAsignacion->fetchAll($select);
+		// ---------------------------------------------------------------------------- Reporte
+		$nombreArchivo = str_replace(' ', '_', $rowDocente->apellidos).str_replace(' ', '', $rowDocente->nombres)."-".$idEncuesta."-".$idDocente."-"."RGRAL.pdf";
 		
+		print_r("Nombre: " . $nombreArchivo);
+		print_r("<br />");
+		print_r("<br />");
+		// ========================================================== >>> Generamos el reporte a partir de plantilla
+		$pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteHBE.pdf');
+		$pages = $pdfTemplate->pages;
+		$pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/general/');
+		$pdfReport->setYHeaderOffset(160);
+		// Clonamos 
+		$pageZ = clone $pages[0];
+		$page = new My_Pdf_Page($pageZ);
+		//$page = new My_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER_LANDSCAPE);
+		$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		$page->setFont($font, 10);
+		
+		//print_r("Generando contenido :: Header");
+		//print_r("<br />");
+		// ========================================================== >>> Generamos header del reporte.
+		$tableHeader = new My_Pdf_Table(2);
+		$rowTable1 = new My_Pdf_Table_Row;
+		$rowTable2 = new My_Pdf_Table_Row;
+		$rowTable3 = new My_Pdf_Table_Row;
+		$rowTable4 = new My_Pdf_Table_Row;
+		
+		$colthA1 = new My_Pdf_Table_Column;
+		$colthA2 = new My_Pdf_Table_Column;
+		$colthB1 = new My_Pdf_Table_Column;
+		$colthB2 = new My_Pdf_Table_Column;
+		$colthC1 = new My_Pdf_Table_Column;
+		$colthC2 = new My_Pdf_Table_Column;
+		$colthD1 = new My_Pdf_Table_Column;
+		$colthD2 = new My_Pdf_Table_Column;
+		
+		$colthA1->setText("Evaluacion: ");
+		$colthA1->setWidth(60);
+		$colthA2->setText($rowEncuesta->nombre);
+		$colthB1->setText("Docente: ");
+		$colthB1->setWidth(60);
+		$colthB2->setText($rowDocente->apellidos.", ".$rowDocente->nombres);
+		
+		$rowTable1->setColumns(array($colthA1,$colthA2));
+		$rowTable1->setCellPaddings(array(5,5,5,5));
+		$rowTable1->setFont($font,10);
+		$rowTable2->setColumns(array($colthB1,$colthB2));
+		$rowTable2->setCellPaddings(array(5,5,5,5));
+		$rowTable2->setFont($font,10);
+		
+		$tableHeader->addRow($rowTable1);
+		$tableHeader->addRow($rowTable2);
+		//$tableHeader->addRow($rowTable3);
+		//$tableHeader->addRow($rowTable4);
+		
+		$page->addTable($tableHeader, 150, 135);
+		// ========================================================== >>> Generamos content del reporte.
+		$numeroColumnas = 0;
+		$categorias = array();
+		$headersCategorias = array();
+		$widthGeneral = 65;
+		$hc1 = new My_Pdf_Table_Column;
+		$hc1->setText("Grupo");
+		$hc1->setWidth($widthGeneral);
+		$hc2 = new My_Pdf_Table_Column;
+		$hc2->setText("Alumnas");
+		$hc2->setWidth($widthGeneral);
+		$headersCategorias[] = $hc1;
+		$headersCategorias[] = $hc2;
+		
+		$tablaGrupo = $this->tablaGrupo;
+		
+		foreach ($rowsSecciones as $rowSeccion) {
+			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion=?",$rowSeccion->idSeccion);
+			$gruposSeccion = $tablaSeccion->fetchAll($select);
+			$numeroColumnas += count($gruposSeccion);
+			foreach ($gruposSeccion as $grupoSeccion) {
+				$categorias[$grupoSeccion->idGrupo] = $grupoSeccion->nombre;
+				$hc = new My_Pdf_Table_Column;
+				$hc->setText($grupoSeccion->nombre);
+				$hc->setWidth($widthGeneral);
+				$headersCategorias[] = $hc;
+			}
+		}
+		
+		$tableContent = new My_Pdf_Table($numeroColumnas+2);
+		//print_r($categorias);
+		$rowHeaderTableContent = new My_Pdf_Table_HeaderRow;
+		//$nombresCategorias = array_values($categorias);
+		$rowHeaderTableContent->setColumns($headersCategorias);
+		$rowHeaderTableContent->setFont($font,8);
+		$rowHeaderTableContent->setCellPaddings(array(2,2,2,2));
+		$tableContent->addRow($rowHeaderTableContent);
+		// ========================================================== >>> Iteramos a traves de las asignaciones
+		$tablaERealizadas = $this->tablaERealizadas;
+		foreach ($rowsAsignaciones as $rowAsignacion) {
+			// idAsignacion: 
+			$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idAsignacion=?",$rowAsignacion->idAsignacion);
+			$rowAsignacion = $tablaERealizadas->fetchRow($select);
+			//
+			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo=?",$rowAsignacion->idGrupo);
+			$rowGrupo = $tablaGrupo->fetchRow($select);
+			//Obtenemos el numero de encuestas realizadas 
+			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo=?",$rowAsignacion->idGrupo);
+			$rowGrupo = $tablaGrupo->fetchRow($select);
+			//
+			$cc1 = new My_Pdf_Table_Column;
+			$cc1->setText($rowGrupo->nombre);
+			$cc1->setWidth($widthGeneral);
+			$cc2 = new My_Pdf_Table_Column;
+			$cc2->setText($rowAsignacion->realizadas);
+			$cc2->setWidth($widthGeneral);
+			foreach ($categorias as $idGrupo => $nombreGrupo) {
+				$valorMayor = $grupoDAO->obtenerValorMayorOpcion($categoria->getIdGrupo());
+				$numeroPreguntas = count($grupoDAO->obtenerPreguntas($categoria->getIdGrupo()));
+				$maximo = $erealizada["realizadas"] * $numeroPreguntas * $valorMayor["valor"];
+			}
+			
+			
+		}
+		
+		
+		
+		$page->addTable($tableContent, 40, 215);
+		$pdfReport->addPage($page);
+		$pdfReport->saveDocument();
 	}
 	
 	public function generarReportePAGrupalEvaluacionDocente($value='')

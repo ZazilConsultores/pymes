@@ -219,7 +219,8 @@ class Encuesta_Util_Generator {
 		//print_r("============================");
 		//print_r("<br />");
 		// $sop: seccion o pregunta
-		$arrayRespuestas = array();
+		$arrRespuestas = array();
+		//$arrRespuestas[0] = date("Y-m-d H:i:s", time());
 		foreach ($contenedores as $seccion) {
 			print_r("En contenedor");
 			print_r("<br />");
@@ -227,19 +228,23 @@ class Encuesta_Util_Generator {
 			//print_r("<br />");
 			print_r("============================");
 			print_r("<br />");
-			//Grupo o pregunta
+			//$gpo: grupo o pregunta
 			foreach ($seccion as $gop => $value) {
-				print_r($gop);
-				print_r("<br />");
-				print_r("============================");
-				print_r("<br />");
+				//print_r($gop);
+				//print_r("<br />");
+				//print_r("============================");
+				//print_r("<br />");
 				//Si value es array entonces es un grupo, $gop es la clave del grupo y $value son las respuestas del grupo
 				if(is_array($value)){
 					//$arrayRespuestas[] = 
-					print_r($value);
-					print_r("<br />");
-					print_r("============================");
-					print_r("<br />");
+					//print_r($value);
+					//print_r("<br />");
+					//print_r("============================");
+					//print_r("<br />");
+					foreach ($value as $idPregunta => $respuesta) {
+						//$arrRespuestas[] = array($idPregunta => $respuesta);
+						$arrRespuestas[$idPregunta] = $respuesta;
+					}
 				}else{
 					print_r($gop);
 					print_r("<br />");
@@ -247,8 +252,42 @@ class Encuesta_Util_Generator {
 					print_r("<br />");
 				}
 			}
+			
+			//print_r($arrRespuestas);
+			//ksort($arrRespuestas);
 		}
 		
+		//$hashEncuesta = Util_Secure::generateKey($arrRespuestas);
+		//print_r("Hash de la encuesta: ".$hashEncuesta);
+		//print_r("<br />");
+		$encuestaDAO = $this->encuestaDAO;
+		$preguntaDAO = $this->preguntaDAO;
+		$respuestaDAO = $this->respuestaDAO;
+		$preferenciaDAO = $this->preferenciaDAO;
+		$conjunto = $encuestaDAO->obtenerNumeroConjuntoAsignacion($idEncuesta, $idAsignacion);
+		print_r("<br />");
+		print_r("Conjunto: ".$conjunto);
+		print_r("<br />");
+		foreach ($arrRespuestas as $idPregunta => $respuesta) {
+			
+			$pregunta = $preguntaDAO->obtenerPregunta($idPregunta);
+			
+			$datos = array();
+			$datos["idEncuesta"] = $idEncuesta;
+			$datos["idAsignacion"] = $idAsignacion;
+			$datos["idPregunta"] = $idPregunta;
+			$datos["respuesta"] = $respuesta;
+			$datos["conjunto"] = $conjunto;
+			$modelRespuesta = new Encuesta_Model_Respuesta($datos);
+			
+			$respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+			
+			if($pregunta->getTipo() == "SS"){
+				$this->preferenciaDAO->agregarPreferenciaPreguntaAsignacion($idAsignacion, $idPregunta, $respuesta); //($idPregunta,
+			}
+			
+			
+		}
 		
 	}
 	

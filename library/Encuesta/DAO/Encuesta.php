@@ -133,6 +133,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * Obtiene el numero de encuestas realizadas para una asignacion (grupo,materia,profesor) dada
 	 */
 	public function obtenerNumeroEncuestasRealizadas($idEncuesta, $idAsignacion){
+		print_r("public function obtenerNumeroEncuestasRealizadas(idEncuesta, idAsignacion)");
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion=?",$idAsignacion);
 		print_r($select->__toString());
@@ -151,9 +152,13 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	public function obtenerNumeroConjuntoAsignacion($idEncuesta, $idAsignacion){
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion=?",$idAsignacion);
+		//print_r($select->__toString());
 		$row = $tablaERealizadas->fetchRow($select);
-		$conjunto = 0;
+		$conjunto = 1;
 		if(!is_null($row)){
+			$conjunto = $row->realizadas++;
+			$row->save();
+			/*
 			if(is_null($row->requeridas)){
 				$conjunto = $row->realizadas;
 			}else{
@@ -161,8 +166,11 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 				$conjunto = $row->requeridas;
 				$row->save();
 			}
+			*/
+		}else{
+			
 		}
-		
+		return $conjunto;
 	}
 	
 	public function obtenerEncuestaRealizadaPorAsignacion($idAsignacion){
