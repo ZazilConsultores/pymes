@@ -18,6 +18,11 @@ class Encuesta_UtilController extends Zend_Controller_Action
         // action body
     }
 	
+	public function rephorizontalAction()
+    {
+        // action body
+    }
+	
 	public function repmargenesAction()
     {
         // action body

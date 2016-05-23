@@ -91,6 +91,9 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 		$respuesta->setHash($respuesta->getHash());
 		$respuesta->setFecha(date("Y-m-d H:i:s", time()));
 		
+		//print_r($respuesta->toArray());
+		//print_r("<br />");
+		
 		$tablaRespuesta->insert($respuesta->toArray());
 		
 		$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("hash=?",$respuesta->getHash());

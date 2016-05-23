@@ -16,7 +16,7 @@ class Contabilidad_NotaproveedorController extends Zend_Controller_Action
 		 
         /* Initialize action controller here */
 		$this->db = Zend_Db_Table::getDefaultAdapter();
-			// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		// =================================================== >>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();

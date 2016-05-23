@@ -427,6 +427,9 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		
 		$nombreArchivo = 'general/' . str_replace(' ', '', $encuesta->getNombre())."-GENERAL-".str_replace(' ', '', $docente->getApellidos()).",".str_replace(' ', '', $docente->getNombres()).'.pdf';
 		//Mandado a la vista lo tomamos en un link y al dar clic vamos a vista del reporte
+		//print_r("<br />");
+		//print_r("NombreArchivo: ".$nombreArchivo);
+		//print_r("<br />");
 		$this->view->nombreArchivo = $nombreArchivo;
 		$pdf = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/');
 		$page = $pdf->createPage(Zend_Pdf_Page::SIZE_LETTER);

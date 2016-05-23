@@ -35,7 +35,7 @@ class Encuesta_Model_Respuesta
     public function setIdEncuesta($idEncuesta) {
         $this->idEncuesta = $idEncuesta;
     }
-	
+	/*
 	private $idRegistro;
 
     public function getIdRegistro() {
@@ -44,8 +44,8 @@ class Encuesta_Model_Respuesta
     
     public function setIdRegistro($idRegistro) {
         $this->idRegistro = $idRegistro;
-    }
-	
+    }*/
+	/*
 	private $idGrupo;
 
     public function getIdGrupo() {
@@ -55,7 +55,7 @@ class Encuesta_Model_Respuesta
     public function setIdGrupo($idGrupo) {
         $this->idGrupo = $idGrupo;
     }
-    
+    */
     private $idPregunta;
 
     public function getIdPregunta() {
