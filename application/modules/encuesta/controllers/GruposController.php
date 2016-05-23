@@ -261,7 +261,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$materia = $this->materiaDAO->obtenerMateria($idMateria);
 		$docente = $this->registroDAO->obtenerRegistro($idDocente);
 		
-        $encuestas = $this->encuestaDAO->obtenerEncuestas();
+        $encuestas = $this->encuestaDAO->obtenerEncuestasRealizadasPorAsignacion($idAsignacion);
         
 		$this->view->grupo = $grupo;
 		$this->view->materia = $materia;

@@ -54,24 +54,16 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 	
 		$divisaDAO = new Contabilidad_DAO_Divisa;
 		$divisas=$divisaDAO->obtenerDivisas();
+		$eDivisa = new Zend_Form_Element_Hidden('idDivisa');
+		$eDivisa->setAttrib("value", "1");
 		
-		$eDivisa = new Zend_Form_Element_Select('idDivisa');
-		$eDivisa->setLabel('Seleccionar Divisa');
-		$eDivisa->setAttrib("class", "form-control");
 		
-		foreach ($divisas as $divisa){
+		/*foreach ($divisas as $divisa){
 			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDivisa());			
-		}
-		
-		$submit = new Zend_Form_Element_Submit('submit');
-		$submit->setLabel('Enviar');
-		$submit->setAttrib("class", "btn btn-primary");
-	
-		
+		}*/			
 		//Agregamos los elementos correspondientes a la subformaEncabezado
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProveedor));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProyecto));
      	$this->addSubForms(array($subEncabezado))  ; 
-		$this->addElement($submit);
 		
 
 	}

@@ -1,3 +1,4 @@
+
 <?php
 
 class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
@@ -116,18 +117,15 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		$eImporte->setAttrib("class", "form-control");
 		$eImporte->setAttrib("class", "prinft('%.2f')");
 		
-		$eSecuencial = new Zend_Form_Element_Text('secuencial');
+		/*$eSecuencial = new Zend_Form_Element_Text('secuencial');
 		$eSecuencial->setLabel("Secuencial");
 		$eSecuencial->setAttrib("class", "form-control");
-		$eSecuencial->setValue(1);
+		$eSecuencial->setValue(1);*/
 		
-		$eEstatus = new Zend_Form_Element_Text('estatus');
-		$eEstatus->setLabel("estatus");
-		$eEstatus->setAttrib("class", "form-control");
-		$eEstatus->setValue(1);
+	
 		
 		$eEsOrigen = new Zend_Form_Element_Hidden('esOrigen');
-		$eSecuencial->setLabel("Secuencial");
+		$eEsOrigen->setLabel("Es Origen");
 		$eEsOrigen->setAttrib("class", "form-control");
 		$eEsOrigen->setValue(1);
 		
@@ -164,8 +162,8 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		 $this->addElement($ePrecioU);
 		 $this->addElement($eImporte);
 		 
-		 $this->addElement($eSecuencial);
-		 $this->addElement($eEstatus);
+		 //$this->addElement($eSecuencial);
+	
 		 $this->addElement($eEsOrigen);
 		
 		 $this->addElement($eDivisa);

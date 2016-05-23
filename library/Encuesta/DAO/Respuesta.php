@@ -85,10 +85,14 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	}
 	
 	// =====================================================================================>>>   Insertar
-	public function crearRespuesta($idEncuesta, Encuesta_Model_Respuesta $respuesta){
+	public function crearRespuesta($idEncuesta, Encuesta_Model_Respuesta $respuesta) {
 		$tablaRespuesta = $this->tablaRespuesta;
+		
 		$respuesta->setHash($respuesta->getHash());
 		$respuesta->setFecha(date("Y-m-d H:i:s", time()));
+		
+		//print_r($respuesta->toArray());
+		//print_r("<br />");
 		
 		$tablaRespuesta->insert($respuesta->toArray());
 		

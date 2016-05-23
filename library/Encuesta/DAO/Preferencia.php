@@ -126,17 +126,24 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	 */
 	public function obtenerTotalPreferenciaGrupo($idGrupo, $idAsignacion){
 		$tablaPregunta = $this->tablaPregunta;
+		$tablaOpcion = $this->tablaOpcion;
 		$tablaPreferenciaS = $this->tablaPreferenciaSimple;
 		
 		$totalCategoria = 0;
 		
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen=?","G")->where("idOrigen=?",$idGrupo);
+		//print_r($select->__toString());
+		//print_r("<br />");
 		$preguntasGrupo = $tablaPregunta->fetchAll($select);
 		foreach ($preguntasGrupo as $pregunta) {
 			$select = $tablaPreferenciaS->select()->from($tablaPreferenciaS)->where("idPregunta=?",$pregunta["idPregunta"])->where("idAsignacion=?",$idAsignacion);
+			//print_r($select->__toString());
+			//print_r("<br />");
 			$preferencias = $tablaPreferenciaS->fetchAll($select);
 			foreach ($preferencias as $preferencia) {
-				$totalCategoria += $preferencia["total"];
+				$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcion=?",$preferencia["idOpcion"]);
+				$rowOpcion = $tablaOpcion->fetchRow($select); 
+				$totalCategoria += $preferencia["preferencia"] * $rowOpcion->vreal;
 			}
 		}
 		
@@ -174,7 +181,14 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	public function agregarPreferenciaPreguntaAsignacion($idAsignacion,$idPregunta,$idOpcion){
 		$tablaPS = $this->tablaPreferenciaSimple;
 		$select = $tablaPS->select()->from($tablaPS)->where("idPregunta = ?", $idPregunta)->where("idOpcion = ?", $idOpcion)->where("idAsignacion=?",$idAsignacion);
+		$mustBe = 0; //Debe ser el total
+		print_r("<br />");
+		print_r($select->__toString());
+		print_r("<br />");
 		$rowPreferencia = $tablaPS->fetchRow($select);
+		
+		$opcionDAO = new Encuesta_DAO_Opcion;
+		$modelOpcion = $opcionDAO->obtenerOpcion($idOpcion);
 		//Si no existe registro previo iniciamos uno nuevo
 		if(is_null($rowPreferencia)){
 			$datos = array();
@@ -183,10 +197,7 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 			$datos["idOpcion"] = $idOpcion;
 			$datos["preferencia"] = 1;
 			
-			$opcionDAO = new Encuesta_DAO_Opcion;
-			$modelOpcion = $opcionDAO->obtenerOpcion($idOpcion);
-			
-			$datos["total"] = $modelOpcion->getVreal();
+			$datos["total"] = $datos["preferencia"] * $modelOpcion->getVreal();
 			
 			try{
 				$tablaPS->insert($datos);
@@ -196,8 +207,18 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 			
 		}else{ // Ya existe registro, agregamos 1+ y recalculamos el total
 			$rowPreferencia->preferencia++;
-			$valor = $rowPreferencia->total / $rowPreferencia->preferencia;
-			$rowPreferencia->total + $valor;
+			
+			$mustBe = $modelOpcion->getVreal() * $rowPreferencia->preferencia;
+			
+			$valor = $modelOpcion->getVreal();
+			print_r("<br />");
+			print_r("Valor a agregar: ".$valor." en la preferencia con Id: ".$idOpcion);
+			print_r("<br />");
+			print_r("TotalPreferenciaTabla: ".$rowPreferencia->preferencia);
+			print_r("<br />");
+			print_r("TotalPreferencia: ".$mustBe);
+			print_r("<br />");
+			$rowPreferencia->total = $mustBe;
 			$rowPreferencia->save();
 		}
 	}

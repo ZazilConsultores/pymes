@@ -1,6 +1,6 @@
-<?php
-	
-?>
+<?php echo $this->formulario ?>
+
+<form name="nuevaNota">
 <section class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -13,12 +13,16 @@
 			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
-			</button><br />
+			</button>
+			<!-- Botón para calcular total importe-->
+			<button id="processTable" class="btn btn-warning">
+				<span class="glyphicon glyphicon-cog" ></span> Calcular
+			</button><br /><br />
 			<table id="productosNota" class="table table-striped table-condensed">
 				<thead>
 					<tr>
 						<th>Cantidad</th>
-						<th>Seleccionar Producto</th>
+						<th>Clave Producto</th>
 						<th>Seleccione Unidad</th>
 						<th>Codigo de Barras</th>
 						<th>Descripcion</th>
@@ -42,18 +46,19 @@
 				</tfoot>
 			</table>
 			<br />
-			<a class="btn btn-primary">
-				<span class="glyphicon glyphicon-envelope"></span>Enviar
-			</a>
 		</div>
 	</div>
-</section>	
+</section>
+<a class="btn btn-primary" href="<?php $this->url (array("module"=>"contabilidad","controller"=>"notaproveedor","action"=>"nueva")) ?>">
+	<span class="glyphicon glyphicon-envelope"></span> Enviar
+</a>
+
 <script>
 	$( document ).ready(function() {
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		console.dir(jsonProductos);
+		//console.dir(jsonProductos);
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
@@ -66,10 +71,8 @@
 			// cantidad
 			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
 			// idProducto
-			var selectProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonProductos,function(i,item){
-				selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
-			});
+			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 			$.each(jsonUnidad,function(i,item){
@@ -78,12 +81,15 @@
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
-			var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-				
+			//var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			$.each(jsonProductos,function(i,item){
+				selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+			});	
 			// precioUnitario
-			var inputPrecioUnitario = $('<input />').attr({'id': 'precioUnitario_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
+			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
-			var inputPrecioImporte = $('<input />').attr({'id': 'precioImporte_' + filasTabla}).attr({'class':'form-control disabled'});
+			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'precioImporte_'});
 			
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
@@ -92,12 +98,12 @@
 			var tbody = $("table#productosNota").find('tbody');
 			tbody.append($('<tr>').
 				append($('<td>').append(inputCantidad)).
-				append($('<td>').append(selectProducto)).
+				append($('<td>').append(inputProducto)).
 				append($('<td>').append(inputUnidad)).
 				append($('<td>').append(inputCodigoBarras)).
-				append($('<td>').append(inputDescripcion)).
-				append($('<td>').append(inputPrecioUnitario)).
-				append($('<td>').append(inputPrecioImporte)).
+				append($('<td>').append(selectDescripcion)).
+				append($('<td>').append(inputCostoUnitario)).
+				append($('<td>').append(inputCostoTotal)).
 				append($('<td>').append(buttonLimpiar))
 				
 			);
@@ -117,16 +123,16 @@
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
- 		$("table#productosNota").on("change", "select[id^='idProducto_']", function(){
- 			var idProducto= $(this).attr("id");
-			var arr = idProducto.split('_');
+ 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
 			var id = $(this).val();
 			//console.log(id);
 			var numFila =  arr[1];
  			
  			$.each(jsonProductos,function(i,item){
  				if(jsonProductos[i].idProducto == id){
- 					$("input#descripcion_"+numFila).val(jsonProductos[i].producto);
+ 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
  				}
  				
 				//selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
@@ -140,32 +146,29 @@
 			var arr = idCantidad.split('_');
 			var numFila =  arr[1];
 			
-			var precioUnitarioFila = $('input#precioUnitario_'+numFila);
+			var precioUnitarioFila = $('input#costoUnitario_'+numFila);
 			//console.log(precioUnitarioFila);
 			var precioImporte = $(this).val() * precioUnitarioFila.val();
-			//console.log($(this).val());
-			//console.log(precioUnitarioFila.val());
-			//console.log(precioImporte);
-			$('input#precioImporte_'+numFila).val(precioImporte);
-			//console.log(idCantidad)	;
+
+			$('input#costoTotal_'+numFila).val(precioImporte);
+			//console.log($(this).val())	;
+			
+ 		}); //cierra input cantidad
+//input  precioImporte
+		//$("table#productosNota input[id^='costoTotal_']".keyup ,function() {
+		$("table#productosNota").on("click", "input[id^='costoTotal_']", function(){	
+			var t;
+			var total =$(this).val();
+			
+			console.log(total);
  		}); //cierra input cantidad
  		
  		//Funcion genera totalColumna
-		$("table#productosNota").on("click","input[id^='precioImporte_']" ,function() {
-			var precioImporte= $(this).attr("id");
-			var arr = precioImporte.split('_');
-			var numColumna =  arr[1];
-			
-			var total = $('input#precioImporte_'+numColumna);
-			var totalColumna = total.val() + total.val();
-			console.log(totalColumna);
-			//console.log($(this).val());
-			//totalColumna = precioImporte.val() + total;
-			//console.log(totalColumna);			
- 		
- 		});//cierra la funcion de genera columna
+
+ 	
+//======================
  		//input precioUnitario
- 		$("table#productosNota").on("change", "input[id^='precioUnitario_']", function(){
+ 		$("table#productosNota").on("change", "input[id^='costoUnitario_']", function(){
  			var precioUnitario = $(this).attr("id");
  			var arr = precioUnitario.split('_');
  			var numFila = arr[1];
@@ -173,7 +176,8 @@
  			var cantidadFila = $('input#idCantidad_'+numFila);
  			var precioImporte = $(this).val() * cantidadFila.val();
  			
- 			$('input#precioImporte_'+numFila).val(precioImporte);
+ 			$('input#costoTotal_'+numFila).val(precioImporte);
+ 			
  		});//cierra input precioUnitario
  		
 	});//cierra document ready

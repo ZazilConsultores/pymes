@@ -2,15 +2,22 @@
 	//Reutilizamos los DAO del controller en vez de instanciar nuevos
 	$encuestaDAO = $this->encuestaDAO;				//  -----> De aqui obtenemos la encuesta
 	$seccionDAO = $this->seccionDAO;				//  -----> De aqui obtenemos las categorias
-	$grupoDAO = $this->grupoDAO;
+	$grupoDAO = $this->grupoDAO;					
 	$gruposDAO = $this->gruposDAO;					//  -----> De aqui obtenemos las asignaciones del docente
 	$registroDAO = $this->registroDAO; 
 	$asignacionDAO = new Encuesta_DAO_AsignacionGrupo;
 	$preferenciaDAO = new Encuesta_DAO_Preferencia;
 	$reporteDAO = new Encuesta_DAO_Reporte;
-	 
+	
+	$reporter = new Encuesta_Util_Reporter;
+	
+	
+	//print_r("En la vista parte 1");
+	//print_r("<br />");
 	$idEncuesta = $this->idEncuesta;
 	$idDocente = $this->idDocente;
+	
+	$reporter->generarReporteGeneralEvaluacionDocente($idDocente, $idEncuesta);
 	
 	$page = $this->page;
 	$pdf = $this->pdf;
@@ -32,14 +39,17 @@
 	$totalAlumnas = 0;
 	$totalCategorias = array();
 	$promedioGeneral = 0;
-	
-	$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
+	//print_r("En la vista parte 2");
+	//print_r("<br />");
+	//$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
 	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical_2015-2016.png');
 	$page->drawImage($imgEncabezado, 50, 20, 580, 121);
 	$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
 	$page->drawText("Docente: ".$docente->getApellidos().", ".$docente->getNombres(), 165, 175);
 	//$page->drawText("Grupo: ".$grupo->getGrupo(), 165, 190);
 	$font = $this->font;
+	//print_r("En la vista parte 3");
+	//print_r("<br />");
 ?>
 <section class="row">
 	<div class="panel panel-info">
@@ -102,13 +112,25 @@
 							<?php
 								$valorMayor = $grupoDAO->obtenerValorMayorOpcion($categoria->getIdGrupo());
 								$numeroPreguntas = count($grupoDAO->obtenerPreguntas($categoria->getIdGrupo()));
+								print_r("N.P: ".$numeroPreguntas);
+								print_r("<br />");
+								print_r("E.R: ".$erealizada["realizadas"]);
+								print_r("<br />");
 								$maximo = $erealizada["realizadas"] * $numeroPreguntas * $valorMayor["valor"];
+								//print_r("NoPreguntas: ".$numeroPreguntas);
+								//print_r("Maximo: ".$maximo);
+								//print_r("<br />");
 								//$vMayor = $erealizada["realizadas"] * $valorMayor["valor"];
 								$puntaje = $preferenciaDAO->obtenerTotalPreferenciaGrupo($categoria->getIdGrupo(), $asignacion["idAsignacion"]);
+								print_r("P.M: ".$maximo);
+								print_r("<br />");
+								print_r("P.O: ".$puntaje);
+								print_r("<br />");
 								//$puntaje = $puntaje / $erealizada["realizadas"];
 								$calificacion = (10 * $puntaje) / $maximo; 
 								//$calificacion = 
-								echo sprintf('%.2f', $calificacion);
+								print_r("Calif: ".sprintf('%.2f', $calificacion));
+								//echo sprintf('%.2f', $calificacion);
 								//echo $puntaje;
 								$totalCategorias[$categoria->getIdGrupo()][] = sprintf('%.2f', $calificacion);
 								$colCategoria = new My_Pdf_Table_Column();
@@ -165,40 +187,58 @@
 										$promedioGeneral += $promedio;
 										echo sprintf('%.2f', $promedio);
 										
-										$colCategoria = new My_Pdf_Table_Column();
-										$colCategoria->setText(sprintf('%.2f', $promedio));
-										$colCategoria->setBorder(My_Pdf::TOP, new Zend_Pdf_Style());
-										$colCategoria->setBorder(My_Pdf::RIGHT, new Zend_Pdf_Style());
-										$colCategoria->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
-										$colCategoria->setBorder(My_Pdf::LEFT, new Zend_Pdf_Style());
+										//$colCategoria = new My_Pdf_Table_Column();
+										//$colCategoria->setText(sprintf('%.2f', $promedio));
+										//$colCategoria->setBorder(My_Pdf::TOP, new Zend_Pdf_Style());
+										//$colCategoria->setBorder(My_Pdf::RIGHT, new Zend_Pdf_Style());
+										//$colCategoria->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
+										//$colCategoria->setBorder(My_Pdf::LEFT, new Zend_Pdf_Style());
 										//$colCategoria->setCellPaddings(array(5, 5, 5, 5));
-										$celdas[] = $colCategoria;
+										//$celdas[] = $colCategoria;
 									?>
 								</strong>
 							</td>
 						<?php endforeach;
 							//print_r($celdas);
-							$rowPromedios->setColumns($celdas);
+							//$rowPromedios->setColumns($celdas);
 							//$rowPromedios->setColumns($cols);
-							$rowPromedios->setFont($font, 9);
+							//$rowPromedios->setFont($font, 9);
 							//$rowPromedios->setBorder(My_Pdf::TOP, new Zend_Pdf_Style());
 							//$rowPromedios->setBorder(My_Pdf::RIGHT, new Zend_Pdf_Style());
 							//$rowPromedios->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
 							//$rowPromedios->setBorder(My_Pdf::LEFT, new Zend_Pdf_Style());
-							$rowPromedios->setCellPaddings(array(5, 5, 5, 5));
-							$tablaPdf->addRow($rowPromedios);
+							//$rowPromedios->setCellPaddings(array(5, 5, 5, 5));
+							//$tablaPdf->addRow($rowPromedios);
 						 ?>
 					</tr>
 				</tbody>
 			</table>
 			<br />
-			<?php $promedioGeneral = $promedioGeneral / count($categorias) ?>
-			<h4>PROMEDIO: <strong><?php echo sprintf('%.2f', $promedioGeneral) ; ?></strong> - Leyenda</h4>
 			<?php 
-				$page->drawText("PROMEDIO: ". sprintf('%.2f', $promedioGeneral), 165, 190);
-				$page->addTable($tablaPdf, 0, 200);
-				$pdf->addPage($page);
-				$pdf->save();
+				$promedioGeneral = $promedioGeneral / count($categorias);
+				$resultado = ""; 
+				
+				if($promedioGeneral > 10){
+					$resultado = "ERROR, RANGO SOBREPASADO";
+				}elseif($promedioGeneral >= 8.5){
+					$resultado = "EXCELENTE";
+				}elseif($promedioGeneral >= 7.0){
+					$resultado = "ADECUADO";
+				}elseif($promedioGeneral >= 5.0){
+					$resultado = "INSUFICIENTE";
+				}elseif($promedioGeneral >= 4.0){
+					$resultado = "DEFICIENTE";
+				}
+				
+				
+			?>
+			<h4>PROMEDIO: <strong><?php echo sprintf('%.2f', $promedioGeneral) ; ?></strong> - <?php echo $resultado ?></h4>
+			<?php 
+				//$page->drawText("PROMEDIO: ". sprintf('%.2f', $promedioGeneral), 165, 190);
+				//$page->addTable($tablaPdf, 0, 200);
+				//$pdf->addPage($page);
+				//$pdf->sa
+				//$pdf->save($filename);
 			?>
 		</div>
 	</div>
