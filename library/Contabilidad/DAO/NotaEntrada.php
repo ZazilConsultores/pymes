@@ -25,7 +25,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	public function crearNotaEntrada(array $datos){
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
-	
+		$cofigoBarra = Zend_barcode;
 		try{
 		
 			$mMovimiento = new Contabilidad_Model_Movimientos($datos);
