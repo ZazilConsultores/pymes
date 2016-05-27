@@ -22,6 +22,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	public function obtenerNotaEntrada(){
 	
 	}
+	
 	public function obtenerProducto ($idProducto){
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto= ?", getIdProducto());
@@ -71,15 +72,20 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			//print_r($mMovtos);
 			$bd->insert("Movimientos",$mMovtos);
 			
-			//=========================
+		//=========================Selecciona Producto
 		$tablaCapas = $this->tablaCapas;
 		print_r("<br />");
 		print_r("<br />");
-		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']);
+		$select = $tablaCapas->select()->from($tablaCapas,'entrada')->where("idProducto=?",$producto['descripcion']);
 		$row = $tablaCapas->fetchRow($select);
 		if(!is_null($row)){
+			//print_r("$select");
+			$cantidad = $row->entrada + $producto['cantidad'] ;
 			
-			print_r("$row");
+			print ("<br />");
+			print ($cantidad);
+			//$where = $tablaCapas->getAdapter()->quoteInto("entrada = ?", $producto['cantidad']);	
+			//$tablaCapas->update($producto,$where);	
 		}	
 			$mCapas = array(
 					'idProducto' => $producto['descripcion'],
