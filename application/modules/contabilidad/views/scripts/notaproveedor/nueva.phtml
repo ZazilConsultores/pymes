@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-<?php echo $this->formulario ?>	
-=======
 <?php echo $this->formulario ?>
 
-<form name="nuevaNota">
->>>>>>> 58127fb11891d72de890e0cf1cad5165fcf2ba67
 <section class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -19,7 +14,7 @@
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
 			<a id="generarJsonArray" class="btn btn-warning">
-				<span class="glyphicon glyphicon-cog"></span> Generar
+				<span class="glyphicon glyphicon-cog"></span> Cargar
 			</a>
 			<table id="productosNota" class="table table-striped table-condensed">
 				<thead>
@@ -52,12 +47,6 @@
 		</div>
 	</div>
 </section>
-<a class="btn btn-primary" href="<?php $this->url (array("module"=>"contabilidad","controller"=>"notaproveedor","action"=>"nueva")) ?>">
-	<span class="glyphicon glyphicon-envelope"></span> Enviar
-</a>
-<a class="btn btn-primary" >
-	<span class="glyphicon glyphicon-envelope"></span> Sumar producto a Nota Entrada
-</a>
 
 <script>
 	$( document ).ready(function() {
@@ -194,7 +183,7 @@
  		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
  			console.log("En a#generarJsonArray: ");
- 			var tabla = $("table#productosNota > tbody > tr");
+ 			var tabla = $("table#productosNota > tbody  > tr");
  			//Array Json de productos
  			var productos = [];
  			
@@ -205,7 +194,7 @@
  				var codigoBarras = row.find("input[id^='codigoBarras_']").val();
  				var descripcion = row.find("select[id^='descripcion_']").val();
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
- 				var costoTotal = row.find("input[id^='costoTotal_']").val();
+ 				var importe = row.find("input[id^='costoTotal_']").val();
  				//var total = row.find("input[id^='total']").val();
  				
  				console.log("Cantidad:"+cantidad);
@@ -213,16 +202,18 @@
  				console.log("codigoBarras:"+codigoBarras);
  				console.log("descripcion:"+descripcion);
  				console.log("precioUnitario:"+precioUnitario);
- 				console.log("costoTotal:"+costoTotal);
+ 				console.log("costoTotal:"+importe);
  				//console.log("total:"+total);
- 				productos.push(new Producto("cantidad", "unidad", "codiBarras", "descripcion","costoUnitario","costoTotal")); 
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
  			});
  			console.dir(productos);
+ 			var myString = JSON.stringify(productos);
  			
+ 			console.log(myString);
+ 			$("input#productos").val(myString);
  			// create an array restaurants
 			
 			// add objects to the array
-			
 			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
 			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
  		});

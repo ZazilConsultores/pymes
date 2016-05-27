@@ -52,18 +52,32 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eProveedor->setValue(1);
 		
 	
-		$divisaDAO = new Contabilidad_DAO_Divisa;
-		$divisas=$divisaDAO->obtenerDivisas();
-		$eDivisa = new Zend_Form_Element_Hidden('idDivisa');
-		$eDivisa->setAttrib("value", "1");
+		$eDivisa = New Zend_Form_Element_Hidden('idDivisa');
+		$eDivisa->setAttrib("class", "form-control");
+		$eDivisa->setValue(1);
 		
+		/*$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
+		$tiposDivisa = $tipoDivisaDAO->obtenerDivisas();
 		
+		foreach ($tiposDivisa as $tipoDivisa)
+		{
+			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
+		}*/
+		
+		$eProducto = new Zend_Form_Element_Hidden('productos');
+		$eProducto->setAttrib("class", "form-control");
+		//$eProducto->setAttrib("class", "hidden");
+		
+		$eSubmit = new Zend_Form_Element_Submit("submit");
+		$eSubmit->setLabel("Enviar");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		/*foreach ($divisas as $divisa){
 			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDivisa());			
 		}*/			
 		//Agregamos los elementos correspondientes a la subformaEncabezado
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProyecto));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProyecto,$eProducto));
      	$this->addSubForms(array($subEncabezado))  ; 
+		$this->addElement($eSubmit);
 		
 
 	}

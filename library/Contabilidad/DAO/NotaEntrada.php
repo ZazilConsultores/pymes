@@ -14,74 +14,104 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;		
+		
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
 	}
 	
 	
 	public function obtenerNotaEntrada(){
 	
-			
+	}
+	public function obtenerProducto ($idProducto){
+		$tablaCapas = $this->tablaCapas;
+		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto= ?", getIdProducto());
+		$rowsCapas = $tablaCapas->fetchAll($select);
+		$modelCapas = array();
+		
+		if(!is_null($rowsCapas)){
+			foreach ($rowsCapas as $rowCapa) {
+				$modelCapas = new Contabilidad_Model_Capas($row->toArray());
+				$modelCapas[] = $modelCapa;
+			}
+		}
+		
+		return $modelCapas;
 	}
 	
-	public function crearNotaEntrada(array $datos){
+	public function agregarProducto(array $encabezado, $producto){
+		//print_r($datos);
+		$datos=array();
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
-		$cofigoBarra = Zend_barcode;
-		try{
 		
-			$mMovimiento = new Contabilidad_Model_Movimientos($datos);
-			$fecha = new Zend_Date($datos["fecha"],'yyyy-MM-dd hh-mm-ss');
-			
-			$bd->insert("Movimientos", $mMovimiento->toArray());
+		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto);
+		
+		try{
+			//$mMovimiento = new Contabilidad_Model_Movimientos($datos);
+			//$bd->insert("Movimientos", $mMovimiento->toArray());
+			//$secuencial = $datos['secuencial']+1;
 			$mMovtos = array(
-					'idProducto' => $datos['idProducto'],
-					'idTipoMovimiento'=>$datos['idTipoMovimiento'],
-					'idEmpresa'=>$datos['idEmpresa'],
-					'idProyecto'=>$datos['idProyecto'],
-					'numFactura'=>$datos['numFactura'],
-					'cantidad'=>$datos['cantidad'],
-					'fecha'=>($fecha->toString('yyyy-MM-dd hh-mm-ss')),
+					'idProducto' => $producto['descripcion'],
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idProyecto'=>$encabezado['idProyecto'],
+					'numFactura'=>$encabezado['numFactura'],
+					'cantidad'=>$producto['cantidad'],
+					'fecha'=>$stringIni,
 					'estatus'=>"A",
-					'secuencial'=> '1',
-					'costoUnitario'=>$datos['costoUnitario'],
-					'esOrigen'=>$datos['esOrigen'],
-					'totalImporte'=>$datos['totalImporte']
-					
+					'secuencial'=> 1,
+					'costoUnitario'=>$producto['precioUnitario'],
+					'esOrigen'=>"E",
+					'totalImporte'=>$producto['importe']
 				);
 			
-				print_r();
+			//print_r($mMovtos);
 			$bd->insert("Movimientos",$mMovtos);
 			
+			//=========================
+		$tablaCapas = $this->tablaCapas;
+		print_r("<br />");
+		print_r("<br />");
+		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']);
+		$row = $tablaCapas->fetchRow($select);
+		if(!is_null($row)){
+			
+			print_r("$row");
+		}	
 			$mCapas = array(
-					'idProducto' => $datos['idProducto'],
-					'idDivisa'=>$datos['idDivisa'],
+					'idProducto' => $producto['descripcion'],
+					'idDivisa'=>$encabezado['idDivisa'],
 					'secuencial'=>1,
-					'entrada'=>$datos['cantidad'],
-					'fechaEntrada'=>($fecha->toString('yyyy-MM-dd hh-mm-ss')),
-					'costoUnitario'=>$datos['costoUnitario'],
-					'costoTotal'=>$datos['totalImporte']
+					'entrada'=>$producto['cantidad'],
+					'fechaEntrada'=>$stringIni,
+					'costoUnitario'=>$producto['precioUnitario'],
+					'costoTotal'=>$producto['importe']
 				);
 			$bd->insert("Capas",$mCapas);
 			
 			//Insertamos en Inventario
 			//$mInventario = new Contabilidad_Model_Inventario($datos);			
 			$mInventario = array(
-					'idProducto' => $datos['idProducto'],
-					'idDivisa'=>$datos['idDivisa'],
-					'idEmpresa'=>$datos['idEmpresa'],
-					'existencia'=>$datos['cantidad'],
+					'idProducto'=>$producto['descripcion'],
+					'idDivisa'=>$encabezado['idDivisa'],
+					'idEmpresa'=>$encabezado['idEmpresa'],
+					'existencia'=>$producto['cantidad'],
 					'apartado'=>'0',
-					'existenciaReal'=>$datos['cantidad'],
+					'existenciaReal'=>$producto['cantidad'],
 					'maximo'=>'0',
 					'minimo'=>'0',
-					'fecha'=>($fecha->toString('yyyy-MM-dd hh-mm-ss')),
-					'costoUnitario'=>$datos['costoUnitario'],
+					'fecha'=>$stringIni,
+					'costoUnitario'=>$producto['precioUnitario'],
 					'porcentajeGanancia'=>'0',
 					'cantidadGanancia'=>'0',
-					'costoCliente'=>$datos['costoUnitario']
+					'costoCliente'=>$producto['importe']
 				);
 			$bd->insert("Inventario",$mInventario);
 			
-			$bd->commit();
+			//$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
