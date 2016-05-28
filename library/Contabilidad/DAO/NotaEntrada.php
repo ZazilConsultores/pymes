@@ -9,16 +9,18 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	private $tablaMovimiento;
 	private $tablaInventario;
 	private $tablaCapas;
+	private $tablaMultiplos;
 	
 	public function __construct() {
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
-		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;		
+		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
+			
 		
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
 	}
-	
-	
+
 	public function obtenerNotaEntrada(){
 	
 	}
@@ -51,9 +53,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$select = $tablaProducto->select()->from($tablaProducto);
 		
 		try{
-			//$mMovimiento = new Contabilidad_Model_Movimientos($datos);
-			//$bd->insert("Movimientos", $mMovimiento->toArray());
-			//$secuencial = $datos['secuencial']+1;
+			
 			$mMovtos = array(
 					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
@@ -71,33 +71,48 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			
 			//print_r($mMovtos);
 			$bd->insert("Movimientos",$mMovtos);
-			
-		//=========================Selecciona Producto
+
 		$tablaCapas = $this->tablaCapas;
+		//=================Selecciona producto y unidad=======================================
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$row = $tablaMultiplos->fetchRow($select); 
 		print_r("<br />");
 		print_r("<br />");
-		$select = $tablaCapas->select()->from($tablaCapas,'entrada')->where("idProducto=?",$producto['descripcion']);
-		$row = $tablaCapas->fetchRow($select);
+		print_r("$select");
+		//====================Operaciones====================================================== 
 		if(!is_null($row)){
-			//print_r("$select");
+		$cantidad = $producto['cantidad'] * $row->cantidad;
+		$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
+		print_r("<br />");
+		print_r($cantidad);
+		print_r("<br />");
+		print_r($precioUnitario);
+		print_r("<br />");
+		}
+		$select = $tablaCapas->select()->from($tablaCapas,'entrada')->where("idProducto=?",$producto['descripcion'])
+		->where ("fechaEntrada = ?", $encabezado['fecha']);
+		$row = $tablaCapas->fetchRow($select);
+		
+		if(!is_null($row)){
+			print_r("$select");
 			$cantidad = $row->entrada + $producto['cantidad'] ;
-			
 			print ("<br />");
 			print ($cantidad);
-			//$where = $tablaCapas->getAdapter()->quoteInto("entrada = ?", $producto['cantidad']);	
-			//$tablaCapas->update($producto,$where);	
-		}	
+			$where = $tablaCapas->getAdapter()->quoteInto("entrada = ?", $cantidad);	
+			$tablaCapas->update($producto,$where);	
+		}else{	
 			$mCapas = array(
 					'idProducto' => $producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'secuencial'=>1,
-					'entrada'=>$producto['cantidad'],
+					'entrada'=>$cantidad,
 					'fechaEntrada'=>$stringIni,
-					'costoUnitario'=>$producto['precioUnitario'],
+					'costoUnitario'=>$precioUnitario,
 					'costoTotal'=>$producto['importe']
 				);
 			$bd->insert("Capas",$mCapas);
-			
+		}	
 			//Insertamos en Inventario
 			//$mInventario = new Contabilidad_Model_Inventario($datos);			
 			$mInventario = array(
@@ -117,7 +132,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 				);
 			$bd->insert("Inventario",$mInventario);
 			
-			//$bd->commit();
+			$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");

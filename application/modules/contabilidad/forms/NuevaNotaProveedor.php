@@ -66,6 +66,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
+		$eProducto->setAttrib("required", "true");
 		//$eProducto->setAttrib("class", "hidden");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
