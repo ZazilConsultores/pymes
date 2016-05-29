@@ -73,6 +73,7 @@ class Util_Permissions_Acl extends Zend_Acl {
      * @return  Zend_Acl
      */
     protected function _setSubresources($subresources)  {
+    	//print_r($subresources);
         foreach ($subresources as $subresource => $resource) {
             $this->add(new Zend_Acl_Resource($subresource), $resource);
         }
@@ -89,6 +90,11 @@ class Util_Permissions_Acl extends Zend_Acl {
      */
     protected function _setPrivileges($role, $privileges)   {
         // Por cada privilegio
+        //print_r("<br />");
+        //print_r($role);
+		//print_r("<br />");
+        //print_r($privileges);
+		//print_r("<br />");
         foreach ($privileges as $do => $resources) {
             // Si no tiene Recursos, es un privilegio global
             if (empty($resources)) {

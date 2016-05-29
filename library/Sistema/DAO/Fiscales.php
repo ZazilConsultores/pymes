@@ -5,6 +5,7 @@
 class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	
 	private $tablaFiscales;
+	private $tablaEmpresa;
 	
 	private $tablaFiscalesDomicilios;
 	private $tablaDomicilio;
@@ -15,6 +16,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	
 	public function __construct() {
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
 		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
 		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
@@ -32,18 +34,30 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		return $modelFiscal;
 	}
 	
-	public function obtenerDomicilioFiscal($idFiscales){
+	public function obtenerDomiciliosPorIdFiscal($idFiscales){
 		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
 		$select = $tablaFiscalesDomicilio->select()->from($tablaFiscalesDomicilio)->where("idFiscales = ?", $idFiscales);
-		$rowDF = $tablaFiscalesDomicilio->fetchRow($select);
+		//$rowDF = $tablaFiscalesDomicilio->fetchRow($select);
+		$rowsDF = $tablaFiscalesDomicilio->fetchAll($select);
+		//print_r($rowsDF);
 		//---------------------------------------------------------
+		$modelsDomicilio = array();
 		$tablaDomicilio = $this->tablaDomicilio;
-		$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio = ?", $rowDF->idDomicilio);
-		$rowD = $tablaDomicilio->fetchRow($select);
-		$modelDomicilio = new Sistema_Model_Domicilio($rowD->toArray());
-		return $modelDomicilio;
+		
+		foreach ($rowsDF as $rowDF) {
+			$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("idDomicilio=?",$rowDF->idDomicilio);
+			//print_r($select->__toString());
+			$rowD = $tablaDomicilio->fetchRow($select);
+			$modelDomicilio = new Sistema_Model_Domicilio($rowD->toArray());
+			$modelsDomicilio[] = $modelDomicilio;
+		}
+		
+		return $modelsDomicilio;
 	}
 	
+	/**
+	 * Obtiene todos los telefonos de la empresa con idFiscales proporcionado
+	 */
 	public function obtenerTelefonosFiscales($idFiscales){
 		$tablaFiscalesTelefonos = $this->tablaFiscalesTelefonos;
 		$select = $tablaFiscalesTelefonos->select()->from($tablaFiscalesTelefonos)->where("idFiscales = ?", $idFiscales);
@@ -117,4 +131,17 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaFiscalesEmail->insert($registro);
 	}
 	
+	public function esSucursal($idDomicilio,$idFiscales)
+	{
+		$tablaFiscalesDomicilio = $this->tablaFiscalesDomicilios;
+		$select = $tablaFiscalesDomicilio->select()->from($tablaFiscalesDomicilio)->where("idDomicilio=?",$idDomicilio)->where("idFiscales=?",$idFiscales);
+		$rowDF = $tablaFiscalesDomicilio->fetchRow($select);
+		
+		if($rowDF->esSucursal){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
 }

@@ -2,10 +2,14 @@
 
 class Sistema_ClientesController extends Zend_Controller_Action
 {
+	private $fiscalesDAO;
+	private $empresaDAO;
 
     public function init()
     {
         /* Initialize action controller here */
+        $this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		$this->empresaDAO = new Sistema_DAO_Empresa;
     }
 
     public function indexAction()
@@ -53,7 +57,22 @@ class Sistema_ClientesController extends Zend_Controller_Action
 		}
     }
 
+    public function clienteAction()
+    {
+        // action body
+        $idEmpresa = $this->getParam("idEmpresa");
+		$empresaDAO = $this->empresaDAO;
+		
+		$empresa = $empresaDAO->obtenerEmpresa($idEmpresa);
+		$this->view->empresa = $empresa;
+		//print_r($empresa);
+		
+    }
+
+
 }
+
+
 
 
 

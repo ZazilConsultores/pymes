@@ -85,6 +85,52 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$bd->rollBack();
 		}
 	}
+
+	/**
+	 * 
+	 */
+	public function obtenerEmpresa($idEmpresa){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa=?",$idEmpresa);
+		
+		try{
+			$rowEmpresa = $tablaEmpresa->fetchRow($select);
+			if(is_null($rowEmpresa)){
+				return null;
+			}else{
+				return $rowEmpresa->toArray();
+			}
+			
+		}catch(Exception $ex){
+			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
+		}
+		
+		
+	}
+	
+	/**
+	 * Obtiene un registro de la tabla empresa, en base al idFiscal proporcionado
+	 * @param $idFiscal
+	 * @return array | null
+	 */
+	public function obtenerEmpresaPorIdFiscales($idFiscales){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		
+		try{
+			$rowEmpresa = $tablaEmpresa->fetchRow($select);
+			if(is_null($rowEmpresa)){
+				return null;
+			}else{
+				return $rowEmpresa->toArray();
+			}
+			
+		}catch(Exception $ex){
+			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
+		}
+		
+		
+	}
 	
 	public function obtenerIdFiscalesEmpresas(){
 		//Obtenemos todas las empresas

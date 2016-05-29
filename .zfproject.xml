@@ -11,10 +11,15 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="login"/>
           <actionMethod actionName="normalize"/>
+          <actionMethod actionName="logout"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Resultados">
           <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Usuario">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="perfil"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -1008,6 +1013,7 @@
             <controllerFile controllerName="Domicilio">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Telefono">
               <actionMethod actionName="index"/>
@@ -1085,6 +1091,7 @@
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="cliente"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1352,6 +1359,12 @@
               <viewControllerScriptsDirectory forControllerName="Reporte">
                 <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Domicilio">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -1426,6 +1439,15 @@
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="normalize"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Usuario">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Usuario">
+            <viewScriptFile forActionName="perfil"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="logout"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -1464,9 +1486,14 @@
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="login"/>
             <testApplicationActionMethod forActionName="normalize"/>
+            <testApplicationActionMethod forActionName="logout"/>
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Resultados">
             <testApplicationActionMethod forActionName="index"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Usuario">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="perfil"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
         <testApplicationModulesDirectory>
@@ -1673,6 +1700,7 @@
               <testApplicationControllerFile forControllerName="Domicilio">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Telefono">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1750,6 +1778,7 @@
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="cliente"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>

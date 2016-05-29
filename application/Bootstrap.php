@@ -26,7 +26,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		$view->doctype('HTML5');
 		
-		$view->headTitle('Sistema de Inventario')->setSeparator(' :: ');
+		$view->headTitle('General Application')->setSeparator(' :: ');
 	}
 
 }

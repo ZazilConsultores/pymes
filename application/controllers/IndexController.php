@@ -55,7 +55,7 @@ class IndexController extends Zend_Controller_Action
 				
  				//print_r($data);
 				$this->view->result = $result->getMessages();
-                $this->_redirect('/');
+                //$this->_redirect('/');
  
             } else {
                 $this->view->loginError = $result->getMessages();
@@ -73,8 +73,20 @@ class IndexController extends Zend_Controller_Action
         // action body
     }
 
+    public function logoutAction()
+    {
+        // action body
+        $auth = Zend_Auth::getInstance();
+		if($auth->hasIdentity()){
+			$auth->clearIdentity();
+		}
+		$this->redirect("/");
+    }
+
 
 }
+
+
 
 
 
