@@ -49,22 +49,4 @@
 		</div>
 	</div>
 	
-	<div class="panel panel-danger">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Eliminar Sección
-			</h3>
-		</div>
-		<div class="panel-body">
-			<p>
-				Una sección solo se puede eliminar si no contiene elementos dentro de si.
-			</p>
-			<p>
-				Los elementos de una sección son los grupos y las preguntas.
-			</p>
-			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"baja","idSeccion"=>$seccion->getIdSeccion(),)) ?>">
-				Eliminar Sección
-			</a>
-		</div>
-	</div>
 </section>

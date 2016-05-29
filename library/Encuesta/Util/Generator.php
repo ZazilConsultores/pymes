@@ -208,7 +208,7 @@ class Encuesta_Util_Generator {
 
 	public function procesarFormulario($idEncuesta,$idAsignacion,$post)
 	{
-		print_r($post);
+		//print_r($post);
 		//print_r("<br />");
 		//print_r("============================");
 		//print_r("<br />");
@@ -243,15 +243,16 @@ class Encuesta_Util_Generator {
 					//print_r("<br />");
 					foreach ($value as $idPregunta => $respuesta) {
 						//$arrRespuestas[] = array($idPregunta => $respuesta);
-						print_r("IdPregunta: ".$idPregunta. " - Respuesta: ".$respuesta);
-						print_r("<br />");
+						//print_r("IdPregunta: ".$idPregunta. " - Respuesta: ".$respuesta);
+						//print_r("<br />");
 						$arrRespuestas[$idPregunta] = $respuesta;
 					}
 				}else{
-					print_r("IdPregunta: ".$gop." - Respuesta: ".$value);
-					print_r("<br />");
+					//print_r("IdPregunta: ".$gop." - Respuesta: ".$value);
+					//print_r("<br />");
 					//print_r("============================");
 					//print_r("<br />");
+					$arrRespuestas[$gop] = $value;
 				}
 			}
 			
@@ -283,17 +284,17 @@ class Encuesta_Util_Generator {
 			$datos["conjunto"] = $conjunto;
 			$modelRespuesta = new Encuesta_Model_Respuesta($datos);
 			
-			//$mResp = $respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+			$mResp = $respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
 			
 			if($pregunta->getTipo() == "SS"){
-				//$this->preferenciaDAO->agregarPreferenciaPreguntaAsignacion($idAsignacion, $idPregunta, $respuesta); //($idPregunta,
+				$this->preferenciaDAO->agregarPreferenciaPreguntaAsignacion($idAsignacion, $idPregunta, $respuesta); //($idPregunta,
 			}
 			
 		}
 		$registro = array();
 		$registro["idEncuesta"] = $idEncuesta;
 		$registro["idAsignacion"] = $idAsignacion;
-		//$encuestaDAO->agregarEncuestaRealizada($registro);
+		$encuestaDAO->agregarEncuestaRealizada($registro);
 		
 	}
 	

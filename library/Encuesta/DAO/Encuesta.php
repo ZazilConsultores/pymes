@@ -308,11 +308,11 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$registro["idEncuesta"])->where("idAsignacion=?",$registro["idAsignacion"]);
 		$row = $tablaERealizadas->fetchRow($select);
 		if(!is_null($row)){
-			print_r("R.Ant".$row->realizadas);
-			print_r("<br />");
+			//print_r("R.Ant".$row->realizadas);
+			//print_r("<br />");
 			$row->realizadas++;
-			print_r("R.Act".$row->realizadas);
-			print_r("<br />");
+			//print_r("R.Act".$row->realizadas);
+			//print_r("<br />");
 			$row->save();
 		}else{
 			$registro["realizadas"] = 1;

@@ -114,10 +114,10 @@ class Encuesta_IndexController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$idEncuesta = $this->getParam("idEncuesta");
 		$post = $request->getPost();
-		$fInicio = new Zend_Date($post["fechaInicio"], 'yyyy-MM-dd hh-mm-ss');
-		$fFin = new Zend_Date($post["fechaFin"], 'yyyy-MM-dd hh-mm-ss');
-		$post['fechaInicio'] = $fInicio->toString('yyyy-MM-dd hh-mm-ss');
-		$post['fechaFin'] = $fFin->toString('yyyy-MM-dd hh-mm-ss');
+		//$fInicio = new Zend_Date($post["fechaInicio"], 'yyyy-MM-dd hh-mm-ss');
+		//$fFin = new Zend_Date($post["fechaFin"], 'yyyy-MM-dd hh-mm-ss');
+		//$post['fechaInicio'] = $fInicio->toString('yyyy-MM-dd hh-mm-ss');
+		//$post['fechaFin'] = $fFin->toString('yyyy-MM-dd hh-mm-ss');
 		unset($post["submit"]);
 		
 		$this->encuestaDAO->editarEncuesta($idEncuesta, $post);

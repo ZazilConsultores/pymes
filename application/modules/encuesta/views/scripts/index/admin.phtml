@@ -48,17 +48,4 @@
 			<?php echo $this->formulario; ?>
 		</div>
 	</div>
-	
-	<div class="panel panel-danger">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Finalizar Encuesta: <strong><?php echo $encuesta->getNombre(); ?></strong>
-			</h3>
-		</div>
-		<div class="panel-body">
-			<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"baja","idEncuesta"=>$encuesta->getIdEncuesta(),)) ?>">
-				Finalizar Encuesta
-			</a>
-		</div>
-	</div>
 </section>

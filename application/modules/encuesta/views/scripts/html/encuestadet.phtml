@@ -13,29 +13,29 @@
 	</header>
 	<table class="table table-striped">
 		<thead>
-			<th>Nombre</th>
-			<th>Inicio Encuesta</th>
-			<th>Término Encuesta</th>
+			<th>Nombre Clave</th>
+			<th>Fecha</th>
 			<th>Estatus</th>
 			<th>Administrar</th>
 			<th>Secciones</th>
+			<th>Descripción</th>
 		</thead>
 		<tbody>
 			<tr>
-				<td><?php echo $encuesta->getNombre(); ?></td>
-				<td><?php echo $encuesta->getFechaInicio(); ?></td>
-				<td><?php echo $encuesta->getFechaFin(); ?></td>
+				<td><?php echo $encuesta->getNombreClave(); ?></td>
+				<td><?php echo $encuesta->getFecha(); ?></td>
 				<td><?php echo $estatus[$encuesta->getEstatus()]; ?></td>
 				<td>
-					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "admin", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-info">
+					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "admin", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-warning">
 						<span class="glyphicon glyphicon-cog"></span>  Administrar
 					</a>
 				</td>
 				<td>
-					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-info">
+					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-warning">
 						<span class="glyphicon glyphicon-cog"></span>  Secciones
 					</a>
 				</td>
+				<td><?php echo $encuesta->getDescripcion(); ?></td>
 			</tr>
 		</tbody>
 		</table>
