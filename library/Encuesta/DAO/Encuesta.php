@@ -133,10 +133,10 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * Obtiene el numero de encuestas realizadas para una asignacion (grupo,materia,profesor) dada
 	 */
 	public function obtenerNumeroEncuestasRealizadas($idEncuesta, $idAsignacion){
-		print_r("public function obtenerNumeroEncuestasRealizadas(idEncuesta, idAsignacion)");
+		//print_r("public function obtenerNumeroEncuestasRealizadas(idEncuesta, idAsignacion)");
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion=?",$idAsignacion);
-		print_r($select->__toString());
+		//print_r($select->__toString());
 		$row = $tablaERealizadas->fetchRow($select);
 		//$realizadas = 0;
 		if(is_null($row)){
@@ -153,11 +153,10 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$tablaERealizadas = $this->tablaERealizadas;
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion=?",$idAsignacion);
 		//print_r($select->__toString());
-		$row = $tablaERealizadas->fetchRow($select);
-		$conjunto = 1;
-		if(!is_null($row)){
-			$conjunto = $row->realizadas++;
-			$row->save();
+		$rowR = $tablaERealizadas->fetchRow($select);
+		$conjunto = 0;
+		if(is_null($rowR)){
+			$conjunto = 1;
 			/*
 			if(is_null($row->requeridas)){
 				$conjunto = $row->realizadas;
@@ -168,8 +167,10 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 			}
 			*/
 		}else{
-			
+			$conjunto = $rowR->realizadas;
+			//$row->save();
 		}
+		
 		return $conjunto;
 	}
 	
@@ -307,7 +308,11 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$registro["idEncuesta"])->where("idAsignacion=?",$registro["idAsignacion"]);
 		$row = $tablaERealizadas->fetchRow($select);
 		if(!is_null($row)){
+			print_r("R.Ant".$row->realizadas);
+			print_r("<br />");
 			$row->realizadas++;
+			print_r("R.Act".$row->realizadas);
+			print_r("<br />");
 			$row->save();
 		}else{
 			$registro["realizadas"] = 1;

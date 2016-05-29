@@ -208,7 +208,7 @@ class Encuesta_Util_Generator {
 
 	public function procesarFormulario($idEncuesta,$idAsignacion,$post)
 	{
-		//print_r($post);
+		print_r($post);
 		//print_r("<br />");
 		//print_r("============================");
 		//print_r("<br />");
@@ -222,12 +222,12 @@ class Encuesta_Util_Generator {
 		$arrRespuestas = array();
 		//$arrRespuestas[0] = date("Y-m-d H:i:s", time());
 		foreach ($contenedores as $seccion) {
-			print_r("En contenedor");
-			print_r("<br />");
+			//print_r("En contenedor");
+			//print_r("<br />");
 			//print_r($seccion);
 			//print_r("<br />");
-			print_r("============================");
-			print_r("<br />");
+			//print_r("============================");
+			//print_r("<br />");
 			//$gpo: grupo o pregunta
 			foreach ($seccion as $gop => $value) {
 				//print_r($gop);
@@ -243,13 +243,15 @@ class Encuesta_Util_Generator {
 					//print_r("<br />");
 					foreach ($value as $idPregunta => $respuesta) {
 						//$arrRespuestas[] = array($idPregunta => $respuesta);
+						print_r("IdPregunta: ".$idPregunta. " - Respuesta: ".$respuesta);
+						print_r("<br />");
 						$arrRespuestas[$idPregunta] = $respuesta;
 					}
 				}else{
-					print_r($gop);
+					print_r("IdPregunta: ".$gop." - Respuesta: ".$value);
 					print_r("<br />");
-					print_r("============================");
-					print_r("<br />");
+					//print_r("============================");
+					//print_r("<br />");
 				}
 			}
 			
@@ -265,9 +267,10 @@ class Encuesta_Util_Generator {
 		$respuestaDAO = $this->respuestaDAO;
 		$preferenciaDAO = $this->preferenciaDAO;
 		$conjunto = $encuestaDAO->obtenerNumeroConjuntoAsignacion($idEncuesta, $idAsignacion);
-		print_r("<br />");
-		print_r("Conjunto: ".$conjunto);
-		print_r("<br />");
+		$conjunto++;
+		//print_r("<br />");
+		//print_r("Conjunto: ".$conjunto);
+		//print_r("<br />");
 		foreach ($arrRespuestas as $idPregunta => $respuesta) {
 			
 			$pregunta = $preguntaDAO->obtenerPregunta($idPregunta);
@@ -280,14 +283,17 @@ class Encuesta_Util_Generator {
 			$datos["conjunto"] = $conjunto;
 			$modelRespuesta = new Encuesta_Model_Respuesta($datos);
 			
-			$respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+			//$mResp = $respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
 			
 			if($pregunta->getTipo() == "SS"){
-				$this->preferenciaDAO->agregarPreferenciaPreguntaAsignacion($idAsignacion, $idPregunta, $respuesta); //($idPregunta,
+				//$this->preferenciaDAO->agregarPreferenciaPreguntaAsignacion($idAsignacion, $idPregunta, $respuesta); //($idPregunta,
 			}
 			
-			
 		}
+		$registro = array();
+		$registro["idEncuesta"] = $idEncuesta;
+		$registro["idAsignacion"] = $idAsignacion;
+		//$encuestaDAO->agregarEncuestaRealizada($registro);
 		
 	}
 	
@@ -303,7 +309,7 @@ class Encuesta_Util_Generator {
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());
 			if($pregunta->getTipo() == "SS"){
 				$ePregunta = new Zend_Form_Element_Radio($pregunta->getIdPregunta());
-				
+				$ePregunta->setAttrib("required", "required");
 			}elseif($pregunta->getTipo() == "MS"){
 				$ePregunta = new Zend_Form_Element_MultiCheckbox($pregunta->getIdPregunta());
 			}

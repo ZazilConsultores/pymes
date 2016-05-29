@@ -1,6 +1,5 @@
 <?php echo $this->formulario ?>
 
-<form name="nuevaNota">
 <section class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -14,10 +13,9 @@
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
-			<!-- Botón para calcular total importe-->
-			<button id="processTable" class="btn btn-warning">
-				<span class="glyphicon glyphicon-cog" ></span> Calcular
-			</button><br /><br />
+			<a id="generarJsonArray" class="btn btn-warning">
+				<span class="glyphicon glyphicon-cog"></span> Cargar
+			</a>
 			<table id="productosNota" class="table table-striped table-condensed">
 				<thead>
 					<tr>
@@ -49,9 +47,6 @@
 		</div>
 	</div>
 </section>
-<a class="btn btn-primary" href="<?php $this->url (array("module"=>"contabilidad","controller"=>"notaproveedor","action"=>"nueva")) ?>">
-	<span class="glyphicon glyphicon-envelope"></span> Enviar
-</a>
 
 <script>
 	$( document ).ready(function() {
@@ -89,7 +84,7 @@
 			// precioUnitario
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
-			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'precioImporte_'});
+			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
 			
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
@@ -154,19 +149,25 @@
 			//console.log($(this).val())	;
 			
  		}); //cierra input cantidad
-//input  precioImporte
-		//$("table#productosNota input[id^='costoTotal_']".keyup ,function() {
-		$("table#productosNota").on("click", "input[id^='costoTotal_']", function(){	
-			var t;
-			var total =$(this).val();
-			
-			console.log(total);
- 		}); //cierra input cantidad
  		
+		//input  costoTotal
+		
+		$("table#productosNota").on("blur","input[id^='costoTotal_']",function() {
+			var costo=0;
+			
+			 $("table#productosNota").find("input[id^='costoTotal_']").each(function () {
+        		costo += +$(this).val();
+    		});
+			//console.log(costo);
+			//console.log(costoTotal);
+			$("input#total").val(costo);
+		
+		});
+			
  		//Funcion genera totalColumna
 
  	
-//======================
+		//======================
  		//input precioUnitario
  		$("table#productosNota").on("change", "input[id^='costoUnitario_']", function(){
  			var precioUnitario = $(this).attr("id");
@@ -179,6 +180,54 @@
  			$('input#costoTotal_'+numFila).val(precioImporte);
  			
  		});//cierra input precioUnitario
+ 		//==================================================================== Calcular JsonArray
+ 		$("a#generarJsonArray").on("click",function(){
+ 			console.log("En a#generarJsonArray: ");
+ 			var tabla = $("table#productosNota > tbody  > tr");
+ 			//Array Json de productos
+ 			var productos = [];
+ 			
+ 			tabla.each(function(){
+ 				var row = $(this);
+ 				var cantidad = row.find("input[id^='idCantidad_']").val();
+ 				var unidad = row.find("select[id^='idUnidad_']").val();
+ 				var codigoBarras = row.find("input[id^='codigoBarras_']").val();
+ 				var descripcion = row.find("select[id^='descripcion_']").val();
+ 				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
+ 				var importe = row.find("input[id^='costoTotal_']").val();
+ 				//var total = row.find("input[id^='total']").val();
+ 				
+ 				console.log("Cantidad:"+cantidad);
+ 				console.log("unidad:"+unidad);
+ 				console.log("codigoBarras:"+codigoBarras);
+ 				console.log("descripcion:"+descripcion);
+ 				console.log("precioUnitario:"+precioUnitario);
+ 				console.log("costoTotal:"+importe);
+ 				//console.log("total:"+total);
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 			});
+ 			console.dir(productos);
+ 			var myString = JSON.stringify(productos);
+ 			
+ 			console.log(myString);
+ 			$("input#productos").val(myString);
+ 			// create an array restaurants
+			
+			// add objects to the array
+			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
+			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
+ 		});
  		
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+		  this.cantidad = cantidad;
+		  //this.claveProducto = claveProducto;
+		  this.unidad = unidad;
+		  this.codigoBarras = codigoBarras;
+		  this.descripcion = descripcion;
+		  this.precioUnitario = precioUnitario;
+		  this.importe = importe;
+		  //this.unidad = unidad;
+		}
+	
 	});//cierra document ready
 </script>
