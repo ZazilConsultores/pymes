@@ -15,6 +15,16 @@ class Sistema_Model_Domicilio
     public function setIdDomicilio($idDomicilio) {
         $this->idDomicilio = $idDomicilio;
     }
+	
+	private $idEstado;
+
+    public function getIdEstado() {
+        return $this->idEstado;
+    }
+    
+    public function setIdEstado($idEstado) {
+        $this->idEstado = $idEstado;
+    }
 
     private $idMunicipio;
 
@@ -25,6 +35,16 @@ class Sistema_Model_Domicilio
     public function setIdMunicipio($idMunicipio) {
         $this->idMunicipio = $idMunicipio;
     }
+	
+	private $colonia;
+
+    public function getColonia() {
+        return $this->colonia;
+    }
+    
+    public function setColonia($colonia) {
+        $this->colonia = $colonia;
+    }
 
     private $calle;
 
@@ -34,16 +54,6 @@ class Sistema_Model_Domicilio
     
     public function setCalle($calle) {
         $this->calle = $calle;
-    }
-
-    private $colonia;
-
-    public function getColonia() {
-        return $this->colonia;
-    }
-    
-    public function setColonia($colonia) {
-        $this->colonia = $colonia;
     }
 
     private $codigoPostal;
@@ -90,12 +100,13 @@ class Sistema_Model_Domicilio
     public function __construct(array $datos) {
 		if(array_key_exists("idDomicilio", $datos)) $this->idDomicilio = $datos["idDomicilio"];
 		if(array_key_exists("idMunicipio", $datos)) $this->idMunicipio = $datos["idMunicipio"];
+		if(array_key_exists("idEstado", $datos)) $this->idEstado = $datos["idEstado"];
 		$this->calle = $datos["calle"];
 		$this->colonia = $datos["colonia"];
 		$this->codigoPostal = $datos["codigoPostal"];
 		$this->numeroInterior = $datos["numeroInterior"];
 		$this->numeroExterior = $datos["numeroExterior"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray() {
@@ -103,12 +114,13 @@ class Sistema_Model_Domicilio
 		
 		$datos["idDomicilio"] = $this->idDomicilio;
 		$datos["idMunicipio"] = $this->idMunicipio;
+		$datos["idEstado"] = $this->idEstado;
 		$datos["calle"] = $this->calle;
 		$datos["colonia"] = $this->colonia;
 		$datos["codigoPostal"] = $this->codigoPostal;
 		$datos["numeroInterior"] = $this->numeroInterior;
 		$datos["numeroExterior"] = $this->numeroExterior;
-		$datos["hash"] = $this->hash;
+		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

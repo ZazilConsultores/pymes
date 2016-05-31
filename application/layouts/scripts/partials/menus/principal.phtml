@@ -17,6 +17,8 @@
 				
 				<div class="collapse navbar-collapse" id="navbar1">
 					<ul class="nav navbar-nav">
+						<!-- Menú de operaciones de usuario -->
+						<?php echo $this->partial('partials/menus/submenus/usuario.phtml'); ?>
 						<!-- Menú de operaciones de sistema -->
 						<?php echo $this->partial('partials/menus/submenus/sistema.phtml'); ?>
 						<!-- Menú de operaciones de contabilidad -->
@@ -29,30 +31,6 @@
 						<?php echo $this->partial('partials/menus/submenus/soporte.phtml'); ?>
 						<!-- Menú de operaciones de encuesta -->
 						<?php echo $this->partial('partials/menus/submenus/encuesta.phtml'); ?>
-					</ul>
-					
-					<ul class="nav navbar-nav navbar-right">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								Usuario <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a id="login" href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'login'),null,true) ?>">
-										<span class="glyphicon glyphicon-user"></span>  
-										Login
-									</a>
-								</li>
-								<li>
-									<a id="profile" class="hidden" href="<?php echo $this->url(array('module'=>'default','controller'=>'usuario','action'=>'perfil'),null,true) ?>">
-										<span class="glyphicon glyphicon-home"></span>  Perfil
-									</a>
-								</li>
-								<li>
-									<a id="logout" class="hidden" href="#"><span class="glyphicon glyphicon-off"></span>  Logout</a>
-								</li>
-							</ul>
-						</li>
 					</ul>
 				</div>
 			</div>

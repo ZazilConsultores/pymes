@@ -6,7 +6,8 @@ interface Sistema_Interfaces_IFiscales {
 	
 	public function obtenerFiscales($idFiscales);
 	
-	public function obtenerDomicilioFiscal($idFiscales);
+	public function obtenerDomiciliosPorIdFiscal($idFiscales);
+	//public function obtenerDomicilioFiscal($idFiscales);
 	public function obtenerTelefonosFiscales($idFiscales);
 	public function obtenerEmailsFiscales($idFiscales);
 	

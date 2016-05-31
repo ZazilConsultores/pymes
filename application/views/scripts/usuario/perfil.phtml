@@ -1,0 +1,21 @@
+<?php
+	$auth = Zend_Auth::getInstance();
+	$identity = null;
+	if($auth->hasIdentity()){
+		$identity = $auth->getIdentity();
+	}
+?>
+<section class="row">
+	<article class="jumbotron">
+		<h3>Usuario: </h3>
+		<div>
+			<?php 
+				if(is_null($identity)){
+					print_r("No hay usuario autentificado");
+				}else{
+					print_r($identity);
+				}
+			?>
+		</div>
+	</article>
+</section>

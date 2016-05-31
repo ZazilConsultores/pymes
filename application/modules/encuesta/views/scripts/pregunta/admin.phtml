@@ -46,6 +46,17 @@
 		</div>
 	</div>
 	
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Editar Pregunta
+			</h3>
+		</div>
+		<div class="panel-body">
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+	
 	<?php if($pregunta->getTipo() != "AB"){ ?>
 	<div class="panel panel-info">
 		<div class="panel-heading">
@@ -92,16 +103,6 @@
 		</div>
 	</div>
 	<?php } ?>
-	<div class="panel panel-warning">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Editar Pregunta
-			</h3>
-		</div>
-		<div class="panel-body">
-			<?php echo $formulario; ?>
-		</div>
-	</div>
 	
 	<div class="panel panel-danger">
 		<div class="panel-heading">

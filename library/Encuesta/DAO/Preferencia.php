@@ -182,9 +182,9 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 		$tablaPS = $this->tablaPreferenciaSimple;
 		$select = $tablaPS->select()->from($tablaPS)->where("idPregunta = ?", $idPregunta)->where("idOpcion = ?", $idOpcion)->where("idAsignacion=?",$idAsignacion);
 		$mustBe = 0; //Debe ser el total
-		print_r("<br />");
-		print_r($select->__toString());
-		print_r("<br />");
+		//print_r("<br />");
+		//print_r($select->__toString());
+		//print_r("<br />");
 		$rowPreferencia = $tablaPS->fetchRow($select);
 		
 		$opcionDAO = new Encuesta_DAO_Opcion;
@@ -211,6 +211,7 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 			$mustBe = $modelOpcion->getVreal() * $rowPreferencia->preferencia;
 			
 			$valor = $modelOpcion->getVreal();
+			/*
 			print_r("<br />");
 			print_r("Valor a agregar: ".$valor." en la preferencia con Id: ".$idOpcion);
 			print_r("<br />");
@@ -218,6 +219,7 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 			print_r("<br />");
 			print_r("TotalPreferencia: ".$mustBe);
 			print_r("<br />");
+			*/
 			$rowPreferencia->total = $mustBe;
 			$rowPreferencia->save();
 		}

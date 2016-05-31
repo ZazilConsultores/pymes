@@ -1,6 +1,6 @@
 <?php
 
-class Sistema_ClientesControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class UsuarioControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
@@ -11,7 +11,7 @@ class Sistema_ClientesControllerTest extends Zend_Test_PHPUnit_ControllerTestCas
 
     public function testIndexAction()
     {
-        $params = array('action' => 'index', 'controller' => 'Clientes', 'module' => 'sistema');
+        $params = array('action' => 'index', 'controller' => 'Usuario', 'module' => 'default');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -26,26 +26,9 @@ class Sistema_ClientesControllerTest extends Zend_Test_PHPUnit_ControllerTestCas
             );
     }
 
-    public function testAltaAction()
+    public function testPerfilAction()
     {
-        $params = array('action' => 'alta', 'controller' => 'Clientes', 'module' => 'sistema');
-        $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
-        // assertions
-        $this->assertModule($urlParams['module']);
-        $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
-    }
-
-    public function testClienteAction()
-    {
-        $params = array('action' => 'cliente', 'controller' => 'Clientes', 'module' => 'sistema');
+        $params = array('action' => 'perfil', 'controller' => 'Usuario', 'module' => 'default');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -62,8 +45,6 @@ class Sistema_ClientesControllerTest extends Zend_Test_PHPUnit_ControllerTestCas
 
 
 }
-
-
 
 
 

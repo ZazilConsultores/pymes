@@ -272,11 +272,12 @@ class Encuesta_Util_Reporter {
 		$resultado = "";
 		if($promedioFinal >= 8.5){
 			$resultado = "EXCELENTE";
-		}elseif($promedioFinal >= 7.0){
+		}elseif($promedioFinal > 7.0){
 			$resultado = "ADECUADO";
-		}elseif($promedioFinal >= 5.0){
+		}elseif($promedioFinal > 5.0){
 			$resultado = "INSUFICIENTE";
-		}elseif($promedio >= 4.0){
+		}elseif($promedioFinal > 4.0){
+
 			$resultado = "DEFICIENTE";
 		}
 		$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedioFinal) . " - " . $resultado, 215, 215);

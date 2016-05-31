@@ -21,7 +21,7 @@
 	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
 	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
 	
-	$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
+	//$idReporte = $reporteDAO->agregarReporte($this->nombreArchivo);
 	$imgEncabezado = Zend_Pdf_Image::imageWithPath(IMAGES_PATH . '/EncabezadoVertical_2015-2016.png');
 	$page->drawImage($imgEncabezado, 50, 20, 580, 121);
 	$page->drawText("Resultados de Encuesta: ".$encuesta->getNombre(), 165, 160);
@@ -86,11 +86,11 @@
 						</tbody>
 					</table>
 			<?php	
-					$page->addTable($tablaPdf,0,190);
+					//$page->addTable($tablaPdf,0,190);
 					endforeach; ?>
 			<?php 
-				$pdf->addPage($page);
-				$pdf->save();
+				//$pdf->addPage($page);
+				//$pdf->save();
 			?>
 		</div>
 	</div>

@@ -73,7 +73,7 @@
 		$tablaDomicilio = $this->tablaDomicilio;
 		$tablaFiscales = $this->tablaFiscales;
 		//Creamos el domicilio en la tabla domicilio
-		$domicilio->setHash($domicilio->getHash());
+		//$domicilio->setHash($domicilio->getHash());
 		$tablaDomicilio->insert($domicilio->toArray());
 		//Creamos la relacion en la tabla fiscalesDomicilios
 		$select = $tablaDomicilio->select()->from($tablaDomicilio)->where("hash = ?",$domicilio->getHash());
@@ -88,6 +88,10 @@
 		//$tablaFiscalesDomicilio->insert($datos);
 	}
 	
-	public function editarDomicilio($idDomiclio, array $domicilio){}
+	public function editarDomicilio($idDomiclio, array $domicilio){
+		$where = $this->tablaDomicilio->getAdapter()->quoteInto("idDomicilio=?", $idDomiclio);
+		$this->tablaDomicilio->update($domicilio, $where);
+	}
+	
 	public function eliminarDomicilio($idDomiclio){}
  }
