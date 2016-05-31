@@ -59,11 +59,11 @@ class Contabilidad_NotaproveedorController extends Zend_Controller_Action
 					//sprint_r($producto);
 					$notaEntradaDAO->agregarProducto($encabezado, $producto);
 					//print_r($contador);
-					print_r('<br />');
+					//print_r('<br />');
 					$contador++;
 					
 				}
-					
+				//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");	
 				//print_r($datos);
 				//
 				//print_r('<br />');

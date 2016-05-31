@@ -28,6 +28,8 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Fecha:');
 		$eFecha->setAttrib("class", "form-control");
+		$eFecha->setAttrib("required","Dede seleccionar fecha");
+		//$eFecha->setAttrib("requiered");
 		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
@@ -67,6 +69,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required", "true");
+		$eProducto->setAttrib("required","La clave es requerida");
 		//$eProducto->setAttrib("class", "hidden");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
