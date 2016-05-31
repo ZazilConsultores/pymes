@@ -14,7 +14,7 @@
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
 			<a id="generarJsonArray" class="btn btn-warning">
-				<span class="glyphicon glyphicon-cog"></span> Cargar
+				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
 			<table id="productosNota" class="table table-striped table-condensed">
 				<thead>
@@ -56,6 +56,7 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+	
 		//console.dir(jsonProductos);
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
@@ -199,6 +200,7 @@
  			var productos = [];
  			
  			tabla.each(function(){
+ 				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
@@ -216,17 +218,23 @@
  				console.log("costoTotal:"+importe);
  				//console.log("total:"+total);
  				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				
+ 			
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
  			
  			console.log(myString);
- 			$("input#productos").val(myString);
+ 			if ($("input#productos").val(myString)){
+ 				
+ 			};
+ 			
  			// create an array restaurants
-			
 			// add objects to the array
 			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
 			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
+			
+		
  		});
  		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
@@ -239,6 +247,7 @@
 		  this.importe = importe;
 		  //this.unidad = unidad;
 		}
+		
 	
 	});//cierra document ready
 </script>
