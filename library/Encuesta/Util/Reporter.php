@@ -277,8 +277,9 @@ class Encuesta_Util_Reporter {
 		}elseif($promedioFinal > 5.0){
 			$resultado = "INSUFICIENTE";
 		}elseif($promedioFinal > 4.0){
-
 			$resultado = "DEFICIENTE";
+		}elseif($promedioFinal < 4.0){
+			$resultado = "MARGINAL";
 		}
 		$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedioFinal) . " - " . $resultado, 215, 215);
 		$page->addTable($tablaContenidoR, 55, 215);
@@ -315,21 +316,27 @@ class Encuesta_Util_Reporter {
 		$select = $tablaRegistro->select()->from($tablaRegistro)->where("idRegistro=?",$idDocente);
 		$rowDocente = $tablaRegistro->fetchRow($select);
 		// ---------------------------------------------------------------------------- Asignaciones
+		// Obtenemos todas las asignaciones del docente
 		$tablaAsignacion = $this->tablaAsignacionG;
 		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idRegistro=?",$idDocente);
-		print_r("Query: " . $select->__toString());
-		print_r("<br />");
+		//print_r("Query: " . $select->__toString());
+		//print_r("<br />");
 		$rowsAsignaciones = $tablaAsignacion->fetchAll($select);
+		//Nos enfocamos a extraer los IdAsignacion
+		$idAsignacionArray = array();
+		foreach ($rowsAsignaciones as $rowAsignacion) {
+			$idAsignacionArray[] = $rowAsignacion->idAsignacion;
+		} 
 		// ---------------------------------------------------------------------------- Reporte
 		$nombreArchivo = str_replace(' ', '_', $rowDocente->apellidos).str_replace(' ', '', $rowDocente->nombres)."-".$idEncuesta."-".$idDocente."-"."RGRAL.pdf";
 		
-		print_r("Nombre: " . $nombreArchivo);
-		print_r("<br />");
-		print_r("<br />");
+		//print_r("Nombre: " . $nombreArchivo);
+		//print_r("<br />");
+		//print_r("<br />");
 		// ========================================================== >>> Generamos el reporte a partir de plantilla
 		$pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteHBE.pdf');
 		$pages = $pdfTemplate->pages;
-		$pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/general/');
+		$pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/general');
 		$pdfReport->setYHeaderOffset(160);
 		// Clonamos 
 		$pageZ = clone $pages[0];
@@ -380,6 +387,7 @@ class Encuesta_Util_Reporter {
 		$numeroColumnas = 0;
 		$categorias = array();
 		$headersCategorias = array();
+		// Ancho estandar de las celdas de la tabla en el documento PDF
 		$widthGeneral = 65;
 		$hc1 = new My_Pdf_Table_Column;
 		$hc1->setText("Grupo");
@@ -387,10 +395,15 @@ class Encuesta_Util_Reporter {
 		$hc2 = new My_Pdf_Table_Column;
 		$hc2->setText("Alumnas");
 		$hc2->setWidth($widthGeneral);
+		
 		$headersCategorias[] = $hc1;
 		$headersCategorias[] = $hc2;
 		
 		$tablaGrupo = $this->tablaGrupo;
+		$tablaPregunta = $this->tablaPregunta;
+		$tablaRespuesta = $this->tablaRespuesta;
+		$tablaPreferenciaSimple = $this->tablaPreferenciaS;
+		$tablaOpcion = $this->tablaOpcion;
 		
 		foreach ($rowsSecciones as $rowSeccion) {
 			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccion=?",$rowSeccion->idSeccion);
@@ -414,34 +427,96 @@ class Encuesta_Util_Reporter {
 		$rowHeaderTableContent->setCellPaddings(array(2,2,2,2));
 		$tableContent->addRow($rowHeaderTableContent);
 		// ========================================================== >>> Iteramos a traves de las asignaciones
+		
 		$tablaERealizadas = $this->tablaERealizadas;
-		foreach ($rowsAsignaciones as $rowAsignacion) {
-			// idAsignacion: 
-			$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idAsignacion=?",$rowAsignacion->idAsignacion);
-			$rowAsignacion = $tablaERealizadas->fetchRow($select);
-			//
-			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo=?",$rowAsignacion->idGrupo);
-			$rowGrupo = $tablaGrupo->fetchRow($select);
-			//Obtenemos el numero de encuestas realizadas 
-			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo=?",$rowAsignacion->idGrupo);
-			$rowGrupo = $tablaGrupo->fetchRow($select);
-			//
+		$tablaGrupoE = $this->tablaGrupoE;
+		// Solo iteramos en las Asignaciones para la encuesta proporcionada
+		$select = $tablaERealizadas->select()->from($tablaERealizadas)->where("idEncuesta=?",$idEncuesta)->where("idAsignacion IN (?)",$idAsignacionArray);
+		//print_r("<br />");
+		//print_r("Select: ".$select->__toString());
+		//print_r("<br />");
+		$rowsRealizadas = $tablaERealizadas->fetchAll($select);
+		foreach ($rowsRealizadas as $rowRealizada) {
+			$rA = null;
+			foreach ($rowsAsignaciones as $rowAsignacion) {
+				if($rowRealizada->idAsignacion == $rowAsignacion->idAsignacion){
+					$rA = $rowAsignacion;
+					break;
+				} 
+			}
+			$rowTableContent = new My_Pdf_Table_Row;
+			$columnsContent = array();
+			//	Obtengo el GrupoE
+			$select = $tablaGrupoE->select()->from($tablaGrupoE)->where("idGrupo=?",$rA->idGrupo);
+			$rowGrupo = $tablaGrupoE->fetchRow($select);
 			$cc1 = new My_Pdf_Table_Column;
-			$cc1->setText($rowGrupo->nombre);
+			$cc1->setText($rowGrupo->grupo);
 			$cc1->setWidth($widthGeneral);
+			$columnsContent[] = $cc1;
+			//	Obtengo # de encuestas contestadas
 			$cc2 = new My_Pdf_Table_Column;
-			$cc2->setText($rowAsignacion->realizadas);
+			$cc2->setText($rowRealizada->realizadas);
 			$cc2->setWidth($widthGeneral);
+			$columnsContent[] = $cc2;
+			// Itero a traves de las categorias y obtengo los respectivos puntajes
 			foreach ($categorias as $idGrupo => $nombreGrupo) {
-				$valorMayor = $grupoDAO->obtenerValorMayorOpcion($categoria->getIdGrupo());
-				$numeroPreguntas = count($grupoDAO->obtenerPreguntas($categoria->getIdGrupo()));
-				$maximo = $erealizada["realizadas"] * $numeroPreguntas * $valorMayor["valor"];
+				//	Obtenemos la Opcion mas grande
+				$select = $tablaGrupo->select()->where("idGrupo=?",$idGrupo);
+				$grupo = $tablaGrupo->fetchRow($select);
+				$ids = explode(",", $grupo->opciones);
+				$select = $tablaOpcion->select()->from($tablaOpcion,array("idOpcion", "valor"=>"MAX(vreal)"))->where("idOpcion IN (?)",$ids);
+				$rowOpcion = $tablaOpcion->fetchRow($select);
+				
+				//$numeroPreguntas = count($grupoDAO->obtenerPreguntas($categoria->getIdGrupo()));
+				$tablaPregunta = $this->tablaPregunta;
+				$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
+				$rowsPreguntas = $tablaPregunta->fetchAll($select);
+				$numeroPreguntas = count($rowsPreguntas);
+				$idsPreguntas = array();
+				foreach ($rowsPreguntas as $rowPregunta) {
+					$idsPreguntas[] = $rowPregunta->idPregunta;
+				}
+				//	Obtenemos el puntaje maximo
+				$maximo = $rowRealizada->realizadas * $numeroPreguntas * $rowOpcion->valor;
+				//	La formula para calcular la puntuacion total es: $calif = ($pObtenido * 10) / $pMax
+				
+				//	Obtenemos el puntaje obtenido para la categoria en cuestion: 
+				$select = $tablaPreferenciaSimple->select()->from($tablaPreferenciaSimple)->where("idAsignacion=?",$rowRealizada->idAsignacion)->where("idPregunta IN (?)",$idsPreguntas);
+				$rowsPreferencias = $tablaPreferenciaSimple->fetchAll($select);
+				$obtenido = 0;
+				foreach ($rowsPreferencias as $rowPreferencia) {
+					$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcion=?",$rowPreferencia->idOpcion);
+					$rOpcion = $tablaOpcion->fetchRow($select);
+					$total = $rOpcion->vreal * $rowPreferencia->preferencia;
+					$obtenido += $total; 
+					if($rowPreferencia->total != $total){
+						$rowPreferencia->total = $total;
+						$rowPreferencia->save();
+					}
+				}
+				
+				if($maximo == 0){
+					$calificacion = 0;
+				}else{
+					$calificacion = ($obtenido * 10) / $maximo;
+				}
+				
+				
+				$cc = new My_Pdf_Table_Column;
+				$cc->setText(sprintf('%.2f', $calificacion));
+				$cc->setWidth($widthGeneral);
+				$columnsContent[] = $cc;
 			}
 			
-			
+			$rowTableContent->setColumns($columnsContent);
+			$rowTableContent->setFont($font,8);
+			$rowTableContent->setBorder(My_Pdf::TOP, new Zend_Pdf_Style());
+			$rowTableContent->setBorder(My_Pdf::RIGHT, new Zend_Pdf_Style());
+			$rowTableContent->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
+			$rowTableContent->setBorder(My_Pdf::LEFT, new Zend_Pdf_Style());
+			$rowTableContent->setCellPaddings(array(2,2,2,2));
+			$tableContent->addRow($rowTableContent);
 		}
-		
-		
 		
 		$page->addTable($tableContent, 40, 215);
 		$pdfReport->addPage($page);

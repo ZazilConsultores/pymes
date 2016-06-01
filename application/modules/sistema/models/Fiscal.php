@@ -86,7 +86,8 @@ class Sistema_Model_Fiscal
 	 public function __construct(array $datos)
     {
     	if(array_key_exists("idFiscal", $datos)) $this->idFiscal = $datos["idFiscal"];
-    	$this->rfc= $datos["rfc"];
+		if(array_key_exists("rfc", $datos)) $this->rfc = $datos["rfc"];
+    	//$this->rfc= $datos["rfc"];
     	$this->razonSocial = $datos["razonSocial"];
 		if(array_key_exists("idDomicilio", $datos)) $this->idDomicilio = $datos["idDomicilio"];
 		if(array_key_exists("idsTelefonos", $datos)) $this->idsTelefonos = $datos["idsTelefonos"];

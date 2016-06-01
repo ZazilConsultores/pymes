@@ -12,6 +12,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
         $eNumeroFactura = new Zend_Form_Element_Text('numFactura');
 		$eNumeroFactura->setLabel('Folio: ');
 		$eNumeroFactura->setAttrib("class", "form-control");
+		$eNumeroFactura->setAttrib("required","factura");
 
 		$eTipoMovto = New Zend_Form_Element_Select('idTipoMovimiento');
 		$eTipoMovto->setLabel('Tipo de Movimiento');
@@ -28,6 +29,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Fecha:');
 		$eFecha->setAttrib("class", "form-control");
+		$eFecha->setAttrib("required","Seleccionar fecha");
 		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
@@ -66,12 +68,13 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
-		$eProducto->setAttrib("required", "true");
+		$eProducto->setAttrib("required","");
 		//$eProducto->setAttrib("class", "hidden");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
+		
 		/*foreach ($divisas as $divisa){
 			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDivisa());			
 		}*/			

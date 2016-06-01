@@ -1,15 +1,22 @@
 <?php 
 	$formulario = $this->formulario;
 ?>
-<section class="row">
-	<article>
-		<header>
-			<h3>Alta de Empresa</h3>
-		</header>
-		<div>
-			<?php echo $formulario; ?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Alta de Empresa Administrable en el Sistema
+		</h3>
+	</div>
+	<div class="panel-body">
+		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresa","action"=>"index",),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Inicio
+		</a><br /><br />
+		<div class="container">
+			<div class="col-md-6">
+				<?php echo $formulario; ?>
+			</div>
 		</div>
-	</article>
+	</div>
 </section>
 <script>
 	$().ready(function(){
