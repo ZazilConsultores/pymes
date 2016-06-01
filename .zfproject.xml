@@ -1150,6 +1150,7 @@
               <dbTableFile dbTableName="Proveedores"/>
               <dbTableFile dbTableName="TipoReporte"/>
               <dbTableFile dbTableName="Reporte"/>
+              <dbTableFile dbTableName="TipoProveedor"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>

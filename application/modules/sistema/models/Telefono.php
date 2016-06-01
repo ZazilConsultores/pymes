@@ -78,14 +78,12 @@ class Sistema_Model_Telefono
     
     public function __construct(array $datos) {
     	if(array_key_exists("idTelefono", $datos)) $this->idTelefono = $datos["idTelefono"];
-		//if(array_key_exists("idTipoTelefono", $datos)) $this->idTipoTelefono = $datos["idTipoTelefono"];
-    	if(array_key_exists("lada", $datos)) $this->lada = $datos["lada"];
+		if(array_key_exists("lada", $datos)) $this->lada = $datos["lada"];
     	$this->tipo = $datos["tipo"];
     	$this->telefono = $datos["telefono"];
 		if(array_key_exists("extensiones", $datos)) $this->extensiones = $datos["extensiones"];
 		if(array_key_exists("descripcion", $datos)) $this->descripcion = $datos["descripcion"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
-		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray() {
@@ -98,7 +96,6 @@ class Sistema_Model_Telefono
 		$datos["extensiones"] = $this->extensiones;
 		$datos["descripcion"] = $this->descripcion;
 		$datos["fecha"] = $this->fecha;
-		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

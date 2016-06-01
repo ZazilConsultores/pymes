@@ -64,7 +64,7 @@ class Sistema_Model_Email
         $this->email = $datos["email"];
 		if(array_key_exists("descripcion", $datos)) $this->descripcion = $datos["descripcion"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray()
@@ -75,7 +75,7 @@ class Sistema_Model_Email
 		$datos["email"] = $this->email;
 		$datos["descripcion"] = $this->descripcion;
 		$datos["fecha"] = $this->fecha;
-		$datos["hash"] = $this->hash;
+		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}
