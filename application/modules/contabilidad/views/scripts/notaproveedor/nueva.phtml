@@ -14,7 +14,7 @@
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
 			<a id="generarJsonArray" class="btn btn-warning">
-				<span class="glyphicon glyphicon-cog"></span> Cargar
+				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
 			<table id="productosNota" class="table table-striped table-condensed">
 				<thead>
@@ -28,8 +28,10 @@
 						<th>Importe</th>
 						<th>Eliminar</th>
 					</tr>
+				
 				</thead>
 				<tbody>
+					
 				</tbody>
 				<tfoot>
 					<tr>
@@ -40,6 +42,7 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td><input id="total" class="form-control" /></td>
+				
 					</tr>
 				</tfoot>
 			</table>
@@ -53,6 +56,7 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+	
 		//console.dir(jsonProductos);
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
@@ -107,14 +111,22 @@
 		//Funcion Eliminar #btnLimpiar_2
  		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
  			var numero=0;
- 			var tabla = document.getElementById("productosNota");
+ 			//var tabla = document.getElementById("productosNota");
  
   			// si tenemos mas de una fila, borramos3
-  			if(tabla.rows.length > 2)
+  			//if(tabla.rows.length > 2)
+  			if ($("table#productosNota tr").length > 2) 
   			{
-  				tabla.deleteRow(tabla.rows.length-1);
-  				--numero;
+  				$("table#productosNota tr:first").remove();
+  				//tabla.deleteRow(tabla.rows.length-1);
+  				//$('table#productosNota tr:last').remove();
+  				//--numero;
   			}
+  			//if ($("table#productosNota tr").length != 1) {
+     		
+			//}
+  			   
+
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
@@ -188,6 +200,7 @@
  			var productos = [];
  			
  			tabla.each(function(){
+ 				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
@@ -205,17 +218,23 @@
  				console.log("costoTotal:"+importe);
  				//console.log("total:"+total);
  				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				
+ 			
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
  			
  			console.log(myString);
- 			$("input#productos").val(myString);
+ 			if ($("input#productos").val(myString)){
+ 				
+ 			};
+ 			
  			// create an array restaurants
-			
 			// add objects to the array
 			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
 			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
+			
+		
  		});
  		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
@@ -228,6 +247,7 @@
 		  this.importe = importe;
 		  //this.unidad = unidad;
 		}
+		
 	
 	});//cierra document ready
 </script>

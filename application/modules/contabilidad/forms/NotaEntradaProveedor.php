@@ -31,7 +31,9 @@ class Contabilidad_Form_NotaEntradaProveedor extends Zend_Form
 		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Fecha:');
+		$eFecha->setAttrib("required", "TRUE");
 		$eFecha->setAttrib("class", "form-control");
+		
 		
 		
 		
