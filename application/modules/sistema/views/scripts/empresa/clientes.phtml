@@ -23,11 +23,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ($fiscales as $fiscal) : 
-					//print_r("<br />");
-					//print_r($fiscal);
-					//print_r("<br />");
 					$empresa = $empresaDAO->obtenerEmpresa($fiscal->getIdFiscales());
-					//$empresa = $empresaDAO->obtenerEmpresaIdFiscales($fiscal->getIdFiscal());
 				?>
 				<tr>
 					<td><?php echo $fiscal->getRazonSocial() ?></td>

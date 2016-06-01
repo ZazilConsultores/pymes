@@ -10,29 +10,67 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 
     {
         /* Form Elements & Other Definitions Here ... */
+        $decoratorsCategoria = array(
+			//'Fieldset',
+			'FormElements',
+			//array(array('body' => 'HtmlTag'), array('tag' => 'tbody')),
+			array(array('tabla' => 'HtmlTag'), array('tag' => 'table', 'class' => 'table table-striped table-condensed')),
+			array('Fieldset', array('placement' => 'prepend')),
+			//array(array('element' => 'HtmlTag'), array('tag' => 'td', 'colspan' => '2')),
+			//array(array('row' => 'HtmlTag'), array('tag' => 'tr'))
+		);
+		
+		$decoratorsElemento = array(
+			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper', 
+			array(array('element' => 'HtmlTag'), array('tag' => 'td')), 
+			array('label', array('tag' => 'td') ), 
+			//array('Description', array('tag' => 'td', 'class' => 'label')), 
+			array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
+		);
+        
         $tipoEmpresa = Zend_Registry::get("tipoEmpresa");
 		$estadoDAO = new Inventario_DAO_Estado;
+		$empresaDAO = new Sistema_DAO_Empresa;
+		
 		$estados = $estadoDAO->obtenerEstados();
 		$municipioDAO = new Inventario_DAO_Municipio;
         
         $subFiscales = new Zend_Form_SubForm();
 		$subFiscales->setLegend("Datos Fiscales");
+		
 
         //   ===============================================================
         $eRazonSocial = new Zend_Form_Element_Text("razonSocial");
 		$eRazonSocial->setLabel("Razon Social: ");
 		$eRazonSocial->setAttrib("class", "form-control");
+		$eRazonSocial->setAttrib("required", "true");
         
         $eRFC = new Zend_Form_Element_Text("rfc");
 		$eRFC->setLabel("R.F.C.");
 		$eRFC->setAttrib("class", "form-control");
+		$eRFC->setAttrib("required", "true");
+		$eRFC->setAttrib("minlength", "12");
+		$eRFC->setAttrib("maxlength", "13");
 		
 		$eTipoEmpresa = new Zend_Form_Element_Select("tipo");
 		$eTipoEmpresa->setLabel("Tipo de Empresa: ");
 		$eTipoEmpresa->setAttrib("class", "form-control");
 		$eTipoEmpresa->setMultiOptions($tipoEmpresa);
+		//$eTipoEmpresa->removeMultiOption("");
+		
+		$eTipoProveedor = new Zend_Form_Element_Select("tipoProveedor");
+		$eTipoProveedor->setLabel("Tipo Proveedor:");
+		$eTipoProveedor->setAttrib("class", "form-control");
+		$rTiposProveedor = $empresaDAO->obtenerTipoProveedor();
+		foreach ($rTiposProveedor as $rTipoProveedor) {
+			$eTipoProveedor->addMultiOption($rTipoProveedor["idTipoProveedor"], $rTipoProveedor["descripcion"]);
+		}
+		
+		//$formulario->getSubForm("0")->addElement($eTipoProveedor);
         
-        $subFiscales->addElements(array($eRazonSocial,$eRFC,$eTipoEmpresa));
+        $subFiscales->addElements(array($eRazonSocial,$eRFC,$eTipoEmpresa,$eTipoProveedor));
+		$subFiscales->setElementDecorators($decoratorsElemento);
+		$subFiscales->setDecorators($decoratorsCategoria);
 		//   ===============================================================
 		$subDomicilio = new Zend_Form_SubForm();
 		$subDomicilio->setLegend("Domicilio");
@@ -60,15 +98,18 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		
 		$eCalle = new Zend_Form_Element_Text("calle");
 		$eCalle->setLabel("Calle:");
-		$eCalle->setAttrib("class", "form-control");	
+		$eCalle->setAttrib("class", "form-control");
+		$eCalle->setAttrib("required", "true");
 		
 		$eColonia = new Zend_Form_Element_Text("colonia");
 		$eColonia->setLabel("Colonia");
 		$eColonia->setAttrib("class", "form-control");
+		$eColonia->setAttrib("required", "true");
 		
 		$eCP = new Zend_Form_Element_Text("codigoPostal");
 		$eCP->setLabel("Codigo Postal");
 		$eCP->setAttrib("class", "form-control");
+		$eCP->setAttrib("required", "true");
 		
 		$eNumInterior = new Zend_Form_Element_Text("numeroInterior");
 		$eNumInterior->setLabel("Numero Interior");
@@ -79,6 +120,8 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eNumExterior->setAttrib("class", "form-control");
 		
 		$subDomicilio->addElements(array($eEstado,$eMunicipio,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
+		$subDomicilio->setElementDecorators($decoratorsElemento);
+		$subDomicilio->setDecorators($decoratorsCategoria);
 		//   ===============================================================
 		$subTelefono = new Zend_Form_SubForm();
 		$subTelefono->setLegend("Telefono");
@@ -96,6 +139,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eTelefono = new Zend_Form_Element_Text("telefono");
 		$eTelefono->setLabel("Telefono");
 		$eTelefono->setAttrib("class", "form-control");
+		$eTelefono->setAttrib("required", "true");
 		
 		$eExtensiones = new Zend_Form_Element_Text("extensiones");
 		$eExtensiones->setLabel("Extension");
@@ -107,6 +151,8 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eTelefonoDescripcion->setAttrib("rows", "2");
 		
 		$subTelefono->addElements(array($eLada,$eTipoTelefono,$eTelefono,$eTelefonoDescripcion,$eExtensiones));
+		$subTelefono->setElementDecorators($decoratorsElemento);
+		$subTelefono->setDecorators($decoratorsCategoria);
 		//   ===============================================================
 		$subEmail = new Zend_Form_SubForm();
 		$subEmail->setLegend("Email");
@@ -114,6 +160,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eEmail = new Zend_Form_Element_Text("email");
 		$eEmail->setLabel("Email");
 		$eEmail->setAttrib("class","form-control");
+		$eEmail->setAttrib("required", "true");
 		
 		$eEmailDescripcion = new Zend_Form_Element_Textarea("descripcion");
 		$eEmailDescripcion->setLabel("Descripcion: ");
@@ -121,7 +168,8 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eEmailDescripcion->setAttrib("rows", "2");
 		
 		$subEmail->addElements(array($eEmail,$eEmailDescripcion));
-		
+		$subEmail->setElementDecorators($decoratorsElemento);
+		$subEmail->setDecorators($decoratorsCategoria);
 		//   ===============================================================
 		$this->addSubForms(array($subFiscales,$subDomicilio,$subTelefono,$subEmail));
 		$eSubmit = new Zend_Form_Element_Submit("submit");

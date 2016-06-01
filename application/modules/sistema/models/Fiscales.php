@@ -36,22 +36,10 @@ class Sistema_Model_Fiscales {
         $this->razonSocial = $razonSocial;
     }
     
-    private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-    
     public function __construct(array $datos) {
         if(array_key_exists("idFiscales", $datos)) $this->idFiscales = $datos["idFiscales"];
 		$this->rfc = $datos["rfc"];
 		$this->razonSocial = $datos["razonSocial"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	
@@ -61,7 +49,6 @@ class Sistema_Model_Fiscales {
 		$datos["idFiscales"] = $this->idFiscales;
 		$datos["rfc"] = $this->rfc;
 		$datos["razonSocial"] = $this->razonSocial;
-		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}
