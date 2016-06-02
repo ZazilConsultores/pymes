@@ -76,7 +76,24 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			
 			//print_r($mMovtos);
 			$bd->insert("Movimientos",$mMovtos);
+		//========================Secuencial==================================================
+		$secuencial=0;	
+		$tablaCapas = $this->tablaCapas;
+		$select = $tablaCapas->select()->from($tablaCapas)
+		->where("fechaEntrada=?", $stringIni)
+		->order("secuencial DESC");
+	
+		$row = $tablaCapas->fetchRow($select); 
 		
+		if(!is_null($row)){
+			//$cantidad = $producto['cantidad'] * $row->cantidad;
+			$secuencial= $row->secuencial +1;
+			print_r($secuencial);
+		}else{
+			$secuencial = 1;	
+		
+		print_r($secuencial);
+		}
 		
 		//=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
