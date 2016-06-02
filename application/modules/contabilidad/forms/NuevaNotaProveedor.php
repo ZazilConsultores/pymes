@@ -73,6 +73,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("disable", "true");
 					
 		//Agregamos los elementos correspondientes a la subformaEncabezado
 		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProyecto,$eProducto));
