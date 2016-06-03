@@ -49,7 +49,8 @@ $connserver = array(
 		'username' => 'zazil',
 		'password' => 'admin',
 		//'dbname' => 'General',
-		'dbname' => 'GeneralSagrado',
+		//'dbname' => 'GeneralSagrado',
+		'dbname' => 'GeneralE',
 	);
 $connlocaltres = array(
 		'host' => 'localhost',
@@ -78,10 +79,10 @@ Zend_Registry::set('connlocal', $connlocal);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-//$db = Zend_Db::factory('PDO_MYSQL', $connserver);
+$db = Zend_Db::factory('PDO_MYSQL', $connserver);
 
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");

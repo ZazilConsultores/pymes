@@ -87,6 +87,7 @@ class Encuesta_Util_Reporter {
 		$pageZ = clone $pages[0];
 		$page = new My_Pdf_Page($pageZ);
 		$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		$fontBold = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHICB.TTF");
 		$page->setFont($font, 10);
 		
 		//print_r("Generando contenido :: Header");
@@ -343,6 +344,7 @@ class Encuesta_Util_Reporter {
 		$page = new My_Pdf_Page($pageZ);
 		//$page = new My_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER_LANDSCAPE);
 		$font = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHIC.TTF");
+		$fontBold = Zend_Pdf_Font::fontWithPath(PDF_PATH . "/fonts/microsoft/GOTHICB.TTF");
 		$page->setFont($font, 10);
 		
 		//print_r("Generando contenido :: Header");
@@ -383,6 +385,8 @@ class Encuesta_Util_Reporter {
 		//$tableHeader->addRow($rowTable4);
 		
 		$page->addTable($tableHeader, 150, 135);
+		$encuestadosTotales = 0;
+		$puntajesCategoria = array(); // idCategoria => $sumaPuntaje
 		// ========================================================== >>> Generamos content del reporte.
 		$numeroColumnas = 0;
 		$categorias = array();
@@ -411,6 +415,7 @@ class Encuesta_Util_Reporter {
 			$numeroColumnas += count($gruposSeccion);
 			foreach ($gruposSeccion as $grupoSeccion) {
 				$categorias[$grupoSeccion->idGrupo] = $grupoSeccion->nombre;
+				$puntajesCategoria[$grupoSeccion->idGrupo] = 0;
 				$hc = new My_Pdf_Table_Column;
 				$hc->setText($grupoSeccion->nombre);
 				$hc->setWidth($widthGeneral);
@@ -436,6 +441,7 @@ class Encuesta_Util_Reporter {
 		//print_r("Select: ".$select->__toString());
 		//print_r("<br />");
 		$rowsRealizadas = $tablaERealizadas->fetchAll($select);
+		$numeroGrupos = count($rowsRealizadas);
 		foreach ($rowsRealizadas as $rowRealizada) {
 			$rA = null;
 			foreach ($rowsAsignaciones as $rowAsignacion) {
@@ -458,6 +464,7 @@ class Encuesta_Util_Reporter {
 			$cc2->setText($rowRealizada->realizadas);
 			$cc2->setWidth($widthGeneral);
 			$columnsContent[] = $cc2;
+			$encuestadosTotales += $rowRealizada->realizadas;
 			// Itero a traves de las categorias y obtengo los respectivos puntajes
 			foreach ($categorias as $idGrupo => $nombreGrupo) {
 				//	Obtenemos la Opcion mas grande
@@ -506,6 +513,7 @@ class Encuesta_Util_Reporter {
 				$cc->setText(sprintf('%.2f', $calificacion));
 				$cc->setWidth($widthGeneral);
 				$columnsContent[] = $cc;
+				$puntajesCategoria[$idGrupo] += $calificacion;
 			}
 			
 			$rowTableContent->setColumns($columnsContent);
@@ -517,6 +525,34 @@ class Encuesta_Util_Reporter {
 			$rowTableContent->setCellPaddings(array(2,2,2,2));
 			$tableContent->addRow($rowTableContent);
 		}
+		// ======================================================================== Fila de promedios
+		$rowPromedio = new My_Pdf_Table_Row();
+		$cols = array();
+		$colEmpty = new My_Pdf_Table_Column;//Primera columna vacia
+		//$colEmpty->setWidth($widthGeneral);
+		$cols[] = $colEmpty;
+		
+		$colTotalEncuestados = new My_Pdf_Table_Column;
+		$colTotalEncuestados->setText($encuestadosTotales);
+		$colTotalEncuestados->setWidth($widthGeneral);
+		
+		foreach ($categorias as $idGrupo => $nombreGrupo) {
+			$colProm = new My_Pdf_Table_Column;
+			$promedio = $puntajesCategoria[$idGrupo] / $numeroGrupos;
+			$colProm->setText(sprintf('%.2f', $calificacion));
+			$colProm->setWidth($widthGeneral);
+			$cols[] = $colProm;
+			print_r("<br />");
+			print_r("Promedio: ".$promedio);
+			print_r("<br />");
+		}
+		
+		$rowPromedio->setColumns($cols);
+		$rowPromedio->setFont($fontBold,8);
+		$rowPromedio->setCellPaddings(array(2,2,2,2));
+		//$tableContent->addRow($rowPromedio);
+		
+		
 		
 		$page->addTable($tableContent, 40, 215);
 		$pdfReport->addPage($page);
