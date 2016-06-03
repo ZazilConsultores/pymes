@@ -32,15 +32,25 @@ class Sistema_EmpresaController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
         $formulario = new Sistema_Form_AltaEmpresa;
+		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("CL");
+		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("PR");
+		//$formulario->getSubForm("0")->removeElement("tipoProveedor");
+		
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				//print_r($datos);
+				//$empresa = new Sistema_Model_Fiscal($datos[0]);
+				//print_r($empresa->toArray());
+				try{
+					$this->empresaDAO->crearEmpresa($datos);
+					$this->view->messageSuccess = "Empresa dada de alta con exitosamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+				}
 				
-				$empresa = new Sistema_Model_Fiscal($datos);
-				$this->empresasDAO->crearEmpresa($empresa);
-				print_r($datos);
 			}
 		}
     }

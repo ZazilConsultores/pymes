@@ -9,6 +9,8 @@ interface Encuesta_Interfaces_IGrupo {
 	public function obtenerGrupo($idGrupo);
 	public function obtenerGrupoHash($hash);
 	public function obtenerPreguntas($idGrupo);
+	public function obtenerValorMayorOpcion($idGrupo);
+	public function obtenerValorMenorOpcion($idGrupo);
 	// =====================================================================================>>>   Crear
 	public function crearGrupo($idSeccion, Encuesta_Model_Grupo $grupo);
 	// =====================================================================================>>>   Editar

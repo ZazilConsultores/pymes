@@ -69,89 +69,154 @@
 	</div>
 </section>
 
+<script>
+	$().ready(function(){
+		$urlEncuesta = "/General/public/encuesta/";
+		
+		$("button[tipo='encuesta']").click(function(){
+			console.log($(this).attr("hash"));
+			$hash = $(this).attr("hash");
+			$hashContainer = $("div#detalles").attr("hash");
+			$tipo = "encuesta";
+			$tipoContainer = $("div#detalles").attr("tipo");
+			
+			if($hash != $hashContainer){
+				$.ajax({
+					url: $urlEncuesta + "html/encuestadet/hash/" + $hash,
+					dataType: "html",
+					success: function(data){
+						$("div#detalles").html(data);
+						$("div#detalles").attr("hash", $hash);
+						$("div#detalles").attr("tipo", $tipo);
+					}
+				});
+				// =======================================   >>> Cargamos las secciones
+				$.ajax({
+					url: $urlEncuesta + "html/secciones/hash/" + $hash,
+					dataType: "html",
+					success: function(data){
+						$("div#contenedorSecciones").html(data);
+						$("div#contenedorGrupos").html("");
+						$("div#contenedorPreguntas").html("");
+					}
+				});
+			}
+			
+		});
+	
+		$("div#contenedorSecciones").on("click", "button[tipo='seccion']", function(event) {
+			console.log("En secciones");
+			
+			$hash = $(this).attr("hash");
+			$hashContainer = $("div#detalles").attr("hash");
+			
+			$tipo = "seccion";
+			$tipoContainer = $("div#detalles").attr("tipo");
+			console.log($tipo);
+			console.log($tipoContainer);
+			
+			if($hash != $hashContainer){
+				//============================================================================================== Detalles Seccion
+				$urlDetallesSeccion = $urlEncuesta + "html/secciondet/hash/" + $hash;
+				$.ajax({
+					url: $urlDetallesSeccion,
+					dataType: "html",
+					success: function(data){
+						$("div#detalles").html(data);
+						$("div#detalles").attr("tipo", "seccion");
+						$("div#detalles").attr("hash", $hash);
+						$("div#detalles").attr("tipo", $tipo);
+					}
+				});
+				//============================================================================================== Grupos
+				//console.log("Lanzando peticion de grupos");
+				$urlGrupos = $urlEncuesta + "html/grupos/hash/" + $hash;
+				console.log($urlGrupos);
+				$.ajax({
+					url: $urlGrupos,
+					dataType: "html",
+					success: function(data){
+						$("div#contenedorGrupos").html(data);
+					}
+				});
+				//============================================================================================== Preguntas
+				//console.log("Lanzando peticion de preguntas");
+				$urlPreguntas = $urlEncuesta + "html/preguntas/hashSeccion/" + $hash;
+				$.ajax({
+					url: $urlPreguntas,
+					dataType: "html",
+					success: function(data){
+						$("div#contenedorPreguntas").html(data);
+					}
+				});
+			}
+			
+		});
+	
+		$("div#contenedorGrupos").on("click", "button[tipo='grupo']", function(event) {
+			console.log("En grupos");
+			$hash = $(this).attr("hash");
+			$hashContainer = $("div#detalles").attr("hash");
+			
+			$tipo = "grupo";
+			$tipoContainer = $("div#detalles").attr("tipo");
+			
+			if($hash != $hashContainer){
+				//============================================================================================== Detalles Grupo
+				$urlDetallesGrupo = $urlEncuesta + "html/grupodet/hash/" + $hash;
+				$.ajax({
+					url: $urlDetallesGrupo,
+					dataType: "html",
+					success: function(data){
+						$("div#detalles").html(data);
+						$("div#detalles").attr("tipo", "grupo");
+						$("div#detalles").attr("hash", $hash);
+						$("div#detalles").attr("tipo", $tipo);
+					}
+				});
+				//============================================================================================== Preguntas
+				console.log("Lanzando peticion de preguntas");
+				$urlPreguntas = $urlEncuesta + "html/preguntas/hashGrupo/" + $hash;
+				$.ajax({
+					url: $urlPreguntas,
+					dataType: "html",
+					success: function(data){
+						$("div#contenedorPreguntas").html(data);
+					}
+				});
+			}
+		});
+	
+		$("div#contenedorPreguntas").on("click", "button[tipo='pregunta']", function(event) {
+			console.log("En preguntas");
+			$hash = $(this).attr("hash");
+			$hashPadre = $(this).attr("padre");
+			//$tipo = $(this).attr("tipo");
+			//console.log($hash);
+			
+			$hashContainer = $("div#detalles").attr("hash");
+			$tipo = "grupo";
+			$tipoContainer = $("div#detalles").attr("tipo");
+			
+			if($hash != $hashContainer){
+				$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/hash/"+$hash;
+				console.log($urlDetallesPregunta);
+				$.ajax({
+					url: $urlDetallesPregunta,
+					dataType: "html",
+					success: function(data){
+						$("div#detalles").html(data);
+						$("div#detalles").attr("tipo", "pregunta");
+						$("div#detalles").attr("hash", $hash);
+						$("div#detalles").attr("tipo", $tipo);
+					}
+				});
+				
+				
+			}
+			
+		});
+	
+	});
 
-<div id="nuevaEncuesta" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h3 class="modal-title">Alta de Encuesta</h3>
-			</div>
-			<div class="modal-body">
-				<div role="tabpanel">
-					<ul class="nav nav-tabs" role="tablist">
-						<li class="active" role="presentation"><a href="#secc1" aria-controls="secc1" data-toggle="tab" role="tab">Seccion 1</a></li>
-						<li role="presentation"><a href="#secc2" aria-controls="secc2" data-toggle="tab" role="tab">Seccion 2</a></li>
-						<li role="presentation"><a href="#secc3" aria-controls="secc3" data-toggle="tab" role="tab">Seccion 3</a></li>
-					</ul>
-					
-					<div class="tab-content">
-						<div id="secc1" role="tabpanel" class="tab-pane active">
-							<h3>Seccion 1</h3>
-							<p>Un parrafo de la seccion uno</p>
-						</div>
-						
-						<div id="secc2" role="tabpanel" class="tab-pane">
-							<h3>Seccion 2</h3>
-							<p>Un parrafo de la seccion dos</p>
-						</div>
-						
-						<div id="secc3" role="tabpanel" class="tab-pane">
-							<h3>Seccion 3</h3>
-							<p>Un parrafo de la seccion tres</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-				<button type="button" class="btn btn-success">Guardar</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="nuevaEncuestaF" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h3 class="modal-title">Alta de Encuesta</h3>
-			</div>
-			<div class="modal-body">
-				<div role="tabpanel">
-					<ul class="nav nav-tabs" role="tablist">
-						<li class="active" role="presentation"><a href="#seccion1" aria-controls="seccion1" data-toggle="tab" role="tab">Seccion 1</a></li>
-						<li role="presentation"><a href="#seccion2" aria-controls="seccion2" data-toggle="tab" role="tab">Seccion 2</a></li>
-						<li role="presentation"><a href="#seccion3" aria-controls="seccion3" data-toggle="tab" role="tab">Seccion 3</a></li>
-					</ul>
-					
-					<div class="tab-content">
-						<div id="seccion1" role="tabpanel" class="tab-pane active">
-							<h3>Seccion 1</h3>
-							<p>Un parrafo de la seccion uno</p>
-						</div>
-						
-						<div id="seccion2" role="tabpanel" class="tab-pane">
-							<h3>Seccion 2</h3>
-							<p>Un parrafo de la seccion dos</p>
-						</div>
-						
-						<div id="seccion3" role="tabpanel" class="tab-pane">
-							<h3>Seccion 3</h3>
-							<p>Un parrafo de la seccion tres</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-				<button type="button" class="btn btn-success">Guardar</button>
-			</div>
-		</div>
-	</div>
-</div>
+</script>

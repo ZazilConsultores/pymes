@@ -6,8 +6,11 @@ class Encuesta_Form_AltaGrupoE extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $planDAO = new Encuesta_DAO_Plan;
+		$plan = $planDAO->obtenerPlanEstudiosVigente();
+		
         $cicloDAO = new Encuesta_DAO_Ciclo;
-		$ciclos = $cicloDAO->obtenerCiclos();
+		$ciclos = $cicloDAO->obtenerCiclos($plan["idPlanE"]);
         
         $eCiclo = new Zend_Form_Element_Select("ciclo");
         $eCiclo->setLabel("Ciclo: ");

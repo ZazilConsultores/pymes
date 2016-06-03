@@ -28,12 +28,26 @@ select * from grupoe;
 select * from materiae;
 
 select * from grupoe;
+select * from encuesta;
+
+select distinct idPregunta from respuesta where idEncuesta = 1 and idGrupo = 2 order by idPregunta;
+delete from preferenciasimple where idGrupo = 2;
+delete from erealizadas where idEncuesta = 1 and idRegistro = 1 and idGrupo = 2;
+select * from preferenciasimple where idGrupo = 2;
+
 select * from encuestagrupo;
 select * from profesoresgrupo;
+select * from erealizadas;
+select * from preferenciasimple;
 
 select * from grupo;
+select * from respuesta;
+select * from erealizadas;
+
 select * from respuesta where idEncuesta = 2;
 select distinct idEncuesta,idRegistro from respuesta;
+
+SELECT `ERealizadas`.* FROM `ERealizadas` WHERE (idEncuesta=1) AND (idRegistro=1) AND (idGrupo=2);
 
 select * from empresas;
 select * from empresa;

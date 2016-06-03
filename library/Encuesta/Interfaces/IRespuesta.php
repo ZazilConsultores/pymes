@@ -12,6 +12,7 @@ interface Encuesta_Interfaces_IRespuesta{
 	public function obtenerIdRegistroEncuesta($idEncuesta);
 	/** Obtiene las respuestas de un usuario en la encuesta **/
 	public function obtenerRespuestasEncuestaUsuario($idEncuesta, $idRegistro);
+	public function obtenerRespuestasPreguntaAsignacion($idEncuesta, $idAsignacion,$idPregunta);
 	// =====================================================================================>>>   Insertar
 	public function crearRespuesta($idEncuesta, Encuesta_Model_Respuesta $respuesta);
 	// =====================================================================================>>>   Actualizar

@@ -72,16 +72,20 @@ class Encuesta_Util_Generator {
 		);
 	}
 	
-	public function generarFormulario($idEncuesta, $idGrupo, $idDocente, $idMateria)
+	public function generarFormulario($idEncuesta, $idAsignacion)
 	{
+		
 		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		$ticket = $this->encuestaDAO->obtenerNumeroConjuntoAsignacion($idEncuesta, $idAsignacion);
+		
 		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
 		
-		$grupoe = $this->gruposDAO->obtenerGrupo($idGrupo);
+		$grupoe = $this->gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
 		$grado = $this->gradoDAO->obtenerGrado($grupoe->getIdGrado());
 		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
-		$docente = $this->registroDAO->obtenerRegistro($idDocente);
-		$materia = $this->materiaDAO->obtenerMateria($idMateria);
+		$docente = $this->registroDAO->obtenerRegistro($asignacion["idRegistro"]);
+		$materia = $this->materiaDAO->obtenerMateria($asignacion["idMateria"]);
 		
 		$formulario = new Zend_Form($encuesta->getHash());
 		
@@ -162,6 +166,7 @@ class Encuesta_Util_Generator {
 			}
 			
 			ksort($elementos);
+			//print_r($elementos);
 			
 			foreach ($elementos as $elemento) {
 				//============================================= Verificamos que tipo de elemento es
@@ -191,128 +196,106 @@ class Encuesta_Util_Generator {
 		$eSubmit->setAttrib("class", "btn btn-success");
 		//$eSubmit->setAttrib("disabled", "disabled");
 		
+		//$eConjunto = new Zend_Form_Element_Hidden("conjunto");
+		//$eConjunto->setValue($ticket);
+		
 		$formulario->addElement($eSubmit);
+		//$formulario->addElement($eConjunto);
 		$formulario->setDecorators($this->formDecorators);
 		
 		return $formulario;
 	}
 
-	public function procesarFormulario($idEncuesta,$idDocente,$idGrupo,$post)
+	public function procesarFormulario($idEncuesta,$idAsignacion,$post)
 	{
 		//print_r($post);
-		//$sub = array_search("referencia", $post);
-		//print_r($sub);
-		//return;
-		$registro = $this->registroDAO->obtenerRegistro($idDocente);
-		
-		$preguntaDAO = $this->preguntaDAO;
-		$numContenedores = count($post);
-		$numContenedores--;
-		//print_r("numContenedores: ".$numContenedores);
 		//print_r("<br />");
-		//print_r("secciones: <br />");
+		//print_r("============================");
 		//print_r("<br />");
+		unset($post["submit"]);
+		$contenedores = array_values($post);
+		//print_r($contenedores);
 		//print_r("<br />");
-		$secciones = array_values($post);
-		//print_r($secciones);
+		//print_r("============================");
 		//print_r("<br />");
-		//$encabezado = $secciones[0];
-		//$idEncuesta = $encabezado["idEncuesta"];
-		//$registro = $docente;//$this->registroDAO->obtenerRegistroReferencia($encabezado["referencia"]);
-			
-		//Recorremos todas las secciones
-		//print_r("<br />");
-		//print_r("====================");
-		//print_r("<br />");
-		for ($index = 0; $index < $numContenedores; $index++) {
-			//tomamos una seccion
-			$seccion = $secciones[$index];
+		// $sop: seccion o pregunta
+		$arrRespuestas = array();
+		//$arrRespuestas[0] = date("Y-m-d H:i:s", time());
+		foreach ($contenedores as $seccion) {
+			//print_r("En contenedor");
+			//print_r("<br />");
 			//print_r($seccion);
 			//print_r("<br />");
-			//print_r("====================");
-			foreach ($seccion as $preguntas) {
-					
-				//si pregunta es array, pregunta[idGrupo] => array(idPregunta=>idRespuesta)
-				$mRespuesta = null;
-				if(!is_array($preguntas)){
-					
-					$respuesta = array();
-					
-					$respuesta["idEncuesta"] = $idEncuesta;
-					$respuesta["idRegistro"] = $registro->getIdRegistro();
-					$respuesta["idGrupo"] = $idGrupo;
-					$respuesta["idPregunta"] = array_search($preguntas, $seccion);
-					$respuesta["respuesta"] = $preguntas;
-					
-					$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
-					$mRespuesta = $this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
-					
-					
-				}else{
-					foreach ($preguntas as $idPregunta => $idRespuesta) {
-						
-						$pregunta = $preguntaDAO->obtenerPregunta($idPregunta);
-						
-						$respuesta = array();
-						
-						$respuesta["idEncuesta"] = $idEncuesta;
-						$respuesta["idRegistro"] = $registro->getIdRegistro();
-						$respuesta["idGrupo"] = $idGrupo;
-						$respuesta["idPregunta"] = $idPregunta;
-						$respuesta["respuesta"] = $idRespuesta;
-						
-						$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
-						$mRespuesta = $this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
-						
-						if($pregunta->getTipo() == "SS"){
-							$this->preferenciaDAO->agregarPreferenciaPregunta($idPregunta, $idRespuesta, $idGrupo);
-						}
-						//print_r("<br />");
-						//print_r($respuesta);
-						//print_r("<br />");
-						//Insertamos en la tabla PreferenciaSimple
-						/*
-						if($pregunta->getTipo() != "AB"){
-							if($pregunta->getTipo() == "SS"){
-								//Quiza sea el primer registro, quiza sea un registro secundario
-								$this->preferenciaDAO->agregarPreferenciaPregunta($idPregunta, $idRespuesta);
-								
-							}
-						}
-						*/
-					}
-					//$mRespuesta = $this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
-				}
-				
-			}
+			//print_r("============================");
 			//print_r("<br />");
-			//print_r("====================");
-			/*
-			foreach ($seccion as $idPregunta => $resp) {
-				$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
-				
-				$preferencia = array();
-				
-				$preferencia["idPregunta"] = $registro->getIdRegistro();
-				$preferencia["idGrupo"] = $idEncuesta;
-				$preferencia["idOpcion"] = $idPregunta;
-				$preferencia["preferencia"] = implode(",", $resp);
-				
-				$modelRespuesta = new Encuesta_Model_Respuesta($respuesta);
-				//$modelRespuesta->setHash($modelRespuesta->getHash());
-				//$modelRespuesta->setFecha(date("Y-m-d H:i:s", time()));
-				
-				$this->respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+			//$gpo: grupo o pregunta
+			foreach ($seccion as $gop => $value) {
+				//print_r($gop);
+				//print_r("<br />");
+				//print_r("============================");
+				//print_r("<br />");
+				//Si value es array entonces es un grupo, $gop es la clave del grupo y $value son las respuestas del grupo
+				if(is_array($value)){
+					//$arrayRespuestas[] = 
+					//print_r($value);
+					//print_r("<br />");
+					//print_r("============================");
+					//print_r("<br />");
+					foreach ($value as $idPregunta => $respuesta) {
+						//$arrRespuestas[] = array($idPregunta => $respuesta);
+						//print_r("IdPregunta: ".$idPregunta. " - Respuesta: ".$respuesta);
+						//print_r("<br />");
+						$arrRespuestas[$idPregunta] = $respuesta;
+					}
+				}else{
+					//print_r("IdPregunta: ".$gop." - Respuesta: ".$value);
+					//print_r("<br />");
+					//print_r("============================");
+					//print_r("<br />");
+					$arrRespuestas[$gop] = $value;
+				}
 			}
-			*/
+			
+			//print_r($arrRespuestas);
+			//ksort($arrRespuestas);
 		}
-		$registroE = array();
-		$registroE["idGrupo"] = $idGrupo;
-		$registroE["idEncuesta"] = $idEncuesta;
-		$registroE["idRegistro"] = $idDocente;
 		
-		//$this->encuestaDAO->agregarEncuestaGrupo($registroE);
-		$this->encuestaDAO->agregarEncuestaRealizada($registroE);
+		//$hashEncuesta = Util_Secure::generateKey($arrRespuestas);
+		//print_r("Hash de la encuesta: ".$hashEncuesta);
+		//print_r("<br />");
+		$encuestaDAO = $this->encuestaDAO;
+		$preguntaDAO = $this->preguntaDAO;
+		$respuestaDAO = $this->respuestaDAO;
+		$preferenciaDAO = $this->preferenciaDAO;
+		$conjunto = $encuestaDAO->obtenerNumeroConjuntoAsignacion($idEncuesta, $idAsignacion);
+		$conjunto++;
+		//print_r("<br />");
+		//print_r("Conjunto: ".$conjunto);
+		//print_r("<br />");
+		foreach ($arrRespuestas as $idPregunta => $respuesta) {
+			
+			$pregunta = $preguntaDAO->obtenerPregunta($idPregunta);
+			
+			$datos = array();
+			$datos["idEncuesta"] = $idEncuesta;
+			$datos["idAsignacion"] = $idAsignacion;
+			$datos["idPregunta"] = $idPregunta;
+			$datos["respuesta"] = $respuesta;
+			$datos["conjunto"] = $conjunto;
+			$modelRespuesta = new Encuesta_Model_Respuesta($datos);
+			
+			$mResp = $respuestaDAO->crearRespuesta($idEncuesta, $modelRespuesta);
+			
+			if($pregunta->getTipo() == "SS"){
+				$this->preferenciaDAO->agregarPreferenciaPreguntaAsignacion($idAsignacion, $idPregunta, $respuesta); //($idPregunta,
+			}
+			
+		}
+		$registro = array();
+		$registro["idEncuesta"] = $idEncuesta;
+		$registro["idAsignacion"] = $idAsignacion;
+		$encuestaDAO->agregarEncuestaRealizada($registro);
+		
 	}
 	
 	private function agregarPregunta(Zend_Form $contenedor, Encuesta_Model_Pregunta $pregunta)
@@ -327,7 +310,7 @@ class Encuesta_Util_Generator {
 			$opciones = $this->opcionDAO->obtenerOpcionesPregunta($pregunta->getIdPregunta());
 			if($pregunta->getTipo() == "SS"){
 				$ePregunta = new Zend_Form_Element_Radio($pregunta->getIdPregunta());
-				
+				$ePregunta->setAttrib("required", "required");
 			}elseif($pregunta->getTipo() == "MS"){
 				$ePregunta = new Zend_Form_Element_MultiCheckbox($pregunta->getIdPregunta());
 			}

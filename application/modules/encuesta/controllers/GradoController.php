@@ -68,6 +68,7 @@ class Encuesta_GradoController extends Zend_Controller_Action
 		
 		$formulario = new Encuesta_Form_AltaGrado;
 		$formulario->getElement("grado")->setValue($grado->getGrado());
+		$formulario->getElement("abreviatura")->setValue($grado->getAbreviatura());
 		$formulario->getElement("descripcion")->setValue($grado->getDescripcion());
 		$formulario->getElement("submit")->setLabel("Actualizar Grado");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
@@ -81,6 +82,12 @@ class Encuesta_GradoController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
+        $idGrado = $this->getParam("idGrado");
+        $request = $this->getRequest();
+		$post = $request->getPost();
+		unset($post['submit']);
+		$this->gradoDAO->editarGrado($idGrado, $post);
+		$this->_helper->redirector->gotoSimple("admin", "grado", "encuesta",array("idGrado"=>$idGrado));
     }
 
     public function bajaAction()

@@ -2,9 +2,10 @@
 
 class IndexController extends Zend_Controller_Action
 {
-	
-	private $usuarioDAO;
-	private $rolDAO;
+
+    private $usuarioDAO = null;
+
+    private $rolDAO = null;
 
     public function init()
     {
@@ -54,7 +55,7 @@ class IndexController extends Zend_Controller_Action
 				
  				//print_r($data);
 				$this->view->result = $result->getMessages();
-                $this->_redirect('/');
+                //$this->_redirect('/');
  
             } else {
                 $this->view->loginError = $result->getMessages();
@@ -67,8 +68,27 @@ class IndexController extends Zend_Controller_Action
 		}
     }
 
+    public function normalizeAction()
+    {
+        // action body
+    }
+
+    public function logoutAction()
+    {
+        // action body
+        $auth = Zend_Auth::getInstance();
+		if($auth->hasIdentity()){
+			$auth->clearIdentity();
+		}
+		$this->redirect("/");
+    }
+
 
 }
+
+
+
+
 
 
 

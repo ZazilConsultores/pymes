@@ -12,9 +12,10 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloE;;
 	}
 	
-	public function obtenerCiclos(){
+	public function obtenerCiclos($idPlan){
 		$tablaCiclo = $this->tablaCiclo;
-		$rowsCiclos = $tablaCiclo->fetchAll();
+		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idPlanE=?",$idPlan);
+		$rowsCiclos = $tablaCiclo->fetchAll($select);
 		
 		$modelCiclos = array();
 		
@@ -40,6 +41,10 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$tablaCiclo = $this->tablaCiclo;
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("actual = ?","1");
 		$row = $tablaCiclo->fetchRow($select);
+		
+		if(is_null($row)){
+			throw new Util_Exception_BussinessException("Error: No hay ciclos escolares");
+		}
 		
 		$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
 		

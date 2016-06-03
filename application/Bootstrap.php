@@ -14,6 +14,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader->registerNamespace('Sistema_');
 		$autoloader->registerNamespace('Contabilidad_');
 		$autoloader->registerNamespace('Util_');
+		$autoloader->registerNamespace('My_');
 	}
 	
 	protected function _initPlugins() {
@@ -25,7 +26,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		$view->doctype('HTML5');
 		
-		$view->headTitle('Sistema de Inventario')->setSeparator(' :: ');
+		$view->headTitle('General Application')->setSeparator(' :: ');
 	}
 
 }

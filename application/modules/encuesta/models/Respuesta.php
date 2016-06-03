@@ -21,11 +21,21 @@ class Encuesta_Model_Respuesta
     public function getIdEncuesta() {
         return $this->idEncuesta;
     }
+	
+	private $idAsignacion;
+
+    public function getIdAsignacion() {
+        return $this->idAsignacion;
+    }
+    
+    public function setIdAsignacion($idAsignacion) {
+        $this->idAsignacion = $idAsignacion;
+    }
     
     public function setIdEncuesta($idEncuesta) {
         $this->idEncuesta = $idEncuesta;
     }
-	
+	/*
 	private $idRegistro;
 
     public function getIdRegistro() {
@@ -34,8 +44,8 @@ class Encuesta_Model_Respuesta
     
     public function setIdRegistro($idRegistro) {
         $this->idRegistro = $idRegistro;
-    }
-	
+    }*/
+	/*
 	private $idGrupo;
 
     public function getIdGrupo() {
@@ -45,7 +55,7 @@ class Encuesta_Model_Respuesta
     public function setIdGrupo($idGrupo) {
         $this->idGrupo = $idGrupo;
     }
-    
+    */
     private $idPregunta;
 
     public function getIdPregunta() {
@@ -56,7 +66,17 @@ class Encuesta_Model_Respuesta
         $this->idPregunta = $idPregunta;
     }
 	
-	private $respuesta;
+	private $conjunto;
+
+    public function getConjunto() {
+        return $this->conjunto;
+    }
+    
+    public function setConjunto($conjunto) {
+        $this->conjunto = $conjunto;
+    }
+    
+    private $respuesta;
 
     public function getRespuesta() {
         return $this->respuesta;
@@ -91,10 +111,11 @@ class Encuesta_Model_Respuesta
     {
     	if(array_key_exists("idRespuesta", $datos)) $this->idRespuesta = $datos["idRespuesta"];
     	if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
-        if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
-    	if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
+		if(array_key_exists("idAsignacion", $datos)) $this->idAsignacion = $datos["idAsignacion"];
+        //if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
+    	//if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
     	if(array_key_exists("idPregunta", $datos)) $this->idPregunta = $datos["idPregunta"];
-		
+		if(array_key_exists("conjunto", $datos)) $this->conjunto = $datos["conjunto"];
 		$this->respuesta = $datos["respuesta"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
@@ -106,9 +127,11 @@ class Encuesta_Model_Respuesta
 		
 		$datos["idRespuesta"] = $this->idRespuesta;
 		$datos["idEncuesta"] = $this->idEncuesta;
-		$datos["idRegistro"] = $this->idRegistro;
-		$datos["idGrupo"] = $this->idGrupo;
+		$datos["idAsignacion"] = $this->idAsignacion;
+		//$datos["idRegistro"] = $this->idRegistro;
+		//$datos["idGrupo"] = $this->idGrupo;
 		$datos["idPregunta"] = $this->idPregunta;
+		$datos["conjunto"] = $this->conjunto;
 		$datos["respuesta"] = $this->respuesta;
 		$datos["fecha"] = $this->fecha;
 		$datos["hash"] = $this->hash;

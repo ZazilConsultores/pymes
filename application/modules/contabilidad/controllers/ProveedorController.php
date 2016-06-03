@@ -2,8 +2,12 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
+	private $movimientosDAO;
+	private $capasDAO;
+	private $inventarioDAO;
+	
 
-    public $links = array(
+    /*public $links = array(
         'Inicio' => array(
             'module' => 'contabilidad',
             'controller' => 'proveedor',
@@ -45,18 +49,25 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
             'action' => 'index',
             'tipo' => '6'
             )
-        );
+        );*/
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
-		$this->view->links = $this->links;
+       	//$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
+		//$this->view->links = $this->links;
+		
+		$this->notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
+		 
+		
+		//$this->fiscalDAO = new Sistema_DAO_Fiscal;
+		//$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		
     }
 
     public function indexAction()
     {
-    	 // action body
+    	 /* action body
         $request = $this->getRequest();
         $tipo = $this->getParam('tipo');
         $formulario = null;
@@ -99,17 +110,60 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isGet()){
 			$this->view->mensajeFormulario = $mensajeFormulario;
 			$this->view->formulario = $formulario;
-		}
-
+		}**/
+		
+		/*$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_NotaEntradaProveedor;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				
+				$notaEntrada= new Contabilidad_Model_Movimientos($datos);
+				$this->movimientosDAO->crearNotaEntrada($notaEntrada);
+				print_r($datos);
+			}
+    	}*/
+    	//$formulario = new Contabilidad_Form_NotaEntradaProveedor;
+		
+		//Obtengo lista de estados y los envio a la vista
+		//$this->view->bancos = $this->bancoDAO->obtenerBancos();
+		//Envio a la vista el formulario de Alta de Estado, si el usuario lo llega se recibe la informacion en altaAction
+		//$this->view->formulario = $formulario;
+		
+		$notaEntradaDAO = $this->notaEntradaDAO;
+	
+		$select = $notaEntradaDAO->obtenerNotaEntrada();
+		
     }
 
     public function agregarnotaentradaAction()
     {
+    		
+		
         // action body
-    }
-
-
-}
+        $request = $this->getRequest();
+        $formulario = new Contabilidad_Form_NotaEntradaProveedor;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				print_r($datos);
+				$notaentrada = new Contabilidad_Model_Movimientos($datos);
+				$this->notaEntradaDAO->crearNotaEntrada($datos);
+				//print_r($datos);
+				$notaentrada = new Contabilidad_Model_Movimientos($datos);
+				$this->notaEntradaDAO->crearNotaEntrada($datos);
+			}
+		}
+        		
+			
+				
+				
+        
+	}}
 
 
 

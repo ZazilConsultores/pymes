@@ -7,7 +7,12 @@ defined('APPLICATION_PATH')
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
+// Define application pdf directory
+defined('PDF_PATH')
+    || define('PDF_PATH', realpath(dirname(__FILE__) .'/pdf' ));
+// Define application images directory
+defined('IMAGES_PATH')
+    || define('IMAGES_PATH', realpath(dirname(__FILE__) .'/images' ));
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
@@ -92,14 +97,14 @@ setlocale(LC_MONETARY, 'es_MX.UTF-8');
 $tipo = array('AB' => 'ABIERTAS', 'SS' => 'SIMPLE SELECCION', 'MS' => 'MULTIPLE SELECCION');
 $formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI');
 $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
-$estatus = array('0' => 'CREADO', '1' => 'ACTIVO', '2' => 'FINALIZADO');
+$estatus = array('A' => 'ACTIVO', 'C' => 'CANCELADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
 $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
 $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
-$gradosEscolares = array("1°","2°","3°","4°","5°","5°","6°","7°","8°","9°","10°","11°","12°","13°","14°","15°","16°");
+$gradosEscolares = array(1=>"1°",2=>"2°",3=>"3°",4=>"4°",5=>"5°",6=>"6°",7=>"7°",8=>"8°",9=>"9°");
 //Zend_Registry::set('estatusEncuesta', $estatusEncuesta);
 //============================================================================ DECORATORS
 //text form element table decorators

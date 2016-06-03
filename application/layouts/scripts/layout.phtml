@@ -21,10 +21,8 @@
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
-		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/formatoTablaAgregarProducto.css"  />
 		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
 	
-		
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.validate.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/additional-methods.js"></script>
@@ -35,12 +33,16 @@
 		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.bootstrap.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.responsive.min.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/responsive.bootstrap.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/generartabla.js"></script>
 		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
-		<script src="<?php echo $this->baseUrl(); ?>/js/generarTabla.js"></script>
+	
 		
 		<style>
 			body{
 				padding-top: 50px;
+			}
+			textarea{
+				resize: none;
 			}
 			.error{
 				color: #FF7F00;
@@ -53,10 +55,13 @@
 		</style>
 		<script>
 			$().ready(function(){
+				// Opciones default de jQuery Validator
 				jQuery.validator.setDefaults({
 					wrapper: "div",
 					errorElement: "label"
 				});
+				// Opciones default de ChartJS
+				//Chart.defaults.global.responsive = true;
 				
 			});
 		</script>
@@ -89,13 +94,20 @@
 			</section>
 		</div>
 		
-		<script src="<?php echo $this->baseUrl(); ?>/js/panel.js"></script>
 		<!--datepickeer-->
-					<script>
+		<script>
 			$(document).ready(function() {
 			    $('#table').dataTable( {
 			        "pagingType": "full_numbers"
 			    } );
+			    
+			    // acomodando formularios creados con Zend.
+			    
+			    //$("fieldset > dl > dt").css("display","inline");
+			    $("fieldset > dl > div > dt").css("display","inline-block");
+			    $("fieldset > dl > div > dd").css("display","inline-block");
+			    //$("fieldset > dl > dd").css("clear","left");
+			    
 			} );
 			$(function() { 
 				$( "#fecha" ).datepicker({

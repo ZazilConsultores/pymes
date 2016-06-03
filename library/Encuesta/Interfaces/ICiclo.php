@@ -6,7 +6,7 @@
  */
 interface Encuesta_Interfaces_ICiclo{
 	// =====================================================================================>>>   Buscar
-	public function obtenerCiclos();
+	public function obtenerCiclos($idPlan);
 	public function obtenerCiclo($idCiclo);
 	public function obtenerCicloActual();
 	public function crearCiclo(Encuesta_Model_Ciclo $ciclo);

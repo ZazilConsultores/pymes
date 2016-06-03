@@ -2,6 +2,7 @@
 	$nivel = $this->nivel;
 	$grado = $this->grado;
 	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"edita","idGrado"=>$grado->getIdGrado()),null,true));
 ?>
 <section class="row">
 	<div class="panel panel-success">

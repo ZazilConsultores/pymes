@@ -10,12 +10,18 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	private $tablaOpcion;
 	private $tablaPregunta;
 	private $tablaGrupo;
+	private $tablaPreferenciaS;
+	
+	private $tablaValoresOpcion;
 	
 	public function __construct() {
 		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
 		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		
+		$this->tablaValoresOpcion = new Encuesta_Model_DbTable_ValoresOpcion;
+		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple;
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -87,6 +93,22 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		
 		return $modelOpciones;
 	}
+	
+	public function obtenerValorOpcionMayor($idGrupo){
+		$tablaGrupo = $this->tablaGrupo;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo=?",$idGrupo);
+		$rowGrupo = $tablaGrupo->fetchRow($select);
+		$tablaOpcion = $this->tablaOpcion;
+		$ids = explode(",", $rowGrupo->opciones);
+		$select = $tablaOpcion->select()->from($tablaOpcion,array("idOpcion", "valor"=>"MAX(vreal)"))->where("idOpcion IN (?)",$ids);
+		
+		$row = $tablaOpcion->fetchRow($select);
+		return $row->toArray();
+	}
+	
+	public function obtenerValorOpcionMenor($idGrupo){
+		
+	}
 	// =====================================================================================>>>   Insertar
 	public function crearOpcion($idCategoria, Encuesta_Model_Opcion $opcion){
 		$tablaOpcion = $this->tablaOpcion;
@@ -100,6 +122,14 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$tablaOpcion->insert($opcion->toArray());
 	}
 	
+	public function asignarValorOpcion($idOpcion, $valor){
+		$tablaValorOpcion = $this->tablaValoresOpcion;
+		try{
+			$tablaValorOpcion->insert($valor);
+		}catch(Exception $ex){
+			throw new Util_Exception_BussinessException("Error: <strong>".$ex->getMessage()."</strong>");
+		}
+	}
 	// =====================================================================================>>>   Actualizar
 	public function editarOpcion($idOpcion, array $opcion){
 		$tablaOpcion = $this->tablaOpcion;
@@ -137,5 +167,24 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$data["opciones"] = $vector;
 		
 		$tablaGrupo->update($data, $where);
+	}
+	// =====================================================================================>>>   Normalizar
+	public function normalizarOpciones(){
+		$tablaPreferenciaS = $this->tablaPreferenciaS;
+		$preferencias = $tablaPreferenciaS->fetchAll();
+		$opcionDAO = new Encuesta_DAO_Opcion;
+		foreach ($preferencias as $preferencia) {
+			if(is_null($preferencia->total)){
+				$opcion = $opcionDAO->obtenerOpcion($preferencia->idOpcion);
+				$total = $opcion->getVreal() * $preferencia->preferencia;
+				
+				$tablaPreferenciaS->update(array("total"=>$total), "idPregunta=".$preferencia->idPregunta." and idGrupo=".$preferencia->idGrupo." and idOpcion=".$preferencia->idOpcion);
+				
+				
+			}
+		}
+		
+		
+		
 	}
 }

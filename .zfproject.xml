@@ -10,10 +10,16 @@
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
           <actionMethod actionName="login"/>
+          <actionMethod actionName="normalize"/>
+          <actionMethod actionName="logout"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Resultados">
           <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Usuario">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="perfil"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -49,6 +55,7 @@
         <modelFile modelName="Producto"/>
         <modelFile modelName="TipoProveedor"/>
         <modelFile modelName="Vendedor"/>
+        <modelFile modelName="Inventario"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -202,6 +209,11 @@
               <actionMethod actionName="altas"/>
               <actionMethod actionName="encuesta"/>
               <actionMethod actionName="resultado"/>
+              <actionMethod actionName="resumen"/>
+              <actionMethod actionName="rpreferencia"/>
+              <actionMethod actionName="reporte"/>
+              <actionMethod actionName="reportepa"/>
+              <actionMethod actionName="reporteg"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -243,6 +255,7 @@
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
               <actionMethod actionName="opciones"/>
+              <actionMethod actionName="grafica"/>
             </controllerFile>
             <controllerFile controllerName="Respuesta">
               <actionMethod actionName="index"/>
@@ -257,6 +270,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
+              <actionMethod actionName="avalor"/>
             </controllerFile>
             <controllerFile controllerName="Categoria">
               <actionMethod actionName="index"/>
@@ -309,6 +323,7 @@
               <actionMethod actionName="asociarp"/>
               <actionMethod actionName="aencuesta"/>
               <actionMethod actionName="encuestas"/>
+              <actionMethod actionName="resultado"/>
             </controllerFile>
             <controllerFile controllerName="Materia">
               <actionMethod actionName="index"/>
@@ -319,6 +334,48 @@
             </controllerFile>
             <controllerFile controllerName="Profesor">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="encuestas"/>
+            </controllerFile>
+            <controllerFile controllerName="Normalize">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="preferenciap"/>
+            </controllerFile>
+            <controllerFile controllerName="Plan">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="edita"/>
+            </controllerFile>
+            <controllerFile controllerName="Evaluacion">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="grupo"/>
+              <actionMethod actionName="capas"/>
+              <actionMethod actionName="acapa"/>
+            </controllerFile>
+            <controllerFile controllerName="4020">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+              <actionMethod actionName="c"/>
+              <actionMethod actionName="d"/>
+            </controllerFile>
+            <controllerFile controllerName="5030">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+              <actionMethod actionName="c"/>
+              <actionMethod actionName="d"/>
+            </controllerFile>
+            <controllerFile controllerName="6020">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+              <actionMethod actionName="c"/>
+            </controllerFile>
+            <controllerFile controllerName="Util">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="repvertical"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -340,6 +397,10 @@
             <formFile formName="AltaMateria"/>
             <formFile formName="MateriasProfesor"/>
             <formFile formName="AsociarEncuesta"/>
+            <formFile formName="AltaValor"/>
+            <formFile formName="AltaPlan"/>
+            <formFile formName="AltaEvaluacion"/>
+            <formFile formName="AltaCapa"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -364,6 +425,11 @@
               <dbTableFile dbTableName="ProfesoresGrupo"/>
               <dbTableFile dbTableName="EncuestaGrupo"/>
               <dbTableFile dbTableName="ERealizadas"/>
+              <dbTableFile dbTableName="ValoresOpcion"/>
+              <dbTableFile dbTableName="PlanE"/>
+              <dbTableFile dbTableName="AsignacionGrupo"/>
+              <dbTableFile dbTableName="Reporte"/>
+              <dbTableFile dbTableName="ECapas"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -660,6 +726,114 @@
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="resultado"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="resultado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="grafica"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="avalor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="resumen"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="preferenciap"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="rpreferencia"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reporte"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Profesor">
+                <viewScriptFile forActionName="encuestas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reportepa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reporteg"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="grupo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="capas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="acapa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="a"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="4020">
+                <viewScriptFile forActionName="d"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="a"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="5030">
+                <viewScriptFile forActionName="d"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="a"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="6020">
+                <viewScriptFile forActionName="c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Util">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Util">
+                <viewScriptFile forActionName="repvertical"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -705,6 +879,16 @@
             <controllerFile controllerName="GuiaContable">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="NuevaNotaProveedor">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="NotaProveedor">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Notaproveedor">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="nueva"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -718,6 +902,7 @@
             <formFile formName="CancelarRemisionCliente"/>
             <formFile formName="EmpresaClienteFR"/>
             <formFile formName="NotaEntradaProveedor"/>
+            <formFile formName="NuevaNotaProveedor"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -728,11 +913,19 @@
               <dbTableFile dbTableName="Divisa"/>
               <dbTableFile dbTableName="BancosEmpresa"/>
               <dbTableFile dbTableName="Fiscales"/>
+              <dbTableFile dbTableName="Movimientos"/>
+              <dbTableFile dbTableName="Inventario"/>
+              <dbTableFile dbTableName="Capas"/>
+              <dbTableFile dbTableName="TipoMovimiento"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
             <modelFile modelName="Fiscales"/>
             <modelFile modelName="Empresas"/>
+            <modelFile modelName="Movimientos"/>
+            <modelFile modelName="Inventario"/>
+            <modelFile modelName="Capas"/>
+            <modelFile modelName="TipoMovimiento"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -797,6 +990,18 @@
               <viewControllerScriptsDirectory forControllerName="Proveedor">
                 <viewScriptFile forActionName="agregarnotaentrada"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="NuevaNotaProveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="NotaProveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notaproveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notaproveedor">
+                <viewScriptFile forActionName="nueva"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -808,6 +1013,7 @@
             <controllerFile controllerName="Domicilio">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Telefono">
               <actionMethod actionName="index"/>
@@ -885,6 +1091,7 @@
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="cliente"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -896,6 +1103,13 @@
               <actionMethod actionName="domicilio"/>
               <actionMethod actionName="telefonos"/>
               <actionMethod actionName="emails"/>
+            </controllerFile>
+            <controllerFile controllerName="Normalize">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Reporte">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -910,6 +1124,7 @@
             <formFile formName="AltaSubparametro"/>
             <formFile formName="AltaRol"/>
             <formFile formName="AltaUsuario"/>
+            <formFile formName="AltaReporte"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -933,6 +1148,9 @@
               <dbTableFile dbTableName="Empresas"/>
               <dbTableFile dbTableName="Clientes"/>
               <dbTableFile dbTableName="Proveedores"/>
+              <dbTableFile dbTableName="TipoReporte"/>
+              <dbTableFile dbTableName="Reporte"/>
+              <dbTableFile dbTableName="TipoProveedor"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -1133,6 +1351,21 @@
               <viewControllerScriptsDirectory forControllerName="Email">
                 <viewScriptFile forActionName="fiscal"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Domicilio">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -1204,6 +1437,18 @@
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="login"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="normalize"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Usuario">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Usuario">
+            <viewScriptFile forActionName="perfil"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="logout"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -1241,9 +1486,15 @@
           <testApplicationControllerFile forControllerName="Index">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="login"/>
+            <testApplicationActionMethod forActionName="normalize"/>
+            <testApplicationActionMethod forActionName="logout"/>
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Resultados">
             <testApplicationActionMethod forActionName="index"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Usuario">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="perfil"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
         <testApplicationModulesDirectory>
@@ -1275,6 +1526,11 @@
                 <testApplicationActionMethod forActionName="altas"/>
                 <testApplicationActionMethod forActionName="encuesta"/>
                 <testApplicationActionMethod forActionName="resultado"/>
+                <testApplicationActionMethod forActionName="resumen"/>
+                <testApplicationActionMethod forActionName="rpreferencia"/>
+                <testApplicationActionMethod forActionName="reporte"/>
+                <testApplicationActionMethod forActionName="reportepa"/>
+                <testApplicationActionMethod forActionName="reporteg"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1316,6 +1572,7 @@
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
                 <testApplicationActionMethod forActionName="opciones"/>
+                <testApplicationActionMethod forActionName="grafica"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Respuesta">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1330,6 +1587,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
+                <testApplicationActionMethod forActionName="avalor"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Categoria">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1382,6 +1640,7 @@
                 <testApplicationActionMethod forActionName="asociarp"/>
                 <testApplicationActionMethod forActionName="aencuesta"/>
                 <testApplicationActionMethod forActionName="encuestas"/>
+                <testApplicationActionMethod forActionName="resultado"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Materia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1392,6 +1651,48 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Profesor">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="encuestas"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Normalize">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="preferenciap"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Plan">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="edita"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Evaluacion">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="grupo"/>
+                <testApplicationActionMethod forActionName="capas"/>
+                <testApplicationActionMethod forActionName="acapa"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="4020">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="a"/>
+                <testApplicationActionMethod forActionName="b"/>
+                <testApplicationActionMethod forActionName="c"/>
+                <testApplicationActionMethod forActionName="d"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="5030">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="a"/>
+                <testApplicationActionMethod forActionName="b"/>
+                <testApplicationActionMethod forActionName="c"/>
+                <testApplicationActionMethod forActionName="d"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="6020">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="a"/>
+                <testApplicationActionMethod forActionName="b"/>
+                <testApplicationActionMethod forActionName="c"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Util">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="repvertical"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
@@ -1400,6 +1701,7 @@
               <testApplicationControllerFile forControllerName="Domicilio">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Telefono">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1477,6 +1779,7 @@
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="cliente"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1488,6 +1791,13 @@
                 <testApplicationActionMethod forActionName="domicilio"/>
                 <testApplicationActionMethod forActionName="telefonos"/>
                 <testApplicationActionMethod forActionName="emails"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Normalize">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Reporte">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
@@ -1532,6 +1842,16 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="GuiaContable">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="NuevaNotaProveedor">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="NotaProveedor">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Notaproveedor">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="nueva"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

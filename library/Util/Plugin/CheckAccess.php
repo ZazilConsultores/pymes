@@ -48,7 +48,7 @@ class Util_Plugin_CheckAccess extends Zend_Controller_Plugin_Abstract {
 			$rol = $tablaRol->fetchRow($tablaRol->select()->from($tablaRol)->where('idRol = ?', $numRol));
 			$rolStr = $rol['rol'];
     	}
-		
+		print_r($rolStr);
         return $rolStr;
     }
 	

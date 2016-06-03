@@ -18,7 +18,7 @@ class Application_Form_Login extends Zend_Form
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Acceder");
-		$eSubmit->setAttrib("class", "btn btn-info");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		$this->addElements(array($eUsuario,$ePassword,$eSubmit));
 		

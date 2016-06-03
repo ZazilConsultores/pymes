@@ -65,26 +65,6 @@ class Encuesta_Model_Encuesta
     public function setFecha($fecha) {
         $this->fecha = $fecha;
     }
-
-    private $fechaInicio;
-
-    public function getFechaInicio() {
-        return $this->fechaInicio;
-    }
-    
-    public function setFechaInicio($fechaInicio) {
-        $this->fechaInicio = $fechaInicio;
-    }
-
-    private $fechaFin;
-
-    public function getFechaFin() {
-        return $this->fechaFin;
-    }
-    
-    public function setFechaFin($fechaFin) {
-        $this->fechaFin = $fechaFin;
-    }
 	
 	private $hash;
 
@@ -105,8 +85,6 @@ class Encuesta_Model_Encuesta
 		$this->descripcion = $datos["descripcion"];
 		$this->estatus = $datos["estatus"];
 		$this->fecha = $datos["fecha"];
-		//$this->fechaInicio = $datos["fechaInicio"];
-		//$this->fechaFin = $datos["fechaFin"];
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
@@ -119,8 +97,6 @@ class Encuesta_Model_Encuesta
 		$datos["descripcion"] = $this->descripcion;
 		$datos["estatus"] = $this->estatus;
 		$datos["fecha"] = $this->fecha;
-		//$datos["fechaInicio"] = $this->fechaInicio;
-		//$datos["fechaFin"] = $this->fechaFin;
 		$datos["hash"] = $this->hash;
 		
 		return $datos;

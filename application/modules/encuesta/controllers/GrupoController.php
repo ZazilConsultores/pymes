@@ -110,6 +110,14 @@ class Encuesta_GrupoController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
+        $request = $this->getRequest();
+		$idGrupo = $this->getParam("idGrupo");
+		$post = $request->getPost();
+		unset($post["submit"]);
+		
+		//$this->encuestaDAO->editarEncuesta($idEncuesta, $post);
+		$this->grupoDAO->editarGrupo($idGrupo, $post);
+		$this->_helper->redirector->gotoSimple("admin", "grupo", "encuesta", array("idGrupo" => $idGrupo));
     }
 
     public function bajaAction()

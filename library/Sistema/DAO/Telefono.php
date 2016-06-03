@@ -71,6 +71,10 @@ class Sistema_DAO_Telefono implements Sistema_Interfaces_ITelefono {
 		$rowFiscal->save();
 	}
 	
-	public function editarTelefono($idTelefono, array $telefono){}
+	public function editarTelefono($idTelefono, array $telefono){
+		$where = $this->tablaTelefono->getAdapter()->quoteInto("idTelefono=?", $idTelefono);
+		$this->tablaTelefono->update($telefono, $where);
+	}
+	
 	public function eliminarTelefono($idTelefono){}
 }
