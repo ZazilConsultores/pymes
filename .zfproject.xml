@@ -26,6 +26,7 @@
         <formFile formName="Login"/>
         <formFile formName="AgregarRemisionCliente"/>
         <formFile formName="AltaNivel"/>
+        <formFile formName="NuevaNotaProveedor"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -889,6 +890,13 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="nueva"/>
             </controllerFile>
+            <controllerFile controllerName="NotaCliente">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Notacliente">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="nueva"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -903,6 +911,8 @@
             <formFile formName="EmpresaClienteFR"/>
             <formFile formName="NotaEntradaProveedor"/>
             <formFile formName="NuevaNotaProveedor"/>
+            <formFile formName="NuevaNotaProveedor"/>
+            <formFile formName="NuevaNotaCliente"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1000,6 +1010,15 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Notaproveedor">
+                <viewScriptFile forActionName="nueva"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="NotaCliente">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notacliente">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notacliente">
                 <viewScriptFile forActionName="nueva"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -1916,6 +1935,13 @@
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Notaproveedor">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="nueva"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="NotaCliente">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Notacliente">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="nueva"/>
               </testApplicationControllerFile>

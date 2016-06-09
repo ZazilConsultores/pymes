@@ -63,9 +63,7 @@ class Contabilidad_NotaproveedorController extends Zend_Controller_Action
 					$contador++;
 					
 				}
-				//	
-				//print_r($datos);
-				//
+				//print_r($datos)		
 				//print_r('<br />');
 				//print_r($productos);
 				//print_r(json_decode($datos[0]['productos']));
