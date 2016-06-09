@@ -51,17 +51,6 @@ class Sistema_Model_Subparametro
     public function setFecha($fecha) {
         $this->fecha = $fecha;
     }
-
-    private $hash;
-
-    function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
-        return $this->hash;
-    }
-    
-    function setHash($hash) {
-        $this->hash = $hash;
-    }
 	
 	public function __construct(array $datos) {
         if(array_key_exists("idSubparametro", $datos)) $this->idSubparametro = $datos["idSubparametro"];
@@ -69,7 +58,6 @@ class Sistema_Model_Subparametro
 		$this->subparametro = $datos["subparametro"];
 		$this->claveSubparametro = $datos["claveSubparametro"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray() {
@@ -80,7 +68,6 @@ class Sistema_Model_Subparametro
 		$datos["subparametro"] = $this->subparametro;
 		$datos["claveSubparametro"] = $this->claveSubparametro;
 		$datos["fecha"] = $this->fecha;
-		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

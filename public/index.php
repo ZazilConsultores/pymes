@@ -57,7 +57,7 @@ $connlocaltres = array(
 		'username' => 'zazil',
 		'password' => 'admin',
 		//'dbname' => 'General',
-		'dbname' => 'GeneralSagrado',
+		'dbname' => 'GeneralEncuestas',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',

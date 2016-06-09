@@ -32,11 +32,13 @@ class Sistema_DomicilioController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$idDomicilio = $this->getParam("idDomicilio");
 		$domicilioModel = $this->domicilioDAO->obtenerDomicilio($idDomicilio);
-		//$estados = $this->estadoDAO->;
-		$municipios = $this->municipioDAO->obtenerMunicipios($domicilioModel->getIdEstado());
+		$municipio = $this->municipioDAO->obtenerMunicipio($domicilioModel->getIdMunicipio());
+		//$estado = $this->estadoDAO->obtenerEstado($municipio->getIdEstado());
+		$municipios = $this->municipioDAO->obtenerMunicipios($municipio->getIdEstado());
+		//$municipios = $this->municipioDAO->obtenerMunicipios($domicilioModel->getIdEstado());
         $formulario = new Sistema_Form_AltaDomicilio;
 		
-		$formulario->getElement("idEstado")->setValue($domicilioModel->getIdEstado());
+		$formulario->getElement("idEstado")->setValue($municipio->getIdEstado());
 		$formulario->getElement("idMunicipio")->clearMultiOptions();
 		foreach ($municipios as $municipio) {
 			$formulario->getElement("idMunicipio")->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
@@ -57,8 +59,8 @@ class Sistema_DomicilioController extends Zend_Controller_Action
 		}else{
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
-				unset($datos["idDomicilio"]);
+				//print_r($datos);
+				//unset($datos["idDomicilio"]);
 				//$domicilio = new Sistema_Model_Domicilio($datos);
 				try{
 					$this->domicilioDAO->editarDomicilio($idDomicilio, $datos);

@@ -68,6 +68,11 @@ class Sistema_DAO_Email implements Sistema_Interfaces_IEmail {
 		
 	}
 	
-	public function editarEmail($idEmail, array $email){}
+	public function editarEmail($idEmail, array $datos){
+		$tablaEmail = $this->tablaEmail;
+		$where = $tablaEmail->getAdapter()->quoteInto("idEmail=?", $idEmail);
+		$tablaEmail->update($datos, $where);
+		
+	}
 	public function eliminarEmail($idEmail){}
 }

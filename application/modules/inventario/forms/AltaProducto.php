@@ -7,9 +7,8 @@ class Inventario_Form_AltaProducto extends Zend_Form
     {
     	$subConfiguracion = new Zend_Form_SubForm();
 		$subConfiguracion->setLegend("Configuracion de Producto");
- //===================================================================================>>>>
+ 		//===================================================================================>>>>
     	
-   	
 		$parametroDAO = new Inventario_DAO_Parametro;		
 		$subparametroDAO = new Sistema_DAO_Subparametro;
 		
@@ -32,7 +31,7 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		
 		//$subDetalle = new Zend_Form_SubForm();
 		//$subDetalle->setLegend("Detalle Producto");
-//===================================================================================>>>>		
+		//===================================================================================>>>>		
 		
 		/*Descripcion */
 		$eProducto = new Zend_Form_Element_Text('producto');
@@ -55,7 +54,7 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$eAgregar = new Zend_Form_Element_Submit('submit');
 		$eAgregar->setLabel('Agregar Producto');
 		$eAgregar->setAttrib("class", "btn btn-success");
-//============================Agregamos Subformas=====================================================>>>>		
+		//============================Agregamos Subformas=====================================================>>>>		
 		//$this->addElement($elemento);
 		$this->addSubForm($subConfiguracion, 'Configuracion');
 		//$this->addSubForms(array($subDetalle));

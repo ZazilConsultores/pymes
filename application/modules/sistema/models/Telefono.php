@@ -66,16 +66,6 @@ class Sistema_Model_Telefono
         $this->descripcion = $descripcion;
     }
 	
-	private $fecha;
-
-    public function getFecha() {
-        return $this->fecha;
-    }
-    
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
-    }
-    
     public function __construct(array $datos) {
     	if(array_key_exists("idTelefono", $datos)) $this->idTelefono = $datos["idTelefono"];
 		if(array_key_exists("lada", $datos)) $this->lada = $datos["lada"];
@@ -83,7 +73,6 @@ class Sistema_Model_Telefono
     	$this->telefono = $datos["telefono"];
 		if(array_key_exists("extensiones", $datos)) $this->extensiones = $datos["extensiones"];
 		if(array_key_exists("descripcion", $datos)) $this->descripcion = $datos["descripcion"];
-		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
     }
 	
 	public function toArray() {
@@ -95,7 +84,6 @@ class Sistema_Model_Telefono
 		$datos["telefono"] = $this->telefono;
 		$datos["extensiones"] = $this->extensiones;
 		$datos["descripcion"] = $this->descripcion;
-		$datos["fecha"] = $this->fecha;
 		
 		return $datos;
 	}
