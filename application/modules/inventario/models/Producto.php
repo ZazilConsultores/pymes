@@ -59,7 +59,8 @@ class Inventario_Model_Producto
 		$this->producto = $datos["producto"];
 		$this->claveProducto = $datos["claveProducto"];
 		$this->codigoBarras = $datos["codigoBarras"];
-		$this->idsSubparametros = $datos["idsSubparametros"];
+		if(array_key_exists("idsSubparametros", $datos)) $this->idsSubparametros = $datos["idsSubparametros"];
+		//$this->idsSubparametros = $datos["idsSubparametros"];
 
 	}
 	
