@@ -87,10 +87,10 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	public function crearSubparametro(Sistema_Model_Subparametro $subparametro)
 	{
 		$tablasubparametro = $this->tablaSubparametro;
-		$select = $tablasubparametro->select()->from($tablasubparametro)->where( "hash = ? ", $subparametro->getHash());
-		$row = $tablasubparametro->fetchRow($select);
+		//$select = $tablasubparametro->select()->from($tablasubparametro)->where( "hash = ? ", $subparametro->getHash());
+		//$row = $tablasubparametro->fetchRow($select);
 		
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Subparámetro: <strong>" . $subparametro->getSubparametro() . "</strong> duplicado en el sistema");
+		//if(!is_null($row)) throw new Util_Exception_BussinessException("Subparámetro: <strong>" . $subparametro->getSubparametro() . "</strong> duplicado en el sistema");
 		//$subparametro->setHash($subparametro->getHash());
 		$subparametro->setFecha(date("Y-m-d H:i:s", time()));
 		
