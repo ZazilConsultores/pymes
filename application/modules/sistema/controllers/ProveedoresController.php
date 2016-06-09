@@ -2,10 +2,12 @@
 
 class Sistema_ProveedoresController extends Zend_Controller_Action
 {
+	private $empresaDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
+        $this->empresaDAO = new Sistema_DAO_Empresa;
     }
 
     public function indexAction()
@@ -25,7 +27,7 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$contenedor = $formulario->getValues();
 				//Se guarda Domicilio, Telefono, Email y al Final Fiscales
-				
+				/*
 				$datosFiscales = $contenedor[0];
 				$datosDomicilio = $contenedor[1];
 				$datosTelefono = $contenedor[2];
@@ -46,15 +48,35 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
 				$datos["esCliente"] = "N";
 				$datos["esProveedor"] = "S";
 				$modelEmpresa = new Sistema_Model_Empresa($datos);
-				$this->empresaDAO->crearEmpresa($modelEmpresa);
+				*/
+				//$this->empresaDAO->crearEmpresa($modelEmpresa);
 				
-				$this->_helper->redirector->gotoSimple("proveedores", "empresa", "sistema");
+				$datos = $formulario->getValues();
+				print_r($datos);
+				try{
+					$this->empresaDAO->crearEmpresa($datos);
+				}catch(Exception $ex){
+					
+				}
+				//$this->_helper->redirector->gotoSimple("proveedores", "empresa", "sistema");
 			}
 		}
     }
 
+    public function proveedorAction()
+    {
+        // action body
+        $idEmpresa = $this->getParam("idEmpresa");
+		$empresaDAO = $this->empresaDAO;
+		
+		$empresa = $empresaDAO->obtenerEmpresa($idEmpresa);
+		$this->view->empresa = $empresa;
+    }
+
 
 }
+
+
 
 
 

@@ -15,8 +15,8 @@ class Sistema_Form_AltaEmail extends Zend_Form
 		$eDescripcion->setAttrib("class", "form-control");
 		
 		
-		$eAgregar = new Zend_Form_Element_Submit('agregar');
-		$eAgregar->setLabel('Agregar');
+		$eAgregar = new Zend_Form_Element_Submit('submit');
+		$eAgregar->setLabel('Agregar Email');
 		$eAgregar->setAttrib('class', 'btn btn-primary');
 		
 		$this->addElement($eEmail);

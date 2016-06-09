@@ -80,6 +80,16 @@ class Sistema_EmpresasController extends Zend_Controller_Action
         // action body
     }
 
+    public function empresaAction()
+    {
+        // action body
+        $idEmpresa = $this->getParam("idEmpresa");
+		$empresaDAO = $this->empresaDAO;
+		
+		$empresa = $empresaDAO->obtenerEmpresa($idEmpresa);
+		$this->view->empresa = $empresa;
+    }
+
 
 }
 

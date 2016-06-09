@@ -35,7 +35,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 * 
 	 */
 	public function crearEmpresa(array $datos){
-		
+		print_r("<br />");
+		print_r("<br />");
+		$fecha = date('Y-m-d h:i:s', time());
+		print_r($fecha);
+		print_r("<br />");
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		print_r("Iniciando transaccion.");
 		print_r("<br />");
@@ -44,11 +48,13 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			print_r("En transaccion.");
 			print_r("<br />");
 			$fiscal = $datos[0];
+			$tipo = $fiscal["tipo"];
 			print_r($fiscal);
 			print_r("<br />");
 			$tipoProveedor = $fiscal["tipoProveedor"];
 			unset($fiscal["tipo"]);
 			unset($fiscal["tipoProveedor"]);
+			$fiscal['fecha'] = $fecha;
 			print_r($fiscal);
 			print_r("<br />");
 			print_r("<br />");
@@ -64,7 +70,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$bd->insert("Empresa", array("idFiscales"=>$idFiscales));
 			$idEmpresa = $bd->lastInsertId("Empresa", "idEmpresa");
 			//Insertamos en empresa, cliente o proveedor
-			switch ($fiscal['tipo']) {
+			switch ($tipo) {
 				case 'EM':
 					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
 					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa));
@@ -95,11 +101,10 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$email = $datos[3];
 			$mEmail = new Sistema_Model_Email($email);
 			//$mEmail->setHash($mEmail->getHash());
-			$mEmail->setFecha(date("Y-m-d H:i:s", time()));
 			$bd->insert("Email", $mEmail->toArray());
-			$idEmail = $bd->lastInsertId("Email","idEmail");
+			$idEmail = $bd->lastInsertId("<email></email>","idEmail");
 			$bd->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
-			$bd->commit();
+			//$bd->commit();
 		}catch(Exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -111,6 +116,26 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			print_r($ex->getMessage());
 			print_r("<br />");
 			print_r("<br />");
+			$bd->rollBack();
+		}
+	}
+	
+	/**
+	 * Agrega una nueva sucursal al domicilio fiscal.
+	 */
+	public function agregarSucursal($idFiscales, array $datos)
+	{
+		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$fecha = date('Y-m-d h:i:s', time());	
+		
+		try{
+			$bd->beginTransaction();
+			
+			
+			
+			
+			//$bd->commit();
+		}catch(Exception $ex){
 			$bd->rollBack();
 		}
 	}
@@ -199,16 +224,16 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	}
 	
 	public function obtenerIdFiscalesProveedores(){
-		$tablaProveedores = $this->tablaProveedores;
-		$rowsProveedores = $tablaProveedores->fetchAll();
-		
 		$tablaEmpresa = $this->tablaEmpresa;
+		$tablaProveedores = $this->tablaProveedores;
+		
+		$rowsProveedores = $tablaProveedores->fetchAll();
 		
 		$idFiscales = array();
 		
 		foreach ($rowsProveedores as $row) {
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa = ?", $row->idEmpresa);
-			$rowEmpresa = $tablaEmpresa->fetchAll($select);
+			$rowEmpresa = $tablaEmpresa->fetchRow($select);
 			
 			$idFiscales[] = $rowEmpresa->idFiscales;
 		}
