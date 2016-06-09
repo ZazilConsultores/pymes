@@ -33,8 +33,7 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	}
 	
 	
-	public function generarIdsSubparametro(array $claves)
-	
+	public function generarIdsSubparametros(array $claves)
 	{
 		
 		$tablaSubparametro= $this->tablaSubparametro;

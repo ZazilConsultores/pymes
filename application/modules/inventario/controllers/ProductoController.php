@@ -36,7 +36,7 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		
 				$producto = new Inventario_Model_Producto($datos);
 				$producto->setClaveProducto($subparametroDAO->generarClaveProducto($datos['Configuracion']));
-				$producto->setIdsSubparametro($subparametroDAO->generarIdsSubparametro($datos['Configuracion']));
+				$producto->setIdsSubparametros($subparametroDAO->generarIdsSubparametro($datos['Configuracion']));
 				$this->productoDAO->crearProducto($producto);
 				$this->_helper->redirector->gotoSimple("index", "producto", "inventario");
 			}
