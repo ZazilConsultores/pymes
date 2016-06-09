@@ -1034,6 +1034,7 @@
             <controllerFile controllerName="Fiscales">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Estados">
               <actionMethod actionName="index"/>
@@ -1087,6 +1088,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
+              <actionMethod actionName="empresa"/>
             </controllerFile>
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
@@ -1096,6 +1098,7 @@
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="proveedor"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
@@ -1109,6 +1112,17 @@
             </controllerFile>
             <controllerFile controllerName="Reporte">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Sucursal">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="atelefono"/>
+              <actionMethod actionName="etelefono"/>
+              <actionMethod actionName="dtelefono"/>
+              <actionMethod actionName="aemail"/>
+              <actionMethod actionName="eemail"/>
+              <actionMethod actionName="demail"/>
+              <actionMethod actionName="edomicilio"/>
               <actionMethod actionName="alta"/>
             </controllerFile>
           </controllersDirectory>
@@ -1151,6 +1165,7 @@
               <dbTableFile dbTableName="TipoReporte"/>
               <dbTableFile dbTableName="Reporte"/>
               <dbTableFile dbTableName="TipoProveedor"/>
+              <dbTableFile dbTableName="Sucursal"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -1167,6 +1182,7 @@
             <modelFile modelName="Empresas"/>
             <modelFile modelName="Clientes"/>
             <modelFile modelName="Proveedores"/>
+            <modelFile modelName="Sucursal"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1365,6 +1381,42 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Domicilio">
                 <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Fiscales">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresas">
+                <viewScriptFile forActionName="empresa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedores">
+                <viewScriptFile forActionName="proveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="atelefono"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="etelefono"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="dtelefono"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="aemail"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="eemail"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="demail"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="edomicilio"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sucursal">
+                <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1722,6 +1774,7 @@
               <testApplicationControllerFile forControllerName="Fiscales">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Estados">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1775,6 +1828,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
+                <testApplicationActionMethod forActionName="empresa"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1784,6 +1838,7 @@
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="proveedor"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Html">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1797,6 +1852,17 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Reporte">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Sucursal">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="atelefono"/>
+                <testApplicationActionMethod forActionName="etelefono"/>
+                <testApplicationActionMethod forActionName="dtelefono"/>
+                <testApplicationActionMethod forActionName="aemail"/>
+                <testApplicationActionMethod forActionName="eemail"/>
+                <testApplicationActionMethod forActionName="demail"/>
+                <testApplicationActionMethod forActionName="edomicilio"/>
                 <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>

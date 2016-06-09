@@ -58,14 +58,33 @@ class Sistema_EmailController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
-        // action body
         $request = $this->getRequest();
 		$idEmail = $this->getParam("idEmail");
-		$post = $request->getPost();
+		$email = $this->emailDAO->obtenerEmail($idEmail);
 		
-		$emailModel = new Application_Model_Email($post);
-		$this->emailDAO->editarEmail($idEmail, $emailModel);
-		$this->_helper->redirector->gotoSimple("index", "email", "sistema");
+		$formulario = new Sistema_Form_AltaEmail;
+		$formulario->getElement("email")->setValue($email->getEmail());
+		$formulario->getElement("descripcion")->setValue($email->getDescripcion());
+		$formulario->getElement("submit")->setLabel("Actualizar Email");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				try{
+					$this->emailDAO->editarEmail($idEmail, $datos);
+					$this->view->messageSuccess = "Email actualizado exitosamente !!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error al actualizar email: " . $ex->getMessage();
+				}
+				print_r($datos);
+			}
+		}
+		
+		
+		
     }
 
     public function bajaAction()

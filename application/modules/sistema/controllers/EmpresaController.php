@@ -84,11 +84,13 @@ class Sistema_EmpresaController extends Zend_Controller_Action
     {
         // action body
         $idFiscales = $this->empresaDAO->obtenerIdFiscalesProveedores();
+		print_r($idFiscales);
 		$fiscales = array();
+		
 		foreach ($idFiscales as $id) {
 			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
 		}
-        //$fiscales = $this->fiscalDAO->obtenerFiscalesProveedor();
+        
 		$this->view->fiscales = $fiscales;
     }
 
