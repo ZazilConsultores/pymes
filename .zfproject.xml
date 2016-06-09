@@ -857,6 +857,9 @@
             </controllerFile>
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="nota"/>
+              <actionMethod actionName="remision"/>
+              <actionMethod actionName="factura"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -867,6 +870,9 @@
               <actionMethod actionName="agregarN"/>
               <actionMethod actionName="agregarnota"/>
               <actionMethod actionName="agregarnotaentrada"/>
+              <actionMethod actionName="nota"/>
+              <actionMethod actionName="remision"/>
+              <actionMethod actionName="factura"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -927,6 +933,7 @@
               <dbTableFile dbTableName="Inventario"/>
               <dbTableFile dbTableName="Capas"/>
               <dbTableFile dbTableName="TipoMovimiento"/>
+              <dbTableFile dbTableName="Cardex"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -936,6 +943,7 @@
             <modelFile modelName="Inventario"/>
             <modelFile modelName="Capas"/>
             <modelFile modelName="TipoMovimiento"/>
+            <modelFile modelName="Cardex"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1020,6 +1028,24 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Notacliente">
                 <viewScriptFile forActionName="nueva"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="nota"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="remision"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="factura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="nota"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="remision"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="factura"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1839,6 +1865,9 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="nota"/>
+                <testApplicationActionMethod forActionName="remision"/>
+                <testApplicationActionMethod forActionName="factura"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1849,6 +1878,9 @@
                 <testApplicationActionMethod forActionName="agregarN"/>
                 <testApplicationActionMethod forActionName="agregarnota"/>
                 <testApplicationActionMethod forActionName="agregarnotaentrada"/>
+                <testApplicationActionMethod forActionName="nota"/>
+                <testApplicationActionMethod forActionName="remision"/>
+                <testApplicationActionMethod forActionName="factura"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>

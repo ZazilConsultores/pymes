@@ -31,7 +31,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	}
 	
 	public function agregarProducto(array $encabezado, $producto){
-		//print_r($datos);
+		print_r($datos);
 		
 
 		$datos=array();
