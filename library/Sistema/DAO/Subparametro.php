@@ -52,11 +52,12 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 	}
 		
-	public function obtenerSubparametros($idparametro)
+	public function obtenerSubparametros($idParametro)
 	{
 		$tablaSubparametro= $this->tablaSubparametro;
-		$where = $tablaSubparametro->getAdapter()->quoteInto("idparametro = ?", $idparametro);
-		$rowsSubParametro = $tablaSubparametro->fetchAll($where);
+		//$where = $tablaSubparametro->getAdapter()->quoteInto("idParametro = ?", $idparametro);
+		$select = $tablaSubparametro->select()->from($tablaSubparametro)->where("idParametro=?",$idParametro)->order("subparametro");
+		$rowsSubParametro = $tablaSubparametro->fetchAll($select);
 		
 		$modelSubParametros = array();
 		
