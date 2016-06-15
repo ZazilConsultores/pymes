@@ -19,6 +19,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	private $tablaEmail;
 	private $tablaEmailFiscales;
 	
+	private $tablaSucursal;
+	
 	public function __construct() {
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
 		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
@@ -26,13 +28,14 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
 		
 		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor;
+		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal;
+		
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
 	}
 	
 	/**
-	 * Crear empresa administrada.
-	 * Este metodo crea una empresa con la que vamos a operar en el sistema.
-	 * A su vez la empresa se da de alta en la Tabla Clientes y en la Tabla Proveedores.
-	 * 
+	 * Este metodo crea una empresa, el valor almacenado en $datos[0]["tipo"], 
+	 * puede ser
 	 */
 	public function crearEmpresa(array $datos){
 		print_r("<br />");
@@ -120,25 +123,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 	}
 	
-	/**
-	 * Agrega una nueva sucursal al domicilio fiscal.
-	 */
-	public function agregarSucursal($idFiscales, array $datos)
-	{
-		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-		$fecha = date('Y-m-d h:i:s', time());	
-		
-		try{
-			$bd->beginTransaction();
-			
-			
-			
-			
-			//$bd->commit();
-		}catch(Exception $ex){
-			$bd->rollBack();
-		}
-	}
+	
 
 	/**
 	 * 
@@ -257,4 +242,138 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 		
 	}
+	
+	/**
+	 * Agrega una nueva sucursal al domicilio fiscal.
+	 */
+	public function agregarSucursal($idFiscales, array $datos, $tipoSucursal)
+	{
+		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$fecha = date('Y-m-d h:i:s', time());	
+		
+		try{
+			$bd->beginTransaction();
+			$datosSucursal = $datos[0];
+			$datosDomicilio = $datos[1];
+			$datosTelefonos = $datos[2];
+			$datosEmails = $datos[3];
+			// ===================================================================================
+			print_r($datosSucursal);
+			print_r($datosDomicilio);
+			print_r($datosTelefonos);
+			print_r($datosEmails);
+			
+			//$bd->commit();
+		}catch(Exception $ex){
+			$bd->rollBack();
+		}
+	}
+	
+	/**
+	 * Sucursales de la empresa
+	 */
+	public function obtenerSucursales($idFiscales){
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
+		$rowsSucursales = $tablaSucursal->fetchRow($select);
+		
+		if(is_null($rowsSucursales)){
+			return null;
+		}else{
+			return $rowsSucursales->toArray();
+		}
+	}
+	
+	/**
+	 * Comprueba que la empresa con IdFiscales proporcionada 
+	 * sea parte de las empresas operables en el sistema.
+	 */
+	public function esEmpresa($idFiscales){
+		$esEmpresa = false;
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$empresa = $this->obtenerEmpresaPorIdFiscales($idFiscales);
+		
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$empresa["idEmpresa"]);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		if(!is_null($rowEmpresas)) $esEmpresa = true;
+		
+		return $esEmpresa;
+	}
+	
+	/**
+	 * Comprueba que la empresa con IdFiscales proporcionada
+	 * sea parte de los clientes del sistema
+	 */
+	public function esCliente($idFiscales){
+		$esCliente = false;
+		$tablaCliente = $this->tablaClientes;
+		
+		$empresa = $this->obtenerEmpresaPorIdFiscales($idFiscales);
+		$select = $tablaCliente->select()->from($tablaCliente)->where("idEmpresa=?",$empresa["idEmpresa"]);
+		$rowCliente = $tablaCliente->fetchRow($select);
+		
+		if(!is_null($rowCliente)) $esCliente = true;
+		
+		return $esCliente;
+	}
+	
+	/**
+	 * Comprueba que la empresa con IdFiscales proporcionada
+	 * sea parte de los proveedores del sistema
+	 */
+	public function esProveedor($idFiscales){
+		$esProveedor = false;
+		$tablaProveedores = $this->tablaProveedores;
+		$empresa = $this->obtenerEmpresaPorIdFiscales($idFiscales);
+		$select = $tablaProveedores->select()->from($tablaProveedores)->where("idEmpresa=?",$empresa["idEmpresa"]);
+		$rowProveedor = $tablaProveedores->fetchRow($select);
+		
+		if(!is_null($rowProveedor)) $esProveedor = true;
+		
+		return $esProveedor;
+	}
+	
+	/**
+	 * Agrega un nuevo telefono de contacto de la sucursal proporcionada.
+	 */
+	public function agregarTelefonoSucursal($idSucursal, Sistema_Model_Telefono $telefono){
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal);
+		$rowSucursal = $tablaSucursal->fetchRow($select);
+		if(!is_null($rowSucursal)){
+			//Obtenemos los id'sTelefonos de la sucursal
+			$telefonosSucursal = explode(",", $rowSucursal->telefonos);
+			//Agregamos telefono a tablaTelefono y con el idGenerado lo agregamos a la sucursal
+			//$tablaTelefono = $this->tablaTelefono;
+			print_r($telefonosSucursal);
+			print_r("<br />");
+			$idTelefono = $this->tablaTelefono->insert($telefono->toArray());
+			//$idTelefono = $tablaTelefono->get
+			$telefonosSucursal[] = $idTelefono;
+			$telefonosSucursal = implode(",", $telefonosSucursal);
+			print_r($telefonosSucursal);
+			print_r("<br />");
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public function agregarEmailSucursal($idSucursal, Sistema_Model_Email $email){
+		
+	}
+	
+	public function editarTelefonoSucursal($idSucursal, array $arrayTelefono){}
+	public function editarEmailSucursal($idSucursal, array $arrayEmail){}
+	
+	public function eliminarTelefonoSucursal($idSucursal, $idTelefono){}
+	public function eliminarEmailSucursal($idSucursal, $idEmail){}
+	
+	
+	
+	
+	
+	
 }

@@ -1075,6 +1075,7 @@
               <actionMethod actionName="empresas"/>
               <actionMethod actionName="clientes"/>
               <actionMethod actionName="proveedores"/>
+              <actionMethod actionName="sucursales"/>
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
@@ -1158,6 +1159,7 @@
             <formFile formName="AltaRol"/>
             <formFile formName="AltaUsuario"/>
             <formFile formName="AltaReporte"/>
+            <formFile formName="AltaSucursal"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1436,6 +1438,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Sucursal">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresa">
+                <viewScriptFile forActionName="sucursales"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1815,6 +1820,7 @@
                 <testApplicationActionMethod forActionName="empresas"/>
                 <testApplicationActionMethod forActionName="clientes"/>
                 <testApplicationActionMethod forActionName="proveedores"/>
+                <testApplicationActionMethod forActionName="sucursales"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
