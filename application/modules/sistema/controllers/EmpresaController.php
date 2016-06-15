@@ -3,11 +3,15 @@
 class Sistema_EmpresaController extends Zend_Controller_Action
 {
 
-    private $empresaDAO;
-	private $domicilioDAO;
-	private $fiscalesDAO;
-	private $telefonoDAO;
-	private $emailDAO;
+    private $empresaDAO = null;
+
+    private $domicilioDAO = null;
+
+    private $fiscalesDAO = null;
+
+    private $telefonoDAO = null;
+
+    private $emailDAO = null;
 
     public function init()
     {
@@ -94,8 +98,24 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 		$this->view->fiscales = $fiscales;
     }
 
+    public function sucursalesAction()
+    {
+        // action body
+        //$empresaDAO = $this->empresaDAO;
+		//$sucursales = $empresaDAO;
+		$idFiscales = $this->getParam("idFiscales");
+		$tipoSucursal = $this->getParam("tipoSucursal");
+		//$empresaDAO->obtenerSucursales($idFiscales);
+		$this->view->empresaDAO = $this->empresaDAO;
+		$this->view->fiscalesDAO = $this->fiscalesDAO;
+		$this->view->idFiscales = $idFiscales;
+		$this->view->tipoSucursal = $tipoSucursal;
+    }
+
 
 }
+
+
 
 
 

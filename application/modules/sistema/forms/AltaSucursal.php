@@ -1,13 +1,9 @@
 <?php
-/**
- * @author Hector Giovanni Rodriguez Ramos
- * @copyright 2016, Zazil Consultores S.A. de C.V.
- * @version 1.0.0
- */
-class Sistema_Form_AltaEmpresa extends Zend_Form
-{
-    public function init()
 
+class Sistema_Form_AltaSucursal extends Zend_Form
+{
+
+    public function init()
     {
         /* Form Elements & Other Definitions Here ... */
         $decoratorsCategoria = array(
@@ -34,43 +30,24 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		
 		$estados = $estadoDAO->obtenerEstados();
 		$municipioDAO = new Inventario_DAO_Municipio;
-        
-        $subFiscales = new Zend_Form_SubForm();
-		$subFiscales->setLegend("Datos Fiscales");
-		
-
         //   ===============================================================
-        $eRazonSocial = new Zend_Form_Element_Text("razonSocial");
-		$eRazonSocial->setLabel("Razon Social: ");
-		$eRazonSocial->setAttrib("class", "form-control");
-		$eRazonSocial->setAttrib("required", "true");
+        $subSucursal = new Zend_Form_SubForm();
+		$subSucursal->setLegend("Datos de Sucursal");
+		
+		$eNombreSucursal = new Zend_Form_Element_Text("nombreSucursal");
+		$eNombreSucursal->setLabel("Nombre Sucursal");
+		$eNombreSucursal->setAttrib("class", "form-control");
+		$eNombreSucursal->setAttrib("required", "true");
+		
+		$eTipoSucursal = new Zend_Form_Element_Select("tipoSucursal");
+		$eTipoSucursal->setLabel("Tipo Sucursal");
+		$eTipoSucursal->setAttrib("class", "form-control");
+		$eTipoSucursal->setAttrib("disabled", "true");
+		
         
-        $eRFC = new Zend_Form_Element_Text("rfc");
-		$eRFC->setLabel("R.F.C.");
-		$eRFC->setAttrib("class", "form-control");
-		$eRFC->setAttrib("required", "true");
-		$eRFC->setAttrib("minlength", "12");
-		$eRFC->setAttrib("maxlength", "13");
-		
-		$eTipoEmpresa = new Zend_Form_Element_Select("tipo");
-		$eTipoEmpresa->setLabel("Tipo de Empresa: ");
-		$eTipoEmpresa->setAttrib("class", "form-control");
-		$eTipoEmpresa->setMultiOptions($tipoEmpresa);
-		//$eTipoEmpresa->removeMultiOption("");
-		
-		$eTipoProveedor = new Zend_Form_Element_Select("tipoProveedor");
-		$eTipoProveedor->setLabel("Tipo Proveedor:");
-		$eTipoProveedor->setAttrib("class", "form-control");
-		$rTiposProveedor = $empresaDAO->obtenerTipoProveedor();
-		foreach ($rTiposProveedor as $rTipoProveedor) {
-			$eTipoProveedor->addMultiOption($rTipoProveedor["idTipoProveedor"], $rTipoProveedor["descripcion"]);
-		}
-		
-		//$formulario->getSubForm("0")->addElement($eTipoProveedor);
-        
-        $subFiscales->addElements(array($eRazonSocial,$eRFC,$eTipoEmpresa,$eTipoProveedor));
-		$subFiscales->setElementDecorators($decoratorsElemento);
-		$subFiscales->setDecorators($decoratorsCategoria);
+        $subSucursal->addElements(array($eNombreSucursal,$eTipoSucursal));
+		$subSucursal->setElementDecorators($decoratorsElemento);
+		$subSucursal->setDecorators($decoratorsCategoria);
 		//   ===============================================================
 		$subDomicilio = new Zend_Form_SubForm();
 		$subDomicilio->setLegend("Domicilio");
@@ -118,6 +95,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eNumExterior = new Zend_Form_Element_Text("numeroExterior");
 		$eNumExterior->setLabel("Numero Exterior");
 		$eNumExterior->setAttrib("class", "form-control");
+		$eNumExterior->setAttrib("required", "true");
 		
 		$subDomicilio->addElements(array($eEstado,$eMunicipio,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
 		$subDomicilio->setElementDecorators($decoratorsElemento);
@@ -171,7 +149,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$subEmail->setElementDecorators($decoratorsElemento);
 		$subEmail->setDecorators($decoratorsCategoria);
 		//   ===============================================================
-		$this->addSubForms(array($subFiscales,$subDomicilio,$subTelefono,$subEmail));
+		$this->addSubForms(array($subSucursal,$subDomicilio,$subTelefono,$subEmail));
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Crear Sucursal");
 		$eSubmit->setAttrib("class", "btn btn-success");

@@ -45,11 +45,11 @@ class Inventario_Model_Producto
 	private $idsSubparametros;
 
     public function getIdsSubparametros() {
-        return $this->idsSubparametro;
+        return $this->idsSubparametros;
     }
     
     public function setIdsSubparametros($idsSubparametro) {
-        $this->idsSubparametro = $idsSubparametro;
+        $this->idsSubparametros = $idsSubparametro;
     }
 	
 	public function __construct(array $datos)
