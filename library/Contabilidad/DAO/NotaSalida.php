@@ -9,6 +9,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 	private $tablaInventario;
 	private $tablaCapas;
 	private $tablaMultiplos;
+	private $tablaCardex;
 	
 	
 	public function __construct() {
@@ -16,12 +17,12 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
-		
+		$this->tablaCardex = new  Contabilidad_Model_DbTable_Cardex;	
 	}
 
 	
-	public function agregarProducto(array $encabezado, $producto){
-		//$datos=array();
+	public function restarProducto(array $encabezado, $producto){
+		//Fechas
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
 		
@@ -29,23 +30,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		try{
-		$secuencial=0;	
-		$tablaMovimiento = $this->tablaMovimiento;
-		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numFactura=?",$encabezado['numFactura'])
-		->where("idProveedor=?",$encabezado['idProveedor'])
-		->where("idEmpresa=?",$encabezado['idEmpresa'])
-		->where("fecha=?", $stringIni)
-		->order("secuencial DESC");
-	
-		$row = $tablaMovimiento->fetchRow($select); 
-		
-		if(!is_null($row)){
-			$secuencial= $row->secuencial +1;
-			print_r($secuencial);
-		}else{
-			$secuencial = 1;	
-		//print_r($secuencial);
-		}
+			
 			$mMovtos = array(
 					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
@@ -65,14 +50,10 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 			//print_r($mMovtos);
 			$bd->insert("Movimientos",$mMovtos);
 		//========================Secuencial==================================================
-		$secuencial=0;	
 		$tablaCapas = $this->tablaCapas;
-		$select = $tablaCapas->select()->from($tablaCapas)
-		->where("numFactura=?",$encabezado['numFactura'])
-		->where("fechaEntrada=?", $stringIni)
-		->order("secuencial DESC");
-	
-		$row = $tablaCapas->fetchRow($select); 
+		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['idProducto'])
+		->order("fechaEntrada DESC");
+			$row = $tablaCardex->fetchRow($select); 
 		
 		if(!is_null($row)){
 			$secuencial= $row->secuencial +1;
@@ -90,27 +71,24 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		print_r("<br />");
 		print_r("$select");
 		
-		//====================Operaciones para convertir unidad minima====================================================== 
-			$cantidad=0;
-			$precioUnitario=0;
-			$cantidad = $producto['cantidad'] * $row->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
-			/*print_r("<br />");
-			print_r($cantidad);
-
-			print_r("<br />");
-			print_r($precioUnitario);*/
 
 		if(!is_null($row)){
-			$mCapas = array(
-					'idProducto' => $producto['descripcion'],
-					'idDivisa'=>$encabezado['idDivisa'],
-					'numFactura'=>$encabezado['numFactura'],
-					'secuencial'=>$secuencial,
-					'entrada'=>$cantidad,
-					'fechaEntrada'=>$stringIni,
-					'costoUnitario'=>$precioUnitario,
-					'costoTotal'=>$producto['importe']
+			$mCardex = array(
+					'idCardex' => $producto['descripcion'],
+					'secuencialEntrada'=>$encabezado['idDivisa'],
+					'fechaEntrada'=>$encabezado['numFactura'],
+					'idProducto'=>$secuencial,
+					'secuencialSalida'=>$cantidad,
+					'fechaSalida'=>$stringIni,
+					'cantidad'=>$precioUnitario,
+					'costo'=>$producto['importe'],
+					'costoSalida'=>$cantidad,
+					'idFactura'=>$stringIni,
+					'utilidad'=>$precioUnitario,
+					'idDivisa'=>$producto['importe'],
+					'idPoliza'=>$precioUnitario,
+					'estatus'=>$producto['importe'],
+					
 			);
 			
 			$bd->insert("Capas",$mCapas);

@@ -1,8 +1,7 @@
 <?php 
-	$formulario = $this->formulario;
-	
+	$formulario = $this->formulario;	
 ?>
-<!--<?php if(! is_null($this->formulario)) { ?>
+<?php if(! is_null($this->formulario)) { ?>
 	<header>
 		<?php echo $this->mensajeFormulario; ?>
 	</header>
@@ -22,11 +21,19 @@
 		}
 		echo '<br />';
 ?>
+
 <?php 
 	if(($this->rowset)){
 		echo $this->mensaje;
 		switch ($this->tipo) {
 			case '1':
+				echo $this->partial('partials/tablas/FacturaProveedor.phtml', 
+					array("tabla" => $this->rowset,
+						"tipo" => $this->tipo,
+						"empresa" => $this->empresa,
+						"cliente" => $this->cliente,
+						"formulario" => $this->datosForm)
+				);
 					
 			case '2':
 				
@@ -40,4 +47,4 @@
 	}
 	
 	echo '<br />';
-?>-->
+?>

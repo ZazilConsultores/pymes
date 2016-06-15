@@ -2,10 +2,6 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
-	private $movimientosDAO;
-	private $capasDAO;
-	private $inventarioDAO;
-	
 
     /*public $links = array(
         'Inicio' => array(
@@ -53,21 +49,31 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
-       	//$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
+        //==============Muestra los links del submenu=======================
+       	$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		//$this->view->links = $this->links;
+	
+		$this->db = Zend_Db_Table::getDefaultAdapter();
 		
-		$this->notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
-		 
+		// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		$select = $this->db->select()->from("Producto");
+		$statement = $select->query();
+		$rowsProducto =  $statement->fetchAll();
 		
-		//$this->fiscalDAO = new Sistema_DAO_Fiscal;
-		//$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		$select = $this->db->select()->from("Unidad");
+		$statement = $select->query();
+		$rowsUnidad =  $statement->fetchAll();
+		// =================================== Codificamos los valores a formato JSON
+		$jsonProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonProductos = $jsonProductos;
+		$jsonUnidad = Zend_Json::encode($rowsUnidad);
+		$this->view->jsonUnidad = $jsonUnidad;
 		
     }
 
     public function indexAction()
     {
-    	 /* action body
+    	//action body
         $request = $this->getRequest();
         $tipo = $this->getParam('tipo');
         $formulario = null;
@@ -79,10 +85,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				switch ($tipo) {
 					case '1':
 						$mensajeFormulario = "<h3>Nueva Nota Entrada Proveedor</h3>";
-						$formulario = new Contabilidad_Form_NotaEntradaProveedor;
+						$formulario = new Contabilidad_Form_NuevaNotaProveedor;
 						break;
-							
-					case '2':
+					/*case '2':
 						$mensajeFormulario = "<h3>Remision Proveedor</h3>";
 						
 						break;
@@ -102,7 +107,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 						$mensajeFormulario = "<h3>Cancelar Remision</h3>";
 						
 						break;	
-					
+					*/
 				}//	Del switch
 			}//	Del if
 		}//	Del if is_null($tipo)
@@ -110,60 +115,74 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isGet()){
 			$this->view->mensajeFormulario = $mensajeFormulario;
 			$this->view->formulario = $formulario;
-		}**/
+		}
 		
-		/*$request = $this->getRequest();
-        $formulario = new Contabilidad_Form_NotaEntradaProveedor;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				
-				$notaEntrada= new Contabilidad_Model_Movimientos($datos);
-				$this->movimientosDAO->crearNotaEntrada($notaEntrada);
-				print_r($datos);
-			}
-    	}*/
-    	//$formulario = new Contabilidad_Form_NotaEntradaProveedor;
 		
-		//Obtengo lista de estados y los envio a la vista
-		//$this->view->bancos = $this->bancoDAO->obtenerBancos();
-		//Envio a la vista el formulario de Alta de Estado, si el usuario lo llega se recibe la informacion en altaAction
-		//$this->view->formulario = $formulario;
-		
-		$notaEntradaDAO = $this->notaEntradaDAO;
-	
-		$select = $notaEntradaDAO->obtenerNotaEntrada();
 		
     }
 
     public function agregarnotaentradaAction()
     {
-    		
-		
+        
+    }
+
+    public function notaAction()
+    {
         // action body
         $request = $this->getRequest();
-        $formulario = new Contabilidad_Form_NotaEntradaProveedor;
+        $formulario = new Contabilidad_Form_NuevaNotaProveedor;
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
+			
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
+				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
-				print_r($datos);
-				$notaentrada = new Contabilidad_Model_Movimientos($datos);
-				$this->notaEntradaDAO->crearNotaEntrada($datos);
-				//print_r($datos);
-				$notaentrada = new Contabilidad_Model_Movimientos($datos);
-				$this->notaEntradaDAO->crearNotaEntrada($datos);
+				$encabezado = $datos[0];
+				print_r($encabezado);
+				$productos = json_decode($encabezado['productos'],TRUE);
+				print_r($encabezado);
+				print_r('<br />');
+				print_r($productos);
+				$contador=0;
+				foreach ($productos as $producto){
+					//$producto->encabezado();
+					//sprint_r($producto);
+					$notaEntradaDAO->agregarProducto($encabezado, $producto);
+					//print_r($contador);
+					$contador++;
+					
+				}
+				//print_r($datos)		
+				//print_r('<br />');
+				//print_r($productos);
+				//print_r(json_decode($datos[0]['productos']));
+				//$notaentrada = new Contabilidad_Model_Movimientos($datos);
+				//$this->notaEntradaDAO->crearNotaEntrada($datos);
 			}
+					
+			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}
-        		
-			
-				
-				
-        
-	}}
+    }
+
+    public function remisionAction()
+    {
+        // action body
+    }
+
+    public function facturaAction()
+    {
+        // action body
+    }
+
+
+}
+
+
+
+
+
+
 
 
 
