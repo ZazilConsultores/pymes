@@ -72,7 +72,7 @@ $connlocalOrigen = array(
 		'dbname' => 'inventario',
 	);
 
-Zend_Registry::set('connlocal', $connlocal);
+Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connnancy', $connnancy);
 //Zend_Registry::set('connlocalorigen', $connlocalOrigen);
@@ -82,7 +82,7 @@ Zend_Registry::set('connlocal', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+$db = Zend_Db::factory('PDO_MYSQL', $connserver);
 
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
