@@ -1,0 +1,20 @@
+Operaciones con Transacciones:
+
+Introduccion: En el sistema se realizan algunas operaciones de datos que afectan a mas de una tabla, estas operaciones en la practica se ven como una sola operacion (atomicidad), si estas operaciones fallan entonces no se deben realizar ninguna de ellas (integridad), por lo cual las realizamos a travez de TRANSACCIONES.
+
+Para facilitar el uso de transacciones, usaremos los objetos de Zend.
+
+	// Iniciamos el objeto principal de Zend
+	$db = Zend_Db_Table_Abstract::getDefaultAdapter();
+
+	// Dentro de un bloque try iniciamos la transaccion
+	$db->beginTransaction();
+
+	// Al final de todas las operaciones realizamos un commit para aplicar definitivamente las operaciones
+	$db->commit();
+
+	// En caso de algun problema (Excepcion lanzada) se realiza un rollBack para eliminar las operaciones apiladas
+	$db->rollBack();
+
+
+

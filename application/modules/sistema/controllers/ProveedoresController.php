@@ -52,7 +52,7 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
 				//$this->empresaDAO->crearEmpresa($modelEmpresa);
 				
 				$datos = $formulario->getValues();
-				print_r($datos);
+				//print_r($datos);
 				try{
 					$this->empresaDAO->crearEmpresa($datos);
 				}catch(Exception $ex){

@@ -1,12 +1,14 @@
 <?php
 	$idFiscales = $this->idFiscales;
 	$tipoSucursal = $this->tipoSucursal;
+	
 	$empresaDAO = $this->empresaDAO;
 	$fiscalesDAO = $this->fiscalesDAO;
 	
 	$empresa = $empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
 	$fiscal = $fiscalesDAO->obtenerFiscales($empresa["idFiscales"]);
 	$sucursales = $empresaDAO->obtenerSucursales($idFiscales);
+	print_r($sucursales);
 	//print_r($empresa);
 ?>
 <section class="panel panel-success">
