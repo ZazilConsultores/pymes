@@ -30,7 +30,21 @@ class Sistema_SucursalController extends Zend_Controller_Action
         $formulario = new Sistema_Form_AltaSucursal;
 		//$formulario->getSubForm("0")->getElement("tipoSucursal")->setMultiOptions(Zend_Registry::get("tipoSucursal"));
 		$tipoSucursales = Zend_Registry::get("tipoSucursal");
-		$formulario->getSubForm("0")->getElement("tipoSucursal")->setMultiOptions($tipoSucursales[$tipoSucursal]);
+		$ts = array();
+		$ts[$tipoSucursal] = $tipoSucursales[$tipoSucursal];
+		switch ($tipoSucursal) {
+			case 'SE':
+				
+				break;
+			case 'SC':
+				
+				break;
+			case 'SP':
+				
+				break;	
+		}
+		
+		$formulario->getSubForm("0")->getElement("tipoSucursal")->removeMultiOption("");//->setMultiOptions($ts);//->setMultiOptions($ts);
 		
 		$this->view->fiscal = $fiscal;
 		
@@ -40,6 +54,9 @@ class Sistema_SucursalController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				print_r($datos);
+				print_r("<br />");
+				print_r("==========================================");
+				print_r("<br />");
 				$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
 			}
 		} 

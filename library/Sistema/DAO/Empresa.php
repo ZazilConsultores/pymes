@@ -38,45 +38,41 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 * puede ser
 	 */
 	public function crearEmpresa(array $datos){
-		print_r("<br />");
-		print_r("<br />");
+		
 		$fecha = date('Y-m-d h:i:s', time());
-		print_r($fecha);
-		print_r("<br />");
+		
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-		print_r("Iniciando transaccion.");
-		print_r("<br />");
+		
 		$bd->beginTransaction();
 		try{
-			print_r("En transaccion.");
-			print_r("<br />");
+			//	Obtenemos los datos fiscales
 			$fiscal = $datos[0];
+			// Vemos si damos de alta una empresa EM, un cliente CL o un proveedor PR
 			$tipo = $fiscal["tipo"];
-			print_r($fiscal);
-			print_r("<br />");
+			// Solo es valido cuando damos de alta una empresa (CL y PR) y un proveedor PR
 			$tipoProveedor = $fiscal["tipoProveedor"];
+			//	En la informacion fiscal tipo y tipoProveedor no van a la base de datos
 			unset($fiscal["tipo"]);
 			unset($fiscal["tipoProveedor"]);
+			//	Agregamos al array de fiscales el campo fecha
 			$fiscal['fecha'] = $fecha;
-			print_r($fiscal);
-			print_r("<br />");
-			print_r("<br />");
-			print_r("TipoProveedor: ".$tipoProveedor);
-			print_r("<br />");
-			$mFiscal = new Sistema_Model_Fiscales($fiscal);
-			//$mFiscal->setHash($mFiscal->getHash());
-			$bd->insert("Fiscales", $mFiscal->toArray());
+			// Antes de insertar verificamos que el RFC no este ya dado de alta, si ya esta nos lanzara un error.
+			$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+			$rowFiscales = $select->query()->fetchAll();
+			if(count($rowFiscales) != 0) throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+			//	No genero error por lo que procedemos a insertar en la tabla
+			$bd->insert("Fiscales", $fiscal);
+			// Obtenemos el id autoincrementable de la tabla Fiscales
 			$idFiscales = $bd->lastInsertId("Fiscales","idFiscales");
-			print_r("<br />");
-			print_r("IdFiscales: ".$idFiscales);
-			print_r("<br />");
+			// Creamos registro en la tabla Empresa
 			$bd->insert("Empresa", array("idFiscales"=>$idFiscales));
+			// Obtenemos el Id de T.Empresa para insertar en Empresas, Clientes o Proveedores 
 			$idEmpresa = $bd->lastInsertId("Empresa", "idEmpresa");
 			//Insertamos en empresa, cliente o proveedor
 			switch ($tipo) {
 				case 'EM':
 					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa));
+					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>""));
 					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
 					break;	
 				case 'CL':
@@ -87,39 +83,27 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 					break;
 			}
 			//Insertamos en domicilio
-			$domicilio = $datos[1];
-			$mDomicilio = new Sistema_Model_Domicilio($domicilio);
-			//$mDomicilio->setHash($mDomicilio->getHash());
-			$bd->insert("Domicilio", $mDomicilio->toArray());
+			unset($datos[1]["idEstado"]);
+			$bd->insert("Domicilio", $datos[1]);
 			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
-			$bd->insert("FiscalesDomicilios", array("idDomicilio"=>$idDomicilio,"idFiscales"=>$idFiscales,"esSucursal"=>"N"));
+			$bd->insert("FiscalesDomicilios", array("idFiscales"=>$idFiscales,"idDomicilio"=>$idDomicilio,"fecha" => $fecha,"esSucursal"=>"N"));
+			
 			//Insertamos en telefono
-			$telefono = $datos[2];
-			$mTelefono = new Sistema_Model_Telefono($telefono);
-			//$mTelefono->setHash($mTelefono->getHash());
-			$bd->insert("Telefono", $mTelefono->toArray());
+			$bd->insert("Telefono", $datos[2]);
 			$idTelefono = $bd->lastInsertId("Telefono", "idTelefono");
 			$bd->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono));
+			
 			//Insertamos en email
-			$email = $datos[3];
-			$mEmail = new Sistema_Model_Email($email);
-			//$mEmail->setHash($mEmail->getHash());
-			$bd->insert("Email", $mEmail->toArray());
-			$idEmail = $bd->lastInsertId("<email></email>","idEmail");
+			$bd->insert("Email", $datos[3]);
+			$idEmail = $bd->lastInsertId("Email","idEmail");
 			$bd->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
-			//$bd->commit();
+			
+			$bd->commit();
+			
 		}catch(Exception $ex){
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r("Excepcion Lanzada");
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r($ex->getMessage());
-			print_r("<br />");
-			print_r("<br />");
 			$bd->rollBack();
+			throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
+			
 		}
 	}
 	
@@ -257,11 +241,39 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$datosDomicilio = $datos[1];
 			$datosTelefonos = $datos[2];
 			$datosEmails = $datos[3];
-			// ===================================================================================
 			print_r($datosSucursal);
+			print_r("<br />");
+			print_r("<br />");
+			// ===========================================  Insertar Domicilio
+			unset($datosDomicilio["idEstado"]); // Este campo no esta en la tabla domicilio
+			$bd->insert("Domicilio",$datosDomicilio);
+			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			// ===========================================  Insertar Telefono
+			$bd->insert("Telefono",$datosTelefonos);
+			$idTelefono = $bd->lastInsertId("Telefono","idTelefono");
+			// ===========================================  Insertar Email
+			$bd->insert("Email",$datosEmails);
+			$idEmail = $bd->lastInsertId("Email","idEmail");
+			// ===========================================  Insertar Sucursal
+			$datosSucursal["idFiscales"] = $idFiscales;
+			$datosSucursal["idDomicilio"] = $idDomicilio;
+			$datosSucursal["idsTelefonos"] = $idTelefono.",";
+			$datosSucursal["idsEmails"] = $idEmail.",";
+			print_r("==================================================");
+			print_r("<br />");
+			print_r($datosSucursal);
+			print_r("<br />");
+			throw new Exception("Exception", 1);
+			
+			/*
+			print_r($datosSucursal);
+			print_r("<br />");
 			print_r($datosDomicilio);
+			print_r("<br />");
 			print_r($datosTelefonos);
+			print_r("<br />");
 			print_r($datosEmails);
+			*/
 			
 			//$bd->commit();
 		}catch(Exception $ex){
