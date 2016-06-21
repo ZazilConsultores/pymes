@@ -1171,6 +1171,14 @@
               <actionMethod actionName="edomicilio"/>
               <actionMethod actionName="alta"/>
             </controllerFile>
+            <controllerFile controllerName="Proveedor">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="sucursales"/>
+            </controllerFile>
+            <controllerFile controllerName="Cliente">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="sucursales"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaFiscales"/>
@@ -1466,6 +1474,18 @@
                 <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Empresa">
+                <viewScriptFile forActionName="sucursales"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Cliente">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="sucursales"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Cliente">
                 <viewScriptFile forActionName="sucursales"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -1915,6 +1935,14 @@
                 <testApplicationActionMethod forActionName="demail"/>
                 <testApplicationActionMethod forActionName="edomicilio"/>
                 <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Proveedor">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="sucursales"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Cliente">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="sucursales"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
