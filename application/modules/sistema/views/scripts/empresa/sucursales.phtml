@@ -8,7 +8,8 @@
 	$empresa = $empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
 	$fiscal = $fiscalesDAO->obtenerFiscales($empresa["idFiscales"]);
 	$sucursales = $empresaDAO->obtenerSucursales($idFiscales);
-	print_r($sucursales);
+	$tiposSucursales = Zend_Registry::get("tipoSucursal");
+	//print_r($sucursales);
 	//print_r($empresa);
 ?>
 <section class="panel panel-success">
@@ -29,13 +30,19 @@
 			</thead>
 			<tbody>
 				<?php if(!is_null($sucursales)){
-					foreach ($sucursales as $sucursal) :
-						
-						
-					?>
-				<td></td>
-				<td></td>
-				<td></td>
+					foreach ($sucursales as $sucursal) : ?>
+				<tr>
+					<td>
+						<a class="btn btn-info" href="<?php echo $this->url(array(),null,true) ?>">
+							<span class="glyphicon glyphicon-cog"></span> Configurar
+						</a>
+					</td>
+					<td>
+						<a class="btn btn-link" idSucursal="<?php echo $sucursal["idSucursal"] ?>">
+							<?php echo $sucursal["nombreSucursal"] ?></td>
+						</a>
+					<td><?php echo $tiposSucursales[$tipoSucursal]; ?></td>
+				</tr>
 				<?php endforeach; } ?>
 			</tbody>
 		</table>
@@ -49,7 +56,7 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		<table class="table table-striped table-condensed">
+		<table id="tDomicilioSucursal" class="table table-striped table-condensed">
 			<thead>
 				<th>Configurar</th>
 				<th>Estado</th>
@@ -73,7 +80,7 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		<table class="table table-striped table-condensed">
+		<table id="tTelefonosSucursal" class="table table-striped table-condensed">
 			<thead>
 				<th>Configurar</th>
 				<th>Lada</th>
@@ -105,3 +112,128 @@
 		</table>
 	</div>
 </section>
+
+<script>
+	$().ready(function(){
+		var base = "/General/public/"
+		
+		// ========================================================= Seleccion de sucursal
+		$("a[idSucursal]").on('click',function(){
+			console.log($(this).attr("idSucursal"));
+			var idSucursal = $(this).attr("idSucursal");
+			$url = "/General/public/sistema/json/sdomicilio/idSucursal/" + idSucursal;
+			//console.log($url);
+			// ======================================================= Carga de domicilio
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					//console.dir(data["calle"]);
+					//console.dir(data["codigoPostal"]);
+					//console.dir(data["colonia"]);
+					// =======================================================
+					
+					var anchorConfigDomicilio = $('<a>').attr({'id': 'btnConfigDomicilio'}).attr({'class':'btn btn-info'}).attr({'href':base +"sistema/domicilio/edita/idDomicilio/"+data["idDomicilio"]}).append($('<span>').attr({'class':'glyphicon glyphicon-cog'})).text("Configurar");
+					//var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
+					var tbody = $("table#tDomicilioSucursal").find('tbody');
+					tbody.empty();
+					tbody.append($('<tr>').
+							append($('<td>').append(anchorConfigDomicilio)).
+							append($('<td>').append(data["estado"]["estado"])).
+							append($('<td>').append(data["municipio"]["municipio"])).
+							append($('<td>').append(data["codigoPostal"])).
+							append($('<td>').append(data["colonia"])).
+							append($('<td>').append(data["calle"])).
+							append($('<td>').append(data["numeroInterior"])).
+							append($('<td>').append(data["numeroExterior"]))
+						);
+				}
+			});
+			
+			// ======================================================= Carga de telefonos
+			$url = base + "sistema/json/stelefonos/idSucursal/" + idSucursal;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					//console.dir(data["calle"]);
+					//console.dir(data["codigoPostal"]);
+					//console.dir(data["colonia"]);
+					// =======================================================
+					var tbody = $("table#tTelefonosSucursal").find('tbody');
+					tbody.empty();
+					$.each(data,function(i,item){
+						//selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+						var anchorConfigTel = $('<a>').attr({'class':'btn btn-info'}).attr({'href':base +"sistema/domicilio/edita/idDomicilio/"+data[i]["idTelefono"]}).text("Configurar");
+						tbody.append($('<tr>').
+							append($('<td>').append(anchorConfigDomicilio)).
+							append($('<td>').append(data["estado"]["estado"])).
+							append($('<td>').append(data["municipio"]["municipio"])).
+							append($('<td>').append(data["codigoPostal"])).
+							append($('<td>').append(data["colonia"])).
+							append($('<td>').append(data["calle"])).
+							append($('<td>').append(data["numeroInterior"])).
+							append($('<td>').append(data["numeroExterior"]))
+						);
+						
+						
+					});
+					
+					
+					//var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
+					var tbody = $("table#tTelefonosSucursal").find('tbody');
+					tbody.empty();
+					tbody.append($('<tr>').
+							append($('<td>').append(anchorConfigDomicilio)).
+							append($('<td>').append(data["estado"]["estado"])).
+							append($('<td>').append(data["municipio"]["municipio"])).
+							append($('<td>').append(data["codigoPostal"])).
+							append($('<td>').append(data["colonia"])).
+							append($('<td>').append(data["calle"])).
+							append($('<td>').append(data["numeroInterior"])).
+							append($('<td>').append(data["numeroExterior"]))
+						);
+				}
+			});
+			
+			/*
+			// ======================================================= Carga de emails
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					//console.dir(data["calle"]);
+					//console.dir(data["codigoPostal"]);
+					//console.dir(data["colonia"]);
+					// =======================================================
+					
+					var anchorConfigDomicilio = $('<a>').attr({'id': 'btnConfigDomicilio'}).attr({'class':'btn btn-info'}).attr({'href':base +"sistema/domicilio/edita/idDomicilio/"+data["idDomicilio"]}).text("Configurar");
+					//var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
+					var tbody = $("table#tDomicilioSucursal").find('tbody');
+					tbody.empty();
+					tbody.append($('<tr>').
+							append($('<td>').append(anchorConfigDomicilio)).
+							append($('<td>').append(data["estado"]["estado"])).
+							append($('<td>').append(data["municipio"]["municipio"])).
+							append($('<td>').append(data["codigoPostal"])).
+							append($('<td>').append(data["colonia"])).
+							append($('<td>').append(data["calle"])).
+							append($('<td>').append(data["numeroInterior"])).
+							append($('<td>').append(data["numeroExterior"]))
+						);
+				}
+			});
+			
+			*/
+		});
+		
+		
+	});	
+</script>
