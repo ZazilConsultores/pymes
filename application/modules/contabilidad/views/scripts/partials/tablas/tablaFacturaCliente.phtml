@@ -2,7 +2,7 @@
 	//tabla::rowset, tipo, empresa, cliente, proveedor, formulario	
 	$tabla = $this->tabla;
 	$tipo = $this->tipo;
-	$empresa = $this->empresa;
+	$proveedor = $this->proveedor;
 	$cliente = $this->cliente;
 	$formulario = $this->formulario;
 	//Formato numeros mexico
@@ -10,10 +10,10 @@
 	
 	$tablaCuentasxc = new Application_Model_DbTable_Cuentasxc;
 	//================================================================ >>>
-	$emp = $empresa["CveEmp"];		//empresa
-	$ndestino = $cliente["Cliente"];	//numero de cliente o proveedor
+	//$emp = $empresa["CveEmp"];		//empresa
+	//$ndestino = $cliente["Cliente"];	//numero de cliente o proveedor
 	//$tdestino = null;	//numero cliente o proveedor --- NO SE USA
-	$nmovto = null;		//numero de factura o remision
+	//$nmovto = null;		//numero de factura o remision
 	$tmovto = $formulario["tipo"];	//factura o remision FC|RC - FP|RP
 	
 	$tablaArray = $tabla->toArray();
@@ -78,5 +78,5 @@
 			</td>
 		</tr>
 		<?php endforeach; ?>
-	</tbody>
+	</tbody> 
 </table>

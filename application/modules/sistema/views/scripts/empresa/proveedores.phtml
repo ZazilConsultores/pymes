@@ -22,13 +22,19 @@
 				<th>Administrar</th>
 			</thead>
 			<tbody>
-				<?php foreach ($fiscales as $fiscal) : 
-					$empresa = $empresaDAO->obtenerEmpresaIdFiscales($fiscal->getIdFiscal());
+				<?php foreach ($fiscales as $fiscal) :
+					//print_r($fiscal);
+					//print_r("<br />"); 
+					$empresa = $empresaDAO->obtenerEmpresaPorIdFiscales($fiscal->getIdFiscales());
+					//print_r("<br />");
+					//print_r($empresa);
+					//print_r("<br />");
+					//$empresa = $empresaDAO->obtenerEmpresaIdFiscales($fiscal->getIdFiscal());
 				?>
 				<tr>
 					<td><?php echo $fiscal->getRazonSocial() ?></td>
 					<td>
-						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"proveedores","action"=>"index","idEmpresa"=>$empresa->getIdEmpresa()),null,true) ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"proveedores","action"=>"proveedor","idEmpresa"=>$empresa["idEmpresa"]),null,true) ?>">
 							<span class="glyphicon glyphicon-cog"></span> Administrar Proveedor
 						</a>
 					</td>

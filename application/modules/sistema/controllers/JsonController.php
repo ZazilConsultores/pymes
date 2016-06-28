@@ -2,7 +2,10 @@
 
 class Sistema_JsonController extends Zend_Controller_Action
 {
-	private $municipioDAO;
+
+    private $municipioDAO = null;
+	private $estadoDAO = null;
+	private $sucursalDAO = null;
 
     public function init()
     {
@@ -12,6 +15,8 @@ class Sistema_JsonController extends Zend_Controller_Action
 		//$this->_helper->contextSwitch()->setAutoJsonSerialization(false);
 		
         $this->municipioDAO = new Inventario_DAO_Municipio;
+		$this->estadoDAO = new Sistema_DAO_Estado;
+		$this->sucursalDAO = new Sistema_DAO_Sucursal;
     }
 
     public function indexAction()
@@ -36,8 +41,42 @@ class Sistema_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($arrayMunicipios);
     }
 
+    public function sdomicilioAction()
+    {
+        // action body
+        $idSucursal = $this->getParam("idSucursal");
+		$sdomicilio = $this->sucursalDAO->obtenerDomicilioSucursal($idSucursal);
+		$municipio = $this->municipioDAO->obtenerMunicipio($sdomicilio["idMunicipio"]);
+		$estado = $this->estadoDAO->obtenerEstado($municipio->getIdEstado());
+		$sdomicilio["estado"] = $estado->toArray();
+		$sdomicilio["municipio"] = $municipio->toArray();
+		echo Zend_Json::encode($sdomicilio);
+		
+    }
+	
+    public function stelefonosAction()
+    {
+        // action body
+        $idSucursal = $this->getParam("idSucursal");
+		$stelefonos = $this->sucursalDAO->obtenerTelefonosSucursal($idSucursal);
+		echo Zend_Json::encode($stelefonos);
+    }
+
+    public function semailsAction()
+    {
+        // action body
+    }
+
+    
+
 
 }
+
+
+
+
+
+
 
 
 

@@ -2,7 +2,8 @@
 
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
-	public $links = array(
+
+    public $links = array(
         'Inicio' => array(
             'module' => 'contabilidad',
             'controller' => 'clientes',
@@ -20,31 +21,47 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
             'action' => 'index',
             'tipo' => '2'
             ),
-		'Cobro Factura' => array(
+        'Cobro Factura' => array(
             'module' => 'contabilidad',
             'controller' => 'clientes',
             'action' => 'index',
             'tipo' => '3'
             ),
-		'Cancelar Factura' => array(
+        'Cancelar Factura' => array(
             'module' => 'contabilidad',
             'controller' => 'clientes',
             'action' => 'index',
             'tipo' => '4'
             ),
-         'Cancelar Remision' => array(
+        'Cancelar Remision' => array(
             'module' => 'contabilidad',
             'controller' => 'clientes',
             'action' => 'index',
             'tipo' => '5'
             )
-);
+        );
 
     public function init()
     {
         /* Initialize action controller here */
         $this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		$this->view->links = $this->links;
+		
+		$this->db = Zend_Db_Table::getDefaultAdapter();
+		
+		// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		$select = $this->db->select()->from("Producto");
+		$statement = $select->query();
+		$rowsProducto =  $statement->fetchAll();
+		
+		$select = $this->db->select()->from("Unidad");
+		$statement = $select->query();
+		$rowsUnidad =  $statement->fetchAll();
+		// =================================== Codificamos los valores a formato JSON
+		$jsonProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonProductos = $jsonProductos;
+		$jsonUnidad = Zend_Json::encode($rowsUnidad);
+		$this->view->jsonUnidad = $jsonUnidad;
     }
 
     public function indexAction()
@@ -60,8 +77,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			if($tipo >= 1 && $tipo <= 5){
 				switch ($tipo) {
 					case '1':
-						$mensajeFormulario = "<h3>Nueva Factura Cliente</h3>";
-						$formulario = new Contabilidad_Form_AgregarFacturaCliente;
+						$mensajeFormulario = "<h3>Nueva Nota Entrada Clientes</h3>";
+						$formulario = new Contabilidad_Form_NuevaNotaCliente;
 						break;
 						
 					case '2':
@@ -90,7 +107,64 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}
 
-		}
     }
+
+    public function notaAction()
+    {
+        // action body
+        $request = $this->getRequest();
+        $formulario = new Contabilidad_Form_NuevaNotaCliente;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+			
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
+				$datos = $formulario->getValues();
+				$encabezado = $datos[0];
+				$productos = json_decode($encabezado['productos'],TRUE);
+				/*print_r($encabezado);
+				print_r('<br />');
+				print_r($productos);*/
+				$contador=0;
+				foreach ($productos as $producto){
+					//$producto->encabezado();
+					//sprint_r($producto);
+					$notaSalidaDAO->agregarProducto($encabezado, $producto);
+					//print_r($contador);
+					$contador++;
+					
+				}
+				//print_r($datos)		
+				//print_r('<br />');
+				//print_r($productos);
+				//print_r(json_decode($datos[0]['productos']));
+				//$notaentrada = new Contabilidad_Model_Movimientos($datos);
+				//$this->notaEntradaDAO->crearNotaEntrada($datos);
+			}
+					
+			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+		}
+        
+    }
+
+    public function remisionAction()
+    {	
+        // action body
+    }
+
+    public function facturaAction()
+    {
+        // action body
+    }
+
+
+}
+
+
+
+
+
+
 
 

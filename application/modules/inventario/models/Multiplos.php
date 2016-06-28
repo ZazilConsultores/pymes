@@ -62,7 +62,7 @@ class Inventario_Model_Multiplos
 		if(array_key_exists("idProducto", $datos)) $this->idProducto = $datos["idProducto"];
 		if(array_key_exists("idUnidad", $datos)) $this->idUnidad = $datos["idUnidad"];
 		$this->cantidad = $datos["cantidad"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray() {
@@ -72,7 +72,7 @@ class Inventario_Model_Multiplos
 		$datos["idProducto"] = $this->idProducto;
 		$datos["idUnidad"] = $this->idUnidad;
 		$datos["cantidad"] = $this->cantidad;
-		$datos["hash"] = $this->hash;	
+		//$datos["hash"] = $this->hash;	
 		
 		return $datos;
 	}

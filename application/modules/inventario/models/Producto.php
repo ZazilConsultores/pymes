@@ -42,20 +42,16 @@ class Inventario_Model_Producto
         $this->codigoBarras = $codigoBarras;
     }
 	
-	private $idsSubparametro;
+	private $idsSubparametros;
 
-    public function getIdsSubparametro() {
-        return $this->idsSubparametro;
+    public function getIdsSubparametros() {
+        return $this->idsSubparametros;
     }
     
-    public function setIdsSubparametro($idsSubparametro) {
-        $this->idsSubparametro = $idsSubparametro;
+    public function setIdsSubparametros($idsSubparametro) {
+        $this->idsSubparametros = $idsSubparametro;
     }
-
-    
-
-   
-    
+	
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idProducto", $datos)) $this->idProducto = $datos["idProducto"];
@@ -63,7 +59,8 @@ class Inventario_Model_Producto
 		$this->producto = $datos["producto"];
 		$this->claveProducto = $datos["claveProducto"];
 		$this->codigoBarras = $datos["codigoBarras"];
-		$this->idsSubparametro=$datos["idsSubparametro"];
+		if(array_key_exists("idsSubparametros", $datos)) $this->idsSubparametros = $datos["idsSubparametros"];
+		//$this->idsSubparametros = $datos["idsSubparametros"];
 
 	}
 	
@@ -75,7 +72,7 @@ class Inventario_Model_Producto
 		$datos["producto"] = $this->producto;
 		$datos["claveProducto"] = $this->claveProducto;
 		$datos["codigoBarras"] = $this->codigoBarras;
-		$datos["idsSubparametro"]=$this->idsSubparametro;
+		$datos["idsSubparametros"]=$this->idsSubparametros;
 		
 		return $datos;
 			 

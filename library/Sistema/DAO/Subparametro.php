@@ -33,8 +33,7 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	}
 	
 	
-	public function generarIdsSubparametro(array $claves)
-	
+	public function generarIdsSubparametros(array $claves)
 	{
 		
 		$tablaSubparametro= $this->tablaSubparametro;
@@ -53,11 +52,12 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 	}
 		
-	public function obtenerSubparametros($idparametro)
+	public function obtenerSubparametros($idParametro)
 	{
 		$tablaSubparametro= $this->tablaSubparametro;
-		$where = $tablaSubparametro->getAdapter()->quoteInto("idparametro = ?", $idparametro);
-		$rowsSubParametro = $tablaSubparametro->fetchAll($where);
+		//$where = $tablaSubparametro->getAdapter()->quoteInto("idParametro = ?", $idparametro);
+		$select = $tablaSubparametro->select()->from($tablaSubparametro)->where("idParametro=?",$idParametro)->order("subparametro");
+		$rowsSubParametro = $tablaSubparametro->fetchAll($select);
 		
 		$modelSubParametros = array();
 		
@@ -87,11 +87,11 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	public function crearSubparametro(Sistema_Model_Subparametro $subparametro)
 	{
 		$tablasubparametro = $this->tablaSubparametro;
-		$select = $tablasubparametro->select()->from($tablasubparametro)->where( "hash = ? ", $subparametro->getHash());
-		$row = $tablasubparametro->fetchRow($select);
+		//$select = $tablasubparametro->select()->from($tablasubparametro)->where( "hash = ? ", $subparametro->getHash());
+		//$row = $tablasubparametro->fetchRow($select);
 		
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Subparámetro: <strong>" . $subparametro->getSubparametro() . "</strong> duplicado en el sistema");
-		$subparametro->setHash($subparametro->getHash());
+		//if(!is_null($row)) throw new Util_Exception_BussinessException("Subparámetro: <strong>" . $subparametro->getSubparametro() . "</strong> duplicado en el sistema");
+		//$subparametro->setHash($subparametro->getHash());
 		$subparametro->setFecha(date("Y-m-d H:i:s", time()));
 		
 		//$subparametro->setClaveSubparametro($claveSubparametro);

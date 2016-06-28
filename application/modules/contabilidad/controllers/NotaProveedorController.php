@@ -49,10 +49,10 @@ class Contabilidad_NotaproveedorController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				print_r($encabezado);
+				/*print_r($encabezado);
 				print_r('<br />');
 				print_r('<br />');
-				print_r($productos);
+				print_r($productos);*/
 				$contador=0;
 				foreach ($productos as $producto){
 					//$producto->encabezado();
@@ -63,9 +63,7 @@ class Contabilidad_NotaproveedorController extends Zend_Controller_Action
 					$contador++;
 					
 				}
-				//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");	
-				//print_r($datos);
-				//
+				//print_r($datos)		
 				//print_r('<br />');
 				//print_r($productos);
 				//print_r(json_decode($datos[0]['productos']));
@@ -73,7 +71,7 @@ class Contabilidad_NotaproveedorController extends Zend_Controller_Action
 				//$this->notaEntradaDAO->crearNotaEntrada($datos);
 			}
 					
-			
+			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}
 		
 		

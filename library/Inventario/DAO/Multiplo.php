@@ -58,15 +58,7 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 
 	public function crearMultiplos(Inventario_Model_Multiplos $multiplo)
 	{
-		$tablaMultiplo = $this->tablaMultiplo;	
-		$select = $tablaMultiplo->select()->from($tablaMultiplo)->where( "hash = ? ", $multiplo->getHash());
-		$row = $tablaMultiplo->fetchRow($select);
-		
-		
-		$multiplo->setHash($multiplo->getHash());
-
-		$tablaMultiplo->insert($multiplo->toArray());
-		
+		$this->tablaMultiplo->insert($multiplo->toArray());		
 	}
 	
 	public function editarMultiplo($idMultiplos, array $multiplo)

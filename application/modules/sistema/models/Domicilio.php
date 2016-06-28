@@ -26,16 +26,6 @@ class Sistema_Model_Domicilio
         $this->idMunicipio = $idMunicipio;
     }
 	
-	private $idEstado;
-
-    public function getIdEstado() {
-        return $this->idEstado;
-    }
-    
-    public function setIdEstado($idEstado) {
-        $this->idEstado = $idEstado;
-    }
-	
 	private $calle;
 
     public function getCalle() {
@@ -89,7 +79,6 @@ class Sistema_Model_Domicilio
 	public function __construct(array $datos) {
 		if(array_key_exists("idDomicilio", $datos)) $this->idDomicilio = $datos["idDomicilio"];
 		if(array_key_exists("idMunicipio", $datos)) $this->idMunicipio = $datos["idMunicipio"];
-		if(array_key_exists("idEstado", $datos)) $this->idEstado = $datos["idEstado"];
 		$this->calle = $datos["calle"];
 		$this->colonia = $datos["colonia"];
 		$this->codigoPostal = $datos["codigoPostal"];
@@ -102,7 +91,6 @@ class Sistema_Model_Domicilio
 		
 		$datos["idDomicilio"] = $this->idDomicilio;
 		$datos["idMunicipio"] = $this->idMunicipio;
-		$datos["idEstado"] = $this->idEstado;
 		$datos["calle"] = $this->calle;
 		$datos["colonia"] = $this->colonia;
 		$datos["codigoPostal"] = $this->codigoPostal;

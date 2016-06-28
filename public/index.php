@@ -49,14 +49,15 @@ $connserver = array(
 		'username' => 'zazil',
 		'password' => 'admin',
 		//'dbname' => 'General',
-		'dbname' => 'GeneralSagrado',
+		//'dbname' => 'GeneralSagrado',
+		'dbname' => 'GeneralE',
 	);
 $connlocaltres = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
 		//'dbname' => 'General',
-		'dbname' => 'GeneralSagrado',
+		'dbname' => 'GeneralEncuestas',
 	);
 $connnancy = array(
 		'host' => '192.168.1.240',
@@ -102,6 +103,7 @@ $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 
 $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
 $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
+$tipoSucursal = array("SE"=>"Sucursal Empresa","SC"=>"Sucursal Cliente", "SP" => "Sucursal Proveedor");
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
 $gradosEscolares = array(1=>"1°",2=>"2°",3=>"3°",4=>"4°",5=>"5°",6=>"6°",7=>"7°",8=>"8°",9=>"9°");
@@ -147,8 +149,10 @@ Zend_Registry::set('padre', $padre);
 Zend_Registry::set('estatus', $estatus);
 Zend_Registry::set('tipoEmpresa', $tipoEmpresa);
 Zend_Registry::set('tipoTelefono', $tipoTelefono);
+Zend_Registry::set('tipoSucursal', $tipoSucursal);
 Zend_Registry::set('tipoBanco', $tipoBanco);
 Zend_Registry::set('gradosEscolares', $gradosEscolares);
 Zend_Registry::set('formaPago', $formaPago);
+
 $application->bootstrap()
             ->run();

@@ -11,6 +11,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	private $tablaCapas;
 	private $tablaMultiplos;
 	
+	
 	public function __construct() {
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
@@ -26,23 +27,13 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	}
 	
 	public function obtenerProducto ($idProducto){
-		$tablaCapas = $this->tablaCapas;
-		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto= ?", getIdProducto());
-		$rowsCapas = $tablaCapas->fetchAll($select);
-		$modelCapas = array();
-		
-		if(!is_null($rowsCapas)){
-			foreach ($rowsCapas as $rowCapa) {
-				$modelCapas = new Contabilidad_Model_Capas($row->toArray());
-				$modelCapas[] = $modelCapa;
-			}
-		}
-		
-		return $modelCapas;
+	
 	}
 	
 	public function agregarProducto(array $encabezado, $producto){
-		//print_r($datos);
+		print_r($datos);
+		
+
 		$datos=array();
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
@@ -51,17 +42,35 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		try{
-			
+		$secuencial=0;	
+		$tablaMovimiento = $this->tablaMovimiento;
+		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numFactura=?",$encabezado['numFactura'])
+		->where("idProveedor=?",$encabezado['idProveedor'])
+		->where("idEmpresa=?",$encabezado['idEmpresa'])
+		->where("fecha=?", $stringIni)
+		->order("secuencial DESC");
+	
+		$row = $tablaMovimiento->fetchRow($select); 
+		
+		if(!is_null($row)){
+			$secuencial= $row->secuencial +1;
+			print_r($secuencial);
+		}else{
+			$secuencial = 1;	
+		
+		print_r($secuencial);
+		}
 			$mMovtos = array(
 					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idProveedor'=>$encabezado['idProveedor'],
 					'idProyecto'=>$encabezado['idProyecto'],
 					'numFactura'=>$encabezado['numFactura'],
 					'cantidad'=>$producto['cantidad'],
 					'fecha'=>$stringIni,
 					'estatus'=>"A",
-					'secuencial'=> 1,
+					'secuencial'=> $secuencial,
 					'costoUnitario'=>$producto['precioUnitario'],
 					'esOrigen'=>"E",
 					'totalImporte'=>$producto['importe']
@@ -69,47 +78,49 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			
 			//print_r($mMovtos);
 			$bd->insert("Movimientos",$mMovtos);
-
+		//========================Secuencial==================================================
+		$secuencial=0;	
+		$tablaCapas = $this->tablaCapas;
+		$select = $tablaCapas->select()->from($tablaCapas)
+		->where("numFactura=?",$encabezado['numFactura'])
+		->where("fechaEntrada=?", $stringIni)
+		->order("secuencial DESC");
+	
+		$row = $tablaCapas->fetchRow($select); 
+		
+		if(!is_null($row)){
+			$secuencial= $row->secuencial +1;
+			print_r($secuencial);
+		}else{
+			$secuencial = 1;	
+		
+		print_r($secuencial);	
+		}
 		
 		//=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
 		print_r("<br />");
-		//print_r("$select");
+		print_r("$select");
+		
 		//====================Operaciones para convertir unidad minima====================================================== 
 			$cantidad=0;
 			$precioUnitario=0;
 			$cantidad = $producto['cantidad'] * $row->cantidad;
 			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
-			print_r("<br />");
+			/*print_r("<br />");
 			print_r($cantidad);
 
 			print_r("<br />");
-			print_r($precioUnitario);
-		
-		$tablaCapas = $this->tablaCapas;
-		$select = $tablaCapas->select()->from($tablaCapas,'entrada')->where("idProducto=?",$producto['descripcion'])
-		->where ("fechaEntrada = ?", $stringIni);
-		$row = $tablaCapas->fetchRow($select);
-		print_r("<br />");
-		print_r("$select");
+			print_r($precioUnitario);*/
 
 		if(!is_null($row)){
-			$cantidad = $row->entrada + $cantidad;
-			print ("<br />");
-			print ("<br />");
-			print ($cantidad);
-			$where = $tablaCapas->getAdapter()->quoteInto("entrada = ?", $row->entrada);	
-			$tablaCapas->update(array('entrada'=> $cantidad), $where);	
-			print_r("<br />");
-			print_r("<br />");
-			//print_r("$tablaCapas");
-		}else{
 			$mCapas = array(
 					'idProducto' => $producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
-					'secuencial'=>1,
+					'numFactura'=>$encabezado['numFactura'],
+					'secuencial'=>$secuencial,
 					'entrada'=>$cantidad,
 					'fechaEntrada'=>$stringIni,
 					'costoUnitario'=>$precioUnitario,
@@ -118,27 +129,26 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			
 			$bd->insert("Capas",$mCapas);
 		}
-			//Insertamos en Inventario
-			//$mInventario = new Contabilidad_Model_Inventario($datos);	
-			//=================Selecciona producto y unidad=======================================
+		//Insertamos en Inventario
+		//=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
 		print_r("<br />");
 		//print_r("$select");
 		//====================Operaciones para convertir unidad minima====================================================== 
-			$cantidad=0;
+			/*$cantidad=0;
 			$precioUnitario=0;
 			$cantidad = $producto['cantidad'] * $row->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
-			print_r("<br />");
+			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;*/
+			/*print_r("<br />");
 			print_r($cantidad);
 
 			print_r("<br />");
-			print_r($precioUnitario);
+			print_r($precioUnitario);*/
 		
 		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario,'existencia')->where("idProducto=?",$producto['descripcion']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 		$row = $tablaInventario->fetchRow($select);
 		print_r("<br />");
 		print_r("$select");
@@ -146,13 +156,11 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		if(!is_null($row)){
 			$cantidad = $row->existencia + $cantidad;
 			print ("<br />");
-			print ("<br />");
 			print ($cantidad);
-			$where = $tablaInventario->getAdapter()->quoteInto("existencia = ?", $row->existencia);	
-			$tablaInventario->update(array('existencia'=> $cantidad), $where);	
+			$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $row->idProducto);	
+			$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
 			print_r("<br />");
-			print_r("<br />");
-			//print_r("$tablaCapas");
+			print_r("$where");
 		}else{
 					
 			$mInventario = array(
@@ -161,7 +169,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					'idEmpresa'=>$encabezado['idEmpresa'],
 					'existencia'=>$cantidad,
 					'apartado'=>'0',
-					'existenciaReal'=>$producto['cantidad'],
+					'existenciaReal'=>$cantidad,
 					'maximo'=>'0',
 					'minimo'=>'0',
 					'fecha'=>$stringIni,
