@@ -47,18 +47,19 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Domicilios del Cliente: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Domicilio Fiscal del Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
 		<table class="table table-striped table-condensed">
 			<thead>
-				<th>Administración</th>
+				<th>Configurar</th>
 				<th>Es sucursal</th>
 				<th>Estado</th>
 				<th>Municipio</th>
 				<th>C.P.</th>
 				<th>Colonia</th>
+				<th>Calle</th>
 				<th>N.I.</th>
 				<th>N.E.</th>
 			</thead>
@@ -69,8 +70,8 @@
 					?>
 					<tr>
 						<td>
-							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"domicilio","action"=>"edita","idDomicilio"=>$domicilioFiscal->getIdDomicilio()),null,true) ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"domicilio","action"=>"edita","idDomicilio"=>$domicilioFiscal->getIdDomicilio()),null,true) ?>">
+								<span class="glyphicon glyphicon-cog"></span> Configurar
 							</a>
 						</td>
 						<td><?php echo ($fiscalesDAO->esSucursal($domicilioFiscal->getIdDomicilio(), $eproveedor["idFiscales"])) ? "Si" : "No" ;  ?></td>
@@ -78,12 +79,9 @@
 						<td><?php echo $municipio->getMunicipio(); ?></td>
 						<td><?php echo $domicilioFiscal->getCodigoPostal(); ?></td>
 						<td><?php echo $domicilioFiscal->getColonia(); ?></td>
+						<td><?php echo $domicilioFiscal->getCalle(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroInterior(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroExterior(); ?></td>
-					</tr>
-					<tr>
-						<td><strong>Calle</strong></td>
-						<td colspan="7"><?php echo $domicilioFiscal->getCalle(); ?></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>
@@ -94,13 +92,13 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Telefonos
+			Telefonos Fiscales del Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
 		<table class="table table-striped table-condensed">
 			<thead>
-				<th>Administrar</th>
+				<th>Configurar</th>
 				<th>Lada</th>
 				<th>Telefono</th>
 				<th>Extensiones</th>
@@ -110,8 +108,8 @@
 				<?php foreach ($fiscalesTelefonos as $fiscalTelefono) : ?>
 				<tr>
 					<td>
-						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"telefono","action"=>"edita","idTelefono"=>$fiscalTelefono->getIdTelefono()),null,true) ?>">
-							<span class="glyphicon glyphicon-cog"></span> Administrar
+						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"telefono","action"=>"edita","idTelefono"=>$fiscalTelefono->getIdTelefono()),null,true) ?>">
+							<span class="glyphicon glyphicon-cog"></span> Configurar
 						</a>
 					</td>
 					<td><?php echo $fiscalTelefono->getLada() ?></td>
@@ -128,13 +126,13 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Emails
+			Emails Fiscales del Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
 		<table class="table table-striped table-condensed">
 			<thead>
-				<th>Administrar</th>
+				<th>Configurar</th>
 				<th>Email</th>
 				<th>Descripción</th>
 			</thead>
@@ -142,8 +140,8 @@
 				<?php foreach ($fiscalesEmails as $fiscalEmail) : ?>
 					<tr>
 						<td>
-							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"email","action"=>"edita","idEmail"=>$fiscalEmail->getIdEmail()),null,TRUE) ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"email","action"=>"edita","idEmail"=>$fiscalEmail->getIdEmail()),null,TRUE) ?>">
+								<span class="glyphicon glyphicon-cog"></span> Configurar
 							</a>
 						</td>
 						<td><?php echo $fiscalEmail->getEmail() ?></td>

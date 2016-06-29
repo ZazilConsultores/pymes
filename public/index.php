@@ -153,5 +153,6 @@ Zend_Registry::set('tipoSucursal', $tipoSucursal);
 Zend_Registry::set('tipoBanco', $tipoBanco);
 Zend_Registry::set('gradosEscolares', $gradosEscolares);
 Zend_Registry::set('formaPago', $formaPago);
+
 $application->bootstrap()
             ->run();

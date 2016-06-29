@@ -23,28 +23,21 @@ class Sistema_SucursalController extends Zend_Controller_Action
         $request = $this->getRequest();
         $idFiscales = $this->getParam("idFiscales");
 		$tipoSucursal = $this->getParam("tipoSucursal");
-		$empresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
 		
+		$empresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
 		$fiscal = $this->fiscalesDAO->obtenerFiscales($idFiscales);
         
         $formulario = new Sistema_Form_AltaSucursal;
-		//$formulario->getSubForm("0")->getElement("tipoSucursal")->setMultiOptions(Zend_Registry::get("tipoSucursal"));
-		$tipoSucursales = Zend_Registry::get("tipoSucursal");
-		$ts = array();
-		$ts[$tipoSucursal] = $tipoSucursales[$tipoSucursal];
-		switch ($tipoSucursal) {
-			case 'SE':
-				
-				break;
-			case 'SC':
-				
-				break;
-			case 'SP':
-				
-				break;	
-		}
 		
-		$formulario->getSubForm("0")->getElement("tipoSucursal")->removeMultiOption("");//->setMultiOptions($ts);//->setMultiOptions($ts);
+		$tiposSucursales = Zend_Registry::get("tipoSucursal");
+		//print_r("Es empresa: " . $this->empresaDAO->esEmpresa($idFiscales));
+		//print_r("<br />");
+		
+		// Si el IdFiscales no es empresa
+		if( !$this->empresaDAO->esEmpresa($idFiscales)){
+			// Si no es empresa cambiamos el valor por defecto del formulario tipoSucursal
+			$formulario->getSubForm("0")->getElement("tipoSucursal")->setMultiOptions(array($tipoSucursal=> ($tipoSucursal == "SC") ? "Sucursal Cliente" : "Sucursal Proveedor"));
+		}
 		
 		$this->view->fiscal = $fiscal;
 		
@@ -53,11 +46,17 @@ class Sistema_SucursalController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
-				print_r("<br />");
-				print_r("==========================================");
-				print_r("<br />");
-				$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
+				//print_r($datos);
+				//print_r("<br />");
+				//print_r("==========================================");
+				//print_r("<br />");
+				try{
+					$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
+					$this->view->messageSuccess = "Sucursal dada de alta exitosamente en la empresa: <strong>".$fiscal->getRazonSocial()."</strong>";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Ha ocurrido un error: <strong>".$ex->getMessage()."</strong>";
+				}
+				//$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
 			}
 		} 
     }

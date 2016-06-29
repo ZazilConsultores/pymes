@@ -241,43 +241,32 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$datosDomicilio = $datos[1];
 			$datosTelefonos = $datos[2];
 			$datosEmails = $datos[3];
-			print_r($datosSucursal);
-			print_r("<br />");
-			print_r("<br />");
+			
 			// ===========================================  Insertar Domicilio
 			unset($datosDomicilio["idEstado"]); // Este campo no esta en la tabla domicilio
 			$bd->insert("Domicilio",$datosDomicilio);
 			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			
 			// ===========================================  Insertar Telefono
 			$bd->insert("Telefono",$datosTelefonos);
 			$idTelefono = $bd->lastInsertId("Telefono","idTelefono");
+			
 			// ===========================================  Insertar Email
 			$bd->insert("Email",$datosEmails);
 			$idEmail = $bd->lastInsertId("Email","idEmail");
+			
 			// ===========================================  Insertar Sucursal
 			$datosSucursal["idFiscales"] = $idFiscales;
 			$datosSucursal["idDomicilio"] = $idDomicilio;
 			$datosSucursal["idsTelefonos"] = $idTelefono.",";
 			$datosSucursal["idsEmails"] = $idEmail.",";
-			print_r("==================================================");
-			print_r("<br />");
-			print_r($datosSucursal);
-			print_r("<br />");
-			throw new Exception("Exception", 1);
 			
-			/*
-			print_r($datosSucursal);
-			print_r("<br />");
-			print_r($datosDomicilio);
-			print_r("<br />");
-			print_r($datosTelefonos);
-			print_r("<br />");
-			print_r($datosEmails);
-			*/
+			$bd->insert("Sucursal",$datosSucursal);
 			
-			//$bd->commit();
+			$bd->commit();
 		}catch(Exception $ex){
 			$bd->rollBack();
+			throw new Util_Exception_BussinessException($ex->getMessage(), 1);
 		}
 	}
 	
@@ -287,7 +276,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	public function obtenerSucursales($idFiscales){
 		$tablaSucursal = $this->tablaSucursal;
 		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
-		$rowsSucursales = $tablaSucursal->fetchRow($select);
+		$rowsSucursales = $tablaSucursal->fetchAll($select);
 		
 		if(is_null($rowsSucursales)){
 			return null;

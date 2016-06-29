@@ -38,12 +38,12 @@ class Sistema_Form_AltaSucursal extends Zend_Form
 		$eNombreSucursal->setLabel("Nombre Sucursal");
 		$eNombreSucursal->setAttrib("class", "form-control");
 		$eNombreSucursal->setAttrib("required", "true");
-		
+		// Por defecto Sucursal Empresa
 		$eTipoSucursal = new Zend_Form_Element_Select("tipoSucursal");
-		$eTipoSucursal->setMultiOptions(Zend_Registry::get("tipoSucursal"));
+		$eTipoSucursal->addMultiOption("SE", "Sucursal Empresa");
 		$eTipoSucursal->setLabel("Tipo Sucursal");
-		$eTipoSucursal->setAttrib("class", "form-control");
-		$eTipoSucursal->setAttrib("disabled", "true");
+		$eTipoSucursal->setAttrib("class", "form-control disabled");
+		//$eTipoSucursal->setAttrib("disabled", "true");
 		//$eTipoSucursal->removeMultiOption("");
 		//$eTipoSucursal->setMultiOptions($options)
 		

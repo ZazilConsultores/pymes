@@ -28,31 +28,14 @@ class Sistema_ClientesController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$contenedor = $formulario->getValues();
-				//Se guarda Domicilio, Telefono, Email y al Final Fiscales
 				
-				$datosFiscales = $contenedor[0];
-				$datosDomicilio = $contenedor[1];
-				$datosTelefono = $contenedor[2];
-				$datosEmail = $contenedor[3];
-				
-				$modelFiscales = new Sistema_Model_Fiscal($datosFiscales);
-				$fiscales = $this->fiscalDAO->crearFiscales($modelFiscales);
-				$modelDomicilio = new Sistema_Model_Domicilio($datosDomicilio);
-				$this->domicilioDAO->crearDomicilioFiscal($fiscales->getIdFiscales(), $modelDomicilio);
-				$modelTelefono = new Sistema_Model_Telefono($datosTelefono);
-				$this->telefonoDAO->crearTelefonoFiscal($fiscales->getIdFiscales(), $modelTelefono);
-				$modelEmail = new Sistema_Model_Email($datosEmail);
-				$this->emailDAO->crearEmailFiscales($fiscales->getIdFiscales(), $modelEmail);
-				
-				$datos = array();
-				$datos["idFiscal"] = $fiscales->getIdFiscal();
-				$datos["esEmpresa"] = "N";
-				$datos["esCliente"] = "S";
-				$datos["esProveedor"] = "N";
-				$modelEmpresa = new Sistema_Model_Empresa($datos);
-				$this->empresaDAO->crearEmpresa($modelEmpresa);
-				
-				$this->_helper->redirector->gotoSimple("clientes", "empresa", "sistema");
+				try{
+					$this->empresaDAO->crearEmpresa($contenedor);
+					$this->view->messageSuccess = "Cliente <strong>".$datos["0"]["razonSocial"]."</strong> creado exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error al crear el cliente: <strong>".$ex->getMessage()."</strong>";
+				}
+				//$this->_helper->redirector->gotoSimple("clientes", "empresa", "sistema");
 			}
 		}
     }

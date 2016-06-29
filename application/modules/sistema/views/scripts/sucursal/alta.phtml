@@ -1,6 +1,8 @@
 <?php 
 	$formulario = $this->formulario;
 	$fiscal = $this->fiscal;
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="panel panel-success">
 	<div class="panel-heading">
@@ -9,6 +11,9 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		<a class="btn btn-info" href="<?php echo $this->url(array(""=>"",""=>"",""=>"",""=>"",),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Sucursales de la Empresa
+		</a>
 		<?php echo $formulario; ?>
 	</div>
 </section>
