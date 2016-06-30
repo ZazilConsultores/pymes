@@ -9,31 +9,18 @@ class Encuesta_IndexController extends Zend_Controller_Action
 {
 
     private $gruposDAO = null;
-
     private $grupoDAO = null;
-
     private $gradoDAO = null;
-
     private $cicloDAO = null;
-
     private $nivelDAO = null;
-
     private $encuestaDAO = null;
-
     private $seccionDAO = null;
-
     private $generador = null;
-
     private $preguntaDAO = null;
-
     private $registroDAO = null;
-
     private $respuestaDAO = null;
-
     private $preferenciaDAO = null;
-
     private $reporteDAO = null;
-	
 	private $materiaDAO = null;
 
     public function init()
@@ -230,8 +217,17 @@ class Encuesta_IndexController extends Zend_Controller_Action
         
         $idEncuesta = $this->getParam("idEncuesta");
 		$idAsignacion = $this->getParam("idAsignacion");
-		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		//$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		$this->view->asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
+		$this->view->encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
 		
+		$this->view->encuestaDAO = $this->encuestaDAO;
+		$this->view->seccionDAO = $this->seccionDAO;
+		$this->view->grupoDAO = $this->grupoDAO;
+		$this->view->preguntaDAO = $this->preguntaDAO;
+		
+		
+		/*
 		$idRegistro = $asignacion["idRegistro"];
 		$idGrupo = $asignacion["idGrupo"];
 		$idMateria = $asignacion["idMateria"];
@@ -266,6 +262,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		
 		//$pdf->addPage($page);
 		//$pdf->save();
+		 */
     }
 
     public function resumenAction()

@@ -1,16 +1,16 @@
 <?php
 	$asignacion = $this->asignacion;
 	$encuesta = $this->encuesta;
-	$registro = $this->registro;
-	$grupo = $this->grupo;
-	$materia = $this->materia;
+	//$registro = $this->registro;
+	//$grupo = $this->grupo;
+	//$materia = $this->materia;
 	//$page = $this->page;
 	//$pdf = $this->pdf;
 	
-	$encuestaDAO = new Encuesta_DAO_Encuesta;
-	$seccionDAO = new Encuesta_DAO_Seccion;
-	$grupoDAO = new Encuesta_DAO_Grupo;
-	$preguntaDAO = new Encuesta_DAO_Pregunta;
+	$encuestaDAO = $this->encuestaDAO;
+	$seccionDAO = $this->seccionDAO;
+	$grupoDAO = $this->grupoDAO;
+	$preguntaDAO = $this->preguntaDAO;
 	$reporteDAO = new Encuesta_DAO_Reporte;
 	
 	$preferenciaDAO = new Encuesta_DAO_Preferencia;
@@ -39,166 +39,7 @@
 			</h3>
 		</div>
 		<div class="panel-body">
-			<h4>Resultados de la Encuesta: <strong><?php echo $encuesta->getNombre() ?></strong></h4>
-			<h4>Grupo: <strong><?php echo $grupo->getGrupo() ?></strong></h4>
-			<h4>Docente: <strong><?php echo $registro->getApellidos().", ".$registro->getNombres() ?></strong></h4>
-			<h4>Alumnas: <strong><?php echo $realizadas ?></strong></h4>
-			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"repgrupal","idReporte"=>$idReporte),null,true) ?>">
-				<span class="glyphicon glyphicon-search"></span> Informe en PDF
-			</a>
-			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta", "controller"=>"index", "action"=>"reppabiertas","idEncuesta"=>$encuesta->getIdEncuesta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
-				<span class="glyphicon glyphicon-search"></span> Ver Preguntas Abiertas
-			</a>
-			<hr />
-			<h4>Categorías</h4>
-			<?php 
-				$promedio = 0;
-				$categorias = 0;
-				$cY = 0;
-				foreach ($secciones as $seccion) :
-					$gruposSeccion = $seccionDAO->obtenerGrupos($seccion->getIdSeccion());
-					$espacio = 10;
-					$eX = 60; // espacio en X
-					$eY = 210; // espacio en Y
-					$aY = 15;
-					$tY = $eY; // total en Y
-					foreach ($gruposSeccion as $grupoSeccion) :
-						$categorias++;
-						//$aY += 10;
-						$preguntasGrupo = $grupoDAO->obtenerPreguntas($grupoSeccion->getIdGrupo());
-						$opcionValorMayor = $grupoDAO->obtenerValorMayorOpcion($grupoSeccion->getIdGrupo());
-						$valor = 0;
-						foreach ($preguntasGrupo as $preguntaGrupo) {
-							$preferencias = $preferenciaDAO->obtenerPreferenciaPregunta($preguntaGrupo->getIdPregunta(), $asignacion["idAsignacion"]);
-							foreach ($preferencias as $preferencia) {
-								$valor += $preferencia["total"];
-							}
-						}
-						
-						$maximo = $opcionValorMayor["valor"] * $grupoSeccion->getElementos() * $realizadas;
-						$calificacion = ($valor * 10) / $maximo;
-						//$total = $realizadas * $valor * $opcionValorMayor["valor"];
-						print_r("Categoria: <strong>".$grupoSeccion->getNombre()."</strong><br />");
-						print_r("Puntaje Máximo: <strong>".$maximo."</strong>   ");
-						print_r("Puntaje Obtenido: <strong>".$valor."</strong>   ");
-						print_r("Calificación: <strong>".sprintf('%.2f', $calificacion)."</strong> <br />");
-						/*
-						$rowTableA = new My_Pdf_Table_Row();
-						$columnasA = array();
-						
-						$colA1 = new My_Pdf_Table_Column();
-						$colA2 = new My_Pdf_Table_Column();
-						$colA1->setText("Categoría: ".$grupoSeccion->getNombre());
-						$colA1->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
-						$colA2->setText("");
-						
-						$columnasA[] = $colA1;
-						$columnasA[] = $colA2;
-						$rowTableA->setColumns($columnasA);
-						$rowTableA->setFont($font);
-						$rowTableA->setCellPaddings(array(5,5,5,5));
-						
-						$rowTableB = new My_Pdf_Table_Row();
-						$columnasB = array();
-						
-						$colB1 = new My_Pdf_Table_Column();
-						$colB2 = new My_Pdf_Table_Column();
-						$colB1->setText("Puntaje Máximo: ".$maximo);
-						$colB2->setText("Puntaje Obtenido: ".$valor);
-						
-						$columnasB[] = $colB1;
-						$columnasB[] = $colB2;
-						$rowTableB->setColumns($columnasB);
-						$rowTableB->setFont($font);
-						$rowTableB->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
-						$rowTableB->setCellPaddings(array(5,5,5,5));
-						
-						$rowTableC = new My_Pdf_Table_Row();
-						$columnasC = array();
-						
-						$colC1 = new My_Pdf_Table_Column();
-						$colC2 = new My_Pdf_Table_Column();
-						$colC1->setText("");
-						$colC2->setText("Calificación Categoría: ".sprintf('%.2f', $calificacion));
-						$colC2->setBorder(My_Pdf::BOTTOM, new Zend_Pdf_Style());
-						
-						$columnasC[] = $colC1;
-						$columnasC[] = $colC2;
-						$rowTableC->setFont($font);
-						$rowTableC->setColumns($columnasC);
-						$rowTableC->setCellPaddings(array(5,5,5,5));
-						
-						$rowTableD = new My_Pdf_Table_Row();
-						$columnasD = array();
-						
-						$colD1 = new My_Pdf_Table_Column();
-						$colD2 = new My_Pdf_Table_Column();
-						$colD1->setText("");
-						$colD2->setText("");
-						
-						$columnasD[] = $colD1;
-						$columnasD[] = $colD2;
-						$rowTableD->setFont($font);
-						$rowTableD->setColumns($columnasD);
-						$rowTableD->setCellPaddings(array(5,5,5,5));
-						
-						$table->addRow($rowTableA);
-						$table->addRow($rowTableB);
-						$table->addRow($rowTableC);
-						$table->addRow($rowTableD);
-						$table->addRow($rowTableD);
-						*/
-						/*
-						$tY += $aY;
-						$page->drawText("Categoría: ".$grupoSeccion->getNombre(), $eX, $tY);
-						$tY += $aY;
-						$page->drawText("Puntaje Máximo: ".$maximo, $eX, $tY);
-						$tY += $aY;
-						$page->drawText("Puntaje Obtenido: ".$valor, $eX, $tY);
-						$tY += $aY;
-						$page->drawText("Calificación Categoría: ".sprintf('%.2f', $calificacion), $eX, $tY);
-						$tY += 2*$aY;
-						$promedio += $calificacion; 
-						$cY = $tY;
-						*/
-						$promedio += $calificacion;
-						//$preferenciaDAO->obtenerPreferenciaGrupo($grupoSeccion->getIdGrupo());
-						/*
-						//$opciones = explode(",", $grupoSeccion->getOpciones());
-						$opcionValorMayor = $grupoDAO->obtenerValorMayorOpcion($grupoSeccion->getIdGrupo());
-						//puntaje maximo = opcion de valor mas alto * numero de preguntas * encuestas realizadas
-						$maximo = $opcionValorMayor["valor"] * $grupoSeccion->getElementos() * $realizadas;
-						//print_r($maximo);
-						echo "<h4>".$grupoSeccion->getNombre()." >> </h4> Puntaje Máximo: " . $maximo;
-						//print_r($opciones);
-						echo "<br />";
-						$preferenciaDAO->obtenerTotalCategoria($encuesta->getIdEncuesta(), $grupo->getIdGrupo(), $grupoSeccion->getIdGrupo());
-						*/
-					endforeach;
-				endforeach;
-				// Agregamos el promedio
-				$promedio /= $categorias;
-				$resultado = ""; 
-				
-				if($promedio > 8.5){
-					$resultado = "EXCELENTE";
-				}elseif($promedio > 7.0){
-					$resultado = "ADECUADO";
-				}elseif($promedio > 5.0){
-					$resultado = "INSUFICIENTE";
-				}elseif($promedio > 4.0){
-					$resultado = "DEFICIENTE";
-				}
-				//$page->addTable($table, 40, 235);
-				//$page->drawText("PROMEDIO: ".sprintf('%.2f', $promedio) . " - " . $resultado, 165, 205);
-				
-				//$pdfReport->addPage($page);
-				//$pdfReport->saveDocument();
-				//$pdf->saveD;
-				//$pdfReport->save($this->nombreArchivo,false);
-				
-				?>
-				
+			
 		</div>
 	</div>
 </section>
