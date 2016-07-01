@@ -305,19 +305,23 @@ class Encuesta_Util_Reporter {
 	 */
 	public function generarReporteGeneralEvaluacionDocente($idDocente, $idEncuesta)
 	{
+		// ---------------------------------------------------------------------------- Obtenemos la Encuesta en cuestion
 		$tablaEncuesta = $this->tablaEncuesta;
 		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta=?",$idEncuesta);
 		$rowEncuesta = $tablaEncuesta->fetchRow($select);
-		// ----------------------------------------------------------------------------
+		
+		// ---------------------------------------------------------------------------- Obtenemos las Secciones de la Encuesta
 		$tablaSeccion = $this->tablaSeccion;
 		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idEncuesta=?",$idEncuesta);
 		$rowsSecciones = $tablaSeccion->fetchAll($select);
-		// ----------------------------------------------------------------------------
+		
+		// ---------------------------------------------------------------------------- Obtenemos al Docente a Evaluar
 		$tablaRegistro = $this->tablaRegistro;
 		$select = $tablaRegistro->select()->from($tablaRegistro)->where("idRegistro=?",$idDocente);
 		$rowDocente = $tablaRegistro->fetchRow($select);
-		// ---------------------------------------------------------------------------- Asignaciones
-		// Obtenemos todas las asignaciones del docente
+		
+		// ---------------------------------------------------------------------------- Obtenemos todas las Asignaciones del Docente
+		
 		$tablaAsignacion = $this->tablaAsignacionG;
 		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idRegistro=?",$idDocente);
 		//print_r("Query: " . $select->__toString());
@@ -339,7 +343,7 @@ class Encuesta_Util_Reporter {
 		$pages = $pdfTemplate->pages;
 		$pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/general');
 		$pdfReport->setYHeaderOffset(160);
-		// Clonamos 
+		// Clonamos la pagina para resetear el numero de seguridad que genera Zend. 
 		$pageZ = clone $pages[0];
 		$page = new My_Pdf_Page($pageZ);
 		//$page = new My_Pdf_Page(Zend_Pdf_Page::SIZE_LETTER_LANDSCAPE);
@@ -542,9 +546,9 @@ class Encuesta_Util_Reporter {
 			$colProm->setText(sprintf('%.2f', $calificacion));
 			$colProm->setWidth($widthGeneral);
 			$cols[] = $colProm;
-			print_r("<br />");
-			print_r("Promedio: ".$promedio);
-			print_r("<br />");
+			//print_r("<br />");
+			//print_r("Promedio: ".$promedio);
+			//print_r("<br />");
 		}
 		
 		$rowPromedio->setColumns($cols);
