@@ -31,7 +31,7 @@ class Sistema_ClientesController extends Zend_Controller_Action
 				
 				try{
 					$this->empresaDAO->crearEmpresa($contenedor);
-					$this->view->messageSuccess = "Cliente <strong>".$datos["0"]["razonSocial"]."</strong> creado exitosamente";
+					$this->view->messageSuccess = "Cliente <strong>".$contenedor["0"]["razonSocial"]."</strong> creado exitosamente";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error al crear el cliente: <strong>".$ex->getMessage()."</strong>";
 				}

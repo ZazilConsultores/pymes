@@ -4,13 +4,17 @@
 	$unidad = $this->unidad;
 	$formulario = $this->formulario;
 	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"multiplos", "action" => "alta"), null, true));
+	$unidadDAO = new Inventario_DAO_Unidad;
 	
 ?>
-<section class="row">
+<section class="panel panel-success">
+	<div class="panel-heading">
 	<article>
 		<header>
 			<h3>Multiplos:  <?php echo $producto->getProducto() ?></h3>
 		</header>
+	</div>
+	<br />
 		<div>
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"multiplos","action"=>"alta","idProducto"=>$producto->getIdProducto()),null,true); ?>">
 				<span class="glyphicon glyphicon-plus"></span> Nuevo Multiplo
@@ -18,23 +22,25 @@
 			<table class="table table-condensed table-striped">
 				<thead>
 					<th>idMultiplos</th>
-					<th>idProducto</th>
-					<th>idUnidad</th>
+					<th>Producto</th>
 					<th>Cantidad</th>
+					<th>Unidad</th>
+					
 				</thead>
 				<tbody>
-					<?php foreach ($multiplos as $multiplo) : ?>
-					<!--<?php print_r($multiplo->toArray()) ?>
-					<!--<?php print_r("<br />") ?>-->
+					<?php foreach ($multiplos as $multiplo) : 
+						$unidad = $unidadDAO->obtenerUnidad($multiplo->getIdUnidad());
+					?>
 					<tr>
 						<td><?php echo $multiplo->getIdMultiplos() ?></td>
-						<td><?php echo $producto->getProducto() ?></td>				
-						<td><?php echo $multiplo->getIdUnidad() ?></td>
-						<td><?php echo $multiplo->getCantidad() ?></td>
+						<td><?php echo $producto->getProducto() ?></td>	
+						<td><?php echo $multiplo->getCantidad() ?></td>			
+						<td><?php echo $unidad->getUnidad() ?></td>
+						
 					</tr>
 					<?php endforeach ?>
 				</tbody>
 			</table>
 		</div>
-	</article>
+		</article>
 </section>

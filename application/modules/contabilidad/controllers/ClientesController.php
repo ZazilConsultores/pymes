@@ -2,7 +2,6 @@
 
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
-
     public $links = array(
         'Inicio' => array(
             'module' => 'contabilidad',
@@ -47,8 +46,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		$this->view->links = $this->links;
 		
-		$this->db = Zend_Db_Table::getDefaultAdapter();
+		$this->notaSalidaDAO= new Contabilidad_DAO_NotaSalida;
 		
+		//=============================
+		 
+        /* Initialize action controller here */
+		$this->db = Zend_Db_Table::getDefaultAdapter();
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto");
 		$statement = $select->query();
@@ -111,14 +114,24 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function notaAction()
     {
+
         // action body
         $request = $this->getRequest();
         $formulario = new Contabilidad_Form_NuevaNotaCliente;
+
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
 			
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
+
+				$notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
+				$datos = $formulario->getValues();
+				$encabezado = $datos[0];
+				$productos = json_decode($encabezado['productos'],TRUE);
+				//print_r($encabezado);
+				/*print_r('<br />');
+				
 				$notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
@@ -130,13 +143,14 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				foreach ($productos as $producto){
 					//$producto->encabezado();
 					//sprint_r($producto);
-					$notaSalidaDAO->agregarProducto($encabezado, $producto);
+
+					$notaSalidaDAO->restarProducto($encabezado, $producto);
 					//print_r($contador);
 					$contador++;
 					
 				}
 				//print_r($datos)		
-				//print_r('<br />');
+
 				//print_r($productos);
 				//print_r(json_decode($datos[0]['productos']));
 				//$notaentrada = new Contabilidad_Model_Movimientos($datos);
@@ -145,13 +159,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}
-        
+
+		
     }
 
     public function remisionAction()
-    {	
-        // action body
+    {
+    	 
     }
+
 
     public function facturaAction()
     {
