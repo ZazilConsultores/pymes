@@ -10,14 +10,25 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 	private $tablaCapas;
 	private $tablaMultiplos;
 	private $tablaCardex;
-	
+	private $tablaClientes;
 	
 	public function __construct() {
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
-		$this->tablaCardex = new  Contabilidad_Model_DbTable_Cardex;	
+		$this->tablaCardex = new  Contabilidad_Model_DbTable_Cardex;
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;	
+	}
+	
+	public function obtenerClientes(){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select=$tablaEmpresa->select()
+		->setIntegrityCheck(false)
+		->from($tablaEmpresa, array('idEmpresa'))
+		->join('fiscales', 'Empresa.idFiscales = fiscales.idFiscales', array('razonSocial'))
+		->join('Clientes','Empresa.idEmpresa = Clientes.idEmpresa');
+		return $tablaEmpresa->fetchAll($select);	
 	}
 
 	

@@ -40,7 +40,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$empresas = array();
 		foreach ($rowsEmpresas as $rowEmpresa) {
 			$empresaModel = new Sistema_Model_Empresas($rowEmpresa->toArray());
-			$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
+			//$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
 			// ==========================================================================
 			
 			
@@ -104,6 +104,20 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		//return $select->__toString();
 		
 	}
+	public function obtenerInformacionEmpresasIdFiscales()
+	{
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()
+			->setIntegrityCheck(false)
+			->from($tablaFiscales, array('idFiscales','rfc', 'razonSocial'))
+			->join('empresa', 'empresa.idFiscales = Fiscales.idFiscales', array())
+			->join('empresas','empresas.idEmpresa = Fiscales.idFiscales', array());
+			
+		//	return $select->__toString();
+		return $tablaFiscales->fetchAll($select);
+		
+	}
 
 	
 	
@@ -121,8 +135,8 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			->join('FiscalesEmail', 'Fiscales.idFiscales = FiscalesEmail.idFiscales',array())
 			->join('Email',"Email.idEmail=FiscalesEmail.idEmail", array('email'))
 			->join('Municipio', "Municipio.idMunicipio = Domicilio.idMunicipio", array('Municipio'))
-			->join('Estado',"Estado.idEstado = Municipio.idEstado", array('Estado'));
-			//->where("Fiscales.idFiscales = ?", $rowEmpresa->idFiscales);
+			->join('Estado',"Estado.idEstado = Municipio.idEstado", array('Estado'))
+			->where("Fiscales.idFiscales = ?", $rowEmpresa->idFiscales);
 			
 		//	return $select->__toString();
 		return $tablaFiscales->fetchAll($select);

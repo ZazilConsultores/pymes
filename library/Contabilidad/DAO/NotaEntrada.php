@@ -10,6 +10,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	private $tablaInventario;
 	private $tablaCapas;
 	private $tablaMultiplos;
+	private $tablaEmpresa;
 	
 	
 	public function __construct() {
@@ -17,9 +18,21 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
+		
 			
 		
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
+	}
+	
+	public function obtenerProveedores(){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select=$tablaEmpresa->select()
+		->setIntegrityCheck(false)
+		->from($tablaEmpresa, array('idEmpresa'))
+		->join('fiscales', 'Empresa.idFiscales = fiscales.idFiscales', array('razonSocial'))
+		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa');
+		return $tablaEmpresa->fetchAll($select);	
 	}
 
 	public function obtenerNotaEntrada(){
