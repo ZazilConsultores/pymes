@@ -226,7 +226,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$this->view->grupoDAO = $this->grupoDAO;
 		$this->view->preguntaDAO = $this->preguntaDAO;
 		
-		
+		$this->view->registroDAO = $this->registroDAO;
 		/*
 		$idRegistro = $asignacion["idRegistro"];
 		$idGrupo = $asignacion["idGrupo"];

@@ -1,45 +1,156 @@
 <?php
-	$asignacion = $this->asignacion;
-	$encuesta = $this->encuesta;
-	//$registro = $this->registro;
-	//$grupo = $this->grupo;
-	//$materia = $this->materia;
-	//$page = $this->page;
-	//$pdf = $this->pdf;
+	// Obtenemos la asignacion del controller
+	$asignacionE = $this->asignacion;	// Array de la BD
+	$encuesta = $this->encuesta;		// Objeto, viene de un DAO
+	
+	//print_r($asignacionE);
+	//print_r("<br />");
+	//print_r($encuesta);
+	//print_r("<br />");
 	
 	$encuestaDAO = $this->encuestaDAO;
 	$seccionDAO = $this->seccionDAO;
 	$grupoDAO = $this->grupoDAO;
 	$preguntaDAO = $this->preguntaDAO;
+	
+	$registroDAO = $this->registroDAO;			// Obtendremos datos del Docente a evaluar
 	$reporteDAO = new Encuesta_DAO_Reporte;
+	$materiaDAO = new Encuesta_DAO_Materia;		//Obtenemos datos de la materia evaluada
+	$gruposDAO = new Encuesta_DAO_Grupos;
 	
 	$preferenciaDAO = new Encuesta_DAO_Preferencia;
 	$reporteador = new Encuesta_Util_Reporter;
 	$idReporte = null;
+	// ========================================================================= Obtenemos los datos de el reporte en general
+	$registro = $registroDAO->obtenerRegistro($asignacionE["idRegistro"]);		// Docente
+	$materia = $materiaDAO->obtenerMateria($asignacionE["idMateria"]);
 	
-	$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
-	$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
+	$grupoE = $gruposDAO->obtenerGrupo($asignacionE["idGrupo"]);
+	$encuestasRealizadas = $encuestaDAO->obtenerEncuestaRealizadaPorAsignacion($asignacionE["idAsignacion"]);
+	//$page = $this->page;
+	//$pdf = $this->pdf;
+	
+	
+	//$realizadas = $encuestaDAO->obtenerNumeroEncuestasRealizadas($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
+	//$secciones = $seccionDAO->obtenerSecciones($encuesta->getIdEncuesta());
+	
+	$secciones = $encuestaDAO->obtenerSecciones($encuesta->getIdEncuesta());
+	//print_r($secciones);
+	$categorias = array();
+	foreach ($secciones as $seccion) {
+		$grupos = $seccionDAO->obtenerGrupos($seccion->getIdSeccion());
+		foreach ($grupos as $grupo) {
+			$categorias[] = $grupo;
+		}
+	}
 	try{
 		//print_r($encuesta);
 		//print_r("<br />");
 		//print_r($asignacion);
 		//print_r("<br />");
-		$idReporte = $reporteador->generarReporteGrupalEvaluacionAsignacion($encuesta->getIdEncuesta(), $asignacion["idAsignacion"]);
+		$idReporte = $reporteador->generarReporteGrupalEvaluacionAsignacion($encuesta->getIdEncuesta(), $asignacionE["idAsignacion"]);
 		//print_r("<br />");
 		//print_r("FIN");
 	}catch(Exception $ex){
 		print_r($ex);
 	}
+	
+	$promedioGeneral = 0;
 ?>
 <section class="row">
 	<div class="panel panel-info">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				<strong>Resultados Grupales de Encuesta.</strong> 
+				Resultado Grupal de Encuesta  
 			</h3>
 		</div>
 		<div class="panel-body">
+			<h4>Encuesta: <strong><?php echo $encuesta->getNombre() ?></strong></h4>
+			<h5>Docente: <strong><?php echo $registro->getApellidos().", " .$registro->getNombres() ?></strong></h5>
 			
+			<a class="btn btn-info" target="_blank" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index","action"=>"repgrupal","idReporte"=>$idReporte),null,true) ?>">
+				<span class="glyphicon glyphicon-duplicate"></span> Reporte en PDF
+			</a>
+			
+			<table class="table table-striped table-condensed">
+				<thead>
+					<th>Grupo</th>
+					<th>Alumnas</th>
+					<?php foreach ($categorias as $categoria) : ?>
+					<th>
+						<?php 
+							$encabezados[] = $categoria->getNombre();
+							echo $categoria->getNombre(); ?>
+					</th>
+					<?php endforeach; ?>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<?php echo $grupoE->getGrupo() ?>
+						</td>
+						<td>
+							<?php 
+							$totalAlumnas += $encuestasRealizadas["realizadas"];
+							echo $encuestasRealizadas["realizadas"] ?>
+						</td>
+						<?php foreach ($categorias as $categoria) : ?>
+						<td>
+							<?php
+								$valorMayor = $grupoDAO->obtenerValorMayorOpcion($categoria->getIdGrupo());
+								$numeroPreguntas = count($grupoDAO->obtenerPreguntas($categoria->getIdGrupo()));
+								//print_r("N.P: ".$numeroPreguntas);
+								//print_r("<br />");
+								//print_r("E.R: ".$encuestasRealizadas["realizadas"]);
+								//print_r("<br />");
+								$maximo = $encuestasRealizadas["realizadas"] * $numeroPreguntas * $valorMayor["valor"];
+								//print_r("NoPreguntas: ".$numeroPreguntas);
+								//print_r("Maximo: ".$maximo);
+								//print_r("<br />");
+								//$vMayor = $erealizada["realizadas"] * $valorMayor["valor"];
+								$puntaje = $preferenciaDAO->obtenerTotalPreferenciaGrupo($categoria->getIdGrupo(), $asignacionE["idAsignacion"]);
+								//print_r("P.M: ".$maximo);
+								//print_r("<br />");
+								//print_r("P.O: ".$puntaje);
+								//print_r("<br />");
+								//$puntaje = $puntaje / $erealizada["realizadas"];
+								
+								if($maximo == 0){
+									$calificacion = 0;
+								}else{
+									$calificacion = (10 * $puntaje) / $maximo;
+								}
+								$promedioGeneral += $calificacion; 
+								//print_r("Calif: ".sprintf('%.2f', $calificacion));
+								echo sprintf('%.2f', $calificacion);
+								$totalCategorias[$categoria->getIdGrupo()][] = sprintf('%.2f', $calificacion);
+								$colCategoria = new My_Pdf_Table_Column();
+								$colCategoria->setText(sprintf('%.2f', $calificacion));
+								$columnas[] = $colCategoria;
+							?>
+						</td>
+						<?php endforeach; ?>
+					</tr>
+				</tbody>
+			</table>
+			<br />
+			<?php 
+				$promedioGeneral = $promedioGeneral / count($categorias);
+				$resultado = ""; 
+				
+				if($promedioGeneral > 10){
+					$resultado = "ERROR, RANGO SOBREPASADO";
+				}elseif($promedioGeneral >= 8.5){
+					$resultado = "EXCELENTE";
+				}elseif($promedioGeneral >= 7.0){
+					$resultado = "ADECUADO";
+				}elseif($promedioGeneral >= 5.0){
+					$resultado = "INSUFICIENTE";
+				}elseif($promedioGeneral >= 4.0){
+					$resultado = "DEFICIENTE";
+				}
+			?>
+			<h4>PROMEDIO: <strong><?php echo sprintf('%.2f', $promedioGeneral) ; ?></strong> - <?php echo $resultado ?></h4>
 		</div>
 	</div>
 </section>
