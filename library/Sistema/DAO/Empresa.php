@@ -51,6 +51,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$tipo = $fiscal["tipo"];
 			// Solo es valido cuando damos de alta una empresa (CL y PR) y un proveedor PR
 			$tipoProveedor = $fiscal["tipoProveedor"];
+			$cuenta = "";
+			if(array_key_exists("cuenta", $fiscal)){
+				$cuenta = $fiscal["cuenta"];
+				unset($fiscal["cuenta"]);
+			}
 			//	En la informacion fiscal tipo y tipoProveedor no van a la base de datos
 			unset($fiscal["tipo"]);
 			unset($fiscal["tipoProveedor"]);
@@ -72,11 +77,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			switch ($tipo) {
 				case 'EM':
 					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>""));
+					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
 					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
 					break;	
 				case 'CL':
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa));
+					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
 					break;
 				case 'PR':
 					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
@@ -174,40 +179,40 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		return $idFiscales;
 	}
 	
-	public function obtenerIdFiscalesClientes(){
+	public function obtenerEmpresasClientes(){
+		$tablaEmpresa = $this->tablaEmpresa;
 		$tablaClientes = $this->tablaClientes;
+		
 		$rowsClientes = $tablaClientes->fetchAll();
 		
-		$tablaEmpresa = $this->tablaEmpresa;
-		
-		$idFiscales = array();
+		$eClientes = array();
 		
 		foreach ($rowsClientes as $row) {
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa = ?", $row->idEmpresa);
 			$rowEmpresa = $tablaEmpresa->fetchRow($select);
 			
-			$idFiscales[] = $rowEmpresa->idFiscales;
+			$eClientes[] = $rowEmpresa->toArray();
 		}
 		
-		return $idFiscales;
+		return $eClientes;
 	}
 	
-	public function obtenerIdFiscalesProveedores(){
+	public function obtenerEmpresasProveedores(){
 		$tablaEmpresa = $this->tablaEmpresa;
 		$tablaProveedores = $this->tablaProveedores;
 		
 		$rowsProveedores = $tablaProveedores->fetchAll();
 		
-		$idFiscales = array();
+		$eProveedores = array();
 		
 		foreach ($rowsProveedores as $row) {
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa = ?", $row->idEmpresa);
 			$rowEmpresa = $tablaEmpresa->fetchRow($select);
 			
-			$idFiscales[] = $rowEmpresa->idFiscales;
+			$eProveedores[] = $rowEmpresa->toArray();
 		}
 		
-		return $idFiscales;
+		return $eProveedores;
 	}
 	
 	/**

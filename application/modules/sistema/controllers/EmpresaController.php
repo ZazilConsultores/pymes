@@ -75,10 +75,10 @@ class Sistema_EmpresaController extends Zend_Controller_Action
     public function clientesAction()
     {
         // action body
-        $idFiscales = $this->empresaDAO->obtenerIdFiscalesClientes();
+        $eClientes = $this->empresaDAO->obtenerEmpresasClientes();
 		$fiscales = array();
-		foreach ($idFiscales as $id) {
-			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
+		foreach ($eClientes as $eCliente) {
+			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($eCliente["idFiscales"]);
 		}
         //$fiscales = $this->fiscalDAO->obtenerFiscalesCliente();
 		$this->view->fiscales = $fiscales;
@@ -87,12 +87,12 @@ class Sistema_EmpresaController extends Zend_Controller_Action
     public function proveedoresAction()
     {
         // action body
-        $idFiscales = $this->empresaDAO->obtenerIdFiscalesProveedores();
-		print_r($idFiscales);
+        $eProveedores = $this->empresaDAO->obtenerEmpresasProveedores();
+		//print_r($idFiscales);
 		$fiscales = array();
 		
-		foreach ($idFiscales as $id) {
-			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($id);
+		foreach ($eProveedores as $eProveedor) {
+			$fiscales[] = $this->fiscalesDAO->obtenerFiscales($eProveedor["idFiscales"]);
 		}
         
 		$this->view->fiscales = $fiscales;

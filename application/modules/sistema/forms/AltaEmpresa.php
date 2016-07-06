@@ -48,9 +48,16 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
         $eRFC = new Zend_Form_Element_Text("rfc");
 		$eRFC->setLabel("R.F.C.");
 		$eRFC->setAttrib("class", "form-control");
-		$eRFC->setAttrib("required", "true");
+		$eRFC->setAttrib("required", "required");
 		$eRFC->setAttrib("minlength", "12");
 		$eRFC->setAttrib("maxlength", "13");
+		
+		$eCuenta = new Zend_Form_Element_Text("cuenta");
+		$eCuenta->setAttrib("class", "hidden");
+		$eCuenta->setLabel("Cuenta: ");
+		$eCuenta->setAttrib("maxlength", "15");
+		$eCuenta->setAttrib("required", "required");
+		//$eCuenta->setAttrib("disabled", "disabled");
 		
 		$eTipoEmpresa = new Zend_Form_Element_Select("tipo");
 		$eTipoEmpresa->setLabel("Tipo de Empresa: ");
@@ -68,7 +75,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		
 		//$formulario->getSubForm("0")->addElement($eTipoProveedor);
         
-        $subFiscales->addElements(array($eRazonSocial,$eRFC,$eTipoEmpresa,$eTipoProveedor));
+        $subFiscales->addElements(array($eRazonSocial,$eRFC, $eCuenta,$eTipoEmpresa,$eTipoProveedor));
 		$subFiscales->setElementDecorators($decoratorsElemento);
 		$subFiscales->setDecorators($decoratorsCategoria);
 		//   ===============================================================

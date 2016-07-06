@@ -24,11 +24,13 @@
 			<tbody>
 				<?php foreach ($fiscales as $fiscal) : 
 					$empresa = $empresaDAO->obtenerEmpresa($fiscal->getIdFiscales());
+					//print_r($empresa);
+					//print_r("<br />");
 				?>
 				<tr>
 					<td><?php echo $fiscal->getRazonSocial() ?></td>
 					<td>
-						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"clientes","action"=>"cliente","idEmpresa"=>$empresa["idEmpresa"]),null,true) ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"clientes","action"=>"cliente","idFiscales"=>$fiscal->getIdFiscales()),null,true) ?>">
 							<span class="glyphicon glyphicon-cog"></span> Administrar Cliente
 						</a>
 					</td>
