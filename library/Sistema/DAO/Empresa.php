@@ -50,7 +50,10 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			// Vemos si damos de alta una empresa EM, un cliente CL o un proveedor PR
 			$tipo = $fiscal["tipo"];
 			// Solo es valido cuando damos de alta una empresa (CL y PR) y un proveedor PR
-			$tipoProveedor = $fiscal["tipoProveedor"];
+			if(array_key_exists("tipoProveedor", $fiscal)){
+				$tipoProveedor = $fiscal["tipoProveedor"];
+				unset($fiscal["tipoProveedor"]);
+			}
 			$cuenta = "";
 			if(array_key_exists("cuenta", $fiscal)){
 				$cuenta = $fiscal["cuenta"];
@@ -64,7 +67,10 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			// Antes de insertar verificamos que el RFC no este ya dado de alta, si ya esta nos lanzara un error.
 			$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 			$rowFiscales = $select->query()->fetchAll();
-			if(count($rowFiscales) != 0) throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+			//Si RFC no es "XAXX010101000", verificamos que no este duplicado
+			if($fiscal["rfc"] != "XAXX010101000"){
+				if(count($rowFiscales) != 0) throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+			}	// Si RFC es "XAXX010101000" no hay problema, esto es solo en un alta de cliente
 			//	No genero error por lo que procedemos a insertar en la tabla
 			$bd->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
