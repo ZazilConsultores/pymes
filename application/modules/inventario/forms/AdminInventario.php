@@ -5,7 +5,7 @@ class Inventario_Form_AdminInventario extends Zend_Form
 
     public function init()
     {
-   	
+   		$this->setAttrib("id", "editaInventario");
 		$eMinimo = new Zend_Form_Element_Text('minimo');
 		$eMinimo->setLabel('Minimo:');
 		$eMinimo->setAttrib('class', 'form-control');
@@ -25,7 +25,7 @@ class Inventario_Form_AdminInventario extends Zend_Form
 		$eCantidadGanancia = new Zend_Form_Element_Text('cantidadGanancia');
 		$eCantidadGanancia->setLabel('Cantidad de Ganancia');
 		$eCantidadGanancia->setAttrib('class', 'form-control');
-		$eCantidadGanancia->setAttrib('disabled', "true");
+		//$eCantidadGanancia->setAttrib('disabled', "true");
 		
 		$eCostoCliente = new  Zend_Form_Element_Text('costoCliente');
 		$eCostoCliente->setLabel('Costo Cliente');

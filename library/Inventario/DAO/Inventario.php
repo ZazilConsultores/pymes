@@ -63,32 +63,42 @@ public function obtenerIdProductoInventario(){
 	
 	public function editarInventario($idInventario, array $inventario)
 	{
-		$tablaInventario = $this->tablaInventario;
-		$where = $tablaInventario->getAdapter()->quoteInto("idInventario = ?", $idInventario);
-		$tablaInventario->update($inventario, $where);
-		
 		//*******Edita
-		$datos=array();
+		//print_r($inventario);
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
-		
-		
-		
+
 		try{
-		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idInventario=?",$datos['idInventario']);
-	
-		$row = $tablaInventario->fetchRow($select); 
-		
-		if(!is_null($row)){
-			$secuencial= $row->secuencial +1;
-			print_r($secuencial);
-		}else{
-			$secuencial = 1;	
-		
-		print_r($secuencial);
-		}
 			
+			$tablaInventario = $this->tablaInventario;
+			//$select = $tablaInventario->select()->from($tablaInventario)->where("idInventario=?",$idInventario);
+			//$row = $tablaInventario->fetchRow($select);
+			$where = $tablaInventario->getAdapter()->quoteInto("idInventario = ?", $idInventario);
+		if(!is_null($where)){
+			
+			$costoCliente = 0;
+			$porcentajeGanancia = 0;
+			
+			$minimo = $inventario['minimo'];
+			$maximo = $inventario['maximo'];
+			$costoUnitario = $inventario['costoUnitario'];
+			$cantidadGanancia = $inventario['cantidadGanancia'];
+			
+			$costoCliente = $inventario['costoUnitario'] + $inventario['cantidadGanancia'];
+			print_r("<br />");
+			print_r("<br />");
+			print_r($costoCliente);
+			
+			$porcentajeGanancia = ((($inventario['costoCliente'] / $inventario['costoUnitario']) -1 ) * 100);
+			//print_r($porcentajeGanancia);
+		}else{
+			if (!is_null($where->porcentajeGanancia)){
+				$costoCliente = ($where->costoUnitario * $where->porcentajeGanancia / 100) + $where->costoUnitario + $where->cantidadGanancia;	
+		
+			}
+		}
+		$tablaInventario->update(array('minimo'=>$minimo, 'maximo'=>$maximo, 'costoUnitario'=>$costoUnitario, 
+		'cantidadGanancia'=>$cantidadGanancia,'porcentajeGanancia'=>$porcentajeGanancia,'costoCliente'=>$costoCliente),$where);		
 		$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");
@@ -102,10 +112,21 @@ public function obtenerIdProductoInventario(){
 			print_r("<br />");
 			print_r("<br />");
 			$bd->rollBack();
+		
 		}
-	
-	
+		
 	}
-	
 
+	public function editarTodo(){
+		$tablaInventario = $this->tablaInventario;
+		$rowsInventario = $tablaInventario->fetchAll();
+		
+		$modelInventario= array();
+		foreach ($rowsInventario as $row) {
+			$modelInventario = new Inventario_Model_Inventario($row->toArray());
+			$modelsInventario[] = $modelInventario;
+		}
+		
+		return $modelsInventario;
+	}
 }

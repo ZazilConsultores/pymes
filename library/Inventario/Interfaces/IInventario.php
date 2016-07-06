@@ -9,6 +9,7 @@ interface Inventario_Interfaces_IInventario{
 	public function editarInventario($idInventario,array $inventario);
 	public function obtenerIdProductoInventario();
 	public function obtenerProductoInventario($idInventario);
+	public function editarTodo();
 	
 	
 }

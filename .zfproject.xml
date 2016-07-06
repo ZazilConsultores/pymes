@@ -76,6 +76,8 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
+              <actionMethod actionName="editarTodo"/>
+              <actionMethod actionName="editartodo"/>
             </controllerFile>
             <controllerFile controllerName="Unidad">
               <actionMethod actionName="index"/>
@@ -189,6 +191,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Inventario">
                 <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="editarTodo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="editartodo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2272,6 +2280,8 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
+                <testApplicationActionMethod forActionName="editarTodo"/>
+                <testApplicationActionMethod forActionName="editartodo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Unidad">
                 <testApplicationActionMethod forActionName="index"/>

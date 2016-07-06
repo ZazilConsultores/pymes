@@ -1,0 +1,51 @@
+<?php 
+	$inventario = $this->inventario;
+	$formulario = $this->formulario;
+	$productosDAO = new Inventario_DAO_Producto;
+?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Inventario General: Aplicar a todos los productos el mismo......
+		</h3>
+	</div>
+	<div class="panel-body">
+	<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"inventario","action"=>"index"),null,true) ?>">
+		<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Inventario
+	</a>
+	<br /><br />
+	<article class="col-md-8">
+		<?php echo $formulario; ?>
+	</article>
+		<br /><br /><br />
+	</div>
+</section>
+<script>
+	$().ready(function(){
+		
+		var form = $("#editaInventario");
+		form.validate({
+			rules: {
+				
+				minimo: {
+					
+					rangelength: [15,20],
+				},
+				descripcion: "required",
+			},
+			messages: {
+				
+				minimo: {
+						rangelength: "Este campo debe tener entre 15 y 20 caracteres"
+				}
+				
+			}
+		});
+		
+		$("#submit").click(function(){
+			console.log("" + form.valid());
+		});
+		
+	});
+	
+</script>
