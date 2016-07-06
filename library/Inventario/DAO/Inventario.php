@@ -128,5 +128,9 @@ public function obtenerIdProductoInventario(){
 		}
 		
 		return $modelsInventario;
+		
+		//editar todos los productos con el minimo*/
+		//$minimo = $inventario['minimo'];
+		//print_r($minimo);
 	}
 }
