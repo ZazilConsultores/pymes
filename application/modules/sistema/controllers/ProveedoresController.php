@@ -3,11 +3,14 @@
 class Sistema_ProveedoresController extends Zend_Controller_Action
 {
 	private $empresaDAO = null;
+	private $fiscalesDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->empresaDAO = new Sistema_DAO_Empresa;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		
     }
 
     public function indexAction()
@@ -43,11 +46,11 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
     public function proveedorAction()
     {
         // action body
-        $idEmpresa = $this->getParam("idEmpresa");
-		$empresaDAO = $this->empresaDAO;
-		
-		$empresa = $empresaDAO->obtenerEmpresa($idEmpresa);
-		$this->view->empresa = $empresa;
+		//	======================================================
+		$idFiscales = $this->getParam("idFiscales");
+		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		$this->view->fiscales = $fiscales;
+		$this->view->fiscalesDAO = $this->fiscalesDAO;
     }
 
 

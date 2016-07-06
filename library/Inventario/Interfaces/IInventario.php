@@ -6,6 +6,10 @@
  */
 interface Inventario_Interfaces_IInventario{
 	public function obtenerInventario();
-	public function editarInventario($idInventario, Sistema_Model_Inventario $inventario);
+	public function editarInventario($idInventario,array $inventario);
+	public function obtenerIdProductoInventario();
+	public function obtenerProductoInventario($idInventario);
+	public function editarTodo();
+	
 	
 }
