@@ -105,6 +105,7 @@
             <formFile formName="AltaUnidad"/>
             <formFile formName="AltaMultiplos"/>
             <formFile formName="AdminInventario"/>
+            <formFile formName="EditarTodoInventario"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
