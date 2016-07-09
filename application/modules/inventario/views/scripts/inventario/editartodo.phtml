@@ -22,19 +22,14 @@
 </section>
 <script>
 	$().ready(function(){
-		
 		var form = $("#editaInventario");
 		form.validate({
 			rules: {
-				
 				minimo: {
-					
-					rangelength: [15,20],
-				},
-				descripcion: "required",
+					maxlength: 10
+				}
 			},
 			messages: {
-				
 				minimo: {
 						rangelength: "Este campo debe tener entre 15 y 20 caracteres"
 				}

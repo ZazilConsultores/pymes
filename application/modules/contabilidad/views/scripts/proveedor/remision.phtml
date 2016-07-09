@@ -1,4 +1,256 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Proveedor</b> and script/action name <b>remision</b></p>
-</div>
+<?php echo $this->formulario; ?>
+<section class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Remision de Entrada.
+			</h3>
+		</div>
+		<div class="panel-body">
+			<!-- -->
+			<!-- Botón para agregar filas-->
+			<button id="addRow" class="btn btn-success" >
+				<span class="glyphicon glyphicon-plus" ></span> Nuevo
+			</button>
+			<a id="generarJsonArray" class="btn btn-warning">
+				<span class="glyphicon glyphicon-cog" ></span> Cargar
+			</a>
+			<table id="productosNota" class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Cantidad</th>
+						<th>Clave Producto</th>
+						<th>Seleccione Unidad</th>
+						<th>Codigo de Barras</th>
+						<th>Descripcion</th>
+						<th>Precio Unitario</th>
+						<th>Importe</th>
+						<th>Eliminar</th>
+					</tr>
+				
+				</thead>
+				<tbody>
+					
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><input id="total" class="form-control" /></td>				
+					</tr>
+				</tfoot>
+			</table>
+			<br />
+		</div>
+	</div>
+</section>
+<script>
+	$( document ).ready(function() {
+		console.log( "ready!" );
+		var jsonProductos = <?php echo $this->jsonProductos; ?>;
+		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+	
+		//console.dir(jsonProductos);
+		
+		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
+		$("button#addRow").on("click",function(){
+			var filasTabla = $("table#productosNota tbody > tr").length;
+			//console.log(filasTabla);
+			// si filasTabla = 0 continuar
+			// si filasTabla <> 0 checar fila actual
+			filasTabla ++;
+			// generamos elementos de nueva fila
+			// cantidad
+			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
+			// idProducto
+			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+
+			// idUnidad
+			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
+			$.each(jsonUnidad,function(i,item){
+				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			});
+			// codigoBarras
+			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
+			// descripcion
+			//var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			$.each(jsonProductos,function(i,item){
+				selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+			});	
+			// precioUnitario
+			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
+			// precioImporte
+			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
+			
+			// botonLimpiar
+			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
+			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
+
+			var tbody = $("table#productosNota").find('tbody');
+			tbody.append($('<tr>').
+				append($('<td>').append(inputCantidad)).
+				append($('<td>').append(inputProducto)).
+				append($('<td>').append(inputUnidad)).
+				append($('<td>').append(inputCodigoBarras)).
+				append($('<td>').append(selectDescripcion)).
+				append($('<td>').append(inputCostoUnitario)).
+				append($('<td>').append(inputCostoTotal)).
+				append($('<td>').append(buttonLimpiar))
+				
+			);
+		});//cierra el addRow
+		
+		//Funcion Eliminar #btnLimpiar_2
+ 		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
+ 			var numero=0;
+ 			//var tabla = document.getElementById("productosNota");
+ 
+  			// si tenemos mas de una fila, borramos3
+  			//if(tabla.rows.length > 2)
+  			if ($("table#productosNota tr").length > 2) 
+  			{
+  				$("table#productosNota tr:first").remove();
+  				//tabla.deleteRow(tabla.rows.length-1);
+  				//$('table#productosNota tr:last').remove();
+  				//--numero;
+  			}
+  			//if ($("table#productosNota tr").length != 1) {
+     		
+			//}
+  			   
+
+ 		});//cierra funcion eliminar
+ 		
+ 		//Funcion buscar descripcion del producto
+ 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			//console.log(id);
+			var numFila =  arr[1];
+ 			
+ 			$.each(jsonProductos,function(i,item){
+ 				if(jsonProductos[i].idProducto == id){
+ 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
+ 				}
+ 				
+				//selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+			});
+ 			
+ 		});//cierra funcion buscar descripcion del producto
+
+		//input  cantidad
+		$("table#productosNota").on("change","input[id^='idCantidad_']" ,function() {
+			var idCantidad= $(this).attr("id");
+			var arr = idCantidad.split('_');
+			var numFila =  arr[1];
+			
+			var precioUnitarioFila = $('input#costoUnitario_'+numFila);
+			//console.log(precioUnitarioFila);
+			var precioImporte = $(this).val() * precioUnitarioFila.val();
+
+			$('input#costoTotal_'+numFila).val(precioImporte);
+			//console.log($(this).val())	;
+			
+ 		}); //cierra input cantidad
+ 		
+		//input  costoTotal
+		
+		$("table#productosNota").on("blur","input[id^='costoTotal_']",function() {
+			var costo=0;
+			
+			 $("table#productosNota").find("input[id^='costoTotal_']").each(function () {
+        		costo += +$(this).val();
+    		});
+			//console.log(costo);
+			//console.log(costoTotal);
+			$("input#total").val(costo);
+		
+		});
+			
+ 		//Funcion genera totalColumna
+
+ 	
+		//======================
+ 		//input precioUnitario
+ 		$("table#productosNota").on("change", "input[id^='costoUnitario_']", function(){
+ 			var precioUnitario = $(this).attr("id");
+ 			var arr = precioUnitario.split('_');
+ 			var numFila = arr[1];
+ 			
+ 			var cantidadFila = $('input#idCantidad_'+numFila);
+ 			var precioImporte = $(this).val() * cantidadFila.val();
+ 			
+ 			$('input#costoTotal_'+numFila).val(precioImporte);
+ 			
+ 		});//cierra input precioUnitario
+ 		//==================================================================== Calcular JsonArray
+ 		$("a#generarJsonArray").on("click",function(){
+ 			console.log("En a#generarJsonArray: ");
+ 			var tabla = $("table#productosNota > tbody  > tr");
+ 			//Array Json de productos
+ 			var productos = [];
+ 			
+ 			tabla.each(function(){
+ 				
+ 				var row = $(this);
+ 				var cantidad = row.find("input[id^='idCantidad_']").val();
+ 				var unidad = row.find("select[id^='idUnidad_']").val();
+ 				var codigoBarras = row.find("input[id^='codigoBarras_']").val();
+ 				var descripcion = row.find("select[id^='descripcion_']").val();
+ 				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
+ 				var importe = row.find("input[id^='costoTotal_']").val();
+ 				//var total = row.find("input[id^='total']").val();
+ 				
+ 				console.log("Cantidad:"+cantidad);
+ 				console.log("unidad:"+unidad);
+ 				console.log("codigoBarras:"+codigoBarras);
+ 				console.log("descripcion:"+descripcion);
+ 				console.log("precioUnitario:"+precioUnitario);
+ 				console.log("costoTotal:"+importe);
+ 				//console.log("total:"+total);
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				
+ 			
+ 			});
+ 			console.dir(productos);
+ 			var myString = JSON.stringify(productos);
+ 			
+ 			console.log(myString);
+ 			if ($("input#productos").val(myString)){
+ 				
+ 			};
+ 			
+ 			// create an array restaurants
+			// add objects to the array
+			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
+			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
+			
+		
+ 		});
+ 		
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+		  this.cantidad = cantidad;
+		  //this.claveProducto = claveProducto;
+		  this.unidad = unidad;
+		  this.codigoBarras = codigoBarras;
+		  this.descripcion = descripcion;
+		  this.precioUnitario = precioUnitario;
+		  this.importe = importe;
+		  //this.unidad = unidad;
+		}
+		
+		
+		 $("a#generarJsonArray").on("click",function(){
+            //if($(this).val() != ''){
+               $('input[type="submit"]').removeAttr('disabled');
+            //}
+          });
+	
+	});//cierra document ready
+</script>

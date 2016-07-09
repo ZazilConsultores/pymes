@@ -27,6 +27,7 @@
         <formFile formName="AgregarRemisionCliente"/>
         <formFile formName="AltaNivel"/>
         <formFile formName="NuevaNotaProveedor"/>
+        <formFile formName="AgregarRemisionProveedor"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -104,6 +105,7 @@
             <formFile formName="AltaUnidad"/>
             <formFile formName="AltaMultiplos"/>
             <formFile formName="AdminInventario"/>
+            <formFile formName="EditarTodoInventario"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1095,6 +1097,7 @@
             <formFile formName="NuevaNotaProveedor"/>
             <formFile formName="NuevaNotaProveedor"/>
             <formFile formName="NuevaNotaCliente"/>
+            <formFile formName="AgregarRemisionProveedor"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
