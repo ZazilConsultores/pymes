@@ -58,15 +58,38 @@ class Inventario_InventarioController extends Zend_Controller_Action
     public function editartodoAction()
     {
         // action body
-        $inventarioDAO = $this->inventarioDAO;
-		$this->view->inventario = $inventarioDAO->editarTodo();
+       /* $inventarioDAO = $this->inventarioDAO;
+		$this->view->inventario = $inventarioDAO->editarTodo($inventario);
 		$formulario = new Inventario_Form_AdminInventario;
 		
+		/*$formulario->getElement("minimo")->setValue(0);
+		$formulario->getElement("maximo")->setValue(0);
+		$formulario->getElement("costoUnitario")->setValue(0);
+		$formulario->getElement("porcentajeGanancia")->setValue(0);
+		$formulario->getElement("cantidadGanancia")->setValue(0);
+		$formulario->getElement("costoCliente")->setValue(0);
+			
 		
 		//$this -> view -> inventario = $inventario;
 		$this -> view -> formulario = $formulario;
 		
-	}    
+	}    */
+	$request = $this->getRequest();
+		$formulario = new Inventario_Form_EditarTodoInventario;
+		$formulario->getElement("minimo")->setValue(0);
+		$formulario->getElement("maximo")->setValue(0);
+		$formulario->getElement("porcentajeGanancia")->setValue(0);
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				print_r($datos);
+				
+				$this->inventarioDAO->editarTodo($datos);		
+			}
+		}
+	}
 }
 
 

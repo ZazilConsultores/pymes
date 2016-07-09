@@ -165,7 +165,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function remisionAction()
     {
-    	 
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarRemisionCliente;
+		$this->view->formulario = $formulario;
     }
 
 

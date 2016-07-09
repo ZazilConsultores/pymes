@@ -168,6 +168,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     public function remisionAction()
     {
         // action body
+        $request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarRemisionProveedor;
+		$this->view->formulario = $formulario;
     }
 
     public function facturaAction()
@@ -177,7 +180,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
 
 }
-
 
 
 

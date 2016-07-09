@@ -1,6 +1,6 @@
 <?php
 
-class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
+class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 {
     public function init()
     {
@@ -42,15 +42,15 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		}
 		
 		$columnas = array('idEmpresa','razonSocial');
-		$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
-		$rowset = $tablaEmpresa->obtenerClientes();
+		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
+		$rowset = $tablaEmpresa->obtenerProveedores();
 		
-		$eCliente = new Zend_Form_Element_Select('idCoP');
-		$eCliente->setLabel('Seleccionar Cliente');
-		$eCliente->setAttrib("class", "form-control");
+		$eProveedor = new Zend_Form_Element_Select('idCoP');
+		$eProveedor->setLabel('Seleccionar Proveedor');
+		$eProveedor->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
 		}
 		
 		
@@ -122,7 +122,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eCliente,$eProyecto,$eProducto, $eTipoInventario));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eProveedor,$eProyecto,$eProducto, $eTipoInventario));
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eFormaPago,$eImportePago));
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		//$this->addElement($eTipoInventario);
@@ -130,3 +130,5 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
     }
 }
    
+
+
