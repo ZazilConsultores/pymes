@@ -67,10 +67,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			// Antes de insertar verificamos que el RFC no este ya dado de alta, si ya esta nos lanzara un error.
 			$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 			$rowFiscales = $select->query()->fetchAll();
-			//Si RFC no es "XAXX010101000", verificamos que no este duplicado
-			if($fiscal["rfc"] != "XAXX010101000"){
+			//Si RFC no es "XAXX010101000" (Cliente), verificamos que no este duplicado
+			if($fiscal["rfc"] != "XAXX010101000" || $fiscal["rfc"] != "XBXX010101000"){
 				if(count($rowFiscales) != 0) throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
-			}	// Si RFC es "XAXX010101000" no hay problema, esto es solo en un alta de cliente
+			}
+			// Si RFC es "XAXX010101000" no hay problema, esto es solo en un alta de cliente
 			//	No genero error por lo que procedemos a insertar en la tabla
 			$bd->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
