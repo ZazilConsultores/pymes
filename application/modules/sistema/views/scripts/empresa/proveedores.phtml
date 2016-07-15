@@ -18,12 +18,14 @@
 		<br /><br />
 		<table class="table table-striped table-condensed">
 			<thead>
+				<th>R.F.C.</th>
 				<th>Razon Social</th>
 				<th>Administrar</th>
 			</thead>
 			<tbody>
 				<?php foreach ($fiscales as $fiscal) : ?>
 				<tr>
+					<td><?php echo $fiscal->getRfc() ?></td>
 					<td><?php echo $fiscal->getRazonSocial() ?></td>
 					<td>
 						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"proveedores","action"=>"proveedor","idFiscales"=>$fiscal->getIdFiscales()),null,true) ?>">

@@ -180,7 +180,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		//   ===============================================================
 		$this->addSubForms(array($subFiscales,$subDomicilio,$subTelefono,$subEmail));
 		$eSubmit = new Zend_Form_Element_Submit("submit");
-		$eSubmit->setLabel("Crear Sucursal");
+		$eSubmit->setLabel("Crear Empresa");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		$this->addElement($eSubmit);
