@@ -28,6 +28,7 @@ class Sistema_UsuarioController extends Zend_Controller_Action
 		$rol = $this->rolDAO->obtenerRol($idRol);
         $request = $this->getRequest();
         $formulario = new Sistema_Form_AltaUsuario;
+		$this->view->rol = $rol;
 		$this->view->formulario = $formulario;
 		if($request->isPost()) {
 			if($formulario->isValid($request->getPost())){
@@ -36,12 +37,25 @@ class Sistema_UsuarioController extends Zend_Controller_Action
 				$datos["idRol"] = $rol->getIdRol();
 				
 				$usuario = new Sistema_Model_Usuario($datos);
-				$this->usuarioDAO->crearUsuario($usuario);
-				
-				$this->_helper->redirector->gotoSimple("index", "rol", "sistema");
+				try{
+					$this->usuarioDAO->crearUsuario($usuario);
+					$this->view->messageSuccess = "Usuario: <strong>" . $usuario->getUsuario() ."</strong> dado de alta exitosamente.";
+				}catch(Exception $ex){
+					$this->view->messageFail = "El usuario: <strong>" . $usuario->getUsuario() ."</strong> no pudo agregarse al sistema. Error: <strong>".$ex->getMessage()."</strong>";
+				}
+				//$this->_helper->redirector->gotoSimple("index", "rol", "sistema");
 			}
 		}
     }
+	
+	public function usuariosAction() {
+		$idRol = $this->getParam("idRol");
+		//print_r($idRol);
+		$rol = $this->rolDAO->obtenerRol($idRol);
+        $usuarios = $this->usuarioDAO->obtenerUsuarios($idRol);
+		$this->view->rol = $rol;
+		$this->view->usuarios = $usuarios;
+	}
 
 
 }

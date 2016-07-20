@@ -71,7 +71,7 @@ class Sistema_Model_Usuario
     public function setFecha($fecha) {
         $this->fecha = $fecha;
     }
-
+	/*
     private $hash;
 
     public function getHash() {
@@ -81,7 +81,7 @@ class Sistema_Model_Usuario
     
     public function setHash($hash) {
         $this->hash = $hash;
-    }
+    }*/
 
     public function __construct(array $datos) {
         if(array_key_exists("idUsuario", $datos)) $this->idUsuario = $datos["idUsuario"];
@@ -91,7 +91,7 @@ class Sistema_Model_Usuario
 		$this->nombres = $datos["nombres"];
 		$this->apellidos = $datos["apellidos"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray() {
@@ -104,7 +104,7 @@ class Sistema_Model_Usuario
 		$datos["nombres"] = $this->nombres;
 		$datos["apellidos"] = $this->apellidos;
 		$datos["fecha"] = $this->fecha;
-		$datos["hash"] = $this->hash;
+		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

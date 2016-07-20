@@ -34,7 +34,7 @@ class Sistema_DAO_Usuario implements Sistema_Interfaces_IUsuario {
 	}
 	public function crearUsuario(Sistema_Model_Usuario $usuario){
 		$tablaUsuario = $this->tablaUsuario;
-		$usuario->setHash($usuario->getHash());
+		//$usuario->setHash($usuario->getHash());
 		$usuario->setFecha(date("Y-m-d H:i:s", time()));
 		$tablaUsuario->insert($usuario->toArray());
 	}
