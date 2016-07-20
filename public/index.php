@@ -72,11 +72,8 @@ $connlocalOrigen = array(
 		'dbname' => 'inventario',
 	);
 
-<<<<<<< HEAD
 Zend_Registry::set('connserver', $connserver);
-=======
 //Zend_Registry::set('connlocal', $connlocal);
->>>>>>> ead896395a2fcdbedd5f13c1e021e366e4521362
 //Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connnancy', $connnancy);
 //Zend_Registry::set('connlocalorigen', $connlocalOrigen);
