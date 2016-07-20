@@ -103,6 +103,12 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		return $fiscales; 
 	}
 	
+	public function actualizarFiscales($idFiscales, $datos) {
+		$tablaFiscales = $this->tablaFiscales;
+		$where = $tablaFiscales->getAdapter()->quoteInto("idFiscales=?", $idFiscales);
+		$tablaFiscales->update($datos, $where);
+	}
+	
 	public function agregarDomicilioFiscal($idFiscales, Sistema_Model_Domicilio $domicilio){
 		$tablaFiscalesDomicilios = $this->tablaFiscalesDomicilios;
 		$registro = array();

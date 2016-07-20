@@ -30,9 +30,15 @@ class Sistema_RolController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$rol = new Sistema_Model_Rol($datos[0]);
-				$this->rolDAO->crearRol($rol);
-				$this->_helper->redirector->gotoSimple("index", "rol", "sistema");
+				$rol = new Sistema_Model_Rol($datos);
+				try{
+					$this->rolDAO->crearRol($rol);
+					$this->view->messageSuccess = "Rol: <strong>" . $rol->getRol(). "</strong> dado de alta exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail = "El Rol: <strong>" . $rol->getRol(). "</strong> no se pudo dar de alta. Error: <strong>".$ex->getMessage()."</strong>";
+				}
+				
+				//$this->_helper->redirector->gotoSimple("index", "rol", "sistema");
 			}
 		}
     }

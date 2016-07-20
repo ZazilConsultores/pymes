@@ -31,7 +31,7 @@ class Sistema_Model_Rol
     public function setFecha($fecha) {
         $this->fecha = $fecha;
     }
-
+	/*
     private $hash;
 
     public function getHash() {
@@ -41,13 +41,13 @@ class Sistema_Model_Rol
     
     public function setHash($hash) {
         $this->hash = $hash;
-    }
+    }*/
 
     public function __construct(array $datos) {
 		if(array_key_exists("idRol", $datos)) $this->idRol = $datos["idRol"];
 		$this->rol = $datos["rol"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
 	public function toArray() {
@@ -57,7 +57,7 @@ class Sistema_Model_Rol
 		$datos["idRol"] = $this->idRol;
 		$datos["rol"] = $this->rol;
 		$datos["fecha"] = $this->fecha;
-		$datos["hash"] = $this->hash;
+		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

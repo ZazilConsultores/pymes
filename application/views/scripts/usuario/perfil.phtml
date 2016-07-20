@@ -2,20 +2,30 @@
 	$auth = Zend_Auth::getInstance();
 	$identity = null;
 	if($auth->hasIdentity()){
-		$identity = $auth->getIdentity();
+		$identity = $auth->getStorage()->read();
 	}
 ?>
 <section class="row">
-	<article class="jumbotron">
-		<h3>Usuario: </h3>
-		<div>
-			<?php 
-				if(is_null($identity)){
-					print_r("No hay usuario autentificado");
-				}else{
-					print_r($identity);
-				}
-			?>
+	<div class="panel panel-info">
+		<!-- Header -->
+		<div class="panel-heading">
+			<h3 class="panel-title"> Usuario: <strong><?php echo $identity->usuario; ?></strong>  </h3>
 		</div>
-	</article>
+		<!-- Contenido -->
+		<div class="panel-body">
+			<div class="col-xs-2">
+				<img src="<?php echo $this->baseUrl() ?>/images/user_admin.png" style="width: 85%; height: 85%" />
+			</div>
+			<div class="col-xs-6">
+				<ul class="nav nav-tabs">
+					<li role="presentation">
+						<a>Datos</a>
+					</li>
+					<li role="presentation">
+						<a>Permisos</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </section>

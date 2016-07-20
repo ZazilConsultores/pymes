@@ -1,3 +1,17 @@
+<?php
+	//$currentModule = Zend_Registry::get("currentModule");
+	//$currentUser = Zend_Registry::get("currentUser");
+	$rolDAO = new Sistema_DAO_Rol;
+	$auth = Zend_Auth::getInstance();
+	$identity == null;
+	$modelRol = null;
+	if($auth->hasIdentity()){
+		$identity = $auth->getStorage()->read();
+		//print_r($identity);
+		$modelRol = $rolDAO->obtenerRol($identity->idRol);
+	}
+	
+?>
 <div class="container">
 	<header>
 		<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -9,16 +23,18 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					
 					<a class="navbar-brand" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true); ?>" >
-						Applicacion General
+						Applicacion General 
 					</a>
 				</div>
 				
 				<div class="collapse navbar-collapse" id="navbar1">
 					<ul class="nav navbar-nav">
-						<!-- Menú de operaciones de usuario -->
-						<?php echo $this->partial('partials/menus/submenus/usuario.phtml'); ?>
+						<li class="active">
+							<a class="navbar-brand" href="<?php echo $this->url(array("module"=>"default","controller"=>"usuario","action"=>"perfil","usr"=>is_null($identity->idUsuario) ? "default" : $identity->idUsuario ),null,true) ?>">
+								<span class="glyphicon glyphicon-cog"></span> <?php echo $rol = (is_null($modelRol)) ? "default" : $modelRol->getRol(); ?> - <span class="glyphicon glyphicon-user"></span> <?php echo $user = (is_null($identity->usuario)) ? "default" : $identity->usuario; ?>
+							</a>
+						</li>
 						<!-- Menú de operaciones de sistema -->
 						<?php echo $this->partial('partials/menus/submenus/sistema.phtml'); ?>
 						<!-- Menú de operaciones de contabilidad -->

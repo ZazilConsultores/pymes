@@ -1,5 +1,7 @@
 <?php
 	$formulario = $this->formulario;
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="panel panel-warning">
 	<div class="panel-heading">
@@ -8,6 +10,22 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		<?php if(!is_null($messageSuccess)){ ?>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+		<?php }elseif(!is_null($messageFail)){ ?>
+		<div class="alert alert-danger" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+			<?php echo $messageFail; ?>
+		</div>
+		<?php } ?>
+		<br />
 		<?php echo $formulario ?>
 	</div>
 </section>

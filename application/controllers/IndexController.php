@@ -48,7 +48,7 @@ class IndexController extends Zend_Controller_Action
             if ($result->isValid()) {
                 // Recoge los valores de las columnas del registro de la Base de Datos y
                 // los almacena como identidad en Zend_Auth, para un uso posterior
-                $data = $authAdapter->getResultRowObject(array('nombres','apellidos','idRol'));
+                $data = $authAdapter->getResultRowObject(null,'password');
 				//$data["rol"] = $this->rolDAO->obtenerRol($data["idRol"]);
 				//$data["rol"] = $this->usuarioDAO->
                 $auth->getStorage()->write($data);
@@ -56,7 +56,8 @@ class IndexController extends Zend_Controller_Action
  				//print_r($data);
 				$this->view->result = $result->getMessages();
                 //$this->_redirect('/');
- 
+                //Zend_Registry::set('currentModule', $data["rol"]);
+				//Zend_Registry::set('currentUser', $data["usuario"]);
             } else {
                 $this->view->loginError = $result->getMessages();
             }
