@@ -32,7 +32,7 @@
 					<ul class="nav navbar-nav">
 						<li class="active">
 							<a class="navbar-brand" href="<?php echo $this->url(array("module"=>"default","controller"=>"usuario","action"=>"perfil","usr"=>is_null($identity->idUsuario) ? "default" : $identity->idUsuario ),null,true) ?>">
-								<span class="glyphicon glyphicon-cog"></span> <?php echo $rol = (is_null($modelRol)) ? "default" : $modelRol->getRol(); ?> - <span class="glyphicon glyphicon-user"></span> <?php echo $user = (is_null($identity->usuario)) ? "default" : $identity->usuario; ?>
+								<span class="glyphicon glyphicon-cog"></span> <?php echo $rol = (is_null($modelRol)) ? "default" : $modelRol->getRol(); ?> - <span class="glyphicon glyphicon-user"></span> <?php echo $user = (is_null($identity)) ? "default" : $identity->usuario; ?>
 							</a>
 						</li>
 						<!-- Menú de operaciones de sistema -->
