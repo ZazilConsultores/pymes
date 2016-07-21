@@ -3,7 +3,7 @@
 	//$currentUser = Zend_Registry::get("currentUser");
 	$rolDAO = new Sistema_DAO_Rol;
 	$auth = Zend_Auth::getInstance();
-	$identity == null;
+	$identity = null;
 	$modelRol = null;
 	if($auth->hasIdentity()){
 		$identity = $auth->getStorage()->read();
