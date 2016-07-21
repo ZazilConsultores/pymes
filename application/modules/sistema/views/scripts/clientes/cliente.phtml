@@ -23,7 +23,7 @@
 		</a>
 		<table class="table table-striped table-condensed">
 			<thead>
-				<th>Administrar</th>
+				<th>Configurar</th>
 				<th>Sucursales</th>
 				<th>R.F.C.</th>
 				<th>Razon Social</th>
@@ -32,11 +32,11 @@
 				<tr>
 					<td>
 						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
-							<span class="glyphicon glyphicon-cog"></span> Administrar
+							<span class="glyphicon glyphicon-cog"></span> Configurar
 						</a>
 					</td>
 					<td>
-						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"cliente","action"=>"sucursales","idFiscales"=>$fiscales->getIdFiscales(),"tipoSucursal"=>"SC"),null,true) ?>">
+						<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"cliente","action"=>"sucursales","idFiscales"=>$fiscales->getIdFiscales(),"tipoSucursal"=>"SC"),null,true) ?>">
 							<span class="glyphicon glyphicon-home"></span> Sucursales
 						</a>
 					</td>

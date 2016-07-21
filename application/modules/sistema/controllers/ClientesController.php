@@ -26,12 +26,12 @@ class Sistema_ClientesController extends Zend_Controller_Action
 		$formulario->getSubForm("0")->removeElement("tipoProveedor");
 		$formulario->getSubForm("0")->getElement("cuenta")->setAttrib("class", "form-control");
 		
-		
 		$this->view->formulario = $formulario;
+		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$contenedor = $formulario->getValues();
-				
+				//print_r($contenedor);
 				try{
 					$this->empresaDAO->crearEmpresa($contenedor);
 					$this->view->messageSuccess = "Cliente <strong>".$contenedor["0"]["razonSocial"]."</strong> creado exitosamente";
