@@ -19,6 +19,9 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresas","action"=>"empresa","idEmpresa"=>$empresa["idEmpresa"]),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Volver a Empresa
+		</a>
 		<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"sucursal","action"=>"alta","idFiscales"=>$idFiscales,"tipoSucursal"=>$tipoSucursal),null,true) ?>">
 			<span class="glyphicon glyphicon-plus"></span> Agregar Sucursal
 		</a>

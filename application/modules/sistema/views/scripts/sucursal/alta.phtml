@@ -3,6 +3,20 @@
 	$fiscal = $this->fiscal;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
+	$tipoSucursal = $this->tipoSucursal;
+	$controller = null;
+	$action = null;
+	if($tipoSucursal == "SE"){
+		$controller = "empresa";
+		$action = "empresas";
+	}elseif($tipoSucursal == "SC"){
+		$controller = "empresa";
+		$action = "clientes";
+	}elseif($tipoSucursal == "SP"){
+		$controller = "empresa";
+		$action = "proveedores";
+	}
+	
 ?>
 <section class="panel panel-success">
 	<div class="panel-heading">
@@ -11,8 +25,8 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		<a class="btn btn-info" href="<?php echo $this->url(array(""=>"",""=>"",""=>"",""=>"",),null,true) ?>">
-			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Sucursales de la Empresa
+		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>$controller,"action"=>$action),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Empresa
 		</a>
 		<?php echo $formulario; ?>
 	</div>

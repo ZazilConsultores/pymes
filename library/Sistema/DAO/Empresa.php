@@ -64,14 +64,30 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			unset($fiscal["tipoProveedor"]);
 			//	Agregamos al array de fiscales el campo fecha
 			$fiscal['fecha'] = $fecha;
-			// Antes de insertar verificamos que el RFC no este ya dado de alta, si ya esta nos lanzara un error.
-			$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
-			$rowFiscales = $select->query()->fetchAll();
-			//Si RFC no es "XAXX010101000" (Cliente), verificamos que no este duplicado
-			if($fiscal["rfc"] != "XAXX010101000" || $fiscal["rfc"] != "XBXX010101000"){
-				if(count($rowFiscales) != 0) throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+			print_r("<br />");
+			print_r("<br />");
+			if($tipo == "CL"){
+				if($fiscal["rfc"] != "XAXX010101000") {
+					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$rowFiscales = $select->query()->fetchAll();
+					//print_r(count($rowFiscales));
+					if(count($rowFiscales) > 1) {
+						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+						
+					}
+				}
+			}elseif($tipo == "PR"){
+				if($fiscal["rfc"] != "XBXX010101000") {
+					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$rowFiscales = $select->query()->fetchAll();
+					//print_r(count($rowFiscales));
+					if(count($rowFiscales) > 1) {
+						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+						
+					}
+				}
 			}
-			// Si RFC es "XAXX010101000" no hay problema, esto es solo en un alta de cliente
+			
 			//	No genero error por lo que procedemos a insertar en la tabla
 			$bd->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
@@ -114,6 +130,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			
 		}catch(Exception $ex){
 			$bd->rollBack();
+			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
 			
 		}
