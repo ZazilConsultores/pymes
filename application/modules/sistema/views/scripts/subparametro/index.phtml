@@ -6,39 +6,50 @@
 	
 ?>
 <section class="row">
-	<article>
-		<header>
-			<h3>Subparámetros:  <?php echo $parametro->getParametro() ?></h3>
-		</header>
-		<div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Subparámetros:  <?php echo $parametro->getParametro() ?></h3>
+		</div>
+		<div class="panel-body">
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"alta","idParametro"=>$parametro->getIdParametro()),null,true); ?>">
 				<span class="glyphicon glyphicon-plus"></span> Nuevo Subparametro
-			</a>
+			</a><br /><br />
 			<table class="table table-condensed table-striped">
 				<thead>
-					<th>SubParametro</th>
-					<th>ClaveSubParametro</th>
-					<th>fecha</th>
-					
+					<th>Configurar</th>
+					<th>Subparametro</th>
+					<th>ClaveSubparametro</th>
+					<th>Fecha</th>
 				</thead>
 				<tbody>
 					<?php foreach ($subparametros as $subparametro) : ?>
 					<tr>
+						<td>
+							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"admin","idSubparametro"=>$subparametro->getIdSubparametro()),null,true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Configurar
+							</a>
+						</td>
 						<td><?php echo $subparametro->getSubparametro(); ?></td>
 						<td><?php echo $subparametro->getClaveSubparametro(); ?></td>
 						<td><?php echo $subparametro->getFecha(); ?></td>
-						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"subparametro","action"=>"admin","idSubparametro"=>$subparametro->getIdSubparametro()),null,true); ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
-							</a>
-						</td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>
 			</table>
 		</div>
-	</article>
+	</div>
 </section>
+<script>
+	$(document).ready(function() {
+		//===================================================================================
+	    $('table.table').dataTable( {
+	       "pagingType": "full_numbers",
+	        "language": {
+	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
+	        }
+	    } );
+	});
+</script>
 
 
 
