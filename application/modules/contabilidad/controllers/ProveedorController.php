@@ -128,29 +128,81 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function notaAction()
     {
-        // action body
-        $request = $this->getRequest();
+       $request = $this->getRequest();
         $formulario = new Contabilidad_Form_NuevaNotaProveedor;
 		if($request->isGet()){
-			$this->view->formulario = $formulario;
-			
+			$this->view->formulario = $formulario;		
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
-				print_r($encabezado);
+				//print_r($encabezado);
+				
 				$productos = json_decode($encabezado['productos'],TRUE);
-				print_r($encabezado);
+				//print_r($encabezado);
 				print_r('<br />');
-				print_r($productos);
+				//print_r($productos);
+				$contador=0;
+			
+				foreach ($productos as $producto){
+					//$producto->encabezado();
+					//sprint_r($producto);
+					//multiplos 
+					try{
+						$notaEntradaDAO->agregarProducto($encabezado, $producto);
+						//print_r($contador);
+						$contador++;
+						$this->view->messageSuccess ="  Nota de Entrada realizada efectivamente" ;
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+					}
+						
+				}
+			}
+					
+			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+		}
+    }
+
+    public function remisionAction()
+    {
+        // action body
+       /* $request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarRemisionProveedor;
+		$this->view->formulario = $formulario;*/
+		$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AgregarRemisionProveedor;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
+				$datos = $formulario->getValues();
+				
+				$encabezado = $datos[0];
+				//print_r($encabezado);
+				$formaPago =$datos[1];
+				print_r($formaPago);
+				$productos = json_decode($encabezado['productos'],TRUE);
+				//print_r($encabezado);
+				print_r('<br />');
+				//print_r($productos);
 				$contador=0;
 				foreach ($productos as $producto){
 					//$producto->encabezado();
 					//sprint_r($producto);
-					$notaEntradaDAO->agregarProducto($encabezado, $producto);
-					//print_r($contador);
-					$contador++;
+					//$notaEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
+					/*$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
+					print_r($remisionEntradaDAO);
+					$contador++;*/
+					try{
+						$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
+						$contador++;
+						$this->view->messageSuccess ="Remision de Entrada realizada efectivamente" ;
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+					}
 					
 				}
 				//print_r($datos)		
@@ -162,17 +214,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			}
 					
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
-		}
     }
-
-    public function remisionAction()
-    {
-        // action body
-        $request = $this->getRequest();
-		$formulario = new Contabilidad_Form_AgregarRemisionProveedor;
-		$this->view->formulario = $formulario;
-    }
-
+  }
     public function facturaAction()
     {
         // action body
