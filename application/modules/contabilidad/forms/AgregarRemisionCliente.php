@@ -4,17 +4,13 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 {
     public function init()
     {
-        /* Encabezado nueva nota salida proveedor */
+    	$this->setAttrib("id", "nuevaRemisionCliente");
+        
         $subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Ingresar Datos");
-		
-		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("UPSP");
-		
-		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
-		$eNumeroFactura->setLabel('Folio: ');
+		$eNumeroFactura = new Zend_Form_Element_Text('numFolio');
+		$eNumeroFactura->setLabel('Folio:');
 		$eNumeroFactura->setAttrib("class", "form-control");
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
@@ -53,23 +49,12 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
 		}
 		
-		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
 		
-		/*$eDivisa = New Zend_Form_Element_Hidden('idDivisa');
-		$eDivisa->setAttrib("class", "form-control");
-		$eDivisa->setValue(1);*/
-		
-		/*$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
-		$tiposDivisa = $tipoDivisaDAO->obtenerDivisas();
-		
-		foreach ($tiposDivisa as $tipoDivisa)
-		{
-			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
-		}*/
+	
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
@@ -101,7 +86,15 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eFormaPago->setAttrib("class", "form-control");
 		$eFormaPago->setMultiOptions($formaPago);
 		
-		$eImportePago = new Zend_Form_Element_Text('total');
+		//==================Concepto pago
+		$conceptoPago = Zend_Registry::get('conceptoPago');
+		
+		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
+		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
+		$eConceptoPago->setAttrib("class", "form-control");
+		$eConceptoPago->setMultiOptions($conceptoPago);
+		
+		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
 		
@@ -122,10 +115,9 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eCliente,$eProyecto,$eProducto, $eTipoInventario));
-		$subFormaPago->addElements(array($eBanco,$eDivisa,$eFormaPago,$eImportePago));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eCliente,$eProyecto,$eProducto));
+		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago, $eFormaPago,$eImportePago));
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
-		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);
     }
 }

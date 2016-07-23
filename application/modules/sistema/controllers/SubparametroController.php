@@ -13,7 +13,8 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 		$this->parametroDAO = new Inventario_DAO_Parametro;
 
     }
-
+	
+	
     public function indexAction()
     {
     	$idParametro = $this->getParam("idParametro");

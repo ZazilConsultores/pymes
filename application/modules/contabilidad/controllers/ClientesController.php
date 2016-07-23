@@ -165,9 +165,34 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function remisionAction()
     {
-    	$request = $this->getRequest();
+		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarRemisionCliente;
-		$this->view->formulario = $formulario;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
+				$datos = $formulario->getValues();
+				$encabezado = $datos[0];
+				$formaPago =$datos[1];
+				$productos = json_decode($encabezado['productos'], TRUE);
+				print_r('<br />');
+				$contador=0;
+				foreach ($productos as $producto){
+					try{
+						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
+						$contador++;
+						$this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+					}
+					
+				}
+			}
+					
+			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+    }
+    	
     }
 
 
