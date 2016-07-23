@@ -1,29 +1,33 @@
 <?php 
 	$roles = $this->roles;
 ?>
-<section>
-	<article>
-		<header>
-			<h3>Roles y Usuarios en el Sistema</h3>
-		</header>
-		<div>
+<section class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">Roles y Usuarios en el Sistema</h3>
+		</div>
+		<div class="panel-body">
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"rol","action"=>"alta"),null,true) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Nuevo Rol
 			</a>
 			<table class="table table-condensed table-striped">
+				<thead>
+					<th>Rol</th>
+					<th>Creación</th>
+					<th>Usuarios</th>
+				</thead>
 				<tbody>
-					<thead>
-						<th>Rol</th>
-						<th>Creación</th>
-						<th>Usuarios</th>
-					</thead>
 					<?php foreach ($roles as $rol) : ?>
 					<tr>
-						<td><?php echo $rol->getRol() ?></td>
+						<td>
+							<a class="btn btn-warning">
+								<span class="glyphicon glyphicon-cog"></span> <?php echo $rol->getRol() ?>
+							</a>
+						</td>
 						<td><?php echo $rol->getFecha() ?></td>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"usuario","action"=>"index","idRol"=>$rol->getIdRol()),null,true) ?>">
-								<span class="glyphicon glyphicon-cog"></span>Usuarios
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"usuario","action"=>"usuarios","idRol"=>$rol->getIdRol()),null,true) ?>">
+								<span class="glyphicon glyphicon-user"></span> Ver Usuarios
 							</a>
 						</td>
 					</tr>
@@ -31,5 +35,5 @@
 				</tbody>
 			</table>
 		</div>
-	</article>
+	</div>
 </section>

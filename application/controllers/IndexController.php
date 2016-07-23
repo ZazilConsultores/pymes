@@ -28,42 +28,41 @@ class IndexController extends Zend_Controller_Action
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-			
-			$values = $formulario->getValues();
- 			
-            // Creamos un adaptador de Zend_Auth para consultar una tabla de la base de datos
-            $authAdapter = new Zend_Auth_Adapter_DbTable(Zend_Db_Table::getDefaultAdapter());
-            $authAdapter ->setTableName('Usuario')              // Nombre de la tabla
-                         ->setIdentityColumn('usuario')             // Campo de identificación
-                         ->setCredentialColumn('password')       // Campo de contraseña
-                         ->setIdentity($values['usuario'])          // Valor de identificación
-                         ->setCredential($values['password']);   // Valor de contraseña
- 			
-            // Recogemos Zend_Auth
-            $auth = Zend_Auth::getInstance();
-            // Realiza la comprobación con el adaptador que hemos creado
-            $result = $auth->authenticate($authAdapter);
- 			
-            // Si la autentificación es válida
-            if ($result->isValid()) {
-                // Recoge los valores de las columnas del registro de la Base de Datos y
-                // los almacena como identidad en Zend_Auth, para un uso posterior
-                $data = $authAdapter->getResultRowObject(array('nombres','apellidos','idRol'));
-				//$data["rol"] = $this->rolDAO->obtenerRol($data["idRol"]);
-				//$data["rol"] = $this->usuarioDAO->
-                $auth->getStorage()->write($data);
 				
- 				//print_r($data);
-				$this->view->result = $result->getMessages();
-                //$this->_redirect('/');
- 
-            } else {
-                $this->view->loginError = $result->getMessages();
-            }
-				
-				//print_r($formulario->getValues());
-				
-				
+				$values = $formulario->getValues();
+	 			
+	            // Creamos un adaptador de Zend_Auth para consultar una tabla de la base de datos
+	            $authAdapter = new Zend_Auth_Adapter_DbTable(Zend_Db_Table::getDefaultAdapter());
+	            $authAdapter ->setTableName('Usuario')              // Nombre de la tabla
+	                         ->setIdentityColumn('usuario')             // Campo de identificación
+	                         ->setCredentialColumn('password')       // Campo de contraseña
+	                         ->setIdentity($values['usuario'])          // Valor de identificación
+	                         ->setCredential($values['password']);   // Valor de contraseña
+	 			
+	            // Recogemos Zend_Auth
+	            $auth = Zend_Auth::getInstance();
+	            // Realiza la comprobación con el adaptador que hemos creado
+	            $result = $auth->authenticate($authAdapter);
+	 			
+	            // Si la autentificación es válida
+	            if ($result->isValid()) {
+	                // Recoge los valores de las columnas del registro de la Base de Datos y
+	                // los almacena como identidad en Zend_Auth, para un uso posterior
+	                $data = $authAdapter->getResultRowObject(null,'password');
+					//$data["rol"] = $this->rolDAO->obtenerRol($data["idRol"]);
+					//$data["rol"] = $this->usuarioDAO->
+	                $auth->getStorage()->write($data);
+					
+	 				//print_r($data);
+					$this->view->result = $result->getMessages();
+					//$this->forward("perfil","usuario","default",array("usr"=>$auth->getStorage()->read()->idUsuario));
+					$this->_helper->redirector->gotoSimple("clientes", "empresa", "sistema",array("usr"=>$auth->getStorage()->read()->idUsuario));
+	                //$this->_redirect('/');
+	                //Zend_Registry::set('currentModule', $data["rol"]);
+					//Zend_Registry::set('currentUser', $data["usuario"]);
+	            } else {
+	                $this->view->loginError = $result->getMessages();
+	            }
 			}
 		}
     }

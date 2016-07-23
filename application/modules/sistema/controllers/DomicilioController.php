@@ -60,7 +60,7 @@ class Sistema_DomicilioController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				//print_r($datos);
-				//unset($datos["idDomicilio"]);
+				unset($datos["idEstado"]);
 				//$domicilio = new Sistema_Model_Domicilio($datos);
 				try{
 					$this->domicilioDAO->editarDomicilio($idDomicilio, $datos);
@@ -68,8 +68,6 @@ class Sistema_DomicilioController extends Zend_Controller_Action
 				}catch(Exception $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}
-				
-				//$this->domicilioDAO->crearDomicilio($domicilio);
 			}
 		}
 		

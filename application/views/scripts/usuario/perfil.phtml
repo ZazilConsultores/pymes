@@ -1,21 +1,78 @@
 <?php
 	$auth = Zend_Auth::getInstance();
 	$identity = null;
+	$usuarioDAO = new Sistema_DAO_Usuario;
+	$rolDAO = new Sistema_DAO_Rol;
+	$usuario = null;
+	$rol = null;
 	if($auth->hasIdentity()){
-		$identity = $auth->getIdentity();
+		$identity = $auth->getStorage()->read();
+		$usuario = $usuarioDAO->obtenerUsuario($identity->idUsuario);
+		$rol = $rolDAO->obtenerRol($identity->idRol);
 	}
 ?>
 <section class="row">
-	<article class="jumbotron">
-		<h3>Usuario: </h3>
-		<div>
-			<?php 
-				if(is_null($identity)){
-					print_r("No hay usuario autentificado");
-				}else{
-					print_r($identity);
-				}
-			?>
+	<div class="panel panel-info">
+		<!-- Header -->
+		<div class="panel-heading">
+			<h3 class="panel-title"> Usuario: <strong><?php echo $identity->usuario; ?></strong>  </h3>
 		</div>
-	</article>
+		<!-- Contenido -->
+		<div class="panel-body">
+			<div class="col-xs-2">
+				<img src="<?php echo $this->baseUrl() ?>/images/user_admin.png" style="width: 85%; height: 85%" />
+			</div>
+			<div class="col-xs-6">
+				<ul class="nav nav-tabs nav-justified" role="tablist">
+					<li role="presentation">
+						<a role="tab" data-toggle="tab" class="active" aria-controls="datos" href="#datos">
+							Datos
+						</a>
+					</li>
+					<li role="presentation">
+						<a role="tab" data-toggle="tab" class="active" aria-controls="permisos" href="#permisos">
+							Permisos
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade active" id="datos">
+						<?php if(!is_null($usuario)) { ?>
+								<table class="table table-striped table-condensed">
+									<tbody>
+										<tr>
+											<td>Nombres:</td>
+											<td><strong><?php echo $usuario->getNombres(); ?></strong></td>
+										</tr>
+										<tr>
+											<td>Apellidos:</td>
+											<td><strong><?php echo $usuario->getApellidos(); ?></strong></td>
+										</tr>
+										<tr>
+											<td>Rol</td>
+											<td><strong><?php echo $rol->getRol(); ?></strong></td>
+										</tr>
+										<tr>
+											<td>Fecha de Alta</td>
+											<td><strong><?php echo $usuario->getFecha(); ?></strong></td>
+										</tr>
+										<tr>
+											<td>Salir</td>
+											<td>
+												<a class="btn btn-danger" href="<?php echo $this->url(array("module"=>"default","controller"=>"index","action"=>"logout"),null,true) ?>">
+													<span class="glyphicon glyphicon-off"></span> Log Out
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+						<?php	} ?>
+					</div>
+					<div role="tabpanel" class="tab-pane fade" id="permisos">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>

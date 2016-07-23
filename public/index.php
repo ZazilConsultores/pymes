@@ -72,17 +72,17 @@ $connlocalOrigen = array(
 		'dbname' => 'inventario',
 	);
 
-Zend_Registry::set('connlocal', $connlocal);
+//Zend_Registry::set('connlocal', $connlocal);
 //Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connnancy', $connnancy);
 //Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-//$db = Zend_Db::factory('PDO_MYSQL', $connserver);
+$db = Zend_Db::factory('PDO_MYSQL', $connserver);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 
 $db->query("SET NAMES 'utf8'");
@@ -145,6 +145,17 @@ $formTDecorators = array(
 	array('HtmlTag',array('tag'=>'table','class'=>'table table-striped table-condensed')),
 	'Form'
 );
+// Verificamos que exista un inicio de sesion
+//$auth = Zend_Auth::getInstance();
+//$auth->clearIdentity();
+/*
+
+//$auth->clearIdentity();
+print_r($auth->getStorage());
+if(!$auth->hasIdentity()){
+	Zend_Registry::set('currentModule', "default");
+	Zend_Registry::set('currentUser', "default");
+}*/
 //============================================================================ CONSTANTES GENERALES
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);
