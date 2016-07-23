@@ -4,7 +4,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 {
     public function init()
     {
-        /* Encabezado nueva nota salida proveedor */
+        $this->setAttrib("id", "nuevaRemisionProveedor");
+        
         $subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Ingresar Datos");
 		
@@ -13,8 +14,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
 		$eTipoInventario->setValue("UPSP");
 		
-		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
-		$eNumeroFactura->setLabel('Folio: ');
+		$eNumeroFactura = new Zend_Form_Element_Text('numFolio');
+		$eNumeroFactura->setLabel('Número de Folio: ');
 		$eNumeroFactura->setAttrib("class", "form-control");
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
@@ -26,7 +27,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		
 		foreach ($tiposMovimientos as $tipoMovimiento)
 		{
-			$eTipoMovto->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());		
+			$eTipoMovto->addMultiOption($tipoMovimiento->getIdTipoMovimiento(),$tipoMovimiento->getDescripcion());		
 		}
 		
 		$columnas = array('idFiscales','razonSocial');
@@ -101,9 +102,18 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eFormaPago->setAttrib("class", "form-control");
 		$eFormaPago->setMultiOptions($formaPago);
 		
-		$eImportePago = new Zend_Form_Element_Text('total');
-		$eImportePago->setLabel('Importe Pago:');
+		//==================Concepto pago
+		$conceptoPago = Zend_Registry::get('conceptoPago');
+		
+		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
+		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
+		$eConceptoPago->setAttrib("class", "form-control");
+		$eConceptoPago->setMultiOptions($conceptoPago);
+		
+		$eImportePago = new Zend_Form_Element_Text('importePago');
+		$eImportePago->setLabel('Pago $:');
 		$eImportePago->setAttrib("class", "form-control");
+		//$eImportePago->setAttrib("required", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
@@ -123,7 +133,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eSubmit->setAttrib("disabled","true");
 		
 		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eProveedor,$eProyecto,$eProducto, $eTipoInventario));
-		$subFormaPago->addElements(array($eBanco,$eDivisa,$eFormaPago,$eImportePago));
+		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago,$eFormaPago,$eImportePago));
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);

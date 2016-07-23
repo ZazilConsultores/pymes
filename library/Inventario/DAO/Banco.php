@@ -28,6 +28,16 @@
 		
 		return $modelBancos;
 	}
+	public function obtenerBancosEmpresasFondeo(Contabilidad_Model_Banco $banco)
+	{
+		$tablaBanco = $this->tablaBanco;
+		$select = $tablaBanco->select()->from($tablaBanco)->where('tipo = "IN"');
+		$rowBanco = $tablaBanco->fetchRow($select);
+		$modelBanco = new Contabilidad_Model_Banco($rowBanco->toArray());
+		
+		return $modelBanco;
+		
+	}
 	
 	public function obtenerBanco($idBanco){
 		$tablaBanco = $this->tablaBanco;
