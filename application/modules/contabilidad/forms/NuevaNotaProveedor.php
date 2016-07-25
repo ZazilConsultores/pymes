@@ -43,6 +43,11 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		foreach ($rowset as $fila) {
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
+		
+		$eSucursal = new Zend_Form_Element_Select('idSucursal');
+		$eSucursal->setLabel("Sucursal: ");
+		$eSucursal->setAttrib("class", "form-control");
+		$eSucursal->setAttrib("required", "true");
 				
 		$eProyecto = new Zend_Form_Element_Text('idProyecto');
         $eProyecto->setLabel('Seleccionar Proyecto:');
@@ -92,7 +97,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eSubmit->setAttrib("disabled", "true");
 
 		//Agregamos los elementos correspondientes a la subformaEncabezado
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eProveedor,$eProyecto,$eProducto));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eProveedor,$eProyecto,$eProducto));
      	$this->addSubForms(array($subEncabezado)); 
 		$this->addElement($eSubmit);
 		

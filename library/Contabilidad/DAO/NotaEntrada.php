@@ -62,7 +62,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	try{
 		$secuencial=0;	
 		$tablaMovimiento = $this->tablaMovimiento;
-		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numFolio=?",$encabezado['numFolio'])
+		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
 		->where("idCoP=?",$encabezado['idCoP'])
 		->where("idEmpresa=?",$encabezado['idEmpresa'])
 		->where("numFolio=?",$encabezado['numFolio'])
