@@ -1,4 +1,17 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Producto</b> and script/action name <b>edita</b></p>
-</div>
+<?php
+	$producto = $this->producto;
+	$formulario = $this->formulario;
+	
+?>
+<section class="row">
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			Actualizando Producto: <strong><?php echo $producto->getProducto() ?></strong>
+		</div>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<?php echo $formulario; ?>
+			</div>
+		</div>
+	</div>
+</section>

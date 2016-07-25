@@ -4,14 +4,15 @@ class Inventario_ProductoController extends Zend_Controller_Action
 {
 
     private $productoDAO = null;
-	private $subparametroDAO;
+	private $subparametroDAO = null;
+	private $parametroDAO = null;
 
     public function init()
     {
-    	
         /* Initialize action controller here */	
         $this->productoDAO = new Inventario_DAO_Producto;
         $this->subparametroDAO = new Sistema_DAO_Subparametro;
+		$this->parametroDAO = new Inventario_DAO_Parametro;
     }
 
     public function indexAction()
@@ -61,7 +62,8 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		$formulario = new Inventario_Form_AltaProducto;
 		$formulario->getElement("claveProducto")->setValue($producto->getClaveProducto());
 		$formulario->getElement("producto")->setValue($producto->getProducto());
-		$formulario -> getElement("submit") -> setLabel("Actualizar");
+		$formulario -> getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario -> getElement("submit")->setLabel("Actualizar Producto");
 		
 		$this -> view -> producto = $producto;
 		$this -> view -> formulario = $formulario;	
@@ -74,15 +76,42 @@ class Inventario_ProductoController extends Zend_Controller_Action
 
     public function editaAction()
     {
-       $idProducto= $this->getParam("idProducto");
+    	$request = $this->getRequest();
 		
-		$datos = $this->getRequest()->getPost();
-		unset($datos["submit"]);
+		$idProducto= $this->getParam("idProducto");
+		$producto = $this->productoDAO->obtenerProducto($idProducto);
 		
-		$this->productoDAO->editarProducto($idProducto, $datos);
+		$formulario = new Inventario_Form_AltaProducto;
+		$formulario->getElement("producto")->setValue($producto->getProducto());
+		$formulario->getElement("codigoBarras")->setValue($producto->getCodigoBarras());
+		$formulario->getElement("submit")->setLabel("Actualizar Producto");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
-		$this->productoDAO->editarProducto($idProducto, ($datos['Configuracion']));
-	
+		$this->view->producto = $producto;
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$producto = new Inventario_Model_Producto($datos);
+				$producto->setClaveProducto($this->subparametroDAO->generarClaveProducto($datos['0']));
+				$producto->setIdsSubparametros($this->subparametroDAO->generarIdsSubparametros($datos['0']));
+				$arrProducto = $producto->toArray();
+				unset($arrProducto["idProducto"]);
+				
+				try{
+					$this->productoDAO->editarProducto($idProducto, $arrProducto);
+					$this->view->messageSuccess = "El producto: <strong>".$producto->getProducto()."</strong> ha sido actualizado exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail = "El producto: <strong>".$producto->getProducto()."</strong>  no se pudo actualizar. Error: <strong>".$ex->getMessage()."</strong>";
+				}
+				//print_r("<br /><br />");
+				//print_r($producto->toArray());
+			}
+		}
+		
+		
     }
 }
 
