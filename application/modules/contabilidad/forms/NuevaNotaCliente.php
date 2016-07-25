@@ -11,8 +11,8 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 		
 		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("UPSP");
+		//$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
+		//$eTipoInventario->setValue("UPSP");
 		
 		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
 		$eNumeroFactura->setLabel('Folio: ');
