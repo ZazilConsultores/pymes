@@ -4,7 +4,7 @@
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
-	<div class="panel panel-success">
+	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Agregar Datos para Nota Entrada.
@@ -25,7 +25,7 @@
 				</button>
 				<?php echo $messageFail; ?>
 			</div>
-			<?php }?><br />
+			<?php }?>
 			
 			<?php echo $formulario ?>
 			<!-- Botón para agregar filas-->
@@ -73,6 +73,30 @@
 </section>
 <script>
 	$().ready(function(){
+		$("select#idEmpresa").on('change', function(){
+			//console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			/**/
+		});
+		
+		
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
 			rules: {
@@ -94,7 +118,7 @@
 		});
 		
 		$("#submit").click(function(){
-			console.log("" + form.valid());
+			//console.log("" + form.valid());
 		});
 		
 	});
