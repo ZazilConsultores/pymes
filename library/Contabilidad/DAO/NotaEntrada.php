@@ -62,10 +62,10 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	try{
 		$secuencial=0;	
 		$tablaMovimiento = $this->tablaMovimiento;
-		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numFolio=?",$encabezado['numFolio'])
+		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
 		->where("idCoP=?",$encabezado['idCoP'])
-		->where("idEmpresa=?",$encabezado['idEmpresa'])
-		->where("numFolio=?",$encabezado['numFolio'])
+		->where("idSucursal=?",$encabezado['idSucursal'])
+		->where("numeroFolio=?",$encabezado['numFolio'])
 		->where("fecha=?", $stringIni)
 		->order("secuencial DESC");
 	
@@ -99,16 +99,17 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			$mMovtos = array(
 					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
+					//'idEmpresa'=>$encabezado['idEmpresa'],
+					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
 					'idProyecto'=>$encabezado['idProyecto'],
-					'numFolio'=>$encabezado['numFolio'],
+					'numeroFolio'=>$encabezado['numFolio'],
+					'idFactura'=>0,
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringIni,
 					'estatus'=>"A",
 					'secuencial'=> $secuencial,
 					'costoUnitario'=>$precioUnitario,
-					'esOrigen'=>"E",
 					'totalImporte'=>$producto['importe']
 				);
 			
@@ -118,7 +119,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$secuencial=0;	
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)
-		->where("numFolio=?",$encabezado['numFolio'])
+		->where("numeroFolio=?",$encabezado['numFolio'])
 		->where("fechaEntrada=?", $stringIni)
 		->order("secuencial DESC");
 	
@@ -154,12 +155,12 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			$mCapas = array(
 					'idProducto' => $producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
-					'numFolio'=>$encabezado['numFolio'],
+					'idSucursal'=>$encabezado['idSucursal'],
+					'numeroFolio'=>$encabezado['numFolio'],
 					'secuencial'=>$secuencial,
-					'entrada'=>$cantidad,
+					'cantidad'=>$cantidad,
 					'fechaEntrada'=>$stringIni,
-					'costoUnitario'=>$precioUnitario,
-					'costoTotal'=>$producto['importe']
+					'costoUnitario'=>$precioUnitario
 			);
 			
 			$bd->insert("Capas",$mCapas);
@@ -201,7 +202,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			$mInventario = array(
 					'idProducto'=>$producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idSucursal'=>$encabezado['idSucursal'],
 					'existencia'=>$cantidad,
 					'apartado'=>'0',
 					'existenciaReal'=>$cantidad,
@@ -215,7 +216,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 				);
 			$bd->insert("Inventario",$mInventario);
 		}
-			//$bd->commit();
+			$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");

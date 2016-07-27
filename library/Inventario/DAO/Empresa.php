@@ -111,8 +111,8 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$select = $tablaFiscales->select()
 			->setIntegrityCheck(false)
 			->from($tablaFiscales, array('idFiscales','rfc', 'razonSocial'))
-			->join('empresa', 'empresa.idFiscales = Fiscales.idFiscales', array())
-			->join('empresas','empresas.idEmpresa = Fiscales.idFiscales', array());
+			->join('Empresa', 'Empresa.idFiscales = Fiscales.idFiscales', array())
+			->join('Empresas','Empresas.idEmpresa = Fiscales.idFiscales', array());
 			
 		//	return $select->__toString();
 		return $tablaFiscales->fetchAll($select);

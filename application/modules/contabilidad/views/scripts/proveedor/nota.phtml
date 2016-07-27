@@ -1,10 +1,10 @@
 <?php
-	$formulario = $this->formulario;
+	echo $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
-	<div class="panel panel-success">
+	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Agregar Datos para Nota Entrada.
@@ -27,7 +27,6 @@
 			</div>
 			<?php }?><br />
 			
-			<?php echo $formulario ?>
 			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
@@ -72,7 +71,54 @@
 	</div>
 </section>
 <script>
-	$().ready(function(){
+	$(document).ready(function(){
+		$("select#idEmpresa").on('change', function(){
+			//console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			
+		});
+		/**/
+		$("select#idEmpresa").on('change', function(){
+			//console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/sistema/json/proyectos/idFiscales/" + this.value;
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
+					});
+					
+				}
+			});
+			
+		});
+	
+		
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
 			rules: {
@@ -81,7 +127,14 @@
 				},
 				fecha: {
 					required: true
+				},
+				idSucursal: {
+					required: true
+				},
+				idProyecto: {
+					required: true
 				}
+				
 			},
 			messages: {
 				numFolio: {					
@@ -89,6 +142,12 @@
 				},
 				fecha: {					
 					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío"
+				},
+				idProyecto: {					
+					required: "Este campo no puede quedar vacío"
 				}
 			}
 		});
