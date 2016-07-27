@@ -1,5 +1,5 @@
 <?php
-	$formulario = $this->formulario;
+	echo $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
@@ -25,9 +25,8 @@
 				</button>
 				<?php echo $messageFail; ?>
 			</div>
-			<?php }?>
+			<?php }?><br />
 			
-			<?php echo $formulario ?>
 			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
@@ -72,7 +71,7 @@
 	</div>
 </section>
 <script>
-	$().ready(function(){
+	$(document).ready(function(){
 		$("select#idEmpresa").on('change', function(){
 			//console.log(this.value);
 			//Borro el contenido del select municipio
@@ -93,9 +92,32 @@
 					
 				}
 			});
-			/**/
+			
 		});
-		
+		/**/
+		$("select#idEmpresa").on('change', function(){
+			//console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/sistema/json/proyectos/idFiscales/" + this.value;
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
+					});
+					
+				}
+			});
+			
+		});
+	
 		
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
@@ -105,7 +127,14 @@
 				},
 				fecha: {
 					required: true
+				},
+				idSucursal: {
+					required: true
+				},
+				idProyecto: {
+					required: true
 				}
+				
 			},
 			messages: {
 				numFolio: {					
@@ -113,12 +142,18 @@
 				},
 				fecha: {					
 					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío"
+				},
+				idProyecto: {					
+					required: "Este campo no puede quedar vacío"
 				}
 			}
 		});
 		
 		$("#submit").click(function(){
-			//console.log("" + form.valid());
+			console.log("" + form.valid());
 		});
 		
 	});

@@ -6,7 +6,8 @@ class Sistema_JsonController extends Zend_Controller_Action
     private $municipioDAO = null;
 	private $estadoDAO = null;
 	private $sucursalDAO = null;
-
+	private $proyectoDAO = null;
+	
     public function init()
     {
         /* Initialize action controller here */
@@ -17,6 +18,7 @@ class Sistema_JsonController extends Zend_Controller_Action
         $this->municipioDAO = new Inventario_DAO_Municipio;
 		$this->estadoDAO = new Sistema_DAO_Estado;
 		$this->sucursalDAO = new Sistema_DAO_Sucursal;
+		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
     }
 
     public function indexAction()
@@ -78,6 +80,14 @@ class Sistema_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($sucursales);
     }
     
+	public function proyectosAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		$proyectos = $this->proyectoDAO->obtenerProyectos($idFiscales);
+		echo Zend_Json::encode($proyectos);
+		
+    }
 
 
 }

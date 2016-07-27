@@ -19,7 +19,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
             'module' => 'contabilidad',
             'controller' => 'proveedor',
             'action' => 'index',
-            'tipo' => '2'
+            'tipo' =>	 '2'
             ),
         'Factura Proveedor' => array(
             'module' => 'contabilidad',
@@ -136,19 +136,18 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
+				//print_r($datos);
 				$encabezado = $datos[0];
 				//print_r($encabezado);
-				
 				$productos = json_decode($encabezado['productos'],TRUE);
 				//print_r($encabezado);
-				print_r('<br />');
+				//print_r('<br />');
 				//print_r($productos);
 				$contador=0;
 			
 				foreach ($productos as $producto){
 					//$producto->encabezado();
 					//sprint_r($producto);
-					//multiplos 
 					try{
 						$notaEntradaDAO->agregarProducto($encabezado, $producto);
 						//print_r($contador);
@@ -159,8 +158,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					}
 						
 				}
-			}
-					
+				
+			}/*else{
+				print_r("formulario no valido <br />");
+			}	*/				
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}
     }

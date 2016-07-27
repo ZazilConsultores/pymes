@@ -29,7 +29,6 @@ class Inventario_Form_AltaUnidad extends Zend_Form
 
 		$this->addElement($eAgregar);
 		
-		
     }
 
 
