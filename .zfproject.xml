@@ -1128,6 +1128,7 @@
               <dbTableFile dbTableName="Cuentasxp"/>
               <dbTableFile dbTableName="Cuentasxc"/>
               <dbTableFile dbTableName="Bancosempresa"/>
+              <dbTableFile dbTableName="Proyecto"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1141,6 +1142,7 @@
             <modelFile modelName="Cuentasxp"/>
             <modelFile modelName="Cuentasxc"/>
             <modelFile modelName="Bancosempresa"/>
+            <modelFile modelName="Proyecto"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
