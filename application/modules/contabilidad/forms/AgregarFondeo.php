@@ -5,13 +5,11 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 
     public function init()
     {
-		$columnas = array('idFiscales', 'razonSocial');
-		$tablaFiscales = new Contabilidad_Model_DbTable_Fiscales();
-		$rowset = $tablaFiscales->obtenerColumnas($columnas);
+		$tablasFiscales = new Inventario_DAO_Empresa();
+		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
-		
-		$eEmpresa = new Zend_Form_Element_Select('idEmpresa');
-		$eEmpresa->setLabel('Seleccionar Empresa: ');
+    	$eEmpresa =  new Zend_Form_Element_Select('idEmpresa');
+        $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
@@ -26,7 +24,10 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$tipoMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
 
 		foreach($tipoMovimientos as $tipoMovimiento){
-			$eTipoMovimiento->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());
+			if($tipoMovimiento->getIdTipoMovimiento()=="3"){
+				$eTipoMovimiento->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());
+			}
+			
 		}
 
 		$eFecha = new Zend_Form_Element_Text('fecha');
@@ -36,6 +37,12 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eNumFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumFolio->setLabel('Ingresar número de Folio');
 		$eNumFolio->setAttrib("class", "form-control");
+		
+		$eProducto = new Zend_Form_Element_Text('idProducto');
+		$eProducto->setLabel('Seleccionar Producto:');
+		$eProducto->setAttrib("class", "form-control");
+		
+		//$productoDAO = new 
 		
 		$formaFondeo = Zend_Registry::get('formaPago');
 		$eFormaFondeo = new Zend_Form_Element_Select('formaPago');
@@ -71,7 +78,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoEntrada->setLabel('Banco de Entrada ');
 		$eBancoEntrada->setAttrib("class", "form-control");
 		
-		$bancos = $bancosDAO->obtenerBancosEmpresasFondeo();
+		$bancos = $bancosDAO->obtenerBancos();
 		
 		foreach ($bancos as $banco){
 			$bancosEmpresa = $bancosEmpresasDAO->obtenerBancosEmpresa($banco->getIdBanco());
@@ -92,8 +99,6 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 				$eBancoSalida->addMultiOption($bancoEmpresa->getIdBancosEmpresas(), $banco->getBanco());
 			}
 		}
-		
-		
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');

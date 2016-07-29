@@ -29,11 +29,11 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eFecha->setLabel('Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 				
-		$columnas = array('idFiscales','razonSocial');
+		//$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
-    	$eEmpresa =  new Zend_Form_Element_Select('idEmpresa');
+    	$eEmpresa =  new Zend_Form_Element_Select('idEmpresas');
         $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
@@ -86,6 +86,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled", "true");
+		
 
 		//Agregamos los elementos correspondientes a la subformaEncabezado
 		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eProveedor, $eProyecto,$eProducto));

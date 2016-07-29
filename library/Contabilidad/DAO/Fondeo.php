@@ -17,7 +17,6 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
 		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
 		$this->tablaBancosEmpresas = new Contabilidad_Model_DbTable_Bancosempresa;
 	}
@@ -56,22 +55,24 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		return $modelBancosEmpresas;
 	}
 
-	public function guardarFondeo(){
+	public function guardarFondeo(array $datos){
 	
-		$datos=array();
+		//$datos=array();
+		
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
 		
-		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 	try{
+		
 		$secuencial=0;	
 		$tablaMovimiento = $this->tablaMovimiento;
-		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numFolio=?",$encabezado['numFolio'])
-		->where("idCoP=?",$encabezado['idCoP'])
-		->where("idEmpresa=?",$encabezado['idEmpresa'])
-		->where("numFolio=?",$encabezado['numFolio'])
+		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$datos['numFolio'])
+		//->where("idCoP=?",$datos['idCoP'])
+		->where("idEmpresa=?",$datos['idEmpresa'])
+		->where("numeroFolio=?",$datos['numFolio'])
 		->where("fecha=?", $stringIni)
 		->order("secuencial DESC");
 	
@@ -79,36 +80,32 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		
 		if(!is_null($row)){
 			$secuencial= $row->secuencial +1;
-			//print_r($secuencial);
+			
 		}else{
 			$secuencial = 1;	
-			//print_r($secuencial);
 		}
 
 //=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$datos['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
-		//print_r("<br />");
-		//print_r("$select");
-		/*if(is_null($row)){
-			throw new Util_Exception_BussinessException("Error: Multiplo Incorrecto");
-		}*/
+		
 				
 		//====================Operaciones para convertir unidad minima====================================================== 
 			$cantidad=0;
 			$precioUnitario=0;
-			$cantidad = $producto['cantidad'] * $row->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
+			$cantidad = $datos['cantidad'] * $row->cantidad;
+			$precioUnitario = $datos['precioUnitario'] / $row->cantidad;
 			
 			
 			$mMovtos = array(
-					'idProducto' => $producto['descripcion'],
-					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
-					'idCoP'=>$encabezado['idCoP'],
-					'idProyecto'=>$encabezado['idProyecto'],
-					'numFolio'=>$encabezado['numFolio'],
+					'idProducto' => $datos['descripcion'],
+					'idTipoMovimiento'=>$datos['idTipoMovimiento'],
+					'idSucursal'=>$datos['idEmpresa'],
+					'idCoP'=>1,
+					'idProyecto'=>$datos['idProyecto'],
+					'numeroFolio'=>$datos['numFolio'],
+					'idFactura'=>0,
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringIni,
 					'estatus'=>"A",
@@ -127,8 +124,8 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 					'idCoP'=>$datos[''],
 					'idProyecto'=>$stringIni,
 					'descripcion'=>$precioUnitario,
-					'estatus'=>$producto[''],
-					'conceptoPago' => $producto[''],
+					'estatus'=>$datos[''],
+					'conceptoPago' => $datos[''],
 					'formaLiquidar'=>$datos['formaPago'],
 					'fecha'=>$datos['fecha'],
 					'fechaCaptura'=>$secuencial,
@@ -145,9 +142,9 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		
 //=============================Guarda en cuentasxp=======================================		
 			$mCuentasxp = array(
-					'idCuentasxp'=>$producto['descripcion'],
-					'idTipoMovimiento'=>$encabezado['idDivisa'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idCuentasxp'=>$datos['descripcion'],
+					'idTipoMovimiento'=>$datos['idDivisa'],
+					'idEmpresa'=>$datos['idEmpresa'],
 					'idCoP'=>$cantidad,
 					'idProyecto'=>'0',
 					'idBanco'=>$cantidad,

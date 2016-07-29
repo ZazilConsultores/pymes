@@ -19,20 +19,23 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 
     public function fondeoAction()
     {
-      /* 	$fondeDAO = $this->fondeoDAO;
-		$idEmpresa = 1;
-		//$select =$fondeDAO->obtenerBancosEmpresas();
-		$select = $fondeDAO->obtenerBancosEmpresas($idEmpresa);
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarFondeo;
+		$this->view->$formulario = $formulario;
+		if ($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				try{
+					$notaEntradaDAO =new Contabilidad_DAO_Fondeo;
+					$notaEntradaDAO->guardarFondeo($datos);
+				}catch(exception $ex){
+					$this->view->messageFail= "Error";
+				}
+			}
+		}		
 		
-		$this->view->select = $select;**/
-		
-		/*$subparmetrosDAO = $this->subparametroDAO;
-		$idParametro =1;
-		$select = $subparmetrosDAO->obtenerSubparametros($idParametro);
-		$this->view->select = $select;*/
-				
-		$select = new Contabilidad_Form_AgregarFondeo;
-		$this->view->select = $select;
     }
 
     public function inversionesAction()

@@ -57,8 +57,6 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
 		
-		if(is_null($row)) throw new Util_Exception_BussinessException("Error: Favor de verificar ");
-		
 	try{
 		$secuencial=0;	
 		$tablaMovimiento = $this->tablaMovimiento;
@@ -85,9 +83,6 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$row = $tablaMultiplos->fetchRow($select); 
 		//print_r("<br />");
 		//print_r("$select");
-		/*if(is_null($row)){
-			throw new Util_Exception_BussinessException("Error: Multiplo Incorrecto");
-		}*/
 				
 		//====================Operaciones para convertir unidad minima====================================================== 
 			$cantidad=0;
@@ -99,7 +94,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			$mMovtos = array(
 					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					//'idEmpresa'=>$encabezado['idEmpresa'],
+					'idEmpresas'=>$encabezado['idEmpresas'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
 					'idProyecto'=>$encabezado['idProyecto'],

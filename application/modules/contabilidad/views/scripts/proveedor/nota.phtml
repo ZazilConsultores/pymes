@@ -72,7 +72,8 @@
 </section>
 <script>
 	$(document).ready(function(){
-		$("select#idEmpresa").on('change', function(){
+		
+		$("select#idEmpresas").on('change', function(){
 			//console.log(this.value);
 			//Borro el contenido del select municipio
 			//Obtengo los municipios del estado
@@ -95,7 +96,7 @@
 			
 		});
 		/**/
-		$("select#idEmpresa").on('change', function(){
+		$("select#idEmpresas").on('change', function(){
 			//console.log(this.value);
 			//Borro el contenido del select municipio
 			//Obtengo los municipios del estado
@@ -117,7 +118,7 @@
 			});
 			
 		});
-	
+		
 		
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
@@ -164,6 +165,7 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+		
 	
 		//console.dir(jsonProductos);
 		
@@ -182,9 +184,14 @@
 
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});
+			
+			//$.each(jsonMultiplo,function(i,item){//function(key,value)		
+				//		inputUnidad.append($("<option></option>").attr("value",jsonMultiplo[i].idMultiplos).text(jsonMultiplo[i].unidad)); 
+					//});
+			//};
+			//$.each(jsonUnidad,function(i,item){
+				//inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			//});
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -192,7 +199,7 @@
 			var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
 			$.each(jsonProductos,function(i,item){
 				selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
-			});	
+			});
 			// precioUnitario
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
@@ -254,7 +261,7 @@
 			});
  			
  		});//cierra funcion buscar descripcion del producto
-
+ 		
 		//input  cantidad
 		$("table#productosNota").on("change","input[id^='idCantidad_']" ,function() {
 			var idCantidad= $(this).attr("id");
@@ -314,6 +321,7 @@
  				var unidad = row.find("select[id^='idUnidad_']").val();
  				var codigoBarras = row.find("input[id^='codigoBarras_']").val();
  				var descripcion = row.find("select[id^='descripcion_']").val();
+ 				
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  				var importe = row.find("input[id^='costoTotal_']").val();
  				//var total = row.find("input[id^='total']").val();
@@ -344,7 +352,31 @@
 			
 		
  		});
- 		
+ 		//========================================================>>>>Multiplos
+ 		 $("body").on('change', 'select[id^="descripcion_"]', function(){
+ 		 	var unidad = $(this).attr("id");
+ 			var arr = unidad.split('_');
+ 			var numFila = arr[1];
+ 			
+ 			var unidadFila = $('input#idUnidad_'+numFila);
+ 			
+		 	$url = "/General/public/sistema/json/multiplos/idProducto/" + this.value;
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				
+				success: function(data){
+						unidadFila.empty();
+						$.each(data, function(i,item){	
+							
+							$("select[id^='idUnidad_']").append($("<option></option>").attr("value",data[i].idMultiplos).text(data[i].unidad)); 
+						});
+				}	
+			});
+		 	
+		 });
+	 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
 		  //this.claveProducto = claveProducto;
