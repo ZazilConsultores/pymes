@@ -5,10 +5,14 @@
 class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	private $tablaEmpresa;
+	private $tablaFiscales;
 	
 	private $tablaEmpresas;
 	private $tablaClientes;
 	private $tablaProveedores;
+	
+	private $tablaClientesEmpresa;
+	private $tablaProveedoresEmpresa;
 	
 	private $tablaTipoProveedor;
 	
@@ -23,9 +27,13 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function __construct() {
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
+		
 		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
 		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
+		
+		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
+		$this->tablaProveedoresEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa;
 		
 		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor;
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal;
@@ -238,6 +246,68 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		
 		return $eProveedores;
 	}
+	
+	/**
+	 * Obtenemos todos los clientes asociados a la empresa (Consulta a Tabla ClientesEmpresa)
+	 */
+	public function obtenerClientesEmpresa($idFiscales) {
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
+		$select = $tablaClientesEmpresa->select()->from($tablaClientesEmpresa)->where("idEmpresas", $rowEmpresas->idEmpresas);
+		$rowsClientes = $tablaClientesEmpresa->fetchAll($select);
+		
+		$clientesFiscales = array();
+		
+		if(is_null($rowsClientes)){
+			return null;
+		}else{
+			//return $rowsClientes->toArray();
+			$idsClientes = array();
+			foreach ($rowsClientes as $rowCliente) {
+				$idsClientes[] = $rowCliente->idCliente;
+			}
+			
+			$tablaClientes = $this->tablaClientes;
+			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente IN (?)", array_values($idsClientes));
+			print_r($select->__toString());
+		}
+		
+		
+		
+		
+	}
+	
+	/**
+	 * Obtenemos todos los proveedores asociados a la empresa (Consulta a Tabla ProveedoresEmpresa)
+	 */
+	 public function obtenerProveedoresEmpresa($idFiscales) {
+	 	$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		$tablaProveedoresEmpresa = $this->tablaProveedoresEmpresa;
+		$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa)->where("idEmpresas=?", $rowEmpresas->idEmpresas);
+		$rowsProveedores = $tablaProveedoresEmpresa->fetchAll($select);
+		
+		if(is_null($rowsProveedores)) {
+			return null;
+		}else{
+			return $rowsProveedores->toArray();
+		}
+		
+	 }
 	
 	/**
 	 * Obtiene todos los elementos de la Tabla Tipo Proveedor
