@@ -33,7 +33,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$select=$tablaEmpresa->select()
 		->setIntegrityCheck(false)
 		->from($tablaEmpresa, array('idEmpresa'))
-		->join('fiscales', 'Empresa.idFiscales = fiscales.idFiscales', array('razonSocial'))
+		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
 		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa');
 		return $tablaEmpresa->fetchAll($select);	
 	}
@@ -82,7 +82,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
 		//print_r("<br />");
-		//print_r("$select");
+			print_r("$select");
 				
 		//====================Operaciones para convertir unidad minima====================================================== 
 			$cantidad=0;
@@ -97,9 +97,9 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					'idEmpresas'=>$encabezado['idEmpresas'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
-					'idProyecto'=>$encabezado['idProyecto'],
+					//'idProyecto'=>$encabezado['idProyecto'],
 					'numeroFolio'=>$encabezado['numFolio'],
-					'idFactura'=>0,
+					//'idFactura'=>0,
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringIni,
 					'estatus'=>"A",

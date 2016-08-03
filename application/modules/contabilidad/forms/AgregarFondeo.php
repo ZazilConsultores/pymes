@@ -75,17 +75,17 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$bancosDAO = new Inventario_DAO_Banco;
 		
 		$eBancoEntrada =new Zend_Form_Element_Select('idBancoE');
-		$eBancoEntrada->setLabel('Banco de Entrada ');
+		$eBancoEntrada->setLabel('Seleccionar Banco de Entrada: ');
 		$eBancoEntrada->setAttrib("class", "form-control");
 		
 		$bancos = $bancosDAO->obtenerBancos();
 		
-		foreach ($bancos as $banco){
+		/*foreach ($bancos as $banco){
 			$bancosEmpresa = $bancosEmpresasDAO->obtenerBancosEmpresa($banco->getIdBanco());
 			foreach($bancosEmpresa as $bancoEmpresa){
 				$eBancoEntrada->addMultiOption($bancoEmpresa->getIdBancosEmpresas(), $banco->getBanco());
 			}
-		}
+		}*/
 		
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
 		$eBancoSalida->setLabel('Seleccionar Banco Salida:');
@@ -93,12 +93,12 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		
 		$bancos = $bancosDAO->obtenerBancos();
 		
-		foreach ($bancos as $banco){
+		/*foreach ($bancos as $banco){
 			$bancosEmpresa = $bancosEmpresasDAO->obtenerBancosEmpresa($banco->getIdBanco());
 			foreach($bancosEmpresa as $bancoEmpresa){
 				$eBancoSalida->addMultiOption($bancoEmpresa->getIdBancosEmpresas(), $banco->getBanco());
 			}
-		}
+		}*/
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');

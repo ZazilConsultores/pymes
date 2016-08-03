@@ -1,0 +1,118 @@
+<?php 
+	$formulario = $this->formulario;
+	$messageSuccess = $this->messageSuccess;
+	$messageFail = $this->messageFail;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Alta Proyecto</h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<?php if(!is_null($messageSuccess)){ ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+					<div class="alert alert-danger" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageFail; ?>
+					</div>
+				<?php } ?>
+				<?php echo $formulario; ?>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+
+$(document).ready(function(){
+	$("select#idEmpresas").on('change', function(){
+		$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#idSucursal").empty();
+				$.each(data, function(i,item){
+					$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+				});
+			}
+		});	
+	});	
+	
+	$("input#costoInicial").on('change', function(){
+		var ganancia = $("input#costoFinal").val() - $("input#costoInicial").val();	
+		console.log(ganancia);
+		$('input#ganancia').val(ganancia);
+	});	
+	
+	$("input#costoFinal").on('change', function(){
+		var ganancia = $("input#costoFinal").val() - $("input#costoInicial").val();	
+		console.log(ganancia);
+		$('input#ganancia').val(ganancia);
+	});	
+			
+});
+	var form = $("#altaProyecto");
+		form.validate({
+			rules: {
+				numeroFolio: {
+					required: true
+				},
+				descripcion: {
+					required: true
+				},
+				idSucursal: {
+					required: true
+				},
+				fechaApertura: {
+					required: true
+				},
+				fechaCierre: {
+					required: true
+				},
+				costoInicial: {
+					required: true,
+					number: true
+				},
+				costoFinal: {
+					required: true,
+					number: true
+				}
+				
+			},
+			messages: {
+				numeroFolio: {					
+					required: "Este campo no puede quedar vacío, Ingrese número de folio"
+				},
+				descripcion: {					
+					required: "Este campo no puede quedar vacío, Ingrese descripción"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío"
+				},
+				fechaApertura: {					
+					required: "Este campo no puede quedar vacío,Seleccione fecha Inicio"
+				},
+				fechaCierre: {					
+					required: "Este campo no puede quedar vacío, Seleccione fecha Cierre"
+				},	
+				costoInicial: {					
+					required: "Este campo no puede quedar vacío, Ingrese Costo Inicio",
+					number:"Ingrese un número valido"
+				},
+				costoFinal: {					
+					required: "Este campo no puede quedar vacío, Ingrese Costo Cierre",
+					number:"Ingrese un número valido"
+				}
+			}
+		});
+		
+</script>

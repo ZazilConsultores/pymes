@@ -137,6 +137,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
        $request = $this->getRequest();
         $formulario = new Contabilidad_Form_NuevaNotaProveedor;
+        $formulario->getSubForm("0")->removeElement("idProyecto");
 		if($request->isGet()){
 			$this->view->formulario = $formulario;		
 		}elseif($request->isPost()){

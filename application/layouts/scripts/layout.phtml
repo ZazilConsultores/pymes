@@ -134,7 +134,6 @@
 			</section>
 		</div>
 		
-		<!--datepickeer-->
 		<script>
 			$(document).ready(function() {
 			    $('#table').dataTable( {
@@ -163,6 +162,20 @@
 					changeYear: true
 				});
 			});
+			
+			$(function() { 
+				$( "#fechaApertura" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			
+			$(function() { 
+				$( "#fechaCierre" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
 			$(function() { 
 				$( "#fecha" ).datepicker({
 					changeMonth: true,
@@ -170,7 +183,7 @@
 				});
 			});
 		</script>
-		<!--datepickeer-->
+	
 
 	</body>
 </html>

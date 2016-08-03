@@ -21,7 +21,7 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		$this->tablaBancosEmpresas = new Contabilidad_Model_DbTable_Bancosempresa;
 	}
 		
-	public function obtenerBancosEmpresa($idBanco){
+	/*public function obtenerBancosEmpresa($idBanco){
 		
 		$tablaBancosEmpresa = $this->tablaBancosEmpresas;
 		$select = $tablaBancosEmpresa->select()->from($tablaBancosEmpresa)->where("idBanco=?",$idBanco)
@@ -30,16 +30,15 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		$rowsBancoEmpresa = $tablaBancosEmpresa->fetchAll($select);
 		
 		$modelBancosEmpresa = array();	
-		
-		foreach ($rowsBancoEmpresa as $rowBancoEmpresa) {
-			$modelBancoEmpresa = new Contabilidad_Model_Bancosempresa ($rowBancoEmpresa->toArray());
+			foreach ($rowsBancoEmpresa as $rowBancoEmpresa) {
+			$modelBancoEmpresa = new Contabilidad_Model_BancosEmpresa ($rowBancoEmpresa->toArray());
 			
 			$modelBancosEmpresa[]= $modelBancoEmpresa;
 			}
 		
 		return $modelBancosEmpresa	;
 		
-	}
+	}*/
 	
 	public function obtenerBancosEmpresas(){
 		$tablaBancosEmpresas = $this->tablaBancosEmpresas;

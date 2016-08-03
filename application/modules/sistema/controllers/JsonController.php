@@ -86,10 +86,10 @@ class Sistema_JsonController extends Zend_Controller_Action
 	public function proyectosAction()
     {
         // action body
-        $idFiscales = $this->getParam("idFiscales");
-		$proyectos = $this->proyectoDAO->obtenerProyectos($idFiscales);
-		echo Zend_Json::encode($proyectos);
-		
+       	$idSucursal = $this->getParam("idSucursal");
+		$sucursales = $this->proyectoDAO->obtenerProyecto($idSucursal);
+		echo Zend_Json::encode($sucursales);
+
     }
 	
 	public function multiplosAction()
@@ -99,7 +99,6 @@ class Sistema_JsonController extends Zend_Controller_Action
 		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
 		$statement = $select->query();
 		$rowsMultiplo = $statement->fetchAll();
-		
 		echo  Zend_Json::encode($rowsMultiplo);
 		
     }

@@ -61,8 +61,6 @@
 						<td>&nbsp;</td>
 
 						<td><input id="total" class="form-control" /></td>
-				
-
 					</tr>
 				</tfoot>
 			</table>
@@ -74,20 +72,14 @@
 	$(document).ready(function(){
 		
 		$("select#idEmpresas").on('change', function(){
-			//console.log(this.value);
-			//Borro el contenido del select municipio
-			//Obtengo los municipios del estado
 			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
-			//console.log($url);
-			
+			//console.log("$url");
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					//console.log($url);
-					//console.dir(data);
 					$("select#idSucursal").empty();
-					$.each(data, function(i,item){//function(key,value)		
+					$.each(data, function(i,item){	
 						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
 					});
 					
@@ -95,31 +87,22 @@
 			});
 			
 		});
-		/**/
+		
 		$("select#idEmpresas").on('change', function(){
-			//console.log(this.value);
-			//Borro el contenido del select municipio
-			//Obtengo los municipios del estado
-			$url = "/General/public/sistema/json/proyectos/idFiscales/" + this.value;
-			//console.log($url);
-			
+			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
 			$.ajax({
 				url: $url,
+				//console.log($ajax);
 				dataType: "json",
 				success: function(data){
-					//console.log($url);
-					//console.dir(data);
 					$("select#idProyecto").empty();
-					$.each(data, function(i,item){//function(key,value)		
+					$.each(data, function(i,item){	
 						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
 					});
-					
 				}
 			});
 			
 		});
-		
-		
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
 			rules: {
@@ -131,10 +114,10 @@
 				},
 				idSucursal: {
 					required: true
-				},
-				idProyecto: {
-					required: true
 				}
+				/*idProyecto: {
+					required: true
+				}*/
 				
 			},
 			messages: {
@@ -146,10 +129,10 @@
 				},
 				idSucursal: {					
 					required: "Este campo no puede quedar vacío"
-				},
-				idProyecto: {					
-					required: "Este campo no puede quedar vacío"
 				}
+				/*idProyecto: {					
+					required: "Este campo no puede quedar vacío"
+				}*/
 			}
 		});
 		
@@ -166,7 +149,6 @@
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
 		
-	
 		//console.dir(jsonProductos);
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
@@ -184,14 +166,9 @@
 
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			
-			//$.each(jsonMultiplo,function(i,item){//function(key,value)		
-				//		inputUnidad.append($("<option></option>").attr("value",jsonMultiplo[i].idMultiplos).text(jsonMultiplo[i].unidad)); 
-					//});
-			//};
-			//$.each(jsonUnidad,function(i,item){
-				//inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			//});
+			$.each(jsonUnidad,function(i,item){
+				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			});
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -237,11 +214,7 @@
   				//$('table#productosNota tr:last').remove();
   				//--numero;
   			}
-  			//if ($("table#productosNota tr").length != 1) {
-     		
-			//}
-  			   
-
+  			
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
@@ -257,7 +230,6 @@
  					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
  				}
  				
-				//selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
 			});
  			
  		});//cierra funcion buscar descripcion del producto
@@ -353,29 +325,30 @@
 		
  		});
  		//========================================================>>>>Multiplos
- 		 $("body").on('change', 'select[id^="descripcion_"]', function(){
+ 		/* $("body").on('change', 'select[id^="descripcion_"]', function(){
  		 	var unidad = $(this).attr("id");
  			var arr = unidad.split('_');
  			var numFila = arr[1];
- 			
- 			var unidadFila = $('input#idUnidad_'+numFila);
- 			
+ 			//var unidadFila = $('select#idUnidad_'+numFila);
+		 	console.log(numFila);
+		 	var tabla = $("table#productosNota > tbody  > tr");
+		 	console.log($(this).val());
 		 	$url = "/General/public/sistema/json/multiplos/idProducto/" + this.value;
 			
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				
-				success: function(data){
-						unidadFila.empty();
-						$.each(data, function(i,item){	
-							
-							$("select[id^='idUnidad_']").append($("<option></option>").attr("value",data[i].idMultiplos).text(data[i].unidad)); 
+				success: function(unidad){
+						$("select[id^='idUnidad_']").empty();
+						$.each(unidad, function(i,item){
+							$("select[id^='idUnidad_']").append($("<option></option>").attr("value",unidad[i].idMultiplos).text(unidad[i].unidad)); 
 						});
-				}	
+				}
+				
 			});
 		 	
-		 });
+		 });*/
 	 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;

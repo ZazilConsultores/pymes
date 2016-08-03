@@ -46,9 +46,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
-		$proyectoDAO = new Contabilidad_DAO_Proyecto;
-		$proyectos = $proyectoDAO->obtenerProyecto();
-		
+	
 		$eProyecto = new Zend_Form_Element_Select('idProyecto');
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
@@ -89,7 +87,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		
 
 		//Agregamos los elementos correspondientes a la subformaEncabezado
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eProveedor, $eProyecto,$eProducto));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eProveedor,$eProducto));
      	$this->addSubForms(array($subEncabezado)); 
 		$this->addElement($eSubmit);
 		
