@@ -166,9 +166,9 @@
 
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});
+			//$.each(jsonUnidad,function(i,item){
+				//inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			//});
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -325,12 +325,9 @@
 		
  		});
  		//========================================================>>>>Multiplos
- 		/* $("body").on('change', 'select[id^="descripcion_"]', function(){
+ 		 $("body").on('change', 'select[id^="descripcion_"]', function(){
  		 	var unidad = $(this).attr("id");
- 			var arr = unidad.split('_');
- 			var numFila = arr[1];
- 			//var unidadFila = $('select#idUnidad_'+numFila);
-		 	console.log(numFila);
+ 			
 		 	var tabla = $("table#productosNota > tbody  > tr");
 		 	console.log($(this).val());
 		 	$url = "/General/public/sistema/json/multiplos/idProducto/" + this.value;
@@ -343,12 +340,14 @@
 						$("select[id^='idUnidad_']").empty();
 						$.each(unidad, function(i,item){
 							$("select[id^='idUnidad_']").append($("<option></option>").attr("value",unidad[i].idMultiplos).text(unidad[i].unidad)); 
+							
 						});
+						
 				}
 				
 			});
 		 	
-		 });*/
+		 });
 	 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
