@@ -147,17 +147,7 @@ $formTDecorators = array(
 	array('HtmlTag',array('tag'=>'table','class'=>'table table-striped table-condensed')),
 	'Form'
 );
-// Verificamos que exista un inicio de sesion
-//$auth = Zend_Auth::getInstance();
-//$auth->clearIdentity();
-/*
 
-//$auth->clearIdentity();
-print_r($auth->getStorage());
-if(!$auth->hasIdentity()){
-	Zend_Registry::set('currentModule', "default");
-	Zend_Registry::set('currentUser', "default");
-}*/
 //============================================================================ CONSTANTES GENERALES
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);

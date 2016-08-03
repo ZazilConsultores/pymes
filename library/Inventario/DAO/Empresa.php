@@ -32,22 +32,27 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	public function obtenerEmpresas() {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $tablaEmpresas->fetchAll();
-		
-		$tablaFiscal = $this->tablaFiscales;
-		$tablaDomicilio = $this->tablaDomicilio;
-		
-		
-		$empresas = array();
+		//Obtenemos los ids de empresas
+		$idsEmpresas = array();
 		foreach ($rowsEmpresas as $rowEmpresa) {
-			$empresaModel = new Sistema_Model_Empresa($rowEmpresa->toArray());
-			//$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
-			// ==========================================================================
-			
-			
-			$empresas[] = $empresaModel;
+			$idsEmpresas[] = $rowEmpresa->idEmpresa;
 		}
 		
-		return $empresas;
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)",$idsEmpresas);
+		$rowsEmpresa = $tablaEmpresa->fetchAll($select);
+		
+		$idsFiscales = array();
+		foreach ($rowsEmpresa as $rowEmpresa) {
+			$idsFiscales[] = $rowEmpresa->idFiscales;
+		}
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)",$idsFiscales);
+		$rowsFiscales = $tablaFiscales->fetchAll($select);
+		//print_r($rowsFiscales->toArray());
+		
+		return $rowsFiscales->toArray();
 	}
 	
 	public function obtenerClientes(){
