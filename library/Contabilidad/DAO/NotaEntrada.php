@@ -56,6 +56,8 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
+		//print_r($row);
+		if(is_null($row)) throw new Util_Exception_BussinessException("Error: Favor de verificar Multiplo");
 		
 	try{
 		$secuencial=0;	
@@ -82,7 +84,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
 		//print_r("<br />");
-			print_r("$select");
+			//print_r("$select");
 				
 		//====================Operaciones para convertir unidad minima====================================================== 
 			$cantidad=0;
