@@ -36,7 +36,7 @@ $application = new Zend_Application(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'GeneralE',
+		'dbname' => 'General',
 	);
  $connlocaldos = array(
 		'host' => 'localhost',
@@ -82,8 +82,8 @@ Zend_Registry::set('connlocal', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-$db = Zend_Db::factory('PDO_MYSQL', $connserver);
-//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+//$db = Zend_Db::factory('PDO_MYSQL', $connserver);
+$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
