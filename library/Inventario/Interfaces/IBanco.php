@@ -12,4 +12,6 @@ interface Inventario_Interfaces_IBanco{
 	public function editarBanco($idBanco,array $banco);
 	public function eliminarBanco($idBanco);
 	
+	public function obtenerBancosEmpresasFondeo(Contabilidad_Model_Banco $banco);
+	
 }

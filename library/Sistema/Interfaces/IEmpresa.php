@@ -10,8 +10,10 @@ interface Sistema_Interfaces_IEmpresa {
 	public function obtenerEmpresaPorIdFiscales($idFiscales);
 	
 	public function obtenerIdFiscalesEmpresas();
-	public function obtenerIdFiscalesClientes();
-	public function obtenerIdFiscalesProveedores();
+	//public function obtenerIdFiscalesClientes();
+	//public function obtenerIdFiscalesProveedores();
+	public function obtenerEmpresasClientes();
+	public function obtenerEmpresasProveedores();
 	
 	public function obtenerTipoProveedor();
 	

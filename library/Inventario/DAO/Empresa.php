@@ -32,22 +32,27 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	public function obtenerEmpresas() {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $tablaEmpresas->fetchAll();
-		
-		$tablaFiscal = $this->tablaFiscales;
-		$tablaDomicilio = $this->tablaDomicilio;
-		
-		
-		$empresas = array();
+		//Obtenemos los ids de empresas
+		$idsEmpresas = array();
 		foreach ($rowsEmpresas as $rowEmpresa) {
-			$empresaModel = new Sistema_Model_Empresas($rowEmpresa->toArray());
-			//$empresaModel->setIdEmpresa($rowEmpresa->idEmpresa);
-			// ==========================================================================
-			
-			
-			$empresas[] = $empresaModel;
+			$idsEmpresas[] = $rowEmpresa->idEmpresa;
 		}
 		
-		return $empresas;
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)",$idsEmpresas);
+		$rowsEmpresa = $tablaEmpresa->fetchAll($select);
+		
+		$idsFiscales = array();
+		foreach ($rowsEmpresa as $rowEmpresa) {
+			$idsFiscales[] = $rowEmpresa->idFiscales;
+		}
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)",$idsFiscales);
+		$rowsFiscales = $tablaFiscales->fetchAll($select);
+		//print_r($rowsFiscales->toArray());
+		
+		return $rowsFiscales->toArray();
 	}
 	
 	public function obtenerClientes(){
@@ -111,8 +116,8 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$select = $tablaFiscales->select()
 			->setIntegrityCheck(false)
 			->from($tablaFiscales, array('idFiscales','rfc', 'razonSocial'))
-			->join('empresa', 'empresa.idFiscales = Fiscales.idFiscales', array())
-			->join('empresas','empresas.idEmpresa = Fiscales.idFiscales', array());
+			->join('Empresa', 'Empresa.idFiscales = Fiscales.idFiscales', array())
+			->join('Empresas','Empresas.idEmpresa = Fiscales.idFiscales', array());
 			
 		//	return $select->__toString();
 		return $tablaFiscales->fetchAll($select);
@@ -124,7 +129,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	public function obtenerInformacionEmpresas()
 	{
 		
-		$tablaFiscales = $this->tablaFiscales;
+		/*$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()
 			->setIntegrityCheck(false)
 			->from($tablaFiscales, array('idFiscales','rfc', 'razonSocial'))
@@ -139,8 +144,19 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			->where("Fiscales.idFiscales = ?", $rowEmpresa->idFiscales);
 			
 		//	return $select->__toString();
-		return $tablaFiscales->fetchAll($select);
+		return $tablaFiscales->fetchAll($select);*/
 		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$rowsEmpresas = $tablaEmpresas->fetchAll();
+		
+		$modelEmpresas = array();
+		foreach ($rowsEmpresas as $row) {
+			$modelEmpresa = new Sistema_Model_Empresa($row->toArray());
+			$modelEmpresas[] = $modelEmpresa;
+		}
+		
+		return $modelEmpresas;
+	
 	}
 	
 	public function crearEmpresa($tipo, Sistema_Model_Fiscal $fiscal, Sistema_Model_Domicilio $domicilio, Sistema_Model_Telefono $telefono, Sistema_Model_Email $email){

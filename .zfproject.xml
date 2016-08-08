@@ -27,6 +27,7 @@
         <formFile formName="AgregarRemisionCliente"/>
         <formFile formName="AltaNivel"/>
         <formFile formName="NuevaNotaProveedor"/>
+        <formFile formName="AgregarRemisionProveedor"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -46,6 +47,7 @@
           <dbTableFile dbTableName="Impuesto"/>
           <dbTableFile dbTableName="ProductoImpuesto"/>
           <dbTableFile dbTableName="Vendedor"/>
+          <dbTableFile dbTableName="Bancosempresa"/>
         </dbTableDirectory>
         <modelFile modelName="Banco"/>
         <modelFile modelName="Divisa"/>
@@ -57,6 +59,7 @@
         <modelFile modelName="TipoProveedor"/>
         <modelFile modelName="Vendedor"/>
         <modelFile modelName="Inventario"/>
+        <modelFile modelName="Bancosempresa"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -76,6 +79,8 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
+              <actionMethod actionName="editarTodo"/>
+              <actionMethod actionName="editartodo"/>
             </controllerFile>
             <controllerFile controllerName="Unidad">
               <actionMethod actionName="index"/>
@@ -102,6 +107,7 @@
             <formFile formName="AltaUnidad"/>
             <formFile formName="AltaMultiplos"/>
             <formFile formName="AdminInventario"/>
+            <formFile formName="EditarTodoInventario"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -189,6 +195,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Inventario">
                 <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="editarTodo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="editartodo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1047,6 +1059,9 @@
             </controllerFile>
             <controllerFile controllerName="Tesoreria">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="inversiones"/>
+              <actionMethod actionName="nomina"/>
+              <actionMethod actionName="impuestos"/>
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
@@ -1071,6 +1086,13 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="nueva"/>
             </controllerFile>
+            <controllerFile controllerName="Fondeo">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Proyectos">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1087,6 +1109,12 @@
             <formFile formName="NuevaNotaProveedor"/>
             <formFile formName="NuevaNotaProveedor"/>
             <formFile formName="NuevaNotaCliente"/>
+            <formFile formName="AgregarRemisionProveedor"/>
+            <formFile formName="AgregarFondeo"/>
+            <formFile formName="AgregarInversiones"/>
+            <formFile formName="AgregarNomina"/>
+            <formFile formName="AgregarImpuestos"/>
+            <formFile formName="AltaProyecto"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1102,6 +1130,10 @@
               <dbTableFile dbTableName="Capas"/>
               <dbTableFile dbTableName="TipoMovimiento"/>
               <dbTableFile dbTableName="Cardex"/>
+              <dbTableFile dbTableName="Cuentasxp"/>
+              <dbTableFile dbTableName="Cuentasxc"/>
+              <dbTableFile dbTableName="Bancosempresa"/>
+              <dbTableFile dbTableName="Proyecto"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1112,6 +1144,10 @@
             <modelFile modelName="Capas"/>
             <modelFile modelName="TipoMovimiento"/>
             <modelFile modelName="Cardex"/>
+            <modelFile modelName="Cuentasxp"/>
+            <modelFile modelName="Cuentasxc"/>
+            <modelFile modelName="Bancosempresa"/>
+            <modelFile modelName="Proyecto"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1214,6 +1250,27 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="factura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Fondeo">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="inversiones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="nomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="impuestos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="tesoreria">
+                <viewScriptFile forActionName="fondeo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2230,6 +2287,9 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreria">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="inversiones"/>
+                <testApplicationActionMethod forActionName="nomina"/>
+                <testApplicationActionMethod forActionName="impuestos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2254,6 +2314,13 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="nueva"/>
               </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Fondeo">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Proyectos">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
           <testApplicationModuleDirectory forModuleName="inventario">
@@ -2272,6 +2339,8 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
+                <testApplicationActionMethod forActionName="editarTodo"/>
+                <testApplicationActionMethod forActionName="editartodo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Unidad">
                 <testApplicationActionMethod forActionName="index"/>

@@ -2,30 +2,34 @@
 
 class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 {
-
     public function init()
     {
-    	$etipo = new Zend_Form_Element_Select('tipoMovto');
-		$etipo->setLabel('Seleccionar Tipo de Remision: ');
-		$etipo->setAttrib("class", "form-control");
+    	$this->setAttrib("id", "nuevaRemisionCliente");
+        
+        $subEncabezado = new Zend_Form_SubForm;
+		$subEncabezado->setLegend("Ingresar Datos");
+	
+		$eNumeroFactura = new Zend_Form_Element_Text('numFolio');
+		$eNumeroFactura->setLabel('Folio:');
+		$eNumeroFactura->setAttrib("class", "form-control");
 		
-    	//foreach ($rowset as $fila) {
-			//$etipo->addMultiOption($fila->idFiscales, $fila->razonSocial);
-		//}
+		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
+		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
 		
-		$eFolio = new Zend_Form_Element_Text('folio');
-		$eFolio->setLabel('Folio: ');
-		$eFolio->setAttrib("class", "form-control");
+		$eTipoMovto = New Zend_Form_Element_Select('idTipoMovimiento');
+		$eTipoMovto->setLabel('Seleccionar Tipo de Movimiento');
+		$eTipoMovto->setAttrib("class", "form-control");
 		
-		$eFecfac = new Zend_Form_Element_Text('fecfac');
-		$eFecfac->setLabel('Fecha Remision: ');
-		$eFecfac->setAttrib("class", "form-control");
+		foreach ($tiposMovimientos as $tipoMovimiento)
+		{
+			$eTipoMovto->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());		
+		}
 		
 		$columnas = array('idFiscales','razonSocial');
-		$tablasFiscales = new Contabilidad_Model_DbTable_Fiscales();
-		$rowset = $tablasFiscales->obtenerColumnas($columnas);
+		$tablasFiscales = new Inventario_DAO_Empresa();
+		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
-    	$eEmpresa =  new Zend_Form_Element_Select('empresa');
+    	$eEmpresa =  new Zend_Form_Element_Select('idEmpresa');
         $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
@@ -33,91 +37,88 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 		
-		$eCliente =  new Zend_Form_Element_Select('cliente');
-        $eCliente->setLabel('Seleccionar Cliente: ');
+		$columnas = array('idEmpresa','razonSocial');
+		$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
+		$rowset = $tablaEmpresa->obtenerClientes();
+		
+		$eCliente = new Zend_Form_Element_Select('idCoP');
+		$eCliente->setLabel('Seleccionar Cliente');
 		$eCliente->setAttrib("class", "form-control");
 		
-		//foreach ($rowset as $fila) {
-			
-		//}
-		$eProyecto =  new Zend_Form_Element_Select('proyecto');
-        $eProyecto->setLabel('Seleccionar Proyecto: ');
-		$eProyecto->setAttrib("class", "form-control");
-		
-		//foreach ($rowset as $fila) {
-			
-		//}
-		$columnas=array('claveDivisa','descripcion');
-		$tablaDivisa = new Contabilidad_Model_DbTable_Divisa();
-		$rowset = $tablaDivisa->obtenerColumnas($columnas);
-		
-		$eDivisa =  new Zend_Form_Element_Select('divisa');
-        $eDivisa->setLabel('Seleccionar Divisa: ');
-		$eDivisa->setAttrib("class", "form-control");
-		
 		foreach ($rowset as $fila) {
-			$eDivisa->addMultiOption($fila->claveDivisa, $fila->descripcion);
-			
+			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
 		}
 		
-		$eClave =  new Zend_Form_Element_Text('clave');
-        $eClave->setLabel('Clave: ');
-		$eClave->setAttrib("class", "form-control");
+		$eFecha = new Zend_Form_Element_Text('fecha');
+		$eFecha->setLabel('Fecha:');
+		$eFecha->setAttrib("class", "form-control");
+		$eFecha->setAttrib("required","Seleccionar fecha");
 		
-		
-		$eCodigoBarra =  new Zend_Form_Element_Text('codigoBarra');
-        $eCodigoBarra->setLabel('Codigo de Barra: ');
-		$eCodigoBarra->setAttrib("class", "form-control");
-		
-		$eDescripcion =  new Zend_Form_Element_Text('descripcion');
-        $eDescripcion->setLabel('Descripcion: ');
-		$eDescripcion->setAttrib("class", "form-control");
-		
-		$ePresentacion =  new Zend_Form_Element_Text('presentacion');
-        $ePresentacion->setLabel('Presentacion: ');
-		$ePresentacion->setAttrib("class", "form-control");
-		
-		$eCantidad =  new Zend_Form_Element_Text('cantidad');
-        $eCantidad->setLabel('Cantidad: ');
-		$eCantidad->setAttrib("class", "form-control");
-		
-		$ePrecioUni = new Zend_Form_Element_Text('precioUnitario');
-		$ePrecioUni->setLabel('Precio Unitario: ');
-		$ePrecioUni->setAttrib("class", "form-control");
-		
-		$eImporte = new Zend_Form_Element_Text('importe');
-		$eImporte->setLabel('Importe: ');
-		$eImporte->setAttrib("class", "form-control");
-		
-		$eSubmit = new Zend_Form_Element_Submit('submit');
-		$eSubmit->setLabel('Agregar');
-		$eSubmit->setAttrib("class", "btn btn-warning");
-		
-		//Encabezado
-		$this->addElement($etipo);
-		$this->addElement($eFolio);
-		$this->addElement($eFecfac);
-		$this->addElement($eEmpresa);
-		$this->addElement($eCliente);
-		$this->addElement($eProyecto);
-		$this->addElement($eDivisa);
-
-		
-		//Cuerpo
-		$this->addElement($eClave);
-		$this->addElement($eCodigoBarra);
-		$this->addElement($eDescripcion);
-		$this->addElement($ePresentacion);
-		$this->addElement($eCantidad);
-		$this->addElement($ePrecioUni);
-		$this->addElement($eImporte);
-		
-		//Condiciones de Pago
-		
-		$this->addElement($eSubmit);
 	
+		$eProducto = new Zend_Form_Element_Hidden('productos');
+		$eProducto->setAttrib("class", "form-control");
+		$eProducto->setAttrib("required","true");
+			
+		$eProyecto = new Zend_Form_Element_Text('idProyecto');
+        $eProyecto->setLabel('Seleccionar Proyecto');
+		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setValue(1);
+		
+		//===============================================================
+		$subFormaPago = new Zend_Form_SubForm;
+		$subFormaPago->setLegend("Registrar un pago en:");
+		
+		$eDivisa = New Zend_Form_Element_Select('idDivisa');
+		$eDivisa->setLabel('Seleccionar Divisa');
+		$eDivisa->setAttrib("class", "form-control");
+		
+		$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
+		$tiposDivisa = $tipoDivisaDAO->obtenerDivisas();
+		
+		foreach ($tiposDivisa as $tipoDivisa)
+		{
+			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
+		}
+		//==================Forma de pago
+		$formaPago = Zend_Registry::get('formaPago');
+		$eFormaPago = new Zend_Form_Element_Select('formaLiquidar');
+		$eFormaPago->setLabel('Seleccionar Forma de Pago:');
+		$eFormaPago->setAttrib("class", "form-control");
+		$eFormaPago->setMultiOptions($formaPago);
+		
+		//==================Concepto pago
+		$conceptoPago = Zend_Registry::get('conceptoPago');
+		
+		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
+		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
+		$eConceptoPago->setAttrib("class", "form-control");
+		$eConceptoPago->setMultiOptions($conceptoPago);
+		
+		$eImportePago = new Zend_Form_Element_Text('importePago');
+		$eImportePago->setLabel('Importe Pago:');
+		$eImportePago->setAttrib("class", "form-control");
+		
+		$bancoDAO = new Inventario_DAO_Banco;
+		$bancos = $bancoDAO->obtenerBancos();
+		
+		$eBanco = new Zend_Form_Element_Select('idBanco');
+		$eBanco->setLabel('Seleccionar Banco');
+		$eBanco->setAttrib("class", "form-control");
+		
+		foreach($bancos as $banco)
+		{
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
+		}
+			
+		$eSubmit = new Zend_Form_Element_Submit("submit");
+		$eSubmit->setLabel("Enviar");
+		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("disabled","true");
+		
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eCliente,$eProyecto,$eProducto));
+		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago, $eFormaPago,$eImportePago));
+		$this->addSubForms(array($subEncabezado,$subFormaPago));
+		$this->addElement($eSubmit);
     }
-
-
 }
-
+   

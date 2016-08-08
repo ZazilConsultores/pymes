@@ -35,14 +35,14 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		
 		/*Descripcion */
 		$eProducto = new Zend_Form_Element_Text('producto');
-		$eProducto->setLabel('Descripcion:');
+		$eProducto->setLabel('Producto:');
 		$eProducto->setAttrib('class','form-control');
 		
 		$eClaveProducto = new Zend_Form_Element_Hidden("claveProducto");
 		//$eClaveProducto->setLabel('Clave Producto:');
 		//$eClaveProducto->setAttrib('class','form-control');
 		
-		$eIdsSubparametro = new Zend_Form_Element_Hidden("idsSubparametro");
+		//$eIdsSubparametro = new Zend_Form_Element_Hidden("idsSubparametro");
 		
 		$eCodigoBarras = new Zend_Form_Element_Text('codigoBarras');
 		$eCodigoBarras->setLabel('Codigo de Barras:');
@@ -56,13 +56,13 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$eAgregar->setAttrib("class", "btn btn-success");
 		//============================Agregamos Subformas=====================================================>>>>		
 		//$this->addElement($elemento);
-		$this->addSubForm($subConfiguracion, 'Configuracion');
+		$this->addSubForms(array($subConfiguracion));
 		//$this->addSubForms(array($subDetalle));
     	//$this->addElement($Configuracion);
     	$this->addElement($eProducto);
 		$this->addElement($eClaveProducto);
 		$this->addElement($eCodigoBarras);
-		$this->addElement($eIdsSubparametro);
+		//$this->addElement($eIdsSubparametro);
 	//	$this->addElement($eProducto);
     	
 		

@@ -1,11 +1,12 @@
 <?php 
-	$ecliente = $this->empresa;
+	// ==========================================================================
+	$fiscalesDAO = $this->fiscalesDAO;
+	$fiscales = $this->fiscales;
 	
-	$fiscalesDAO = new Sistema_DAO_Fiscales;
-	$fiscal = $fiscalesDAO->obtenerFiscales($ecliente["idFiscales"]);
-	$domiciliosFiscales = $fiscalesDAO->obtenerDomiciliosPorIdFiscal($ecliente["idFiscales"]);
-	$fiscalesTelefonos = $fiscalesDAO->obtenerTelefonosFiscales($ecliente["idFiscales"]);
-	$fiscalesEmails = $fiscalesDAO->obtenerEmailsFiscales($ecliente["idFiscales"]);
+	//$fiscal = $fiscalesDAO->obtenerFiscales($ecliente["idFiscales"]);
+	$domiciliosFiscales = $fiscalesDAO->obtenerDomiciliosPorIdFiscal($fiscales->getIdFiscales());
+	$fiscalesTelefonos = $fiscalesDAO->obtenerTelefonosFiscales($fiscales->getIdFiscales());
+	$fiscalesEmails = $fiscalesDAO->obtenerEmailsFiscales($fiscales->getIdFiscales());
 	//print_r($fiscalesTelefonos);
 	$estadoDAO = new Sistema_DAO_Estado;
 	$municipioDAO = new Sistema_DAO_Municipio;
@@ -13,25 +14,34 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Cliente: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Cliente: <strong><?php echo $fiscales->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
+		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresa","action"=>"clientes"),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Clientes
+		</a>
 		<table class="table table-striped table-condensed">
 			<thead>
-				<th>Administrar</th>
+				<th>Configurar</th>
+				<th>Sucursales</th>
 				<th>R.F.C.</th>
 				<th>Razon Social</th>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
-						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscal->getIdFiscales()),null,TRUE); ?>">
-							<span class="glyphicon glyphicon-cog"></span> Administrar
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
+							<span class="glyphicon glyphicon-cog"></span> Configurar
 						</a>
 					</td>
-					<td><?php echo $fiscal->getRfc() ?></td>
-					<td><?php echo $fiscal->getRazonSocial() ?></td>
+					<td>
+						<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"cliente","action"=>"sucursales","idFiscales"=>$fiscales->getIdFiscales(),"tipoSucursal"=>"SC"),null,true) ?>">
+							<span class="glyphicon glyphicon-home"></span> Sucursales
+						</a>
+					</td>
+					<td><?php echo $fiscales->getRfc() ?></td>
+					<td><?php echo $fiscales->getRazonSocial() ?></td>
 				</tr>
 			</tbody>
 		</table>
@@ -41,7 +51,7 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Domicilios del Cliente: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Domicilios del Cliente: <strong><?php echo $fiscales->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
@@ -53,6 +63,7 @@
 				<th>Municipio</th>
 				<th>C.P.</th>
 				<th>Colonia</th>
+				<th>Calle</th>
 				<th>N.I.</th>
 				<th>N.E.</th>
 			</thead>
@@ -67,17 +78,14 @@
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>
-						<td><?php echo ($fiscalesDAO->esSucursal($domicilioFiscal->getIdDomicilio(), $ecliente["idFiscales"])) ? "Si" : "No" ;  ?></td>
+						<td><?php echo ($fiscalesDAO->esSucursal($domicilioFiscal->getIdDomicilio(), $fiscales->getIdFiscales())) ? "Si" : "No" ;  ?></td>
 						<td><?php echo $estado->getEstado(); ?></td>
 						<td><?php echo $municipio->getMunicipio(); ?></td>
 						<td><?php echo $domicilioFiscal->getCodigoPostal(); ?></td>
 						<td><?php echo $domicilioFiscal->getColonia(); ?></td>
+						<td><?php echo $domicilioFiscal->getCalle(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroInterior(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroExterior(); ?></td>
-					</tr>
-					<tr>
-						<td><strong>Calle</strong></td>
-						<td colspan="7"><?php echo $domicilioFiscal->getCalle(); ?></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>

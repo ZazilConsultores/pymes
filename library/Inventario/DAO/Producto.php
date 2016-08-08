@@ -37,9 +37,10 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		
 	}
 	
-	public function obtenerProductos(){
+	public function obtenerProductos() {
 		$tablaProducto = $this->tablaProducto;
-		$rowProductos = $tablaProducto->fetchAll();
+		$select = $tablaProducto->select()->from($tablaProducto)->order("producto");
+		$rowProductos = $tablaProducto->fetchAll($select);
 		
 		$modelProductos = array();
 		

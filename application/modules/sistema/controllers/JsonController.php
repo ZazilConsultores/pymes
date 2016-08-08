@@ -6,7 +6,9 @@ class Sistema_JsonController extends Zend_Controller_Action
     private $municipioDAO = null;
 	private $estadoDAO = null;
 	private $sucursalDAO = null;
-
+	private $proyectoDAO = null;
+	private $multiplos = null;
+	
     public function init()
     {
         /* Initialize action controller here */
@@ -17,6 +19,9 @@ class Sistema_JsonController extends Zend_Controller_Action
         $this->municipioDAO = new Inventario_DAO_Municipio;
 		$this->estadoDAO = new Sistema_DAO_Estado;
 		$this->sucursalDAO = new Sistema_DAO_Sucursal;
+		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
+		$this->multiploDAO = new Inventario_DAO_Multiplo;
+		$this->db = Zend_Db_Table::getDefaultAdapter();
     }
 
     public function indexAction()
@@ -65,10 +70,38 @@ class Sistema_JsonController extends Zend_Controller_Action
     public function semailsAction()
     {
         // action body
+        $idSucursal = $this->getParam("idSucursal");
+		$semails = $this->sucursalDAO->obtenerEmailsSucursal($idSucursal);
+		echo Zend_Json::encode($semails);
     }
-
+	
+	public function sucursalesAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		$sucursales = $this->sucursalDAO->obtenerSucursales($idFiscales);
+		echo Zend_Json::encode($sucursales);
+    }
     
+	public function proyectosAction()
+    {
+        // action body
+       	$idSucursal = $this->getParam("idSucursal");
+		$sucursales = $this->proyectoDAO->obtenerProyecto($idSucursal);
+		echo Zend_Json::encode($sucursales);
 
+    }
+	
+	public function multiplosAction()
+    {
+        $idProducto = $this->getParam("idProducto");
+		$select = $this->db->select()->from("Multiplos","idMultiplos")
+		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
+		$statement = $select->query();
+		$rowsMultiplo = $statement->fetchAll();
+		echo  Zend_Json::encode($rowsMultiplo);
+		
+    }
 
 }
 

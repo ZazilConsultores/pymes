@@ -1,6 +1,6 @@
 <?php
 
-class Contabilidad_RemisionController extends Zend_Controller_Action
+class Contabilidad_FondeoController extends Zend_Controller_Action
 {
 
     public function init()
@@ -10,9 +10,7 @@ class Contabilidad_RemisionController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+
     }
-
-
 }
 

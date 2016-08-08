@@ -1,42 +1,58 @@
 <?php 
-	$producto = $this->producto;
-	$multiplos = $this->multiplos;
-	$formulario = $this->formulario;
-	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"multiplos", "action" => "alta"), null, true));
-	
+	$inventario = $this->inventario;
+	$productosDAO = new Inventario_DAO_Producto;
 ?>
-<section class="row">
-	<article>
-		<header>
-			<h3>Multiplos:  <?php echo $producto->getProducto() ?></h3>
-		</header>
-		<div>
-			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"multiplos","action"=>"alta","idProducto"=>$producto->getIdProducto()),null,true); ?>">
-				<span class="glyphicon glyphicon-plus"></span> Nuevo Multiplo
-			</a>
-			<table class="table table-condensed table-striped">
-				<thead>
-					<th>Cantidad</th>
-					<th>Unidad</th>
-					<th>Abreviatura</th>
-					<th>Administrar</th>
-					
-				</thead>
-				<tbody>
-					<?php foreach ($multiplos as $multiplo) : ?>
-					<tr>
-						<td><?php echo $multiplo->getCantidad(); ?></td>
-						<td><?php echo $multiplo->getUnidad(); ?></td>
-						<td><?php echo $multiplo->getAbreviatura(); ?></td>
-						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"multiplos","action"=>"admin","idMultiplos"=>$multiplo->getIdMultiplos()),null,true); ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
-							</a>
-						</td>
-					</tr>
-					<?php endforeach ?>
-				</tbody>
-			</table>
-		</div>
-	</article>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Inventario General
+		</h3>
+	</div>
+	<div class="panel-body" >
+		<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "editartodo"), null, true); ?>">
+			<span class="glyphicon glyphicon-cog"></span> Aplicar a Todos
+		</a>
+		<a class="btn btn-info">
+			<span class="glyphicon glyphicon-print"></span> Compra Urgente
+		</a>
+		<a class="btn btn-info">
+			<span class="glyphicon glyphicon-print"></span> Imprimir Todo
+		</a>
+		<br /><br /><br />
+		<table class="table table-striped table-condensed">
+			<thead>
+				<th>No</th>
+				<th>Producto</th>
+				<th>Existencia</th>
+				<th>Administrar</th>
+			</thead>
+			<tbody>
+				<?php foreach ($inventario as $inventario) : 
+					$producto = $productosDAO->obtenerProducto($inventario->getIdProducto());
+				?>
+				<tr>	
+					<td><?php echo $inventario->getIdInventario() ?></td>
+					<td><?php echo $producto->getProducto() ?></td>
+					<td><?php echo $inventario->getExistencia() ?></td>
+					<td>
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "admin", "idInventario" => $inventario->getIdInventario()), null, true); ?>">
+							<span class="glyphicon glyphicon-pencil"></span> Administrar
+						</a>
+					</td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+		</table>
+	</div>
 </section>
+<script>
+	$(document).ready(function() {
+		//===================================================================================
+	    $('table.table').dataTable( {
+	       "pagingType": "full_numbers",
+	        "language": {
+	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
+	        }
+	    } );	    
+	} );
+</script>

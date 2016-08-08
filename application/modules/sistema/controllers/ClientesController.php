@@ -23,12 +23,15 @@ class Sistema_ClientesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $formulario = new Sistema_Form_AltaEmpresa;
 		$formulario->getSubForm("0")->getElement("tipo")->setMultiOptions(array("CL"=>"Cliente"));
+		$formulario->getSubForm("0")->removeElement("tipoProveedor");
+		$formulario->getSubForm("0")->getElement("cuenta")->setAttrib("class", "form-control");
 		
 		$this->view->formulario = $formulario;
+		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$contenedor = $formulario->getValues();
-				
+				//print_r($contenedor);
 				try{
 					$this->empresaDAO->crearEmpresa($contenedor);
 					$this->view->messageSuccess = "Cliente <strong>".$contenedor["0"]["razonSocial"]."</strong> creado exitosamente";
@@ -43,12 +46,11 @@ class Sistema_ClientesController extends Zend_Controller_Action
     public function clienteAction()
     {
         // action body
-        $idEmpresa = $this->getParam("idEmpresa");
-		$empresaDAO = $this->empresaDAO;
-		
-		$empresa = $empresaDAO->obtenerEmpresa($idEmpresa);
-		$this->view->empresa = $empresa;
-		//print_r($empresa);
+        $idFiscales = $this->getParam("idFiscales");
+        $fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+        
+		$this->view->fiscalesDAO = $this->fiscalesDAO;
+		$this->view->fiscales = $fiscales;
 		
     }
 

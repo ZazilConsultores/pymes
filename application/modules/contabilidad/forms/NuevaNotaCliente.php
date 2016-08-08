@@ -11,8 +11,8 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 		
 		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("UPSP");
+		//$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
+		//$eTipoInventario->setValue("UPSP");
 		
 		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
 		$eNumeroFactura->setLabel('Folio: ');
@@ -85,7 +85,7 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eCliente,$eProyecto,$eProducto, $eTipoInventario));
+		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eDivisa,$eCliente,$eProyecto,$eProducto));
 		$this->addSubForms(array($subEncabezado));
 		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);

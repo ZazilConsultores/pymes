@@ -1,4 +1,63 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Inventario</b> and script/action name <b>admin</b></p>
-</div>
+<?php
+	$inventario= $this->inventario;
+	$formulario = $this->formulario;
+	$producto = $this->producto;
+	$productosDAO = new Inventario_DAO_Producto;
+	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "edita", "idInventario"=> $inventario->getIdInventario()), null, true));
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<?php 
+					$producto = $productosDAO->obtenerProducto($inventario->getIdProducto());
+				?>
+				Producto en Inventario: <strong><?php echo $producto->getProducto(); ?></strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Clave</th>
+						<th>Minimo</th>
+						<th>Maximo</th>
+						<th>Costo Unitario</th>
+						<th>Porcentaje Ganancia</th>
+						<th>Cantidad de Ganancia</th>
+						<th>Costo Cliente</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+						$producto = $productosDAO->obtenerProducto($inventario->getIdProducto());
+					?>
+					<tr>
+						<td><?php echo $inventario->getIdInventario() ?></td>
+						<td><?php echo $producto->getClaveProducto() ?></td>
+						<td><?php echo $inventario->getMinimo() ?></td>
+						<td><?php echo $inventario->getMaximo() ?></td>
+						<td><?php echo $inventario->getCostoUnitario() ?></td>
+						<td><?php echo $inventario->getPorcentajeGanancia() ?></td>
+						<td><?php echo $inventario->getCantidadGanancia() ?></td>
+						<td><?php echo $inventario->getCostoCliente() ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<?php 
+					$producto = $productosDAO->obtenerProducto($inventario->getIdProducto());
+				?>
+				Editar Producto en Inventario: <strong><?php echo $producto->getProducto(); ?></strong>
+				
+		</div>
+		<div class="panel-body">
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>

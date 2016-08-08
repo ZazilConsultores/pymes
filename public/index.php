@@ -72,18 +72,20 @@ $connlocalOrigen = array(
 		'dbname' => 'inventario',
 	);
 
+//Zend_Registry::set('connserver', $connserver);
 Zend_Registry::set('connlocal', $connlocal);
+//Zend_Registry::set('connlocal', $connlocal);
 //Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connnancy', $connnancy);
 //Zend_Registry::set('connlocalorigen', $connlocalOrigen);
 //============================================================== >>> Fijamos una conexion directa a localhost
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 
-//$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
 //$db = Zend_Db::factory('PDO_MYSQL', $connserver);
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+
 
 $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
@@ -96,8 +98,9 @@ date_default_timezone_set('America/Mexico_City');
 setlocale(LC_MONETARY, 'es_MX.UTF-8');
 //============================================================================ CONSTANTES GENERALES
 //$estatusEncuesta = array('0' => 'CREADO', '1' => 'PUBLICADO', '2' => 'ACTIVO', '3' => 'FINALIZADO');
+
 $tipo = array('AB' => 'ABIERTAS', 'SS' => 'SIMPLE SELECCION', 'MS' => 'MULTIPLE SELECCION');
-$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI');
+$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','DO'=>'DOCUMENTO','EF'=>'EFECTIVO','SP'=>'SPEI','TR'=>'TRANSFERENCIA');
 $padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 $estatus = array('A' => 'ACTIVO', 'C' => 'CANCELADO');
 $tUsuario = array('AL' => 'Alumna', 'DO' => 'Docente', 'MA' => 'Mantenimiento', 'LI' => 'Limpieza', 'SI' => 'Sistemas','AD' => 'Administrativo');
@@ -105,6 +108,7 @@ $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
 $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 $tipoSucursal = array("SE"=>"Sucursal Empresa","SC"=>"Sucursal Cliente", "SP" => "Sucursal Proveedor");
+$conceptoPago = array('AN'=>'Anticipo', 'LI'=>'Liquidacion', 'PA'=>'Pago');
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
 $gradosEscolares = array(1=>"1°",2=>"2°",3=>"3°",4=>"4°",5=>"5°",6=>"6°",7=>"7°",8=>"8°",9=>"9°");
@@ -143,6 +147,7 @@ $formTDecorators = array(
 	array('HtmlTag',array('tag'=>'table','class'=>'table table-striped table-condensed')),
 	'Form'
 );
+
 //============================================================================ CONSTANTES GENERALES
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);
@@ -154,6 +159,7 @@ Zend_Registry::set('tipoSucursal', $tipoSucursal);
 Zend_Registry::set('tipoBanco', $tipoBanco);
 Zend_Registry::set('gradosEscolares', $gradosEscolares);
 Zend_Registry::set('formaPago', $formaPago);
+Zend_Registry::set('conceptoPago', $conceptoPago);
 
 $application->bootstrap()
             ->run();

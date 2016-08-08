@@ -6,6 +6,9 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	
 	private $tablaFiscales;
 	private $tablaEmpresa;
+	private $tablaEmpresas;
+	private $tablaClientes;
+	private $tablaProveedores;
 	
 	private $tablaFiscalesDomicilios;
 	private $tablaDomicilio;
@@ -17,6 +20,11 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	public function __construct() {
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
+		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
+		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
+		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
+		
+		
 		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
 		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
@@ -32,6 +40,40 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$modelFiscal = new Sistema_Model_Fiscales($rowFiscal->toArray());
 		
 		return $modelFiscal;
+	}
+	
+	public function obtenerFiscalesEmpresas() {
+		$tablaEmpresas = $this->tablaEmpresas;
+		$rowsEmpresas = $this->tablaEmpresas->fetchAll();
+		
+		$idsEmpresa = array();
+		foreach ($rowsEmpresas as $rowEmpresa) {
+			$idsEmpresa[] = $rowEmpresa->idEmpresa;
+		}
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)", $idsEmpresa);
+		// Todas las empresas administrables
+		$rowsEmpresa = $tablaEmpresa->fetchAll($select);
+		$idsFiscales = array();
+		foreach ($rowsEmpresa as $rowEmpresa) {
+			$idsFiscales[] = $rowEmpresa->idFiscales;
+		}
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
+		$rowsFiscales = $tablaFiscales->fetchAll($select);
+		
+		//print_r($rowsFiscales->toArray());
+		return $rowsFiscales->toArray();
+	}
+	
+	public function obtenerFiscalesClientes() {
+		
+	}
+	
+	public function obtenerFiscalesProveedores() {
+		
 	}
 	
 	public function obtenerDomiciliosPorIdFiscal($idFiscales){
@@ -101,6 +143,12 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$rowFiscal = $tablaFiscales->fetchRow($select);
 		$fiscales = new Sistema_Model_Fiscales($rowFiscal->toArray());
 		return $fiscales; 
+	}
+	
+	public function actualizarFiscales($idFiscales, $datos) {
+		$tablaFiscales = $this->tablaFiscales;
+		$where = $tablaFiscales->getAdapter()->quoteInto("idFiscales=?", $idFiscales);
+		$tablaFiscales->update($datos, $where);
 	}
 	
 	public function agregarDomicilioFiscal($idFiscales, Sistema_Model_Domicilio $domicilio){

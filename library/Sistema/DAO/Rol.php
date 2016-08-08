@@ -33,7 +33,6 @@ class Sistema_DAO_Rol implements Sistema_Interfaces_IRol {
 	}
 	
 	public function crearRol(Sistema_Model_Rol $rol) {
-		$rol->setHash($rol->getHash());
 		$rol->setFecha(date("Y-m-d H:i:s", time()));
 		
 		$this->tablaRol->insert($rol->toArray());

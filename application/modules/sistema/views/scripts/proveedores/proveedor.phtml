@@ -1,22 +1,24 @@
 <?php 
-	$eproveedor = $this->empresa;
+	$fiscalesDAO = $this->fiscalesDAO;
+	$fiscales = $this->fiscales;
 	
-	$fiscalesDAO = new Sistema_DAO_Fiscales;
-	$fiscal = $fiscalesDAO->obtenerFiscales($eproveedor["idFiscales"]);
-	$domiciliosFiscales = $fiscalesDAO->obtenerDomiciliosPorIdFiscal($eproveedor["idFiscales"]);
-	$fiscalesTelefonos = $fiscalesDAO->obtenerTelefonosFiscales($eproveedor["idFiscales"]);
-	$fiscalesEmails = $fiscalesDAO->obtenerEmailsFiscales($eproveedor["idFiscales"]);
-	//print_r($fiscalesTelefonos);
+	$domiciliosFiscales = $fiscalesDAO->obtenerDomiciliosPorIdFiscal($fiscales->getIdFiscales());
+	$fiscalesTelefonos = $fiscalesDAO->obtenerTelefonosFiscales($fiscales->getIdFiscales());
+	$fiscalesEmails = $fiscalesDAO->obtenerEmailsFiscales($fiscales->getIdFiscales());
+	
 	$estadoDAO = new Sistema_DAO_Estado;
 	$municipioDAO = new Sistema_DAO_Municipio;
 ?>
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Proveedor: <strong><?php echo $fiscales->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
+		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"empresa","action"=>"proveedores"),null,true) ?>">
+			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Proveedores
+		</a>
 		<table class="table table-striped table-condensed">
 			<thead>
 				<th>Configuración</th>
@@ -27,17 +29,17 @@
 			<tbody>
 				<tr>
 					<td>
-						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscal->getIdFiscales()),null,TRUE); ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
 							<span class="glyphicon glyphicon-cog"></span> Configurar
 						</a>
 					</td>
 					<td>
-						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"proveedor","action"=>"sucursales","idFiscales"=>$fiscal->getIdFiscales(),"tipoSucursal"=>"SP",),null,true) ?>">
+						<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"proveedor","action"=>"sucursales","idFiscales"=>$fiscales->getIdFiscales(),"tipoSucursal"=>"SP",),null,true) ?>">
 							<span class="glyphicon glyphicon-home"></span> Sucursales
 						</a>
 					</td>
-					<td><?php echo $fiscal->getRfc() ?></td>
-					<td><?php echo $fiscal->getRazonSocial() ?></td>
+					<td><?php echo $fiscales->getRfc() ?></td>
+					<td><?php echo $fiscales->getRazonSocial() ?></td>
 				</tr>
 			</tbody>
 		</table>
@@ -47,7 +49,7 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Domicilio Fiscal del Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Domicilio Fiscal del Proveedor: <strong><?php echo $fiscales->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
@@ -70,11 +72,11 @@
 					?>
 					<tr>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"domicilio","action"=>"edita","idDomicilio"=>$domicilioFiscal->getIdDomicilio()),null,true) ?>">
+							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"domicilio","action"=>"edita","idDomicilio"=>$domicilioFiscal->getIdDomicilio()),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar
 							</a>
 						</td>
-						<td><?php echo ($fiscalesDAO->esSucursal($domicilioFiscal->getIdDomicilio(), $eproveedor["idFiscales"])) ? "Si" : "No" ;  ?></td>
+						<td><?php echo ($fiscalesDAO->esSucursal($domicilioFiscal->getIdDomicilio(), $fiscales->getIdFiscales())) ? "Si" : "No" ;  ?></td>
 						<td><?php echo $estado->getEstado(); ?></td>
 						<td><?php echo $municipio->getMunicipio(); ?></td>
 						<td><?php echo $domicilioFiscal->getCodigoPostal(); ?></td>
@@ -92,7 +94,7 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Telefonos Fiscales del Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Telefonos Fiscales del Proveedor: <strong><?php echo $fiscales->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
@@ -108,7 +110,7 @@
 				<?php foreach ($fiscalesTelefonos as $fiscalTelefono) : ?>
 				<tr>
 					<td>
-						<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"telefono","action"=>"edita","idTelefono"=>$fiscalTelefono->getIdTelefono()),null,true) ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"telefono","action"=>"edita","idTelefono"=>$fiscalTelefono->getIdTelefono()),null,true) ?>">
 							<span class="glyphicon glyphicon-cog"></span> Configurar
 						</a>
 					</td>
@@ -126,7 +128,7 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Emails Fiscales del Proveedor: <strong><?php echo $fiscal->getRazonSocial() ?></strong>
+			Emails Fiscales del Proveedor: <strong><?php echo $fiscales->getRazonSocial() ?></strong>
 		</h3>
 	</div>
 	<div class="panel-body">
@@ -140,7 +142,7 @@
 				<?php foreach ($fiscalesEmails as $fiscalEmail) : ?>
 					<tr>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"email","action"=>"edita","idEmail"=>$fiscalEmail->getIdEmail()),null,TRUE) ?>">
+							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"email","action"=>"edita","idEmail"=>$fiscalEmail->getIdEmail()),null,TRUE) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar
 							</a>
 						</td>

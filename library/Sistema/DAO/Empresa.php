@@ -5,10 +5,14 @@
 class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	private $tablaEmpresa;
+	private $tablaFiscales;
 	
 	private $tablaEmpresas;
 	private $tablaClientes;
 	private $tablaProveedores;
+	
+	private $tablaClientesEmpresa;
+	private $tablaProveedoresEmpresa;
 	
 	private $tablaTipoProveedor;
 	
@@ -23,9 +27,13 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function __construct() {
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
+		
 		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
 		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
+		
+		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
+		$this->tablaProveedoresEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa;
 		
 		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor;
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal;
@@ -50,16 +58,44 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			// Vemos si damos de alta una empresa EM, un cliente CL o un proveedor PR
 			$tipo = $fiscal["tipo"];
 			// Solo es valido cuando damos de alta una empresa (CL y PR) y un proveedor PR
-			$tipoProveedor = $fiscal["tipoProveedor"];
+			if(array_key_exists("tipoProveedor", $fiscal)){
+				$tipoProveedor = $fiscal["tipoProveedor"];
+				unset($fiscal["tipoProveedor"]);
+			}
+			$cuenta = "";
+			if(array_key_exists("cuenta", $fiscal)){
+				$cuenta = $fiscal["cuenta"];
+				unset($fiscal["cuenta"]);
+			}
 			//	En la informacion fiscal tipo y tipoProveedor no van a la base de datos
 			unset($fiscal["tipo"]);
 			unset($fiscal["tipoProveedor"]);
 			//	Agregamos al array de fiscales el campo fecha
 			$fiscal['fecha'] = $fecha;
-			// Antes de insertar verificamos que el RFC no este ya dado de alta, si ya esta nos lanzara un error.
-			$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
-			$rowFiscales = $select->query()->fetchAll();
-			if(count($rowFiscales) != 0) throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+			print_r("<br />");
+			print_r("<br />");
+			if($tipo == "CL"){
+				if($fiscal["rfc"] != "XAXX010101000") {
+					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$rowFiscales = $select->query()->fetchAll();
+					//print_r(count($rowFiscales));
+					if(count($rowFiscales) > 1) {
+						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+						
+					}
+				}
+			}elseif($tipo == "PR"){
+				if($fiscal["rfc"] != "XBXX010101000") {
+					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$rowFiscales = $select->query()->fetchAll();
+					//print_r(count($rowFiscales));
+					if(count($rowFiscales) > 1) {
+						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+						
+					}
+				}
+			}
+			
 			//	No genero error por lo que procedemos a insertar en la tabla
 			$bd->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
@@ -72,11 +108,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			switch ($tipo) {
 				case 'EM':
 					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>""));
+					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
 					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
 					break;	
 				case 'CL':
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa));
+					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
 					break;
 				case 'PR':
 					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
@@ -102,6 +138,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			
 		}catch(Exception $ex){
 			$bd->rollBack();
+			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
 			
 		}
@@ -174,41 +211,103 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		return $idFiscales;
 	}
 	
-	public function obtenerIdFiscalesClientes(){
+	public function obtenerEmpresasClientes(){
+		$tablaEmpresa = $this->tablaEmpresa;
 		$tablaClientes = $this->tablaClientes;
+		
 		$rowsClientes = $tablaClientes->fetchAll();
 		
-		$tablaEmpresa = $this->tablaEmpresa;
-		
-		$idFiscales = array();
+		$eClientes = array();
 		
 		foreach ($rowsClientes as $row) {
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa = ?", $row->idEmpresa);
 			$rowEmpresa = $tablaEmpresa->fetchRow($select);
 			
-			$idFiscales[] = $rowEmpresa->idFiscales;
+			$eClientes[] = $rowEmpresa->toArray();
 		}
 		
-		return $idFiscales;
+		return $eClientes;
 	}
 	
-	public function obtenerIdFiscalesProveedores(){
+	public function obtenerEmpresasProveedores(){
 		$tablaEmpresa = $this->tablaEmpresa;
 		$tablaProveedores = $this->tablaProveedores;
 		
 		$rowsProveedores = $tablaProveedores->fetchAll();
 		
-		$idFiscales = array();
+		$eProveedores = array();
 		
 		foreach ($rowsProveedores as $row) {
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa = ?", $row->idEmpresa);
 			$rowEmpresa = $tablaEmpresa->fetchRow($select);
 			
-			$idFiscales[] = $rowEmpresa->idFiscales;
+			$eProveedores[] = $rowEmpresa->toArray();
 		}
 		
-		return $idFiscales;
+		return $eProveedores;
 	}
+	
+	/**
+	 * Obtenemos todos los clientes asociados a la empresa (Consulta a Tabla ClientesEmpresa)
+	 */
+	public function obtenerClientesEmpresa($idFiscales) {
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
+		$select = $tablaClientesEmpresa->select()->from($tablaClientesEmpresa)->where("idEmpresas", $rowEmpresas->idEmpresas);
+		$rowsClientes = $tablaClientesEmpresa->fetchAll($select);
+		
+		$clientesFiscales = array();
+		
+		if(is_null($rowsClientes)){
+			return null;
+		}else{
+			//return $rowsClientes->toArray();
+			$idsClientes = array();
+			foreach ($rowsClientes as $rowCliente) {
+				$idsClientes[] = $rowCliente->idCliente;
+			}
+			
+			$tablaClientes = $this->tablaClientes;
+			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente IN (?)", array_values($idsClientes));
+			print_r($select->__toString());
+		}
+		
+		
+		
+		
+	}
+	
+	/**
+	 * Obtenemos todos los proveedores asociados a la empresa (Consulta a Tabla ProveedoresEmpresa)
+	 */
+	 public function obtenerProveedoresEmpresa($idFiscales) {
+	 	$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		$tablaProveedoresEmpresa = $this->tablaProveedoresEmpresa;
+		$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa)->where("idEmpresas=?", $rowEmpresas->idEmpresas);
+		$rowsProveedores = $tablaProveedoresEmpresa->fetchAll($select);
+		
+		if(is_null($rowsProveedores)) {
+			return null;
+		}else{
+			return $rowsProveedores->toArray();
+		}
+		
+	 }
 	
 	/**
 	 * Obtiene todos los elementos de la Tabla Tipo Proveedor
