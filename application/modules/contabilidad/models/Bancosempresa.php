@@ -1,6 +1,6 @@
 <?php
 
-class Contabilidad_Model_Bancosempresa 
+class Contabilidad_Model_BancosEmpresa 
 {
 	private $idBancosEmpresas;
 

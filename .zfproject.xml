@@ -1089,6 +1089,10 @@
             <controllerFile controllerName="Fondeo">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Proyectos">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1110,6 +1114,7 @@
             <formFile formName="AgregarInversiones"/>
             <formFile formName="AgregarNomina"/>
             <formFile formName="AgregarImpuestos"/>
+            <formFile formName="AltaProyecto"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1260,6 +1265,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="tesoreria">
                 <viewScriptFile forActionName="fondeo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2305,6 +2316,10 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Fondeo">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Proyectos">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

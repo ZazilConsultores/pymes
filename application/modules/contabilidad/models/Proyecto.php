@@ -14,17 +14,7 @@ class Contabilidad_Model_Proyecto
         $this->idProyecto = $idProyecto;
     }
 
-	private $idCoP;
-
-    public function getIdCoP() {
-        return $this->idCoP;
-    }
-    
-    public function setIdCoP($idCoP) {
-        $this->idCoP = $idCoP;
-    }
-
-    private $idSucursal;
+	private $idSucursal;
 
     public function getIdSucursal() {
         return $this->idSucursal;
@@ -33,8 +23,28 @@ class Contabilidad_Model_Proyecto
     public function setIdSucursal($idSucursal) {
         $this->idSucursal = $idSucursal;
     }
-		
-	private $descripcion;
+	
+	private $idCliente;
+
+    public function getIdCliente() {
+        return $this->idCliente;
+    }
+    
+    public function setIdCliente($idCliente) {
+        $this->idCliente = $idCliente;
+    }
+	
+    private $numeroFolio;
+
+    public function getNumeroFolio() {
+        return $this->numeroFolio;
+    }
+    
+    public function setNumeroFolio($numeroFolio) {
+        $this->numeroFolio = $numeroFolio;
+    }
+
+    private $descripcion;
 
     public function getDescripcion() {
         return $this->descripcion;
@@ -43,28 +53,8 @@ class Contabilidad_Model_Proyecto
     public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
     }
-
-	private $costo;
-
-    public function getCosto() {
-        return $this->costo;
-    }
-    
-    public function setCosto($costo) {
-        $this->costo = $costo;
-    }
-    
-    private $ganancia;
-
-    public function getGanancia() {
-        return $this->ganancia;
-    }
-    
-    public function setGanancia($ganancia) {
-        $this->ganancia = $ganancia;
-    }
-
-    private $fechaApertura;
+	
+	private $fechaApertura;
 
     public function getFechaApertura() {
         return $this->fechaApertura;
@@ -83,21 +73,51 @@ class Contabilidad_Model_Proyecto
     public function setFechaCierre($fechaCierre) {
         $this->fechaCierre = $fechaCierre;
     }
+
+	private $costoInicial;
+
+    public function getCostoInicial() {
+        return $this->costoInicial;
+    }
+    
+    public function setCostoInicial($costoInicial) {
+        $this->costoInicial = $costoInicial;
+    }
+
+    private $costoFinal;
+
+    public function getCostoFinal() {
+        return $this->costoFinal;
+    }
+    
+    public function setCostoFinal($costoFinal) {
+        $this->costoFinal = $costoFinal;
+    }
+
+       
+    private $ganancia;
+
+    public function getGanancia() {
+        return $this->ganancia;
+    }
+    
+    public function setGanancia($ganancia) {
+        $this->ganancia = $ganancia;
+    }
 	
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idProyecto", $datos)) $this->idProyecto = $datos["idProyecto"];
+		if(array_key_exists("idSucursal", $datos)) $this->idSucursal = $datos["idSucursal"];
+		if(array_key_exists("idCliente", $datos)) $this->idCliente = $datos["idCliente"];
 		
-		$this->idCoP = $datos["idCoP"];
-		$this->idSucursal = $datos["idSucursal"];
+		$this->numeroFolio = $datos["numeroFolio"];
 		$this->descripcion = $datos["descripcion"];
-		$this->costo = $datos["costo"];
-		$this->ganancia = $datos["ganancia"];
 		$this->fechaApertura = $datos["fechaApertura"];
 		$this->fechaCierre = $datos["fechaCierre"];
-
-		
-		
+		$this->costoInicial = $datos["costoInicial"];
+		$this->costoFinal = $datos["costoFinal"];
+		$this->ganancia = $datos["ganancia"];
 	}
 
     public function toArray()
@@ -105,13 +125,16 @@ class Contabilidad_Model_Proyecto
         $datos = array();
 		
 		$datos["idProyecto"] = $this->idProyecto;
-		$datos["idCoP"] = $this->idCoP;
 		$datos["idSucursal"] = $this->idSucursal;
+		$datos["idCliente"] = $this->idCliente;
+		$datos["numeroFolio"] = $this->numeroFolio;
 		$datos["descripcion"] = $this->descripcion;
-		$datos["costo"] = $this->costo;
-		$datos["gananacia"] = $this->ganancia;
 		$datos["fechaApertura"] = $this->fechaApertura;
 		$datos["fechaCierre"] = $this->fechaCierre;
+		$datos["costoInicial"] = $this->costoInicial;
+		$datos["costoFinal"] = $this->costoFinal;
+		$datos["ganancia"] = $this->ganancia;
+		
 		
 		return $datos;
     }

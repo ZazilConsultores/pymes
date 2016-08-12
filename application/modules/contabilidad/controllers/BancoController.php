@@ -15,12 +15,9 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    	//Creo un formulario de Alta de Estado
+    	
 		$formulario = new Contabilidad_Form_AltaBanco;
-		
-		//Obtengo lista de estados y los envio a la vista
 		$this->view->bancos = $this->bancoDAO->obtenerBancos();
-		//Envio a la vista el formulario de Alta de Estado, si el usuario lo llega se recibe la informacion en altaAction
 		$this->view->formulario = $formulario;	
 			
     	

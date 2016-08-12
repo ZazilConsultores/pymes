@@ -26,7 +26,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		$select=$tablaEmpresa->select()
 		->setIntegrityCheck(false)
 		->from($tablaEmpresa, array('idEmpresa'))
-		->join('fiscales', 'Empresa.idFiscales = fiscales.idFiscales', array('razonSocial'))
+		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
 		->join('Clientes','Empresa.idEmpresa = Clientes.idEmpresa');
 		return $tablaEmpresa->fetchAll($select);	
 	}

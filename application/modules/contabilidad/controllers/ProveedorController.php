@@ -63,12 +63,22 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
+		
+		//============================================>>>Multiplos
+		//$idProducto = $this->getParam("idProducto");
+		$idProducto=14;
+		$select = $this->db->select()->from("Multiplos","idMultiplos")
+		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
+		$statement = $select->query();
+		$rowsMultiplo = $statement->fetchAll();
+		
 		// =================================== Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonProductos = $jsonProductos;
 		$jsonUnidad = Zend_Json::encode($rowsUnidad);
 		$this->view->jsonUnidad = $jsonUnidad;
-		
+		$jsonMultiplos = Zend_Json::encode($rowsMultiplo);
+		$this->view->jsonMultiplo = $jsonMultiplos;
     }
 
     public function indexAction()
@@ -116,9 +126,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$this->view->mensajeFormulario = $mensajeFormulario;
 			$this->view->formulario = $formulario;
 		}
-		
-		
-		
     }
 
     public function agregarnotaentradaAction()
@@ -130,10 +137,13 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
        $request = $this->getRequest();
         $formulario = new Contabilidad_Form_NuevaNotaProveedor;
+        $formulario->getSubForm("0")->removeElement("idProyecto");
 		if($request->isGet()){
 			$this->view->formulario = $formulario;		
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
+					
+				
 				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
 				//print_r($datos);

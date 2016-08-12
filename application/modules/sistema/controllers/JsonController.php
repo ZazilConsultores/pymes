@@ -7,6 +7,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 	private $estadoDAO = null;
 	private $sucursalDAO = null;
 	private $proyectoDAO = null;
+	private $multiplos = null;
 	
     public function init()
     {
@@ -19,6 +20,8 @@ class Sistema_JsonController extends Zend_Controller_Action
 		$this->estadoDAO = new Sistema_DAO_Estado;
 		$this->sucursalDAO = new Sistema_DAO_Sucursal;
 		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
+		$this->multiploDAO = new Inventario_DAO_Multiplo;
+		$this->db = Zend_Db_Table::getDefaultAdapter();
     }
 
     public function indexAction()
@@ -83,12 +86,22 @@ class Sistema_JsonController extends Zend_Controller_Action
 	public function proyectosAction()
     {
         // action body
-        $idFiscales = $this->getParam("idFiscales");
-		$proyectos = $this->proyectoDAO->obtenerProyectos($idFiscales);
-		echo Zend_Json::encode($proyectos);
+       	$idSucursal = $this->getParam("idSucursal");
+		$sucursales = $this->proyectoDAO->obtenerProyecto($idSucursal);
+		echo Zend_Json::encode($sucursales);
+
+    }
+	
+	public function multiplosAction()
+    {
+        $idProducto = $this->getParam("idProducto");
+		$select = $this->db->select()->from("Multiplos","idMultiplos")
+		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
+		$statement = $select->query();
+		$rowsMultiplo = $statement->fetchAll();
+		echo  Zend_Json::encode($rowsMultiplo);
 		
     }
-
 
 }
 

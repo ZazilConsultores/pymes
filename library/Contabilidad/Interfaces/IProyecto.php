@@ -2,7 +2,8 @@
 
 interface Contabilidad_Interfaces_IProyecto {
 	
-	public function obtenerProyecto();
-	public function obtenerProyectos($idFiscales);
+	public function crearProyecto(Contabilidad_Model_Proyecto $proyecto);
+	public function obtenerProyectos();
+	public function obtenerProyecto($idSucursal);
 
 }

@@ -20,15 +20,42 @@ class Sistema_DAO_Sucursal implements Sistema_Interfaces_ISucursal {
 	 * Obtenemos una sucursal de la T.Sucursal
 	 */
 	public function obtenerSucursal($idSucursal){
-		$tablaSucursal = $this->tablaSucursal;
+		/*$tablaSucursal = $this->tablaSucursal;
 		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal);
 		$rowSucursal = $tablaSucursal->fetchRow($select);
 		
 		if(!is_null($rowSucursal)){
 			return $rowSucursal->toArray();
 		}else{
-			return null;
-		}
+			return $rowSucursal;
+		}*/
+		
+		//=====================================Modificacion Areli 02 de Agosto 2016
+		/*$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal);
+		
+		try{
+			$rowSucursal = $tablaSucursal->fetchRow($select);
+			if(is_null($rowSucursal)){
+				return null;
+			}else{
+				return $rowSucursal->toArray();
+			}
+			
+		}catch(Exception $ex){
+			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
+		}*/
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal = ?",$idSucursal);
+		$rowSucursal = $tablaSucursal->fetchRow($select);
+		
+		$sucursalModel = new Sistema_Model_Sucursal($rowSucursal->toArray());
+		$sucursalModel->setIdSucursal($rowSucursal->idSucursal);
+		
+		return $sucursalModel;
+		
+		
+	
 	}
 	
 	public function obtenerSucursales($idFiscales){
