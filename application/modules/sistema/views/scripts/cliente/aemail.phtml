@@ -1,0 +1,19 @@
+<?php
+	$fiscales = $this->fiscales;
+	$formulario = $this->formulario
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Alta de Email en Cliente: <strong><?php echo $fiscales->getRazonSocial() ?></strong></h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"clientes","action"=>"cliente","idFiscales"=>$fiscales->getIdFiscales()),null,true) ?>">
+					<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Cliente
+				</a><br /><br />
+				<?php echo $formulario; ?>
+			</div>
+		</div>
+	</div>
+</section>

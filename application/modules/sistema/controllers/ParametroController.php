@@ -33,7 +33,7 @@ class Sistema_ParametroController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$parametro = new Sistema_Model_Parametro($datos[0]);
-				$parametro->setHash($parametro->getHash());
+				//$parametro->setHash($parametro->getHash());
 				
 				try{
 					$this->parametroDAO->crearParametro($parametro);
