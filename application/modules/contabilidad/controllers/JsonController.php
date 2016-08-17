@@ -57,7 +57,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		
 		
 	}
-<<<<<<< HEAD
+
 	
 	public function bancosempresaAction() {
 		$idBanco = $this->getParam("idBanco");
@@ -65,6 +65,4 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		
 	}
 
-=======
->>>>>>> 365a6f8042fb7d54e1f4e3f868f8bd51262d636d
 }
