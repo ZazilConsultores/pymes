@@ -1,92 +1,176 @@
 <?php
 	$fiscalesEmpresas = $this->fiscalesEmpresas;
+	$fiscalesDAO = new Sistema_DAO_Fiscales;
+	$fiscalesClientes = $fiscalesDAO->obtenerFiscalesClientes();
+	$fiscalesDAO->getFiscalesClientes();
 ?>
 <section class="row">
-	<div class="panel panel-success">
+	<div class="panel panel-warning">
 		<div class="panel-heading">
-			<h3 class="panel-title">Consulta de Clientes</h3>
+			<h3 class="panel-title">Asociar Clientes a Empresas</h3>
 		</div>
 		<div class="panel-body">
-			<a class="btn btn-info" href="">
-				<span></span> Agregar Cliente
-			</a>
-			<div>
-				<p>
-					Seleccione Empresa
-				</p>
-				<select id="selectIdFiscales" class="form-control">
-					<?php foreach ($fiscalesEmpresas as $fiscales) : ?>
-						<option value="<?php echo $fiscales["idFiscales"]; ?>"><?php echo $fiscales["razonSocial"]; ?></option>
-					<?php endforeach; ?>
-				</select>
+			<div class="col-xs-12">
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>Seleccione Empresa</td>
+							<td>
+								<select id="selectIdFiscales" class="form-control">
+									<?php foreach ($fiscalesEmpresas as $fiscales) : ?>
+										<option value="<?php echo $fiscales["idFiscales"]; ?>"><?php echo $fiscales["razonSocial"]; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button id="asociarCliente" class="btn btn-warning" type="button" data-toggle="modal" data-target="#msgConfirm">
+									<span class="glyphicon glyphicon-random"></span> Asociar Cliente
+								</button>
+							</td>
+							<td>
+								<select id="selectIdClientes" class="form-control">
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div><br />
-			<div id="containerClientesEmpresa" class="col-xs-6">
-				<ul id="clientesEmpresa" class="connectedSortable">
-					<li class="ui-state-default">Item 1</li>
-					<li class="ui-state-default">Item 2</li>
-					<li class="ui-state-default">Item 3</li>
-					<li class="ui-state-default">Item 4</li>
-					<li class="ui-state-default">Item 5</li>
-				</ul>
-			</div>
-			<div id="containerEmpresasSistema" class="col-xs-6">
-				<ul id="empresasSistema" class="connectedSortable">
-					<li class="ui-state-highlight">Item 1</li>
-					<li class="ui-state-highlight">Item 2</li>
-					<li class="ui-state-highlight">Item 3</li>
-					<li class="ui-state-highlight">Item 4</li>
-					<li class="ui-state-highlight">Item 5</li>
-				</ul>
+			
+			<div class="col-xs-12">
+				<table id="clientesEmpresa" class="table table-striped table-condensed">
+					<thead>
+						<th>R.F.C.</th>
+						<th>Razón Social</th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
 </section>
-<style>
-	/* Estilos de los contenedores */
-	#clientesEmpresa, #empresasSistema {
-		border: 1px solid #eee;
-		width: 142px;
-		min-height: 20px;
-		list-style-type: disc;
-		margin: 0;
-		padding: 5px 0 0 0;
-		float: left;
-		margin-right: 10px;
-	}
-	
-	#clientesEmpresa li, #empresasSistema li {
-		margin: 0 5px 5px 5px;
-		padding: 5px;
-		font-size: 1.2em;
-		width: 120px;
-	}
-</style>
+
+<!-- Message Config -->
+<div class="modal fade" id="msgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Confirmar Asociación.</h4>
+			</div>
+			
+			<div class="modal-body">
+				¿Esta seguro de asociar el cliente: <strong><span id="cliente"></span></strong> a la empresa: <strong><span id="empresa"></span></strong> ? 
+			</div>
+			
+			<div class="modal-footer">
+				<button id="asociarClienteEmpresa" type="button" class="btn btn-success" data-dismiss="modal">
+					<span class="glyphicon glyphicon-random"></span> Asociar
+				</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<span class="glyphicon glyphicon-close"></span> Cancelar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
-	$().ready(function(){
+	$().ready(function() {
+		
 		var module = "";
 		var controller = "";
 		var action = "";
-		console.log("Cargado!");
 		
-		$("select#selectIdFiscales").on('change',function(){
+		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesClientes()); ?>;
+		// Cargamos el combo de clientes con el JSON recien cargado
+		$.each(fiscales, function(i,item){		
+			$("select#selectIdClientes").append($("<option></option>").attr("value",fiscales[i].idFiscales).text(fiscales[i].razonSocial));
+		});
+		var idFiscales = $("select#selectIdFiscales").val();
+		
+		var url = window.location.origin + "/General/public/contabilidad/json/clientese/idFiscales/"+idFiscales; 
+			
+		$.ajax({
+			url: url,
+			dataType: "json",
+			success: function(data){
+				console.log(url);
+				console.dir(data);
+				var tablaClientes = $("table#clientesEmpresa");
+				tablaClientes.empty();
+				$.each(data, function(i,item){//function(key,value)		
+					//$("table#clientesEmpresa").append($("<tr></tr>").attr("value",data[i].idMunicipio).text(data[i].municipio));
+				});
+			}
+		});
+		
+		$("button#asociarCliente").on('click',function(){
+			console.log($("select#selectIdClientes option:selected ").text());
+			console.log($("select#selectIdFiscales option:selected ").text());
+			$("span#cliente").text($("select#selectIdClientes option:selected ").text());
+			$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
+		});
+		
+		
+		$("button#asociarClienteEmpresa").on('click',function(){
+			
+			var selectEmpresa = $("select#selectIdFiscales");
+			var selectCliente = $("select#selectIdClientes");
+			
+			module = "contabilidad";
+			controller = "json";
+			action = "asoccliente";
+			
+			var fempresa = selectEmpresa.val();
+			var fcliente = selectCliente.val();
+			
+			console.log(selectEmpresa.val());
+			console.log(selectCliente.val());
+			
+			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;
+			
+			console.log(url);
+			
+			$(this).css();
+			
+		});
+		
+		$("select#selectIdFiscales").on('change',function() {
 			
 			module = "contabilidad";
 			controller = "json";
 			action = "clientese";
 			
-			console.log("Valor: " + $(this).val());
+			//console.log("Valor: " + $(this).val());
 			
 			$url = window.location.origin + "/General/public/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
 			
 			console.log($url);
+			/*
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#1-idMunicipio").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#1-idMunicipio").append($("<option></option>").attr("value",data[i].idMunicipio).text(data[i].municipio));
+						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
+					});
+					
+				}
+			});
+			*/
+			
 		});
 		
-		$("table#tablaClientes");
 		
-		$(function(){
-			$("#clientesEmpresa, #empresasSistema").sortable({
-				connectWith: ".connectedSortable"
-			}).disableSelection();
-		});
+		//$("select#selectIdFiscales").
 	});
 </script>

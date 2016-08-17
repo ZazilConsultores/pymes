@@ -17,12 +17,11 @@ class Sistema_Form_AltaEmail extends Zend_Form
 		
 		$eAgregar = new Zend_Form_Element_Submit('submit');
 		$eAgregar->setLabel('Agregar Email');
-		$eAgregar->setAttrib('class', 'btn btn-primary');
+		$eAgregar->setAttrib('class', 'btn btn-success');
 		
 		$this->addElement($eEmail);
 		$this->addElement($eDescripcion);
 		$this->addElement($eAgregar);
-	
     }
 
 
