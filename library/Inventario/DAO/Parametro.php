@@ -52,10 +52,8 @@ class Inventario_DAO_Parametro implements Inventario_Interfaces_IParametro{
 	
 	public function crearParametro(Sistema_Model_Parametro $parametro){
 		$tablaParametro = $this->tablaParametro;
-		$select = $tablaParametro->select()->from($tablaParametro)->where("hash = ?", $parametro->getHash());
-		$row = $tablaParametro->fetchRow($select);
 		
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Parámetro: <strong>" . $parametro->getParametro() . "</strong> duplicado en el sistema");
+		//if(!is_null($row)) throw new Util_Exception_BussinessException("Parámetro: <strong>" . $parametro->getParametro() . "</strong> duplicado en el sistema");
 		//$parametro->setHash($parametro->getHash());
 		$parametro->setFecha(date("Y-m-d H:i:s", time()));
 		$tablaParametro->insert($parametro->toArray());

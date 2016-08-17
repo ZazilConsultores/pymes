@@ -291,19 +291,48 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	}
 	
 	public function getFiscalesProveedores(){
+		$tablaProveedores = $this->tablaProveedores;
+		$select = $tablaProveedores->select()->from($tablaProveedores, array("idEmpresa"));
+		$rowsProveedores = $tablaProveedores->fetchAll($select);
+		
+		$idsEmpresa = array();
+		foreach ($rowsProveedores as $rowProveedor) {
+			$idsEmpresa[] = $rowProveedor->idEmpresa;
+		}
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa,array("idFiscales"))->where("idEmpresa IN (?)",$idsEmpresa);
+		$rowsEmpresa = $tablaEmpresa->fetchAll($select);
+		
+		$idsFiscales = array();
+		foreach ($rowsEmpresa as $rowEmpresa) {
+			$idsFiscales[] = $rowEmpresa->idFiscales;
+		}
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
+		$rowsFiscales = $tablaFiscales->fetchAll($select);
+		
+		if (is_null($rowsFiscales)) {
+			return null;
+		}else{
+			return $rowsFiscales->toArray();
+		}
+		
 		
 	}
 	
 	
 	public function getFiscalesClientesByIdFiscalesEmpresa($idFiscales) {
+		// Obtenemos el IdEmpresa de la empresa del idFiscales proporcionado
 		$tablaEmpresa = $this->tablaEmpresa;
 		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
 		$rowEmpresa = $tablaEmpresa->fetchRow($select);
-		
+		// Obtenemos el IdEmpresas de la empresa mediante el IdEmpresa
 		$tablaEmpresas = $this->tablaEmpresas;
 		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
 		$rowEmpresas = $tablaEmpresas->fetchRow($select);
-		
+		// Obtenemos todos los ids de Cliente de la tabla ClientesEmpresa
 		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
 		$select = $tablaClientesEmpresa->select()->from($tablaClientesEmpresa)->where("idEmpresas=?",$rowEmpresas->idEmpresas);
 		$rowsClientesEmpresa = $tablaClientesEmpresa->fetchAll($select);
@@ -312,20 +341,28 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		foreach ($rowsClientesEmpresa as $rowClientesEmpresa) {
 			$idsCliente[] = $rowClientesEmpresa->idCliente;
 		}
-		
+		// Si hay ids de Cliente
 		if(! empty($idsCliente)){
-			//print_r("array vacio de clientes");
+			// Obtenemos todos los Clientes
 			$tablaClientes = $this->tablaClientes;
 			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente IN (?)", $idsCliente);
 			$rowsClientes = $tablaClientes->fetchAll($select);
 			
-			$idsFiscales = array();
+			$idsEmpresa = array();
 			foreach ($rowsClientes as $rowCliente) {
-				$idsFiscales[] = $rowCliente->idFiscales;
+				$idsEmpresa[] = $rowCliente->idEmpresa;
+			}
+			
+			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)", $idsEmpresa);
+			$rowsEmpresa = $tablaEmpresa->fetchAll($select);
+			
+			$idsFiscales = array();
+			foreach ($rowsEmpresa as $rowEmpresa) {
+				$idsFiscales[] = $rowEmpresa->idFiscales;
 			}
 			
 			$tablaFiscales = $this->tablaFiscales;
-			$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = (?)", $idsFiscales);
+			$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
 			$rowsFiscales = $tablaFiscales->fetchAll($select);
 			
 			if (is_null($rowsFiscales)) {
@@ -343,4 +380,56 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	public function getFiscalesProveedoresByIdFiscalesEmpresa ($idFiscales){
 		
 	}
+	
+	/**
+	 * 
+	 */
+	public function getEmpresaByIdFiscales($idFiscales){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		return $rowEmpresas->toArray();
+	}
+	
+	/**
+	 * 
+	 */
+	public function getClienteByIdFiscales($idFiscales) {
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaClientes = $this->tablaClientes;
+		$select = $tablaClientes->select()->from($tablaClientes)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowCliente = $tablaClientes->fetchRow($select);
+		
+		return $rowCliente->toArray();
+	}
+	
+	public function getProveedorByIdFiscales($idFiscales) {
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		
+		$tablaProveedores = $this->tablaProveedores;
+		$select = $tablaProveedores->select()->from($tablaProveedores)->where("idEmpresa=?", $rowEmpresa->idEmpresa);
+		$rowProveedor = $tablaProveedores->fetchRow($select);
+		
+		return $rowProveedor->toArray();
+	}
+	
+	public function asociateClienteEmpresa($idEmpresas, $idCliente) {
+		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
+		$tablaClientesEmpresa->insert(array("idEmpresas"=>$idEmpresas, "idCliente"=>$idCliente));
+	}
+	
+	public function asociateProveedorEmpresa($idEmpresa, $idProveedor) {
+		
+	}
+	
 }
