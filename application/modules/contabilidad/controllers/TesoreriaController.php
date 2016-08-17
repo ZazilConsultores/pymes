@@ -33,8 +33,12 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				}catch(exception $ex){
 					$this->view->messageFail= "Error";
 				}
-			}
-		}		
+			//}
+			}else{
+				print_r("formulario no valido <br />");
+			}				
+			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+		}	
 		
     }
 
@@ -46,7 +50,8 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 
     public function nominaAction()
     {
-    	
+    	$formulario = new Contabilidad_Form_AgregarNomina;
+		$this->view->formulario = $formulario;
     }
 
     public function impuestosAction()

@@ -1,5 +1,5 @@
 <?php
-	$formulario = $this->formulario;
+	echo $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
@@ -26,8 +26,7 @@
 				<?php echo $messageFail; ?>
 			</div>
 			<?php }?><br />
-			
-			<?php echo $formulario ?>
+	
 			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
@@ -59,11 +58,8 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-
-						<td><input id="total" class="form-control" /></td>
-				
-
+						<td>Total:</td>
+						<td><input id="total" class="form-control" /></td>				
 					</tr>
 				</tfoot>
 			</table>
@@ -107,7 +103,66 @@
 	});
 </script>
 <script>
-	$( document ).ready(function() {
+	$(document).ready(function(){
+		$("select#idEmpresas").on('change', function(){
+			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			
+		});
+		
+		$("select#idSucursal").on('click', function(){
+			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: $url,
+				dataType: "json",	
+				success: function(data){
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){	
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
+					});
+					
+				}
+			});
+			
+		});
+		var form = $("#nuevaRemisionProveedor");
+		form.validate({
+			rules: {
+				numFolio: {
+					required: true
+				},
+				importePago: {
+					required: true
+				},
+				fecha: {
+					required: true
+				}
+			},
+			messages: {
+				numFolio: {					
+					required: "Este campo no puede quedar vacío, Ingrese número de folio"
+				},
+				importePago: {					
+					required: "Este campo no puede quedar vacío, Ingrese cantidad a pagar"
+				},
+				
+				fecha: {					
+					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				}
+			}
+		});
 	
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
@@ -166,23 +221,11 @@
 		
 		//Funcion Eliminar #btnLimpiar_2
  		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
- 			var numero=0;
- 			//var tabla = document.getElementById("productosNota");
- 
-  			// si tenemos mas de una fila, borramos3
-  			//if(tabla.rows.length > 2)
-  			if ($("table#productosNota tr").length > 2) 
+ 			// si tenemos mas de una fila
+  			if ($("table#productosNota tbody > tr").length >1)
   			{
-  				$("table#productosNota tr:first").remove();
-  				//tabla.deleteRow(tabla.rows.length-1);
-  				//$('table#productosNota tr:last').remove();
-  				//--numero;
+  				$("table#productosNota  tbody > tr:last").remove();
   			}
-  			//if ($("table#productosNota tr").length != 1) {
-     		
-			//}
-  			   
-
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
@@ -232,7 +275,17 @@
 		
 		});
 			
- 		//Funcion genera totalColumna
+ 		//Funcion totalImporte para remision
+ 		$("table#productosNota").on("blur","input[id^='total']",function() {
+ 			var importe = $(this).val();
+ 			console.log(importe);
+ 			$("input#1-importePago").val(importe);
+		});
+		
+		$("input#1-importePago").on('click', function(){
+ 			console.log("importe");
+ 			
+		});
 
  	
 		//======================

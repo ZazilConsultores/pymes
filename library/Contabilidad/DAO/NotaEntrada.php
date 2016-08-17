@@ -34,7 +34,8 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		->setIntegrityCheck(false)
 		->from($tablaEmpresa, array('idEmpresa'))
 		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
-		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa');
+		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa')
+		->order('razonSocial ASC');
 		return $tablaEmpresa->fetchAll($select);	
 	}
 	
@@ -48,10 +49,17 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	
 		$datos=array();
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+	
 		$bd->beginTransaction();
 		
-		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
-		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		//$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		//$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		
+		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		//$dateIni->add(h:m:s);
+		$dateIni->addTime($dateIni);
+		print_r($dateIni);
+		$stringIni = $dateIni->toString ('Y-MM-dd');
 		
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);

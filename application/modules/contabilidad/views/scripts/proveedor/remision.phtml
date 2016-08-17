@@ -1,13 +1,13 @@
 <?php
-	$formulario = $this->formulario;
+	echo $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
-	<div class="panel panel-success">
+	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Agregar Datos para Nota Entrada.
+				Agregar Productos para Remision Entrada.
 			</h3>
 		</div>
 		<div class="panel-body">
@@ -27,7 +27,6 @@
 			</div>
 			<?php }?><br />
 			
-			<?php echo $formulario ?>
 			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
@@ -59,11 +58,8 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-
+						<td>Total:</td>
 						<td><input id="total" class="form-control" /></td>
-				
-
 					</tr>
 				</tfoot>
 			</table>
@@ -72,7 +68,40 @@
 	</div>
 </section>
 <script>
-	$().ready(function(){
+	$(document).ready(function(){
+		$("select#idEmpresas").on('change', function(){
+			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			
+		});
+		
+		$("select#idSucursal").on('click', function(){
+			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: $url,
+				dataType: "json",	
+				success: function(data){
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){	
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
+					});
+					
+				}
+			});
+			
+		});
 		var form = $("#nuevaRemisionProveedor");
 		form.validate({
 			rules: {
@@ -166,22 +195,10 @@
 		
 		//Funcion Eliminar #btnLimpiar_2
  		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
- 			var numero=0;
- 			//var tabla = document.getElementById("productosNota");
- 
-  			// si tenemos mas de una fila, borramos3
-  			//if(tabla.rows.length > 2)
-  			if ($("table#productosNota tr").length > 2) 
+ 			if ($("table#productosNota tbody > tr").length >1)
   			{
-  				$("table#productosNota tr:first").remove();
-  				//tabla.deleteRow(tabla.rows.length-1);
-  				//$('table#productosNota tr:last').remove();
-  				//--numero;
+  				$("table#productosNota  tbody > tr:last").remove();
   			}
-  			//if ($("table#productosNota tr").length != 1) {
-     		
-			//}
-  			   
 
  		});//cierra funcion eliminar
  		
@@ -232,7 +249,17 @@
 		
 		});
 			
- 		//Funcion genera totalColumna
+ 		//Funcion totalImporte para remision
+ 		$("table#productosNota").on("blur","input[id^='total']",function() {
+ 			var importe = $(this).val();
+ 			console.log(importe);
+ 			$("input#1-importePago").val(importe);
+		});
+		
+		$("input#1-importePago").on('click', function(){
+ 			console.log("importe");
+ 			
+		});
 
  	
 		//======================

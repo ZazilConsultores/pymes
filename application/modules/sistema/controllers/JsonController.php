@@ -8,6 +8,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 	private $sucursalDAO = null;
 	private $proyectoDAO = null;
 	private $multiplos = null;
+	private $bancosEmpresa = null;
 	
     public function init()
     {
@@ -21,6 +22,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 		$this->sucursalDAO = new Sistema_DAO_Sucursal;
 		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
 		$this->multiploDAO = new Inventario_DAO_Multiplo;
+		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
 		$this->db = Zend_Db_Table::getDefaultAdapter();
     }
 
@@ -87,8 +89,8 @@ class Sistema_JsonController extends Zend_Controller_Action
     {
         // action body
        	$idSucursal = $this->getParam("idSucursal");
-		$sucursales = $this->proyectoDAO->obtenerProyecto($idSucursal);
-		echo Zend_Json::encode($sucursales);
+		$proyectos = $this->proyectoDAO->obtenerProyecto($idSucursal);
+		echo Zend_Json::encode($proyectos);
 
     }
 	
@@ -102,7 +104,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 		echo  Zend_Json::encode($rowsMultiplo);
 		
     }
-
+   
 }
 
 

@@ -1,12 +1,10 @@
-<?php 	$proyectos = $this->proyectos;
+<?php $proyectos = $this->proyectos;
 	$sucursal = $this->sucursal;
-	$cliente = $this->cliente;
 	$fiscales = $this->fiscales;
 	$formulario = $this->formulario;
 	$formulario->setAction($this->url(array("module"=>"contabilidad", "controller"=>"proyectos", "action" => "alta"), null, true));
 	$sucursalDAO = new Sistema_DAO_Sucursal;
-	
-	//$fiscalesDAO->obtenerFiscales($ecliente["idFiscales"]);
+	$fiscalesDAO = new Sistema_DAO_Fiscales;
 ?>
 
 <section class="row">
@@ -14,16 +12,17 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Proyectos.
-			</h3>
+			</h3>	
 		</div>
 		<div class="panel-body">
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proyectos","action"=>"alta")) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Nuevo Proyecto
 			</a>
+			
 			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
-						<th>Numero Folio</th>
+						<th>Número</th>
 						<th>Sucursal</th>
 						<th>Cliente</th>
 						<th>Descripción</th>
@@ -37,12 +36,13 @@
 				<tbody>
 					<?php foreach ($proyectos as $proyecto) :
 						$sucursal = $sucursalDAO->obtenerSucursal($proyecto->getIdSucursal());
+						$fiscales = $fiscalesDAO->obtenerFiscales($proyecto->getIdCoP());
 						//print_r($fiscal);
 					?>
 					<tr>
 						<td><?php echo $proyecto->getNumeroFolio() ?></td>
 						<td><?php echo $sucursal->getNombreSucursal() ?></td>
-						<td><?php echo $proyecto->getIdCliente() ?></td>
+						<td><?php echo $fiscales->getRazonSocial() ?></td>
 						<td><?php echo $proyecto->getDescripcion() ?></td>
 						<td><?php echo $proyecto->getFechaApertura() ?></td>
 						<td><?php echo $proyecto->getFechaCierre() ?></td>
@@ -57,3 +57,14 @@
 		</div>
 	</div>
 </section>
+<script>
+	$(document).ready(function() {
+		//===================================================================================
+	    $('table.table').dataTable( {
+	       "pagingType": "full_numbers",
+	        "language": {
+	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
+	        }
+	    } );
+	});
+</script>

@@ -27,18 +27,17 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		$idProyecto = $this->getParam("idProyecto");
 		$formulario = new Contabilidad_Form_AltaProyecto;
 		$this->view->formulario = $formulario;
-		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
-				$proyecto = new Contabilidad_Model_Proyecto($datos);
+				print_r($datos);
+				/*$proyecto = new Contabilidad_Model_Proyecto($datos);
 				try{
 					$this->proyectoDAO->crearProyecto($proyecto);
 					$this->view->messageSuccess = "Se ha agregado el proyecto: <strong>".$proyecto->getDescripcion()."</strong> exitosamente";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
-				}
+				}*/
 			}
 		}
     }

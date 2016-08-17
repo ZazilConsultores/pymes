@@ -11,6 +11,7 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 	private $tablaClientes;
 	private $tablaFiscales;
 	private $tablaBancosEmpresas;
+	private $tablaMultiplos;
 	
 	public function __construct() {
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
@@ -19,26 +20,22 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
 		$this->tablaBancosEmpresas = new Contabilidad_Model_DbTable_Bancosempresa;
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
 	}
 		
-	/*public function obtenerBancosEmpresa($idBanco){
+	public function obtenerBancosEmpresa($idBanco){
+		$tablaBancosEmpresas = $this->tablaBancosEmpresas;
+		$select = $tablaBancosEmpresas->select()->from($tablaBancosEmpresas)->where("idBanco=?",$idBanco);
+		$rowsBancoEmpresa = $tablaBancosEmpresas->fetchAll($select);
 		
-		$tablaBancosEmpresa = $this->tablaBancosEmpresas;
-		$select = $tablaBancosEmpresa->select()->from($tablaBancosEmpresa)->where("idBanco=?",$idBanco)
-		->order("idEmpresa DESC");
-		
-		$rowsBancoEmpresa = $tablaBancosEmpresa->fetchAll($select);
-		
-		$modelBancosEmpresa = array();	
-			foreach ($rowsBancoEmpresa as $rowBancoEmpresa) {
-			$modelBancoEmpresa = new Contabilidad_Model_BancosEmpresa ($rowBancoEmpresa->toArray());
-			
-			$modelBancosEmpresa[]= $modelBancoEmpresa;
-			}
-		
-		return $modelBancosEmpresa	;
-		
-	}*/
+		if(!is_null($rowsBancoEmpresa)){
+			return $rowsBancoEmpresa->toArray();
+		}else{
+			return null;
+		}
+		print_r($rowsBancoEmpresa);
+				
+	}
 	
 	public function obtenerBancosEmpresas(){
 		$tablaBancosEmpresas = $this->tablaBancosEmpresas;
@@ -70,11 +67,11 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		$tablaMovimiento = $this->tablaMovimiento;
 		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$datos['numFolio'])
 		//->where("idCoP=?",$datos['idCoP'])
-		->where("idEmpresa=?",$datos['idEmpresa'])
+		->where("idEmpresas=?",$datos['idEmpresas'])
 		->where("numeroFolio=?",$datos['numFolio'])
 		->where("fecha=?", $stringIni)
 		->order("secuencial DESC");
-	
+		print_r("$select");	
 		$row = $tablaMovimiento->fetchRow($select); 
 		
 		if(!is_null($row)){
@@ -86,44 +83,47 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 
 //=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$datos['descripcion'])->where("idUnidad=?",$producto['unidad']);
-		$row = $tablaMultiplos->fetchRow($select); 
-		
-				
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?","195")->where("idUnidad=?","17");
+		$row = $tablaMultiplos->fetchRow($select); 	
+			
 		//====================Operaciones para convertir unidad minima====================================================== 
 			$cantidad=0;
 			$precioUnitario=0;
-			$cantidad = $datos['cantidad'] * $row->cantidad;
-			$precioUnitario = $datos['precioUnitario'] / $row->cantidad;
+			$cantidad = $row->cantidad * $row->cantidad;
+			//$precioUnitario = 1 / $row->cantidad;
+			
+			print_r($cantidad);
+			print_r("<br />");
+			//print_r($precioUnitario);
 			
 			
 			$mMovtos = array(
-					'idProducto' => $datos['descripcion'],
+					'idProducto' => $datos['idProducto'],
 					'idTipoMovimiento'=>$datos['idTipoMovimiento'],
-					'idSucursal'=>$datos['idEmpresa'],
+					'idEmpresas'=>$datos['idEmpresas'],
+					'idSucursal'=>$datos['idSucursal'],
 					'idCoP'=>1,
-					'idProyecto'=>$datos['idProyecto'],
+					//'idProyecto'=>$datos['idProyecto'],
 					'numeroFolio'=>$datos['numFolio'],
-					'idFactura'=>0,
+					//'idFactura'=>0,
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringIni,
 					'estatus'=>"A",
 					'secuencial'=> $secuencial,
 					'costoUnitario'=>$precioUnitario,
-					'esOrigen'=>"E",
-					'totalImporte'=>$producto['importe']
+					'totalImporte'=>$datos['total']
 				);
 			$bd->insert("Movimientos",$mMovtos);
 		//========================Guarda en tabla cuentasxc==================================================
-			$mCuentasxc = array(
+			/*$mCuentasxc = array(
 			
 					'idTipoMovimiento'=>$datos['idTipoMovimiento'],
 					'numeroReferencia'=>0,
-					'idEmpresa'=>$datos['idEmpresa'],
-					'idCoP'=>$datos[''],
+					'idSucursal'=>$datos['idSucursal'],
+					'idCoP'=>$datos['idBancoE'],
 					'idProyecto'=>$stringIni,
-					'descripcion'=>$precioUnitario,
-					'estatus'=>$datos[''],
+					'descripcion'=>"Fondeo",
+					'estatus'=>"A",
 					'conceptoPago' => $datos[''],
 					'formaLiquidar'=>$datos['formaPago'],
 					'fecha'=>$datos['fecha'],
@@ -143,8 +143,8 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 			$mCuentasxp = array(
 					'idCuentasxp'=>$datos['descripcion'],
 					'idTipoMovimiento'=>$datos['idDivisa'],
-					'idEmpresa'=>$datos['idEmpresa'],
-					'idCoP'=>$cantidad,
+					'idEmpresa'=>$datos['idEmpresas'],
+					'idCoP'=>$datos['idProveedor'],
 					'idProyecto'=>'0',
 					'idBanco'=>$cantidad,
 					'idDivisa'=>'0',
@@ -160,9 +160,8 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 					'subtotal'=>'0',
 					'total'=>$producto['importe']
 				);
-			$bd->insert("Cuentascxp",$mCuentasxp);
-//=========================Actualiza saldo en bancos=========================================================				
-			//$bd->commit();
+			$bd->insert("Cuentascxp",$mCuentasxp);*///=========================Actualiza saldo en bancos=========================================================				
+			$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");

@@ -5,13 +5,14 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	private $empresaDAO;
 	private $fiscalesDAO;
+	private $bancosEmpresaDAO;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
-		
+		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
     }
 
     public function indexAction() {
@@ -32,6 +33,11 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		
 		
 	}
+	
+	public function bancosempresaAction() {
+		$idBanco = $this->getParam("idBanco");
+		$bancosEmpresa = $this->bancosEmpresaDAO->obtenerBancosEmpresa($idBanco);
+		
+	}
 
-    
 }

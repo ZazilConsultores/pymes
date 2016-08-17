@@ -63,9 +63,9 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 		try{
 			$secuencial=0;	
 			$tablaMovimiento = $this->tablaMovimiento;
-			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numFactura=?",$encabezado['numFolio'])
+			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
 			->where("idCoP=?",$encabezado['idCoP'])
-			->where("idEmpresa=?",$encabezado['idEmpresa'])
+			->where("idSucursal=?",$encabezado['idSucursal'])
 			->where("fecha=?", $stringIni)
 			->order("secuencial DESC");
 		
@@ -88,19 +88,19 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
 			
 			$mMovtos = array(
-					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idEmpresas'=>$encabezado['idEmpresas'],
+					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
-					'idProyecto'=>$encabezado['idProyecto'],
+					'numeroFolio'=>$encabezado['numFolio'],
 					//'idFactura'=>0,
-					'numFactura'=>$encabezado['numFolio'],
+					'idProducto' => $producto['descripcion'],
+					'idProyecto'=>$encabezado['idProyecto'],
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringIni,
-					'estatus'=>"A",
 					'secuencial'=> $secuencial,
+					'estatus'=>"A",
 					'costoUnitario'=>$precioUnitario,
-					'esOrigen'=>"E",
 					'totalImporte'=>$producto['importe']
 				);
 			
@@ -109,9 +109,9 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			
 			$secuencial=0;	
 			$tablaCuentasxp = $this->tablaCuentasxp;
-			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("numFolio=?",$encabezado['numFolio'])
+			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("numeroFolio=?",$encabezado['numFolio'])
 			->where("idCoP=?",$encabezado['idCoP'])
-			->where("idEmpresa=?",$encabezado['idEmpresa'])
+			->where("idSucursal=?",$encabezado['idSucursal'])
 			->where("fecha=?", $stringIni)
 			->order("secuencial DESC");
 			$row = $tablaMovimiento->fetchRow($select); 
@@ -124,13 +124,13 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			
 			$mCuentasxp = array(
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
 					//'idFactura'=>$encabezado['idFactura'],
 					'idProyecto'=>$encabezado['idProyecto'],
 					'idBanco'=>$formaPago['idBanco'],
 					'idDivisa'=>$formaPago['idDivisa'],
-					'numFolio'=>$encabezado['numFolio'],
+					'numeroFolio'=>$encabezado['numFolio'],
 					'descripcion'=>'Remisión Proveedor',
 					'numeroReferencia'=>0,
 					'secuencial'=>$secuencial,
@@ -143,7 +143,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'total'=>0
 				);   
 			
-				//print_r($mCuentasxp);
+				print_r($mCuentasxp);
 				$bd->insert("Cuentasxp",$mCuentasxp);
 			
 		//========================Realiza Movimiento en banco===================================
@@ -165,7 +165,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$secuencial=0;	
 			$tablaCapas = $this->tablaCapas;
 			$select = $tablaCapas->select()->from($tablaCapas)
-			->where("numFolio=?",$encabezado['numFolio'])
+			->where("numeroFolio=?",$encabezado['numFolio'])
 			->where("fechaEntrada=?", $stringIni)
 			->order("secuencial DESC");
 			$row = $tablaCapas->fetchRow($select); 
@@ -191,15 +191,16 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			if(!is_null($row)){
 				$mCapas = array(
 					'idProducto' => $producto['descripcion'],
+					'idSucursal' => $encabezado['idSucursal'],
 					'idDivisa'=>$formaPago['idDivisa'],
-					'numFolio'=>$encabezado['numFolio'],
+					'numeroFolio'=>$encabezado['numFolio'],
 					'secuencial'=>$secuencial,
-					'entrada'=>$cantidad,
+					'cantidad'=>$cantidad,
 					'fechaEntrada'=>$stringIni,
-					'costoUnitario'=>$precioUnitario,
-					'costoTotal'=>$producto['importe']
+					'costoUnitario'=>$precioUnitario
+					
 				);
-				//$bd->insert("Capas",$mCapas);
+				$bd->insert("Capas",$mCapas);
 		}
 		//Insertamos en Inventario
 		//=================Selecciona producto y unidad=======================================
@@ -244,7 +245,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'cantidadGanancia'=>'0',
 					'costoCliente'=>$producto['importe']
 				);
-			//$bd->insert("Inventario",$mInventario);
+			$bd->insert("Inventario",$mInventario);
 			}
 			$bd->commit();
 		}catch(exception $ex){
