@@ -32,6 +32,10 @@ interface Sistema_Interfaces_IFiscales {
 	public function getFiscalesClientesByIdFiscalesEmpresa($idFiscales);	// Id de Tabla Fiscales
 	public function getFiscalesProveedoresByIdFiscalesEmpresa($idFiscales);	// Id de Tabla Fiscales
 	
+	public function getEmpresaByIdFiscales($idFiscales);
+	public function getClienteByIdFiscales($idFiscales);
+	
+	public function asociateClienteEmpresa($idEmpresas, $idCliente);
 	
 	
 }

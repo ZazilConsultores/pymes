@@ -88,55 +88,61 @@
 		
 		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesClientes()); ?>;
 		// Cargamos el combo de clientes con el JSON recien cargado
-		$.each(fiscales, function(i,item){		
+		$.each(fiscales, function(i,item) {
 			$("select#selectIdClientes").append($("<option></option>").attr("value",fiscales[i].idFiscales).text(fiscales[i].razonSocial));
 		});
-		var idFiscales = $("select#selectIdFiscales").val();
 		
+		var idFiscales = $("select#selectIdFiscales").val();
 		var url = window.location.origin + "/General/public/contabilidad/json/clientese/idFiscales/"+idFiscales; 
-			
+		
 		$.ajax({
 			url: url,
 			dataType: "json",
 			success: function(data){
-				console.log(url);
-				console.dir(data);
-				var tablaClientes = $("table#clientesEmpresa");
-				tablaClientes.empty();
-				$.each(data, function(i,item){//function(key,value)		
-					//$("table#clientesEmpresa").append($("<tr></tr>").attr("value",data[i].idMunicipio).text(data[i].municipio));
+				//console.log(url);
+				//console.dir(data);
+				
+				var tbody = $("table#clientesEmpresa").find('tbody');
+				tbody.empty();
+				$.each(data, function(i,item){
+					tbody.append($('<tr>').
+						append($('<td>').append(data[i].rfc)).
+						append($('<td>').append(data[i].razonSocial))
+					);
 				});
 			}
 		});
 		
-		$("button#asociarCliente").on('click',function(){
-			console.log($("select#selectIdClientes option:selected ").text());
-			console.log($("select#selectIdFiscales option:selected ").text());
+		$("button#asociarCliente").on('click',function() {
+			//console.log($("select#selectIdClientes option:selected ").text());
+			//console.log($("select#selectIdFiscales option:selected ").text());
 			$("span#cliente").text($("select#selectIdClientes option:selected ").text());
 			$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
 		});
 		
 		
-		$("button#asociarClienteEmpresa").on('click',function(){
+		$("button#asociarClienteEmpresa").on('click',function() {
 			
 			var selectEmpresa = $("select#selectIdFiscales");
 			var selectCliente = $("select#selectIdClientes");
 			
 			module = "contabilidad";
-			controller = "json";
-			action = "asoccliente";
+			controller = "opera";
+			action = "asocclientee";
 			
 			var fempresa = selectEmpresa.val();
 			var fcliente = selectCliente.val();
 			
-			console.log(selectEmpresa.val());
-			console.log(selectCliente.val());
+			//console.log(selectEmpresa.val());
+			//console.log(selectCliente.val());
 			
 			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;
 			
 			console.log(url);
 			
-			$(this).css();
+			$.ajax({
+				url: url,
+			});
 			
 		});
 		
@@ -146,31 +152,29 @@
 			controller = "json";
 			action = "clientese";
 			
-			//console.log("Valor: " + $(this).val());
-			
 			$url = window.location.origin + "/General/public/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
 			
-			console.log($url);
-			/*
+			//console.log($url);
+			
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					console.log($url);
-					console.dir(data);
-					$("select#1-idMunicipio").empty();
-					$.each(data, function(i,item){//function(key,value)		
-						$("select#1-idMunicipio").append($("<option></option>").attr("value",data[i].idMunicipio).text(data[i].municipio));
-						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
-					});
+					//console.log($url);
+					//console.dir(data);
 					
+					var tbody = $("table#clientesEmpresa").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].rfc)).
+							append($('<td>').append(data[i].razonSocial))
+						);
+					});
 				}
 			});
-			*/
 			
 		});
 		
-		
-		//$("select#selectIdFiscales").
 	});
 </script>
