@@ -71,22 +71,7 @@
 			
 		});
 		
-		/*$("select#idSucursal").on('click', function(){
-			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
-			//console.log("$url");
-			$.ajax({
-				url: $url,
-				dataType: "json",	
-				success: function(data){
-					$("select#idProyecto").empty();
-					$.each(data, function(i,item){	
-						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
-					});
-					
-				}
-			});
-			
-		});*/
+		
 	
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
@@ -95,9 +80,6 @@
 					required: true
 				},
 				fecha: {
-					required: true
-				},
-				idSucursal: {
 					required: true
 				}
 				
@@ -108,9 +90,6 @@
 				},
 				fecha: {					
 					required: "Este campo no puede quedar vacío, Seleccione fecha"
-				},
-				idSucursal: {					
-					required: "Este campo no puede quedar vacío,Seleccionar Empresa"
 				}
 				
 			}

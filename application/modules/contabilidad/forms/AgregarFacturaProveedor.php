@@ -28,7 +28,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eTipoMovto->setLabel('Tipo Movimiento:');
 		$eTipoMovto->setAttrib("class", "form-control");
 		foreach ($tipoMovimientoDAO->obtenerTiposMovimientos() as $fila) {
-			if ($fila->getIdTipoMovimiento() == "8") {
+			if ($fila->getIdTipoMovimiento() == "4") {
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(), $fila->getDescripcion());
 			}
 		
