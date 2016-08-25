@@ -63,24 +63,7 @@
 			});
 			
 		});
-		
-		$("select#idSucursal").on('click', function(){
-			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
-			//console.log("$url");
-			$.ajax({
-				url: $url,
-				dataType: "json",	
-				success: function(data){
-					$("select#idProyecto").empty();
-					$.each(data, function(i,item){	
-						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
-					});
-					
-				}
-			});
 			
-		});
-		
 		var form = $("#nuevaNotaCliente");
 		form.validate({
 			rules: {
