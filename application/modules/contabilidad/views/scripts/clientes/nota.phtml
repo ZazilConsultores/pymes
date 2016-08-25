@@ -1,15 +1,12 @@
-<?php echo $this->formulario ?>
 
+<?php echo $this->formulario 		
+?>
 <section class="row">
-	<div class="panel panel-default">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				Agregar Productos para Nota Salida.
-			</h3>
+			<h3 class="panel-title">Agregar Productos para Nota Salida.</h3>
 		</div>
 		<div class="panel-body">
-			<!-- -->
-			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -28,10 +25,8 @@
 						<th>Importe</th>
 						<th>Eliminar</th>
 					</tr>
-				
 				</thead>
 				<tbody>
-					
 				</tbody>
 				<tfoot>
 					<tr>
@@ -42,15 +37,20 @@
 						<td>&nbsp;</td>
 						<td>Total:</td>
 						<td><input id="total" class="form-control" /></td>
-				
 					</tr>
+					
 				</tfoot>
 			</table>
-			<br />
 		</div>
 	</div>
+<tr>
+	<td>
+		<button id="submit" class="btn btn-primary" type="button" data-toggle="modal" data-target="#msgConfirm">
+			<span class="glyphicon glyphicon-random"></span> Enviar Factura
+		</button>
+	</td>
+</tr>
 </section>
-
 <script>
 	$( document ).ready(function() {
 		
@@ -312,3 +312,27 @@
 	
 	});//cierra document ready
 </script>
+
+<div class="modal fade" id="msgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Confirma Nota de Entrada.</h4>
+			</div>
+		<div class="modal-body">
+			¿Los datos son correctos... Listo para Enviar  Nota de Entrada?:
+		</div>
+		<div class="modal-footer">
+			<button id="generarJsonArray" type="button" class="btn btn success" data-dismiss="modal">
+				<span class="glyphicon glyphicon-random"></span>Enviar
+			</button>
+			<button type="button" class="btn btn-danger" data-dismiss="modal">
+				<span class="glyphicon glyphicon-close"></span>Cancelar	
+			</button>
+			</div>
+		</div>
+	</div>
+</div>

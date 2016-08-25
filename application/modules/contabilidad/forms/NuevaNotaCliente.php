@@ -5,6 +5,19 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 
     public function init()
     {
+    	$decoratorsPresentacion = array(
+			'FormElements',
+			array(array('tabla'=>'Htmltag'),array('tag'=>'table','class'=>'table table-striped table-condensed')),
+    		array('Fieldset', array('placement'=>'prepend'))
+		);
+		$decoratorsElemento=array(
+			'ViewHelper',
+			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
+			array('label',array('tag'=>'td')),
+			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+			
+		);
+			
         $this->setAttrib("id", "nuevaNotaCliente");
         $subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Nueva Nota Cliente");
@@ -36,6 +49,7 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 		foreach ($rowset as $fila) {
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
+		
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel("Sucursal: ");
 		$eSucursal->setAttrib("class", "form-control");
@@ -71,23 +85,25 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
 		}*/
 		$eProducto = new Zend_Form_Element_Hidden('productos');
-		$eProducto->setAttrib("class", "form-control");
+		//$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
-			
+		
 		/*$eProyecto = new Zend_Form_Element_Select('idProyecto');
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);*/
 		
-		$eSubmit = new Zend_Form_Element_Submit("submit");
+		/*$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
-		$eSubmit->setAttrib("disabled","true");
+		$eSubmit->setAttrib("disabled","true");*/
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eCliente,/*$eProyecto*/$eProducto));
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
 		$this->addSubForms(array($subEncabezado));
 		//$this->addElement($eTipoInventario);
-		$this->addElement($eSubmit);
+		//$this->addElement($eSubmit);
     }
 }
 

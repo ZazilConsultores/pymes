@@ -292,18 +292,6 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 }
     public function init()
     {
-        
-		
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
 		$this->addElement($eEmpresa);
 		$this->addElement($eProveedor);
 		$this->addElement($eTipoMovimiento);
@@ -318,7 +306,6 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
     }
 
 */
-	
 	}
 }
 

@@ -131,7 +131,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'idBanco'=>$formaPago['idBanco'],
 					'idDivisa'=>$formaPago['idDivisa'],
 					'numeroFolio'=>$encabezado['numFolio'],
-					'descripcion'=>'Remisión Proveedor',
+					//'descripcion'=>'Remisión Proveedor',
 					'numeroReferencia'=>0,
 					'secuencial'=>$secuencial,
 					'estatus'=>"A",
@@ -140,7 +140,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'formaLiquidar'=>$formaPago['formaLiquidar'],
 					'conceptoPago'=>$formaPago['conceptoPago'],
 					'subTotal'=>0,
-					'total'=>0
+					'total'=>$formaPago['importePago']
 				);   
 			
 				print_r($mCuentasxp);

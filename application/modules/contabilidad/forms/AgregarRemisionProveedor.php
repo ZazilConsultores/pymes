@@ -129,7 +129,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		//$eConceptoPago->setMultiOptions($conceptoPago);
 		
 		$conceptoPago = array(
-			'Li' => 'LIQUIDACION'
+			'LI' => 'LIQUIDACION'
 		);
 		foreach ($conceptoPago as $key => $value) {
 			$eConceptoPago->addMultiOption($key, $value);
