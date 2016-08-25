@@ -95,14 +95,14 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eProyecto->setRegisterInArrayValidator(FALSE);*/
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
-		//$eSubmit->setLabel("Enviar");
-		$eSubmit->setAttrib("class", "hidden");
-		//$eSubmit->setAttrib("disabled", "true");
+		$eSubmit->setLabel("Enviar");
+		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("disabled", "true");
 		
-		$eSubmit1 = new Zend_Form_Element_Button("submit1");
+		/*$eSubmit1 = new Zend_Form_Element_Button("submit1");
 		$eSubmit1->setLabel("Enviar");
 		$eSubmit1->setAttrib("class", "btn btn-success");
-		$eSubmit1->setAttrib("disabled", "true");
+		$eSubmit1->setAttrib("disabled", "true");*/
 		
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProveedor,$eDivisa,$eProducto));
@@ -111,7 +111,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
      	$this->addSubForms(array($subEncabezado)); 
 		//$this->addElement($eProyecto);
 		$this->addElement($eSubmit);
-		$this->addElement($eSubmit1);
+		//$this->addElement($eSubmit1);
 		
 	}
 }

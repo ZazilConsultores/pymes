@@ -53,9 +53,6 @@ class Sistema_DAO_Sucursal implements Sistema_Interfaces_ISucursal {
 		$sucursalModel->setIdSucursal($rowSucursal->idSucursal);
 		
 		return $sucursalModel;
-		
-		
-	
 	}
 	
 	public function obtenerSucursales($idFiscales){
@@ -68,6 +65,7 @@ class Sistema_DAO_Sucursal implements Sistema_Interfaces_ISucursal {
 		}else{
 			return null;
 		}
+		print_r("$select");
 	}	
 	
 	public function agregarSucursal($idFiscales, array $datos){

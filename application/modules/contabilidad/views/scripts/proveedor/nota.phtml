@@ -315,36 +315,10 @@
 		  //this.unidad = unidad;
 		}
 		 $("a#generarJsonArray").on("click",function(){
-            //if($(this).val() != ''){
-               $("#submit1").removeAttr('disabled');
-            //}
-              /*$("input#idCantidad_").validate({
-            	rules:{
-            		idCantidad_:{
-            			required:true
-            		}
-            	}
-            });*/
-          });
+         
+               $("#submit").removeAttr('disabled');
+           });
           
-          $("#submit1").on("click",function(){
-          		
-          	if ($("form#nuevaNotaProveedor fbody > tr"))
-  			{
- 			if (confirm('¿Estas seguro de enviar la nota de Entrada?')){ 
- 				//documentElement.nuevaNotaProveedor.submit() 
- 				console.log("Hola");
- 				 document.nuevaNotaProveedor.submit()
-       			/*$.post("nota",$("#formdata").serialize(),function(res){
-                $("#nuevaNotaProveedor").fadeOut("slow");   // Hacemos desaparecer el div "formulario" con un efecto fadeOut lento.
-                if(res == 1){
-                    $("#exito").delay(500).fadeIn("slow");      // Si hemos tenido éxito, hacemos aparecer el div "exito" con un efecto fadeIn lento tras un delay de 0,5 segundos.
-                } else {
-                    $("#fracaso").delay(500).fadeIn("slow");    // Si no, lo mismo, pero haremos aparecer el div "fracaso"
-                }
-            });*/
-    		}
-    		} 
-		});
+          
 	});//cierra document ready
 </script>
