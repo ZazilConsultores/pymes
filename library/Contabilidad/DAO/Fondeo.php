@@ -98,20 +98,22 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 			
 			
 			$mMovtos = array(
-					'idProducto' => $datos['idProducto'],
-					'idTipoMovimiento'=>$datos['idTipoMovimiento'],
-					'idEmpresas'=>$datos['idEmpresas'],
-					'idSucursal'=>$datos['idSucursal'],
-					'idCoP'=>1,
-					//'idProyecto'=>$datos['idProyecto'],
-					'numeroFolio'=>$datos['numFolio'],
-					//'idFactura'=>0,
-					'cantidad'=>$cantidad,
-					'fecha'=>$stringIni,
-					'estatus'=>"A",
-					'secuencial'=> $secuencial,
-					'costoUnitario'=>$precioUnitario,
-					'totalImporte'=>$datos['total']
+				'idTipoMovimiento'=>$datos['idTipoMovimiento'],
+				'idEmpresas'=>$datos['idEmpresas'],
+				//Para Fondeo idSucursal es el Proveedor
+				'idSucursal'=>$datos['idSucursal'],
+				//Para Fondeo idCoP es el Cliente
+				'idCoP'=>$datos['idBancos'],
+				'numeroFolio'=>$datos['numFolio'],
+				//'idFactura'=>0,
+				'idProducto' => $datos['idProducto'],
+				//'idProyecto'=>$datos['idProyecto'],
+				'cantidad'=>$cantidad,
+				'fecha'=>$stringIni,
+				'secuencial'=> $secuencial,
+				'estatus'=>"A",
+				'costoUnitario'=>$precioUnitario,
+				'totalImporte'=>$datos['total']
 				);
 			$bd->insert("Movimientos",$mMovtos);
 		//========================Guarda en tabla cuentasxc==================================================

@@ -146,7 +146,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         // action body
         $formulario = new Contabilidad_Form_AgregarFacturaProveedor	;
     	$this->view->formulario = $formulario;
-    }
+		$fimpuestos =  new Contabilidad_Form_Impuestos;
+		$this->view->fimpuestos = $fimpuestos;
+    
+	}
 
 
 }

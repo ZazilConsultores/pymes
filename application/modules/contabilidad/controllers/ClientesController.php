@@ -108,8 +108,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					}
 					
 				}
-			}
-					
+			}else{
+				print_r("formulario no valido <br />");
+			}							
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
     }
     	

@@ -9,7 +9,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
          $this->fondeoDAO = new Contabilidad_DAO_Fondeo;
-		 $this->subparametroDAO = new Sistema_DAO_Subparametro;
+		 
     }
 
     public function indexAction()
@@ -27,9 +27,11 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				print_r($datos);
 				try{
-					$notaEntradaDAO =new Contabilidad_DAO_Fondeo;
-					$notaEntradaDAO->guardarFondeo($datos);
+					$fondeoDAO = new Contabilidad_DAO_Fondeo;
+					$fondeoDAO->guardarFondeo($datos);
+					//print_r("$fondeoDAO");
 				}catch(exception $ex){
 					$this->view->messageFail= "Error";
 				}

@@ -29,6 +29,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de Folio: ');
 		$eNumeroFolio->setAttrib("class", "form-control");
+		$eNumeroFolio->setAttrib("required", "true");
+		
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
@@ -49,6 +51,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
+		$eFecha->setAttrib("required", "true");
+		
 		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
@@ -66,6 +70,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
         $eSucursal->setLabel('Sucursal: ');
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
+		
 	
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
@@ -97,6 +103,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
+		$eProyecto->setAttrib("required", "true");
 			
 		//===============================================================
 		$subFormaPago = new Zend_Form_SubForm;
@@ -138,7 +145,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
-		//$eImportePago->setAttrib("required", "true");
+		$eImportePago->setAttrib("required", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();

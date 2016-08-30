@@ -112,7 +112,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("numeroFolio=?",$encabezado['numFolio'])
 			->where("idCoP=?",$encabezado['idCoP'])
 			->where("idSucursal=?",$encabezado['idSucursal'])
-			->where("fecha=?", $stringIni)
+			->where("fechaPago=?", $stringIni)
 			->order("secuencial DESC");
 			$row = $tablaMovimiento->fetchRow($select); 
 			
@@ -127,20 +127,18 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
 					//'idFactura'=>$encabezado['idFactura'],
-					'idProyecto'=>$encabezado['idProyecto'],
 					'idBanco'=>$formaPago['idBanco'],
 					'idDivisa'=>$formaPago['idDivisa'],
 					'numeroFolio'=>$encabezado['numFolio'],
-					//'descripcion'=>'Remisión Proveedor',
-					'numeroReferencia'=>0,
+					'numeroReferencia'=>"",
 					'secuencial'=>$secuencial,
 					'estatus'=>"A",
-					'fecha'=>$stringIni,
+					'fechaPago'=>$stringIni,
 					'fechaCaptura'=>$date->toString ('yyyy-MM-dd'),
 					'formaLiquidar'=>$formaPago['formaLiquidar'],
 					'conceptoPago'=>$formaPago['conceptoPago'],
 					'subTotal'=>0,
-					'total'=>$formaPago['importePago']
+					'total'=>$producto['importe']
 				);   
 			
 				print_r($mCuentasxp);
@@ -155,7 +153,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			if(!is_null($row)){
 				$where = $tablaBancos->getAdapter()->quoteInto("idBanco = ?", $formaPago['idBanco']);
 				
-				$importePago = $row->saldo - $formaPago['importePago'];
+				$importePago = $row->saldo - $producto['importe'];
 				//print_r($importePago);
 				$where = $tablaBancos->getAdapter()->quoteInto("idBanco = ?", $formaPago['idBanco']);
 				$tablaBancos->update(array('saldo'=> $importePago,'fecha'=>$stringIni), $where);
@@ -233,7 +231,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$mInventario = array(
 					'idProducto'=>$producto['descripcion'],
 					'idDivisa'=>$formaPago['idDivisa'],
-					'idEmpresa'=>$encabezado['idEmpresa'],
+					'idSucursal'=>$encabezado['idSucursal'],
 					'existencia'=>$cantidad,
 					'apartado'=>'0',
 					'existenciaReal'=>$cantidad,

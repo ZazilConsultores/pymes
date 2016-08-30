@@ -4,7 +4,7 @@
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
-	<div class="panel panel-success">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Agregar Datos para Remision Salida.
@@ -105,7 +105,7 @@
 <script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
 			$.ajax({
 				url: $url,

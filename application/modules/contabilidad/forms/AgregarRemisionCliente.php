@@ -4,6 +4,18 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 {
     public function init()
     {
+    	$decoratorsPresentacion = array(
+			'FormElements',
+			array(array('tabla'=>'Htmltag'),array('tag'=>'table','class'=>'table table-striped table-condensed')),
+			array('Fieldset', array('placement'=>'prepend'))
+		);
+		$decoratorsElemento = array(
+			'ViewHelper',
+			array(array('element'=>'Htmltag'),array('tag'=>'td')),
+			array('label',array('tag'=>'td')),
+			array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
+		);
+		
     	$this->setAttrib("id", "nuevaRemisionCliente");
         
         $subEncabezado = new Zend_Form_SubForm;
@@ -24,7 +36,6 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		{
 			if ($fila->getIdTipoMovimiento()==13){
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(),$fila->getDescripcion());		
-		
 			}
 		}
 		
@@ -43,7 +54,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eSucursal =  new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel('Sucursal:');
 		$eSucursal->setAttrib("class", "form-control");
-		$eSucursal->setAutoInsertNotEmptyValidator(FALSE);
+		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
 		$columnas = array('idEmpresa','razonSocial');
 		$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
@@ -70,7 +81,8 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eProyecto = new Zend_Form_Element_Select('idProyecto');
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
-		$eProyecto->setAutoInsertNotEmptyValidator(FALSE);
+		$eProyecto->setRegisterInArrayValidator(FALSE);
+		
 		
 		//===============================================================
 		$subFormaPago = new Zend_Form_SubForm;
@@ -96,7 +108,6 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		
 		//==================Concepto pago
 		$conceptoPago = Zend_Registry::get('conceptoPago');
-		
 		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
 		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
 		$eConceptoPago->setAttrib("class", "form-control");
@@ -125,6 +136,9 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eProducto));
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago, $eFormaPago,$eImportePago));
+		//$subFormaPago->setElementDecorators($decoratorsElemento);
+		//$subFormaPago->setDecorators($decoratorsPresentacion);
+		
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		$this->addElement($eSubmit);
     }

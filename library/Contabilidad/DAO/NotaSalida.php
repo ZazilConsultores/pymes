@@ -87,7 +87,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 				);
 			
 			//print_r($mMovtos);
-			//$bd->insert("Movimientos",$mMovtos);
+			$bd->insert("Movimientos",$mMovtos);
 			
 //======================Resta en capas, inventario y crea Cardex============================================================================*//
 		$tablaMultiplos = $this->tablaMultiplos;
@@ -109,7 +109,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		//print_r("$restaCantidad");
 		
 
-		if(!is_null($row) and (!$restaCantidad <= 0)){
+		if(!is_null($row)){
 			print_r("la cantidad en inventario no es menor que 0");
 			print_r("<br />");
 			$tablaCapas = $this->tablaCapas;
@@ -132,7 +132,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		//=====================================================================Resta 
 		if(!$cant <= 0){
 			
-			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?",$row->fechaEntrada,"idProducto =?",$row->idProducto);
+			$where = $tablaCapas->getAdapter()->quoteInto("idProducto =?",$row->idProducto);
 			print_r("<br />");
 			print_r("query seleccion producto:");		
 			print_r("<br />");
@@ -171,12 +171,12 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 					
 			);
 			//print_r($mCardex);
-			//$bd->insert("Cardex",$mCardex);
+			$bd->insert("Cardex",$mCardex);
 		//===Resta cantidad en inventario
 		
-			/*$tablaInventario = $this->tablaInventario;
+			$tablaInventario = $this->tablaInventario;
 			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
-			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);*/
+			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
 		}
 
 			$bd->commit();

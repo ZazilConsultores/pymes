@@ -5,7 +5,6 @@
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
-
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -55,12 +54,13 @@
 	$(document).ready(function(){
 		
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
-			//console.log("$url");
+			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			console.log(url);
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",
 				success: function(data){
+					console.dir(data);
 					$("select#idSucursal").empty();
 					$.each(data, function(i,item){	
 						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
@@ -68,8 +68,9 @@
 					
 				}
 			});
-			var id =$("select#idSucursal").val();
-			console.log(id);
+			var id = $("select#idSucursal");
+			//console.log("verificamos idSucursal");
+			//console.log($("select#idSucursal"));
 		});
 		
 		
@@ -303,8 +304,6 @@
 		 	
 		 });*/
 		
-		
-	 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
 		  //this.claveProducto = claveProducto;
