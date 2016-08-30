@@ -36,8 +36,8 @@
 						</tr>
 					</tbody>
 				</table>
-			</div><br />
-			
+			</div>
+			<br /><hr /><br />
 			<div class="col-xs-12">
 				<table id="clientesEmpresa" class="table table-striped table-condensed">
 					<thead>
@@ -82,10 +82,6 @@
 <script>
 	$().ready(function() {
 		
-		var module = "";
-		var controller = "";
-		var action = "";
-		
 		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesClientes()); ?>;
 		// Cargamos el combo de clientes con el JSON recien cargado
 		$.each(fiscales, function(i,item) {
@@ -93,14 +89,14 @@
 		});
 		
 		var idFiscales = $("select#selectIdFiscales").val();
-		var url = window.location.origin + "/General/public/contabilidad/json/clientese/idFiscales/"+idFiscales; 
+		var url = window.location.origin + "/General/public/contabilidad/json/clientese/idFiscales/"+idFiscales;
 		
 		$.ajax({
 			url: url,
 			dataType: "json",
 			success: function(data){
-				//console.log(url);
-				//console.dir(data);
+				console.log(url);
+				console.dir(data);
 				
 				var tbody = $("table#clientesEmpresa").find('tbody');
 				tbody.empty();
@@ -114,48 +110,58 @@
 		});
 		
 		$("button#asociarCliente").on('click',function() {
-			//console.log($("select#selectIdClientes option:selected ").text());
-			//console.log($("select#selectIdFiscales option:selected ").text());
 			$("span#cliente").text($("select#selectIdClientes option:selected ").text());
 			$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
 		});
 		
-		
+		/**
+		 * Aqui hacemos la asociacion real
+		 */
 		$("button#asociarClienteEmpresa").on('click',function() {
 			
 			var selectEmpresa = $("select#selectIdFiscales");
 			var selectCliente = $("select#selectIdClientes");
 			
-			module = "contabilidad";
-			controller = "opera";
-			action = "asocclientee";
-			
 			var fempresa = selectEmpresa.val();
 			var fcliente = selectCliente.val();
 			
-			//console.log(selectEmpresa.val());
-			//console.log(selectCliente.val());
 			
-			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;
+			var url = window.location.origin + "/General/public/"+"contabilidad/opera/asocclientee/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;
 			
 			console.log(url);
 			
 			$.ajax({
 				url: url,
 			});
+			// Volvemos a cargar la tabla, asi traemos los valores actualizados.
+			$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					
+					var tbody = $("table#clientesEmpresa").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].rfc)).
+							append($('<td>').append(data[i].razonSocial))
+						);
+					});
+				}
+			});
 			
 		});
 		
+		/**
+		 * Buscamos los clientes ya asociados de la empresa seleccionada
+		 */
 		$("select#selectIdFiscales").on('change',function() {
 			
-			module = "contabilidad";
-			controller = "json";
-			action = "clientese";
-			
-			$url = window.location.origin + "/General/public/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
-			
-			//console.log($url);
-			
+			$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+$(this).val();
+			console.log($url);
 			$.ajax({
 				url: $url,
 				dataType: "json",

@@ -15,7 +15,7 @@
 						<tr>
 							<td>Seleccione Empresa</td>
 							<td>
-								<select id="selectIdEmpresas" class="form-control">
+								<select id="selectIdFiscales" class="form-control">
 									<?php foreach ($fiscalesEmpresas as $fiscales) : ?>
 										<option value="<?php echo $fiscales["idFiscales"]; ?>"><?php echo $fiscales["razonSocial"] ?></option>
 									<?php endforeach; ?>
@@ -24,7 +24,7 @@
 						</tr>
 						<tr>
 							<td>
-								<button id="btnProveedor" class="btn btn-warning">
+								<button id="asociarProveedor" type="button" class="btn btn-warning" data-toggle="modal" data-target="#msgConfirm">
 									<span class="glyphicon glyphicon-random"></span> Asociar Proveedor
 								</button>
 							</td>
@@ -43,7 +43,6 @@
 						<tbody></tbody>
 					</table>
 				</div>
-				
 			</div>
 		</div>
 	</div>
@@ -60,7 +59,7 @@
 			</div>
 			
 			<div class="modal-body">
-				¿Esta seguro de asociar el cliente: <strong><span id="cliente"></span></strong> a la empresa: <strong><span id="empresa"></span></strong> ? 
+				¿Esta seguro de asociar el proveedor: <strong><span id="proveedor"></span></strong> a la empresa: <strong><span id="empresa"></span></strong> ? 
 			</div>
 			
 			<div class="modal-footer">
@@ -77,7 +76,7 @@
 <script>
 	$().ready(function(){
 		
-		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesProveedores()); ?>
+		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesProveedores()); ?>;
 		$.each(fiscales, function(i,item) {
 			$("select#selectIdProveedores").append($("<option></option>").attr("value",fiscales[i].idFiscales).text(fiscales[i].razonSocial));
 		});
@@ -103,7 +102,7 @@
 			}
 		});
 		
-		$("button#asociarCliente").on('click',function() {
+		$("button#asociarProveedor").on('click',function() {
 			//console.log($("select#selectIdClientes option:selected ").text());
 			//console.log($("select#selectIdFiscales option:selected ").text());
 			$("span#proveedor").text($("select#selectIdProveedores option:selected ").text());
@@ -125,12 +124,42 @@
 			//console.log(selectEmpresa.val());
 			//console.log(selectCliente.val());
 			
-			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;
+			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesProveedor/" + fproveedor;
 			
 			console.log(url);
 			
 			$.ajax({
 				url: url,
+			});
+			
+		});
+		
+		$("select#selectIdFiscales").on('change',function() {
+			
+			module = "contabilidad";
+			controller = "json";
+			action = "proveedorese";
+			
+			$url = window.location.origin + "/General/public/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
+			
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					
+					var tbody = $("table#proveedoresEmpresa").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].rfc)).
+							append($('<td>').append(data[i].razonSocial))
+						);
+					});
+				}
 			});
 			
 		});
