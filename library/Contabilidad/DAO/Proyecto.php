@@ -22,7 +22,6 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		$proyecto->setFechaApertura($stringIni);		
 		$proyecto->setFechaCierre($stringFin);
 		//$proyecto->setGanancia($Ganancia);
-		
 		$this->tablaProyecto->insert($proyecto->toArray());		
 	}
 	

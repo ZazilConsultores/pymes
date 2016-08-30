@@ -4,32 +4,49 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 
     public function init()
     {
+    	$decoratorsPresentacion = array (
+			'FormElements',
+			array(array('tabla'=>'Htmltag'), array('tag'=>'table','class'=>'table table-striped table-condensed')),
+			array('Fieldset',array('placement'=>'prepend'))
+		);
+		
+		$decoratorsElemento = array(
+		'ViewHelper',
+		array(array('element'=>'Htmltag'),array('tag'=>'td')),
+		array('label',array('tag'=>'td')),
+		array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+		);
+		
     	$this->setAttrib("id", "nuevaNotaProveedor");
+		$this->setAttrib("name", "nuevaNotaProveedor");
+		
         $subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Nueva Nota Proveedor");
-		
-        $eNumeroFactura = new Zend_Form_Element_Text('numFolio');
-		$eNumeroFactura->setLabel('Numero de Folio: ');
-		$eNumeroFactura->setAttrib("class", "form-control");
-		
-		$eTipoMovto = New Zend_Form_Element_Select('idTipoMovimiento');
-		$eTipoMovto->setLabel('Selecccionar Tipo de Movimiento:');
-		$eTipoMovto->setAttrib("class", "form-control");
-		//$eTipoMovto->setAttrib("disabled", "true");
+
+		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
+		$eNumeroFolio->setLabel('Número de Folio: ');
+		$eNumeroFolio->setAttrib("class", "form-control");
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
-		foreach ($tipoMovimientoDAO->obtenerTiposMovimientos() as $fila) {
-			if ($fila->getIdTipoMovimiento() == "7") {
-				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(), $fila->getDescripcion());
+		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
+		
+		$eTipoMovto = New Zend_Form_Element_Select('idTipoMovimiento');
+		$eTipoMovto->setLabel('Tipo  Movimiento:');
+		$eTipoMovto->setAttrib("class", "form-control");
+		
+		foreach ($tipoMovimientoDAO->obtenerTiposMovimientos()as $fila)
+		{
+			if ($fila->getIdTipoMovimiento()==7){
+				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(),$fila->getDescripcion());		
+		
 			}
-		
-		}
-		
+		}	
 		$eFecha = new Zend_Form_Element_Text('fecha');
-		$eFecha->setLabel('Fecha:');
+		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
-				
-		//$columnas = array('idFiscales','razonSocial');
+		$eFecha->setAttrib("required","Seleccionar fecha");
+		
+		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
@@ -41,19 +58,12 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 		
-		$eSucursal = new Zend_Form_Element_Select('idSucursal');
-		$eSucursal->setLabel("Sucursal: ");
+		$eSucursal =  new Zend_Form_Element_Select('idSucursal');
+        $eSucursal->setLabel('Sucursal: ');
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
-		
 	
-		$eProyecto = new Zend_Form_Element_Select('idProyecto');
-        $eProyecto->setLabel('Seleccionar Proyecto:');
-		$eProyecto->setAttrib("class", "form-control");
-		$eProyecto->setRegisterInArrayValidator(FALSE);
-	
-		//$columnas = array('idEmpresa','razonSocial');
-		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada();  
+		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
 		
 		$eProveedor = new Zend_Form_Element_Select('idCoP');
@@ -75,21 +85,33 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		{
 			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
 		}*/
-		
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
-
+			
+		/*$eProyecto = new Zend_Form_Element_Select('idProyecto');
+        $eProyecto->setLabel('Seleccionar Proyecto:');
+		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setRegisterInArrayValidator(FALSE);*/
+		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled", "true");
 		
-
-		//Agregamos los elementos correspondientes a la subformaEncabezado
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eProveedor,$eProducto));
+		/*$eSubmit1 = new Zend_Form_Element_Button("submit1");
+		$eSubmit1->setLabel("Enviar");
+		$eSubmit1->setAttrib("class", "btn btn-success");
+		$eSubmit1->setAttrib("disabled", "true");*/
+		
+		
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProveedor,$eDivisa,$eProducto));
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
      	$this->addSubForms(array($subEncabezado)); 
+		//$this->addElement($eProyecto);
 		$this->addElement($eSubmit);
+		//$this->addElement($eSubmit1);
 		
 	}
 }

@@ -1,33 +1,18 @@
 <?php
-	echo $this->formulario;
+	//echo $this->formulario;
+	$formulario = $this->formulario;
+	 echo $formulario; 
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
+
 <section class="row">
-	<div class="panel panel-default">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				Agregar Datos para Nota Entrada.
-			</h3>
+			<h3 class="panel-title">Agregar Productos para Nota Entrada.</h3>
 		</div>
+		
 		<div class="panel-body">
-			<?php if (!is_null($messageSuccess)){?>
-			<div class="alert-success" role="alert">
-				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
-					<span arial-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageSuccess; ?>
-			</div>
-			<?php }elseif(!is_null($messageFail)){ ?>
-			<div class="alert alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert" arial-label="close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageFail; ?>
-			</div>
-			<?php }?><br />
-			
-			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -35,40 +20,38 @@
 				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
 			<table id="productosNota" class="table table-striped table-condensed">
-				<thead>
-					<tr>
-						<th>Cantidad</th>
-						<th>Clave Producto</th>
-						<th>Seleccione Unidad</th>
-						<th>Codigo de Barras</th>
-						<th>Descripcion</th>
-						<th>Precio Unitario</th>
-						<th>Importe</th>
-						<th>Eliminar</th>
-					</tr>
-				
-				</thead>
-				<tbody>
-					
-				</tbody>
-				<tfoot>
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-
-						<td><input id="total" class="form-control" /></td>
-					</tr>
-				</tfoot>
-			</table>
-			<br />
+					<thead>
+						<tr>
+							<th>Cantidad</th>
+							<th>Clave Producto</th>
+							<th>Seleccione Unidad</th>
+							<th>Codigo de Barras</th>
+							<th>Descripcion</th>
+							<th>Precio Unitario</th>
+							<th>Importe</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>Total:</td>
+							<td><input id="total" class="form-control" /></td>
+							
+						</tr>
+					</tfoot>	
+				</table>
 		</div>
 	</div>
 </section>
 <script>
+
 	$(document).ready(function(){
 		
 		$("select#idEmpresas").on('change', function(){
@@ -85,24 +68,12 @@
 					
 				}
 			});
-			
+			var id =$("select#idSucursal").val();
+			console.log(id);
 		});
 		
-		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
-			$.ajax({
-				url: $url,
-				//console.log($ajax);
-				dataType: "json",
-				success: function(data){
-					$("select#idProyecto").empty();
-					$.each(data, function(i,item){	
-						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
-					});
-				}
-			});
-			
-		});
+		
+	
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
 			rules: {
@@ -111,13 +82,7 @@
 				},
 				fecha: {
 					required: true
-				},
-				idSucursal: {
-					required: true
 				}
-				/*idProyecto: {
-					required: true
-				}*/
 				
 			},
 			messages: {
@@ -126,14 +91,10 @@
 				},
 				fecha: {					
 					required: "Este campo no puede quedar vacío, Seleccione fecha"
-				},
-				idSucursal: {					
-					required: "Este campo no puede quedar vacío"
 				}
-				/*idProyecto: {					
-					required: "Este campo no puede quedar vacío"
-				}*/
+				
 			}
+
 		});
 		
 		$("#submit").click(function(){
@@ -202,17 +163,10 @@
 		
 		//Funcion Eliminar #btnLimpiar_2
  		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
- 			var numero=0;
- 			//var tabla = document.getElementById("productosNota");
- 
-  			// si tenemos mas de una fila, borramos3
-  			//if(tabla.rows.length > 2)
-  			if ($("table#productosNota tr").length > 2) 
+  			// si tenemos mas de una fila
+  			if ($("table#productosNota tbody > tr").length >1)
   			{
-  				$("table#productosNota tr:first").remove();
-  				//tabla.deleteRow(tabla.rows.length-1);
-  				//$('table#productosNota tr:last').remove();
-  				//--numero;
+  				$("table#productosNota  tbody > tr:last").remove();
   			}
   			
  		});//cierra funcion eliminar
@@ -348,6 +302,8 @@
 			});
 		 	
 		 });*/
+		
+		
 	 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
@@ -360,17 +316,10 @@
 		  //this.unidad = unidad;
 		}
 		 $("a#generarJsonArray").on("click",function(){
-            //if($(this).val() != ''){
-               $('input[type="submit"]').removeAttr('disabled');
-            //}
-              /*$("input#idCantidad_").validate({
-            	rules:{
-            		idCantidad_:{
-            			required:true
-            		}
-            	}
-            });*/
-          });
- 	
+         
+               $("#submit").removeAttr('disabled');
+           });
+          
+          
 	});//cierra document ready
 </script>

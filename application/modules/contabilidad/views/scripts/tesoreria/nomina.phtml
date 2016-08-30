@@ -1,1 +1,20 @@
 <?php echo $this->formulario; ?>
+<script>
+	$(document).ready(function(){
+		$("select#idEmpresas").on('change', function(){
+			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+		});
+	});
+</script>

@@ -4,8 +4,8 @@ class Encuesta_JsonController extends Zend_Controller_Action
 {
 
     private $gradosDAO = null;
-	private $gruposDAO = null;
-	//private $gruposDAO = null;
+
+    private $gruposDAO = null;
 
     public function init()
     {
@@ -51,8 +51,12 @@ class Encuesta_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($arrayGrupos);
     }
 
+    
+
 
 }
+
+
 
 
 
