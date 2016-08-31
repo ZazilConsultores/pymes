@@ -158,7 +158,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		//print_r("$restaCantidad");
 		
 
-		if(!is_null($row) and (!$restaCantidad <= 0)){
+		if(!is_null($row)){
 			print_r("la cantidad en inventario no es menor que 0");
 			print_r("<br />");
 			$tablaCapas = $this->tablaCapas;
@@ -223,9 +223,9 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			$bd->insert("Cardex",$mCardex);
 		//===Resta cantidad en inventario
 		
-			/*$tablaInventario = $this->tablaInventario;
+			$tablaInventario = $this->tablaInventario;
 			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
-			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);*/
+			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
 		}
 
 			$bd->commit();

@@ -34,17 +34,14 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function notaAction()
     {
-
-        // action body
+    	
         $request = $this->getRequest();
         $formulario = new Contabilidad_Form_NuevaNotaCliente;
 
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
-			
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-
 				$notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
@@ -60,21 +57,16 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				print_r('<br />');
 				print_r($productos);*/
 				$contador=0;
+				
 				foreach ($productos as $producto){
-					//$producto->encabezado();
-					//sprint_r($producto);
-
-					$notaSalidaDAO->restarProducto($encabezado, $producto);
-					//print_r($contador);
-					$contador++;
+					try{
+						$notaSalidaDAO->restarProducto($encabezado, $producto);
+						$contador++;
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+					}
 					
 				}
-				//print_r($datos)		
-
-				//print_r($productos);
-				//print_r(json_decode($datos[0]['productos']));
-				//$notaentrada = new Contabilidad_Model_Movimientos($datos);
-				//$this->notaEntradaDAO->crearNotaEntrada($datos);
 			}
 					
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");

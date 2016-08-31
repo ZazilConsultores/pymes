@@ -70,10 +70,10 @@
 <script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",
 				success: function(data){
 					$("select#idSucursal").empty();
@@ -87,10 +87,10 @@
 		});
 		
 		$("select#idSucursal").on('click', function(){
-			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+			var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
 			//console.log("$url");
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",	
 				success: function(data){
 					$("select#idProyecto").empty();

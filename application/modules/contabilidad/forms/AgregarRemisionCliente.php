@@ -24,6 +24,8 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de  Folio:');
 		$eNumeroFolio->setAttrib("class", "form-control");
+		$eNumeroFolio->setAttrib("required", "true");
+		
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
@@ -55,6 +57,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eSucursal->setLabel('Sucursal:');
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
 		
 		$columnas = array('idEmpresa','razonSocial');
 		$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
@@ -72,6 +75,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
+	
 		
 	
 		$eProducto = new Zend_Form_Element_Hidden('productos');
@@ -82,7 +86,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
-		
+		$eProyecto->setAttrib("required", "true");
 		
 		//===============================================================
 		$subFormaPago = new Zend_Form_SubForm;
@@ -116,6 +120,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
+		$eImportePago->setAttrib("required", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
@@ -136,8 +141,8 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eProducto));
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago, $eFormaPago,$eImportePago));
-		//$subFormaPago->setElementDecorators($decoratorsElemento);
-		//$subFormaPago->setDecorators($decoratorsPresentacion);
+		$subFormaPago->setElementDecorators($decoratorsElemento);
+		$subFormaPago->setDecorators($decoratorsPresentacion);
 		
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		$this->addElement($eSubmit);

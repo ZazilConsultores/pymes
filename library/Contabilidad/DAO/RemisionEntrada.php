@@ -141,7 +141,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'total'=>$producto['importe']
 				);   
 			
-				print_r($mCuentasxp);
+				//print_r($mCuentasxp);
 				$bd->insert("Cuentasxp",$mCuentasxp);
 			
 		//========================Realiza Movimiento en banco===================================

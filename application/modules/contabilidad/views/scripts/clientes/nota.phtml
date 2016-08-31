@@ -1,5 +1,7 @@
-
-<?php echo $this->formulario 		
+<?php
+	echo $this->formulario;	
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;	
 ?>
 <section class="row">
 	<div class="panel panel-primary">
@@ -7,6 +9,21 @@
 			<h3 class="panel-title">Agregar Productos para Nota Salida.</h3>
 		</div>
 		<div class="panel-body">
+			<?php if (!is_null($messageSuccess)){?>
+			<div class="alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
+					<span arial-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php }?><br />
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -51,7 +68,7 @@
 			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",
 				success: function(data){
 					$("select#idSucursal").empty();
@@ -72,6 +89,9 @@
 				},
 				fecha: {
 					required: true
+				},
+				idSucursal: {
+					required: true
 				}
 			},
 			messages: {
@@ -80,6 +100,9 @@
 				},
 				fecha: {					
 					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío, Seleccione Empresa"
 				}
 			}
 		});
@@ -274,26 +297,3 @@
 	});//cierra document ready
 </script>
 
-<div class="modal fade" id="msgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title">Confirma Nota de Entrada.</h4>
-			</div>
-		<div class="modal-body">
-			¿Los datos son correctos... Listo para Enviar  Nota de Entrada?:
-		</div>
-		<div class="modal-footer">
-			<button id="generarJsonArray" type="button" class="btn btn success" data-dismiss="modal">
-				<span class="glyphicon glyphicon-random"></span>Enviar
-			</button>
-			<button type="button" class="btn btn-danger" data-dismiss="modal">
-				<span class="glyphicon glyphicon-close"></span>Cancelar	
-			</button>
-			</div>
-		</div>
-	</div>
-</div>

@@ -12,22 +12,15 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	private $tablaMultiplos;
 	private $tablaEmpresa;
 	
-	
 	public function __construct() {
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
-			
-		
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
 	}
 
-	public function obtenerNotaEntrada(){
-	
-	}
-	
 	public function obtenerProveedores(){
 		$tablaEmpresa = $this->tablaEmpresa;
 		$select=$tablaEmpresa->select()
@@ -40,26 +33,12 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	}
 	
 	
-	public function obtenerProducto ($idProducto){
-	
-	}
-	
 	public function agregarProducto(array $encabezado, $producto){
-		//print_r($datos);
-	
-		$datos=array();
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-	
 		$bd->beginTransaction();
 		
-		//$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
-		//$stringIni = $dateIni->toString ('yyyy-MM-dd');
-		
 		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
-		//$dateIni->add(h:m:s);
-		$dateIni->addTime($dateIni);
-		print_r($dateIni);
-		$stringIni = $dateIni->toString ('Y-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
