@@ -31,13 +31,13 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				print_r($datos);
-				/*$proyecto = new Contabilidad_Model_Proyecto($datos);
+				$proyecto = new Contabilidad_Model_Proyecto($datos);
 				try{
 					$this->proyectoDAO->crearProyecto($proyecto);
 					$this->view->messageSuccess = "Se ha agregado el proyecto: <strong>".$proyecto->getDescripcion()."</strong> exitosamente";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
-				}*/
+				}
 			}
 		}
     }

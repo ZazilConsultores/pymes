@@ -20,7 +20,7 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		//$Ganancia = $proyecto->getCostoFinal()- $proyecto->getCostoInicial();
 		
 		$proyecto->setFechaApertura($stringIni);		
-		$proyecto->setFechaCierre($stringFin);
+		$proyecto->setFechaCierre($stringFin);	
 		//$proyecto->setGanancia($Ganancia);
 		$this->tablaProyecto->insert($proyecto->toArray());		
 	}

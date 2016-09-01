@@ -41,7 +41,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 			$eCoP->addMultiOption($key, $value);
 		}
 		
-		$eCliente = new Zend_Form_Element_Select('idCliente');
+		$eCliente = new Zend_Form_Element_Select('idCoP');
 		$eCliente->setLabel('Seleccionar Cliente:');
 		$eCliente->setAttrib("class", "form-control");
 
@@ -52,7 +52,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 			$eCliente->addMultiOption($fila->idEmpresa,$fila->razonSocial);
 		}
 		
-		$eProveedor = new Zend_Form_Element_Select('idProveedor');
+		$eProveedor = new Zend_Form_Element_Select('idCoP');
 		$eProveedor->setLabel('Seleccionar Proveedor	:');
 		$eProveedor->setAttrib("class", "form-control");
 			
