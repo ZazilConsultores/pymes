@@ -23,8 +23,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		
 		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("PEPS");
+		/*$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
+		$eTipoInventario->setValue("PEPS");*/
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de Folio: ');
@@ -164,16 +164,14 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eProducto, $eTipoInventario));
-		//$subEncabezado->setElementDecorators($decoratorsElemento);
-		//$subEncabezado->setDecorators($decoratorsPresentacion);
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eProducto));
+	
 		
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago,$eFormaPago,$eImportePago));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 		
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
-		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);
     }
 }
