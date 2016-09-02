@@ -28,6 +28,7 @@
         <formFile formName="AltaNivel"/>
         <formFile formName="NuevaNotaProveedor"/>
         <formFile formName="AgregarRemisionProveedor"/>
+        <formFile formName="AltaMateria"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -1780,6 +1781,117 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
+        <moduleDirectory moduleName="Biblioteca">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="Libro">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Materia">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="LibrosMateria">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Librosmateria">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Categoria">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+          </controllersDirectory>
+          <formsDirectory>
+            <formFile formName="AltaLibro"/>
+            <formFile formName="AltaMateria"/>
+            <formFile formName="AltaLibrosMateria"/>
+            <formFile formName="Categoria"/>
+            <formFile formName="AltaCategoria"/>
+          </formsDirectory>
+          <layoutsDirectory enabled="false">
+            <layoutScriptsDirectory enabled="false"/>
+          </layoutsDirectory>
+          <modelsDirectory>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Libro"/>
+              <dbTableFile dbTableName="Materia"/>
+              <dbTableFile dbTableName="LibrosMateria"/>
+              <dbTableFile dbTableName="Categoria"/>
+            </dbTableDirectory>
+            <modelFile modelName="Libro"/>
+            <modelFile modelName="Materia"/>
+            <modelFile modelName="Especialidad"/>
+            <modelFile modelName="LibrosMateria"/>
+            <modelFile modelName="Categoria"/>
+          </modelsDirectory>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Libro">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Libro">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="MateriaController">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="AltaMateria">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="MateriaB">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="MateriaB">
+                <viewScriptFile forActionName="altaMateria"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="MateriaB">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materiab">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materiab">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="LibrosMateria">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Librosmateria">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Librosmateria">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Librosmateria">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
       </modulesDirectory>
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
@@ -2359,6 +2471,43 @@
               <testApplicationControllerFile forControllerName="JsonController">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="unidades"/>
+              </testApplicationControllerFile>
+            </testApplicationControllerDirectory>
+          </testApplicationModuleDirectory>
+          <testApplicationModuleDirectory forModuleName="Biblioteca">
+            <testApplicationControllerDirectory>
+              <testApplicationControllerFile forControllerName="Libro">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="MateriaController">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Materia">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="AltaMateria">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="MateriaB">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="altaMateria"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Materiab">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Librosmateria">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Categoria">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
