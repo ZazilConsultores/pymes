@@ -71,7 +71,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eProveedor->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idProveedores, $fila->razonSocial);
 		}
 		
 		$eDivisa = New Zend_Form_Element_Hidden('idDivisa');

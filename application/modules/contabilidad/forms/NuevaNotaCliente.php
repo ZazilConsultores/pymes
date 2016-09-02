@@ -64,7 +64,7 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 		$eCliente->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eCliente->addMultiOption($fila->idCliente, $fila->razonSocial);
 		}
 		
 		

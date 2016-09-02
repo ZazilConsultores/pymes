@@ -43,7 +43,6 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		{
 			if ($fila->getIdTipoMovimiento()==12){
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(),$fila->getDescripcion());		
-		
 			}
 		}
 			
@@ -52,7 +51,6 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
 		$eFecha->setAttrib("required", "true");
-		
 		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
@@ -81,7 +79,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eProveedor->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idProveedores, $fila->razonSocial);
 		}
 		
 		/*$eDivisa = New Zend_Form_Element_Hidden('idDivisa');
