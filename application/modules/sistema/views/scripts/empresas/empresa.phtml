@@ -57,14 +57,13 @@
 		<table class="table table-striped table-condensed table-responsive">
 			<thead>
 				<th>Configurar</th>
-				<th>Es sucursal</th>
 				<th>Estado</th>
 				<th>Municipio</th>
-				<th>C.P.</th>
 				<th>Colonia</th>
 				<th>Calle</th>
 				<th>N.I.</th>
 				<th>N.E.</th>
+				<th>C.P.</th>
 			</thead>
 			<tbody>
 				<?php foreach ($domiciliosFiscales as $domicilioFiscal) : 
@@ -78,14 +77,13 @@
 								<span class="glyphicon glyphicon-cog"></span> Configurar
 							</a>
 						</td>
-						<td><?php echo ($fiscalesDAO->esSucursal($domicilioFiscal->getIdDomicilio(), $eempresa["idFiscales"])) ? "Si" : "No" ;  ?></td>
 						<td><?php echo $estado->getEstado(); ?></td>
 						<td><?php echo $municipio->getMunicipio(); ?></td>
-						<td><?php echo $domicilioFiscal->getCodigoPostal(); ?></td>
 						<td><?php echo $domicilioFiscal->getColonia(); ?></td>
 						<td><?php echo $domicilioFiscal->getCalle(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroInterior(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroExterior(); ?></td>
+						<td><?php echo $domicilioFiscal->getCodigoPostal(); ?></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>
