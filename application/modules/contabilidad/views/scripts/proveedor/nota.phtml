@@ -5,7 +5,6 @@
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
-
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -13,6 +12,21 @@
 		</div>
 		
 		<div class="panel-body">
+			<?php if (!is_null($messageSuccess)){?>
+			<div class="alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
+					<span arial-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php }?><br />
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -55,12 +69,13 @@
 	$(document).ready(function(){
 		
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
-			//console.log("$url");
+			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			console.log(url);
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",
 				success: function(data){
+					console.dir(data);
 					$("select#idSucursal").empty();
 					$.each(data, function(i,item){	
 						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
@@ -68,8 +83,9 @@
 					
 				}
 			});
-			var id =$("select#idSucursal").val();
-			console.log(id);
+			var id = $("select#idSucursal");
+			//console.log("verificamos idSucursal");
+			//console.log($("select#idSucursal"));
 		});
 		
 		
@@ -82,6 +98,9 @@
 				},
 				fecha: {
 					required: true
+				},
+				idSucursal: {
+					required: true
 				}
 				
 			},
@@ -91,6 +110,9 @@
 				},
 				fecha: {					
 					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío, Seleccione Empresa"
 				}
 				
 			}
@@ -303,8 +325,6 @@
 		 	
 		 });*/
 		
-		
-	 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
 		  //this.claveProducto = claveProducto;

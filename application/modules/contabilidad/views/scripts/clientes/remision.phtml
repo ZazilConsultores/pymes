@@ -4,7 +4,7 @@
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
-	<div class="panel panel-success">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Agregar Datos para Remision Salida.
@@ -69,32 +69,7 @@
 </section>
 <script>
 	$().ready(function(){
-		var form = $("#nuevaRemisionCliente");
-		form.validate({
-			rules: {
-				numFolio: {
-					required: true
-				},
-				importePago: {
-					required: true
-				},
-				fecha: {
-					required: true
-				}
-			},
-			messages: {
-				numFolio: {					
-					required: "Este campo no puede quedar vacío, Ingrese número de folio"
-				},
-				importePago: {					
-					required: "Este campo no puede quedar vacío, Ingrese cantidad a pagar"
-				},
-				
-				fecha: {					
-					required: "Este campo no puede quedar vacío, Seleccione fecha"
-				}
-			}
-		});
+		
 		
 		$("#submit").click(function(){
 			console.log("" + form.valid());
@@ -105,10 +80,10 @@
 <script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",
 				success: function(data){
 					$("select#idSucursal").empty();
@@ -122,10 +97,10 @@
 		});
 		
 		$("select#idSucursal").on('click', function(){
-			$url = "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+		var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
 			//console.log("$url");
 			$.ajax({
-				url: $url,
+				url: url,
 				dataType: "json",	
 				success: function(data){
 					$("select#idProyecto").empty();
@@ -137,33 +112,7 @@
 			});
 			
 		});
-		var form = $("#nuevaRemisionProveedor");
-		form.validate({
-			rules: {
-				numFolio: {
-					required: true
-				},
-				importePago: {
-					required: true
-				},
-				fecha: {
-					required: true
-				}
-			},
-			messages: {
-				numFolio: {					
-					required: "Este campo no puede quedar vacío, Ingrese número de folio"
-				},
-				importePago: {					
-					required: "Este campo no puede quedar vacío, Ingrese cantidad a pagar"
-				},
-				
-				fecha: {					
-					required: "Este campo no puede quedar vacío, Seleccione fecha"
-				}
-			}
-		});
-	
+			
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;

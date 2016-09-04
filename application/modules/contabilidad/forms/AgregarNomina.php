@@ -21,6 +21,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
 		);
 		
+		$subEncabezado->setLegend("Nuevo Fondeo");
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
 		

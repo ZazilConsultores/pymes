@@ -5,6 +5,36 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 
     public function init()
     {
+    	$decoratorsPresentacion = array(
+    		'FormElements',
+    		array(array('tabla'=>'Htmltag'),array('tag'=>'table','class'=>'table table-striped table-condensed')),
+    		array('Fieldset', array('placement'=>'prepend'))
+		);
+		
+		$decoratorsElemento = array(
+			'ViewHelper',
+			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
+			array('label',array('tag'=>'td')),
+			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+		);
+		
+		$subEncabezado = new Zend_Form_SubForm;
+		$subEncabezado->setLegend("Nuevo Fondeo");
+
+		$eTipoMovimiento = new Zend_Form_Element_Select('idTipoMovimiento');
+		$eTipoMovimiento->setLabel('Tipo Movimiento:');
+		$eTipoMovimiento->setAttrib("class", "form-control");
+		
+		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
+		$tipoMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
+
+		foreach($tipoMovimientos as $tipoMovimiento){
+			if($tipoMovimiento->getIdTipoMovimiento()=="3"){
+				$eTipoMovimiento->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());
+			}
+			
+		}
+		
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
@@ -25,23 +55,11 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eFecha->setLabel('Seleccionar fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		
-		$eTipoMovimiento = new Zend_Form_Element_Select('idTipoMovimiento');
-		$eTipoMovimiento->setLabel('Tipo Movimiento:');
-		$eTipoMovimiento->setAttrib("class", "form-control");
-		
-		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
-		$tipoMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
-
-		foreach($tipoMovimientos as $tipoMovimiento){
-			if($tipoMovimiento->getIdTipoMovimiento()=="3"){
-				$eTipoMovimiento->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());
-			}
-			
-		}
-
 		$eNumFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumFolio->setLabel('Ingresar número de Folio:');
 		$eNumFolio->setAttrib("class", "form-control");
+		
+		
 		
 		$eProducto = new Zend_Form_Element_Select('idProducto');
 		$eProducto->setLabel('Seleccionar Producto:');
@@ -85,7 +103,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 	
 		foreach($bancoEmpresas as $bancoEmpresa){
 			$banco = $bancosDAO->obtenerBanco($bancoEmpresa->getIdBanco());
-			$eBancoEntrada->addMultiOption($bancoEmpresa->getIdBanco(), $banco->getCuenta());
+			$eBancoEntrada->addMultiOption($bancoEmpresa->getIdEmpresa(), $banco->getCuenta());
 			
 		}	
 			
@@ -95,7 +113,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		
 		foreach($bancoEmpresas as $bancoEmpresa){
 			$banco = $bancosDAO->obtenerBanco($bancoEmpresa->getIdBanco());
-			$eBancoSalida->addMultiOption($bancoEmpresa->getIdBanco(), $banco->getCuenta());
+			$eBancoSalida->addMultiOption($bancoEmpresa->getIdEmpresa(), $banco->getCuenta());
 			
 		}
 		
@@ -112,15 +130,16 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
 		
+		$subEncabezado->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eFecha,$eNumFolio));
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
-		$this->addElement($eEmpresa);
-		$this->addElement($eSucursal);
-		$this->addElement($eFecha);
-		$this->addElement($eTipoMovimiento);
-		$this->addElement($eNumFolio);
-		$this->addElement($eFormaFondeo);
+		$this->addSubForms(array($subEncabezado));
+		
 		$this->addElement($eProducto);
 		$this->addElement($eDivisa);
+		$this->addElement($eFormaFondeo);
+		
 		
 		$this->addElement($eBancoEntrada);
 		$this->addElement($eBancoSalida);

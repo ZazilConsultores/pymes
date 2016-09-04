@@ -39,12 +39,18 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$row = $tablaMultiplos->fetchRow($select); 
+		//print_r($row);
+		if(is_null($row)) throw new Util_Exception_BussinessException("Error: Favor de verificar Multiplo");
 		
 		try{
 		
 //*=======================Crea secuencial, convierte a unidad minima y guarda registro en tabla Movimiento=======================================
 		$tablaMovimiento = $this->tablaMovimiento;
 		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
+		->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
 		->where("idCoP=?",$encabezado['idCoP'])
 		->where("idEmpresas=?",$encabezado['idEmpresas'])
 		->where("fecha=?", $stringIni)
@@ -65,8 +71,9 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		$row = $tablaMultiplos->fetchRow($select); 
 		//print_r("$select");
 		
-			$cantidad=0;
-			$precioUnitario=0;
+			$cantidad = 0;
+			$precioUnitario = 0;
+			
 			$cantidad = $producto['cantidad'] * $row->cantidad;
 			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
 			
@@ -86,8 +93,8 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 					'totalImporte'=>$producto['importe']
 				);
 			
-			//print_r($mMovtos);
-			//$bd->insert("Movimientos",$mMovtos);
+			print_r($mMovtos);
+			$bd->insert("Movimientos",$mMovtos);
 			
 //======================Resta en capas, inventario y crea Cardex============================================================================*//
 		$tablaMultiplos = $this->tablaMultiplos;
@@ -109,12 +116,13 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		//print_r("$restaCantidad");
 		
 
-		if(!is_null($row) and (!$restaCantidad <= 0)){
+		if(!is_null($row)){
 			print_r("la cantidad en inventario no es menor que 0");
 			print_r("<br />");
 			$tablaCapas = $this->tablaCapas;
 			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']) 
 			->order("fechaEntrada ASC");
+			
 			$row = $tablaCapas->fetchRow($select);
 			//print_r("<br />");
 			print_r("<br />");
@@ -132,7 +140,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		//=====================================================================Resta 
 		if(!$cant <= 0){
 			
-			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?",$row->fechaEntrada,"idProducto =?",$row->idProducto);
+			$where = $tablaCapas->getAdapter()->quoteInto("idProducto =?",$row->idProducto,"fechaEntrada =?",$row->fechaEntrada );
 			print_r("<br />");
 			print_r("query seleccion producto:");		
 			print_r("<br />");
@@ -146,9 +154,10 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 			print_r("$where");
 		}else{
 		
-			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?", $row->fechaEntrada );	
+			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?", $row->fechaEntrada,"idProducto =?",$row->idProducto);	
 			$tablaCapas->delete($where);
 		}
+		
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion'])
 		//->where("fechaEntrada )
@@ -170,13 +179,13 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 					'utilidad'=>($mMovtos['costoUnitario']-$row['costoUnitario'])* $mMovtos['cantidad']
 					
 			);
-			//print_r($mCardex);
-			//$bd->insert("Cardex",$mCardex);
+			print_r($mCardex);
+			$bd->insert("Cardex",$mCardex);
 		//===Resta cantidad en inventario
 		
-			/*$tablaInventario = $this->tablaInventario;
+			$tablaInventario = $this->tablaInventario;
 			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
-			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);*/
+			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
 		}
 
 			$bd->commit();

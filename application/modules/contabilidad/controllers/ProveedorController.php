@@ -51,6 +51,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_NuevaNotaProveedor;
         //$formulario->getSubForm("0")->removeElement("submit");
+        
 		//$formulario->removeElement("submit");
 		if($request->isGet()){
 			$this->view->formulario = $formulario;		
@@ -70,12 +71,11 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				foreach ($productos as $producto){
 					//$producto->encabezado();
 					//sprint_r($producto);
+					
 					try{
 						$notaEntradaDAO->agregarProducto($encabezado, $producto);
 						//print_r($contador);
 						$contador++;
-						
-						$this->view->messageSuccess ="  Nota de Entrada realizada efectivamente" ;
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}
@@ -107,7 +107,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$encabezado = $datos[0];
 				//print_r($encabezado);
 				$formaPago =$datos[1];
-				print_r($formaPago);
+				//print_r($formaPago);
 				$productos = json_decode($encabezado['productos'],TRUE);
 				//print_r($encabezado);
 				print_r('<br />');
@@ -145,7 +145,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         // action body
         $formulario = new Contabilidad_Form_AgregarFacturaProveedor	;
     	$this->view->formulario = $formulario;
-    }
+		$fimpuestos =  new Contabilidad_Form_Impuestos;
+		$this->view->fimpuestos = $fimpuestos;
+    
+	}
 
 
 }

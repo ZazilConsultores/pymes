@@ -23,12 +23,14 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		
 		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("PEPS");
+		/*$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
+		$eTipoInventario->setValue("PEPS");*/
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de Folio: ');
 		$eNumeroFolio->setAttrib("class", "form-control");
+		$eNumeroFolio->setAttrib("required", "true");
+		
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
@@ -41,7 +43,6 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		{
 			if ($fila->getIdTipoMovimiento()==12){
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(),$fila->getDescripcion());		
-		
 			}
 		}
 			
@@ -49,6 +50,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
+		$eFecha->setAttrib("required", "true");
 		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
@@ -66,6 +68,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
         $eSucursal->setLabel('Sucursal: ');
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
+		
 	
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
@@ -75,7 +79,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eProveedor->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idProveedores, $fila->razonSocial);
 		}
 		
 		/*$eDivisa = New Zend_Form_Element_Hidden('idDivisa');
@@ -97,6 +101,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
+		$eProyecto->setAttrib("required", "true");
 			
 		//===============================================================
 		$subFormaPago = new Zend_Form_SubForm;
@@ -138,7 +143,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
-		//$eImportePago->setAttrib("required", "true");
+		$eImportePago->setAttrib("required", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
@@ -157,16 +162,14 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eProducto, $eTipoInventario));
-		//$subEncabezado->setElementDecorators($decoratorsElemento);
-		//$subEncabezado->setDecorators($decoratorsPresentacion);
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eProducto));
+	
 		
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago,$eFormaPago,$eImportePago));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 		
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
-		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);
     }
 }
