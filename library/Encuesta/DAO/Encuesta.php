@@ -7,34 +7,38 @@
 class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
-	private $tablaSeccion;
-	private $tablaGrupo;
+	private $tablaSeccionEncuesta;
+	private $tablaGrupoEncuesta;
 	private $tablaRespuesta;
 	
 	//private $tablaEncuestaGrupo;
 	private $tablaPregunta;
-	private $tablaERealizadas;
-	private $tablaAsignacion;
-	private $tablaPreferenciaS;
+	private $tablaEncuestasRealizadas;
+	private $tablaAsignacionGrupo;
+	private $tablaPreferenciaSimple;
 	private $tablaRegistro;
-	private $tablaMateria;
+	private $tablaMateriaEscolar;
 	
 	
 	public function __construct()
 	{
+		$dbAdapter = Zend_Db::factory('PDO_MYSQL',Zend_Registry::get('dbconfigmodencuesta'));
+		
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
-		$this->tablaSeccion = new Encuesta_Model_DbTable_Seccion;
+		
+		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta;
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
 		//$this->tablaEncuestaGrupo = new Encuesta_Model_DbTable_EncuestaGrupo;
-		$this->tablaERealizadas = new Encuesta_Model_DbTable_ERealizadas;
-		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple;
+		$this->tablaEncuestasRealizadas = new Encuesta_Model_DbTable_ERealizadas;
+		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple;
 		
-		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
-		$this->tablaAsignacion = new Encuesta_Model_DbTable_AsignacionGrupo;
+		$this->tablaGrupoEncuesta = new Encuesta_Model_DbTable_Grupo;
+		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo;
 		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
 		
 		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro;
-		$this->tablaMateria = new Encuesta_Model_DbTable_MateriaE;
+		$this->tablaMateriaEscolar = new Encuesta_Model_DbTable_MateriaE;
+		
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -57,6 +61,9 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		return $modelEncuesta;
 	}
 	
+	/**
+	 * @TODO Eliminar Metodo
+	 */
 	public function obtenerEncuestaHash($hash)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
@@ -86,6 +93,9 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		return $modelEncuestas;
 	}
 	
+	/**
+	 * 
+	 */
 	public function obtenerEncuestasGrupo($idGrupo){
 		$tablaEncuestaGrupo = $this->tablaEncuestaGrupo;
 		$select = $tablaEncuestaGrupo->select()->from($tablaEncuestaGrupo)->where("idGrupo=?",$idGrupo);

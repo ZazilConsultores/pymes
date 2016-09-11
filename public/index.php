@@ -44,6 +44,12 @@ $application = new Zend_Application(
 		'password' => 'admin',
 		'dbname' => 'GeneralE',
 	);
+$connlocalweb = array(
+		'host' => 'localhost',
+		'username' => 'dospesos_general',
+		'password' => 'Sgeneral2016/+',
+		'dbname' => 'dospesos_sgeneral',
+	);
 $connserver = array(
 		'host' => '192.168.1.5',
 		'username' => 'zazil',
@@ -82,6 +88,7 @@ Zend_Registry::set('connlocal', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
 
 $db = Zend_Db::factory('PDO_MYSQL', $connlocal);
+$db = Zend_Db::factory('PDO_MYSQL', $connlocalweb);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
 //$db = Zend_Db::factory('PDO_MYSQL', $connserver);
@@ -148,6 +155,13 @@ $formTDecorators = array(
 	'Form'
 );
 
+$modEncuesta = array(
+	'host' => 'localhost',
+	'username' => 'dospesos_general',
+	'password' => 'Sgeneral2016/+',
+	'dbname' => 'dospesos_mod_encuesta',
+);
+
 //============================================================================ CONSTANTES GENERALES
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);
@@ -160,6 +174,8 @@ Zend_Registry::set('tipoBanco', $tipoBanco);
 Zend_Registry::set('gradosEscolares', $gradosEscolares);
 Zend_Registry::set('formaPago', $formaPago);
 Zend_Registry::set('conceptoPago', $conceptoPago);
+
+Zend_Registry::set('dbconfigmodencuesta', $modEncuesta);
 
 $application->bootstrap()
             ->run();

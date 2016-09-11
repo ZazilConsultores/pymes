@@ -85,7 +85,7 @@ class Encuesta_Model_Encuesta
 		$this->descripcion = $datos["descripcion"];
 		$this->estatus = $datos["estatus"];
 		$this->fecha = $datos["fecha"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
 	public function toArray() {
@@ -97,7 +97,7 @@ class Encuesta_Model_Encuesta
 		$datos["descripcion"] = $this->descripcion;
 		$datos["estatus"] = $this->estatus;
 		$datos["fecha"] = $this->fecha;
-		$datos["hash"] = $this->hash;
+		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}
