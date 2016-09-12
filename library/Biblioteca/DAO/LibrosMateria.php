@@ -22,14 +22,25 @@
 	 * @param $librosMateria 
 	 */
 	 
-	 public function agregarLibrosMateria(Biblioteca_Model_LibrosMateria $materia){
+	/* public function agregarLibrosMateria(Biblioteca_Model_LibrosMateria $materia){
 	 	
 		
 		$tablaLibrosMateria = $this->tablaLibrosMateria;
 		$tablaLibrosMateria->insert($materia->toArray());
+				
+	 }*/
+	 
+	 
+	 public function agregarLibrosMateria(array $datos){
+	 	
+		try{
 			
+			$idMateria = $this->getParam("Libro","idLibro");
+		}catch(Exxception $ex){
 			
+		}
 	 }
+	 
 	 
 	 
 	 /**

@@ -36,13 +36,13 @@ $application = new Zend_Application(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'General',
+		'dbname' => 'GeneralE',
 	);
  $connlocaldos = array(
 		'host' => 'localhost',
 		'username' => 'zazil',
 		'password' => 'admin',
-		'dbname' => 'GeneralDos',
+		'dbname' => 'GeneralE',
 	);
 $connserver = array(
 		'host' => '192.168.1.5',
@@ -72,9 +72,9 @@ $connlocalOrigen = array(
 		'dbname' => 'inventario',
 	);
 
-//Zend_Registry::set('connserver', $connserver);
-Zend_Registry::set('connlocal', $connlocal);
+Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connlocal', $connlocal);
+//Zend_Registry::set('connnlocal', $connlocal);
 //Zend_Registry::set('connserver', $connserver);
 //Zend_Registry::set('connnancy', $connnancy);
 //Zend_Registry::set('connlocalorigen', $connlocalOrigen);
@@ -84,7 +84,7 @@ Zend_Registry::set('connlocal', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
 //$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
 //$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-$db = Zend_Db::factory('PDO_MYSQL', $connserver);
+
 
 
 $db->query("SET NAMES 'utf8'");

@@ -5,14 +5,21 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	private $empresaDAO;
 	private $fiscalesDAO;
-	private $tablaClientesEmpresa;
+
 
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+        
         $this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+
+		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
+
 		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
+
     }
 
     public function indexAction() {
@@ -21,8 +28,6 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	public function clienteseAction() {
 		$idFiscales = $this->getParam("idFiscales");
-		//$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
-		//$empresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
 		
 		$fiscalesClientes = $this->fiscalesDAO->getFiscalesClientesByIdFiscalesEmpresa($idFiscales);
 		if(!is_null($fiscalesClientes)){
@@ -35,7 +40,13 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	public function proveedoreseAction() {
 		$idFiscales = $this->getParam("idFiscales");
-		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		
+		$fiscalesProveedores = $this->fiscalesDAO->getFiscalesProveedoresByIdFiscalesEmpresa($idFiscales);
+		if(!is_null($fiscalesProveedores)){
+			echo Zend_Json::encode($fiscalesProveedores);
+		}else{
+			echo Zend_Json::encode(array());
+		}
 	}
 	
 	public function asocclienteAction() {
@@ -43,14 +54,34 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$idFiscalesEmpresa = $this->getParam("idFiscalesEmpresa");
 		$idFiscalesCliente = $this->getParam("idFiscalesCliente");
 		
+		//print_r($idFiscalesCliente . "<br />");
+		//print_r($idFiscalesEmpresa . "<br />");
+		
 		$fiscalesDAO = $this->fiscalesDAO;
 		$empresaDAO = $this->empresaDAO;
 		
 		$empresaEmpresa = $empresaDAO->obtenerEmpresaPorIdFiscales($idFiscalesEmpresa);
 		$empresaCliente = $empresaDAO->obtenerEmpresaPorIdFiscales($idFiscalesCliente);
 		
-		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
+		//print_r($empresaEmpresa);
+		//print_r("<br />");
+		//print_r($empresaCliente);
 		
+		$empresa = $fiscalesDAO->getEmpresaByIdFiscales($idFiscalesEmpresa);
+		$cliente = $fiscalesDAO->getClienteByIdFiscales($idFiscalesCliente);
+		
+		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
+		print_r("<br />");
+		print_r($fiscalesDAO->getEmpresaByIdFiscales($idFiscalesEmpresa));
+		print_r("<br />");
+		print_r($fiscalesDAO->getClienteByIdFiscales($idFiscalesCliente));
+	}
+
+	
+
+	public function bancosempresaAction() {
+		$idBanco = $this->getParam("idBanco");
+		$bancosEmpresa = $this->bancosEmpresaDAO->obtenerBancosEmpresa($idBanco);
 		
 	}
 }

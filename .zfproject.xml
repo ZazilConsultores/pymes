@@ -1116,6 +1116,7 @@
             <formFile formName="AgregarNomina"/>
             <formFile formName="AgregarImpuestos"/>
             <formFile formName="AltaProyecto"/>
+            <formFile formName="Impuestos"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>

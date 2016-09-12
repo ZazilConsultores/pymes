@@ -1,15 +1,29 @@
-<?php echo $this->formulario ?>
-
+<?php
+	echo $this->formulario;	
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;	
+?>
 <section class="row">
-	<div class="panel panel-default">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				Agregar Productos para Notaaaaa Salida.
-			</h3>
+			<h3 class="panel-title">Agregar Productos para Nota Salida.</h3>
 		</div>
 		<div class="panel-body">
-			<!-- -->
-			<!-- Botón para agregar filas-->
+			<?php if (!is_null($messageSuccess)){?>
+			<div class="alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
+					<span arial-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php }?><br />
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -28,10 +42,8 @@
 						<th>Importe</th>
 						<th>Eliminar</th>
 					</tr>
-				
 				</thead>
 				<tbody>
-					
 				</tbody>
 				<tfoot>
 					<tr>
@@ -40,19 +52,61 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td>&nbsp;</td>
+						<td>Total:</td>
 						<td><input id="total" class="form-control" /></td>
-				
 					</tr>
+					
 				</tfoot>
 			</table>
-			<br />
 		</div>
 	</div>
 </section>
-
 <script>
 	$( document ).ready(function() {
+		
+		$("select#idEmpresas").on('change', function(){
+			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			
+		});
+			
+		var form = $("#nuevaNotaCliente");
+		form.validate({
+			rules: {
+				numFolio: {
+					required: true
+				},
+				fecha: {
+					required: true
+				},
+				idSucursal: {
+					required: true
+				}
+			},
+			messages: {
+				numFolio: {					
+					required: "Este campo no puede quedar vacío, Ingrese número de folio"
+				},
+				fecha: {					
+					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío, Seleccione Empresa"
+				}
+			}
+		});
+		
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
@@ -110,23 +164,11 @@
 		
 		//Funcion Eliminar #btnLimpiar_2
  		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
- 			var numero=0;
- 			//var tabla = document.getElementById("productosNota");
- 
-  			// si tenemos mas de una fila, borramos3
-  			//if(tabla.rows.length > 2)
-  			if ($("table#productosNota tr").length > 2) 
+ 			if ($("table#productosNota tbody > tr").length >1)
   			{
-  				$("table#productosNota tr:first").remove();
-  				//tabla.deleteRow(tabla.rows.length-1);
-  				//$('table#productosNota tr:last').remove();
-  				//--numero;
+  				$("table#productosNota  tbody > tr:last").remove();
   			}
-  			//if ($("table#productosNota tr").length != 1) {
-     		
-			//}
-  			   
-
+ 			 		
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
@@ -170,15 +212,10 @@
 			 $("table#productosNota").find("input[id^='costoTotal_']").each(function () {
         		costo += +$(this).val();
     		});
-			//console.log(costo);
-			//console.log(costoTotal);
 			$("input#total").val(costo);
 		
 		});
-			
- 		//Funcion genera totalColumna
-
- 	
+			 	
 		//======================
  		//input precioUnitario
  		$("table#productosNota").on("change", "input[id^='costoUnitario_']", function(){
@@ -259,3 +296,4 @@
 	
 	});//cierra document ready
 </script>
+

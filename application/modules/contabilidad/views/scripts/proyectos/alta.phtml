@@ -57,6 +57,30 @@ $(document).ready(function(){
 		var ganancia = $("input#costoFinal").val() - $("input#costoInicial").val();	
 		console.log(ganancia);
 		$('input#ganancia').val(ganancia);
+	});
+	
+	$("select#opcion").on('change', function(){
+		var valor = $(this).val();
+		//var cliente = $("select#idCliente");
+		 //console.log(cliente);
+		if(valor == 1){
+			console.log("es cliente");
+			document.getElementById("idCliente").disabled=false;
+
+		}else{
+			document.getElementById("idCliente").disabled=true;
+
+		}
+		
+		if(valor == 2){
+			console.log("es Proveedor");
+			document.getElementById("idProveedor").disabled=false;
+
+		}else{
+			document.getElementById("idProveedor").disabled=true;
+
+		}
+		
 	});	
 			
 });
@@ -75,14 +99,7 @@ $(document).ready(function(){
 				fechaApertura: {
 					required: true
 				},
-				fechaCierre: {
-					required: true
-				},
 				costoInicial: {
-					required: true,
-					number: true
-				},
-				costoFinal: {
 					required: true,
 					number: true
 				}
@@ -100,16 +117,9 @@ $(document).ready(function(){
 				},
 				fechaApertura: {					
 					required: "Este campo no puede quedar vacío,Seleccione fecha Inicio"
-				},
-				fechaCierre: {					
-					required: "Este campo no puede quedar vacío, Seleccione fecha Cierre"
 				},	
 				costoInicial: {					
 					required: "Este campo no puede quedar vacío, Ingrese Costo Inicio",
-					number:"Ingrese un número valido"
-				},
-				costoFinal: {					
-					required: "Este campo no puede quedar vacío, Ingrese Costo Cierre",
 					number:"Ingrese un número valido"
 				}
 			}

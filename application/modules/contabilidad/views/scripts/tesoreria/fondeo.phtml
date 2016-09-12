@@ -1,1 +1,110 @@
-<?php echo $this->formulario; ?>
+<?php 
+	$formulario = $this->formulario;
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Ingresar Nuevo Fondeo
+			</h3>
+		</div>
+		<div class="panel-body">
+			<?php if(!is_null($messageSuccess)){ ?>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php } ?><br />
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"tesoreria","action"=>"fondeo"), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Fondeo.
+			</a><br />
+			<?php echo $formulario ?>
+		</div>
+	</div>
+</section>
+<script>
+	$(document).ready(function(){
+		$("select#idEmpresas").on('change', function(){
+			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			
+		});
+		
+		$("select#idEmpresas").on('change', function(){
+			$url = "/General/public/contabilidad/json/bancosempresa/idBanco/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				//console.log($ajax);
+				dataType: "json",
+				success: function(data){
+					$("select#idBancoE").empty();
+					$.each(data, function(i,item){	
+						$("select#idBancoE").append($("<option></option>").attr("value",data[i].idBancosEmpresas).text(data[i].idBanco)); 
+					});
+				}
+			});
+			
+		});
+		var form = $("#nuevaNotaProveedor");
+		form.validate({
+			rules: {
+				numFolio: {
+					required: true
+				},
+				fecha: {
+					required: true
+				},
+				idSucursal: {
+					required: true
+				}
+				/*idProyecto: {
+					required: true
+				}*/
+				
+			},
+			messages: {
+				numFolio: {					
+					required: "Este campo no puede quedar vacío, Ingrese número de folio"
+				},
+				fecha: {					
+					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío"
+				}
+				/*idProyecto: {					
+					required: "Este campo no puede quedar vacío"
+				}*/
+			}
+		});
+		
+		$("#submit").click(function(){
+			console.log("" + form.valid());
+		});
+		
+	});
+</script>
+

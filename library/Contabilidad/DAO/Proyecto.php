@@ -11,6 +11,7 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	
 	public function crearProyecto(Contabilidad_Model_Proyecto $proyecto)
 	{
+	
 		$fechaApertura = new Zend_Date($proyecto->getFechaApertura());	
 		$stringIni = $fechaApertura->toString('yyyy-MM-dd');
 		
@@ -20,10 +21,9 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		//$Ganancia = $proyecto->getCostoFinal()- $proyecto->getCostoInicial();
 		
 		$proyecto->setFechaApertura($stringIni);		
-		$proyecto->setFechaCierre($stringFin);
+		$proyecto->setFechaCierre($stringFin);	
 		//$proyecto->setGanancia($Ganancia);
-		
-		$this->tablaProyecto->insert($proyecto->toArray());		
+		//$this->tablaProyecto->insert($proyecto->toArray());		
 	}
 	
 	public function obtenerProyectos(){

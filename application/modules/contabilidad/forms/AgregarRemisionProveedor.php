@@ -4,37 +4,59 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 {
     public function init()
     {
+    	$decoratorsPresentacion = array(
+			'FormElements',
+			array(array('tabla'=>'Htmltag'),array('tag'=>'table','class'=>'table table-striped table-condensed')),
+			array('Fieldset', array('placement'=>'prepend'))
+		);
+		$decoratorsElemento = array(
+			'ViewHelper',
+			array(array('element'=>'Htmltag'),array('tag'=>'td')),
+			array('label',array('tag'=>'td')),
+			array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
+		);
+		
         $this->setAttrib("id", "nuevaRemisionProveedor");
         
         $subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Ingresar Datos");
+		$subEncabezado->setLegend("Nueva Remisión Proveedor");
 		
 		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("UPSP");
+		/*$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
+		$eTipoInventario->setValue("PEPS");*/
 		
-		$eNumeroFactura = new Zend_Form_Element_Text('numFolio');
-		$eNumeroFactura->setLabel('Número de Folio: ');
-		$eNumeroFactura->setAttrib("class", "form-control");
+		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
+		$eNumeroFolio->setLabel('Número de Folio: ');
+		$eNumeroFolio->setAttrib("class", "form-control");
+		$eNumeroFolio->setAttrib("required", "true");
+		
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
 		
 		$eTipoMovto = New Zend_Form_Element_Select('idTipoMovimiento');
-		$eTipoMovto->setLabel('Seleccionar Tipo de Movimiento');
+		$eTipoMovto->setLabel('Tipo  Movimiento:');
 		$eTipoMovto->setAttrib("class", "form-control");
 		
-		foreach ($tiposMovimientos as $tipoMovimiento)
+		foreach ($tipoMovimientoDAO->obtenerTiposMovimientos()as $fila)
 		{
-			$eTipoMovto->addMultiOption($tipoMovimiento->getIdTipoMovimiento(),$tipoMovimiento->getDescripcion());		
+			if ($fila->getIdTipoMovimiento()==12){
+				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(),$fila->getDescripcion());		
+			}
 		}
+			
+		$eFecha = new Zend_Form_Element_Text('fecha');
+		$eFecha->setLabel('Seleccionar Fecha:');
+		$eFecha->setAttrib("class", "form-control");
+		$eFecha->setAttrib("required","Seleccionar fecha");
+		$eFecha->setAttrib("required", "true");
 		
 		$columnas = array('idFiscales','razonSocial');
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
-    	$eEmpresa =  new Zend_Form_Element_Select('idEmpresa');
+    	$eEmpresa =  new Zend_Form_Element_Select('idEmpresas');
         $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
@@ -42,23 +64,23 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 		
-		$columnas = array('idEmpresa','razonSocial');
+		$eSucursal =  new Zend_Form_Element_Select('idSucursal');
+        $eSucursal->setLabel('Sucursal: ');
+		$eSucursal->setAttrib("class", "form-control");
+		$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
+		
+	
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
 		
 		$eProveedor = new Zend_Form_Element_Select('idCoP');
-		$eProveedor->setLabel('Seleccionar Proveedor');
+		$eProveedor->setLabel('Seleccionar Proveedor:');
 		$eProveedor->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idProveedores, $fila->razonSocial);
 		}
-		
-		
-		$eFecha = new Zend_Form_Element_Text('fecha');
-		$eFecha->setLabel('Fecha:');
-		$eFecha->setAttrib("class", "form-control");
-		$eFecha->setAttrib("required","Seleccionar fecha");
 		
 		/*$eDivisa = New Zend_Form_Element_Hidden('idDivisa');
 		$eDivisa->setAttrib("class", "form-control");
@@ -75,17 +97,18 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
 			
-		$eProyecto = new Zend_Form_Element_Text('idProyecto');
-        $eProyecto->setLabel('Seleccionar Proyecto');
+		$eProyecto = new Zend_Form_Element_Select('idProyecto');
+        $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
-		$eProyecto->setValue(1);
-		
+		$eProyecto->setRegisterInArrayValidator(FALSE);
+		$eProyecto->setAttrib("required", "true");
+			
 		//===============================================================
 		$subFormaPago = new Zend_Form_SubForm;
 		$subFormaPago->setLegend("Registrar un pago en:");
 		
 		$eDivisa = New Zend_Form_Element_Select('idDivisa');
-		$eDivisa->setLabel('Seleccionar Divisa');
+		$eDivisa->setLabel('Seleccionar Divisa:');
 		$eDivisa->setAttrib("class", "form-control");
 		
 		$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
@@ -103,28 +126,35 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eFormaPago->setMultiOptions($formaPago);
 		
 		//==================Concepto pago
-		$conceptoPago = Zend_Registry::get('conceptoPago');
+		//$conceptoPago = Zend_Registry::get('conceptoPago');
 		
 		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
 		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
 		$eConceptoPago->setAttrib("class", "form-control");
-		$eConceptoPago->setMultiOptions($conceptoPago);
+		//$eConceptoPago->setMultiOptions($conceptoPago);
+		
+		$conceptoPago = array(
+			'LI' => 'LIQUIDACION'
+		);
+		foreach ($conceptoPago as $key => $value) {
+			$eConceptoPago->addMultiOption($key, $value);
+		}
 		
 		$eImportePago = new Zend_Form_Element_Text('importePago');
-		$eImportePago->setLabel('Pago $:');
+		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
-		//$eImportePago->setAttrib("required", "true");
+		$eImportePago->setAttrib("required", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 		
 		$eBanco = new Zend_Form_Element_Select('idBanco');
-		$eBanco->setLabel('Seleccionar Banco');
+		$eBanco->setLabel('Seleccionar Banco:');
 		$eBanco->setAttrib("class", "form-control");
 		
 		foreach($bancos as $banco)
 		{
-			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getCuenta());
 		}
 			
 		$eSubmit = new Zend_Form_Element_Submit("submit");
@@ -132,10 +162,14 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFactura, $eTipoMovto,$eFecha,$eEmpresa,$eProveedor,$eProyecto,$eProducto, $eTipoInventario));
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eProducto));
+	
+		
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago,$eFormaPago,$eImportePago));
+		$subFormaPago->setElementDecorators($decoratorsElemento);
+		$subFormaPago->setDecorators($decoratorsPresentacion);
+		
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
-		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);
     }
 }
