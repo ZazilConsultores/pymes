@@ -31,7 +31,6 @@ $application = new Zend_Application(
  * Agregamos variables al registro de Zend, 
  * este se mantendra en memoria: no acepta objetos, solo variables y arrays.
  */
-//date_default_timezone_set('America/Mexico_City');
 setlocale(LC_MONETARY, 'es_MX.UTF-8');
 //============================================================================ CONSTANTES GENERALES
 //$estatusEncuesta = array('0' => 'CREADO', '1' => 'PUBLICADO', '2' => 'ACTIVO', '3' => 'FINALIZADO');

@@ -22,6 +22,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader->registerNamespace('Contabilidad_');
 		$autoloader->registerNamespace('Util_');
 		$autoloader->registerNamespace('My_');
+		$autoloader->registerNamespace('Biblioteca_');
 	}
 	
 	/**
