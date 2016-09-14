@@ -9,7 +9,9 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 	private $tablaRegistro;
 	
 	function __construct() {
-		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro(array('db'=>$dbAdapter));
 	}
 	
 	// =====================================================================================>>>   Buscar

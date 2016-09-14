@@ -25,11 +25,11 @@ class Sistema_Form_AltaSucursal extends Zend_Form
 		);
         
         $tipoEmpresa = Zend_Registry::get("tipoEmpresa");
-		$estadoDAO = new Inventario_DAO_Estado;
+		$estadoDAO = new Sistema_DAO_Estado;
 		$empresaDAO = new Sistema_DAO_Empresa;
 		
 		$estados = $estadoDAO->obtenerEstados();
-		$municipioDAO = new Inventario_DAO_Municipio;
+		$municipioDAO = new Sistema_DAO_Municipio;
         //   ===============================================================
         $subSucursal = new Zend_Form_SubForm();
 		$subSucursal->setLegend("Datos de Sucursal");

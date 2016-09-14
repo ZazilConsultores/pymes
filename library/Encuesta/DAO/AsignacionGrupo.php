@@ -11,11 +11,13 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 	private $tablaAsignacionGrupo;
 	
 	public function __construct() {
-		$this->registroDAO = new Encuesta_DAO_Registro;
-		$this->materiaDAO = new Encuesta_DAO_Materia;
-		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
-		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo;
+		$this->registroDAO = new Encuesta_DAO_Registro(array('db'=>$dbAdapter));
+		$this->materiaDAO = new Encuesta_DAO_Materia(array('db'=>$dbAdapter));
+		$this->gruposDAO = new Encuesta_DAO_Grupos(array('db'=>$dbAdapter));
+		
+		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
 		
 	}
 	

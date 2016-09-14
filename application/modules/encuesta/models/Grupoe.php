@@ -46,24 +46,12 @@ class Encuesta_Model_Grupoe
         $this->grupo = $grupo;
     }
 
-    private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
     public function __construct(array $datos)
     {
         if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
 		if(array_key_exists("idGrado", $datos)) $this->idGrado = $datos["idGrado"];
 		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
 		$this->grupo = $datos["grupo"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	
 	public function toArray()
@@ -74,7 +62,6 @@ class Encuesta_Model_Grupoe
 		$datos["idGrado"] = $this->idGrado;
 		$datos["idCiclo"] = $this->idCiclo;
 		$datos["grupo"] = $this->grupo;
-		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

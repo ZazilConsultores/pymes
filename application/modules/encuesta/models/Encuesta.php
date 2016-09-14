@@ -35,16 +35,6 @@ class Encuesta_Model_Encuesta
     public function setNombreClave($nombreClave) {
         $this->nombreClave = $nombreClave;
     }
-
-    private $descripcion;
-
-    public function getDescripcion() {
-        return $this->descripcion;
-    }
-    
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
-    }
 	
 	private $estatus;
 
@@ -54,6 +44,16 @@ class Encuesta_Model_Encuesta
     
     public function setEstatus($estatus) {
         $this->estatus = $estatus;
+    }
+
+    private $descripcion;
+
+    public function getDescripcion() {
+        return $this->descripcion;
+    }
+    
+    public function setDescripcion($descripcion) {
+        $this->descripcion = $descripcion;
     }
     
     private $fecha;
@@ -66,29 +66,19 @@ class Encuesta_Model_Encuesta
         $this->fecha = $fecha;
     }
 	
-	private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey($this->toArray()));
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
     public function __construct(array $datos) {
 		
 		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
 		$this->nombre = $datos["nombre"];
 		$this->nombreClave = $datos["nombreClave"];
-		$this->descripcion = $datos["descripcion"];
 		$this->estatus = $datos["estatus"];
-		$this->fecha = $datos["fecha"];
-		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		$this->descripcion = $datos["descripcion"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
+		
 	}
 	
 	public function toArray() {
+		
 		$datos = array();
 		
 		$datos["idEncuesta"] = $this->idEncuesta;
@@ -97,7 +87,6 @@ class Encuesta_Model_Encuesta
 		$datos["descripcion"] = $this->descripcion;
 		$datos["estatus"] = $this->estatus;
 		$datos["fecha"] = $this->fecha;
-		//$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

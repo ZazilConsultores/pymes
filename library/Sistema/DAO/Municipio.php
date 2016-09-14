@@ -7,10 +7,10 @@
 class Sistema_DAO_Municipio implements Sistema_Interfaces_IMunicipio {
 	private $tablaMunicipio;
 	
-	public function __construct()
-	{
-		$this->tablaMunicipio = new Sistema_Model_DbTable_Municipio;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
+		$this->tablaMunicipio = new Sistema_Model_DbTable_Municipio(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerMunicipio($idMunicipio)

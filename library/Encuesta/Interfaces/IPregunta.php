@@ -7,7 +7,6 @@
 interface Encuesta_Interfaces_IPregunta{
 	// =====================================================================================>>>   Buscar
 	public function obtenerPregunta($idPregunta);
-	public function obtenerPreguntaHash($hash);
 	public function obtenerPreguntasEncuesta($idEncuesta);
 	public function obtenerPreguntasAbiertasEncuesta($idEncuesta);
 	// =====================================================================================>>>   Crear

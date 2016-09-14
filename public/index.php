@@ -6,7 +6,7 @@ defined('APPLICATION_PATH')
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 // Define application pdf directory
 defined('PDF_PATH')
     || define('PDF_PATH', realpath(dirname(__FILE__) .'/pdf' ));
@@ -31,77 +31,7 @@ $application = new Zend_Application(
  * Agregamos variables al registro de Zend, 
  * este se mantendra en memoria: no acepta objetos, solo variables y arrays.
  */
- //============================================================== >>> Arrays de conexion a bd: usados para las clases de Zend_Db
- $connlocal = array(
-		'host' => 'localhost',
-		'username' => 'zazil',
-		'password' => 'admin',
-		'dbname' => 'GeneralE',
-	);
- $connlocaldos = array(
-		'host' => 'localhost',
-		'username' => 'zazil',
-		'password' => 'admin',
-		'dbname' => 'GeneralE',
-	);
-$connlocalweb = array(
-		'host' => 'localhost',
-		'username' => 'dospesos_general',
-		'password' => 'Sgeneral2016/+',
-		'dbname' => 'dospesos_sgeneral',
-	);
-$connserver = array(
-		'host' => '192.168.1.5',
-		'username' => 'zazil',
-		'password' => 'admin',
-		//'dbname' => 'General',
-		//'dbname' => 'GeneralSagrado',
-		'dbname' => 'GeneralE',
-	);
-$connlocaltres = array(
-		'host' => 'localhost',
-		'username' => 'zazil',
-		'password' => 'admin',
-		//'dbname' => 'General',
-		'dbname' => 'GeneralEncuestas',
-	);
-$connnancy = array(
-		'host' => '192.168.1.240',
-		'username' => 'areli',
-		'password' => 'zazil',
-		'dbname' => 'inventario',
-	);
-$connlocalOrigen = array(
-		'host' => 'localhost',
-		'username' => 'inventario',
-		'password' => 'inventario',
-		'dbname' => 'inventario',
-	);
-
-//Zend_Registry::set('connserver', $connserver);
-Zend_Registry::set('connlocal', $connlocal);
-//Zend_Registry::set('connnlocal', $connlocal);
-//Zend_Registry::set('connserver', $connserver);
-//Zend_Registry::set('connnancy', $connnancy);
-//Zend_Registry::set('connlocalorigen', $connlocalOrigen);
-//============================================================== >>> Fijamos una conexion directa a localhost
-//$db = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
-
-$db = Zend_Db::factory('PDO_MYSQL', $connlocal);
-$db = Zend_Db::factory('PDO_MYSQL', $connlocalweb);
-//$db = Zend_Db::factory('PDO_MYSQL', $connnancy);
-//$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-//$db = Zend_Db::factory('PDO_MYSQL', $connserver);
-//$db = Zend_Db::factory('PDO_MYSQL', $connlocaldos);
-
-$db->query("SET NAMES 'utf8'");
-$db->query("SET CHARACTER SET 'utf8'");
-Zend_Db_Table_Abstract::setDefaultAdapter($db);
-
-//$dbServer = Zend_Db::factory('PDO_MYSQL', $connlocalOrigen);
-//Zend_Registry::set('dbInventarioLocal', $dbServer);
-
-date_default_timezone_set('America/Mexico_City');
+//date_default_timezone_set('America/Mexico_City');
 setlocale(LC_MONETARY, 'es_MX.UTF-8');
 //============================================================================ CONSTANTES GENERALES
 //$estatusEncuesta = array('0' => 'CREADO', '1' => 'PUBLICADO', '2' => 'ACTIVO', '3' => 'FINALIZADO');
@@ -154,14 +84,14 @@ $formTDecorators = array(
 	array('HtmlTag',array('tag'=>'table','class'=>'table table-striped table-condensed')),
 	'Form'
 );
-
+/*
 $modEncuesta = array(
-	'host' => 'localhost',
+	'host' => '192.168.1.69',
 	'username' => 'dospesos_general',
 	'password' => 'Sgeneral2016/+',
 	'dbname' => 'dospesos_mod_encuesta',
 );
-
+*/
 //============================================================================ CONSTANTES GENERALES
 Zend_Registry::set('tipo', $tipo);
 Zend_Registry::set('tUsuario', $tUsuario);
@@ -175,7 +105,7 @@ Zend_Registry::set('gradosEscolares', $gradosEscolares);
 Zend_Registry::set('formaPago', $formaPago);
 Zend_Registry::set('conceptoPago', $conceptoPago);
 
-Zend_Registry::set('dbconfigmodencuesta', $modEncuesta);
+//Zend_Registry::set('dbconfigmodencuesta', $modEncuesta);
 
 $application->bootstrap()
             ->run();

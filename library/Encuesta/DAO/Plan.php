@@ -9,7 +9,9 @@ class Encuesta_DAO_Plan implements Encuesta_Interfaces_IPlan {
 	private $tablaPlanEstudios;
 	
 	public function __construct() {
-		$this->tablaPlanEstudios = new Encuesta_Model_DbTable_PlanE;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaPlanEstudios = new Encuesta_Model_DbTable_PlanEducativo(array('db'=>$dbAdapter));
 	}
 	
 	// =====================================================================================>>>   Buscar

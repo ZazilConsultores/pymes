@@ -8,7 +8,9 @@ class Sistema_DAO_Reporte implements Sistema_Interfaces_IReporte {
 	private $tablaTipoReporte;
 	
 	public function __construct() {
-		$this->tablaTipoReporte = new Sistema_Model_DbTable_TipoReporte;
-		$this->tablaReporte = new Sistema_Model_DbTable_Reporte;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaTipoReporte = new Sistema_Model_DbTable_TipoReporte(array('db'=>$dbAdapter));
+		$this->tablaReporte = new Sistema_Model_DbTable_Reporte(array('db'=>$dbAdapter));
 	}
 }

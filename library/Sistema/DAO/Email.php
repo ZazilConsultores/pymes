@@ -10,8 +10,10 @@ class Sistema_DAO_Email implements Sistema_Interfaces_IEmail {
 	private $tablaFiscales;
 	
 	function __construct() {
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
-		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerEmail($idEmail){

@@ -8,7 +8,6 @@ interface Encuesta_Interfaces_ISeccion{
 	// =====================================================================================>>>   Buscar
 	// ============================================================= Simple elemento
 	public function obtenerSeccion($idSeccion);
-	public function obtenerSeccionHash($hash);
 	// ============================================================= Conjunto de elementos
 	public function obtenerPreguntas($idSeccion);
 	public function obtenerGrupos($idSeccion);

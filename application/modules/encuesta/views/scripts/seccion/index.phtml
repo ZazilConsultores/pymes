@@ -16,13 +16,13 @@
 				<a class="btn btn-info" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true); ?>">
 					<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Secciones
 				</a>
-				<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"admin","idSeccion"=>$seccion->getIdSeccion()), null, true) ?>">
+				<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"admin","idSeccion"=>$seccion->getIdSeccionEncuesta()), null, true) ?>">
 					<span class="glyphicon glyphicon-cog"></span> Administrar Sección
 				</a>
-				<a class="btn btn-success" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "grupo", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>">
+				<a class="btn btn-success" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "grupo", "action" => "alta", "idSeccion" => $seccion->getIdSeccionEncuesta()), null, true); ?>">
 					<span class="glyphicon glyphicon-plus"></span> Agregar grupo
 				</a>
-				<a class="btn btn-success" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "alta", "idSeccion" => $seccion->getIdSeccion()), null, true); ?>">
+				<a class="btn btn-success" href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "alta", "idSeccion" => $seccion->getIdSeccionEncuesta()), null, true); ?>">
 					<span class="glyphicon glyphicon-plus"></span> Agregar pregunta
 				</a>
 			</div>

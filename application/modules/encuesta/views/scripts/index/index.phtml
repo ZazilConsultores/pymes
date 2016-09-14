@@ -19,7 +19,7 @@
 					<?php foreach ($encuestas as $encuesta) : ?>
 					<tr>
 						<td>
-							<button type="button" class="btn btn-block btn-default" tipo="encuesta" hash="<?php echo $encuesta->getHash(); ?>">
+							<button type="button" class="btn btn-block btn-default" tipo="encuesta" claveEncuesta="<?php echo $encuesta->getIdEncuesta(); ?>">
 								<span class="glyphicon glyphicon-list-alt"></span> <?php echo $encuesta->getNombreClave(); ?>
 							</button>
 						</td>
@@ -62,37 +62,42 @@
 <section class="row">
 	<div id="contentDet" class="panel panel-info">
 		<div class="panel-heading">
-			<h3 class="panel-title">Detalles</h3>
+			<h3 class="panel-title">Detalles Elemento</h3>
 		</div>
-		<div id="detalles" class="panel-body">
+		<div id="detalles" class="panel-body" tipo="" claveContenedor="">
 		</div>
 	</div>
 </section>
 
 <script>
-	$().ready(function(){
-		$urlEncuesta = "/General/public/encuesta/";
+	$().ready(function() {
+		//$urlEncuesta = "/General/public/encuesta/";
+		var url = window.location.origin + "/General/public/";
 		
-		$("button[tipo='encuesta']").click(function(){
-			console.log($(this).attr("hash"));
-			$hash = $(this).attr("hash");
-			$hashContainer = $("div#detalles").attr("hash");
-			$tipo = "encuesta";
-			$tipoContainer = $("div#detalles").attr("tipo");
+		$("button[tipo='encuesta']").click(function() {
+			console.log($(this).attr("claveEncuesta"));
+			var claveEncuesta = $(this).attr("claveEncuesta");
+			var claveContenedor = $("div#detalles").attr("claveContenedor");
+			//$hashContainer = $("div#detalles").attr("hash");
+			var tipo = "encuesta";
+			var tipoContenedor = $("div#detalles").attr("tipo");
 			
-			if($hash != $hashContainer){
+			if((tipo != tipoContenedor) && (claveEncuesta != claveContenedor) ){
+				// Peticion AJAX para actualizar contenedor de detalles
+				var urlQueryEncuesta = url + "encuesta/html/encuestadet/claveEncuesta/"+claveEncuesta; 
 				$.ajax({
-					url: $urlEncuesta + "html/encuestadet/hash/" + $hash,
+					url: urlQueryEncuesta,
 					dataType: "html",
 					success: function(data){
 						$("div#detalles").html(data);
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
+						$("div#detalles").attr("claveContenedor", claveEncuesta);
+						$("div#detalles").attr("tipo", tipo);
 					}
 				});
-				// =======================================   >>> Cargamos las secciones
+				// Peticion AJAX para actualizar secciones
+				var urlQuerySecciones = url + "encuesta/html/secciones/claveEncuesta/"+claveEncuesta;
 				$.ajax({
-					url: $urlEncuesta + "html/secciones/hash/" + $hash,
+					url: urlQuerySecciones,
 					dataType: "html",
 					success: function(data){
 						$("div#contenedorSecciones").html(data);
@@ -100,6 +105,8 @@
 						$("div#contenedorPreguntas").html("");
 					}
 				});
+				
+				
 			}
 			
 		});
@@ -107,33 +114,35 @@
 		$("div#contenedorSecciones").on("click", "button[tipo='seccion']", function(event) {
 			console.log("En secciones");
 			
-			$hash = $(this).attr("hash");
-			$hashContainer = $("div#detalles").attr("hash");
+			var claveSeccion = $(this).attr("claveSeccion");
+			var claveContenedor = $("div#detalles").attr("claveContenedor");
 			
-			$tipo = "seccion";
-			$tipoContainer = $("div#detalles").attr("tipo");
-			console.log($tipo);
-			console.log($tipoContainer);
+			var tipo = "seccion";
+			var tipoContenedor = $("div#detalles").attr("tipo");
+			//console.log($tipo);
+			//console.log($tipoContainer);
 			
-			if($hash != $hashContainer){
+			if((tipo != tipoContenedor) && (claveSeccion != claveContenedor) ){
 				//============================================================================================== Detalles Seccion
-				$urlDetallesSeccion = $urlEncuesta + "html/secciondet/hash/" + $hash;
+				//$urlDetallesSeccion = $urlEncuesta + "html/secciondet/hash/" + $hash;
+				var urlQuerySeccion = url + "encuesta/html/secciondet/claveSeccion/"+claveSeccion;
 				$.ajax({
-					url: $urlDetallesSeccion,
+					url: urlQuerySeccion,
 					dataType: "html",
 					success: function(data){
 						$("div#detalles").html(data);
 						$("div#detalles").attr("tipo", "seccion");
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
+						$("div#detalles").attr("claveContenedor", claveSeccion);
+						$("div#detalles").attr("tipo", tipo);
 					}
 				});
 				//============================================================================================== Grupos
 				//console.log("Lanzando peticion de grupos");
-				$urlGrupos = $urlEncuesta + "html/grupos/hash/" + $hash;
-				console.log($urlGrupos);
+				//$urlGrupos = $urlEncuesta + "html/grupos/hash/" + $hash;
+				//console.log($urlGrupos);
+				var urlQueryGrupos = url + "encuesta/html/grupos/claveSeccion/"+claveSeccion;
 				$.ajax({
-					url: $urlGrupos,
+					url: urlQueryGrupos,
 					dataType: "html",
 					success: function(data){
 						$("div#contenedorGrupos").html(data);
@@ -141,9 +150,10 @@
 				});
 				//============================================================================================== Preguntas
 				//console.log("Lanzando peticion de preguntas");
-				$urlPreguntas = $urlEncuesta + "html/preguntas/hashSeccion/" + $hash;
+				//$urlPreguntas = $urlEncuesta + "html/preguntas/hashSeccion/" + $hash;
+				var urlQueryPreguntas = url + "encuesta/html/preguntas/claveSeccion/"+claveSeccion;
 				$.ajax({
-					url: $urlPreguntas,
+					url: urlQueryPreguntas,
 					dataType: "html",
 					success: function(data){
 						$("div#contenedorPreguntas").html(data);
@@ -155,30 +165,31 @@
 	
 		$("div#contenedorGrupos").on("click", "button[tipo='grupo']", function(event) {
 			console.log("En grupos");
-			$hash = $(this).attr("hash");
-			$hashContainer = $("div#detalles").attr("hash");
+			var claveGrupo = $(this).attr("claveGrupo");
+			var claveContenedor = $("div#detalles").attr("claveContenedor");
 			
-			$tipo = "grupo";
-			$tipoContainer = $("div#detalles").attr("tipo");
+			var tipo = "grupo";
+			var tipoContenedor = $("div#detalles").attr("tipo");
 			
-			if($hash != $hashContainer){
+			if((tipo != tipoContenedor) && (claveGrupo != claveContenedor)){
 				//============================================================================================== Detalles Grupo
 				$urlDetallesGrupo = $urlEncuesta + "html/grupodet/hash/" + $hash;
+				var urlQueryGrupo = url + "encuesta/html/grupodet/claveGrupo/"+claveGrupo;
 				$.ajax({
-					url: $urlDetallesGrupo,
+					url: urlQueryGrupo,
 					dataType: "html",
 					success: function(data){
 						$("div#detalles").html(data);
-						$("div#detalles").attr("tipo", "grupo");
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
+						$("div#detalles").attr("claveGrupo", claveGrupo);
+						$("div#detalles").attr("tipo", tipo);
 					}
 				});
 				//============================================================================================== Preguntas
-				console.log("Lanzando peticion de preguntas");
-				$urlPreguntas = $urlEncuesta + "html/preguntas/hashGrupo/" + $hash;
+				//console.log("Lanzando peticion de preguntas");
+				//$urlPreguntas = $urlEncuesta + "html/preguntas/hashGrupo/" + $hash;
+				var urlPreguntasGrupo = url + "encuesta/html/preguntas/claveGrupo/" + claveGrupo;
 				$.ajax({
-					url: $urlPreguntas,
+					url: urlPreguntasGrupo,
 					dataType: "html",
 					success: function(data){
 						$("div#contenedorPreguntas").html(data);
@@ -189,26 +200,27 @@
 	
 		$("div#contenedorPreguntas").on("click", "button[tipo='pregunta']", function(event) {
 			console.log("En preguntas");
-			$hash = $(this).attr("hash");
-			$hashPadre = $(this).attr("padre");
+			var clavePregunta = $(this).attr("clavePregunta");
+			var clavePadre = $(this).attr("padre");
 			//$tipo = $(this).attr("tipo");
 			//console.log($hash);
 			
-			$hashContainer = $("div#detalles").attr("hash");
-			$tipo = "grupo";
-			$tipoContainer = $("div#detalles").attr("tipo");
+			var claveContenedor = $("div#detalles").attr("claveContenedor");
+			var tipo = "grupo";
+			var tipoContenedor = $("div#detalles").attr("tipo");
 			
-			if($hash != $hashContainer){
-				$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/hash/"+$hash;
-				console.log($urlDetallesPregunta);
+			if((tipo != tipoContenedor) && (clavePregunta != claveContenedor) ){
+				//$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/hash/"+$hash;
+				var urlDetallesPregunta = url + "encuesta/html/preguntadet/idPadre/"+clavePadre+"/tipo/"+tipo+"/clavePregunta/"+clavePregunta;
+				console.log(urlDetallesPregunta);
 				$.ajax({
-					url: $urlDetallesPregunta,
+					url: urlDetallesPregunta,
 					dataType: "html",
 					success: function(data){
 						$("div#detalles").html(data);
-						$("div#detalles").attr("tipo", "pregunta");
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
+						//$("div#detalles").attr("tipo", "pregunta");
+						$("div#detalles").attr("claveContenedor", clavePregunta);
+						$("div#detalles").attr("tipo", tipo);
 					}
 				});
 				

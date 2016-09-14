@@ -10,8 +10,10 @@ class Sistema_DAO_Telefono implements Sistema_Interfaces_ITelefono {
 	private $tablaFiscal;
 	
 	public function __construct() {
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
-		$this->tablaFiscal = new Sistema_Model_DbTable_Fiscales;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		$this->tablaFiscal = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerTelefono($idTelefono) {
