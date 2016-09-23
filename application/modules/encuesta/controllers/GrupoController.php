@@ -89,10 +89,9 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 				
 				$grupo = new Encuesta_Model_Grupo($datos);
 				
-				$grupo->setIdSeccion($idSeccion);
-				$grupo->setFecha(date("Y-m-d H:i:s", time()));
+				$grupo->setIdSeccionEncuesta($idSeccion);
+				//$grupo->setFecha(date("Y-m-d H:i:s", time()));
 				$grupo->setElementos("0");
-				$grupo->setHash($grupo->getHash());
 				
 				//$grupo->setElementos("0");
 				$idGrupo = $this->grupoDAO->crearGrupo($idSeccion,$grupo);

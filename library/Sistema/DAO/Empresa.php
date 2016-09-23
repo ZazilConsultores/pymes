@@ -26,19 +26,21 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	private $tablaSucursal;
 	
 	public function __construct() {
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
-		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
-		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
-		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
 		
-		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
-		$this->tablaProveedoresEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa;
+		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas(array('db'=>$dbAdapter));
+		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
+		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
 		
-		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor;
-		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal;
+		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa(array('db'=>$dbAdapter));
+		$this->tablaProveedoresEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa(array('db'=>$dbAdapter));
 		
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
+		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor(array('db'=>$dbAdapter));
+		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
+		
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
 	}
 	
 	/**

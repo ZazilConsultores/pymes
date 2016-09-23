@@ -21,21 +21,23 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	private $tablaEmail;
 	
 	public function __construct() {
-		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
-		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
-		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
-		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
-		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
-		$this->tablaProveedoresEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa;
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas(array('db'=>$dbAdapter));
+		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
+		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
 		
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
-		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos;
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
-		$this->tablaFiscalesEmail = new Sistema_Model_DbTable_FiscalesEmail;
+		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa(array('db'=>$dbAdapter));
+		$this->tablaProveedoresEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa(array('db'=>$dbAdapter));
+		
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
+		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios(array('db'=>$dbAdapter));
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos(array('db'=>$dbAdapter));
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
+		$this->tablaFiscalesEmail = new Sistema_Model_DbTable_FiscalesEmail(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerFiscales($idFiscales){

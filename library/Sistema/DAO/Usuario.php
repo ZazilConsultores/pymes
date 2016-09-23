@@ -8,8 +8,10 @@ class Sistema_DAO_Usuario implements Sistema_Interfaces_IUsuario {
 	private $tablaRol;
 	
 	function __construct() {
-		$this->tablaRol = new Sistema_Model_DbTable_Rol;
-		$this->tablaUsuario = new Sistema_Model_DbTable_Usuario;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaRol = new Sistema_Model_DbTable_Rol(array('db'=>$dbAdapter));
+		$this->tablaUsuario = new Sistema_Model_DbTable_Usuario(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerUsuario($idUsuario){

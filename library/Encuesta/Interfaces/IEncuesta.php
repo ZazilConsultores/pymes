@@ -5,12 +5,16 @@
  * @version 1.0.0
  */
 interface Encuesta_Interfaces_IEncuesta{
-	// =====================================================================================>>>   Buscar
-	// ============================================================= Simple elemento
+	// ============================================= Buscar
+	
 	public function obtenerEncuesta($idEncuesta);
-	public function obtenerEncuestaHash($hash);
-	// ============================================================= Conjunto de elementos
 	public function obtenerEncuestas();
+	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
+	public function editarEncuesta($idEncuesta, array $encuesta);
+	public function eliminarEncuesta($idEncuesta);
+	
+	// ============================================================= Conjunto de elementos
+	
 	public function obtenerEncuestasGrupo($idGrupo);
 	public function obtenerSecciones($idEncuesta);
 	public function obtenerPreguntas($idEncuesta);
@@ -18,17 +22,11 @@ interface Encuesta_Interfaces_IEncuesta{
 	public function obtenerEncuestaRealizadaPorAsignacion($idAsignacion);
 	public function obtenerEncuestasRealizadasPorAsignacion($idAsignacion);
 	public function obtenerEncuestasVigentesRealizadas();
-	//public function obtenerEncuestasRealizadasPorProfesor($idAsignacion);
 	public function obtenerGruposEncuesta($idEncuesta);
 	public function obtenerObjetoEncuesta($idEncuesta, $idAsignacion);
 	// =====================================================================================>>>   Insertar
-	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta);
 	public function agregarEncuestaGrupo(array $registro);
 	public function agregarEncuestaRealizada(array $registro);
-	// =====================================================================================>>>   Actualizar
-	public function editarEncuesta($idEncuesta, array $encuesta);
-	// =====================================================================================>>>   Eliminar
-	public function eliminarEncuesta($idEncuesta);
 	// =====================================================================================>>>   Normalizar Preferencia
 	public function normalizarPreferenciasEncuestaAsignacion($idEncuesta, $idAsignacion);
 	

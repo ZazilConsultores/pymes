@@ -11,7 +11,6 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	private $tablaGrupoEncuesta;
 	private $tablaRespuesta;
 	
-	//private $tablaEncuestaGrupo;
 	private $tablaPregunta;
 	private $tablaEncuestasRealizadas;
 	private $tablaAsignacionGrupo;
@@ -19,32 +18,44 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	private $tablaRegistro;
 	private $tablaMateriaEscolar;
 	
-	
-	public function __construct()
-	{
-		$dbAdapter = Zend_Db::factory('PDO_MYSQL',Zend_Registry::get('dbconfigmodencuesta'));
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
-		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta;
+		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta(array('db'=>$dbAdapter));
+		//$this->tablaEncuesta->setDefaultAdapter($dbAdapter);
 		
-		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta;
-		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
-		//$this->tablaEncuestaGrupo = new Encuesta_Model_DbTable_EncuestaGrupo;
-		$this->tablaEncuestasRealizadas = new Encuesta_Model_DbTable_ERealizadas;
-		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple;
+		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta(array('db'=>$dbAdapter));
+		//$this->tablaSeccionEncuesta->setDefaultAdapter($dbAdapter);
 		
-		$this->tablaGrupoEncuesta = new Encuesta_Model_DbTable_Grupo;
-		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo;
-		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta(array('db'=>$dbAdapter));
+		//$this->tablaPregunta->setDefaultAdapter($dbAdapter);
 		
-		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro;
-		$this->tablaMateriaEscolar = new Encuesta_Model_DbTable_MateriaE;
+		$this->tablaEncuestasRealizadas = new Encuesta_Model_DbTable_EncuestasRealizadas(array('db'=>$dbAdapter));
+		//$this->tablaEncuestasRealizadas->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple(array('db'=>$dbAdapter));
+		//$this->tablaPreferenciaSimple->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaGrupoEncuesta = new Encuesta_Model_DbTable_GrupoEncuesta(array('db'=>$dbAdapter));
+		//$this->tablaGrupoEncuesta->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
+		//$this->tablaAsignacionGrupo->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta(array('db'=>$dbAdapter));
+		//$this->tablaRespuesta->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro(array('db'=>$dbAdapter));
+		//$this->tablaRegistro->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaMateriaEscolar = new Encuesta_Model_DbTable_MateriaEscolar(array('db'=>$dbAdapter));
+		//$this->tablaMateriaEscolar->setDefaultAdapter($dbAdapter);
 		
 	}
 	
 	// =====================================================================================>>>   Buscar
-	// ============================================================= Simple elemento
 	/**
-	 * @method obtenerEncuestaId Obtiene una encuesta en base a un id proporcionado.
+	 * @method obtenerEncuesta Obtiene una encuesta en base a un id proporcionado.
 	 * @param int $idEncuesta
 	 * @return Encuesta_Model_Encuesta $encuestaM
 	 */
@@ -62,20 +73,6 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	}
 	
 	/**
-	 * @TODO Eliminar Metodo
-	 */
-	public function obtenerEncuestaHash($hash)
-	{
-		$tablaEncuesta = $this->tablaEncuesta;
-		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("hash = ?", $hash);
-		$rowEncuesta = $tablaEncuesta->fetchRow($select);
-		
-		$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
-		
-		return $modelEncuesta;
-	}
-	// ============================================================= Conjunto de elementos
-	/**
 	 * @method obtenerEncuestas Obtiene todas las encuestas existentes.
 	 * @return array Encuesta_Model_Encuesta
 	 */
@@ -92,6 +89,46 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 		return $modelEncuestas;
 	}
+	
+	/**
+	 * @method crearEncuesta Crea una encuesta pasandole un model.
+	 * @param Encuesta_Model_Encuesta $encuesta
+	 */
+	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta)
+	{
+		$tablaEncuesta = $this->tablaEncuesta;
+		//$encuesta->setHash($encuesta->getHash());
+		$encuesta->setFecha(date("Y-m-d H:i:s", time()));
+		//print_r($encuesta->toArray());
+		$tablaEncuesta->insert($encuesta->toArray());
+	}
+	
+	/**
+	 * @method editarEncuesta
+	 * @param $idEncuesta
+	 * @param array $encuesta
+	 */
+	public function editarEncuesta($idEncuesta, array $encuesta)
+	{
+		$tablaEncuesta = $this->tablaEncuesta;
+		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
+
+		$tablaEncuesta->update($encuesta, $where);
+	}
+	
+	public function eliminarEncuesta($idEncuesta)
+	{
+		$tablaEncuesta = $this->tablaEncuesta;
+		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
+
+		$tablaEncuesta->delete($where);
+	}
+	// ================================================================================================================ //
+	// ============================================================= Simple elemento
+	
+	
+	// ============================================================= Conjunto de elementos
+	
 	
 	/**
 	 * 
@@ -268,18 +305,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 	}
 	// =====================================================================================>>>   Insertar
-	/**
-	 * @method crearEncuesta Crea una encuesta pasandole un model.
-	 * @param Encuesta_Model_Encuesta $encuesta
-	 */
-	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta)
-	{
-		$tablaEncuesta = $this->tablaEncuesta;
-		$encuesta->setHash($encuesta->getHash());
-		$encuesta->setFecha(date("Y-m-d H:i:s", time()));
-		//print_r($encuesta->toArray());
-		$tablaEncuesta->insert($encuesta->toArray());
-	}
+	
 	
 	public function agregarEncuestaGrupo(array $registro){
 		$tablaERealizadas = $this->tablaERealizadas;
@@ -331,21 +357,9 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 	}
 	//          =========================================================================   >>>   Actualizar
-	public function editarEncuesta($idEncuesta, array $encuesta)
-	{
-		$tablaEncuesta = $this->tablaEncuesta;
-		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
-
-		$tablaEncuesta->update($encuesta, $where);
-	}
+	
 	//          =========================================================================   >>>   Eliminar
-	public function eliminarEncuesta($idEncuesta)
-	{
-		$tablaEncuesta = $this->tablaEncuesta;
-		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
-
-		$tablaEncuesta->delete($where);
-	}
+	
 	
 	public function normalizarPreferenciasEncuestaAsignacion($idEncuesta, $idAsignacion){
 		$tablaEncuesta = $this->tablaEncuesta;
@@ -367,8 +381,5 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 			}
 			break;
 		}
-		
-		
-		
 	}
 }

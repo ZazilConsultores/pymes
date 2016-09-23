@@ -8,9 +8,11 @@ class Encuesta_DAO_Reporte implements Encuesta_Interfaces_IReporte {
 	private $tablaERealizadas;
 	
 	public function __construct() {
-		$this->tablaReporte = new Encuesta_Model_DbTable_Reporte;
-		$this->tablaERealizadas = new Encuesta_Model_DbTable_ERealizadas;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
+		$this->tablaReporte = new Encuesta_Model_DbTable_ReportesEncuesta(array('db'=>$dbAdapter));
+		
+		$this->tablaERealizadas = new Encuesta_Model_DbTable_EncuestasRealizadas(array('db'=>$dbAdapter));
 	}
 	
 	/**

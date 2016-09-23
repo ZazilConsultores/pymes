@@ -53,25 +53,13 @@ class Encuesta_Model_Materia
     public function setCreditos($creditos) {
         $this->creditos = $creditos;
     }
-
-    private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey(array("idCiclo"=>$this->idCiclo,"idGrado"=>$this->idGrado,"materia"=>strtolower($this->materia)));
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
+	
     public function __construct(array $datos) {
 		if(array_key_exists("idMateria", $datos)) $this->idMateria = $datos["idMateria"];
 		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
 		if(array_key_exists("idGrado", $datos)) $this->idGrado = $datos["idGrado"];
 		$this->materia = $datos["materia"];
 		$this->creditos = $datos["creditos"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
 	public function toArray()
@@ -83,7 +71,6 @@ class Encuesta_Model_Materia
 		$datos["idGrado"] = $this->idGrado;
 		$datos["materia"] = $this->materia;
 		$datos["creditos"] = $this->creditos;
-		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}

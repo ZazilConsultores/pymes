@@ -4,14 +4,11 @@ class Sistema_SubparametroController extends Zend_Controller_Action
 {
 
     private $subParametrosDAO = null;
-
     private $parametroDAO = null;
 
-    public function init()
-    {
+    public function init() {
     	$this->subParametrosDAO = new Sistema_DAO_Subparametro;
-		$this->parametroDAO = new Inventario_DAO_Parametro;
-
+		$this->parametroDAO = new Sistema_DAO_Parametro;
     }
 	
 	

@@ -15,29 +15,28 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	private $tablaValoresOpcion;
 	
 	public function __construct() {
-		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
-		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
-		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
-		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
-		$this->tablaValoresOpcion = new Encuesta_Model_DbTable_ValoresOpcion;
-		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple;
+		$this->tablaCategoria = new Encuesta_Model_DbTable_CategoriasRespuesta(array('db'=>$dbAdapter));
+		//$this->tablaCategoria->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaOpcion = new Encuesta_Model_DbTable_OpcionCategoria(array('db'=>$dbAdapter));
+		//$this->tablaOpcion->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta(array('db'=>$dbAdapter));
+		//$this->tablaPregunta->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaGrupo = new Encuesta_Model_DbTable_GrupoEncuesta(array('db'=>$dbAdapter));
+		//$this->tablaGrupo->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple(array('db'=>$dbAdapter));
+		//$this->tablaPreferenciaS->setDefaultAdapter($dbAdapter);
 	}
 	
 	// =====================================================================================>>>   Buscar
 	public function obtenerOpcion($idOpcion){
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcion = ?", $idOpcion);
-		$rowOpcion = $tablaOpcion->fetchRow($select);
-		
-		$modelOpcion = new Encuesta_Model_Opcion($rowOpcion->toArray());
-		
-		return $modelOpcion;
-	}
-	
-	public function obtenerOpcionHash($hash){
-		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("hash = ?", $hash);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcionCategoria = ?", $idOpcion);
 		$rowOpcion = $tablaOpcion->fetchRow($select);
 		
 		$modelOpcion = new Encuesta_Model_Opcion($rowOpcion->toArray());
@@ -47,7 +46,7 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	
 	public function obtenerOpcionesCategoria($idCategoria) {
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoriasRespuesta = ?", $idCategoria);
 		$rowsCategoria = $tablaOpcion->fetchAll($tablaOpcion);
 		$modelOpciones = array();
 		
@@ -81,7 +80,7 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	
 	public function obtenerOpcionesGrupo($idGrupo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoEncuesta = ?", $idGrupo);
 		$rowGrupo = $tablaGrupo->fetchRow($select);
 		$opciones = explode(",", $rowGrupo->opciones);
 		$modelOpciones = array();

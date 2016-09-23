@@ -10,8 +10,12 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 	private $tablaOpcion;
 	
 	function __construct() {
-		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
-		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaCategoria = new Encuesta_Model_DbTable_CategoriasRespuesta(array('db'=>$dbAdapter));
+		
+		$this->tablaOpcion = new Encuesta_Model_DbTable_OpcionCategoria(array('db'=>$dbAdapter));
+		
 	}
 	
 	// =====================================================================================>>>   Buscar

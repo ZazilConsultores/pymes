@@ -7,7 +7,7 @@
 interface Encuesta_Interfaces_IOpcion{
 	// =====================================================================================>>>   Buscar
 	public function obtenerOpcion($idOpcion);
-	public function obtenerOpcionHash($hash);
+	
 	public function obtenerOpcionesCategoria($idCategoria);
 	// =========================================== Pregunta y Grupo
 	public function obtenerOpcionesPregunta($idPregunta);

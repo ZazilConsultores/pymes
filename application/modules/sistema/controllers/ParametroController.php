@@ -13,7 +13,7 @@ class Sistema_ParametroController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->parametroDAO = new Inventario_DAO_Parametro;
+        $this->parametroDAO = new Sistema_DAO_Parametro();
     }
 
     public function indexAction()

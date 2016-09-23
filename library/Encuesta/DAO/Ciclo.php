@@ -9,12 +9,15 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	private $tablaCiclo;
 	
 	public function __construct() {
-		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloE;;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloEscolar(array('db'=>$dbAdapter));
+		//$this->tablaCiclo->setDefaultAdapter($dbAdapter);
 	}
 	
 	public function obtenerCiclos($idPlan){
 		$tablaCiclo = $this->tablaCiclo;
-		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idPlanE=?",$idPlan);
+		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idPlanEducativo = ?",$idPlan);
 		$rowsCiclos = $tablaCiclo->fetchAll($select);
 		
 		$modelCiclos = array();
@@ -29,7 +32,7 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	
 	public function obtenerCiclo($idCiclo){
 		$tablaCiclo = $this->tablaCiclo;
-		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idCiclo = ?",$idCiclo);
+		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idCicloEscolar = ?",$idCiclo);
 		$row = $tablaCiclo->fetchRow($select);
 		
 		$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
@@ -53,10 +56,6 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	
 	public function crearCiclo(Encuesta_Model_Ciclo $ciclo){
 		$tablaCiclo = $this->tablaCiclo;
-		$ciclo->setHash($ciclo->getHash());
-		$select = $tablaCiclo->select()->from($tablaCiclo)->where("hash = ?",$ciclo->getHash());
-		$row = $tablaCiclo->fetchRow($select);
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Error Ciclo: <strong>" . $ciclo->getCiclo() ."</strong> duplicado en el Sistema.");
 		
 		try{
 			$tablaCiclo->insert($ciclo->toArray());
@@ -68,13 +67,13 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	
 	public function editarCiclo($idCiclo, array $datos){
 		$tablaCiclo = $this->tablaCiclo;
-		$where = $tablaCiclo->getAdapter()->quoteInto("idCiclo = ?", $idCiclo);
+		$where = $tablaCiclo->getAdapter()->quoteInto("idCicloEscolar = ?", $idCiclo);
 		$tablaCiclo->update($datos, $where);
 	}
 	
 	public function eliminarCiclo($idCiclo){
 		$tablaCiclo = $this->tablaCiclo;
-		$where = $tablaCiclo->getAdapter()->quoteInto("idCiclo = ?", $idCiclo);
+		$where = $tablaCiclo->getAdapter()->quoteInto("idCicloEscolar = ?", $idCiclo);
 		$tablaCiclo->delete($where);
 	}
 }

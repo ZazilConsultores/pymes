@@ -72,41 +72,28 @@ class Encuesta_Model_Ciclo
         $this->descripcion = $descripcion;
     }
 
-    private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey(array("ciclo"=>strtoupper($this->ciclo)));
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
     public function __construct(array $datos)
 	{
-		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
-		if(array_key_exists("idPlanE", $datos)) $this->idPlanE = $datos["idPlanE"];
+		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
+		if(array_key_exists("idPlanEducativo", $datos)) $this->idPlanE = $datos["idPlanEducativo"];
 		$this->ciclo = $datos["ciclo"];
 		$this->inicio = $datos["inicio"];
 		$this->termino = $datos["termino"];
 		$this->actual = $datos["actual"];
 		$this->descripcion = $datos["descripcion"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	
 	public function toArray()
 	{
 		$datos = array();
 		
-		$datos["idCiclo"] = $this->idCiclo;
-		$datos["idPlanE"] = $this->idPlanE;
+		$datos["idCicloEscolar"] = $this->idCiclo;
+		$datos["idPlanEducativo"] = $this->idPlanE;
 		$datos["ciclo"] = $this->ciclo;
 		$datos["inicio"] = $this->inicio;
 		$datos["termino"] = $this->termino;
 		$datos["actual"] = $this->actual;
 		$datos["descripcion"] = $this->descripcion;
-		$datos["hash"] = $this->hash;
 		
 		return $datos;
 	}
