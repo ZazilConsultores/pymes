@@ -1,6 +1,6 @@
 <?php
 
-class Biblioteca_LibroControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class Biblioteca_JsonControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
@@ -11,7 +11,7 @@ class Biblioteca_LibroControllerTest extends Zend_Test_PHPUnit_ControllerTestCas
 
     public function testIndexAction()
     {
-        $params = array('action' => 'index', 'controller' => 'Libro', 'module' => 'Biblioteca');
+        $params = array('action' => 'index', 'controller' => 'Json', 'module' => 'Biblioteca');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -26,26 +26,9 @@ class Biblioteca_LibroControllerTest extends Zend_Test_PHPUnit_ControllerTestCas
             );
     }
 
-    public function testAltaAction()
+    public function testConsultabasicaAction()
     {
-        $params = array('action' => 'alta', 'controller' => 'Libro', 'module' => 'Biblioteca');
-        $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
-        // assertions
-        $this->assertModule($urlParams['module']);
-        $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
-    }
-
-    public function testConsultaAction()
-    {
-        $params = array('action' => 'consulta', 'controller' => 'Libro', 'module' => 'Biblioteca');
+        $params = array('action' => 'consultabasica', 'controller' => 'Json', 'module' => 'Biblioteca');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -62,8 +45,6 @@ class Biblioteca_LibroControllerTest extends Zend_Test_PHPUnit_ControllerTestCas
 
 
 }
-
-
 
 
 

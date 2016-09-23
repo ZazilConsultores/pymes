@@ -7,7 +7,7 @@
  */
 interface Biblioteca_Interfaces_ILibrosMateria {
 	
-	  public function agregarLibrosMateria(Biblioteca_Model_LibrosMateria $materia);
+	  public function agregarLibrosMateria($idMateria, $idLibro);
 	
 	
 }

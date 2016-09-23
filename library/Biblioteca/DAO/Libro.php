@@ -25,28 +25,29 @@ class Biblioteca_DAO_Libro implements Biblioteca_Interfaces_ILibro {
 		
 	}
 	
-		/**
+	/**
 	 * Función que obtiene un registro de la tabla materia, mediante el idMateria
 	 * @param $idMateria
 	 * @return array | null
 	 */
-	
-	public function obtenerLibro($idLibro)
-	{
+	public function obtenerLibro($idLibro) {
 		$tablaLibro = $this->tablaLibro;
-		$rowLibros = $tablaLibro->fetchAll();
+		$where = $tablaLibro->getAdapter()->quoteInto("idMateria = ?", $idMateria);
+		$rowLibro = $tablaLibro->fetchAll($where);
 		
 		$modelLibros = array();
 		
 		foreach ($rowLibros as $rowLibro) {
 			$modelLibro = new Biblioteca_Model_Libro($rowLibro->toArray());
-			$modelLibro->setIdLibro($rowLibro->idLibro);
-			
 			$modelLibros[] = $modelLibro;
 		}
 		
 		return $modelLibros;
 	}
+	
+	
+
+	
 	public function prestamoLibro($libro,$registro) {}
 	public function devolverLibro($libro,$registro) {}
 	public function liberarLibro($libro,$causa,$destino) {}

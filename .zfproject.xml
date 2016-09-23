@@ -1788,10 +1788,13 @@
             <controllerFile controllerName="Libro">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="consulta"/>
             </controllerFile>
             <controllerFile controllerName="Materia">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="agregarlibro"/>
+              <actionMethod actionName="consultalibro"/>
             </controllerFile>
             <controllerFile controllerName="LibrosMateria">
               <actionMethod actionName="index"/>
@@ -1803,6 +1806,10 @@
             <controllerFile controllerName="Categoria">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="consultabasica"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1887,6 +1894,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Categoria">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="agregarlibro"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="consultalibro"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Libro">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="consultabasica"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2480,6 +2502,7 @@
               <testApplicationControllerFile forControllerName="Libro">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="consulta"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="MateriaController">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2489,6 +2512,8 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="agregarlibro"/>
+                <testApplicationActionMethod forActionName="consultalibro"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="AltaMateria">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2509,6 +2534,10 @@
               <testApplicationControllerFile forControllerName="Categoria">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Json">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="consultabasica"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

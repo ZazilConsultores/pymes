@@ -2,7 +2,8 @@
 
 class Biblioteca_LibroController extends Zend_Controller_Action
 {
-	private $libroDAO;
+
+    private $libroDAO = null;
 
     public function init()
     {
@@ -43,8 +44,15 @@ class Biblioteca_LibroController extends Zend_Controller_Action
 		}
     }
 
+    public function consultaAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

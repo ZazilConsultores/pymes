@@ -1,0 +1,34 @@
+<!-- Menú de operaciones de consulta -->
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		Biblioteca
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'Biblioteca', 'controller' => 'libro', 'action' => 'alta'), null, true); ?>">
+				Alta Libros
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'Biblioteca', 'controller' => 'materia', 'action' => 'alta'), null, true); ?>">
+				Alta Materias 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'Biblioteca', 'controller' => 'materia', 'action' => 'agregarlibro'), null, true); ?>">
+				Asociacion Libro Materias 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'Biblioteca', 'controller' => 'materia', 'action' => 'consultalibro'), null, true); ?>">
+				Consulta Libros por Materia
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'Biblioteca', 'controller' => 'libro', 'action' => 'consulta'), null, true); ?>">
+				Consulta de Libros por Parametros 
+			</a>
+		</li>
+	</ul>
+</li>
