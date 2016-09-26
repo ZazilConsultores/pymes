@@ -13,9 +13,11 @@
 	private $tablaMateria;
 	
 	function __construct(){
-		$this->tablaLibrosMateria = new Biblioteca_Model_DbTable_LibrosMateria;
-		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro;
-		$this->tablaMateria = new Biblioteca_Model_DbTable_Materia;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaLibrosMateria = new Biblioteca_Model_DbTable_LibrosMateria(array('db'=>$dbAdapter));
+		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro(array('db'=>$dbAdapter));
+		$this->tablaMateria = new Biblioteca_Model_DbTable_Materia(array('db'=>$dbAdapter));
 	
 	}
 	
@@ -90,31 +92,7 @@
 		
 	}
 	
-	public function obtenerTelefonosSucursal($idLibrosMateria){
-		$librosMateria = $this->obtenerLibrosMateria($idLibrosMateria);
-		$idsLibros = explode(",", $librosMateria["idsLibro"]);
-		//print_r($idsLibros);
-		$libros = array();
-		$tablaLibro = $this->tablaLibro;
-		//print_r("<br />");
-		foreach ($idsLibro as $index => $idLibro) {
-			if($idLibro != ""){	//El ultimo elemento generado por la funcion explode es un string vacio, este ultimo no se toma en cuenta
-				//print_r($idLibro);
-				//print_r("<br />");
-				$select = $tablaLibro->select()->from($tablaLibro)->where("idLibro=?",$idLibro);
-				//print_r($select->__toString());
-				//print_r("<br />");
-				$rowLibro = $tablaLibro->fetchRow($select);
-				//print_r($rowLibro->toArray());
-				//print_r("<br />");
-				$libros[] = $rowLibro->toArray();
-			}
-		}
-		//print_r("<br />");
-		//print_r($libros);
-		return $libros;
-	}
-	 
+	
 	 
  }
  	

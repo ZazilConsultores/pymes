@@ -11,9 +11,11 @@ class Biblioteca_JsonController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
         $this->materiaDAO =  new Biblioteca_DAO_Materia;
 		$this->libroDAO = new Biblioteca_DAO_Libro;
-		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro;
+		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro(array('db'=>$dbAdapter));
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
     }

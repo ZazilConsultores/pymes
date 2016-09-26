@@ -1,4 +1,55 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Libro</b> and script/action name <b>consulta</b></p>
-</div>
+<?php ?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Consulta  de libros</strong></h3>
+	</div>
+	<div class="panel-body">
+		<div class="form-horizontal">
+			<div class="form-group">
+				<label for="titulo" class="control-label col-xs-2">Titulo:</label>
+				<div class="col-xs-10">
+					<input type="text" class="form-control"  id="titulo" placeholder="Titulo...">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="autor" class="control-label col-xs-2">Autor:</label>
+				<div class="col-xs-10">
+					<input type="text" class="form-control" id="autor" placeholder="Autor...">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="editorial" class="control-label col-xs-2">Editorial:</label>
+				<div class="col-xs-10">
+					<input type="text" class="form-control" id="editorial" placeholder="Editorial...">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-xs-offset-2 col-xs-12">
+					<button id="btnBusqueda" type="button" class="btn btn-info">
+						<span class="glyphicon glyphicon-search"></span> Consultar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">Libros Encontrados</h3>
+	</div>
+	<div class="panel-body">
+		<table id="resultadoLibros" class="table table-striped table-condensed">
+			<thead>
+				<th>Titulo</th>
+				<th>Autor</th>
+				<th>Editorial</th>
+				<th>Detalles</th>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</section>
+<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/js/biblioteca/consultaLibro.js"></script>

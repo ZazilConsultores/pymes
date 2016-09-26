@@ -10,8 +10,9 @@ class Biblioteca_DAO_Libro implements Biblioteca_Interfaces_ILibro {
 	private $tablaLibro;
 	
 	function __construct() {
-		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
+		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro(array('db'=>$dbAdapter));
 	}
 	
 	/**

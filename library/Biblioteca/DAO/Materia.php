@@ -10,8 +10,9 @@ class Biblioteca_DAO_Materia implements Biblioteca_Interfaces_IMateria {
 	private $tablaMateria;
 	
 	function __construct() {
-		$this->tablaMateria = new Biblioteca_Model_DbTable_Materia;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
+		$this->tablaMateria = new Biblioteca_Model_DbTable_Materia(array('db'=>$dbAdapter));
 	}
 	
 	/**

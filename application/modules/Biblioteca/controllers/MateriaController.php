@@ -89,6 +89,8 @@ class Biblioteca_MateriaController extends Zend_Controller_Action
     public function consultalibroAction()
     {
         // action body
+        
+        
     }
 
 

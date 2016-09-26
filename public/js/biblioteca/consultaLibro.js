@@ -1,40 +1,7 @@
-<?php ?>
-<section class="row">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title"><strong>Consulta  de libros</strong></h3>
-		</div>
-		<div class="panel-body">
-			<div>
-				<div class="form-group">
-					<label for="titulo">Titulo:</label>
-    				<input type="text" class="form-control" id="titulo" placeholder="Titulo...">
-				</div>
-				<div class="form-group">
-					<label for="autor">Autor:</label>
-    				<input type="text" class="form-control" id="autor" placeholder="Autor...">
-				</div>
-				<div class="form-group">
-					<label for="editorial">Editorial:</label>
-    				<input type="text" class="form-control" id="editorial" placeholder="Editorial...">
-				</div>
-				<button id="btnBusqueda" type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span> Consultar</button>
-			</div>
-			<br /><hr /><br />
-			<table id="resultadoLibros" class="table table-striped table-condensed">
-				<thead>
-					<th>Titulo</th>
-					<th>Autor</th>
-					<th>Editorial</th>
-					<th>Detalles</th>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-	</div>
-</section>
-<script>
-	$().ready(function(){
+/**
+ * @author WSZAZILSI01
+ */
+$().ready(function(){
 		console.log("Javascript Activado!!");
 		
 		$("button#btnBusqueda").on('click', function(){
@@ -76,17 +43,11 @@
 			});
 			
 			
-			$("button#VerLibro").on('click',function()){
-				
-				
+			$("button#VerLibro").on('click',function(){
 				var url = windows.location.origin + "General/public/"+"Biblioteca"
-				
-				
-			}
-			
+			});
+		
+		
+		
 		});
-		
-		
-		
-	});
-</script>
+});	
