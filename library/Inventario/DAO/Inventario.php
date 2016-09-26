@@ -10,8 +10,10 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 	private $tablaProducto;
 	
 	public function __construct() {
-		$this->tablaInventario = new Inventario_Model_DbTable_Inventario;
-		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaInventario = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerInventario(){

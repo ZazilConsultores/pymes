@@ -9,7 +9,9 @@ class Inventario_DAO_Email implements Inventario_Interfaces_IEmail {
 	private $tablaEmail;
 	
 	public function __construct() {
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerEmail($idEmail){

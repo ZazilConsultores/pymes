@@ -7,10 +7,10 @@
 class Inventario_DAO_Telefono implements Inventario_Interfaces_ITelefono {
 	private $tablaTelefono;
 	
-	public function __construct()
-	{
-		$this->tablaTelefono = new Application_Model_DbTable_Telefono
-		;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaTelefono = new Application_Model_DbTable_Telefono(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerTelefono($idTelefono){

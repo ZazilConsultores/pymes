@@ -42,13 +42,9 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 	public function obtenerMateriasGrado($idGrado){
 		$tablaMateria = $this->tablaMateria;
 		$select = $tablaMateria->select()->from($tablaMateria)->where("idGradoEducativo=?",$idGrado);
-		$rowMaterias = $tablaMateria->fetchAll($select);
-		$modelMaterias = array();
-		foreach ($rowMaterias as $row) {
-			$modelMateria = new Encuesta_Model_Materia($row->toArray());
-			$modelMaterias[] = $modelMateria;
-		}
-		return $modelMaterias;
+		$rowsMaterias = $tablaMateria->fetchAll($select);
+		
+		return $rowsMaterias->toArray();
 	}
 	
 	public function obtenerMateriasGrupo($idCiclo,$idGrado){

@@ -21,33 +21,34 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 	// =====================================================================================>>>   Buscar
 	public function obtenerCategoria($idCategoria){
 		$tablaCategoria = $this->tablaCategoria;
-		$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoria = ?", $idCategoria);
+		$select = $tablaCategoria->select()->from($tablaCategoria)->where("idCategoriasRespuesta = ?", $idCategoria);
 		$rowCategoria = $tablaCategoria->fetchRow($select);
 		
-		$modelCategoria = new Encuesta_Model_Categoria($rowCategoria->toArray());
+		//$modelCategoria = new Encuesta_Model_Categoria($rowCategoria->toArray());
 		
-		return $modelCategoria;
+		return $rowCategoria->toArray();
 	}
 
 	public function obtenerOpciones($idCategoria){
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoriasRespuesta = ?", $idCategoria);
 		$rowOpciones = $tablaOpcion->fetchAll($select);
 		
+		/*
 		$opcionesModel = array();
 		foreach ($rowOpciones as $rowOpcion) {
 			$opcionModel = new Encuesta_Model_Opcion($rowOpcion->toArray());
 			
 			$opcionesModel[] = $opcionModel;
-		}
+		}*/
 		
-		return $opcionesModel;
+		return $rowOpciones->toArray();
 	}
 	
 	public function obtenerCategorias() {
 		$tablaCategoria = $this->tablaCategoria;
 		$rowCategorias = $tablaCategoria->fetchAll();
-		
+		/*
 		$modelCategorias = array();
 		
 		foreach ($rowCategorias as $rowCategoria) {
@@ -55,33 +56,33 @@ class Encuesta_DAO_Categoria implements Encuesta_Interfaces_ICategoria {
 			
 			$modelCategorias[] = $modelCategoria;
 		}
-		
-		return $modelCategorias;
+		*/
+		return $rowCategorias->toArray();
 	}
 	
 	// =====================================================================================>>>   Insertar
-	public function crearCategoria(Encuesta_Model_Categoria $categoria){
+	public function crearCategoria(array $categoria){
 		$tablaCategoria = $this->tablaCategoria; 
-		$tablaCategoria->insert($categoria->toArray());
+		$tablaCategoria->insert($categoria);
 	}
 	// =====================================================================================>>>   Actualizar
-	public function editarCategoria($idCategoria, Encuesta_Model_Categoria $categoria) {
+	public function editarCategoria($idCategoria, array $categoria) {
 		$tablaCategoria = $this->tablaCategoria;
-		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoria = ?", $idCategoria);
+		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoriasRespuesta = ?", $idCategoria);
 		
 		$tablaCategoria->update($categoria->toArray(), $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarCategoria($idCategoria){
 		$tablaCategoria = $this->tablaCategoria;
-		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoria = ?", $idCategoria);
+		$where = $tablaCategoria->getAdapter()->quoteInto("idCategoriasRespuesta = ?", $idCategoria);
 		
 		$tablaCategoria->delete($where);
 	}
 	
 	public function eliminarOpciones($idCategoria){
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->where("idCategoria = ?", $idCategoria);
+		$select = $tablaOpcion->select()->where("idCategoriasRespuesta = ?", $idCategoria);
 		
 		$tablaOpcion->delete($select);
 	}

@@ -21,9 +21,10 @@ class Encuesta_Form_AltaGrado extends Zend_Form
 			"10" => "10°"
 		);
         
-        $eGrado = new Zend_Form_Element_Text("grado");
+        $eGrado = new Zend_Form_Element_Text("gradoEducativo");
 		$eGrado->setLabel("Grado: ");
         $eGrado->setAttrib("class", "form-control");
+		$eGrado->setAttrib("placeholder", "Ej: Primero, Segundo, Primer Semestre, etc...");
 		
 		$eAbreviatura = new Zend_Form_Element_Select("abreviatura");
 		$eAbreviatura->setLabel("Abreviatura: ");
@@ -33,10 +34,6 @@ class Encuesta_Form_AltaGrado extends Zend_Form
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");
 		$eDescripcion->setLabel("Descripción (opcional): ");
 		$eDescripcion->setAttrib("class", "form-control");
-		
-		$eObjetivo = new Zend_Form_Element_Text("objetivo");
-		$eObjetivo->setLabel("Objetivo (opcional): ");
-		$eObjetivo->setAttrib("class", "form-control");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Agregar Grado");

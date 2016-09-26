@@ -17,16 +17,18 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	private $tablaEmail;
 	
 	function __construct() {
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
-	
-		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas;
-		$this->tablaClientes = new Sistema_Model_DbTable_Clientes;
-		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
-		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+	
+		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas(array('db'=>$dbAdapter));
+		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
+		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
+		
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerEmpresas() {

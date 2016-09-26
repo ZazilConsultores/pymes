@@ -9,9 +9,10 @@
 
 	private $tablaBanco;
 	
-	public function __construct()
-	{
-		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
 	}
 	public function obtenerBancos()
 	{

@@ -22,9 +22,9 @@
 				<tbody>
 					<?php foreach ($planes as $plan) : ?>
 					<tr>
-						<td><?php echo $plan["plan"] ?></td>
+						<td><?php echo $plan["planEducativo"] ?></td>
 						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index","idPlan"=>$plan["idPlanE"],),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index","idPlan"=>$plan["idPlanEducativo"],),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Ciclos Escolares
 							</a>
 						</td>

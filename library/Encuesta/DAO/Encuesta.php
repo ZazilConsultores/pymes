@@ -8,7 +8,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	
 	private $tablaEncuesta;
 	private $tablaSeccionEncuesta;
-	private $tablaGrupoEncuesta;
+	private $tablaGrupoSeccion;
 	private $tablaRespuesta;
 	
 	private $tablaPregunta;
@@ -22,35 +22,15 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta(array('db'=>$dbAdapter));
-		//$this->tablaEncuesta->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta(array('db'=>$dbAdapter));
-		//$this->tablaSeccionEncuesta->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta(array('db'=>$dbAdapter));
-		//$this->tablaPregunta->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaEncuestasRealizadas = new Encuesta_Model_DbTable_EncuestasRealizadas(array('db'=>$dbAdapter));
-		//$this->tablaEncuestasRealizadas->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple(array('db'=>$dbAdapter));
-		//$this->tablaPreferenciaSimple->setDefaultAdapter($dbAdapter);
-		
-		$this->tablaGrupoEncuesta = new Encuesta_Model_DbTable_GrupoEncuesta(array('db'=>$dbAdapter));
-		//$this->tablaGrupoEncuesta->setDefaultAdapter($dbAdapter);
-		
+		$this->tablaGrupoSeccion = new Encuesta_Model_DbTable_GrupoSeccion(array('db'=>$dbAdapter));
 		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
-		//$this->tablaAsignacionGrupo->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta(array('db'=>$dbAdapter));
-		//$this->tablaRespuesta->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro(array('db'=>$dbAdapter));
-		//$this->tablaRegistro->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaMateriaEscolar = new Encuesta_Model_DbTable_MateriaEscolar(array('db'=>$dbAdapter));
-		//$this->tablaMateriaEscolar->setDefaultAdapter($dbAdapter);
-		
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -59,6 +39,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	 * @param int $idEncuesta
 	 * @return Encuesta_Model_Encuesta $encuestaM
 	 */
+	/*
 	public function obtenerEncuesta($idEncuesta)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
@@ -71,11 +52,12 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 		return $modelEncuesta;
 	}
-	
+	*/
 	/**
 	 * @method obtenerEncuestas Obtiene todas las encuestas existentes.
 	 * @return array Encuesta_Model_Encuesta
 	 */
+	/*
 	public function obtenerEncuestas() {
 		$tablaEncuesta = $this->tablaEncuesta;
 		$rowsEncuestas = $tablaEncuesta->fetchAll();
@@ -89,25 +71,27 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 		
 		return $modelEncuestas;
 	}
-	
+	*/
 	/**
 	 * @method crearEncuesta Crea una encuesta pasandole un model.
 	 * @param Encuesta_Model_Encuesta $encuesta
 	 */
+	/*
 	public function crearEncuesta(Encuesta_Model_Encuesta $encuesta)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
 		//$encuesta->setHash($encuesta->getHash());
-		$encuesta->setFecha(date("Y-m-d H:i:s", time()));
+		//$encuesta->setFecha(date("Y-m-d H:i:s", time()));
 		//print_r($encuesta->toArray());
 		$tablaEncuesta->insert($encuesta->toArray());
 	}
-	
+	*/
 	/**
 	 * @method editarEncuesta
 	 * @param $idEncuesta
 	 * @param array $encuesta
 	 */
+	/*
 	public function editarEncuesta($idEncuesta, array $encuesta)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
@@ -115,7 +99,8 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 
 		$tablaEncuesta->update($encuesta, $where);
 	}
-	
+	*/
+	/*
 	public function eliminarEncuesta($idEncuesta)
 	{
 		$tablaEncuesta = $this->tablaEncuesta;
@@ -123,6 +108,7 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 
 		$tablaEncuesta->delete($where);
 	}
+	*/ 
 	// ================================================================================================================ //
 	// ============================================================= Simple elemento
 	
@@ -382,4 +368,81 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 			break;
 		}
 	}
+	// **************************************************************************************** IMPLEMENTANDO ESTANDAR DE NOMBRES
+	
+	/**
+	 * function getAllEncuestas() .- Obtiene todas las encuestas del modulo.
+	 * @return array() | null
+	 */
+	public function getAllEncuestas(){
+		// Instanciamos de forma local una referencia a la TablaEncuesta
+		$tablaEncuesta = $this->tablaEncuesta;
+		//Obtenemos todas las encuestas registradas en la TablaEncuesta
+		$rowsEncuestas = $tablaEncuesta->fetchAll();
+		// Creamos un array simple que contendra objetos Encuesta_Models_Encuesta en ves de pasar un array de arrays
+		$modelEncuestas = array();
+		// Si no es nulo nuestro $rowsEncuestas significa que hay almenos 1 registro que procesar
+		if(!is_null($rowsEncuestas)){
+			// Iteramos a traves de los registros convirtiendo cada registro en un Model y agregandolo al array general.
+			foreach ($rowsEncuestas as $rowEncuesta) {
+				$modelEncuesta = new Encuesta_Models_Encuesta($rowEncuesta->toArray());
+				// Condicion filtrante: estatus = 2 significa INACTIVO, es decir solo se agregan encuestas con estatus ACTIVO
+				if($rowEncuesta->estatus != 2) $modelEncuestas[] = $modelEncuesta;
+			}
+		}
+		// Enviamos el array de models encuestas
+		return $modelEncuestas;
+	}
+	
+	/**
+	 * function getEncuestaById($id) .- Obtiene un model de la TablaEncuesta correspondiente al $id especificado.
+	 * @param $id - el idEncuesta
+	 * @return $modelEncuesta | null
+	 */
+	public function getEncuestaById($id){
+		// Instanciamos de forma local una referencia a la TablaEncuesta
+		$tablaEncuesta = $this->tablaEncuesta;
+		// Creamos un select para consultar especificamente el $id pasado como parámetro
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $id);
+		// Ejecutamos el select obteniendo un solo registro especificamente
+		$rowEncuesta = $tablaEncuesta->fetchRow($select);
+		// Si es null nuestro objeto, enviamos null al procedimiento que ejecuto este metodo
+		if(is_null($rowEncuesta)){
+			return null;
+		}else{
+			// Si no es null enviamos un objeto Model al procedimiento que ejecuto este metodo
+			$modelEncuesta = new Encuesta_Models_Encuesta($rowEncuesta->toArray());
+			
+			return $modelEncuesta;
+		}
+	}
+	
+	/**
+	 * function addEncuesta(Encuesta_Models_Encuesta $encuesta) - Inserta un registro de encuesta en la TablaEncuesta.
+	 * @throws Exception - Generada por la conexion al servidor de base de datos.
+	 */
+	public function addEncuesta(Encuesta_Models_Encuesta $encuesta){
+		// Instanciamos de forma local una referencia a la TablaEncuesta
+		$tablaEncuesta = $this->tablaEncuesta;
+		// Insertamos directamente a la TablaEncuesta (Nos puede enviar Excepcion por diversas causas)
+		$tablaEncuesta->insert($encuesta->toArray());
+	}
+	
+	/**
+	 * function editEncuesta($id, array $datos) - Edita la informacion de una encuesta registrada.
+	 * @throws Exception - Tanto el $id como los $datos pueden tener informacion que cause conflicto con la base
+	 */
+	public function editEncuesta($id, array $datos){
+		// Instanciamos de forma local una referencia a la TablaEncuesta
+		$tablaEncuesta = $this->tablaEncuesta;
+		// Creamos el condicional de forma estandar (especificado por Zend Framework)
+		$where = $tablaEncuesta->getAdapter()->quoteInto("idEncuesta = ?", $idEncuesta);
+		// Actualizamos datos sobre la tabla (Nos puede enviar Excepcion por diversas causas).
+		$tablaEncuesta->update($encuesta, $where);
+	}
+	
+	
+	
+	
+	
 }

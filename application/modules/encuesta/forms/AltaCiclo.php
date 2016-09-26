@@ -42,6 +42,7 @@ class Encuesta_Form_AltaCiclo extends Zend_Form
         $eCiclo = new Zend_Form_Element_Text("ciclo");
 		$eCiclo->setLabel("Ciclo: ");
 		$eCiclo->setAttrib("class", "form-control");
+		$eCiclo->setAttrib("placeholder", "Ejem: 2015-A");
 		//$eCiclo->setAttrib("minlength", "5");
 		//$eCiclo->setAttrib("maxlength", "5");
 		//$eCiclo->setDecorators($decoratorsPregunta);
@@ -49,14 +50,16 @@ class Encuesta_Form_AltaCiclo extends Zend_Form
 		$eInicio = new Zend_Form_Element_Text("inicio");
 		$eInicio->setLabel("Fecha Inicio:");
 		$eInicio->setAttrib("class", "form-control fechaInicio");
+		$eInicio->setAttrib("placeholder", "Fecha de inicio...");
 		//$eInicio->setDecorators($decoratorsPregunta);
 		
 		$eTermino = new Zend_Form_Element_Text("termino");
 		$eTermino->setLabel("Fecha Termino:");
 		$eTermino->setAttrib("class", "form-control fechaTermino");
+		$eTermino->setAttrib("placeholder", "Fecha de término...");
 		//$eTermino->setDecorators($decoratorsPregunta);
 		
-		$eActual = new Zend_Form_Element_Checkbox("actual");
+		$eActual = new Zend_Form_Element_Checkbox("vigente");
 		$eActual->setLabel("Ciclo en curso");
 		//$eActual->setDecorators($decoratorsPregunta);
 		
@@ -64,6 +67,7 @@ class Encuesta_Form_AltaCiclo extends Zend_Form
 		$eDescripcion->setLabel("Descripción: ");
 		$eDescripcion->setAttrib("class", "form-control");
 		$eDescripcion->setAttrib("rows", "2");
+		$eDescripcion->setAttrib("placeholder", "Descripción del ciclo escolar");
 		//$eDescripcion->setDecorators($decoratorsPregunta);
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");

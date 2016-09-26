@@ -32,25 +32,25 @@ class Encuesta_Form_ConsultaGrupos extends Zend_Form
 		$plan = $planDAO->obtenerPlanEstudiosVigente();
         
         $cicloDAO = new Encuesta_DAO_Ciclo;
-		$ciclos = $cicloDAO->obtenerCiclos($plan["idPlanE"]);
+		$ciclos = $cicloDAO->obtenerCiclos($plan["idPlanEducativo"]);
 		
-        $eCicloEscolar = new Zend_Form_Element_Select("ciclo");
+        $eCicloEscolar = new Zend_Form_Element_Select("idCicloEscolar");
         $eCicloEscolar->setLabel("Ciclo Escolar: ");
 		$eCicloEscolar->setAttrib("class", "form-control");
 		
-		foreach ($ciclos as $ciclo) {
-			$eCicloEscolar->addMultiOption($ciclo->getIdCiclo(),$ciclo->getCiclo()); 
+		foreach ($ciclos as $index => $ciclo) {
+			$eCicloEscolar->addMultiOption($ciclo["idCicloEscolar"], $ciclo["ciclo"]); 
 		}
 		
 		$nivelDAO = new Encuesta_DAO_Nivel;
 		$niveles = $nivelDAO->obtenerNiveles();
 		
-		$eNivel = new Zend_Form_Element_Select("nivel");
+		$eNivel = new Zend_Form_Element_Select("idNivelEducativo");
 		$eNivel->setLabel("Nivel Educativo: ");
 		$eNivel->setAttrib("class", "form-control");
 		
 		foreach ($niveles as $nivel) {
-			$eNivel->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
+			$eNivel->addMultiOption($nivel["idNivelEducativo"], $nivel["nivelEducativo"]);
 		}
 		
 		$idNivel = $eNivel->getId();
@@ -62,8 +62,8 @@ class Encuesta_Form_ConsultaGrupos extends Zend_Form
 		$eGradoEscolar->setAttrib("class", "form-control");
 		//$eGradoEscolar->addMultiOption("0","Seleccione Nivel Educativo");
 		if(!is_null($grados)){
-			foreach ($grados as $grado) {
-				$eGradoEscolar->addMultiOption($grado->getIdGrado(),$grado->getGrado());
+			foreach ($grados as $index => $grado) {
+				$eGradoEscolar->addMultiOption($grado["idGradoEducativo"], $grado["gradoEducativo"]);
 			}
 		}
 		//$eGradoEscolar->clearMultiOptions();

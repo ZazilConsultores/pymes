@@ -2,7 +2,7 @@
 	$categoria = $this->categoria;
 	$opciones = $this->opciones;
 	$formulario = $this->formulario; 
-	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"categoria", "action" => "edita", "idCategoria"=>$categoria->getIdCategoria()), null, true));
+	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"categoria", "action" => "edita", "idCategoria"=>$categoria["idCategoriasRespuesta"]), null, true));
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -24,11 +24,11 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><?php echo $categoria->getCategoria(); ?></td>
-						<td><?php echo $categoria->getFecha(); ?></td>
-						<td><?php echo $categoria->getDescripcion(); ?></td>
+						<td><?php echo $categoria["categoria"]; ?></td>
+						<td><?php echo $categoria["fecha"]; ?></td>
+						<td><?php echo $categoria["descripcion"]; ?></td>
 						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"opciones","idCategoria"=>$categoria->getIdCategoria())) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"opciones","idCategoria"=>$categoria["idCategoriasRespuesta"])) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Opciones
 							</a>
 						</td>

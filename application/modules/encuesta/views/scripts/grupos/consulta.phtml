@@ -8,12 +8,12 @@
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Busqueda de Grupos en Nivel: <strong><?php echo $nivel->getNivel() ?></strong>
+				Busqueda de Grupos en Nivel: <strong><?php echo $nivel["nivelEducativo"] ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
-			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()), null, true); ?>">
-				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grado: <strong><?php echo $grado->getGrado() ?></strong>.
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado["idGradoEducativo"]), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grado: <strong><?php echo $grado["gradoEducativo"] ?></strong>.
 			</a><br /><br />
 			<?php echo $this->formulario; ?>
 			
@@ -27,12 +27,12 @@
 				<tbody>
 					<?php foreach ($grupos as $grupo) : ?>
 					<tr>
-						<td><?php echo $ciclo->getCiclo() ?></td>
-						<td><?php echo $nivel->getNivel() ?></td>
-						<td><?php echo $grado->getGrado() ?></td>
+						<td><?php echo $ciclo["cicloEscolar"]; ?></td>
+						<td><?php echo $nivel["nivelEducativo"] ?></td>
+						<td><?php echo $grado["gradoEducativo"] ?></td>
 						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"index","idGrupo"=>$grupo->getIdGrupo()),null,true) ?>">
-								<span class="glyphicon glyphicon-search"></span> Grupo: <strong><?php echo $grupo->getGrupo() ?></strong>
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"index","idGrupo"=>$grupo["idGrupoEscolar"]),null,true) ?>">
+								<span class="glyphicon glyphicon-search"></span> Grupo: <strong><?php echo $grupo["grupoEscolar"]; ?></strong>
 							</a>
 						</td>
 					</tr>

@@ -19,27 +19,28 @@ class Encuesta_DAO_Nivel implements Encuesta_Interfaces_INivel {
 		$tablaNivel = $this->tablaNivel;
 		$select = $tablaNivel->select()->from($tablaNivel)->where("idNivelEducativo = ?",$idNivel);
 		$rowNivel = $tablaNivel->fetchRow($select);
-		$modelNivel = new Encuesta_Model_Nivel($rowNivel->toArray());
+		//$modelNivel = new Encuesta_Model_Nivel($rowNivel->toArray());
 		
-		return $modelNivel;
+		return $rowNivel->toArray();
 	}
 	
 	public function obtenerNiveles(){
 		$tablaNivel = $this->tablaNivel;
 		$rowsNiveles = $tablaNivel->fetchAll();
+		/*
 		$modelNiveles = array();
 		foreach ($rowsNiveles as $row) {
 			$modelNivel = new Encuesta_Model_Nivel($row->toArray());
 			$modelNiveles[] = $modelNivel;
-		}
+		}*/
 		
-		return $modelNiveles;
+		return $rowsNiveles->toArray();
 	}
 	
-	public function crearNivel(Encuesta_Model_Nivel $nivel){
+	public function crearNivel(array $nivel){
 		$tablaNivel = $this->tablaNivel;
 		try{
-			$tablaNivel->insert($nivel->toArray());
+			$tablaNivel->insert($nivel);
 		}catch(Exception $ex){
 			throw new Util_Exception_BussinessException("<strong>" . $ex->getMessage() . "</strong>");
 		}

@@ -29,11 +29,11 @@ class Encuesta_CicloController extends Zend_Controller_Action
 		$ciclo = $this->cicloDAO->obtenerCiclo($idCiclo);
 		
 		$formulario = new Encuesta_Form_AltaCiclo;
-		$formulario->getElement("ciclo")->setValue($ciclo->getCiclo());
-		$formulario->getElement("inicio")->setValue($ciclo->getInicio());
-		$formulario->getElement("termino")->setValue($ciclo->getTermino());
-		$formulario->getElement("actual")->setValue($ciclo->getActual());
-		$formulario->getElement("descripcion")->setValue($ciclo->getDescripcion());
+		$formulario->getElement("ciclo")->setValue($ciclo["ciclo"]);
+		$formulario->getElement("inicio")->setValue($ciclo["inicio"]);
+		$formulario->getElement("termino")->setValue($ciclo["termino"]);
+		$formulario->getElement("vigente")->setValue($ciclo["vigente"]);
+		$formulario->getElement("descripcion")->setValue($ciclo["descripcion"]);
 		$formulario->getElement("submit")->setLabel("Actualizar Ciclo");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -53,17 +53,17 @@ class Encuesta_CicloController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				
 				$inicio = new Zend_Date($datos["inicio"], 'yyyy-MM-dd hh-mm-ss');
 				$termino = new Zend_Date($datos["termino"], 'yyyy-MM-dd hh-mm-ss');
+				
 				$datos["inicio"] = $inicio->toString('yyyy-MM-dd hh-mm-ss');
 				$datos["termino"] = $termino->toString('yyyy-MM-dd hh-mm-ss');
-				//$datos["idPlanE"] = $idPlan;
-				$ciclo = new Encuesta_Model_Ciclo($datos);
-				$ciclo->setIdPlanE($idPlan);
-				//print_r($ciclo);
+				$datos["idPlanEducativo"] = $idPlan;
+				
 				try{
-					$this->cicloDAO->crearCiclo($ciclo);
-					$this->view->messageSuccess = "Ciclo Escolar: <strong>".$ciclo->getCiclo(). "</strong> dato de alta efectivamente." ;
+					$this->cicloDAO->crearCiclo($datos);
+					$this->view->messageSuccess = "Ciclo Escolar: <strong>".$datos["ciclo"]. "</strong> dato de alta efectivamente." ;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}

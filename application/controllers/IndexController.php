@@ -55,7 +55,7 @@ class IndexController extends Zend_Controller_Action
 	 				//print_r($data);
 					$this->view->result = $result->getMessages();
 					//$this->forward("perfil","usuario","default",array("usr"=>$auth->getStorage()->read()->idUsuario));
-					$this->_helper->redirector->gotoSimple("clientes", "empresa", "sistema",array("usr"=>$auth->getStorage()->read()->idUsuario));
+					$this->_helper->redirector->gotoSimple("perfil", "usuario", "default",array("usr"=>$auth->getStorage()->read()->idUsuario));
 	                //$this->_redirect('/');
 	                //Zend_Registry::set('currentModule', $data["rol"]);
 					//Zend_Registry::set('currentUser', $data["usuario"]);

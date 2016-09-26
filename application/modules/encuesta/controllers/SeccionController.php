@@ -21,8 +21,8 @@ class Encuesta_SeccionController extends Zend_Controller_Action
         // action body
         $idSeccion = $this->getParam("idSeccion");
 		if(! is_null($idSeccion)) {
-			$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
-			$encuesta = $this->encuestaDAO->obtenerEncuesta($seccion->getIdEncuesta());
+			$seccion = $this->seccionDAO->getSeccionById($idSeccion);
+			$encuesta = $this->encuestaDAO->getEncuestaById($seccion->getIdEncuesta());
 			$this->view->seccion = $seccion;
 			$this->view->encuesta = $encuesta;
 			$grupos = $this->seccionDAO->obtenerGrupos($idSeccion);
@@ -53,7 +53,7 @@ class Encuesta_SeccionController extends Zend_Controller_Action
         $idSeccion = $this->getParam("idSeccion");
 		if(! is_null($idSeccion)) {
 			$seccionDAO = $this->seccionDAO;
-			$seccion = $seccionDAO->obtenerSeccion($idSeccion);
+			$seccion = $seccionDAO->getSeccionById($idSeccion);
 			$grupos = $seccionDAO->obtenerGrupos($idSeccion);
 			$preguntas = $seccionDAO->obtenerPreguntas($idSeccion);
 			//$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
@@ -81,7 +81,7 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 		$formulario = new Encuesta_Form_AltaSeccion();
 		if($request->isGet()){
 			if(!is_null($idEncuesta)){
-				$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+				$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);
 				
 				$this->view->encuesta = $encuesta;
 				$this->view->formulario = $formulario;

@@ -4,17 +4,11 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 {
 
     private $preguntaDAO = null;
-
     private $seccionDAO = null;
-
     private $grupoDAO = null;
-
     private $opcionDAO = null;
-	
 	private $gruposDAO = null;
-	
 	private $preferenciaDAO = null;
-	
 	private $registroDAO = null;
 
     public function init()
@@ -81,7 +75,7 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 			$idEncuesta = $seccion->getIdEncuesta();
 		}elseif(!is_null($idSeccion)){
 			$seccionDAO = $this->seccionDAO;
-			$seccion = $seccionDAO->obtenerSeccion($idSeccion);
+			$seccion = $seccionDAO->getSeccionById($idSeccion);
 			
 			$mensaje = "Seccion: " . $seccion->getNombre();
 			$idEncuesta = $seccion->getIdEncuesta();
