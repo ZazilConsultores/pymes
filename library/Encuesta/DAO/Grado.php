@@ -12,38 +12,28 @@ class Encuesta_DAO_Grado implements Encuesta_Interfaces_IGrado {
 		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaGradoEducativo = new Encuesta_Model_DbTable_GradoEducativo(array('db'=>$dbAdapter));
-		//$this->tablaGradoEducativo->setDefaultAdapter($dbAdapter);
 	}
 	
 	public function obtenerGrado($idGrado){
 		$tablaGrado = $this->tablaGradoEducativo;
 		$select = $tablaGrado->select()->from($tablaGrado)->where("idGradoEducativo = ?",$idGrado);
 		$rowGrado = $tablaGrado->fetchRow($select);
-		$modelGrado = new Encuesta_Model_Grado($rowGrado->toArray());
 		
-		return $modelGrado;
+		return $rowGrado->toArray();
 	}
 	
 	public function obtenerGrados($idNivel){
 		$tablaGrado = $this->tablaGradoEducativo;
 		$select = $tablaGrado->select()->from($tablaGrado)->where("idNivelEducativo = ?",$idNivel);
 		$rowsGrados = $tablaGrado->fetchAll($select);
-		$modelGrados = array();
-		foreach ($rowsGrados as $row) {
-			$modelGrado = new Encuesta_Model_Grado($row->toArray());
-			$modelGrados[] = $modelGrado;
-		}
 		
-		return $modelGrados;
+		return $rowsGrados->toArray();
 	}
 	
-	public function crearGrado(Encuesta_Model_Grado $grado){
+	public function crearGrado(array $grado){
 		$tablaGrado = $this->tablaGradoEducativo;
-		try{
-			$tablaGrado->insert($grado->toArray());
-		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("Grado: <strong>".$grado->getGrado()."</strong> no se puede dar de alta.<br /><br /><strong>" . $ex->getMessage() . "</strong>");
-		}
+		
+		$tablaGrado->insert($grado);
 	}
 	
 	public function editarGrado($idGrado, array $datos){

@@ -51,7 +51,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $this->view->encuestas = $this->encuestaDAO->obtenerEncuestas();
+        $this->view->encuestas = $this->encuestaDAO->getAllEncuestas();
     }
 
     public function adminAction()
@@ -59,7 +59,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
 		$idEncuesta = $this->getParam("idEncuesta");
-		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);
 		
 		$this->view->encuesta = $encuesta;
 		//$this->view->secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
@@ -123,8 +123,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
     {
         // action body
         $idEncuesta = $this->getParam("idEncuesta");
-		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
-		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
+		$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);
+		$secciones = $this->seccionDAO->getSeccionesByIdEncuesta($idEncuesta);
 		$this->view->secciones = $secciones;
 		$this->view->encuesta = $encuesta;
     }

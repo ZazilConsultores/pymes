@@ -7,9 +7,10 @@
 class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 	private $tablaUnidad;
 	
-	public function __construct()
-	{
-		$this->tablaUnidad = new Inventario_Model_DbTable_Unidad;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerUnidad($idUnidad)

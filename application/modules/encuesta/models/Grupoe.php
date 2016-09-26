@@ -48,20 +48,20 @@ class Encuesta_Model_Grupoe
 
     public function __construct(array $datos)
     {
-        if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
-		if(array_key_exists("idGrado", $datos)) $this->idGrado = $datos["idGrado"];
-		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
-		$this->grupo = $datos["grupo"];
+        if(array_key_exists("idGrupoEscolar", $datos)) $this->idGrupo = $datos["idGrupoEscolar"];
+		if(array_key_exists("idGradoEducativo", $datos)) $this->idGrado = $datos["idGradoEducativo"];
+		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
+		$this->grupo = $datos["grupoEscolar"];
     }
 	
 	public function toArray()
 	{
 		$datos = array();
 		
-		$datos["idGrupo"] = $this->idGrupo;
-		$datos["idGrado"] = $this->idGrado;
-		$datos["idCiclo"] = $this->idCiclo;
-		$datos["grupo"] = $this->grupo;
+		$datos["idGrupoEscolar"] = $this->idGrupo;
+		$datos["idGradoEducativo"] = $this->idGrado;
+		$datos["idCicloEscolar"] = $this->idCiclo;
+		$datos["grupoEscolar"] = $this->grupo;
 		
 		return $datos;
 	}

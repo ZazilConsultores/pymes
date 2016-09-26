@@ -1,14 +1,12 @@
 <?php 
 	$nivel = $this->nivel;
 	$grados = $this->grados;
-	//print_r($grados);
-	
 ?>
 <section class="row">
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Grados Escolares del Nivel: <strong><?php echo $nivel->getNivel() ?></strong>
+				Grados Escolares del Nivel: <strong><?php echo $nivel["nivelEducativo"] ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
@@ -16,10 +14,10 @@
 				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a los Niveles
 			</a>
 			
-			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"alta","idNivel"=>$nivel->getIdNivel()),null,true) ?>">
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"alta","idNivel"=>$nivel["idNivelEducativo"]),null,true) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Agregar Grado
 			</a>
-			<a class="btn btn-info <?php if(empty($grados)) echo "disabled" ?>" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta","idNivel"=>$nivel->getIdNivel()),null,true) ?>">
+			<a class="btn btn-info <?php if(empty($grados)) echo "disabled" ?>" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"consulta","idNivel"=>$nivel["idNivelEducativo"]),null,true) ?>">
 				<span class="glyphicon glyphicon-search"></span> Búsqueda de Grupos Escolares
 			</a>
 			<br /><br />
@@ -28,18 +26,17 @@
 					<th>Grado</th>
 					<th>Configuración</th>
 					<th>Descripción</th>
-					
 				</thead>
 				<tbody>
 					<?php foreach ($grados as $grado) : ?>
 					<tr>
-						<td><?php echo $grado->getGrado() ?></td>
+						<td><?php echo $grado["gradoEducativo"] ?></td>
 						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGrado()),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado["idGradoEducativo"]),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>
-						<td><?php echo $grado->getDescripcion() ?></td>
+						<td><?php echo $grado["descripcion"]; ?></td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

@@ -9,7 +9,7 @@ interface Encuesta_Interfaces_ICiclo{
 	public function obtenerCiclos($idPlan);
 	public function obtenerCiclo($idCiclo);
 	public function obtenerCicloActual();
-	public function crearCiclo(Encuesta_Model_Ciclo $ciclo);
+	public function crearCiclo(array $ciclo);
 	public function editarCiclo($idCiclo, array $datos);
 	public function eliminarCiclo($idCiclo);
 }

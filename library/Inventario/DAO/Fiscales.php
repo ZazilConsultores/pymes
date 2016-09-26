@@ -16,14 +16,16 @@ class Inventario_DAO_Fiscales implements Inventario_Interfaces_IFiscales {
 	private $tablaFiscalesEmails;
 	
 	function __construct() {
-		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
-		$this->tablaFiscalesDomicilio = new Sistema_Model_DbTable_FiscalesDomicilios;
-		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos;	
-		$this->tablaFiscalesEmails = new Sistema_Model_DbTable_FiscalesEmail;
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
+		
+		$this->tablaFiscalesDomicilio = new Sistema_Model_DbTable_FiscalesDomicilios(array('db'=>$dbAdapter));
+		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos(array('db'=>$dbAdapter));
+		$this->tablaFiscalesEmails = new Sistema_Model_DbTable_FiscalesEmail(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerFiscales($idFiscales){

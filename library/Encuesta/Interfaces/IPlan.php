@@ -7,11 +7,10 @@
 interface Encuesta_Interfaces_IPlan{
 	// =====================================================================================>>>   Buscar
 	public function obtenerPlanEstudios($idPlan);
-	public function obtenerPlanEstudiosHash($hash);
 	public function obtenerPlanEstudiosVigente();
 	public function obtenerPlanesDeEstudio();
 	// =====================================================================================>>>   Insertar
-	public function agregarPlanEstudios($plan);
+	public function agregarPlanEstudios(array $plan);
 	// =====================================================================================>>>   Actualizar
 	public function actualizarPlanEstudios($idPlan, $datos);
 	// =====================================================================================>>>   Eliminar

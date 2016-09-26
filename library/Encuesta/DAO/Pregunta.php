@@ -7,7 +7,7 @@
 class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 	
 	private $tablaSeccionEncuesta;
-	private $tablaGrupoEncuesta;
+	private $tablaGrupoSeccion;
 	private $tablaPregunta;
 	private $tablaPreferenciaSimple;
 	
@@ -15,11 +15,8 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta(array('db'=>$dbAdapter));
-		
-		$this->tablaGrupoEncuesta = new Encuesta_Model_DbTable_GrupoEncuesta(array('db'=>$dbAdapter));
-		
+		$this->tablaGrupoEncuesta = new Encuesta_Model_DbTable_GrupoSeccion(array('db'=>$dbAdapter));
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta(array('db'=>$dbAdapter));
-		
 		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple(array('db'=>$dbAdapter));
 	}
 	// =====================================================================================>>>   Buscar
@@ -67,8 +64,8 @@ class Encuesta_DAO_Pregunta implements Encuesta_Interfaces_IPregunta {
 			$pregunta->setOrden($rowSeccion->elementos);
 			
 		}elseif($tipoPadre === "G"){
-			$tablaGrupo = $this->tablaGrupoEncuesta;
-			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoEncuesta = ?", $idPadre);
+			$tablaGrupo = $this->tablaGrupoSeccion;
+			$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $idPadre);
 			$rowGrupo = $tablaGrupo->fetchRow($select);
 			
 			$rowGrupo->elementos++;

@@ -7,9 +7,10 @@
 class Inventario_DAO_Estado implements Inventario_Interfaces_IEstado {
 	private $tablaEstado;
 	
-	public function __construct()
-	{
-		$this->tablaEstado = new Sistema_Model_DbTable_Estado;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaEstado = new Sistema_Model_DbTable_Estado(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerEstado($idEstado){

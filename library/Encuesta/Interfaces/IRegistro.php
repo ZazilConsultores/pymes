@@ -11,7 +11,7 @@ interface Encuesta_Interfaces_IRegistro{
 	public function obtenerRegistros();
 	public function obtenerDocentes();
 	// =====================================================================================>>>   Insertar
-	public function crearRegistro(Encuesta_Model_Registro $registro);
+	public function crearRegistro(array $registro);
 	// =====================================================================================>>>   Actualizar
 	public function editarRegistro($idRegistro, array $registro);
 	// =====================================================================================>>>   Eliminar

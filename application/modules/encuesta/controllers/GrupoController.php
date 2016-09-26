@@ -74,7 +74,7 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 		
 		if($request->isGet()){
 			if(!is_null($idSeccion)){
-				$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
+				$seccion = $this->seccionDAO->getSeccionById($idSeccion);
 				//->obtenerSeccionId($idEncuesta, $idSeccion);
 				
 				$this->view->formulario = $formulario;

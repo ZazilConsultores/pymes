@@ -8,10 +8,11 @@ class Inventario_DAO_Parametro implements Inventario_Interfaces_IParametro{
 	private $tablaParametro;
 	private $tablaSubparametro;
 	
-	public function __construct()
-	{
-		$this->tablaParametro = new Sistema_Model_DbTable_Parametro;
-		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaParametro = new Sistema_Model_DbTable_Parametro(array('db'=>$dbAdapter));
+		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerParametro($idParametro){

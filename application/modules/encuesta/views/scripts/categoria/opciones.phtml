@@ -8,14 +8,14 @@
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Opciones de la Categoría: <strong><?php echo $categoria->getCategoria(); ?></strong>
+				Opciones de la Categoría: <strong><?php echo $categoria["categoria"] ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
-			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"admin","idCategoria"=>$categoria->getIdCategoria(),),null,true) ?>">
-				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Categoria: <strong><?php echo $categoria->getCategoria() ?></strong>
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"admin","idCategoria"=>$categoria["idCategoriasRespuesta"]),null,true) ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Categoría: <strong><?php echo $categoria["categoria"] ?></strong>
 			</a>
-			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"opcion","action"=>"alta","idCategoria"=>$categoria->getIdCategoria()), null, true) ?>">
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"opcion","action"=>"alta","idCategoria"=>$categoria["idCategoriasRespuesta"]), null, true) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Agregar Opción
 			</a>
 			<table class="table table-striped table-condensed">
@@ -30,10 +30,22 @@
 				<tbody>
 					<?php foreach ($opciones as $opcion) : ?>
 					<tr>
-						<td><?php echo $opcion->getOrden(); ?></td>
-						<td><?php echo $opcion->getOpcion(); ?></td>
-						<td><?php echo $opcion->getVreal(); ?></td>
-						<td><?php echo $opcion->getFecha(); ?></td>
+						<td><?php echo $opcion["orden"]; ?></td>
+						<td><?php echo $opcion["nombreOpcion"]; ?></td>
+						<td><?php 
+							switch ($opcion["tipoValor"]) {
+								case 'EN':
+									echo $opcion["valorEntero"];
+									break;
+								case 'TX':
+									echo $opcion["valorTexto"];
+									break;
+								case 'DC':
+									echo $opcion["valorDecimal"];
+									break;
+							}
+						 ?></td>
+						<td><?php echo $opcion["fecha"]; ?></td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

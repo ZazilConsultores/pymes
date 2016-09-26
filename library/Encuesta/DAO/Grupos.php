@@ -27,7 +27,7 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	public function obtenerGrupos($idGrado,$idCiclo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGradoEducativo = ?",$idGrado)->where("idCicloEscolar = ?",$idCiclo)->order("grupo ASC");
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGradoEducativo = ?",$idGrado)->where("idCicloEscolar = ?",$idCiclo)->order("grupoEscolar ASC");
 		$grupos = $tablaGrupo->fetchAll($select);
 		
 		$modelGrupos = array();
@@ -59,8 +59,14 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 		return $asignacion->toArray();
 	}
 	
-	public function crearGrupo($idGrado,$idCiclo,Encuesta_Model_Grupoe $grupo){
+	/**
+	 * crearGrupo - Crea un grupo en el ciclo escolar actual
+	 */
+	public function crearGrupo(array $grupo){
 		$tablaGrupo = $this->tablaGrupo;
+		$tablaGrupo->insert($grupo);
+		
+		/*
 		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGradoEducativo = ?",$idGrado)->where("idCicloEscolar = ?",$idCiclo)->where("grupo = ?",$grupo->getGrupo());
 		$grupoe = $tablaGrupo->fetchRow($select);
 		
@@ -75,7 +81,7 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 		}catch(Exception $ex){
 			throw new Util_Exception_BussinessException("Error al Insertar el Grupo: " . $grupo->getGrupo());			
 		}
-		
+		*/
 	}
 	
 	public function obtenerDocentes($idGrupo){

@@ -19,15 +19,15 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$tablaCiclo = $this->tablaCiclo;
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idPlanEducativo = ?",$idPlan);
 		$rowsCiclos = $tablaCiclo->fetchAll($select);
-		
+		/*
 		$modelCiclos = array();
 		
 		foreach ($rowsCiclos as $row) {
 			$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
 			$modelCiclos[] = $modelCiclo;
-		}
+		}*/
 		
-		return $modelCiclos;
+		return $rowsCiclos->toArray();
 	}
 	
 	public function obtenerCiclo($idCiclo){
@@ -35,34 +35,32 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idCicloEscolar = ?",$idCiclo);
 		$row = $tablaCiclo->fetchRow($select);
 		
-		$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
+		//$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
 		
-		return $modelCiclo;
+		return $row->toArray();
 	}
 	
 	public function obtenerCicloActual(){
 		$tablaCiclo = $this->tablaCiclo;
-		$select = $tablaCiclo->select()->from($tablaCiclo)->where("actual = ?","1");
+		$select = $tablaCiclo->select()->from($tablaCiclo)->where("vigente = ?","1");
 		$row = $tablaCiclo->fetchRow($select);
 		
 		if(is_null($row)){
 			throw new Util_Exception_BussinessException("Error: No hay ciclos escolares");
 		}
 		
-		$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
+		//$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
 		
-		return $modelCiclo;
+		return $row->toArray();
 	}
 	
-	public function crearCiclo(Encuesta_Model_Ciclo $ciclo){
+	/**
+	 * Inserta un nuevo ciclo escolar en el modulo de encuestas
+	 */
+	public function crearCiclo(array $ciclo){
 		$tablaCiclo = $this->tablaCiclo;
 		
-		try{
-			$tablaCiclo->insert($ciclo->toArray());
-		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("Error: <strong>" . $ex->getMessage() ."</strong>");
-		}
-		
+		$tablaCiclo->insert($ciclo);
 	}
 	
 	public function editarCiclo($idCiclo, array $datos){

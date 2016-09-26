@@ -45,6 +45,7 @@ $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
 $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 $tipoSucursal = array("SE"=>"Sucursal Empresa","SC"=>"Sucursal Cliente", "SP" => "Sucursal Proveedor");
+$tiposValores = array("EN" => "Entero", "TX" => "Texto", "DC" => "Decimal");
 $conceptoPago = array('AN'=>'Anticipo', 'LI'=>'Liquidacion', 'PA'=>'Pago');
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
@@ -104,7 +105,7 @@ Zend_Registry::set('tipoBanco', $tipoBanco);
 Zend_Registry::set('gradosEscolares', $gradosEscolares);
 Zend_Registry::set('formaPago', $formaPago);
 Zend_Registry::set('conceptoPago', $conceptoPago);
-
+Zend_Registry::set('tiposValores', $tiposValores);
 //Zend_Registry::set('dbconfigmodencuesta', $modEncuesta);
 
 $application->bootstrap()

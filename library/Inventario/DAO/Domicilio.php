@@ -10,11 +10,12 @@
 	private $tablaMunicipio;
 	private $tablaDomicilio;
 	
-	public function __construct()
-	{
-		$this->tablaEstado = new Sistema_Model_DbTable_Estado;
-		$this->tablaMunicipio = new Sistema_Model_DbTable_Municipio;
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaEstado = new Sistema_Model_DbTable_Estado(array('db'=>$dbAdapter));
+		$this->tablaMunicipio = new Sistema_Model_DbTable_Municipio(array('db'=>$dbAdapter));
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerEstados(){
