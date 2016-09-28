@@ -4,7 +4,7 @@
 	//$preguntas = $this->preguntas;
 	$opciones = $this->opciones;
 	$formulario = $this->formulario;
-	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"grupo", "action" => "edita", "idGrupo"=>$grupo->getIdGrupo()), null, true));
+	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"grupo", "action" => "edita", "idGrupo"=>$grupo->getIdGrupoSeccion()), null, true));
 	
 	$t = Zend_Registry::get("tipo");
 ?>
@@ -31,7 +31,7 @@
 						<td><?php echo $grupo->getOrden(); ?></td>
 						<td><?php echo $t[$grupo->getTipo()]; ?></td>
 						<td>
-							<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "grupo", "action" => "index", "idGrupo" => $grupo->getIdGrupo()), null, true) ?>" class="btn btn-info">
+							<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "grupo", "action" => "index", "idGrupo" => $grupo->getIdGrupoSeccion()), null, true) ?>" class="btn btn-info">
 								<span class="glyphicon glyphicon-cog"></span>  Preguntas
 							</a>
 						</td>

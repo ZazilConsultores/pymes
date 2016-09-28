@@ -31,7 +31,7 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		return $modelGrupo;
 	}
 	*/
-	
+	/*
 	public function obtenerPreguntas($idGrupo) {
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
@@ -47,6 +47,8 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		
 		return $modelPreguntas;
 	}
+	*/
+	
 	/**
 	 * Un grupo con preguntas de simple seleccion comparte las mismas opciones 
 	 */
@@ -115,10 +117,23 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	
 	// **************************************************************************************** IMPLEMENTANDO ESTANDAR DE NOMBRES
 	/**
-	 * 
+	 * function getGruposByIdSeccion($idSeccion) - 
+	 * @param $idSeccion - 
+	 * @param array - conjunto de models Encuesta_Models_Grupo
 	 */
 	public function getGruposByIdSeccion($idSeccion){
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccionEncuesta=?",$idSeccion);
+		$rowsGrupos = $tablaGrupo->fetchAll($select);
 		
+		$modelGrupos = array();
+		foreach ($rowsGrupos as $row) {
+			$model = new Encuesta_Models_Grupo($row->toArray());
+			
+			$modelGrupos[] = $model;
+		}
+		
+		return $modelGrupos;
 	}
 	
 	/**
@@ -127,8 +142,8 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	 * @return $modelGrupo | null - El model o null conseguido de la base de datos
 	 */
 	public function getGrupoById($id){
-		$tablaGrupo = $this->tablaGrupoEncuesta;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $idGrupo);
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $id);
 		$rowGrupo = $tablaGrupo->fetchRow($select);
 		
 		if(is_null($rowGrupo)){
@@ -140,16 +155,53 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	}
 	
 	/**
+	 * function getPreguntasByIdGrupo($idGrupo) - Obtiene las preguntas correspondientes al contenedor grupo especificado mediante el $id
+	 * @param $idGrupo - 
 	 * 
 	 */
-	public function addGrupoToSeccion(Encuesta_Models_Grupo $grupo){
+	public function getPreguntasByIdGrupo($idGrupo) {
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
+		$rowsPreguntas = $tablaPregunta->fetchAll($select);
+		$modelPreguntas = array();
 		
+		if(!is_null($rowsPreguntas)){
+			foreach ($rowsPreguntas as $row) {
+				$modelPregunta = new Encuesta_Models_Pregunta($row->toArray());
+				$modelPreguntas[] = $modelPregunta;
+			}
+		}
+		
+		return $modelPreguntas;
+	}
+	
+	/**
+	 * function addGrupoToSeccion(Encuesta_Models_Grupo $grupo)
+	 * @param $grupo - model Encuesta_Models_Grupo
+	 */
+	public function addGrupoToSeccion(Encuesta_Models_Grupo $grupo) {
+		
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		
+		$datos = $grupo->toArray();
+		unset($datos["fecha"]);
+		$tablaGrupo->insert($datos);
+		// Si se agrego un grupo a una seccion en la seccion se debe incrementar el numero de elementos
+		$tablaSeccion = $this->tablaSeccionEncuesta;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccionEncuesta=?",$grupo->getIdSeccionEncuesta());
+		$rowSeccion = $tablaSeccion->fetchRow($select);
+		$rowSeccion->elementos++;
+		$rowSeccion->save();
 	}
 	
 	/**
 	 * 
 	 */
 	public function editGrupo($id, array $datos){
-		
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$where = $this->tablaGrupoSeccion->getAdapter()->quoteInto("idGrupoSeccion=?", $id);
+		$tablaGrupo->update($datos, $where);
 	}
+	
+	
 }

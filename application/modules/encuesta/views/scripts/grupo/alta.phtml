@@ -1,10 +1,8 @@
-<section class="row">
-	<article class="col-xs-8">
-		<header>
-			<h3>Nuevo Grupo a la Seccion: <?php echo $this->seccion->getNombre(); ?></h3>
-		</header>
-		<div>
-			<?php echo $this->formulario ?>
-		</div>
-	</article>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">Nuevo Grupo a la Seccion: <strong><?php echo $this->seccion->getNombre(); ?></strong></h3>
+	</div>
+	<div class="panel-body">
+		<?php echo $this->formulario ?>
+	</div>	
 </section>

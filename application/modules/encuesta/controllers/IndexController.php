@@ -87,10 +87,12 @@ class Encuesta_IndexController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				
-				$encuesta = new Encuesta_Model_Encuesta($datos);
-				
-				$this->encuestaDAO->crearEncuesta($encuesta);
-				//$this->_helper->redirector->gotoSimple("index", "index", "encuesta", array("idEncuesta" => $encuesta->getIdEncuesta()));
+				$encuesta = new Encuesta_Models_Encuesta($datos);
+				try{
+					$this->encuestaDAO->addEncuesta($encuesta);
+				}catch(Exception $ex){
+					print_r($ex->getMessage());
+				}
 			}
 		}
     }

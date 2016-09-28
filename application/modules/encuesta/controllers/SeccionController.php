@@ -25,8 +25,8 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 			$encuesta = $this->encuestaDAO->getEncuestaById($seccion->getIdEncuesta());
 			$this->view->seccion = $seccion;
 			$this->view->encuesta = $encuesta;
-			$grupos = $this->seccionDAO->obtenerGrupos($idSeccion);
-			$preguntas = $this->seccionDAO->obtenerPreguntas($idSeccion);
+			$grupos = $this->seccionDAO->getGruposByIdSeccion($idSeccion);
+			$preguntas = $this->seccionDAO->getPreguntasByIdSeccion($idSeccion);
 			
 			$elementos = array();
 			
@@ -54,8 +54,8 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 		if(! is_null($idSeccion)) {
 			$seccionDAO = $this->seccionDAO;
 			$seccion = $seccionDAO->getSeccionById($idSeccion);
-			$grupos = $seccionDAO->obtenerGrupos($idSeccion);
-			$preguntas = $seccionDAO->obtenerPreguntas($idSeccion);
+			$grupos = $seccionDAO->getGruposByIdSeccion($idSeccion);
+			$preguntas = $seccionDAO->getPreguntasByIdSeccion($idSeccion);
 			//$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
 			$this->view->seccion = $seccion;
 			$this->view->grupos = $grupos;
@@ -93,12 +93,14 @@ class Encuesta_SeccionController extends Zend_Controller_Action
 				
 				$datos = $formulario->getValues();
 				
-				$seccion = new Encuesta_Model_Seccion($datos);
+				$seccion = new Encuesta_Models_Seccion($datos);
 				$seccion->setIdEncuesta($idEncuesta);
-				$seccion->setFecha(date("Y-m-d H:i:s", time()));
-				
-				$this->seccionDAO->crearSeccion($seccion);
-				
+				//$seccion->setFecha(date("Y-m-d H:i:s", time()));
+				try{
+					$this->seccionDAO->addSeccionToEncuesta($seccion);
+				}catch(Exception $ex){
+					print_r($ex->getMessage());
+				}
 				$this->_helper->redirector->gotoSimple("index", "index", "encuesta", array("idEncuesta" => $idEncuesta));
 			}
 		}

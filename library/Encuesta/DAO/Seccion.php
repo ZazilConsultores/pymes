@@ -49,6 +49,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		return $modelSecciones;
 	}
 	*/
+	/*
 	public function obtenerPreguntas($idSeccion){
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
@@ -76,6 +77,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		
 		return $modelGrupos;
 	}
+	*/
 	// =====================================================================================>>>   Crear
 	/*
 	public function crearSeccion(Encuesta_Models_Seccion $seccion) {
@@ -111,14 +113,14 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$tablaSeccion->delete($where);
 	}
 	*/
-	
+	/*
 	public function eliminarPreguntas($idSeccion){
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
 		
 		$tablaSeccion->delete($select);
 	}
-	
+	*/
 	public function eliminarGrupos($idSeccion){
 		$tablaGrupoSeccion = $this->tablaGrupoSeccion;
 		$tablaPregunta = $this->tablaPregunta;
@@ -198,8 +200,10 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$seccion->setOrden($orden);
 		// Siempre al crearse una seccion esta vacía es decir contiene 0 elementos
 		$seccion->setElementos("0");
+		$datos = $seccion->toArray();
+		unset($datos["fecha"]);
 		// Insertamos en la TablaSeccion (Puede arrojar Excepcion de la base de datos)
-		$tablaSeccion->insert($seccion->toArray());
+		$tablaSeccion->insert($datos);
 	}
 	
 	/**
@@ -236,6 +240,23 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		}
 		
 		return $modelGrupos;
+	}
+	
+	/**
+	 * 
+	 */
+	public function getPreguntasByIdSeccion($idSeccion){
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
+		$rowsPreguntas = $tablaPregunta->fetchAll($select);
+		$modelPreguntas = array();
+		
+		foreach ($rowsPreguntas as $row) {
+			$modelPregunta = new Encuesta_Models_Pregunta($row->toArray());
+			$modelPreguntas[] = $modelPregunta;
+		}
+		
+		return $modelPreguntas;
 	}
 	
 }

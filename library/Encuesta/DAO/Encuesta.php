@@ -424,8 +424,11 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 	public function addEncuesta(Encuesta_Models_Encuesta $encuesta){
 		// Instanciamos de forma local una referencia a la TablaEncuesta
 		$tablaEncuesta = $this->tablaEncuesta;
+		// En insercion necesitamos eliminar 'fecha' por default va null pero el server le asigna valor y no puede ser null
+		$datos = $encuesta->toArray();
+		unset($datos["fecha"]);
 		// Insertamos directamente a la TablaEncuesta (Nos puede enviar Excepcion por diversas causas)
-		$tablaEncuesta->insert($encuesta->toArray());
+		$tablaEncuesta->insert($datos);
 	}
 	
 	/**

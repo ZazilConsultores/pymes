@@ -3,51 +3,53 @@
 	$preguntas = $this->preguntas;
 	$tipo = Zend_Registry::get("tipo");
 ?>
-<section class="row">
-	<header>
-		<h3>
-			Preguntas del grupo: <?php echo $grupo->getNombre(); ?>
-		</h3>
-	</header>
-	<div>
-		<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"index","idSeccion"=>$grupo->getIdSeccion()), null, true) ?>">
-			<span class="glyphicon glyphicon-chevron-left"></span> Regresar a la Sección
-		</a>
-		<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupo","action"=>"admin","idGrupo"=>$grupo->getIdGrupo()), null, true) ?>">
-			<span class="glyphicon glyphicon-cog"></span> Administrar Grupo
-		</a>
-		<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"alta","idGrupo"=>$grupo->getIdGrupo()), null, true) ?>">
-			<span class="glyphicon glyphicon-plus"></span> Nueva Pregunta
-		</a>
-		<br /><br />
-		<table class="table table-striped table-condensed">
-			<thead>
-				<tr>
-					<th>Pregunta</th>
-					<th>Tipo Pregunta</th>
-					<th>Creación</th>
-					<th>Contenedor</th>
-					<th>Orden en contenedor</th>
-					<th>Configuración</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($preguntas as $pregunta) : ?>
-				<tr>
-					<td><?php echo $pregunta->getPregunta(); ?></td>
-					<td><?php echo $tipo[$pregunta->getTipo()]; ?></td>
-					<td><?php echo $pregunta->getFecha(); ?></td>
-					<td><?php echo $contenedor = ($pregunta->getOrigen() == "S") ? "Sección" : "Grupo" ; ?></td>
-					<td><?php echo $pregunta->getOrden(); ?></td>
-					<td>
-						<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "admin", "idPregunta" => $pregunta->getIdPregunta()), null, true); ?>" class="btn btn-success">
-							<span class="glyphicon glyphicon-pencil"></span> Editar
-						</a>
-					</td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">Preguntas del grupo: <strong><?php echo $grupo->getNombre(); ?></strong></h3>
+	</div>
+	<div class="panel-body">
+		<div>
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"seccion","action"=>"index","idSeccion"=>$grupo->getIdSeccionEncuesta()), null, true) ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a la Sección
+			</a>
+			<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupo","action"=>"admin","idGrupo"=>$grupo->getIdGrupoSeccion()), null, true) ?>">
+				<span class="glyphicon glyphicon-cog"></span> Administrar Grupo
+			</a>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"alta","idGrupo"=>$grupo->getIdGrupoSeccion()), null, true) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nueva Pregunta
+			</a>
+		</div>
+		<div>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Tipo Pregunta</th>
+						<th>Creación</th>
+						<th>Contenedor</th>
+						<th>Orden en contenedor</th>
+						<th>Configuración</th>
+						<th>Pregunta</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($preguntas as $pregunta) : ?>
+					<tr>
+						
+						<td><?php echo $tipo[$pregunta->getTipo()]; ?></td>
+						<td><?php echo $pregunta->getFecha(); ?></td>
+						<td><?php echo $contenedor = ($pregunta->getOrigen() == "S") ? "Sección" : "Grupo" ; ?></td>
+						<td><?php echo $pregunta->getOrden(); ?></td>
+						<td>
+							<a href="<?php echo $this->url(array("module" => "encuesta", "controller" => "pregunta", "action" => "admin", "idPregunta" => $pregunta->getIdPregunta()), null, true); ?>" class="btn btn-success">
+								<span class="glyphicon glyphicon-pencil"></span> Editar
+							</a>
+						</td>
+						<td><?php echo $pregunta->getNombre(); ?></td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </section>
 <script>

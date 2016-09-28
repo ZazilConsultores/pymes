@@ -77,7 +77,7 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 			
 			$seccion = $seccionDAO->getSeccionById($claveSeccion);
 			//$grupos = $seccionDAO->get
-			$grupos = $seccionDAO->obtenerGrupos($seccion->getIdSeccionEncuesta());
+			$grupos = $seccionDAO->getGruposByIdSeccion($claveSeccion);//->obtenerGrupos($seccion->getIdSeccionEncuesta());
 			
 			$this->view->seccion = $seccion;
 			$this->view->grupos = $grupos;
@@ -114,7 +114,7 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 				
 				$this->view->seccion = $seccion;
 				//$this->view->preguntas = $preguntaDAO->obtenerPreguntas($seccion->getIdSeccion(), "S");
-				$this->view->preguntas = $seccionDAO->obtenerPreguntas($seccion->getIdSeccionEncuesta());
+				$this->view->preguntas = $seccionDAO->getPreguntasByIdSeccion($claveSeccion); //->obtenerPreguntas($seccion->getIdSeccionEncuesta());
 			}else if(!is_null($claveGrupo)) {
 				$grupoDAO = $this->grupoDAO;
 				$grupo = $grupoDAO->obtenerGrupo($claveGrupo);
