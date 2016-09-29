@@ -6,6 +6,8 @@ class Encuesta_Form_ConsultaGrupos extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $this->setAttrib("class", "form-horizontal");
+		
         $elementDecorators = array(
 			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper',
 			array('Label', array("class"=>"control-label") ),

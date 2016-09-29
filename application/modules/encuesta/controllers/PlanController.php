@@ -28,7 +28,7 @@ class Encuesta_PlanController extends Zend_Controller_Action
 				$plan = $formulario->getValues();
 				try{
 					$this->planDAO->agregarPlanEstudios($plan);
-					$this->view->messageSuccess = "Plan de estudios: ".$plan["planEducativo"]." dado de alta exitosamente.";
+					$this->view->messageSuccess = "Plan de estudios: <strong>".$plan["planEducativo"]."</strong> dado de alta exitosamente.";
 				}catch(Exception $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}

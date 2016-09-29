@@ -153,7 +153,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		// Si nuestro conjunto de registros no es nulo enviamos rellenamos el contenedor, si es nulo se va vacío
 		if(!is_null($rowsSecciones)){
 			foreach ($rowsSecciones as $row) {
-				$modelSeccion = new Encuesta_Model_Seccion($row->toArray());
+				$modelSeccion = new Encuesta_Models_Seccion($row->toArray());
 				$modelSecciones[] = $modelSeccion;
 			}
 		}
@@ -243,7 +243,9 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 	}
 	
 	/**
-	 * 
+	 * function getPreguntasByIdSeccion($idSeccion)
+	 * @param $idSeccion - el id de la seccion 
+	 * @return $model - 
 	 */
 	public function getPreguntasByIdSeccion($idSeccion){
 		$tablaPregunta = $this->tablaPregunta;

@@ -1,34 +1,36 @@
 <?php 
+	$categoria = $this->categoria;
 	$formulario = $this->formulario;
 	$messageSuccess = $this->messageSuccess;
 	$messageFail = $this->messageFail;
 ?>
-<section class="row">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title"></h3>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">Nueva Categoria de Respuestas</h3>
+	</div>
+	<div class="panel-body">
+		<div>
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta", "controller"=>"categoria", "action"=>"index")) ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Categorias
+			</a><br /><br />
+			<?php if(!is_null($messageSuccess)){ ?>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php } ?>
 		</div>
-		<div class="panel-body">
-			<div>
-				<?php echo $formulario ?>
-			</div>
-			<div>
-				<?php if(!is_null($messageSuccess)){ ?>
-				<div class="alert alert-success" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
-					<?php echo $messageSuccess; ?>
-				</div>
-				<?php }elseif(!is_null($messageFail)){ ?>
-				<div class="alert alert-danger" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
-					<?php echo $messageFail; ?>
-				</div>
-				<?php } ?>
-			</div>
+		<div>
+			<?php echo $formulario ?>
 		</div>
 	</div>
 </section>

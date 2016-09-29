@@ -76,8 +76,8 @@ class Encuesta_GruposController extends Zend_Controller_Action
 			
 			if(!is_null($grados)){
 				$formulario->getElement("grado")->clearMultiOptions();
-				$formulario->getElement("nivel")->clearMultiOptions();
-				$formulario->getElement("nivel")->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
+				$formulario->getElement("idNivelEducativo")->clearMultiOptions();
+				$formulario->getElement("idNivelEducativo")->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
 				foreach ($grados as $grado) {
 					$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
 				}
