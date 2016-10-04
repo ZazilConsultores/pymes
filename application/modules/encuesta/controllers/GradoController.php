@@ -20,7 +20,7 @@ class Encuesta_GradoController extends Zend_Controller_Action
         // action body
         $idNivel = $this->getParam("idNivel");
 		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
-		$grados = $this->gradoDAO->obtenerGrados($idNivel);
+		$grados = $this->gradoDAO->getGradosByIdNivel($idNivel);
 		
 		$this->view->nivel = $nivel;
 		$this->view->grados = $grados;
@@ -54,13 +54,13 @@ class Encuesta_GradoController extends Zend_Controller_Action
     public function adminAction() {
         // action body
 		$idGrado = $this->getParam("idGrado");
-		$grado = $this->gradoDAO->obtenerGrado($idGrado);
-		$nivel = $this->nivelDAO->obtenerNivel($grado["idNivelEducativo"]);
+		$grado = $this->gradoDAO->getGradoById($idGrado);
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivelEducativo());
 		
 		$formulario = new Encuesta_Form_AltaGrado;
-		$formulario->getElement("gradoEducativo")->setValue($grado["gradoEducativo"]);
-		$formulario->getElement("abreviatura")->setValue($grado["abreviatura"]);
-		$formulario->getElement("descripcion")->setValue($grado["descripcion"]);
+		$formulario->getElement("gradoEducativo")->setValue($grado->getGradoEducativo());
+		$formulario->getElement("abreviatura")->setValue($grado->getAbreviatura());
+		$formulario->getElement("descripcion")->setValue($grado->getDescripcion());
 		$formulario->getElement("submit")->setLabel("Actualizar Grado");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -87,8 +87,8 @@ class Encuesta_GradoController extends Zend_Controller_Action
     public function materiasAction() {
         // action body
         $idGrado = $this->getParam("idGrado");
-		$grado = $this->gradoDAO->obtenerGrado($idGrado);
-		$nivel = $this->nivelDAO->obtenerNivel($grado["idNivelEducativo"]);
+		$grado = $this->gradoDAO->getGradoById($idGrado);//->obtenerGrado($idGrado);
+		$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivelEducativo());
 		//$ciclo = $this->cicloDAO->obtenerCiclo($grado->get)
 		//$formulario = new Encuesta_Form_AltaMateria;
 		$materias = $this->materiaDAO->obtenerMateriasGrado($idGrado);

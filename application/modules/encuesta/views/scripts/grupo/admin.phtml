@@ -1,8 +1,8 @@
 <?php 
 	$grupo = $this->grupo;
 	$seccion = $this->seccion;
-	//$preguntas = $this->preguntas;
 	$opciones = $this->opciones;
+	$tipoOpcion = Zend_Registry::get("tiposValores");
 	$formulario = $this->formulario;
 	$formulario->setAction($this->url(array("module"=>"encuesta", "controller"=>"grupo", "action" => "edita", "idGrupo"=>$grupo->getIdGrupoSeccion()), null, true));
 	
@@ -66,13 +66,30 @@
 			<table class="table table-striped table-condensed">
 				<thead>
 					<th>Opción</th>
+					<th>Tipo Valor</th>
+					<th>Valor</th>
 					<th>Creación</th>
 				</thead>
 				<tbody>
 					
 					<?php foreach ($opciones as $opcion) : ?>
 						<tr>
-							<td><?php echo $opcion->getOpcion() ?></td>
+							<td><?php echo $opcion->getNombreOpcion() ?></td>
+							<td><?php echo $tipoOpcion[$opcion->getTipoValor()];  ?></td>
+							<td><?php
+								switch ($opcion->getTipoValor()) {
+									case 'EN':
+										echo $opcion->getValorEntero();
+										break;
+									case 'TX':
+										echo $opcion->getValorTexto();
+										break;
+									case 'DC':
+										echo $opcion->getValorDecimal();
+										break;
+								}
+							?>
+							</td>
 							<td><?php echo $opcion->getFecha() ?></td>
 						</tr>
 					<?php endforeach; ?>

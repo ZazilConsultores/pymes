@@ -2,23 +2,17 @@
 	$encuesta = $this->encuesta; 
 	$estatus = Zend_Registry::get("estatus");
 ?>
-<section class="row">
-	<header>
-		<h3>Encuesta: <?php echo $encuesta->getNombre(); ?>  
-			<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "generador", "action" => "index", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-success">
-				Generar
-				<span class="glyphicon glyphicon-cog"></span>
-			</a>
-		</h3>
-	</header>
+<div>
+	<strong>Encuesta:</strong> <span style="font-style: italic;"><?php echo $encuesta->getNombre() ?></span><br />
+	<strong>Objetivo Encuesta:</strong>  <span style="font-style: italic;"><?php echo $encuesta->getDescripcion(); ?></span><br /><hr />
+</div>
+<div>
 	<table class="table table-striped">
 		<thead>
 			<th>Nombre Clave</th>
-			<th>Fecha</th>
+			<th>Creación</th>
 			<th>Estatus</th>
 			<th>Administrar</th>
-			<th>Secciones</th>
-			<th>Descripción</th>
 		</thead>
 		<tbody>
 			<tr>
@@ -30,13 +24,7 @@
 						<span class="glyphicon glyphicon-cog"></span>  Administrar
 					</a>
 				</td>
-				<td>
-					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "secciones", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-warning">
-						<span class="glyphicon glyphicon-cog"></span>  Secciones
-					</a>
-				</td>
-				<td><?php echo $encuesta->getDescripcion(); ?></td>
 			</tr>
 		</tbody>
 	</table>
-</section>
+</div>

@@ -60,8 +60,8 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		//Cuando viene la la vista encuesta/grado/admin/idGrado/valor
 		//No desplegamos formulario de consulta, traemos tabla con los grupos del grado del ciclo actual
 		if(!is_null($idGrado)){
-			$grado = $this->gradoDAO->obtenerGrado($idGrado);
-			$nivel = $this->nivelDAO->obtenerNivel($grado["idNivelEducativo"]);
+			$grado = $this->gradoDAO->getGradoById($idGrado);
+			$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivelEducativo());
 			
 			$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $ciclo["idCicloEscolar"]);
 			
@@ -72,7 +72,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
 			return;
 		}elseif(!is_null($idNivel)){
 			$nivel = $this->nivelDAO->obtenerNivel($idNivel);
-			$grados = $this->gradoDAO->obtenerGrados($idNivel);
+			$grados = $this->gradoDAO->getGradosByIdNivel($idNivel);
 			
 			if(!is_null($grados)){
 				$formulario->getElement("grado")->clearMultiOptions();

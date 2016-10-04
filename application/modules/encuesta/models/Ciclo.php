@@ -79,7 +79,7 @@ class Encuesta_Model_Ciclo
 		$this->ciclo = $datos["ciclo"];
 		$this->inicio = $datos["inicio"];
 		$this->termino = $datos["termino"];
-		$this->actual = $datos["actual"];
+		$this->actual = $datos["vigente"];
 		$this->descripcion = $datos["descripcion"];
 	}
 	
@@ -92,7 +92,7 @@ class Encuesta_Model_Ciclo
 		$datos["ciclo"] = $this->ciclo;
 		$datos["inicio"] = $this->inicio;
 		$datos["termino"] = $this->termino;
-		$datos["actual"] = $this->actual;
+		$datos["vigente"] = $this->actual;
 		$datos["descripcion"] = $this->descripcion;
 		
 		return $datos;

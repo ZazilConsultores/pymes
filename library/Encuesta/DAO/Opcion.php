@@ -30,9 +30,9 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcionCategoria = ?", $idOpcion);
 		$rowOpcion = $tablaOpcion->fetchRow($select);
 		
-		//$modelOpcion = new Encuesta_Model_Opcion($rowOpcion->toArray());
+		$modelOpcion = new Encuesta_Models_Opcion($rowOpcion->toArray());
 		
-		return $rowOpcion->toArray();
+		return $modelOpcion;
 	}
 	
 	/**
@@ -42,24 +42,27 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		$tablaOpcion = $this->tablaOpcion;
 		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoriasRespuesta = ?", $idCategoria);
 		$rowsOpcion = $tablaOpcion->fetchAll($tablaOpcion);
-		/*
+		
 		$modelOpciones = array();
 		
 		if(!is_null($rowsCategoria)){
 			foreach ($rowsCategoria as $row) {
-				$modelOpcion = new Encuesta_Model_Opcion($row->toArray());
+				$modelOpcion = new Encuesta_Models_Opcion($row->toArray());
 				$modelOpciones[] = $modelOpcion;
 			}
 		}
-		*/
-		return $rowsOpcion->toArray();
+		
+		return $modelOpciones;
 	}
 	
+	/**
+	 * 
+	 */
 	public function obtenerOpcionesPregunta($idPregunta){
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("idPregunta = ?", $idPregunta);
 		$rowOpciones = $tablaPregunta->fetchRow($select);
-		/*
+		
 		$modelOpciones = array();
 		//Si no es nulo traemos las opciones
 		if(!is_null($rowOpciones)){
@@ -70,15 +73,16 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 				$modelOpciones[] = $modelOpcion;
 			}
 		}
-		*/
-		return $rowOpciones->toArray();
+		
+		return $modelOpciones;
 	}
 	
 	public function obtenerOpcionesGrupo($idGrupo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoEncuesta = ?", $idGrupo);
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $idGrupo);
 		$rowGrupo = $tablaGrupo->fetchRow($select);
 		$opciones = explode(",", $rowGrupo->opciones);
+		
 		$modelOpciones = array();
 		
 		foreach ($opciones as $opcion) {

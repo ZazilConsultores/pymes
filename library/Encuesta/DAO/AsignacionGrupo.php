@@ -100,8 +100,14 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 		foreach ($asignaciones as $asignacion) {
 			$ids[] = $asignacion->idAsignacion;
 		}
-		
-		
-		
 	}
+	
+	public function getAsignacionById($id){
+		$tablaAsignacion = $this->tablaAsignacionGrupo;
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$id);
+		$row = $tablaAsignacion->fetchRow($select);
+		
+		return $row->toArray();
+	}
+	
 }

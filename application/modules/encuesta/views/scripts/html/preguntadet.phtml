@@ -2,41 +2,27 @@
 	$pregunta = $this->pregunta; 
 	$t = Zend_Registry::get("tipo");
 ?>
-<section class="row">
-	<article>
-		<header>
-			<h3> Pregunta 
-				
-				<a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"baja","idPregunta"=>$pregunta->getIdPregunta()), null, true) ?>" class="btn btn-default">
-					Eliminar
-					<span class="glyphicon glyphicon-remove"></span>
-				</a>
-			</h3>
-		</header>
-		<div>
-			<table class="table table-striped">
-				<thead>
-					<th>Pregunta</th>
-					<th>Fecha</th>
-					<th>Orden</th>
-					<th>Tipo</th>
-					<th>Configuración</th>
-				</thead>
-				<tbody>
-					<tr>
-						<td><?php echo $pregunta->getPregunta(); ?></td>
-						<td><?php echo $pregunta->getFecha(); ?></td>
-						<td><?php echo $pregunta->getOrden(); ?></td>
-						<td><?php echo $t[$pregunta->getTipo()]; ?></td>
-						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"admin","idPregunta"=>$pregunta->getIdPregunta()), null, true) ?>">
-								<span class="glyphicon glyphicon-cog"></span> Administrar
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>  
-		</div>
-	</article>
-	
-</section>
+<div>
+	<table class="table table-striped">
+		<thead>
+			<th>Pregunta</th>
+			<th>Creación</th>
+			<th>Orden</th>
+			<th>Tipo</th>
+			<th>Configuración</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?php echo $pregunta->getNombre(); ?></td>
+				<td><?php echo $pregunta->getFecha(); ?></td>
+				<td><?php echo $pregunta->getOrden(); ?></td>
+				<td><?php echo $t[$pregunta->getTipo()]; ?></td>
+				<td>
+					<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"admin","idPregunta"=>$pregunta->getIdPregunta()), null, true) ?>">
+						<span class="glyphicon glyphicon-cog"></span> Administrar
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>  
+</div>

@@ -196,14 +196,14 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
 		
 		$idRegistro = $asignacion["idRegistro"];
-		$idMateria = $asignacion["idMateria"];
-		$idGrupo = $asignacion["idGrupo"];
+		$idMateria = $asignacion["idMateriaEscolar"];
+		$idGrupo = $asignacion["idGrupoEscolar"];
 		
 		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
-		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);//->obtenerEncuesta($idEncuesta);
 		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
 		
-		$preguntas = $this->preguntaDAO->obtenerPreguntasEncuesta($idEncuesta);
+		$preguntas = $this->preguntaDAO->getPreguntasByIdEncuesta($idEncuesta);//->obtenerPreguntasEncuesta($idEncuesta);
 		$this->view->asignacion = $asignacion;
 		$this->view->grupo = $grupo;
 		$this->view->docente = $registro;

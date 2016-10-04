@@ -89,12 +89,19 @@ class Encuesta_HtmlController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
 		$claveGrupo = $this->getParam("claveGrupo");
-		$hash = $this->getParam("hash");
-		//if($request->isXmlHttpRequest()){
+		if($request->isXmlHttpRequest()){
+			$encuestaDAO = $this->encuestaDAO;
+			$seccionDAO = $this->seccionDAO;
 			$grupoDAO = $this->grupoDAO;
-			$grupo = $grupoDAO->obtenerGrupo($claveGrupo);
+			
+			$grupo = $grupoDAO->getGrupoById($claveGrupo);//->obtenerGrupo($claveGrupo);
+			$seccion = $seccionDAO->getSeccionById($grupo->getIdSeccionEncuesta());
+			$encuesta = $encuestaDAO->getEncuestaById($seccion->getIdEncuesta());
+			
 			$this->view->grupo = $grupo;
-		//}
+			$this->view->seccion = $seccion;
+			$this->view->encuesta = $encuesta;
+		}
     }
 
     public function preguntasAction()
@@ -117,10 +124,10 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 				$this->view->preguntas = $seccionDAO->getPreguntasByIdSeccion($claveSeccion); //->obtenerPreguntas($seccion->getIdSeccionEncuesta());
 			}else if(!is_null($claveGrupo)) {
 				$grupoDAO = $this->grupoDAO;
-				$grupo = $grupoDAO->obtenerGrupo($claveGrupo);
+				$grupo = $grupoDAO->getGrupoById($claveGrupo);//->obtenerGrupo($claveGrupo);
 				$this->view->grupo = $grupo;
 				//$this->view->preguntas = $preguntaDAO->obtenerPreguntas($grupo->getIdGrupo(), "G");
-				$this->view->preguntas = $grupoDAO->obtenerPreguntas($grupo->getIdGrupo());
+				$this->view->preguntas = $grupoDAO->getPreguntasByIdGrupo($claveGrupo);//->obtenerPreguntas($grupo->getIdGrupo());
 			}
 		}
     }
@@ -135,7 +142,7 @@ class Encuesta_HtmlController extends Zend_Controller_Action
 		$preguntaDAO = new Encuesta_DAO_Pregunta;
 		
 		if($request->isXmlHttpRequest()){
-			$this->view->pregunta = $preguntaDAO->obtenerPregunta($clavePregunta);
+			$this->view->pregunta = $preguntaDAO->getPreguntaById($clavePregunta);//->obtenerPregunta($clavePregunta);
 		}
     }
 

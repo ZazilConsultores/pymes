@@ -13,7 +13,7 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 		//$this->tablaMateria->setDefaultAdapter($dbAdapter);
 	}
 	
-	public function obtenerMateria($idMateria){
+	public function obtenerMateria($idMateria) {
 		$tablaMateria = $this->tablaMateria;
 		$select = $tablaMateria->select()->from($tablaMateria)->where("idMateriaEscolar = ?",$idMateria);
 		$rowMateria = $tablaMateria->fetchRow($select);

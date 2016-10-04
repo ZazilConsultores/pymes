@@ -8,12 +8,12 @@
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Busqueda de Grupos en Nivel: <strong><?php echo $nivel["nivelEducativo"] ?></strong>
+				Busqueda de Grupos en Nivel: <strong><?php echo $nivel->getNivel(); ?></strong>
 			</h3>
 		</div>
 		<div class="panel-body">
-			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado["idGradoEducativo"]), null, true); ?>">
-				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grado: <strong><?php echo $grado["gradoEducativo"] ?></strong>.
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grado","action"=>"admin","idGrado"=>$grado->getIdGradoEducativo()), null, true); ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar al Grado: <strong><?php echo $grado->getGradoEducativo(); ?></strong>.
 			</a><br /><br />
 			<?php echo $this->formulario; ?>
 			
@@ -28,8 +28,8 @@
 					<?php foreach ($grupos as $grupo) : ?>
 					<tr>
 						<td><?php echo $ciclo["cicloEscolar"]; ?></td>
-						<td><?php echo $nivel["nivelEducativo"] ?></td>
-						<td><?php echo $grado["gradoEducativo"] ?></td>
+						<td><?php echo $nivel->getNivelEducativo(); ?></td>
+						<td><?php echo $grado->getGradoEducativo(); ?></td>
 						<td>
 							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"grupos","action"=>"index","idGrupo"=>$grupo["idGrupoEscolar"]),null,true) ?>">
 								<span class="glyphicon glyphicon-search"></span> Grupo: <strong><?php echo $grupo["grupoEscolar"]; ?></strong>
@@ -44,29 +44,4 @@
 	</div>
 	
 </section>
-<script>
-	$().ready(function(){
-		$("select#nivel").on('change', function(){
-			console.log(this.value);
-			//Borro el contenido del select municipio
-			//Obtengo los municipios del estado
-			$url = "/General/public/encuesta/json/grados/idNivel/" + this.value;
-			console.log($url);
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				success: function(data){
-					console.log($url);
-					console.dir(data);
-					$("select#1-grado").empty();
-					$.each(data, function(i,item){//function(key,value)		
-						$("select#1-grado").append($("<option></option>").attr("value",data[i].idGrado).text(data[i].grado));
-						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
-					});
-					
-				}
-			});
-		});
-		
-	});
-</script>
+<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/js/mencuesta/consultaGrupos.js"></script>

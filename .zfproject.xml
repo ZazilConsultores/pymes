@@ -246,6 +246,7 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="grados"/>
               <actionMethod actionName="grupos"/>
+              <actionMethod actionName="encrealizadas"/>
             </controllerFile>
             <controllerFile controllerName="Seccion">
               <actionMethod actionName="index"/>
@@ -450,6 +451,9 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="a"/>
               <actionMethod actionName="b"/>
+            </controllerFile>
+            <controllerFile controllerName="Consulta">
+              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1015,6 +1019,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="P6b">
                 <viewScriptFile forActionName="b"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Consulta">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="encrealizadas"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2021,6 +2031,7 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="grados"/>
                 <testApplicationActionMethod forActionName="grupos"/>
+                <testApplicationActionMethod forActionName="encrealizadas"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Seccion">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2225,6 +2236,9 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="a"/>
                 <testApplicationActionMethod forActionName="b"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Consulta">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
