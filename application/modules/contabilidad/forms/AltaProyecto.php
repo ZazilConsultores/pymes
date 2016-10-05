@@ -31,17 +31,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 	
-		$eCoP = new Zend_Form_Element_Select('opcion');
-		$eCoP->setLabel('Seleccionar Cliente o Proveedor:');
-		$eCoP->setAttrib("class", "form-control");
-		
-		$optCoP = array('1' => 'Cliente','2' => 'Proveedor');
-		
-		foreach ($optCoP as $key => $value) {
-			$eCoP->addMultiOption($key, $value);
-		}
-		
-		$eCliente = new Zend_Form_Element_Select('idCliente');
+		$eCliente = new Zend_Form_Element_Select('idCoP');
 		$eCliente->setLabel('Seleccionar Cliente:');
 		$eCliente->setAttrib("class", "form-control");
 
@@ -49,20 +39,10 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$rowset = $tablaEmpresa->obtenerClientes();
 		
 		foreach($rowset as $fila){
-			$eCliente->addMultiOption($fila->idEmpresa,$fila->razonSocial);
+			$eCliente->addMultiOption($fila->idCliente,$fila->razonSocial);
 		}
 		
-		$eProveedor = new Zend_Form_Element_Select('idProveedor');
-		$eProveedor->setLabel('Seleccionar Proveedor	:');
-		$eProveedor->setAttrib("class", "form-control");
-			
-		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada();
-		$rowset = $tablaEmpresa->obtenerProveedores();
-		foreach($rowset as $fila){
-			$eProveedor->addMultiOption($fila->idEmpresa,$fila->razonSocial);
-		}
-	
-				
+					
     	$eNombreProyecto =  new Zend_Form_Element_Text('descripcion');
         $eNombreProyecto->setLabel('Ingresar Nombre Proyecto: ');
 		$eNombreProyecto->setAttrib("class", "form-control");
@@ -75,7 +55,8 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eFechaCierre = new Zend_Form_Element_Text('fechaCierre');
 		$eFechaCierre->setLabel('Seleccionar Fecha Cierre Proyecto:');
 		$eFechaCierre->setAttrib("class", "form-control");
-		
+		$eFechaCierre->setAttrib("value", "0");
+				
 		$eCostoInicio = new Zend_Form_Element_Text('costoInicial');
 		$eCostoInicio->setLabel('Ingresar Costo Inicial:');
 		$eCostoInicio->setAttrib("class", "form-control");
@@ -112,9 +93,8 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$this->addElement($eNumFolio);
 		$this->addElement($eEmpresa);
 		$this->addElement($eSucursal);
-		$this->addElement($eCoP);
 		$this->addElement($eCliente);
-		$this->addElement($eProveedor);
+		
 		$this->addElement($eNombreProyecto);
 		$this->addElement($eCliente);
 		$this->addElement($eFechaApertura);

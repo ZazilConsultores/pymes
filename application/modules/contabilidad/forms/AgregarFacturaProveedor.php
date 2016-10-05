@@ -11,15 +11,18 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 			array('Fieldset', array('placement'=>'prepend'))
 		);
 		$decoratorsElemento =array(
+			/*Decoradores*/
 			'ViewHelper',
 			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
 			array('label', array('tag'=>'td')),
 			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+	
 		);
 		
 		$this->setAttrib("id", "agregarFacturaProveedor");
 		$subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Nueva Factura Proveedor");
+		
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
@@ -27,6 +30,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eTipoMovto = New Zend_Form_Element_Select('idTipoMovimiento');
 		$eTipoMovto->setLabel('Tipo Movimiento:');
 		$eTipoMovto->setAttrib("class", "form-control");
+	
 		foreach ($tipoMovimientoDAO->obtenerTiposMovimientos() as $fila) {
 			if ($fila->getIdTipoMovimiento() == "4") {
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(), $fila->getDescripcion());
@@ -34,13 +38,15 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		
 		}
 		
-		$eNumeroFactura = new Zend_Form_Element_Text('idFactura');
+		$eNumeroFactura = new Zend_Form_Element_Text('numeroFactura');
 		$eNumeroFactura->setLabel('Número de Factura: ');
 		$eNumeroFactura->setAttrib("class", "form-control");
+		$eNumeroFactura->setAttrib("required", "true");
 		
 		$eFolioFiscal = new Zend_Form_Element_Text('folioFiscal');
 		$eFolioFiscal->setLabel('Folio Fiscal: ');
 		$eFolioFiscal->setAttrib("class", "form-control");
+		$eFolioFiscal->setAttrib("required", "true");
 		
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
@@ -57,6 +63,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eSucursal->setLabel("Sucursal: ");
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
 		
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
@@ -73,6 +80,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
+		$eProyecto->setAttrib("required", "true");
 			
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
@@ -90,8 +98,13 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha));
-		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$eProducto = new Zend_Form_Element_Hidden('productos');
+		$eProducto->setAttrib("class", "form-control");
+		$eProducto->setAttrib("required","true");
+		
+		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto));
+		//$subEncabezado->setElementDecorators($decoratorsElementoEncabezado);
+			$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
 		//=========================================================================>>
@@ -109,24 +122,36 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 			
 		}
 		
-		$ePagada = new Zend_Form_Element_Checkbox('Pagada');
+		// = new Zend_Form_Element_Checkbox('Pagada');
+		$ePagada = new Zend_Form_Element_Radio('Pagada');
 		$ePagada->setLabel('Pago en una sola exhibición: ');
-		//$ePagada->setAttrib("class", "form-control");
+		/*$ePagada->setOptions(array(
+		'multiOptions' => array(
+		'0'=>'SI',
+		'1'=>'NO')));*/
+		$ePagada->setMultiOptions(array(
+		'SI'=>'SI','NO'=>'NO'));
 		
+		//$ePagada->setAttrib("class", "form-control");
+		$ePagada->setSeparator('  ');
 		
     	$eIva =  new Zend_Form_Element_Text('iva');
         $eIva->setLabel('Editar Iva: ');
 		$eIva->setAttrib("class", "form-control");
+		$eIva->setAttrib("required", "true");
 		
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('$Pago:');
 		$ePagos->setAttrib("class", "form-control");
+		$ePagos->setAttrib("required", "true");
 		
 		$conceptoPago = Zend_Registry::get('conceptoPago');
 		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
 		$eConceptoPago->setLabel("Seleccionar Forma Pago: ");
 		$eConceptoPago->setAttrib("class", "form-control");
 		$eConceptoPago->setMultiOptions($conceptoPago);
+		$eConceptoPago->setAttrib("required", "true");
+		
 		
 		$eCondicionesPago = new Zend_Form_Element_Select('condiconesPago');
 		$eCondicionesPago->setLabel('Condiciones Pago');
@@ -142,7 +167,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
-		
+		$eNumReferencia->setAttrib("required", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
@@ -156,12 +181,63 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getCuenta());
 		}
 		
-		
 		$subFormaPago->addElements(array($eDivisa,$ePagada,$eIva,$ePagos,$eCondicionesPago,$eConceptoPago,$eFormaPago,$eNumReferencia,$eBanco));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
-		$this->addSubForms(array($subEncabezado, $subFormaPago));
-		 	
+		
+		/* SubForm impuestos*/
+		$subImpuestos = new Zend_Form_SubForm;
+		$subImpuestos->setLegend("Impuestos");
+		
+        
+        $eIva = new Zend_Form_Element_Text('ivaImp');
+		$eIva->setLabel('IVA:');
+		$eIva->setAttrib("class", "form-control");
+		$eIva->setAttrib("required","true");
+		
+		$eISH = new Zend_Form_Element_Text('ish');
+		$eISH->setLabel('ISH:');
+		$eISH->setAttrib("class", "form-control");
+		$eISH->setAttrib("required","true");
+		
+		$eISR = new Zend_Form_Element('isr');  
+		$eISR->setLabel('ISR:');
+		$eISR->setAttrib("class", "form-control");
+		$eISR->setAttrib("required","true");
+		
+		$eIEPS = new Zend_Form_Element_Text('ieps');
+		$eIEPS->setLabel('IEPS:');
+		$eIEPS->setAttrib("class", "form-control");
+		$eIEPS->setAttrib("required","true");
+		
+		$eDescuento = new Zend_Form_Element_Text('descuento');
+		$eDescuento->setLabel('Descuento:');
+		$eDescuento->setAttrib("class", "form-control");
+		$eDescuento->setAttrib("required","true");
+		
+		$eSubtotal = new Zend_Form_Element_Text('subtotal');
+		$eSubtotal->setLabel('Subtotal:');
+		$eSubtotal->setAttrib("class", "form-control");
+		$eSubtotal->setAttrib("required","true");
+		
+		$eTotal = new Zend_Form_Element_Text('total');
+		$eTotal->setLabel('Total:');
+		$eTotal->setAttrib("class", "form-control");
+		$eTotal->setAttrib("required","true");
+		
+		$subImpuestos->addElements(array($eIva,$eISH,$eISR,$eIEPS,$eDescuento,$eSubtotal,$eTotal));
+		$subImpuestos->setElementDecorators($decoratorsElemento);
+		$subImpuestos->setDecorators($decoratorsPresentacion);
+		
+		
+		$eSubmit =  new Zend_Form_Element_Submit("submit");
+		$eSubmit->setLabel("Enviar");
+		$eSubmit->setAttrib("class","btn btn-success");
+		
+		$this->addSubForms(array($subEncabezado, $subFormaPago,$subImpuestos));
+		
+		$this->addElement($eSubmit); 
+			
     }
 }
 

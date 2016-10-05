@@ -15,15 +15,23 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		$fechaApertura = new Zend_Date($proyecto->getFechaApertura());	
 		$stringIni = $fechaApertura->toString('yyyy-MM-dd');
 		
-		$fechaCierre = new Zend_Date($proyecto->getFechaCierre());	
-		$stringFin = $fechaCierre->toString('yyyy-MM-dd');
+		$fechaCierre = $proyecto->getFechaCierre();	
+
+		$Ganancia = $proyecto->getCostoFinal()- $proyecto->getCostoInicial();
 		
-		//$Ganancia = $proyecto->getCostoFinal()- $proyecto->getCostoInicial();
+		$proyecto->setFechaApertura($stringIni);
 		
-		$proyecto->setFechaApertura($stringIni);		
-		$proyecto->setFechaCierre($stringFin);	
-		//$proyecto->setGanancia($Ganancia);
-		//$this->tablaProyecto->insert($proyecto->toArray());		
+		if(!is_null($fechaCierre)){
+			$fechaCierre = new Zend_Date($proyecto->getFechaCierre());	
+			$stringFin = $fechaCierre->toString('yyyy-MM-dd');
+		
+			print_r($fechaCierre);
+			$proyecto->setFechaCierre($stringFin);	
+		}else{
+			print_r($fechaCierre);
+			$proyecto->setFechaCierre = 'NULL';	
+		}
+		$this->tablaProyecto->insert($proyecto->toArray());		
 	}
 	
 	public function obtenerProyectos(){

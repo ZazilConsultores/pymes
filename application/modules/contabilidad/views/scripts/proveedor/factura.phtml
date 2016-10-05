@@ -42,9 +42,7 @@
 	</div>
 </section>
 <script>
-
 	$(document).ready(function(){
-		
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
@@ -60,17 +58,28 @@
 					
 				}
 			});
-			var id = $("select#idSucursal");
-			//console.log("verificamos idSucursal");
-			//console.log($("select#idSucursal"));
 		});
 		
+		$("select#idSucursal").on('click', function(){
+				var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+				console.log(url);
+				$.ajax({
+					url:url,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("select#idProyecto").empty();
+						$.each(data, function(i,item){
+							$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
+						});
+					}
+				});
+		});
 		
-	
-		var form = $("#nuevaNotaProveedor");
+		/*var form = $("#agregarFacturaProveedor");
 		form.validate({
 			rules: {
-				numFolio: {
+				numeroFactura: {
 					required: true
 				},
 				fecha: {
@@ -79,7 +88,7 @@
 				
 			},
 			messages: {
-				numFolio: {					
+				numeroFactura: {					
 					required: "Este campo no puede quedar vacío, Ingrese número de folio"
 				},
 				fecha: {					
@@ -94,10 +103,7 @@
 			console.log("" + form.valid());
 		});
 		
-	});
-</script>
-<script>
-	$( document ).ready(function() {
+	//});*/
 	
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
@@ -315,4 +321,4 @@
 	});//cierra document ready
 </script>
 
-<?php echo $this->fimpuestos ?>
+

@@ -1,4 +1,19 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Multiplos</b> and script/action name <b>edita</b></p>
-</div>
+<?php
+	$producto = $this->producto;
+	$productosDAO = new Inventario_DAO_Producto;
+	$multiplo = $this->multiplo;
+	$formulario = $this->formulario;	
+?>
+<section class="row">
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<?php 
+				$producto = $productosDAO->obtenerProducto($multiplo->getIdProducto());
+			?>
+			Editar multiplo del producto: <strong><?php echo $producto->getProducto(); ?></strong>
+		</div>
+		<div class="col-xs-6">
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>

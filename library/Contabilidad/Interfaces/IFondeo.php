@@ -2,8 +2,6 @@
 
 interface Contabilidad_Interfaces_IFondeo {
 	
-	//public function obtenerBancosEmpresas();
-	//public function obtenerBancosEmpresa($idBanco);
-	//public function guardarFondeo(array $encabezado);
-
+	public function obtenerBancosEmpresas();
+	public function guardarFondeo(array $datos);
 }

@@ -113,7 +113,6 @@ class Contabilidad_Model_Proyecto
 		if(array_key_exists("idProyecto", $datos)) $this->idProyecto = $datos["idProyecto"];
 		if(array_key_exists("idSucursal", $datos)) $this->idSucursal = $datos["idSucursal"];
 		if(array_key_exists("idCoP", $datos)) $this->idCoP = $datos["idCoP"];
-		
 		$this->numeroFolio = $datos["numeroFolio"];
 		$this->descripcion = $datos["descripcion"];
 		$this->fechaApertura = $datos["fechaApertura"];

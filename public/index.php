@@ -108,7 +108,7 @@ $tipoEmpresa = array("EM"=>"Empresa","CL"=>"Cliente","PR"=>"Proveedor");
 $tipoBanco = array("CA" => "Caja","IN" => "Inversiones","OP" => "Operacion");
 $tipoTelefono = array("OF"=>"Oficina","CL"=>"Celular");
 $tipoSucursal = array("SE"=>"Sucursal Empresa","SC"=>"Sucursal Cliente", "SP" => "Sucursal Proveedor");
-$conceptoPago = array('AN'=>'Anticipo', 'LI'=>'Liquidacion', 'PA'=>'Pago');
+$conceptoPago = array('AN'=>'Anticipo', 'LI'=>'Liquidacion', 'PA'=>'Pago','PE'=>'Pendiente Pago');
 //$tipoEmail = array("OF"=>"Oficina","CS"=>"Casa","PR"=>"Proveedor");
 $tipoMantenimiento = array("MH"=>"Mantenimiento Hardware","MS"=>"Mantenimiento Software","AV"=>"Antivirus","RO"=>"Registro Observaciones");
 $gradosEscolares = array(1=>"1°",2=>"2°",3=>"3°",4=>"4°",5=>"5°",6=>"6°",7=>"7°",8=>"8°",9=>"9°");

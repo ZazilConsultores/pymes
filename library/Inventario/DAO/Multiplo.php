@@ -47,12 +47,13 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		
 		$modelMultiplos = array();
 		foreach ($rowsMultiplo as $rowMultiplo) {
-		
-			$modelMultiplo = new Inventario_Model_Multiplos ($rowMultiplo->toArray());
+			$modelMultiplo = new Inventario_Model_Multiplos($rowMultiplo->toArray());
 			$modelMultiplos[] = $modelMultiplo;
 		}
 		
 		return $modelMultiplos;
+		
+		print_r($where);
 		
 	}
 
@@ -61,11 +62,12 @@ class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 		$this->tablaMultiplo->insert($multiplo->toArray());		
 	}
 	
-	public function editarMultiplo($idMultiplos, array $multiplo)
+	public function editarMultiplo($idMultiplo, array $datos)
 	{
 		$tablaMultiplo = $this->tablaMultiplo;
-		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos = ?", $idMultiplos);
-		$tablaMultiplo->update($multiplo, $where);
+		$where = $tablaMultiplo->getAdapter()->quoteInto("idMultiplos = ?", $idMultiplo);
+		$tablaMultiplo->update($datos, $where);
+
 	}
 	
 	public function eliminarMultiplo($idMultiplos)

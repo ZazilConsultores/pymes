@@ -143,11 +143,43 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
   }
     public function facturaAction()
     {
-        // action body
-        $formulario = new Contabilidad_Form_AgregarFacturaProveedor	;
-    	$this->view->formulario = $formulario;
-		$fimpuestos =  new Contabilidad_Form_Impuestos;
-		$this->view->fimpuestos = $fimpuestos;
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$facturaProveedor = new Contabilidad_DAO_FacturaProveedor;
+				$datos = $formulario->getValues();
+				$encabezado = $datos[0];
+				$productos = json_decode($encabezado['productos'],TRUE);
+				$formaPago = $datos[1];
+				$impuestos = $datos[2];
+				
+				/*print_r($encabezado);
+				print_r('<br />');
+				print_r($formaPago);
+				print_r('<br />');
+				print_r($impuestos);
+				print_r('<br />');*/
+				
+				$contador = 0;
+				
+				foreach ($productos as $producto){
+					try{
+						$facturaProveedor->agregarFactura($encabezado,$formaPago,$impuestos,$producto);
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+						
+					}
+				}
+				
+			}
+			
+		}
+       
     
 	}
 
