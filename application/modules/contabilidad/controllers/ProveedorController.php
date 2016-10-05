@@ -47,10 +47,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         
     }
 
-    public function notaAction()
-    {
-       $request = $this->getRequest();
-        $formulario = new Contabilidad_Form_NuevaNotaProveedor;
+    public function notaAction() {
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_NuevaNotaProveedor;
         //$formulario->getSubForm("0")->removeElement("submit");
         
 		//$formulario->removeElement("submit");

@@ -15,45 +15,39 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	private $tablaValoresOpcion;
 	
 	public function __construct() {
-		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
-		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
-		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta;
-		$this->tablaGrupo = new Encuesta_Model_DbTable_Grupo;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
-		$this->tablaValoresOpcion = new Encuesta_Model_DbTable_ValoresOpcion;
-		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple;
+		$this->tablaCategoria = new Encuesta_Model_DbTable_CategoriasRespuesta(array('db'=>$dbAdapter));
+		$this->tablaOpcion = new Encuesta_Model_DbTable_OpcionCategoria(array('db'=>$dbAdapter));
+		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta(array('db'=>$dbAdapter));
+		$this->tablaGrupo = new Encuesta_Model_DbTable_GrupoSeccion(array('db'=>$dbAdapter));
+		$this->tablaPreferenciaS = new Encuesta_Model_DbTable_PreferenciaSimple(array('db'=>$dbAdapter));
 	}
 	
 	// =====================================================================================>>>   Buscar
 	public function obtenerOpcion($idOpcion){
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcion = ?", $idOpcion);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcionCategoria = ?", $idOpcion);
 		$rowOpcion = $tablaOpcion->fetchRow($select);
 		
-		$modelOpcion = new Encuesta_Model_Opcion($rowOpcion->toArray());
+		$modelOpcion = new Encuesta_Models_Opcion($rowOpcion->toArray());
 		
 		return $modelOpcion;
 	}
 	
-	public function obtenerOpcionHash($hash){
-		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("hash = ?", $hash);
-		$rowOpcion = $tablaOpcion->fetchRow($select);
-		
-		$modelOpcion = new Encuesta_Model_Opcion($rowOpcion->toArray());
-		
-		return $modelOpcion;
-	}
-	
+	/**
+	 * 
+	 */
 	public function obtenerOpcionesCategoria($idCategoria) {
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
-		$rowsCategoria = $tablaOpcion->fetchAll($tablaOpcion);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoriasRespuesta = ?", $idCategoria);
+		$rowsOpcion = $tablaOpcion->fetchAll($tablaOpcion);
+		
 		$modelOpciones = array();
 		
 		if(!is_null($rowsCategoria)){
 			foreach ($rowsCategoria as $row) {
-				$modelOpcion = new Encuesta_Model_Opcion($row->toArray());
+				$modelOpcion = new Encuesta_Models_Opcion($row->toArray());
 				$modelOpciones[] = $modelOpcion;
 			}
 		}
@@ -61,10 +55,14 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		return $modelOpciones;
 	}
 	
+	/**
+	 * 
+	 */
 	public function obtenerOpcionesPregunta($idPregunta){
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("idPregunta = ?", $idPregunta);
 		$rowOpciones = $tablaPregunta->fetchRow($select);
+		
 		$modelOpciones = array();
 		//Si no es nulo traemos las opciones
 		if(!is_null($rowOpciones)){
@@ -81,9 +79,10 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 	
 	public function obtenerOpcionesGrupo($idGrupo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?", $idGrupo);
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $idGrupo);
 		$rowGrupo = $tablaGrupo->fetchRow($select);
 		$opciones = explode(",", $rowGrupo->opciones);
+		
 		$modelOpciones = array();
 		
 		foreach ($opciones as $opcion) {
@@ -110,16 +109,16 @@ class Encuesta_DAO_Opcion implements Encuesta_Interfaces_IOpcion {
 		
 	}
 	// =====================================================================================>>>   Insertar
-	public function crearOpcion($idCategoria, Encuesta_Model_Opcion $opcion){
+	public function crearOpcion($idCategoria, array $opcion){
 		$tablaOpcion = $this->tablaOpcion;
-		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoria = ?", $idCategoria);
+		$select = $tablaOpcion->select()->from($tablaOpcion)->where("idCategoriasRespuesta = ?", $idCategoria);
 		$orden = count($tablaOpcion->fetchAll($select));
 		$orden++;
-		$opcion->setOrden($orden);
-		$opcion->setHash($opcion->getHash());
-		$opcion->setFecha(date("Y-m-d H:i:s", time()));
+		$opcion["orden"] = $orden;
+		//$opcion->setHash($opcion->getHash());
+		//$opcion->setFecha(date("Y-m-d H:i:s", time()));
 		//print_r($opcion->toArray());
-		$tablaOpcion->insert($opcion->toArray());
+		$tablaOpcion->insert($opcion);
 	}
 	
 	public function asignarValorOpcion($idOpcion, $valor){

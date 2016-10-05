@@ -11,7 +11,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<a type="button" class="btn btn-block btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index", "action"=>"alta"), null, true) ?>" data-toggle="modal">
+							<a type="button" class="btn btn-block btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index", "action"=>"alta"), null, true) ?>">
 								<span class="glyphicon glyphicon-plus"></span> Nueva
 							</a>
 						</td>
@@ -19,8 +19,8 @@
 					<?php foreach ($encuestas as $encuesta) : ?>
 					<tr>
 						<td>
-							<button type="button" class="btn btn-block btn-default" tipo="encuesta" hash="<?php echo $encuesta->getHash(); ?>">
-								<span class="glyphicon glyphicon-list-alt"></span> <?php echo $encuesta->getNombreClave(); ?>
+							<button type="button" class="btn btn-block btn-default" tipo="encuesta" claveEncuesta="<?php echo $encuesta->getIdEncuesta(); ?>" data-toggle="modal" data-target="#msgDetails">
+								<?php echo $encuesta->getNombreClave(); ?>
 							</button>
 						</td>
 					</tr>
@@ -62,161 +62,34 @@
 <section class="row">
 	<div id="contentDet" class="panel panel-info">
 		<div class="panel-heading">
-			<h3 class="panel-title">Detalles</h3>
+			<h3 class="panel-title">Detalles Elemento</h3>
 		</div>
-		<div id="detalles" class="panel-body">
+		<div id="detalles" class="panel-body" tipo="" claveContenedor="">
 		</div>
 	</div>
 </section>
+<!-- Detalles -->
+<div class="modal fade" id="msgDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Detalles del elemento</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div id="dynamicContent" class="col-xs-12" ></div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<span class="glyphicon glyphicon-close"></span> Cerrar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-<script>
-	$().ready(function(){
-		$urlEncuesta = "/General/public/encuesta/";
-		
-		$("button[tipo='encuesta']").click(function(){
-			console.log($(this).attr("hash"));
-			$hash = $(this).attr("hash");
-			$hashContainer = $("div#detalles").attr("hash");
-			$tipo = "encuesta";
-			$tipoContainer = $("div#detalles").attr("tipo");
-			
-			if($hash != $hashContainer){
-				$.ajax({
-					url: $urlEncuesta + "html/encuestadet/hash/" + $hash,
-					dataType: "html",
-					success: function(data){
-						$("div#detalles").html(data);
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
-					}
-				});
-				// =======================================   >>> Cargamos las secciones
-				$.ajax({
-					url: $urlEncuesta + "html/secciones/hash/" + $hash,
-					dataType: "html",
-					success: function(data){
-						$("div#contenedorSecciones").html(data);
-						$("div#contenedorGrupos").html("");
-						$("div#contenedorPreguntas").html("");
-					}
-				});
-			}
-			
-		});
-	
-		$("div#contenedorSecciones").on("click", "button[tipo='seccion']", function(event) {
-			console.log("En secciones");
-			
-			$hash = $(this).attr("hash");
-			$hashContainer = $("div#detalles").attr("hash");
-			
-			$tipo = "seccion";
-			$tipoContainer = $("div#detalles").attr("tipo");
-			console.log($tipo);
-			console.log($tipoContainer);
-			
-			if($hash != $hashContainer){
-				//============================================================================================== Detalles Seccion
-				$urlDetallesSeccion = $urlEncuesta + "html/secciondet/hash/" + $hash;
-				$.ajax({
-					url: $urlDetallesSeccion,
-					dataType: "html",
-					success: function(data){
-						$("div#detalles").html(data);
-						$("div#detalles").attr("tipo", "seccion");
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
-					}
-				});
-				//============================================================================================== Grupos
-				//console.log("Lanzando peticion de grupos");
-				$urlGrupos = $urlEncuesta + "html/grupos/hash/" + $hash;
-				console.log($urlGrupos);
-				$.ajax({
-					url: $urlGrupos,
-					dataType: "html",
-					success: function(data){
-						$("div#contenedorGrupos").html(data);
-					}
-				});
-				//============================================================================================== Preguntas
-				//console.log("Lanzando peticion de preguntas");
-				$urlPreguntas = $urlEncuesta + "html/preguntas/hashSeccion/" + $hash;
-				$.ajax({
-					url: $urlPreguntas,
-					dataType: "html",
-					success: function(data){
-						$("div#contenedorPreguntas").html(data);
-					}
-				});
-			}
-			
-		});
-	
-		$("div#contenedorGrupos").on("click", "button[tipo='grupo']", function(event) {
-			console.log("En grupos");
-			$hash = $(this).attr("hash");
-			$hashContainer = $("div#detalles").attr("hash");
-			
-			$tipo = "grupo";
-			$tipoContainer = $("div#detalles").attr("tipo");
-			
-			if($hash != $hashContainer){
-				//============================================================================================== Detalles Grupo
-				$urlDetallesGrupo = $urlEncuesta + "html/grupodet/hash/" + $hash;
-				$.ajax({
-					url: $urlDetallesGrupo,
-					dataType: "html",
-					success: function(data){
-						$("div#detalles").html(data);
-						$("div#detalles").attr("tipo", "grupo");
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
-					}
-				});
-				//============================================================================================== Preguntas
-				console.log("Lanzando peticion de preguntas");
-				$urlPreguntas = $urlEncuesta + "html/preguntas/hashGrupo/" + $hash;
-				$.ajax({
-					url: $urlPreguntas,
-					dataType: "html",
-					success: function(data){
-						$("div#contenedorPreguntas").html(data);
-					}
-				});
-			}
-		});
-	
-		$("div#contenedorPreguntas").on("click", "button[tipo='pregunta']", function(event) {
-			console.log("En preguntas");
-			$hash = $(this).attr("hash");
-			$hashPadre = $(this).attr("padre");
-			//$tipo = $(this).attr("tipo");
-			//console.log($hash);
-			
-			$hashContainer = $("div#detalles").attr("hash");
-			$tipo = "grupo";
-			$tipoContainer = $("div#detalles").attr("tipo");
-			
-			if($hash != $hashContainer){
-				$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/hash/"+$hash;
-				console.log($urlDetallesPregunta);
-				$.ajax({
-					url: $urlDetallesPregunta,
-					dataType: "html",
-					success: function(data){
-						$("div#detalles").html(data);
-						$("div#detalles").attr("tipo", "pregunta");
-						$("div#detalles").attr("hash", $hash);
-						$("div#detalles").attr("tipo", $tipo);
-					}
-				});
-				
-				
-			}
-			
-		});
-	
-	});
-
-</script>
+<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/js/mencuesta/mainEncuesta.js"></script>

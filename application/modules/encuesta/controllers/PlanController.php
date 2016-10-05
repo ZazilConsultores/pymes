@@ -26,11 +26,9 @@ class Encuesta_PlanController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$plan = $formulario->getValues();
-				$plan["hash"] = Util_Secure::generateKey(array($plan["plan"]));
-				//print_r($plan);
 				try{
 					$this->planDAO->agregarPlanEstudios($plan);
-					$this->view->messageSuccess = "Plan de estudios: ".$plan["plan"]." dado de alta exitosamente.";
+					$this->view->messageSuccess = "Plan de estudios: <strong>".$plan["planEducativo"]."</strong> dado de alta exitosamente.";
 				}catch(Exception $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}

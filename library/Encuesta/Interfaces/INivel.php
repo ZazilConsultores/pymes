@@ -8,7 +8,7 @@ interface Encuesta_Interfaces_INivel{
 	// =====================================================================================>>>   Buscar
 	public function obtenerNiveles();
 	public function obtenerNivel($idNivel);
-	public function crearNivel(Encuesta_Model_Nivel $nivel);
+	public function crearNivel(array $nivel);
 	public function editarNivel($idNivel, array $datos);
 	public function eliminarNivel($idNivel);
 }

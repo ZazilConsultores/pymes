@@ -4,20 +4,14 @@ class Encuesta_GruposController extends Zend_Controller_Action
 {
 
     private $gradoDAO = null;
-
     private $cicloDAO = null;
-
     private $gruposDAO = null;
-
     private $nivelDAO = null;
-
     private $materiaDAO = null;
-
     private $encuestaDAO = null;
-
     private $registroDAO = null;
-	
 	private $preferenciaDAO = null;
+	private $planDAO = null;
 
     public function init()
     {
@@ -30,6 +24,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$this->encuestaDAO = new Encuesta_DAO_Encuesta;
 		$this->registroDAO = new Encuesta_DAO_Registro;
 		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
+		$this->planDAO = new Encuesta_DAO_Plan;
     }
 
     public function indexAction()
@@ -57,7 +52,6 @@ class Encuesta_GruposController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$formulario = new Encuesta_Form_ConsultaGrupos;
 		
-		
         $idGrado = $this->getParam("idGrado");
 		$idNivel = $this->getParam("idNivel");
 		$ciclo = $this->cicloDAO->obtenerCicloActual();
@@ -66,10 +60,10 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		//Cuando viene la la vista encuesta/grado/admin/idGrado/valor
 		//No desplegamos formulario de consulta, traemos tabla con los grupos del grado del ciclo actual
 		if(!is_null($idGrado)){
-			$grado = $this->gradoDAO->obtenerGrado($idGrado);
-			$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivel());
+			$grado = $this->gradoDAO->getGradoById($idGrado);
+			$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivelEducativo());
 			
-			$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $ciclo->getIdCiclo());
+			$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $ciclo["idCicloEscolar"]);
 			
 			$this->view->nivel = $nivel;
 			$this->view->grado = $grado;
@@ -78,12 +72,12 @@ class Encuesta_GruposController extends Zend_Controller_Action
 			return;
 		}elseif(!is_null($idNivel)){
 			$nivel = $this->nivelDAO->obtenerNivel($idNivel);
-			$grados = $this->gradoDAO->obtenerGrados($idNivel);
+			$grados = $this->gradoDAO->getGradosByIdNivel($idNivel);
 			
 			if(!is_null($grados)){
 				$formulario->getElement("grado")->clearMultiOptions();
-				$formulario->getElement("nivel")->clearMultiOptions();
-				$formulario->getElement("nivel")->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
+				$formulario->getElement("idNivelEducativo")->clearMultiOptions();
+				$formulario->getElement("idNivelEducativo")->addMultiOption($nivel->getIdNivel(),$nivel->getNivel());
 				foreach ($grados as $grado) {
 					$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
 				}
@@ -115,7 +109,7 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		$grado = $this->gradoDAO->obtenerGrado($idGrado);
 		
 		$formulario = new Encuesta_Form_AltaGrupoE;
-		$formulario->getElement("grado")->addMultiOption($grado->getIdGrado(),$grado->getGrado());
+		$formulario->getElement("idGradoEducativo")->addMultiOption($grado["idGradoEducativo"],$grado["gradoEducativo"]);
         
 		$this->view->formulario = $formulario;
 		$this->view->grado = $grado;
@@ -123,21 +117,12 @@ class Encuesta_GruposController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
-				$datos["idCiclo"] = $datos["ciclo"];
-				$datos["idGrado"] = $datos["grado"];
-				$grupo = new Encuesta_Model_Grupoe($datos);
-				$grado->setHash($grupo->getHash());
-				//print_r("<br/>");
-				//print_r($grupo->toArray());
 				try{
-					$this->gruposDAO->crearGrupo($datos["idGrado"], $datos["idCiclo"], $grupo);
-					$this->view->messageSuccess = "Grupo: <strong>".$grupo->getGrupo()."</strong> dado de alta exitosamente";
+					$this->gruposDAO->crearGrupo($datos);
+					$this->view->messageSuccess = "Grupo: <strong>".$datos["grupoEscolar"]."</strong> dado de alta en el Grado: <strong>" . $grado["gradoEducativo"] . "</strong> exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
-					//print_r($ex->getMessage());
 				}
-				
 				
 			}
 		}

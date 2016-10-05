@@ -9,7 +9,9 @@ class Sistema_DAO_Rol implements Sistema_Interfaces_IRol {
 	private $tablaRol;
 	
 	public function __construct() {
-		$this->tablaRol = new Sistema_Model_DbTable_Rol;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaRol = new Sistema_Model_DbTable_Rol(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerRol($idRol) {

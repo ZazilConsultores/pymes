@@ -33,11 +33,11 @@ class Encuesta_NivelController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$nivel = new Encuesta_Model_Nivel($datos);
+				//$nivel = new Encuesta_Model_Nivel($datos);
 				
 				try{
-					$this->nivelDAO->crearNivel($nivel);
-					$this->view->messageSuccess = "Nivel Educativo: <strong>" .$nivel->getNivel()."</strong> creado exitosamente.";
+					$this->nivelDAO->crearNivel($datos);
+					$this->view->messageSuccess = "Nivel Educativo: <strong>" .$datos["nivelEducativo"]."</strong> creado exitosamente.";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}

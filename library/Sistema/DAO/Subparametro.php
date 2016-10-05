@@ -5,10 +5,11 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	private $tablaSubparametro;
 	private $tablaParametro;
 	
-	function __construct()
-	{
-		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
-		$this->tablaParametro = new Sistema_Model_DbTable_Parametro;	
+	function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro(array('db'=>$dbAdapter));
+		$this->tablaParametro = new Sistema_Model_DbTable_Parametro(array('db'=>$dbAdapter));
 	}
 	
 	public function generarClaveProducto(array $claves){

@@ -7,20 +7,27 @@
 class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	private $tablaGrupo;
-	private $tablaProfesoresGrupo;
+	//private $tablaProfesoresGrupo;
 	private $tablaCiclo;
 	private $tablaAsignacionGrupo;
 	
 	function __construct() {
-		$this->tablaGrupo = new Encuesta_Model_DbTable_GrupoE;
-		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloE;
-		$this->tablaProfesoresGrupo = new Encuesta_Model_DbTable_ProfesoresGrupo;
-		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaGrupo = new Encuesta_Model_DbTable_GrupoEscolar(array('db'=>$dbAdapter));
+		//$this->tablaGrupo->setDefaultAdapter($dbAdapter);
+		
+		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloEscolar(array('db'=>$dbAdapter));
+		//$this->tablaCiclo->setDefaultAdapter($dbAdapter);
+		
+		//$this->tablaProfesoresGrupo = new Encuesta_Model_DbTable_ProfesoresGrupo;
+		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
+		//$this->tablaAsignacionGrupo->setDefaultAdapter($dbAdapter);
 	}
 	
 	public function obtenerGrupos($idGrado,$idCiclo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrado = ?",$idGrado)->where("idCiclo = ?",$idCiclo)->order("grupo ASC");
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGradoEducativo = ?",$idGrado)->where("idCicloEscolar = ?",$idCiclo)->order("grupoEscolar ASC");
 		$grupos = $tablaGrupo->fetchAll($select);
 		
 		$modelGrupos = array();
@@ -35,7 +42,7 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	public function obtenerGrupo($idGrupo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupo = ?",$idGrupo);
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoEscolar = ?",$idGrupo);
 		$rowGrupo = $tablaGrupo->fetchRow($select);
 		
 		$modelGrupo = new Encuesta_Model_Grupoe($rowGrupo->toArray());
@@ -45,16 +52,22 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	
 	public function obtenerAsignacion($idAsignacion){
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
-		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacion=?",$idAsignacion);
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$idAsignacion);
 		$asignacion = $tablaAsignacion->fetchRow($select);
 		if(is_null($asignacion)) throw new Util_Exception_BussinessException("Error: No hay asignacion de Docente-Materia con el id:<strong>".$idAsignacion."</strong>", 1);
 		
 		return $asignacion->toArray();
 	}
 	
-	public function crearGrupo($idGrado,$idCiclo,Encuesta_Model_Grupoe $grupo){
+	/**
+	 * crearGrupo - Crea un grupo en el ciclo escolar actual
+	 */
+	public function crearGrupo(array $grupo){
 		$tablaGrupo = $this->tablaGrupo;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrado = ?",$idGrado)->where("idCiclo = ?",$idCiclo)->where("grupo = ?",$grupo->getGrupo());
+		$tablaGrupo->insert($grupo);
+		
+		/*
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGradoEducativo = ?",$idGrado)->where("idCicloEscolar = ?",$idCiclo)->where("grupo = ?",$grupo->getGrupo());
 		$grupoe = $tablaGrupo->fetchRow($select);
 		
 		$grupo->setIdCiclo($idCiclo);
@@ -68,13 +81,13 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 		}catch(Exception $ex){
 			throw new Util_Exception_BussinessException("Error al Insertar el Grupo: " . $grupo->getGrupo());			
 		}
-		
+		*/
 	}
 	
 	public function obtenerDocentes($idGrupo){
 		//$tablaProfesoresGrupo = $this->tablaProfesoresGrupo;
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
-		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idGrupo=?",$idGrupo);
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idGrupoEscolar = ?",$idGrupo);
 		$profesores = $tablaAsignacion->fetchAll($select);
 		$profesoresGrupo = array();
 		
@@ -98,7 +111,7 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	public function agregarDocenteGrupo(array $registro){
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
 		//Si ya hay un registro de esta materia
-		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idGrupo=?",$registro["idGrupo"])->where("idMateria=?",$registro["idMateria"]);
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idGrupoEscolar=?",$registro["idGrupoEscolar"])->where("idMateriaEscolar=?",$registro["idMateriaEscolar"]);
 		$row = $tablaAsignacion->fetchRow($select);
 		
 		if(!is_null($row)){

@@ -9,7 +9,9 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 	private $tablaRegistro;
 	
 	function __construct() {
-		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro(array('db'=>$dbAdapter));
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -62,14 +64,17 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 		return $modelDocentes;
 	}
 	// =====================================================================================>>>   Insertar
-	public function crearRegistro(Encuesta_Model_Registro $registro){
+	public function crearRegistro(array $registro){
 		$tablaRegistro = $this->tablaRegistro;
-		$tablaRegistro->insert($registro->toArray());
+		$tablaRegistro->insert($registro);
 	}
 	
 	// =====================================================================================>>>   Actualizar
 	public function editarRegistro($idRegistro, array $registro){
+		$tablaRegistro = $this->tablaRegistro;
+		$where = $tablaRegistro->getAdapter()->quoteInto("idRegistro=?", $idRegistro);
 		
+		$tablaRegistro->update($registro, $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarRegistro($idRegistro){

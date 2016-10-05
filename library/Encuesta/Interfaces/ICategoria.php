@@ -10,9 +10,9 @@ interface Encuesta_Interfaces_ICategoria{
 	public function obtenerOpciones($idCategoria);
 	public function obtenerCategorias();
 	// =====================================================================================>>>   Insertar
-	public function crearCategoria(Encuesta_Model_Categoria $categoria);
+	public function crearCategoria(array $categoria);
 	// =====================================================================================>>>   Actualizar
-	public function editarCategoria($idCategoria, Encuesta_Model_Categoria $categoria);
+	public function editarCategoria($idCategoria, array $categoria);
 	// =====================================================================================>>>   Eliminar
 	public function eliminarCategoria($idCategoria);
 	public function eliminarOpciones($idCategoria);

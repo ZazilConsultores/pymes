@@ -9,9 +9,20 @@ class Sistema_DAO_Parametro implements Sistema_Interfaces_IParametro {
 	private $tablaParametro;
 	private $tablaSubparametro;
 	
-	function __construct($argument) {
-		$this->tablaParametro = new Sistema_Model_DbTable_Parametro;
-		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaParametro = new Sistema_Model_DbTable_Parametro(array('db'=>$dbAdapter));
+		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro(array('db'=>$dbAdapter));
+	}
+	
+	public function obtenerParametro($idParametro){
+		$tablaParametro = $this->tablaParametro;
+		$select = $tablaParametro->select()->from($tablaParametro)->where("idParametro = ?", $idParametro);
+		$rowParametro = $tablaParametro->fetchRow($select);
+		$modelParametro = new Sistema_Model_Parametro($rowParametro->toArray());
+		
+		return $modelParametro;
 	}
 	
 	public function obtenerParametros(){
@@ -41,6 +52,12 @@ class Sistema_DAO_Parametro implements Sistema_Interfaces_IParametro {
 		$parametro->setFecha(date("Y-m-d H:i:s", time()));
 		
 		$this->tablaParametro->insert($parametro->toArray());
+	}
+	
+	public function editarParametro($idParametro, array $parametro){
+		$tablaParametro = $this->tablaParametro;
+		$where = $tablaParametro->getAdapter()->quoteInto("idParametro = ?", $idParametro);
+		$tablaParametro->update($parametro, $where);
 	}
 
 }

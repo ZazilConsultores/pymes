@@ -1,13 +1,13 @@
 <?php $formulario = $this->formulario; ?>
-<section class="row"><section>
-	<article class="col-md-8">
-		<header>
-			<h3>Alta de nueva Encuesta</h3>
-		</header>
-		<div id="errorContainerGeneral"></div>
-		<div class="errorContainerLabel"></div>
-		<?php echo $this->formulario; ?>
-	</article>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Alta de nueva encuesta</h3>
+		</div>
+		<div class="panel-body">
+			<?php echo $formulario; ?>
+		</div>
+	</div>
 </section>
 <script>
 	$().ready(function(){
@@ -37,4 +37,6 @@
 		});
 		
 	});
+
+
 </script>

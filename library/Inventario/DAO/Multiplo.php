@@ -7,9 +7,10 @@
 class Inventario_DAO_Multiplo implements Inventario_Interfaces_IMultiplo {
 	private $tablaMultiplo;
 	
-	public function __construct()
-	{
-		$this->tablaMultiplo= new Inventario_Model_DbTable_Multiplos;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaMultiplo= new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
 		
 	}
 	public function obtenerUnidades($idUnidad)

@@ -4,7 +4,6 @@ class IndexController extends Zend_Controller_Action
 {
 
     private $usuarioDAO = null;
-
     private $rolDAO = null;
 
     public function init()
@@ -32,7 +31,7 @@ class IndexController extends Zend_Controller_Action
 				$values = $formulario->getValues();
 	 			
 	            // Creamos un adaptador de Zend_Auth para consultar una tabla de la base de datos
-	            $authAdapter = new Zend_Auth_Adapter_DbTable(Zend_Db_Table::getDefaultAdapter());
+	            $authAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('dbmodgeneral'));
 	            $authAdapter ->setTableName('Usuario')              // Nombre de la tabla
 	                         ->setIdentityColumn('usuario')             // Campo de identificación
 	                         ->setCredentialColumn('password')       // Campo de contraseña
@@ -56,7 +55,7 @@ class IndexController extends Zend_Controller_Action
 	 				//print_r($data);
 					$this->view->result = $result->getMessages();
 					//$this->forward("perfil","usuario","default",array("usr"=>$auth->getStorage()->read()->idUsuario));
-					$this->_helper->redirector->gotoSimple("clientes", "empresa", "sistema",array("usr"=>$auth->getStorage()->read()->idUsuario));
+					$this->_helper->redirector->gotoSimple("perfil", "usuario", "default",array("usr"=>$auth->getStorage()->read()->idUsuario));
 	                //$this->_redirect('/');
 	                //Zend_Registry::set('currentModule', $data["rol"]);
 					//Zend_Registry::set('currentUser', $data["usuario"]);

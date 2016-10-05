@@ -10,11 +10,12 @@
 	private $tablaFiscales;
 	private $tablaFiscalesDomicilios;
 	
-	public function __construct()
-	{
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales;
-		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
+		$this->tablaFiscalesDomicilios = new Sistema_Model_DbTable_FiscalesDomicilios(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerDomicilio($idDomicilio) {

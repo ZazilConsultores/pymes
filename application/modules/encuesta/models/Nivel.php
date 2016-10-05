@@ -36,33 +36,32 @@ class Encuesta_Model_Nivel
         $this->descripcion = $descripcion;
     }
 	
-	private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey(array("nivel"=>strtolower($this->nivel)));
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
+	private $fecha;
+	
+	public function getFecha() {
+		return $this->fecha;
+	}
+	
+	public function setFecha($fecha) {
+		$this->fecha = $fecha;
+	}
+	
     public function __construct(array $datos)
     {
-		if(array_key_exists("idNivel", $datos)) $this->idNivel = $datos["idNivel"];
-		$this->nivel = $datos["nivel"];
+		if(array_key_exists("idNivelEducativo", $datos)) $this->idNivel = $datos["idNivelEducativo"];
+		$this->nivel = $datos["nivelEducativo"];
 		$this->descripcion = $datos["descripcion"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		$this->fecha = $datos["fecha"];
     }
 	
 	public function toArray()
 	{
 		$datos = array();
 		
-		$datos["idNivel"] = $this->idNivel;
-		$datos["nivel"] = $this->nivel;
+		$datos["idNivelEducativo"] = $this->idNivel;
+		$datos["nivelEducativo"] = $this->nivel;
 		$datos["descripcion"] = $this->descripcion;
-		$datos["hash"] = $this->hash;
+		$datos["fecha"] = $this->fecha;
 		
 		return $datos;
 	}

@@ -10,21 +10,21 @@ class Encuesta_Form_AltaGrupoE extends Zend_Form
 		$plan = $planDAO->obtenerPlanEstudiosVigente();
 		
         $cicloDAO = new Encuesta_DAO_Ciclo;
-		$ciclos = $cicloDAO->obtenerCiclos($plan["idPlanE"]);
+		$ciclos = $cicloDAO->obtenerCiclos($plan["idPlanEducativo"]);
         
-        $eCiclo = new Zend_Form_Element_Select("ciclo");
+        $eCiclo = new Zend_Form_Element_Select("idCicloEscolar");
         $eCiclo->setLabel("Ciclo: ");
 		$eCiclo->setAttrib("class", "form-control");
 		
 		foreach ($ciclos as $ciclo) {
-			$eCiclo->addMultiOption($ciclo->getIdCiclo(),$ciclo->getCiclo());
+			$eCiclo->addMultiOption($ciclo["idCicloEscolar"],$ciclo["ciclo"]);
 		}
 		
-		$eGrado = new Zend_Form_Element_Select("grado");
+		$eGrado = new Zend_Form_Element_Select("idGradoEducativo");
 		$eGrado->setLabel("Grado: ");
 		$eGrado->setAttrib("class", "form-control");
         
-        $eGrupo = new Zend_Form_Element_Text("grupo");
+        $eGrupo = new Zend_Form_Element_Text("grupoEscolar");
         $eGrupo->setLabel("Grupo: ");
 		$eGrupo->setAttrib("class", "form-control");
 		

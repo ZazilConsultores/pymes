@@ -6,56 +6,107 @@
  */
 class Encuesta_DAO_Grado implements Encuesta_Interfaces_IGrado {
 	
-	private $tablaGrado;
+	private $tablaGradoEducativo;
+	//private $tablaNivelEducativo;
 	
 	public function __construct() {
-		$this->tablaGrado = new Encuesta_Model_DbTable_GradoE;
-	}
-	
-	public function obtenerGrado($idGrado){
-		$tablaGrado = $this->tablaGrado;
-		$select = $tablaGrado->select()->from($tablaGrado)->where("idGrado = ?",$idGrado);
-		$rowGrado = $tablaGrado->fetchRow($select);
-		$modelGrado = new Encuesta_Model_Grado($rowGrado->toArray());
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
-		return $modelGrado;
+		$this->tablaGradoEducativo = new Encuesta_Model_DbTable_GradoEducativo(array('db'=>$dbAdapter));
+		//$this->tablaNivelEducativo = new Encuesta_Model_DbTable_NivelEducativo(array('db'=>$dbAdapter));
+	}
+	/*
+	public function obtenerGrado($idGrado){
+		$tablaGrado = $this->tablaGradoEducativo;
+		$select = $tablaGrado->select()->from($tablaGrado)->where("idGradoEducativo = ?",$idGrado);
+		$rowGrado = $tablaGrado->fetchRow($select);
+		
+		return $rowGrado->toArray();
 	}
 	
 	public function obtenerGrados($idNivel){
-		$tablaGrado = $this->tablaGrado;
-		$select = $tablaGrado->select()->from($tablaGrado)->where("idNivel = ?",$idNivel);
+		$tablaGrado = $this->tablaGradoEducativo;
+		$select = $tablaGrado->select()->from($tablaGrado)->where("idNivelEducativo = ?",$idNivel);
 		$rowsGrados = $tablaGrado->fetchAll($select);
-		$modelGrados = array();
-		foreach ($rowsGrados as $row) {
-			$modelGrado = new Encuesta_Model_Grado($row->toArray());
-			$modelGrados[] = $modelGrado;
-		}
 		
-		return $modelGrados;
+		return $rowsGrados->toArray();
 	}
 	
-	public function crearGrado(Encuesta_Model_Grado $grado){
-		$tablaGrado = $this->tablaGrado;
-		$grado->setHash($grado->getHash());
-		$select = $tablaGrado->select()->from($tablaGrado)->where("hash = ?",$grado->getHash());
-		$row = $tablaGrado->fetchRow($select);
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Grado: <strong>".$grado->getGrado()."</strong> no se puede dar de alta. <strong>Grado duplicado en el sistema</strong>\n");
-		try{
-			
-			$tablaGrado->insert($grado->toArray());
-		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("Grado: <strong>".$grado->getGrado()."</strong> no se puede dar de alta.<br /><br /><strong>" . $ex->getMessage() . "</strong>");
-		}
+	public function crearGrado(array $grado){
+		$tablaGrado = $this->tablaGradoEducativo;
+		
+		$tablaGrado->insert($grado);
 	}
 	
 	public function editarGrado($idGrado, array $datos){
-		$tablaGrado = $this->tablaGrado;
+		$tablaGrado = $this->tablaGradoEducativo;
 		$where = $tablaGrado->getAdapter()->quoteInto("idGrado=?", $idGrado);
 		$tablaGrado->update($datos, $where);
 	}
 	
 	public function eliminarGrado($idGrado){
-		$tablaGrado = $this->tablaGrado;
+		$tablaGrado = $this->tablaGradoEducativo;
 		
+	}
+	*/
+	// **************************************************** Implementando Standard de nombres.
+	
+	/**
+	 * 
+	 */
+	public function getGradoById($id){
+		$tablaGrado = $this->tablaGradoEducativo;
+		$select = $tablaGrado->select()->from($tablaGrado)->where("idGradoEducativo = ?", $id);
+		$rowGrado = $tablaGrado->fetchRow($select);
+		
+		$modelGrado = new Encuesta_Models_GradoEducativo($rowGrado->toArray());
+		
+		return $modelGrado;
+	}
+	
+	/**
+	 * 
+	 */
+	public function getGradosByIdNivel($idNivel){
+		$tablaGrado = $this->tablaGradoEducativo;
+		$select = $tablaGrado->select()->from($tablaGrado)->where("idNivelEducativo = ?",$idNivel);
+		$rowsGrados = $tablaGrado->fetchAll($select);
+		
+		$modelsGrados = array();
+		
+		foreach ($rowsGrados as $row) {
+			$model = new Encuesta_Models_GradoEducativo($row->toArray());
+			$modelsGrados[] = $model;
+		}
+		
+		return $modelsGrados;
+	}
+	
+	/**
+	 * 
+	 */
+	public function addGrado(Encuesta_Models_GradoEducativo $grado){
+		$tablaGrado = $this->tablaGradoEducativo;
+		$datos = $grado->toArray();
+		unset($datos["fecha"]);
+		
+		$tablaGrado->insert($grado);
+	}
+	
+	/**
+	 * 
+	 */
+	public function editGrado($idGrado, array $datos){
+		$tablaGrado = $this->tablaGradoEducativo;
+		$where = $tablaGrado->getAdapter()->quoteInto("idGrado=?", $idGrado);
+		$tablaGrado->update($datos, $where);
+	}
+	
+	/**
+	 * 
+	 */
+	public function dropGradoById($id){
+		//@TODO verificar dependencias, borrar registros de otras tablas que dependan de este registro!!
+		$tablaGrado = $this->tablaGradoEducativo;
 	}
 }

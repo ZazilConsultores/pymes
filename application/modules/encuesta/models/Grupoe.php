@@ -46,35 +46,22 @@ class Encuesta_Model_Grupoe
         $this->grupo = $grupo;
     }
 
-    private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey($this->toArray());
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
     public function __construct(array $datos)
     {
-        if(array_key_exists("idGrupo", $datos)) $this->idGrupo = $datos["idGrupo"];
-		if(array_key_exists("idGrado", $datos)) $this->idGrado = $datos["idGrado"];
-		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
-		$this->grupo = $datos["grupo"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+        if(array_key_exists("idGrupoEscolar", $datos)) $this->idGrupo = $datos["idGrupoEscolar"];
+		if(array_key_exists("idGradoEducativo", $datos)) $this->idGrado = $datos["idGradoEducativo"];
+		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
+		$this->grupo = $datos["grupoEscolar"];
     }
 	
 	public function toArray()
 	{
 		$datos = array();
 		
-		$datos["idGrupo"] = $this->idGrupo;
-		$datos["idGrado"] = $this->idGrado;
-		$datos["idCiclo"] = $this->idCiclo;
-		$datos["grupo"] = $this->grupo;
-		$datos["hash"] = $this->hash;
+		$datos["idGrupoEscolar"] = $this->idGrupo;
+		$datos["idGradoEducativo"] = $this->idGrado;
+		$datos["idCicloEscolar"] = $this->idCiclo;
+		$datos["grupoEscolar"] = $this->grupo;
 		
 		return $datos;
 	}

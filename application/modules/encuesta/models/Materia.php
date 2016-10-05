@@ -53,37 +53,36 @@ class Encuesta_Model_Materia
     public function setCreditos($creditos) {
         $this->creditos = $creditos;
     }
-
-    private $hash;
-
-    public function getHash() {
-    	if(is_null($this->hash)) $this->hash = Util_Secure::generateKey(array("idCiclo"=>$this->idCiclo,"idGrado"=>$this->idGrado,"materia"=>strtolower($this->materia)));
-        return $this->hash;
-    }
-    
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
-
+	
+	private $fecha;
+	
+	public function getFecha() {
+		return $fecha;
+	}
+	
+	public function setFecha($fecha) {
+		$this->fecha = $fecha;
+	}
+	
     public function __construct(array $datos) {
-		if(array_key_exists("idMateria", $datos)) $this->idMateria = $datos["idMateria"];
-		if(array_key_exists("idCiclo", $datos)) $this->idCiclo = $datos["idCiclo"];
-		if(array_key_exists("idGrado", $datos)) $this->idGrado = $datos["idGrado"];
-		$this->materia = $datos["materia"];
+		if(array_key_exists("idMateriaEscolar", $datos)) $this->idMateria = $datos["idMateriaEscolar"];
+		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
+		if(array_key_exists("idGradoEducativo", $datos)) $this->idGrado = $datos["idGradoEducativo"];
+		$this->materia = $datos["materiaEscolar"];
 		$this->creditos = $datos["creditos"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		$this->fecha = $datos["fecha"];
 	}
 	
 	public function toArray()
 	{
 		$datos = array();
 		
-		$datos["idMateria"] = $this->idMateria;
-		$datos["idCiclo"] = $this->idCiclo;
-		$datos["idGrado"] = $this->idGrado;
+		$datos["idMateriaEscolar"] = $this->idMateria;
+		$datos["idCicloEscolar"] = $this->idCiclo;
+		$datos["idGradoEducativo"] = $this->idGrado;
 		$datos["materia"] = $this->materia;
 		$datos["creditos"] = $this->creditos;
-		$datos["hash"] = $this->hash;
+		$datos["fecha"] = $this->fecha;
 		
 		return $datos;
 	}

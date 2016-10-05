@@ -28,8 +28,8 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 		
 		$formulario = new Encuesta_Form_AltaCategoria();
 		
-		$formulario->getElement("categoria")->setValue($categoria->getCategoria());
-		$formulario->getElement("descripcion")->setValue($categoria->getDescripcion());
+		$formulario->getElement("categoria")->setValue($categoria["categoria"]);
+		$formulario->getElement("descripcion")->setValue($categoria["descripcion"]);
 		$formulario->getElement("submit")->setLabel("Actualizar Categoria");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -39,8 +39,7 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 		
     }
 
-    public function altaAction()
-    {
+    public function altaAction() {
         // action body
         $request = $this->getRequest();
 		$formulario = new Encuesta_Form_AltaCategoria;
@@ -49,18 +48,23 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$datos["fecha"] = date("Y-m-d H:i:s", time());
+				//$datos["fecha"] = date("Y-m-d H:i:s", time());
 				
-				$categoria = new Encuesta_Model_Categoria($datos);
-				$categoria->setHash($categoria->getHash());
-				$this->categoriaDAO->crearCategoria($categoria);
-				$this->_helper->redirector->gotoSimple("index", "categoria", "encuesta");
+				//$categoria = new Encuesta_Model_Categoria($datos);
+				//$categoria->setHash($categoria->getHash());
+				try{
+					$this->categoriaDAO->crearCategoria($datos);
+					$this->view->messageSuccess = "La categoría <strong>".$datos["categoria"]."</strong> ha sido creada exitosamente.";
+				}catch(Exception $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
+				
+				//$this->_helper->redirector->gotoSimple("index", "categoria", "encuesta");
 			}
 		}
     }
 
-    public function editaAction()
-    {
+    public function editaAction() {
         // action body
         $request = $this->getRequest();
 		$idCategoria = $this->getParam("idCategoria");
@@ -80,8 +84,7 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
         
     }
 
-    public function opcionesAction()
-    {
+    public function opcionesAction() {
         // action body
         $idCategoria = $this->getParam("idCategoria");
 		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);

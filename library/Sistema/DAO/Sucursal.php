@@ -10,10 +10,12 @@ class Sistema_DAO_Sucursal implements Sistema_Interfaces_ISucursal {
 	private $tablaEmail;
 	
 	public function __construct() {
-		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal;
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		
+		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
 	}
 	
 	/**

@@ -24,9 +24,9 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 		
 		if(!is_null($idGrupo)){
 			
-			$this->view->grupo = $this->grupoDAO->obtenerGrupo($idGrupo);
+			$this->view->grupo = $this->grupoDAO->getGrupoById($idGrupo);//->obtenerGrupo($idGrupo);
 			//$this->view->preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "grupo");
-			$this->view->preguntas = $this->grupoDAO->obtenerPreguntas($idGrupo);
+			$this->view->preguntas = $this->grupoDAO->getPreguntasByIdGrupo($idGrupo);//->obtenerPreguntas($idGrupo);
 		}else{
 			//Redirect
 		}
@@ -39,10 +39,10 @@ class Encuesta_GrupoController extends Zend_Controller_Action
 		
 		
 		if(!is_null($idGrupo)){
-			$grupo = $this->grupoDAO->obtenerGrupo($idGrupo);
-			$seccion = $this->seccionDAO->obtenerSeccion($grupo->getIdSeccion());
+			$grupo = $this->grupoDAO->getGrupoById($idGrupo);//->obtenerGrupo($idGrupo);
+			$seccion = $this->seccionDAO->getSeccionById($grupo->getIdSeccionEncuesta());//->obtenerSeccion($grupo->getIdSeccion());
 			//$preguntas = $this->preguntaDAO->obtenerPreguntas($idGrupo, "G");
-			$preguntas = $this->grupoDAO->obtenerPreguntas($grupo->getIdGrupo());
+			$preguntas = $this->grupoDAO->getPreguntasByIdGrupo($grupo->getIdGrupoSeccion());//->obtenerPreguntas($grupo->getIdGrupoSeccion());
 			$t = Zend_Registry::get("tipo");
 			$formulario = new Encuesta_Form_AltaGrupo;
 			$formulario->getElement("nombre")->setValue($grupo->getNombre());
@@ -69,40 +69,30 @@ class Encuesta_GrupoController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
         $formulario = new Encuesta_Form_AltaGrupo;
-		//$idEncuesta = $this->getParam("idEncuesta");
-		$idSeccion = $this->getParam("idSeccion");
 		
-		if($request->isGet()){
-			if(!is_null($idSeccion)){
-				$seccion = $this->seccionDAO->obtenerSeccion($idSeccion);
-				//->obtenerSeccionId($idEncuesta, $idSeccion);
-				
-				$this->view->formulario = $formulario;
-				$this->view->seccion = $seccion;
-			}else{
-				$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
-			}
-		}else if($request->isPost()){
+		$idSeccion = $this->getParam("idSeccion");
+		$seccion = $this->seccionDAO->getSeccionById($idSeccion);
+		
+		$this->view->formulario = $formulario;
+		$this->view->seccion = $seccion;
+		
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())) {
 				$datos = $formulario->getValues();
-				//$datos["idSeccion"] = $idSeccion;
 				
-				$grupo = new Encuesta_Model_Grupo($datos);
+				$grupo = new Encuesta_Models_Grupo($datos);
 				
-				$grupo->setIdSeccion($idSeccion);
-				$grupo->setFecha(date("Y-m-d H:i:s", time()));
+				$grupo->setIdSeccionEncuesta($idSeccion);
 				$grupo->setElementos("0");
-				$grupo->setHash($grupo->getHash());
+				$grupo->setOrden($seccion->getElementos() + 1);
 				
-				//$grupo->setElementos("0");
-				$idGrupo = $this->grupoDAO->crearGrupo($idSeccion,$grupo);
-				//$this->grupoDAO->crearGrupo($grupo);
+				$idGrupo = $this->grupoDAO->addGrupoToSeccion($grupo);
 				if($grupo->getTipo() == "AB"){
 					$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
 				}else{
 					$this->_helper->redirector->gotoSimple("opciones", "grupo", "encuesta", array("idGrupo"=>$idGrupo));
 				}
-				//$this->_helper->redirector->gotoSimple("index", "seccion", "encuesta", array("idSeccion" => $idSeccion));
+				
 			}
 		}
     }

@@ -11,4 +11,7 @@ interface Encuesta_Interfaces_IAsignacionGrupo {
 	public function obtenerIdGruposDocente($idDocente);
 	
 	public function obtenerEvaluacionGeneralDocente($idDocente, $idEncuesta);
+	// *************************************************
+	public function getAsignacionById($id);
+	
 }

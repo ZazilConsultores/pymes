@@ -51,7 +51,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $this->view->encuestas = $this->encuestaDAO->obtenerEncuestas();
+        $this->view->encuestas = $this->encuestaDAO->getAllEncuestas();
     }
 
     public function adminAction()
@@ -59,7 +59,7 @@ class Encuesta_IndexController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
 		$idEncuesta = $this->getParam("idEncuesta");
-		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);
 		
 		$this->view->encuesta = $encuesta;
 		//$this->view->secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
@@ -87,10 +87,12 @@ class Encuesta_IndexController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				
-				$encuesta = new Encuesta_Model_Encuesta($datos);
-				
-				$this->encuestaDAO->crearEncuesta($encuesta);
-				$this->_helper->redirector->gotoSimple("index", "index", "encuesta", array("idEncuesta" => $encuesta->getIdEncuesta()));
+				$encuesta = new Encuesta_Models_Encuesta($datos);
+				try{
+					$this->encuestaDAO->addEncuesta($encuesta);
+				}catch(Exception $ex){
+					print_r($ex->getMessage());
+				}
 			}
 		}
     }
@@ -123,8 +125,8 @@ class Encuesta_IndexController extends Zend_Controller_Action
     {
         // action body
         $idEncuesta = $this->getParam("idEncuesta");
-		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
-		$secciones = $this->seccionDAO->obtenerSecciones($idEncuesta);
+		$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);
+		$secciones = $this->seccionDAO->getSeccionesByIdEncuesta($idEncuesta);
 		$this->view->secciones = $secciones;
 		$this->view->encuesta = $encuesta;
     }
@@ -194,14 +196,14 @@ class Encuesta_IndexController extends Zend_Controller_Action
 		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
 		
 		$idRegistro = $asignacion["idRegistro"];
-		$idMateria = $asignacion["idMateria"];
-		$idGrupo = $asignacion["idGrupo"];
+		$idMateria = $asignacion["idMateriaEscolar"];
+		$idGrupo = $asignacion["idGrupoEscolar"];
 		
 		$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
-		$encuesta = $this->encuestaDAO->obtenerEncuesta($idEncuesta);
+		$encuesta = $this->encuestaDAO->getEncuestaById($idEncuesta);//->obtenerEncuesta($idEncuesta);
 		$registro = $this->registroDAO->obtenerRegistro($idRegistro);
 		
-		$preguntas = $this->preguntaDAO->obtenerPreguntasEncuesta($idEncuesta);
+		$preguntas = $this->preguntaDAO->getPreguntasByIdEncuesta($idEncuesta);//->obtenerPreguntasEncuesta($idEncuesta);
 		$this->view->asignacion = $asignacion;
 		$this->view->grupo = $grupo;
 		$this->view->docente = $registro;

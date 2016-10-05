@@ -11,6 +11,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->bancoDAO = new Inventario_DAO_Banco;
+	
     }
 
     public function indexAction()

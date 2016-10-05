@@ -7,7 +7,7 @@
 interface Encuesta_Interfaces_IOpcion{
 	// =====================================================================================>>>   Buscar
 	public function obtenerOpcion($idOpcion);
-	public function obtenerOpcionHash($hash);
+	
 	public function obtenerOpcionesCategoria($idCategoria);
 	// =========================================== Pregunta y Grupo
 	public function obtenerOpcionesPregunta($idPregunta);
@@ -16,7 +16,7 @@ interface Encuesta_Interfaces_IOpcion{
 	public function obtenerValorOpcionMayor($idGrupo);
 	public function obtenerValorOpcionMenor($idGrupo);
 	// =====================================================================================>>>   Insertar
-	public function crearOpcion($idCategoria, Encuesta_Model_Opcion $opcion);
+	public function crearOpcion($idCategoria, array $opcion);
 	public function asignarValorOpcion($idOpcion, $valor);
 	// =====================================================================================>>>   Actualizar
 	public function editarOpcion($idCategoria, array $opcion);

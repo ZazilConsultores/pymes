@@ -13,11 +13,17 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	private $tablaERealizadas;
 	
 	function __construct() {
-		$this->tablaCategoria = new Encuesta_Model_DbTable_Categoria;
-		$this->tablaOpcion = new Encuesta_Model_DbTable_Opcion;
-		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta;
-		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple;
-		$this->tablaERealizadas = new Encuesta_Model_DbTable_ERealizadas;
+		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+		
+		$this->tablaCategoria = new Encuesta_Model_DbTable_CategoriasRespuesta(array('db'=>$dbAdapter));
+		
+		$this->tablaOpcion = new Encuesta_Model_DbTable_OpcionCategoria(array('db'=>$dbAdapter));
+		
+		$this->tablaRespuesta = new Encuesta_Model_DbTable_Respuesta(array('db'=>$dbAdapter));
+		
+		$this->tablaPreferenciaSimple = new Encuesta_Model_DbTable_PreferenciaSimple(array('db'=>$dbAdapter));
+		
+		$this->tablaERealizadas = new Encuesta_Model_DbTable_EncuestasRealizadas(array('db'=>$dbAdapter));
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -38,6 +44,7 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 		//si no hay respuestas para la encuesta seleccionada retorno array vacio
 		return $rowsRespuestas;
 	}
+	
 	public function obtenerIdPreguntasEncuesta($idEncuesta){
 		$tablaRespuesta = $this->tablaRespuesta;
 		$select = $tablaRespuesta->select()->distinct()->from($tablaRespuesta, "idPregunta")->where("idEncuesta = ?", $idEncuesta);
@@ -87,8 +94,6 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	// =====================================================================================>>>   Insertar
 	public function crearRespuesta($idEncuesta, Encuesta_Model_Respuesta $respuesta) {
 		$tablaRespuesta = $this->tablaRespuesta;
-		
-		$respuesta->setHash($respuesta->getHash());
 		$respuesta->setFecha(date("Y-m-d H:i:s", time()));
 		
 		//print_r($respuesta->toArray());
@@ -96,7 +101,6 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 		
 		$tablaRespuesta->insert($respuesta->toArray());
 		
-		$select = $tablaRespuesta->select()->from($tablaRespuesta)->where("hash=?",$respuesta->getHash());
 		$rowRes = $tablaRespuesta->fetchRow($select);
 		$modelRespuesta = new Encuesta_Model_Respuesta($rowRes->toArray());
 		return $modelRespuesta;
