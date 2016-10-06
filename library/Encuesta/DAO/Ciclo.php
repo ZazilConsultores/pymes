@@ -19,15 +19,14 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$tablaCiclo = $this->tablaCiclo;
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idPlanEducativo = ?",$idPlan);
 		$rowsCiclos = $tablaCiclo->fetchAll($select);
-		/*
 		$modelCiclos = array();
 		
 		foreach ($rowsCiclos as $row) {
 			$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
 			$modelCiclos[] = $modelCiclo;
-		}*/
+		}
 		
-		return $rowsCiclos->toArray();
+		return $modelCiclos;
 	}
 	
 	public function obtenerCiclo($idCiclo){

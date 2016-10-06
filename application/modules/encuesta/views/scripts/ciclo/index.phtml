@@ -26,11 +26,11 @@
 				<tbody>
 					<?php foreach ($ciclos as $ciclo) : ?>
 					<tr>
-						<td><?php echo $ciclo["ciclo"]; ?></td>
-						<td><?php echo $ciclo["inicio"]; ?></td>
-						<td><?php echo $ciclo["termino"]; ?></td>
+						<td><?php echo $ciclo->getCiclo(); ?></td>
+						<td><?php echo $ciclo->getInicio(); ?></td>
+						<td><?php echo $ciclo->getTermino(); ?></td>
 						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo["idCicloEscolar"]),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo->getIdCiclo()),null,true) ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar 
 							</a>
 						</td>
@@ -39,7 +39,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-	
-	
+	</div>	
 </section>

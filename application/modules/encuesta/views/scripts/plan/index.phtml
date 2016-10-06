@@ -1,23 +1,30 @@
 <?php
 	$planes = $this->planes;
 ?>
-<section class="row">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Planes de Estudio
-			</h3>
-		</div>
-		<div class="panel-body">
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Planes de Estudio
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div>
+			<span>
+				Un plan de estudios comprende un periodo de años durante el cual este estará vigente
+			</span>
+			<hr />
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"alta"),null,true) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Agregar Plan de Estudios 
 			</a>
+			<hr />
+		</div>
+		<div>
 			<table class="table table-striped table-condensed">
 				<thead>
 					<th>Plan de Estudios</th>
 					<th>Ciclos Escolares</th>
 					<th>Vigente</th>
-					<th>Descripcion</th>
+					<th>Configurar</th>
 				</thead>
 				<tbody>
 					<?php foreach ($planes as $plan) : ?>
@@ -25,11 +32,15 @@
 						<td><?php echo $plan["planEducativo"] ?></td>
 						<td>
 							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index","idPlan"=>$plan["idPlanEducativo"],),null,true) ?>">
-								<span class="glyphicon glyphicon-cog"></span> Ciclos Escolares
+								<span class="glyphicon glyphicon-eye-open"></span> Ver Ciclos Escolares
 							</a>
 						</td>
-						<td><?php echo $plan["vigente"] ?></td>
-						<td><?php echo $plan["descripcion"] ?></td>
+						<td><?php echo $txt = ($plan["vigente"] == 1 ) ?  "Vigente" : "Pasado" ; ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta", "controller"=>"plan", "action"=>"admin", "idPlan"=>$plan["idPlanEducativo"])) ?>">
+								<span class="glyphicon glyphicon-cog"></span> Configurar Ciclo
+							</a>
+						</td>
 					</tr>
 					<?php endforeach ?>
 				</tbody>

@@ -27,10 +27,18 @@ $().ready(function(){
 					});
 				}
 			});
+		}else{
+			var selectGradoEducativo = $("select#idGradoEducativo");
+			var selectGrupoEscolar = $("select#idGrupoEscolar");
+			selectGradoEducativo.empty();
+			selectGrupoEscolar.empty();
+			var opt = new Option("Seleccione opción...", "0");
+			selectGradoEducativo.append(opt);
+			selectGrupoEscolar.append(opt);
 		}
 	});
 	
-	$("select#idGradoEducativo").on('change',function(){
+	$("select#idGradoEducativo").on('change', function(){
 		console.log("Select Grado Educativo");
 		var idGrado = $(this).val();
 		//console.log("Valor del Combo: " + idGrado);
@@ -86,7 +94,7 @@ $().ready(function(){
 					//console.log(item.materia);
 					tbody.append($('<tr>').
 						append($('<td>').append(item.materia.materia)).
-						append($('<td>').append(item.docente.nombres)).
+						append($('<td>').append(item.docente.apellidos + ", " +item.docente.nombres)).
 						append($('<td>').append(item.encuesta.nombre)).
 						append($('<td>').append(anchorDetails))
 					);

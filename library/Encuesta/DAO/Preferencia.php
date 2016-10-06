@@ -92,7 +92,7 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	 */
 	public function obtenerPreferenciaPregunta($idPregunta,$idAsignacion){
 		$tablaPreferencia = $this->tablaPreferenciaSimple;
-		$select = $tablaPreferencia->select()->from($tablaPreferencia)->where("idPregunta=?",$idPregunta)->where("idAsignacion=?",$idAsignacion);
+		$select = $tablaPreferencia->select()->from($tablaPreferencia)->where("idPregunta=?",$idPregunta)->where("idAsignacionGrupo=?",$idAsignacion);
 		$rowsPreferencia = $tablaPreferencia->fetchAll($select);
 		$objPreferencia = array();
 		

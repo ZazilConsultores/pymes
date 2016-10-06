@@ -71,6 +71,16 @@ class Encuesta_Model_Ciclo
     public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
     }
+	
+	private $fecha;
+	
+	public function getFecha() {
+		return $this->fecha;
+	}
+	
+	public function setFecha($fecha) {
+		$this->fecha = $fecha;
+	}
 
     public function __construct(array $datos)
 	{
@@ -81,6 +91,7 @@ class Encuesta_Model_Ciclo
 		$this->termino = $datos["termino"];
 		$this->actual = $datos["vigente"];
 		$this->descripcion = $datos["descripcion"];
+		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 	}
 	
 	public function toArray()
@@ -90,10 +101,11 @@ class Encuesta_Model_Ciclo
 		$datos["idCicloEscolar"] = $this->idCiclo;
 		$datos["idPlanEducativo"] = $this->idPlanE;
 		$datos["ciclo"] = $this->ciclo;
+		$datos["vigente"] = $this->actual;
 		$datos["inicio"] = $this->inicio;
 		$datos["termino"] = $this->termino;
-		$datos["vigente"] = $this->actual;
 		$datos["descripcion"] = $this->descripcion;
+		$datos["fecha"] = $this->fecha;
 		
 		return $datos;
 	}
