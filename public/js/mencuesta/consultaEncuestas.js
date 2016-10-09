@@ -3,6 +3,13 @@
  */
 $().ready(function(){
 	var url = window.location.origin + "/General/public/";
+	$("select#idCicloEscolar").on('change',function(){
+		console.log("Select Ciclo Escolar");
+		$("select#idGrupoEscolar").empty();
+		$("button#btnQueryEncuesta").attr("disabled", "");
+		
+	});
+	
 	$("select#idNivel").on('change',function(){
 		console.log("Select Nivel Educativo");
 		var idNivel = $(this).val();
@@ -38,12 +45,12 @@ $().ready(function(){
 		}
 	});
 	
-	$("select#idGradoEducativo").on('change', function(){
+	$("select#idGradoEducativo").on('change', function() {
 		console.log("Select Grado Educativo");
 		var idGrado = $(this).val();
 		//console.log("Valor del Combo: " + idGrado);
 		var urlQueryGrupos = url + "encuesta/json/grupos/idGrado/" + idGrado;
-		//console.log(urlQueryGrupos);
+		console.log(urlQueryGrupos);
 		$.ajax({
 			url: urlQueryGrupos,
 			dataType: "json",
@@ -57,14 +64,16 @@ $().ready(function(){
 					var opt = new Option(item.grupo, item.idGrupo);
 					selectGrupoEscolar.append(opt);
 				});
-				
-				$("button#btnQueryEncuesta").removeClass("disabled");
+				console.log("Modificando Attrib del button");
+				$("button#btnQueryEncuesta").removeAttr("disabled");
 			}
 		});
 	});
 	
 	$("select#idGrupoEscolar").on('change',function(){
-		$("button#btnQueryEncuesta").removeClass("disabled");
+		//$("button#btnQueryEncuesta").removeClass("disabled");
+		//$("button#btnQueryEncuesta").attr("disabled", "");
+		$("button#btnQueryEncuesta").removeAttr("disabled");
 	});
 	
 	$("button#btnQueryEncuesta").on('click',function(){
@@ -102,7 +111,7 @@ $().ready(function(){
 				
 			}
 		});
-		$(this).addClass("disabled");
+		$(this).attr("disabled","");
 	});
 	
 });

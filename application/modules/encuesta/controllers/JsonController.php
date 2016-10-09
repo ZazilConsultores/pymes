@@ -60,7 +60,7 @@ class Encuesta_JsonController extends Zend_Controller_Action
         // action body
         $idCiclo = $this->getParam("idCiclo");
 		$idGrado = $this->getParam("idGrado");
-		if(is_null($idCiclo)) $idCiclo = $this->cicloDAO->obtenerCicloActual()->getIdCiclo();
+		if(is_null($idCiclo)) $idCiclo = $this->cicloDAO->getCurrentCiclo()->getIdCiclo();
 		$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $idCiclo);
 		$arrayGrupos = array();
 		

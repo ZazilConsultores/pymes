@@ -1,6 +1,6 @@
 <?php
 
-class Encuesta_Model_Ciclo
+class Encuesta_Models_Ciclo
 {
 	private $idCiclo;
 
@@ -12,14 +12,14 @@ class Encuesta_Model_Ciclo
         $this->idCiclo = $idCiclo;
     }
 	
-	private $idPlanE;
+	private $idPlan;
 
-    public function getIdPlanE() {
-        return $this->idPlanE;
+    public function getIdPlan() {
+        return $this->idPlan;
     }
     
-    public function setIdPlanE($idPlanE) {
-        $this->idPlanE = $idPlanE;
+    public function setIdPlan($idPlan) {
+        $this->idPlan = $idPlan;
     }
     
     private $ciclo;
@@ -30,6 +30,16 @@ class Encuesta_Model_Ciclo
     
     public function setCiclo($ciclo) {
         $this->ciclo = $ciclo;
+    }
+	
+	private $vigente;
+
+    public function getVigente() {
+        return $this->vigente;
+    }
+    
+    public function setVigente($vigente) {
+        $this->vigente = $vigente;
     }
 
     private $inicio;
@@ -52,16 +62,6 @@ class Encuesta_Model_Ciclo
         $this->termino = $termino;
     }
 	
-	private $actual;
-
-    public function getActual() {
-        return $this->actual;
-    }
-    
-    public function setActual($actual) {
-        $this->actual = $actual;
-    }
-    
     private $descripcion;
 
     public function getDescripcion() {
@@ -85,11 +85,11 @@ class Encuesta_Model_Ciclo
     public function __construct(array $datos)
 	{
 		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
-		if(array_key_exists("idPlanEducativo", $datos)) $this->idPlanE = $datos["idPlanEducativo"];
+		if(array_key_exists("idPlanEducativo", $datos)) $this->idPlan = $datos["idPlanEducativo"];
 		$this->ciclo = $datos["ciclo"];
+		$this->vigente = $datos["vigente"];
 		$this->inicio = $datos["inicio"];
 		$this->termino = $datos["termino"];
-		$this->actual = $datos["vigente"];
 		$this->descripcion = $datos["descripcion"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 	}
@@ -99,9 +99,9 @@ class Encuesta_Model_Ciclo
 		$datos = array();
 		
 		$datos["idCicloEscolar"] = $this->idCiclo;
-		$datos["idPlanEducativo"] = $this->idPlanE;
+		$datos["idPlanEducativo"] = $this->idPlan;
 		$datos["ciclo"] = $this->ciclo;
-		$datos["vigente"] = $this->actual;
+		$datos["vigente"] = $this->vigente;
 		$datos["inicio"] = $this->inicio;
 		$datos["termino"] = $this->termino;
 		$datos["descripcion"] = $this->descripcion;

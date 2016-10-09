@@ -18,7 +18,7 @@
 					<td>
 						<select id="idCicloEscolar" class="form-control">
 							<?php foreach ($ciclosEscolares as $ciclo) : ?>
-							<option value="<?php echo $ciclo->getIdCiclo() ?>"><?php echo $ciclo->getCiclo() ?></option>
+							<option value="<?php echo $ciclo->getIdCiclo() ?>"><?php echo $ciclo->getCiclo(); echo $txt = ($ciclo->getVigente() == 1) ? " - Vigente" : "" ; ?></option>
 							<?php endforeach; ?>
 						</select>
 					</td>
@@ -53,7 +53,7 @@
 				<tr>
 					<td></td>
 					<td>
-						<button id="btnQueryEncuesta" class="btn btn-success disabled">
+						<button id="btnQueryEncuesta" class="btn btn-success" disabled>
 							<span class="glyphicon glyphicon-search"></span> Buscar encuestas
 						</button>
 					</td>

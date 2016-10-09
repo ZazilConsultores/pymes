@@ -20,7 +20,7 @@ class Encuesta_ConsultaController extends Zend_Controller_Action
         // action body
         $planActual = $this->planDAO->obtenerPlanEstudiosVigente();
         $niveles = $this->nivelDAO->obtenerNiveles();
-		$ciclosEscolares = $this->cicloDAO->obtenerCiclos($planActual["idPlanEducativo"]);
+		$ciclosEscolares = $this->cicloDAO->getCiclosbyIdPlan($planActual["idPlanEducativo"]);//->obtenerCiclos($planActual["idPlanEducativo"]);
 		$this->view->niveles = $niveles;
 		$this->view->ciclosEscolares = $ciclosEscolares;
     }

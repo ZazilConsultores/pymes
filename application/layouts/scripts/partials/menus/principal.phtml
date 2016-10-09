@@ -35,6 +35,10 @@
 								<span class="glyphicon glyphicon-cog"></span> <?php echo $rol = (is_null($modelRol)) ? "default" : $modelRol->getRol(); ?> - <span class="glyphicon glyphicon-user"></span> <?php echo $user = (is_null($identity)) ? "default" : $identity->usuario; ?>
 							</a>
 						</li>
+						<?php
+							$moduloDAO = new Sistema_DAO_Modulo;
+							$configEncuesta = $moduloDAO->getConfig("encuesta");
+						?>
 						<!-- Menú de operaciones de sistema -->
 						<?php echo $this->partial('partials/menus/submenus/sistema.phtml'); ?>
 						<!-- Menú de operaciones de contabilidad -->
@@ -45,9 +49,21 @@
 						<?php echo $this->partial('partials/menus/submenus/soporte.phtml'); ?>
 						<!-- Menú de operaciones de encuesta -->
 						<?php echo $this->partial('partials/menus/submenus/encuesta.phtml'); ?>
+						
 					</ul>
 				</div>
 			</div>
 		</nav>
 </header>
 </div>
+<script type="text/javascript">
+	$().ready(function() {
+		var viewOperacionE = "<?php echo $configEncuesta['viewOperacion'] ?>";
+		var viewConsultaE = "<?php echo $configEncuesta['viewConsulta'] ?>";
+		var cssViewOperacionE = viewOperacionE == "S" ? "" : "hidden";
+		var cssViewConsultaE = viewConsultaE == "S" ? "" : "hidden";
+		$("a[tipoVista='operacion']").addClass(cssViewOperacionE);
+		$("a[tipoVista='consulta']").addClass(cssViewConsultaE);
+		
+	});
+</script>

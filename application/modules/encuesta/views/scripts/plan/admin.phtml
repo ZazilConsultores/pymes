@@ -9,8 +9,11 @@
 	</div>
 	<div class="panel-body">
 		<div>
-			
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"index"),null,true) ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a los Planes de Estudio
+			</a>
 		</div>
+		<hr />
 		<div>
 			<?php echo $formulario; ?>
 		</div>
