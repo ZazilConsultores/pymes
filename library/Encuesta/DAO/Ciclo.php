@@ -38,7 +38,9 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		
 		return $modelCiclo;
 	}
-	
+	/**
+	 * Obtiene el ciclo escolar actual
+	 */
 	public function getCurrentCiclo(){
 		$tablaCiclo = $this->tablaCiclo;
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("vigente = ?","1");
