@@ -15,7 +15,7 @@
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						  <span aria-hidden="true">&times;</span>
 						</button>
-						<?php echo $messageSuccess; ?>
+							<?php echo $messageSuccess; ?>
 					</div>
 				<?php }elseif(!is_null($messageFail)){ ?>
 					<div class="alert alert-danger" role="alert">
@@ -76,9 +76,7 @@ $(document).ready(function(){
 				fechaApertura: {
 					required: true
 				},
-				fechaCierre: {
-					required: true
-				},
+				
 				costoInicial: {
 					required: true,
 					number: true
@@ -98,9 +96,7 @@ $(document).ready(function(){
 				fechaApertura: {					
 					required: "Este campo no puede quedar vacío,Seleccione fecha Inicio"
 				},	
-				fechaCierre: {					
-					required: "Este campo no puede quedar vacío,Seleccione fecha Cierre"
-				},	
+					
 				costoInicial: {					
 					required: "Este campo no puede quedar vacío, Ingrese Costo Inicio",
 					number:"Ingrese un número valido"

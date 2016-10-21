@@ -101,6 +101,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			$bd->insert("Movimientos",$mMovtos);
 		//========================Secuencial==================================================
 		$secuencial=0;	
+		
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)
 		->where("numeroFolio=?",$encabezado['numFolio'])

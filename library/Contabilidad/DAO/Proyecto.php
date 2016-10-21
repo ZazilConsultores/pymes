@@ -11,25 +11,25 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	
 	public function crearProyecto(Contabilidad_Model_Proyecto $proyecto)
 	{
-	
+		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();		
 		$fechaApertura = new Zend_Date($proyecto->getFechaApertura());	
-		$stringIni = $fechaApertura->toString('yyyy-MM-dd');
-		
+		$stringIni = $fechaApertura->toString('yyyy-MM-dd hh:mm:ss',time());
+	
 		$fechaCierre = $proyecto->getFechaCierre();	
 
 		$Ganancia = $proyecto->getCostoFinal()- $proyecto->getCostoInicial();
 		
 		$proyecto->setFechaApertura($stringIni);
 		
-		if(!is_null($fechaCierre)){
-			$fechaCierre = new Zend_Date($proyecto->getFechaCierre());	
-			$stringFin = $fechaCierre->toString('yyyy-MM-dd');
-		
-			print_r($fechaCierre);
-			$proyecto->setFechaCierre($stringFin);	
+		if(($fechaCierre=="")){
+			
+			$proyecto->setFechaCierre(date("Y-m-d H:i:s", time()));
+	
+			//print_r("la fecha esta vacia");	
 		}else{
-			print_r($fechaCierre);
-			$proyecto->setFechaCierre = 'NULL';	
+			$fechaCierre = new Zend_Date($proyecto->getFechaCierre());	
+			$stringIni = $fechaCierre->toString('yyyy-MM-dd');
+			$proyecto->setFechaCierre($stringIni);
 		}
 		$this->tablaProyecto->insert($proyecto->toArray());		
 	}

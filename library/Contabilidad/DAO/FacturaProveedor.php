@@ -15,6 +15,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	private $tablaMultiplos;
 	private $tablaEmpresa;
 	
+	
 	public function __construct() {
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura;
 		$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle;
@@ -25,10 +26,20 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
+		
+	}
+	
+	public function convertirMultiplo (array $producto){
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$row = $tablaMultiplos->fetchRow($select);
+	
 	}
 		
-	public function agregarFactura(array $encabezado, $formaPago,$impuestos,$producto)
+		
+	public function agregarFactura(array $encabezado, $formaPago,$producto)
 	{
+		$datos;
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
 		
@@ -55,28 +66,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 			->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])
 			->where("idCoP=?",$encabezado['idCoP'])
 			->where("idSucursal=?",$encabezado['idSucursal']);
-			
-			/*if(!is_null($row)){}
-			
-			$mMovtos = array(
-				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-				'idEmpresas'=>$encabezado['idEmpresas'],
-				'idSucursal'=>$encabezado['idSucursal'],
-				'idCoP'=>$encabezado['idCoP'],
-				//'numeroFolio'=>$encabezado['numFolio'],
-				'idFactura'=>0,
-				'idProducto' => $producto['descripcion'],
-				//'idProyecto'=>$encabezado['idProyecto'],
-				'cantidad'=>$cantidad,
-				'fecha'=>$stringIni,
-				'secuencial'=> $secuencial,
-				'estatus'=>"A",
-				'costoUnitario'=>$precioUnitario,
-				'totalImporte'=>$producto['importe']
-				);
-			
-			//print_r($mMovtos);
-			$bd->insert("Movimientos",$mMovtos);*/
+	
 			
 			//Validar que no se vuelva a registrar la misma factura en la tabla factura
 			$tablaFactura = $this->tablaFactura;
@@ -106,19 +96,39 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 						'idCoP'=>$encabezado['idCoP'],
 						'idDivisa'=>$formaPago['idDivisa'],
 						'numeroFactura'=>$encabezado['numeroFactura'],
+						'numeroFiscal'=>$encabezado['folioFiscal'],
 						'estatus'=>"A",
-						'conceptoPago'=> $conceptoPago,
-						'descuento'=>0,
-						'condicionPago'=>1,
+						'descuento'=>$producto['descuento'],
+						'conceptoPago'=>"LI",
 						'formaPago'=>$formaPago['formaLiquidar'],
 						'fechaFactura'=> $stringFecha,
 						//'fechaCancelada'=>$fechaCancelada,
-						'subTotal'=>$impuestos['subtotal'],
-						'total'=>$impuestos['total']
+						'subTotal'=>$producto['subTotal'],
+						'total'=>$producto['total']
 					);
 				
 				//print_r($mMovtos);
 				$bd->insert("Factura",$mFactura);
+				
+				/*$mMovtos = array(
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idEmpresas'=>$encabezado['idEmpresas'],
+					'idSucursal'=>$encabezado['idSucursal'],
+					'idCoP'=>$encabezado['idCoP'],
+					//'numeroFolio'=>$encabezado['numFolio'],
+					//'idFactura'=>$mFactura['idFactura'],
+					'idProducto' => $producto['descripcion'],
+					//'idProyecto'=>$encabezado['idProyecto'],
+					'cantidad'=>$cantidad,
+					'fecha'=>$stringIni,
+					'secuencial'=> $secuencial,
+					'estatus'=>"A",
+					'costoUnitario'=>$precioUnitario,
+					'totalImporte'=>$producto['importe']
+				);*/
+			
+			//print_r($mMovtos);
+			//$bd->insert("Movimientos",$mMovtos);
 				$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");

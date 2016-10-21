@@ -55,19 +55,22 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eFechaCierre = new Zend_Form_Element_Text('fechaCierre');
 		$eFechaCierre->setLabel('Seleccionar Fecha Cierre Proyecto:');
 		$eFechaCierre->setAttrib("class", "form-control");
-		$eFechaCierre->setAttrib("value", "0");
+		
 				
 		$eCostoInicio = new Zend_Form_Element_Text('costoInicial');
 		$eCostoInicio->setLabel('Ingresar Costo Inicial:');
 		$eCostoInicio->setAttrib("class", "form-control");
+		$eCostoInicio->setValue("0");
 		
 		$eCostoFinal = new Zend_Form_Element_Text('costoFinal');
 		$eCostoFinal->setLabel('Ingresar Costo Final:');
 		$eCostoFinal->setAttrib("class", "form-control");
+		$eCostoFinal->setValue("0");
 		
 		$eGanancia = new Zend_Form_Element_Text('ganancia');
 		$eGanancia->setLabel('Total de Ganancia:');
 		$eGanancia->setAttrib("class", "form-control");
+		$eGanancia->setValue("0");
 		
 		/* En Proyecto es necesario idProducto	
 		$eProducto = new Zend_Form_Element_Text('idProducto');

@@ -65,7 +65,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$productos = json_decode($encabezado['productos'],TRUE);
 				//print_r($encabezado);
 				//print_r('<br />');
-				//print_r($productos);
+				print_r($productos);
 				$contador=0;
 			
 				foreach ($productos as $producto){
@@ -155,7 +155,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$encabezado = $datos[0];
 				$productos = json_decode($encabezado['productos'],TRUE);
 				$formaPago = $datos[1];
-				$impuestos = $datos[2];
+				//$impuestos = $datos[2];
 				
 				/*print_r($encabezado);
 				print_r('<br />');
@@ -168,7 +168,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				
 				foreach ($productos as $producto){
 					try{
-						$facturaProveedor->agregarFactura($encabezado,$formaPago,$impuestos,$producto);
+						$facturaProveedor->agregarFactura($encabezado,$formaPago,$producto);
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 						

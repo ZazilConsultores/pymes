@@ -1439,6 +1439,7 @@
             <formFile formName="AltaUsuario"/>
             <formFile formName="AltaReporte"/>
             <formFile formName="AltaSucursal"/>
+            <formFile formName="Pruebas"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>

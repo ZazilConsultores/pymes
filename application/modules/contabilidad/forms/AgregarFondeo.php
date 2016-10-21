@@ -113,8 +113,8 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 			
 		}
 		
-		$eIva = new Zend_Form_Element_Checkbox('iva');
-		$eIva->setLabel('Iva:');
+		//$eIva = new Zend_Form_Element_Checkbox('iva');
+		//$eIva->setLabel('Iva:');
 		//$eIva->setAttrib("class", "form-control");
 		
 		$eImportePago = new Zend_Form_Element_Text('total');
@@ -140,7 +140,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		
 		$this->addElement($eBancoEntrada);
 		$this->addElement($eBancoSalida);
-		$this->addElement($eIva);
+		//$this->addElement($eIva);
 		$this->addElement($eImportePago);
 		
 		$this->addElement($eSubmit);
