@@ -1,4 +1,21 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Plan</b> and script/action name <b>admin</b></p>
-</div>
+<?php
+	$plan = $this->plan;
+	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"edita","idPlan"=>$plan["idPlanEducativo"]),null,true));
+?>
+<section class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">Configuracion del Plan de estudios: <strong><?php echo $plan["planEducativo"] ?></strong></h3>
+	</div>
+	<div class="panel-body">
+		<div>
+			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"index"),null,true) ?>">
+				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a los Planes de Estudio
+			</a>
+		</div>
+		<hr />
+		<div>
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>

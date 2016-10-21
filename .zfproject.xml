@@ -1467,6 +1467,7 @@
               <dbTableFile dbTableName="Reporte"/>
               <dbTableFile dbTableName="TipoProveedor"/>
               <dbTableFile dbTableName="Sucursal"/>
+              <dbTableFile dbTableName="Modulo"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>

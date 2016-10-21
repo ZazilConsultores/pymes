@@ -1,0 +1,35 @@
+/**
+ * The next preloader is creation of smashtheshell
+ * youtube: https://www.youtube.com/watch?v=67_DXhS3_Hc
+ * @author IngenieroRodriguez
+ */
+body {
+
+}
+
+.spinner{
+	width: 150px;
+	height: 150px;
+	
+	border: 2px solid #F3F3F3;
+	border-top: 4px solid #f25a41;
+	border-radius: 100%;
+	
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	
+	animation: spin 1s infinite linear;
+	
+}
+
+@keyframes spin{
+	from{
+		transform: rotate(0deg);
+	}to{
+		transform: rotate(360deg);
+	}
+}

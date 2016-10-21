@@ -16,7 +16,7 @@ class Encuesta_CicloController extends Zend_Controller_Action
     {
         // action body
         $idPlan = $this->getParam("idPlan");
-        $ciclos = $this->cicloDAO->obtenerCiclos($idPlan);
+        $ciclos = $this->cicloDAO->getCiclosbyIdPlan($idPlan);//->obtenerCiclos($idPlan);
 		$plan = $this->planDAO->obtenerPlanEstudios($idPlan);
         $this->view->ciclos = $ciclos;
 		$this->view->plan = $plan;
@@ -26,14 +26,14 @@ class Encuesta_CicloController extends Zend_Controller_Action
     {
         // action body
         $idCiclo = $this->getParam("idCiclo");
-		$ciclo = $this->cicloDAO->obtenerCiclo($idCiclo);
+		$ciclo = $this->cicloDAO->getCicloById($idCiclo);//->obtenerCiclo($idCiclo);
 		
 		$formulario = new Encuesta_Form_AltaCiclo;
-		$formulario->getElement("ciclo")->setValue($ciclo["ciclo"]);
-		$formulario->getElement("inicio")->setValue($ciclo["inicio"]);
-		$formulario->getElement("termino")->setValue($ciclo["termino"]);
-		$formulario->getElement("vigente")->setValue($ciclo["vigente"]);
-		$formulario->getElement("descripcion")->setValue($ciclo["descripcion"]);
+		$formulario->getElement("ciclo")->setValue($ciclo->getCiclo());
+		$formulario->getElement("inicio")->setValue($ciclo->getInicio());
+		$formulario->getElement("termino")->setValue($ciclo->getTermino());
+		$formulario->getElement("vigente")->setValue($ciclo->getVigente());
+		$formulario->getElement("descripcion")->setValue($ciclo->getDescripcion());
 		$formulario->getElement("submit")->setLabel("Actualizar Ciclo");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -75,6 +75,16 @@ class Encuesta_CicloController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
+        $idCiclo = $this->getParam("idCiclo");
+        $request = $this->getRequest();
+		$datos = $request->getPost();
+		unset($datos["submit"]);
+		try{
+			$this->cicloDAO->editCiclo($idCiclo, $datos);
+			$this->_helper->redirector->gotoSimple("admin", "ciclo", "encuesta",array("idCiclo"=>$idCiclo));
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+		}
     }
 
 

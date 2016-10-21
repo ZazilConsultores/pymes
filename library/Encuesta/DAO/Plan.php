@@ -54,13 +54,13 @@ class Encuesta_DAO_Plan implements Encuesta_Interfaces_IPlan {
 	// =====================================================================================>>>   Actualizar
 	public function actualizarPlanEstudios($idPlan, $datos){
 		$tablaPlan = $this->tablaPlanEstudios;
-		$where = $tablaPlan->getAdapter()->quoteInto("idPlan=?", $idPlan);
+		$where = $tablaPlan->getAdapter()->quoteInto("idPlanEducativo=?", $idPlan);
 		$tablaPlan->update($datos, $where);
 	}
 	// =====================================================================================>>>   Eliminar
 	public function eliminarPlanEstudios($idPlan){
 		$tablaPlan = $this->tablaPlanEstudios;
-		$where = $tablaPlan->getAdapter()->quoteInto("idPlan=?", $idPlan);
+		$where = $tablaPlan->getAdapter()->quoteInto("idPlanEducativo=?", $idPlan);
 		$tablaPlan->delete($where);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+	$ciclosEscolares = $this->ciclosEscolares;
 	$niveles = $this->niveles;
 ?>
 <section class="panel panel-success">
@@ -12,6 +13,16 @@
 				<th>Valor</th>
 			</thead>
 			<tbody>
+				<tr>
+					<td>Ciclo Escolar</td>
+					<td>
+						<select id="idCicloEscolar" class="form-control">
+							<?php foreach ($ciclosEscolares as $ciclo) : ?>
+							<option value="<?php echo $ciclo->getIdCiclo() ?>"><?php echo $ciclo->getCiclo(); echo $txt = ($ciclo->getVigente() == 1) ? " - Vigente" : "" ; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
 				<tr>
 					<td>Nivel</td>
 					<td>
@@ -42,7 +53,7 @@
 				<tr>
 					<td></td>
 					<td>
-						<button id="btnQueryEncuesta" class="btn btn-success disabled">
+						<button id="btnQueryEncuesta" class="btn btn-success" disabled>
 							<span class="glyphicon glyphicon-search"></span> Buscar encuestas
 						</button>
 					</td>
@@ -70,3 +81,4 @@
 	</div>
 </section>
 <script type="text/javascript" src="<?php echo $this->baseUrl() ?>/js/mencuesta/consultaEncuestas.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/mencuesta/preloader.css" />

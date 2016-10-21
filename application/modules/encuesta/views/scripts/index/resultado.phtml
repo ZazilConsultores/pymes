@@ -38,7 +38,7 @@
 						<td><?php echo $pregunta->getNombre() ?></td>
 						<td>
 							<?php if ($pregunta->getTipo() != "AB"){  ?>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"grafica","idPregunta"=>$pregunta->getIdPregunta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"grafica","idPregunta"=>$pregunta->getIdPregunta(),"idAsignacion"=>$asignacion["idAsignacionGrupo"]),null,true) ?>">
 								<span class="glyphicon glyphicon-stats"></span> Gráfico
 							</a>
 							<?php }else{ ?>
