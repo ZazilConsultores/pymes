@@ -1,4 +1,7 @@
-<?php echo $this->formulario ?>
+<?php 
+	echo $this->formulario;
+	$facturasProveedorDAO = new Contabilidad_DAO_FacturaProveedor;
+?>
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -9,14 +12,16 @@
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
-			<a id="generarJsonArray" class="btn btn-warning">
+			<a id="generarJsonArray" class="btn btn-primary" data-toggle="modal" data-target="#msgConfirm">
 				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
-				<button id="editarIva" class="btn btn-success">
+			<a class="form-inline">
+				<button id="editarIva" class="btn btn-warning">
 					<span class="glyphicon glyphicon-pencil" ></span> Editar Iva
 				</button>
-				<input id="editarIva" type="text" size="15" class="" value="16" />
-						
+				
+				<input id="ivaPorcentaje" type="text" class="form-control" value="16" disabled="disabled">
+			</a>		
 				<table id="productos" class="table table-striped table-condensed">
 					<thead>
 						<tr>
@@ -92,9 +97,9 @@
 							<td align="center"><strong>ISR</strong></td>
 						</tr>
 						 <tr>
-            				<td align="left"><INPUT type="text" name="iEPS" size="15" class="form-control" value="0"></td>
-          				 	<td align="left"><INPUT type="text" name="iEPS" size="15" class="form-control" value="0"></td>
-          				 	<td align="left"><INPUT type="text" name="iEPS" size="15" class="form-control" value="0"></td>	
+            				<td align="left"><input type="text" name="iEPS" size="15" class="form-control" value="0"></td>
+          				 	<td align="left"><input type="text" name="iEPS" size="15" class="form-control" value="0"></td>
+          				 	<td align="left"><input type="text" name="iEPS" size="15" class="form-control" value="0"></td>	
           				 </tr>
           				 <tr>
             				
@@ -112,6 +117,32 @@
 		</div>
 	</div>
 </section>
+<!-- Message Config -->
+<div class="modal fade"  id="msgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-sm" >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">La Factura ya existe.</h4>
+			</div>
+			<div class="modal-body">
+				<?php foreach($facturasProveedorDAO as $facturaProveedorDAO): 
+					
+				?>
+				<?php endforeach ?>
+				El Numero de la factura <strong><span id="cliente"></span> con el Proveedor " " Ya esta registrada. 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<span class="glyphicon glyphicon-close"></span> Cancelar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
@@ -456,6 +487,19 @@
     		}else {
         		$("#1-pagos").removeAttr("disabled");
 			}
+         });//Cierra habilita Pagos
+         
+         //Habilitar elemento Text editaPagos
+         $("#editarIva").on("click",function(){
+         	$("#ivaPorcentaje").val("");
+         	$("#ivaPorcentaje").removeAttr("disabled");
+         	console.log("Click en boton iva");
+         	/*('input:checkbox[id=Pagada]:checked').attr('checked',true);
+         	 if($("#iva").val()==16) {
+         		$("#iva").attr('disabled', 'disabled');
+    		}else {
+        		$("#iva").removeAttr("disabled");
+			}*/
          });
           
          //$("table#productosNota").on("change","input[id^='costoTotal_']", function(){

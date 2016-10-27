@@ -142,7 +142,14 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
   }
     public function facturaAction()
     {
+    	//Validar que la factura no existe
     	$request = $this->getRequest();
+		$numeroFactura = $this->getParam("numeroFactura");
+		$idCoP = $this->getParam("idCoP");
+		$idTipoMovimiento  = $this->getParam("idTipoMovimiento");
+		$idSucursal = $this->getParam("idSucursal");
+		
+	
 		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
@@ -150,29 +157,51 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				//print_r($datos);
+				print_r($numeroFactura);
+				print_r("<br />");
+				print_r($idCoP);
+				print_r("<br />");
+				print_r($idTipoMovimiento);
+				print_r("<br />");
+				print_r($idSucursal);
+				
+			
 				$facturaProveedor = new Contabilidad_DAO_FacturaProveedor;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
+				
 				$productos = json_decode($encabezado['productos'],TRUE);
+				
 				$formaPago = $datos[1];
 				//$impuestos = $datos[2];
-				
+				//$facturaProveedor->agregarFactura($encabezado,$formaPago,$producto);
 				/*print_r($encabezado);
 				print_r('<br />');
 				print_r($formaPago);
 				print_r('<br />');
 				print_r($impuestos);
 				print_r('<br />');*/
-				
+				//$facturaProveedor->existeFactura($numeroFactura, $idTipoMovimiento, $idCoP, $idSucursal);
+				//print_r($facturaProveedor);
 				$contador = 0;
 				
 				foreach ($productos as $producto){
-					try{
+					//Validar multiplos
+				$cantidad = $this->getParam("idCantidad_");
+				$idProducto = $this->getParam("descripcion_");
+				$idUnidad = $this->getParam("idUnidad_");
+				//valida Multiplos
+				print_r($cantidad);
+				print_r($idProducto);
+				print_r("<br />");
+				print_r($idUnidad);
+					 
+					 /*try{
 						$facturaProveedor->agregarFactura($encabezado,$formaPago,$producto);
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 						
-					}
+					}*/
 				}
 				
 			}

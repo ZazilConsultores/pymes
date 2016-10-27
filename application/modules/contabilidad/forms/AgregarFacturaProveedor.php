@@ -306,6 +306,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$ePagos = new Zend_Form_Element_Text('pagos');
 
 		$ePagos->setLabel('Importe Pago:');
+	
 
 		$ePagos->setAttrib("class", "form-control");
 
