@@ -491,15 +491,19 @@
          
          //Habilitar elemento Text editaPagos
          $("#editarIva").on("click",function(){
-         	$("#ivaPorcentaje").val("");
          	$("#ivaPorcentaje").removeAttr("disabled");
-         	console.log("Click en boton iva");
-         	/*('input:checkbox[id=Pagada]:checked').attr('checked',true);
-         	 if($("#iva").val()==16) {
-         		$("#iva").attr('disabled', 'disabled');
-    		}else {
-        		$("#iva").removeAttr("disabled");
-			}*/
+         	if($("#ivaPorcentaje").val()!==0){
+         		console.log("HOLA");
+         		
+         		console.log($("#ivaPorcentaje").val());
+         		//console.log($("subTotal").val());
+         		var ivaPorcentaje = parseFloat($("#ivaPorcentaje").val()) * parseFloat($("#subTotal").val()) /100;
+         		console.log(ivaPorcentaje);
+         		var total = (parseFloat($("#subTotal").val()) + parseFloat($("#iva").val()));
+         		$('input#iva').val(ivaPorcentaje);
+         		$('input#total').val(total);
+         	}
+         	
          });
           
          //$("table#productosNota").on("change","input[id^='costoTotal_']", function(){

@@ -1148,6 +1148,7 @@
               <dbTableFile dbTableName="Proyecto"/>
               <dbTableFile dbTableName="Factura"/>
               <dbTableFile dbTableName="FacturaDetalle"/>
+              <dbTableFile dbTableName="Impuestos"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1165,6 +1166,7 @@
             <modelFile modelName="Factura"/>
             <modelFile modelName="Facturadet"/>
             <modelFile modelName="Facturadetalle"/>
+            <modelFile modelName="Impuestos"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

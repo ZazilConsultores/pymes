@@ -31,7 +31,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 	
-		$eCliente = new Zend_Form_Element_Select('idCoP');
+		$eCliente = new Zend_Form_Element_Select('idCliente');
 		$eCliente->setLabel('Seleccionar Cliente:');
 		$eCliente->setAttrib("class", "form-control");
 

@@ -8,6 +8,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	
 	private $tablaFactura;
 	private $tablaFacturaDetalle;
+	private $tablaImpuestos;
 	
 	private $tablaMovimiento;
 	private $tablaInventario;
@@ -19,6 +20,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	public function __construct() {
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura;
 		$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle;
+		$this->tablaImpuestos = new Contabilidad_Model_DbTable_Impuestos;
 		
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
@@ -128,6 +130,21 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 						//'fechaCancelada'=>$fechaCancelada,
 						'subTotal'=>$producto['subTotal'],
 						'total'=>$producto['total']
+					);
+				
+				//print_r($mMovtos);
+				$bd->insert("Factura",$mFactura);
+				
+				//======Llena tabla Impuestos
+				$mImpuestos = array(
+						'idTipoMovimiento' => $encabezado['idTipoMovimiento'],
+						'idFactura'=>$encabezado['idSucursal'],
+						'idProducto'=>$encabezado['idCoP'],
+						'descripcion'=>$formaPago['idDivisa'],
+						'abreviatura'=>$encabezado['numeroFactura'],
+						'porcentaje'=>$encabezado['folioFiscal'],
+						'importe'=>"A",
+						
 					);
 				
 				//print_r($mMovtos);
