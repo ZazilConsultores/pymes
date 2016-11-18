@@ -3,9 +3,6 @@
 class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 
 {
-
-
-
     public function init()
     {
 
@@ -17,9 +14,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		);
 
 		$decoratorsElemento =array(
-
 			/*Decoradores*/
-
 			'ViewHelper',
 			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
 			array('label', array('tag'=>'td')),
@@ -182,14 +177,20 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 
 		$eProducto->setAttrib("required","true");
-
+		
+		
+		
+		/*idProducto*/
+		$eidProducto = new Zend_Form_Element_Hidden('idProducto');
+		$eidProducto->setAttrib("class", "form-control");
+		$eidProducto->setAttrib("required","true");
 		
 
-		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,$eidProducto));
 
 		//$subEncabezado->setElementDecorators($decoratorsElementoEncabezado);
 
-			$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setElementDecorators($decoratorsElemento);
 
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 
@@ -201,7 +202,9 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 
 		$subFormaPago->setLegend("Forma de Pago");
 
-		
+		$eImporte = new Zend_Form_Element_Hidden('importes');
+		$eImporte->setAttrib("class", "form-control");
+		$eImporte->setAttrib("required","true");
 
 		$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
 
@@ -226,74 +229,23 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$ePagada = new Zend_Form_Element_Checkbox('Pagada');
 
 		$ePagada->setLabel("Pagada en una sola exhibición:");
-
-		//$ePagada->setUseHiddenElement(true);
-
-		//$ePagada->setValue("3");
-
-		//$ePagada->setCheckedValue("2");
-
-		//if ($ePagada->getCheckedValue() == true){
-
-			//$ePagada->setValue("3");
-
-		//if ($fila->getIdTipoMovimiento() == "4") {
-
-			
-
-			//}
-
-		
-
-		//$ePagada = new Zend_Form_Element_Checkbox('Pagada');
-
-		//$ePagada = new Zend_Form_Element_Radio('Pagada');
-
-		//$ePagada->setLabel('Pago en una sola exhibición: ');
-
-		//->setValue('0');
-
-		//$ePagada->setAttrib("class", "form-control");
-
+		//$ePagada->setAttrib("", $value);
+		//print_r($expression)
 		/*$ePagada->setOptions(array(
 
 		'multiOptions' => array(
 
 		'0'=>'SI',
 
-		'1'=>'NO')));*/
+		'1'=>'NO')));
 
-		/*$ePagada->setOptions(array(
+		$ePagada->setOptions(array(
 
 		'0'=>'0','1'=>'1'));*/
 
 		
 
-		//$ePagada->setAttrib("class", "form-control");
-
-		//$ePagada->setSeparator('  ');
-
-		
-
-		//$ePagada->setUseHiddenElement(true);
-
-		
-
-		//$ePagada->setOptions(array(
-
-        //'label' => 'A checkbox',
-
-        //'use_hidden_element' => true,
-
-       // 'checked_value' => 'good',
-
-        //'unchecked_value' => 'bad'
-
-    //));
-
-		
-
-    	$eIva =  new Zend_Form_Element_Text('iva');
+	   	$eIva =  new Zend_Form_Element_Text('iva');
 
         $eIva->setLabel('Editar Iva: ');
 
@@ -387,8 +339,9 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		}
 
 		
+		
 
-		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,/*$eConceptoPago,*/$eFormaPago,$eBanco,$eNumReferencia));
+		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,/*$eConceptoPago,*/$eFormaPago,$eBanco,$eNumReferencia,$eImporte));
 
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 

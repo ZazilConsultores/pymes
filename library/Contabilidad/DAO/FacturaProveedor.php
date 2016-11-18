@@ -16,7 +16,6 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	private $tablaMultiplos;
 	private $tablaEmpresa;
 	
-	
 	public function __construct() {
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura;
 		$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle;
@@ -31,145 +30,169 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		
 	}
 	
-	public function convertirMultiplo (array $producto){
-		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-		$row = $tablaMultiplos->fetchRow($select);
-	
-	}
-	
-	//Validar que no se vuelva a registrar la misma factura en la tabla factura
-	public function existeFactura($numeroFactura,$idTipoMovimiento,$idCoP, $idSucursal){	
-		$tablaFactura = $this->tablaFactura;
-		$select = $tablaFactura->select()->from($tablaFactura)->where("numeroFactura=?",$numeroFactura)
-		->where("idTipoMovimiento = ?",$idTipoMovimiento)
-		->where("idCoP=?",$idCoP)
-		->where("idSucursal=?",$idSucursal);
-		$rowFactura = $tablaFactura->fetchRow($select);
 		
-		$facturaModel = new Contabilidad_Model_Factura($rowFactura->toArray());
-		$facturaModel->setNumeroFactura($numeroFactura);
-		$facturaModel->setIdCoP($idCoP);
-		$facturaModel->setIdTipoMovimiento($idTipoMovimiento);
-		$facturaModel->setIdSucursal($idSucursal);
-		
-		return $facturaModel;
-		
-		if(is_null($row)) throw new Util_Exception_BussinessException("Error: Favor de verificar Multiplo");
-		$cantidad=0;
-		$precioUnitario=0;
-		$cantidad = $producto['cantidad'] * $row->cantidad;
-		$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
-	}
-	
-	public function convierteMultiplo($idProducto, $idUnidad){
-		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$idProducto)
-		->where("idUnidad=?",$idUnidad);
-		
-		$rowMultiplo = $tablaMultiplos->fetchRow($select);
-	
-		$multiploModel =  new Inventario_Model_Multiplos;
-		$multiploModel->setIdProducto($idProducto);
-		$multiploModel->setIdUnidad($idUnidad);
-		
-		return $multiploModel;
-		
-	}
-		
-	public function agregarFactura(array $encabezado, $formaPago,$producto)
+	public function guardaFactura(array $encabezado, $importe, $formaPago)
 	{
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$bd->beginTransaction();
 		
+		$tablaFactura = $this->tablaFactura;		
 		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
 		$stringFecha = $fechaInicio->toString('YY-mm-dd');
 		
-		try{
-			
-			//====================================
-			
-			//if(!is_null($row)){}
-				
-			//Valida que cantidad, desripcion de producti, costo e Importe no esten vacios o diferente de 0
-			if(is_null('cantidad') and (is_null($producto['descripcion'])) and(is_null($producot['costoUnitario'])) and (is_null($producto['costoTotal']))){
-				print_r("Los Datos estan vacios");	
-			}	
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura);
+		 
 		
-			$tablaMovimiento = $this->tablaMovimiento;
-			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
-			->where("idCoP=?",$encabezado['idCoP'])
-			->where("idSucursal=?",$encabezado['idSucursal'])
-			//->where("fecha=?", $stringIni)
-			->order("secuencial DESC");
-			//Guarda en tabla Factura despues de haber convertido el Multiplo
-			
-			//=====Pagada en pagos o en un solo pago
+		//print_r($result);
+		try{
 			$conceptoPago;
-			if(($formaPago['Pagada'])=== "SI"){
+			
+			if(($formaPago['Pagada'])==="1"){
 				$conceptoPago = "LI";
-				print_r($conceptoPago);
 				
-			}elseif(($formaPago['Pagada'])=== "NO"){
+				
+			}elseif(($formaPago['Pagada'])=== "0"){
 				
 				$conceptoPago = "PA";
-				print_r($conceptoPago);
+			
 			}	
+				
 			$mFactura = array(
 						'idTipoMovimiento' => $encabezado['idTipoMovimiento'],
 						'idSucursal'=>$encabezado['idSucursal'],
 						'idCoP'=>$encabezado['idCoP'],
 						'idDivisa'=>$formaPago['idDivisa'],
 						'numeroFactura'=>$encabezado['numeroFactura'],
-						'numeroFiscal'=>$encabezado['folioFiscal'],
+						'folioFiscal'=>$encabezado['folioFiscal'],
 						'estatus'=>"A",
-						'descuento'=>$producto['descuento'],
+						'descuento'=>$importe[0]['descuento'],
 						'conceptoPago'=>$conceptoPago,
 						'formaPago'=>$formaPago['formaLiquidar'],
 						'fechaFactura'=> $stringFecha,
 						//'fechaCancelada'=>$fechaCancelada,
-						'subTotal'=>$producto['subTotal'],
-						'total'=>$producto['total']
+						'subtotal'=>$importe[0]['subtotal'],
+						'total'=>$importe[0]['total'],
+						'importePago'=>0
 					);
-				
-				//print_r($mMovtos);
-				$bd->insert("Factura",$mFactura);
-				
-				//======Llena tabla Impuestos
-				$mImpuestos = array(
-						'idTipoMovimiento' => $encabezado['idTipoMovimiento'],
-						'idFactura'=>$encabezado['idSucursal'],
-						'idProducto'=>$encabezado['idCoP'],
-						'descripcion'=>$formaPago['idDivisa'],
-						'abreviatura'=>$encabezado['numeroFactura'],
-						'porcentaje'=>$encabezado['folioFiscal'],
-						'importe'=>"A",
+							
+				print("<br />");
+				$mFacturaImpuesto = array(
+					//	'idFactura'=>$idFactura,
+						'isrImporte'=>$importe[0]['iva'],
+						'ivaImporte'=>$importe[0]['ish'],
+						'ishImporte'=>$importe[0]['isr'],
 						
-					);
+					);	
 				
-				//print_r($mMovtos);
-				$bd->insert("Factura",$mFactura);
+			
+				//$bd->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$bd->rollBack();
+		}
+	}
+	
+	public function agregarFactura(array $encabezado, $formaPago,$producto)
+	{
+		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$bd->beginTransaction();
+		
+		
+		
+		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
+		$stringFecha = $fechaInicio->toString('YY-mm-dd');
+		
+		
+		
+		try{
+			//=================Selecciona producto y unidad=======================================
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$row = $tablaMultiplos->fetchRow($select); 
+		//print_r("<br />");
+			//print_r("$select");
 				
-				/*$mMovtos = array(
+		//====================Operaciones para convertir unidad minima====================================================== 
+			$cantidad=0;
+			$precioUnitario=0;
+			$cantidad = $producto['cantidad'] * $row->cantidad;
+			$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
+			
+			//====================================secuencial
+		$secuencial=0;	
+		$tablaMovimiento = $this->tablaMovimiento;
+		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
+		->where("idCoP=?",$encabezado['idCoP'])
+		->where("idSucursal=?",$encabezado['idSucursal'])
+		->where("numeroFolio=?",$encabezado['numeroFactura'])
+		->where("fecha=?", $stringFecha)
+		->order("secuencial DESC");
+	
+		$row = $tablaMovimiento->fetchRow($select); 
+		
+		if(!is_null($row)){
+			$secuencial= $row->secuencial +1;
+			//print_r($secuencial);
+		}else{
+			$secuencial = 1;	
+			//print_r($secuencial);
+		}
+			
+		// Obtenemos el id autoincrementable de la tabla Fiscales
+		$idFactura = $bd->lastInsertId("Factura","idFactura");
+		//print_r("El idFactura es:");
+		print_r($idFactura);		
+			$mMovtos = array(
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 					'idEmpresas'=>$encabezado['idEmpresas'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
-					//'numeroFolio'=>$encabezado['numFolio'],
-					//'idFactura'=>$mFactura['idFactura'],
-					'idProducto' => $producto['descripcion'],
-					//'idProyecto'=>$encabezado['idProyecto'],
+					'numeroFolio'=>$encabezado['numeroFactura'],
+					'idFactura'=>$idFactura,
+				 	'idProducto' => $producto['descripcion'],
+					'idProyecto'=>$encabezado['idProyecto'],
 					'cantidad'=>$cantidad,
-					'fecha'=>$stringIni,
+					'fecha'=>$stringFecha,
 					'secuencial'=> $secuencial,
 					'estatus'=>"A",
 					'costoUnitario'=>$precioUnitario,
 					'totalImporte'=>$producto['importe']
-				);*/
-			
-			//print_r($mMovtos);
+				);
+				print_r("<br />");
+				print_r($mMovtos);
 			//$bd->insert("Movimientos",$mMovtos);
-				$bd->commit();
+			
+			
+			
+			// Obtenemos el id autoincrementable de la tabla Fiscales
+			
+				//Llena tabla facturaDetalle
+				$mFacturaDetalle = array(
+						//'idFactura' => $idFactura,
+						'idMultiplos'=>2,
+						'secuencial'=>$secuencial,
+						'cantidad'=>$producto['cantidad'],
+						'descripcion'=>'-',
+						'precioUnitario'=>$producto['precioUnitario'],
+						'importe'=>$producto['importe'],
+						'fechaCaptura'=>date("Y-m-d H:i:s", time()),
+						
+					);
+				
+				//print_r($mFacturaDetalle);
+				//$bd->insert("FacturaDetalle",$mFacturaDetalle);
+				
+				//$bd->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");

@@ -5,7 +5,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	private $empresaDAO;
 	private $fiscalesDAO;
-
+	private $productosDAO;
 
     public function init()
     {
@@ -15,14 +15,16 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         
         $this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
-
+		$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
+		$this->productosDAO = new Inventario_DAO_Producto;
+		
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
 
 		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
 
     }
 
-    public function indexAction() {
+    public function indexAction(){
     	
     }
 	
@@ -84,4 +86,27 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$bancosEmpresa = $this->bancosEmpresaDAO->obtenerBancosEmpresa($idBanco);
 		
 	}
+	
+	//Revisar si aun se utiliza la funcion productosimpuestos
+	public function productosimpuestosAction(){
+		$idProducto = $this->getParam($idProducto);
+		$factura = $this->facturaDAO->buscarProducto($idProducto);
+		//echo Zend_Json::encode($factura);
+	}
+	
+	public function productosAction() {
+		$idProducto = $this->getParam("idProducto");
+		
+		$productos = $this->productosDAO->obtenerProducto($idProducto);
+		if(!is_null($productos)){
+			echo Zend_Json::encode($productos);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+		
+	}
+	
+	
+	
+	
 }

@@ -2,6 +2,7 @@
 	echo $this->formulario;
 	$facturasProveedorDAO = new Contabilidad_DAO_FacturaProveedor;
 ?>
+
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -45,8 +46,8 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td><strong>Subtotal:</strong></td>
-							<td><input id="subTotal" class="form-control" /></td>
+							<td><strong>SubTotal:</strong></td>
+							<td><input id="subtotal" class="form-control" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -97,9 +98,9 @@
 							<td align="center"><strong>ISR</strong></td>
 						</tr>
 						 <tr>
-            				<td align="left"><input type="text" name="iEPS" size="15" class="form-control" value="0"></td>
-          				 	<td align="left"><input type="text" name="iEPS" size="15" class="form-control" value="0"></td>
-          				 	<td align="left"><input type="text" name="iEPS" size="15" class="form-control" value="0"></td>	
+            				<td align="left"><input type="text" id="ieps" name="iEPS" size="15" class="form-control" value="0"></td>
+          				 	<td align="left"><input type="text" id="ish" name="ish" size="15" class="form-control" value="0"></td>
+          				 	<td align="left"><input type="text" id="isr" name="isr" size="15" class="form-control" value="0"></td>	
           				 </tr>
           				 <tr>
             				
@@ -145,6 +146,7 @@
 
 <script>
 	$(document).ready(function(){
+		
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
@@ -181,8 +183,9 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+		var jsonImpuestos = <?php echo $this->jsonImpuestos; ?>;
 		
-		//console.dir(jsonProductos);
+		//console.dir(jsonImpuestos);
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
@@ -284,10 +287,10 @@
 				//var suma = cantidadFila.val();
 				//console.log(suma);
 			});
-			$("input#subTotal").val(suma);
+			$("input#subtotal").val(suma);
 			//Calcula iva 
-			var iva = ($("input#subTotal").val() * 0.16 );
-			console.log(iva);
+			var iva = ($("input#subtotal").val() * 0.16 );
+			//console.log(iva);
 			$("input#iva").val(iva);
 			
 		});//Cierra input precioUnitario
@@ -301,15 +304,15 @@
 				//var suma = cantidadFila.val();
 				//console.log(suma);
 			});
-			$("input#subTotal").val(suma);
+			$("input#subtotal").val(suma);
 			//console.log("Ha dado cambiado en costoTotal");
 			//Calcula iva 
-			var iva = ($("input#subTotal").val() * 0.16 );
-			console.log(iva);
+			var iva = ($("input#subtotal").val() * 0.16 );
+			//console.log(iva);
 			$("input#iva").val(iva);
 			//Calcula Total 
-			var total = parseFloat($("input#subTotal").val()) +parseFloat($("input#iva").val());
-			console.log(iva);
+			var total = parseFloat($("input#subtotal").val()) +parseFloat($("input#iva").val());
+			//console.log(iva);
 			$("input#total").val(total);
 		});//Cierra input cantidad
 		
@@ -320,17 +323,16 @@
         		costo += +$(this).val();
     		});
 			//console.log(costo);
-			//console.log(costoTotal);
-			$("input#subTotal").val(costo);
+			$("input#subtotal").val(costo);
 			
 			
 			//En caso de que se Obtenga descuento
 			if($("#descuento").val()!== "0") {
 				//console.log("El input Descuento no esta vacio");
-				var descuento = parseFloat($("#subTotal").val()) - parseFloat( $("#descuento").val());
-				console.log("Este es el valor del subTotal:"+parseFloat($("#subTotal").val()));
-				console.log("Este es el valor: del descuento:" +parseFloat($("#descuento").val()));
-				console.log("El descuento es:" +descuento);
+				var descuento = parseFloat($("#subtotal").val()) - parseFloat( $("#descuento").val());
+				//console.log("Este es el valor del subTotal:"+parseFloat($("#subTotal").val()));
+				//console.log("Este es el valor: del descuento:" +parseFloat($("#descuento").val()));
+				//console.log("El descuento es:" +descuento);
 				
 				$("#descuentoGenerado").val(descuento);
 				//Realiza el total, cuando hay descuento
@@ -338,9 +340,10 @@
 				$("input#total").val(total);
 				$("#1-pagos").attr("enabled","enabled");
 				$("#1-pagos").val(total);
-				console.log("El valor del importePago es"+$("#1-pagos").val(total)); 
+				//console.log("El valor del importePago es"+$("#1-pagos").val(total)); 
 			}
 		});
+		
  		$("table#productos").on("change", "input[id^='costoUnitario_']", function(){
  			var precioUnitario = $(this).attr("id");
  			var arr = precioUnitario.split('_');
@@ -353,24 +356,8 @@
  			
  		});//cierra input precioUnitario
  		
- 		//Calcula Total de la factura
- 		$("tabla#productos").on("change","")
- 		
- 		
  		//==================================================================== Calcular JsonArray
- 		$("a#generarJsonArray").on("click",function(){
  		
- 				//var total = r("input[id^='total']").val();
- 				//var subTotal = $("input[id^='subTotal']").val();
- 				//var total = $("input[id^='total']").val();
- 			
- 				//console.log("total:"+total);
- 						
- 		 	//console.log("subTotal:"+subTotal);
- 				//console.log("iva:"+iva);
- 			//console.log("total:"+total);	
- 		});
- 		//
  		$("a#generarJsonArray").on("click",function(){
  			
  			var tabla = $("table#productos > tbody  > tr");
@@ -388,9 +375,9 @@
  				
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  				var importe = row.find("input[id^='costoTotal_']").val();
+ 				
+ 				//var subTotal = row.find("input[id^='subTotal']").val();
  				//var total = row.find("input[id^='total']").val();
- 				var subTotal = row.find("input[id^='subTotal']").val();
- 				var total = row.find("input[id^='total']").val();
  				
  				console.log("Cantidad:"+cantidad);
  				console.log("unidad:"+unidad);
@@ -401,22 +388,13 @@
  				//console.log("total:"+total);
  				
  				
- 				var subTotal = $("input[id^='subTotal']").val();
- 				var total = $("input[id^='total']").val();
- 				var descuento = $("input[id^='descuento']").val();
+ 				//var subTotal = $("input[id^='subTotal']").val();
+ 				//var total = $("input[id^='total']").val();
+ 				//var descuento = $("input[id^='descuento']").val();
  	
  			
  				//console.log("total:"+total);
- 						
- 		 	console.log("subTotal:"+subTotal);
- 				//console.log("iva:"+iva);
- 			console.log("total:"+total);	
- 			console.log("En a#generarJsonArray: ");
- 				
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
- 				
-
- 			
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -425,42 +403,73 @@
  			if ($("input#productos").val(myString)){
  				
  			};
- 			
- 			
- 			// create an array restaurants
-			// add objects to the array
-			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
-			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
-			
-		
+ 	
  		});
- 		
- 		//========================================================>>>>Multiplos
- 		/* $("body").on('change', 'select[id^="descripcion_"]', function(){
- 		 	var unidad = $(this).attr("id");
+ 		//=====
+ 		$("a#generarJsonArray").on("click",function(){
  			
-		 	var tabla = $("table# > tbody  > tr");
-		 	console.log($(this).val());
-		 	$url = "/General/public/sistema/json/multiplos/idProducto/" + this.value;
-			
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				
-				success: function(unidad){
-						$("select[id^='idUnidad_']").empty();
-						$.each(unidad, function(i,item){
-							$("select[id^='idUnidad_']").append($("<option></option>").attr("value",unidad[i].idMultiplos).text(unidad[i].unidad)); 
-							
-						});
-						
-				}
-				
-			});
-		 	
-		 });*/
+ 			var tabla = $("table#productos > tbody  > tr");
+ 		
+ 			//Array Json de productos
+ 			var importes = [];
+ 			
+ 			tabla.each(function(){
+ 				
+ 				
+ 				var subtotal = $("#subtotal").val();
+ 				var descuento = $("#descuento").val();
+ 				var total = $("#total").val();
+ 				
+ 				var iva = $("#iva").val();
+ 				var ieps = $("#ieps").val();
+ 				var ish = $("#ish").val();
+ 				var isr = $("#isr").val();
+ 				
+ 				
+ 				console.log("subtotal:"+subtotal);
+ 				console.log("descuento:"+descuento);
+ 				console.log("total:"+total);
+ 				
+ 				console.log("iva:"+iva);
+ 				console.log("ieps:"+ieps);
+ 				console.log("ish:"+ish);
+ 				console.log("isr:"+isr);
+ 				
+ 		
+ 				importes.push(new Importe(subtotal, descuento, total,iva,ieps,ish,isr)); 
+ 			});
+ 			console.dir(importes);
+ 			var myString = JSON.stringify(importes);
+ 			
+ 			console.log(myString);
+ 			if ($("#1-importes").val(myString)){
+ 				
+ 			};
+ 	
+ 		});
+ 		//=====
+ 		
+		//==========================================Obtenemos el valor en la tabla del producto
+		$("a#generarJsonArray").on("click",function(){
+ 			var tabla = $("table#productos > tbody  > tr");
+ 			//Array Json de productos
+ 			var producto = [];
+ 			
+ 			tabla.each(function(){
+ 				var row = $(this);
+ 				var  idProducto= row.find("select[id^='descripcion_']").val();
+ 				console.log("idProducto:"+idProducto); 
+ 				producto.push(new Producto(idProducto)); 
+ 				
+ 				if ($("input#idProducto").val(idProducto)){
+ 				
+ 				};
 		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal,total) {
+ 			});
+ 		});
+		//===========================================
+		
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
 		  //this.claveProducto = claveProducto;
 		  this.unidad = unidad;
@@ -469,11 +478,21 @@
 		  this.precioUnitario = precioUnitario;
 		  this.importe = importe;
 		  //this.unidad = unidad;
-		  this.subTotal = subTotal;
-		  this.descuento = descuento;
-		  //this.iva = iva;
-		  this.total = total;
+		  
 		}
+		
+		function Importe(subtotal, descuento, total,iva,ieps,ish,isr) {
+		  this.subtotal = subtotal;
+		  //this.claveProducto = claveProducto;
+		  this.descuento = descuento;
+		  this.total = total;
+		  
+		  this.iva = iva;
+		  this.ieps = ieps;
+		  this.ish = ish;
+		  this.isr = isr;
+		}
+		
 		 $("a#generarJsonArray").on("click",function(){
          
                $("#submit").removeAttr('disabled');
@@ -493,27 +512,19 @@
          $("#editarIva").on("click",function(){
          	$("#ivaPorcentaje").removeAttr("disabled");
          	if($("#ivaPorcentaje").val()!==0){
-         		console.log("HOLA");
+         		//console.log("HOLA");
          		
-         		console.log($("#ivaPorcentaje").val());
+         		//console.log($("#ivaPorcentaje").val());
          		//console.log($("subTotal").val());
-         		var ivaPorcentaje = parseFloat($("#ivaPorcentaje").val()) * parseFloat($("#subTotal").val()) /100;
-         		console.log(ivaPorcentaje);
-         		var total = (parseFloat($("#subTotal").val()) + parseFloat($("#iva").val()));
+         		var ivaPorcentaje = parseFloat($("#ivaPorcentaje").val()) * parseFloat($("#subtotal").val()) /100;
+         		//console.log(ivaPorcentaje);
+         		var total = (parseFloat($("#subtotal").val()) + parseFloat($("#iva").val()));
          		$('input#iva').val(ivaPorcentaje);
          		$('input#total').val(total);
          	}
          	
          });
-          
-         //$("table#productosNota").on("change","input[id^='costoTotal_']", function(){
-         //$("total").on("change",function(){	
-         	//console.log("Hola");
-         //});
-	
-          
-          
-          
+
 	});//cierra document ready
 </script>
 

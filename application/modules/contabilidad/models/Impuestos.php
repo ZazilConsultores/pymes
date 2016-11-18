@@ -11,28 +11,6 @@ class Contabilidad_Model_Impuestos
     public function setIdImpuestos($idImpuestos) {
         $this->idImpuestos = $idImpuestos;
     }
-
- 
-    private $idTipoMovimiento;
-
-    public function getIdTipoMovimiento() {
-        return $this->idTipoMovimiento;
-    }
-    
-    public function setIdTipoMovimiento($idTipoMovimiento) {
-        $this->idTipoMovimiento = $idTipoMovimiento;
-    }
-
-    private $idFactura;
-
-    public function getIdFactura() {
-        return $this->idFactura;
-    }
-    
-    public function setIdFactura($idFactura) {
-        $this->idFactura = $idFactura;
-    }
-
     	
 	private $idProducto;
 
@@ -89,9 +67,7 @@ class Contabilidad_Model_Impuestos
 
     
     public function __construct(array $datos){
-    	if (array_key_exists("idImpuestos", $datos)) $this->idImpuestos = $datos["ïdImpuestos"];
-		if (array_key_exists("idTipoMovimiento", $datos)) $this->idTipoMovimiento = $datos["ïdTipoMovimiento"];
-		if (array_key_exists("idFactura", $datos)) $this->idSucursal = $datos["idFactura"];
+    	if (array_key_exists("idImpuestos", $datos)) $this->idImpuestos = $datos["idImpuestos"];
     	if (array_key_exists("idProducto", $datos)) $this->idCoP = $datos["idProducto"];
 		
 		$this->descripcion = $datos["descripcion"];
@@ -105,8 +81,7 @@ class Contabilidad_Model_Impuestos
 		$datos = array();
 		
 		$datos["idImpuestos"] = $this->idImpuestos;
-		$datos["idTipoMovimiento"] = $this->idTipoMovimiento;
-		$datos["idFactura"] = $this->idFactura;
+		
 		$datos["idProducto"] = $this->idProducto;
 		$datos["descripcion"] = $this->descripcion;
 		$datos["abreviatura"] = $this->abreviatura;

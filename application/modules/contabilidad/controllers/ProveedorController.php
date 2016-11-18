@@ -19,22 +19,32 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
+
+		$select = $this->db->select()->from('impuestos');
+		$statement = $select->query();
+		$rowImpuesto =$statement->fetchAll();
+		///////////////////
+		$jsonImpuestos = Zend_Json::encode($rowImpuesto);
+		$this->view->jsonImpuestos = $jsonImpuestos;
 		
 		//============================================>>>Multiplos
 		//$idProducto = $this->getParam("idProducto");
-		$idProducto=14;
-		$select = $this->db->select()->from("Multiplos","idMultiplos")
+	
+		/*$select = $this->db->select()->from("Multiplos","idMultiplos")
 		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
 		$statement = $select->query();
-		$rowsMultiplo = $statement->fetchAll();
+		$rowsMultiplo = $statement->fetchAll();*/
 		
 		// =================================== Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonProductos = $jsonProductos;
+		
 		$jsonUnidad = Zend_Json::encode($rowsUnidad);
 		$this->view->jsonUnidad = $jsonUnidad;
-		$jsonMultiplos = Zend_Json::encode($rowsMultiplo);
-		$this->view->jsonMultiplo = $jsonMultiplos;
+		
+		/*$jsonMultiplos = Zend_Json::encode($rowsMultiplo);
+		$this->view->jsonMultiplo = $jsonMultiplos;*/
+	
     }
 
     public function indexAction()
@@ -103,7 +113,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
-				
 				$encabezado = $datos[0];
 				//print_r($encabezado);
 				$formaPago =$datos[1];
@@ -131,7 +140,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				}
 				//print_r($datos)		
 				//print_r('<br />');
-				//print_r($productos);
 				//print_r(json_decode($datos[0]['productos']));
 				//$notaentrada = new Contabilidad_Model_Movimientos($datos);
 				//$this->notaEntradaDAO->crearNotaEntrada($datos);
@@ -142,68 +150,32 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
   }
     public function facturaAction()
     {
-    	//Validar que la factura no existe
     	$request = $this->getRequest();
-		$numeroFactura = $this->getParam("numeroFactura");
-		$idCoP = $this->getParam("idCoP");
-		$idTipoMovimiento  = $this->getParam("idTipoMovimiento");
-		$idSucursal = $this->getParam("idSucursal");
-		
-	
 		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
-				print_r($numeroFactura);
-				print_r("<br />");
-				print_r($idCoP);
-				print_r("<br />");
-				print_r($idTipoMovimiento);
-				print_r("<br />");
-				print_r($idSucursal);
-				
-			
 				$facturaProveedor = new Contabilidad_DAO_FacturaProveedor;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
-				
-				$productos = json_decode($encabezado['productos'],TRUE);
-				
 				$formaPago = $datos[1];
-				//$impuestos = $datos[2];
-				//$facturaProveedor->agregarFactura($encabezado,$formaPago,$producto);
-				/*print_r($encabezado);
-				print_r('<br />');
-				print_r($formaPago);
-				print_r('<br />');
-				print_r($impuestos);
-				print_r('<br />');*/
-				//$facturaProveedor->existeFactura($numeroFactura, $idTipoMovimiento, $idCoP, $idSucursal);
-				//print_r($facturaProveedor);
-				$contador = 0;
+				$productos = json_decode($encabezado['productos'], TRUE);
+				$importe = json_decode($formaPago['importes'], TRUE);
+				print_r($importe);
 				
-				foreach ($productos as $producto){
-					//Validar multiplos
-				$cantidad = $this->getParam("idCantidad_");
-				$idProducto = $this->getParam("descripcion_");
-				$idUnidad = $this->getParam("idUnidad_");
-				//valida Multiplos
-				print_r($cantidad);
-				print_r($idProducto);
-				print_r("<br />");
-				print_r($idUnidad);
-					 
-					 /*try{
-						$facturaProveedor->agregarFactura($encabezado,$formaPago,$producto);
+				//$facturaProveedor->guardaFactura($encabezado,$productos, $formaPago);
+				 foreach ($productos as $producto){
+					 try{
+					 	$facturaProveedor->guardaFactura($encabezado, $importe, $formaPago);	
+					
+					 	$facturaProveedor->agregarFactura($encabezado, $formaPago, $producto);	
+					 	//$facturaProveedor->guardaFactura($encabezado, $formaPago, $producto);	
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
-						
-					}*/
+					}
 				}
-				
 			}
 			
 		}

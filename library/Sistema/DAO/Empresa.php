@@ -97,7 +97,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 					}
 				}
 			}
-			
+			/*
 			//	No genero error por lo que procedemos a insertar en la tabla
 			$bd->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
@@ -135,7 +135,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$bd->insert("Email", $datos[3]);
 			$idEmail = $bd->lastInsertId("Email","idEmail");
 			$bd->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
-			
+			*/
 			$bd->commit();
 			
 		}catch(Exception $ex){

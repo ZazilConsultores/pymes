@@ -1,0 +1,90 @@
+<?php
+	$formulario = $this->formulario; 
+	$messageSuccess = $this->messageSuccess;
+	$messageFail = $this->messageFail;
+?>
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Nuevo vendedor</h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<?php if(!is_null($messageSuccess)){?>
+					<div class="alert alert-info" role="alert">
+						<button type="button" class="close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+					<div class="alert alert-danger" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageFail; ?>
+					</div>	
+					<?php } ?>
+					<?php echo $formulario; ?>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	$(document).ready(function(){
+		var ap, am, nombre
+		
+		$("#apPaterno").on('change', function(){
+			var apellido = $(this).val();
+			ap = apellido.substring(0,2).toUpperCase();
+			console.log(ap);
+		});	
+		
+		$("#apMaterno").on('change', function(){
+			var apellido = $(this).val();
+			am = apellido.substring(0,2).toUpperCase();
+			console.log(am);
+		});
+		
+		$("#nombre").on('change', function(){
+			var nombre = $(this).val();
+			nombre = nombre.substring(0,2).toUpperCase();
+			console.log(nombre);
+		});
+		
+		$("#apPaterno").on('click', function(){
+			if($("#apPaterno").val().length < 1 && $("#apMaterno").val().length < 1 && $("#nombre").val().length < 1){
+				console.log('No hay datos');
+			
+			}else{
+				console.log('No hay apellido paterno');
+			}
+		
+		});
+		
+		$("select#1-idEstado").on('change', function(){
+			console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/public/sistema/json/municipios/idEstado/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#1-idMunicipio").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#1-idMunicipio").append($("<option></option>").attr("value",data[i].idMunicipio).text(data[i].municipio));
+						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
+					});
+					
+				}
+			});
+		});
+		
+	//});	
+	});
+	
+</script>
