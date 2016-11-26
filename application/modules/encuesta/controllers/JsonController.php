@@ -10,10 +10,12 @@ class Encuesta_JsonController extends Zend_Controller_Action
     private $gruposDAO = null;
 
     private $cicloDAO = null;
-	
-	private $asignacionDAO = null;
-	private $materiaDAO;
-	private $registroDAO;
+
+    private $asignacionDAO = null;
+
+    private $materiaDAO = null;
+
+    private $registroDAO = null;
 
     public function init()
     {
@@ -102,8 +104,15 @@ class Encuesta_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($arrayERExt);
     }
 
+    public function impuestoProductosAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

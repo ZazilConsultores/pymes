@@ -1,10 +1,14 @@
 <?php
    class Contabilidad_DAO_Impuesto implements Contabilidad_Interfaces_IImpuesto{
    	private $tablaImpuesto;
+	private $tablaImpuestoProductos;
+	private $tablaProducto;
 	
 	function __construct(){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$this->tablaImpuesto = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));	
+		$this->tablaImpuesto = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
+		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos;
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto;	
 	}
 	
 	public function obtenerImpuestos()
@@ -13,13 +17,20 @@
 		$select = $tablaImpuestos->select()->from($tablaImpuestos)->order("abreviatura");
 		$rowImpuestos = $tablaImpuestos->fetchAll($select);
 		
-		$modelImpuestos = array();
+		$impuestos = array();
 		foreach($rowImpuestos as $rowImpuesto){
-			$modelImpuesto = new Contabilidad_Model_Impuesto($rowImpuesto->toArray());
-			$modelImpuesto->setIdImpuesto($rowImpuesto->idImpuesto);
-			$modelImpuestos[] = $modelImpuesto;
+			//$modelImpuesto = new Contabilidad_Model_Impuesto($rowImpuesto->toArray());
+			//$modelImpuesto->setIdImpuesto($rowImpuesto->idImpuesto);
+			$idsImpuestos[] = $rowImpuesto->idImpuesto;
 		}
-		return $modelImpuestos;
+		//return $modelImpuestos;
+		
+		if (is_null($rowImpuestos)) {
+			return null;
+		}else{
+			return $rowImpuestos->toArray();
+		}
+		
 		
 	}
 	public function obtenerImpuesto($idImpuesto)
@@ -47,6 +58,45 @@
 		$where = $tablaImpuesto->getAdapter()->quoteInto("idImpuesto = ?", $idImpuesto);
 		$tablaImpuesto->update($datos, $where);
 		
+	}
+	public function obtenerImpuetoProductos($idImpuesto) {
+		// Obtenemos el IdImpuesto 
+		$tablaImpuesto = $this->tablaImpuesto;
+		$select = $tablaImpuesto->select()->from($tablaImpuesto)->where("idImpuesto=?",$idImpuesto);
+		$rowImporte = $tablaImpuesto->fetchRow($select);
+		
+		if (is_null($rowImporte)) {
+				return NULL;
+			}else{
+				return $rowImporte->toArray();
+			}
+		 
+		 /*
+		// Obtenemos todos los ids de Producto de la tabla impuestoProductos
+		$tablaImpuestoProducto = $this->tablaImpuestoProductos;
+		$select = $tablaImpuestoProducto->select()->from($tablaImpuestoProducto)->where("idImpuesto=?",$rowImporte->idImporte);
+		//$rowsClientesEmpresa = $tablaClientesEmpresa->fetchAll($select);
+		$rowImpuestoProductos = $tablaImpuestoProducto->fetchRow($select);
+		
+		$idsProductos = explode(",", $rowImpuestoProductos->idsProducto);
+		
+		// Si hay ids de Cliente
+		
+		if(! is_null($rowImpuestoProductos->idsProducto) && ! empty($idsProductos)) {
+			 //Obtenemos todos los Productos //pero para que?
+			$tablaProducto = $this->tablaProducto;
+			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto IN (?)", $idsProductos);
+			$rowsProducto = $tablaProducto->fetchAll($select);
+			
+			$idsImpuesto = array();
+			foreach ($rowsProducto as $rowProducto) {
+				$idsImpuesto[] = $rowProducto->idProducto;
+			}*/
+			
+			
+		//}else{
+			//return NULL;
+		//}
 	}
    }
 ?>

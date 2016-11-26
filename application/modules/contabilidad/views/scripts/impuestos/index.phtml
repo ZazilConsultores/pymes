@@ -1,5 +1,6 @@
 <?php
 	$impuestos = $this->impuestos;
+	$impuestosDAO =  new Contabilidad_DAO_Impuesto;
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -21,7 +22,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($impuestos as $impuesto): ?>
+			<?php foreach ($impuestos as $impuesto): 
+				$impuesto = $impuestosDAO->obtenerImpuestos();
+			?>
 			<tr>
 				<td>
 					<a class="btn btn-warning" href="<?php echo $this->url(array ("module"=>"contabilidad","controller"=>"impuestos","action"=>"editar","idImpuesto"=>$impuesto->getIdImpuesto()), null, true);?>">
@@ -30,17 +33,16 @@
 				</td>
 				<td><?php echo $impuesto->getAbreviatura() ?></td>
 				<td><?php echo $impuesto->getDescripcion() ?></td>
-				<td><?php echo $impuesto->getEstatus() ?></td>
-				<td><?php echo $impuesto->getFechaPublicacion() ?></td>
-				
+				<td><?php echo $impuesto.abreviatura ?></td>
+				<td><?php echo $impuesto.abreviatura ?></td>
 				<td>
 					<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"impuestos","action"=>"enlazar")) ?>">
 						<span class="glyphicon glyphicon-equalizer"></span>Enlazar Impuesto
 					</a>
 				</td>
-				
 			</tr>
 			<?php endforeach; ?>
+			
 		</tbody>
 		</table>
 	</div>

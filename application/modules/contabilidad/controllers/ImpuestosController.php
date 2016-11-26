@@ -74,7 +74,16 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 
     public function enlazarAction()
     {
-    	$this->view->productoImpuestos = $this->productoDAO->obtenerProductos();
+    	/*$idProducto = $this->getParam("idProducto");
+		$idImpuesto = $this->getParam("idImpuesto");
+		print_r($idProducto);
+		//$producto = $this->productoDAO->obtenerProducto($idProducto);
+    	//$this->view->productoImpuestos = $this->productoDAO->obtenerProductos();
+    	//$productoImpuesto = $this->impuestoDAO->obtenerImpuetoProductos($idImpuesto);
+		  $this->view->fiscalesEmpresas = $this->fiscalesDAO->obtenerFiscalesEmpresas(); */
+		  //Obtener los productos
+		  
+		  $this->view->impuestosProducto = $this->productoDAO->obtenerProductos();
     }
 
 }

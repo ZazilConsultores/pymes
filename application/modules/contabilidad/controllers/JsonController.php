@@ -6,6 +6,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	private $empresaDAO;
 	private $fiscalesDAO;
 	private $productosDAO;
+	private $impuestoProductosDAO;
 
     public function init()
     {
@@ -17,10 +18,13 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
 		$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
 		$this->productosDAO = new Inventario_DAO_Producto;
+		$this->vendedorDAO = new Sistema_DAO_Vendedores;
+		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
 		
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
 
 		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
+		
 
     }
 
@@ -106,6 +110,30 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		
 	}
 	
+	public function vendedorAction() {
+		$idVendedor = $this->getParam("idVendedor");
+		
+		$vendedor = $this->vendedorDAO->obtenerVendedor($idVendedor);
+		if(!is_null($vendedor)){
+			echo Zend_Json::encode($vendedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+		
+	}
+	
+	//Obtener impuestosProductos
+	public function impuestosAction() {
+		$idImpuesto = $this->getParam("idImpuesto");
+		print_r($idImpuesto);
+		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuetoProductos($idImpuesto);
+		if(!is_null($impuestoProducto)){
+			echo Zend_Json::encode($impuestoProducto);
+		}else{
+			echo Zend_Json::encode(array());
+		}	
+		
+	}
 	
 	
 	

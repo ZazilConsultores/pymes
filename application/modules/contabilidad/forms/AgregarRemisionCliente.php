@@ -71,6 +71,17 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 			$eCliente->addMultiOption($fila->idCliente, $fila->razonSocial);
 		}
 		
+		$vendedoresDAO = new Sistema_DAO_Vendedores;
+		$vendedores = $vendedoresDAO->obtenerVendedores();
+		
+		$eVendedor = new Zend_Form_Element_Select('idVendedor');
+		$eVendedor->setLabel('Seleccionar Vendedor:');
+		$eVendedor->setAttrib("class", "form-control");
+		
+		foreach ($vendedores as $fila) {
+			$eVendedor->addMultiOption($fila->getIdVendedor(), $fila->getNombre());
+		}
+		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
@@ -111,11 +122,11 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eFormaPago->setMultiOptions($formaPago);
 		
 		//==================Concepto pago
-		$conceptoPago = Zend_Registry::get('conceptoPago');
+		//$conceptoPago = Zend_Registry::get('conceptoPago');
 		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
 		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
 		$eConceptoPago->setAttrib("class", "form-control");
-		$eConceptoPago->setMultiOptions($conceptoPago);
+		//$eConceptoPago->setMultiOptions($conceptoPago);
 		
 		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
@@ -139,7 +150,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eProducto));
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eProducto,$eVendedor));
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago, $eFormaPago,$eImportePago));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);

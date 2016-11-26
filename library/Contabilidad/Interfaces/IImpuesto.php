@@ -5,5 +5,7 @@
 	public function obtenerImpuesto($idImpuesto);
 	public function nuevoImpuesto(Contabilidad_Model_Impuesto $impuesto);
 	public function editarImpuesto($idImpuesto, array $datos);
+	public function obtenerImpuetoProductos($idImpuesto);
+	
    }
 ?>

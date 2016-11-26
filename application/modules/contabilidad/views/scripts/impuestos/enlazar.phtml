@@ -1,5 +1,9 @@
 <?php
-$productoImpuestos = $this->productoImpuesto;
+	$impuestosProducto = $this->impuestosProducto;
+	$productosDAO = new Inventario_DAO_Producto;
+	$productos = $productosDAO->obtenerProductos();
+	$impuestosDAO = new Contabilidad_DAO_Impuesto;
+	$impuestos = $impuestosDAO->obtenerImpuestos();
 ?>
 <section class="row">
 	<div class="panel panel-warning">
@@ -14,20 +18,20 @@ $productoImpuestos = $this->productoImpuesto;
 							<td>Seleccione Producto</td>
 							<td>
 								<select id="idProducto" class="form-control">
-									<?php foreach ($productoImpuestos as $producto) : ?>
-										<option value="<?php echo $producto["idProducto"]; ?>"><?php echo $producto["producto"]; ?></option>
+									<?php foreach ($productos as $producto) : ?>
+										<option value="<?php echo $producto->getIdProducto() ?>"><?php echo $producto->getProducto() ?></option>
 									<?php endforeach; ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<button id="idImpuesto" class="btn btn-warning" type="button" data-toggle="modal" data-target="#msgConfirm">
+								<button id="idEnlazarImpuesto" class="btn btn-warning" type="button" data-toggle="modal" data-target="#msgConfirm">
 									<span class="glyphicon glyphicon-random"></span> Asociar Impuesto
 								</button>
 							</td>
 							<td>
-								<select id="selectIdClientes" class="form-control">
+								<select id="idImpuestos" class="form-control">
 								</select>
 							</td>
 						</tr>
@@ -36,7 +40,7 @@ $productoImpuestos = $this->productoImpuesto;
 			</div>
 			<br /><hr /><br />
 			<div class="col-xs-12">
-				<table id="clientesEmpresa" class="table table-striped table-condensed">
+				<table id="impuestosProductos" class="table table-striped table-condensed">
 					<thead>
 						<th>Producto</th>
 						<th>Impuesto</th>
@@ -48,10 +52,126 @@ $productoImpuestos = $this->productoImpuesto;
 		</div>
 	</div>
 </section>
+
+<div class="modal fade" id="msgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Confirmar Asociación.</h4>
+			</div>
+			
+			<div class="modal-body">
+				¿Esta seguro de asociar el impuesto: <strong><span id="impuesto"></span></strong> al producto: <strong><span id="producto"></span></strong> ? 
+			</div>
+			<div class="modal-footer">
+				<button id="enlazarImpuestoProducto" type="button" class="btn btn-success" data-dismiss="modal">
+					<span class="glyphicon glyphicon-random"></span> Asociar
+				</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<span class="glyphicon glyphicon-close"></span> Cancelar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 	$().ready(function(){
-		var idProductos = $("select#idProducto").val();
-		var url = window.location.origin + "/General/public/contabilidad/json/productos/idProducto/"+idProducto;
+		var impuestos = <?php echo Zend_Json::encode($impuestosDAO->obtenerImpuestos()); ?>;
+		//Cargamos los impuestos
+		$.each(impuestos, function(i,item){
+			$("select#idImpuestos").append($("<option></option>").attr("value",impuestos[i].idImpuesto).text(impuestos[i].abreviatura));
+			
+		});
+		
+		var idProducto = $("select#idImpuestos").val();
+		var url = window.location.origin + "/General/public/contabilidad/json/impuestos/idImpuesto/"+idProducto;
+		
+		$.ajax({
+			url: url,
+			dataType: "json",
+			success: function(data){
+				console.log(url);
+				console.dir(data);
+				
+				var tbody = $("table#impuestosProductos").find('tbody');
+				tbody.empty();
+				$.each(data, function(i,item){
+					tbody.append($('<tr>').
+						append($('<td>').append(data[i].descripcion))//.
+						//append($('<td>').append(data[i].abreviatura))
+					);
+				});
+			}
+		});
+		
+		//Enlazar producto
+		$("button#idEnlazarImpuesto").on('click', function(){
+			$("span#impuesto").text($("select#idProducto option:selected").text());
+			$("span#producto").text($("select#idImpuestos option:selected").text());
+		});
+		
+		$("button#enlazarImpuestoProducto").on('click', function(){
+			var iproducto = $("select#idProducto");
+			var iimpuesto = $("select#idImpuestos");
+			
+			var producto = iproducto.val();
+			var impuesto = iimpuesto.val();
+
+			var url = window.location.origin + "/General/public/"+"contabilidad/impuestos/enlazar/idProducto/" + producto + "/idImpuestos/" + impuesto;
+		
+			//console.log(url);
+			
+			$.ajax({
+				url: url,
+			});
+			// Cargar valores actuales 	$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
+			$url = window.location.origin +"/General/public/"+"contabilidad/json/productos/idProducto/"+producto
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					
+					var tbody = $("table#impuestosProductos").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].claveProducto)).
+							append($('<td>').append(data[i].producto))
+						);
+					});
+				}
+			});
+			
+		});
+		
+		//Busqueda
+		$("select#idProducto").on('change', function(){	
+		  //$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+$(this).val();
+			$url = window.location.origin + "/General/public/"+"contabilidad/json/productos/idProducto/"+$(this).val();
+			//console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data) {
+				var tbody = $("table#impuestosProductos").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							  append($('<td>').append(data[i].claveProducto)).
+							  append($('<td>').append(data[i].producto)));
+					});	
+				  
+				}
+			});
+			
+		});
 		
 	});
 </script>

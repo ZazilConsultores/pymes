@@ -1,12 +1,11 @@
 <?php
-   interface Sistema_Interface_IVendedores{
+   interface Sistema_Interfaces_IVendedores {
    	
-	//public function obtenerVendedores();
-	//public function obtenerVendedores($idVendedor);
-	public function altaVendedor(array $datos);
-	//public function editarImpuesto($idVendedor, array $datos);
-	//public function generaComision();
+
+	public function crearVendedor(array $datos);
+	public function obtenerVendedores();
+	public function obtenerVendedor($idVendedor);
 	public function generarClaveVendedor(array $claves);
-  
+  	public function crearEmpresa(array $datos);
+   
    }
-?>

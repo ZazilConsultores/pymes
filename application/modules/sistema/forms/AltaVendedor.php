@@ -27,14 +27,13 @@ class Sistema_Form_AltaVendedor extends Zend_Form
         $tipoEmpresa = Zend_Registry::get("tipoEmpresa");
 		$estadoDAO = new Inventario_DAO_Estado;
 		$empresaDAO = new Sistema_DAO_Empresa;
-		
+			
 		$estados = $estadoDAO->obtenerEstados();
 		$municipioDAO = new Inventario_DAO_Municipio;
         
         $subFiscales = new Zend_Form_SubForm();
-		$subFiscales->setLegend("Datos Fiscales");
+		$subFiscales->setLegend("Datos Personales");
 		
-
         //   =======================================================Nombre
         $eClaveVendedor = new Zend_Form_Element_Text('claveVendedor');
 		$eClaveVendedor->setLabel("Clave Vendedor: ");
@@ -56,8 +55,14 @@ class Sistema_Form_AltaVendedor extends Zend_Form
 		$eApMaterno->setLabel("Apellido Materno: ");
 		$eApMaterno->setAttrib("class", "form-control");
 		$eApMaterno->setAttrib("required", "true");
+		
+		$comision = new Zend_Form_Element("comision");
+		$comision->setLabel("Comisión: ");
+		$comision->setAttrib("class", "form-control");
+		$comision->setAttrib("required", "true");
+		
        
-        $subFiscales->addElements(array($eApPaterno,$eApMaterno,$eNombre, $eClaveVendedor));
+        $subFiscales->addElements(array($eNombre, $eClaveVendedor,$comision));
 		$subFiscales->setElementDecorators($decoratorsElemento);
 		$subFiscales->setDecorators($decoratorsCategoria);
 	//===============================================================
@@ -70,8 +75,8 @@ class Sistema_Form_AltaVendedor extends Zend_Form
 		$eEstado->setRegisterInArrayValidator(FALSE);
 		foreach ($estados as $estado) {
 			$eEstado->addMultiOption($estado->getIdEstado(),$estado->getEstado());
-		
 		}
+		
 		$eEstado->setValue("9");
 		
 		$municipios = $municipioDAO->obtenerMunicipios("9");
@@ -116,7 +121,7 @@ class Sistema_Form_AltaVendedor extends Zend_Form
 		$subTelefono->setLegend("Telefono");
 		$tipoTelefono = Zend_Registry::get("tipoTelefono");
 		
-		$eLada	 = new Zend_Form_Element_Text("lada");
+		$eLada = new Zend_Form_Element_Text("lada");
 		$eLada->setLabel("Lada");
 		$eLada->setAttrib("class", "form-control");
 		

@@ -101,6 +101,22 @@
 			});
 			
 		});
+		$("select#idVendedor").on('click', function(){
+			var url = window.location.origin + "/General/public/contabilidad/json/vendedor/idVendedor/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: url,
+				dataType: "json",	
+				success: function(data){
+					$("select#idVendedor").empty();
+					$.each(data, function(i,item){	
+						$("select#idVendedor").append($("<option></option>").attr("value",data[i].idVendedor.text(data[i].nombre)); 
+					});
+					
+				}
+			});
+			
+		});
 		/*var form = $("#nuevaRemisionProveedor");
 		form.validate({
 			rules: {

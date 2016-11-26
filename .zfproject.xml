@@ -1171,6 +1171,7 @@
               <dbTableFile dbTableName="Impuestos"/>
               <dbTableFile dbTableName="Impuesto"/>
               <dbTableFile dbTableName="FactutaImpuesto"/>
+              <dbTableFile dbTableName="ImpuestoProductos"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1465,6 +1466,7 @@
             <controllerFile controllerName="Vendedores">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="editar"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1794,6 +1796,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Vendedores">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Vendedores">
+                <viewScriptFile forActionName="editar"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2438,6 +2443,7 @@
               <testApplicationControllerFile forControllerName="Vendedores">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="editar"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

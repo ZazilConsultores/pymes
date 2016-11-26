@@ -5,6 +5,12 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 
     public function init()
     {
+    	$decoratorsPresentacion =array(
+			'FormElements',
+			array(array()),
+		);
+		
+    	$this->setAttrib("id", "agregarFacturaCliente");
     	/*Empresa*/
 		$columnas = array('idFiscales', 'razonSocial');
 		$tablaFiscales = new Contabilidad_Model_DbTable_Fiscales();
