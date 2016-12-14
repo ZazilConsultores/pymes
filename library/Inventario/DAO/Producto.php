@@ -46,7 +46,7 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		
 		$modelProductos = array();
 		
-		foreach ($rowProductos as $rowProducto) {
+		/*foreach ($rowProductos as $rowProducto) {
 			$modelProducto = new Inventario_Model_Producto($rowProducto->toArray());
 			$modelProducto->setIdProducto($rowProducto->idProducto);
 			
@@ -54,7 +54,12 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 			
 		}
 		
-		return $modelProductos;
+		return $modelProductos;*/
+		if(is_null($rowProductos)){
+			return null;
+		}else{
+			return $rowProductos->toArray();
+		}
 		
 	}
 	

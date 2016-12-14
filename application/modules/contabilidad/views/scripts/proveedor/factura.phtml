@@ -83,7 +83,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td><strong>Total:</strong></td>
-							<td><input id="total" class="form-control" /></td>
+							<td><input id="total" class="form-control" onclick="Calcular();" /></td>
 						</tr>
 					</tfoot>	
 				</table>
@@ -146,7 +146,7 @@
 
 <script>
 	$(document).ready(function(){
-		
+			
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
@@ -165,19 +165,19 @@
 		});
 		
 		$("select#idSucursal").on('click', function(){
-				var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
-				console.log(url);
-				$.ajax({
-					url:url,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("select#idProyecto").empty();
-						$.each(data, function(i,item){
-							$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
-						});
-					}
-				});
+			var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+			console.log(url);
+			$.ajax({
+				url:url,
+				dataType: "json",
+				success: function(data){
+					console.dir(data);
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
+					});
+				}
+			});
 		});
 	
 		console.log( "ready!" );
@@ -248,10 +248,9 @@
  		
  		//Funcion buscar descripcion del producto
  		$("table#productos").on("change", "select[id^='descripcion_']", function(){
- 			var descripcion= $(this).attr("id");
+ 			var descripcion = $(this).attr("id");
 			var arr = descripcion.split('_');
 			var id = $(this).val();
-			//console.log(id);
 			var numFila =  arr[1];
  			
  			$.each(jsonProductos,function(i,item){
@@ -260,12 +259,11 @@
  				}
  				
 			});
- 			
  		});//cierra funcion buscar descripcion del producto
  		
 		//input  cantidad
 		$("table#productos").on("change","input[id^='idCantidad_']" ,function() {
-			var idCantidad= $(this).attr("id");
+			var idCantidad = $(this).attr("id");
 			var arr = idCantidad.split('_');
 			var numFila =  arr[1];
 			
@@ -274,7 +272,26 @@
 			var precioImporte = $(this).val() * precioUnitarioFila.val();
 
 			$('input#costoTotal_'+numFila).val(precioImporte);
-			//console.log($(this).val())	;
+			
+			//totalif($("input[id^='idCantidad_']").val()!==" "){
+				//==================================================Prueba el total
+				var suma =0;
+				$("#costoTotal_").each(function () {
+					suma += +$(this).val();
+				//$("input#total").val(suma);
+				console.log(suma);
+				});
+			
+			//console.log("Ha dado cambiado en costoTotal");
+			//Calcula iva 
+			/*var iva = ($("input#subtotal").val() * 0.16 );
+			//console.log(iva);
+			$("input#iva").val(iva);
+			//Calcula Total 
+			var total = parseFloat($("input#subtotal").val()) +parseFloat($("input#iva").val());
+			//console.log(iva);
+			$("input#total").val(total);*/
+			//}
 			
  		}); //cierra input cantidad
  		
@@ -504,10 +521,19 @@
          	 if($("#1-Pagada:checked").val()==1) {
          		$("#1-pagos").attr('disabled', 'disabled');
     		}else {
+    			//$("#1-pagos").val("0");
         		$("#1-pagos").removeAttr("disabled");
 			}
          });//Cierra habilita Pagos
-         
+         //=========
+         $("input[name=total]").change(function(){
+         	//$("#ejemplo2").change(function(){
+            alert($('input[id=total').val());
+         	/*/var total = $(this).val();
+         	console.log(total);
+         	$("#1-pagos").val(total);*/
+         });
+         //=========
          //Habilitar elemento Text editaPagos
          $("#editarIva").on("click",function(){
          	$("#ivaPorcentaje").removeAttr("disabled");
@@ -524,6 +550,15 @@
          	}
          	
          });
+         function Calcular(){
+         	importe_total = 0
+	$("#costoTotal").each(
+		function(index, value) {
+			importe_total = importe_total + eval($(this).val());
+		}
+	);
+	$("#total").val(importe_total);
+         }
 
 	});//cierra document ready
 </script>

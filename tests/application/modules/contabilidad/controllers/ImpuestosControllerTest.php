@@ -77,8 +77,46 @@ class Contabilidad_ImpuestosControllerTest extends Zend_Test_PHPUnit_ControllerT
             );
     }
 
+    public function testEnlazarProductoAction()
+    {
+        $params = array('action' => 'enlazarProducto', 'controller' => 'Impuestos', 'module' => 'contabilidad');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
+    public function testEnlazarproductoAction()
+    {
+        $params = array('action' => 'enlazarproducto', 'controller' => 'Impuestos', 'module' => 'contabilidad');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
 
 }
+
+
+
+
 
 
 

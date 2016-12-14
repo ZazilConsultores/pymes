@@ -2,9 +2,11 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
+	private $facturaDAO = null;
 
     public function init()
     {
+    	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
         //==============Muestra los links del submenu=======================
        	$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		//$this->view->links = $this->links;
@@ -157,25 +159,23 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$facturaProveedor = new Contabilidad_DAO_FacturaProveedor;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
 				$importe = json_decode($formaPago['importes'], TRUE);
-				print_r($importe);
+				print_r($productos);
 				
-				//$facturaProveedor->guardaFactura($encabezado,$productos, $formaPago);
-				 foreach ($productos as $producto){
-					 try{
-					 	$facturaProveedor->guardaFactura($encabezado, $importe, $formaPago);	
+				$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+				
+				$saldoProveedor = $this->facturaDAO->actualizaSaldoProveedor($encabezado, $formaPago);
+				$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+					 	
+				foreach ($productos as $producto){
+					$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 					
-					 	$facturaProveedor->agregarFactura($encabezado, $formaPago, $producto);	
-					 	//$facturaProveedor->guardaFactura($encabezado, $formaPago, $producto);	
-					}catch(Util_Exception_BussinessException $ex){
-						$this->view->messageFail = $ex->getMessage();
-					}
 				}
+					
 			}
 			
 		}

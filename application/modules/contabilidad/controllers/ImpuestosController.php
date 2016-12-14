@@ -4,7 +4,8 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 {
 
     private $impuestoDAO = null;
-	private $productoDAO = null;
+
+    private $productoDAO = null;
 
     public function init()
     {
@@ -86,7 +87,34 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 		  $this->view->impuestosProducto = $this->productoDAO->obtenerProductos();
     }
 
+   
+
+    public function enlazarproductoAction()
+    {
+        // action body
+        $impuestosDAO = $this->impuestoDAO;
+		$productosDAO = $this->productoDAO;
+        $idImpuesto = $this->getParam("idImpuesto");
+		$idProducto = $this->getParam("idProducto");
+		$idImporte = $this->getParam("importe");
+		$porcentaje = $this->getParam("porcentaje");
+		
+		//$impuestoProducto =  new Contabilidad_Model_ImpuestoProductos($datos);
+		
+		$impuestos = $impuestosDAO->obtenerByImpuestos($idImpuesto);
+		$productos = $impuestosDAO->obtenerByProductos($idProducto);
+		
+		//$impuestosDAO->enlazarProductoImpuesto($impuestos["idImpuesto"],$productos["idProducto"], $importe, $porcentaje);
+		print_r($idImporte);
+		print_r($porcentaje);
+    }
+
+
 }
+
+
+
+
 
 
 

@@ -156,7 +156,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 
 		foreach ($rowset as $fila) {
 
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idProveedores, $fila->razonSocial);
 
 		}
 
@@ -261,7 +261,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 	
 
 		$ePagos->setAttrib("class", "form-control");
-
+		$ePagos->setValue(0);
 		//$ePagos->setAttrib("required", "true");
 
 		//$ePagos->setAttrib("disabled", "true");
@@ -334,7 +334,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 
 		{
 
-			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getCuenta());
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
 
 		}
 

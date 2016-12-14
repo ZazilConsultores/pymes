@@ -1119,6 +1119,8 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="editar"/>
               <actionMethod actionName="enlazar"/>
+              <actionMethod actionName="enlazarProducto"/>
+              <actionMethod actionName="enlazarproducto"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1192,6 +1194,7 @@
             <modelFile modelName="Impuestos"/>
             <modelFile modelName="Impuesto"/>
             <modelFile modelName="FacturaImpuesto"/>
+            <modelFile modelName="ImpuestoProductos"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1327,6 +1330,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Impuestos">
                 <viewScriptFile forActionName="enlazar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="enlazarProducto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="enlazarproducto"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2527,6 +2536,8 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="editar"/>
                 <testApplicationActionMethod forActionName="enlazar"/>
+                <testApplicationActionMethod forActionName="enlazarProducto"/>
+                <testApplicationActionMethod forActionName="enlazarproducto"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

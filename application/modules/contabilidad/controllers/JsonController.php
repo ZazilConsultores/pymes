@@ -125,8 +125,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	//Obtener impuestosProductos
 	public function impuestosAction() {
 		$idImpuesto = $this->getParam("idImpuesto");
-		print_r($idImpuesto);
-		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuetoProductos($idImpuesto);
+		
+		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProductos($idImpuesto);
+		
 		if(!is_null($impuestoProducto)){
 			echo Zend_Json::encode($impuestoProducto);
 		}else{

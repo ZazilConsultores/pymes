@@ -34,22 +34,11 @@
 	$(document).ready(function(){
 		var ap, am, nombre
 		
-		$("#apPaterno").on('change', function(){
-			var apellido = $(this).val();
-			ap = apellido.substring(0,2).toUpperCase();
-			console.log(ap);
-		});	
-		
-		$("#apMaterno").on('change', function(){
-			var apellido = $(this).val();
-			am = apellido.substring(0,2).toUpperCase();
-			console.log(am);
-		});
 		
 		$("#nombre").on('change', function(){
 			var nombre = $(this).val();
 			nombre = nombre.substring(0,2).toUpperCase();
-			console.log(nombre);
+			//console.log(nombre);
 		});
 		
 		$("#apPaterno").on('click', function(){
@@ -83,8 +72,22 @@
 				}
 			});
 		});
-		
-	//});	
+		$("input#nombre").on('click', function(){
+			/*var nombre = $(this).val();
+			nombre = nombre.substring(0,2).toUpperCase();
+			//console.log(nombre);
+			
+			var cadena = $('body');
+			var letra = cadena.text().charAt(0);
+			alert(letra);
+
+			
+			 */
+			var contenido = $(this);
+			var letra = contenido.text().charAt(2);
+			
+			console.log(letra);
+		});
 	});
 	
 </script>
