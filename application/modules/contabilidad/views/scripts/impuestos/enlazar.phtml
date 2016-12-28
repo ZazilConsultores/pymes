@@ -1,21 +1,25 @@
 <?php
-	$impuestosProducto = $this->impuestosProducto;
-	$productosDAO = new Inventario_DAO_Producto;
+	$formulario = $this->formulario;
+	
+	//$impuestosProducto = $this->impuestosProducto;
+	//$productosDAO = new Inventario_DAO_Producto;
 	//$productos = $productosDAO->obtenerProductos();
-	$impuestosDAO = new Contabilidad_DAO_Impuesto;
-	$impuestos = $impuestosDAO->obtenerImpuestos();
+	//$impuestosDAO = new Contabilidad_DAO_Impuesto;
+	//$impuestos = $impuestosDAO->obtenerImpuestos();
 ?>
+
 <section class="row">
 	<div class="panel panel-warning">
 		<div class="panel-heading">
 			<h3 class="panel-title">Asociar Producto a Impuesto</h3>
 		</div>
-		<div class="panel-body">
+		<!--<div class="panel-body">
 			<div class="col-xs-12">
 				<table class="table table-condensed">
 					<tbody>
-						<tr>
-							<td>Seleccione Impuesto</td>
+						<!--<tr>
+							
+							<td>Seleccione Impuesto:</td>
 							<td>
 								<select id="idImpuesto" class="form-control">
 									<?php foreach ($impuestos as $impuesto) : ?>
@@ -25,37 +29,45 @@
 							</td>
 						</tr>
 						<tr>
-							<td>
-								<button id="idEnlazarImpuesto" class="btn btn-warning" type="button" data-toggle="modal" data-target="#msgConfirm">
-									<span class="glyphicon glyphicon-random"></span> Asociar Producto
-								</button>
-							</td>
-							<td>
+							<td>Selecciones Producto:</td>
+							<td><!--
 								<select id="idProductos" class="form-control">
 								</select>
 							</td>
-						</tr>
+						</tr>-->
+						<!--
 						<tr>
 							<td>
-								<label>Ingresar Importe:</label>
+								Ingresar Importe:
 							</td>
 							<td>
-								<input type="text" name="importe" id="importe" class="form-control"  required="true"/>	
+								<input type="text" name="importe" id="importe" class="form-control"  required="true" value="0"/>	
 							</td>
 							
 						</tr>
 						<tr>
 							<td>
-								<label>Ingresar Porcentaje:</label>
+								Ingresar Porcentaje:
 							</td>
 							<td>
-								<input type="text" name="porcentaje" id="porcentaje" class="form-control" required="true"/>	
+								<input type="text" name="porcentaje" id="porcentaje" class="form-control" required="true" value="0"/>	
 							</td>
 						</tr>
+						--->
+						<!--
+						<tr>
+							<td>
+								<button id="idEnlazarImpuesto" class="btn btn-warning" type="button" data-toggle = "modal" data-target="#msgConfirm">
+									<span class="glyphicon glyphicon-random"></span> Asociar Producto.
+								</button>
+							</td>
+						</tr>
+						
 					</tbody>
 				</table>
 			</div>
 			<br /><hr /><br />
+			
 			<div class="col-xs-12">
 				<table id="impuestosProductos" class="table table-striped table-condensed">
 					<thead>
@@ -66,7 +78,8 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</div>---->
+		<?php echo $formulario; ?>
 	</div>
 </section>
 
@@ -93,100 +106,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 <script>
-	$().ready(function(){
-		var productos = <?php echo Zend_Json::encode($productosDAO->obtenerProductos()); ?>;
-		$.each(productos, function(i,item){
-			$("select#idProductos").append($("<option></option>").attr("value",productos[i].idProducto).text(productos[i].producto));
-		});
-		
-		var idImpuesto = $("select#idImpuesto").val();
-		var url = window.location.origin + "/General/public/contabilidad/json/impuestos/idImpuesto/"+idImpuesto;
-		console.log(url);
-		$.ajax({
-			url: url,
-			dataType: "json",
-			success: function(data){
-				console.log(url);
-				console.dir(data);
-				
-				var tbody = $("table#impuestosProductos").find('tbody');
-				tbody.empty();
-				$.each(data, function(i,item){
-					tbody.append($('<tr>').
-					append($('<td>').append(data[i].idProducto)).
-						append($('<td>').append(data[i].producto))
-					);
-				});
-			}
-		});
-		
-		//Enlazar producto
-		$("button#idEnlazarImpuesto").on('click', function(){
-			$("span#producto").text($("select#idProductos option:selected").text());
-			$("span#impuesto").text($("select#idImpuesto option:selected").text());
-		});
-		
-		$("button#enlazarImpuestoProducto").on('click', function(){
-			var iproducto = $("select#idProductos");
-			var iimpuesto = $("select#idImpuesto");
-			
-			var producto = iproducto.val();
-			var impuesto = iimpuesto.val();
-
-			var url = window.location.origin + "/General/public/"+"contabilidad/impuestos/enlazarproducto/idProducto/" + producto + "/idImpuesto/" + impuesto;
-			console.log(url);
-			
-			$.ajax({
-				url: url,
-			});
-			// Cargar valores actuales 	$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
-			//$url = window.location.origin +"/General/public/"+"contabilidad/json/productos/idProducto/"+producto
-			$url = window.location.origin +"/General/public/contabilidad/json/impuestos/idImpuesto/"+idImpuesto;
-			//console.log($url);
-			
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				success: function(data){
-					//console.log($url);
-					//console.dir(data);
-					
-					var tbody = $("table#impuestosProductos").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].idProducto)).
-							append($('<td>').append(data[i].producto))
-						);
-					});
-				}
-			});
-			
-		});
-		
-		//Busqueda
-		$("select#idImpuesto").on('change', function(){	
-		  //$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+$(this).val();
-			$url = window.location.origin + "/General/public/"+"contabilidad/json/productos/idProducto/"+$(this).val();
-			//console.log($url);
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				success: function(data) {
-				var tbody = $("table#impuestosProductos").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						tbody.append($('<tr>').
-							  append($('<td>').append(data[i].idProducto)).
-							  append($('<td>').append(data[i].producto)));
-					});	
-				  
-				}
-			});
-			
-		});
-		
-	});
+	
 </script>

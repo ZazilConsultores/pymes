@@ -112,6 +112,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function facturaAction()
     {
         // action body
+        $formulario = new Contabilidad_Form_AgregarFacturaCliente;
+		$this->view->formulario = $formulario;
     }
 
 

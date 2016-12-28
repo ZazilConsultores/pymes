@@ -207,15 +207,10 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eImporte->setAttrib("required","true");
 
 		$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
-
 		$tiposDivisas = $tipoDivisaDAO->obtenerDivisas();
 
-		
-
 		$eDivisa = New Zend_Form_Element_Select('idDivisa');
-
 		$eDivisa->setLabel('Seleccionar Divisa:');
-
 		$eDivisa->setAttrib("class", "form-control");
 
 		foreach ($tiposDivisas as $tipoDivisa) {
@@ -223,8 +218,6 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDescripcion());
 
 		}
-
-		
 
 		$ePagada = new Zend_Form_Element_Checkbox('Pagada');
 
@@ -293,58 +286,30 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		
 
 		$formaPago = Zend_Registry::get('formaPago');
-
 		$eFormaPago = new Zend_Form_Element_Select('formaLiquidar');
-
 		$eFormaPago->setLabel('FormaPago:');
-
 		$eFormaPago->setAttrib("class", "form-control");
-
 		$eFormaPago->setMultiOptions($formaPago);
 
-		
-
-		
-
 		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
-
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
-
 		$eNumReferencia->setAttrib("class", "form-control");
-
 		$eNumReferencia->setAttrib("required", "true");
 
-		
-
 		$bancoDAO = new Inventario_DAO_Banco;
-
 		$bancos = $bancoDAO->obtenerBancos();
 
-		
-
 		$eBanco = new Zend_Form_Element_Select('idBanco');
-
 		$eBanco->setLabel('Seleccionar Banco:');
-
 		$eBanco->setAttrib("class", "form-control");
 
-		
-
 		foreach($bancos as $banco)
-
 		{
-
 			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
-
 		}
 
-		
-		
-
 		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,/*$eConceptoPago,*/$eFormaPago,$eBanco,$eNumReferencia,$eImporte));
-
 		$subFormaPago->setElementDecorators($decoratorsElemento);
-
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 
 		

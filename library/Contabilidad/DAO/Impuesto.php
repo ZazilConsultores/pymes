@@ -13,26 +13,27 @@
 	
 	public function obtenerImpuestos()
 	{
-		$tablaImpuestos = $this->tablaImpuesto;
-		$select = $tablaImpuestos->select()->from($tablaImpuestos)->order("abreviatura");
-		$rowImpuestos = $tablaImpuestos->fetchAll($select);
-		
-		$impuestos = array();
+		$tablaImpuesto = $this->tablaImpuesto;
+		$select = $tablaImpuesto->select()->from($tablaImpuesto)->order("abreviatura");
+		$rowImpuestos = $tablaImpuesto->fetchAll($select);
+		$modelImpuestos = array();
 		foreach($rowImpuestos as $rowImpuesto){
-			//$modelImpuesto = new Contabilidad_Model_Impuesto($rowImpuesto->toArray());
-			//$modelImpuesto->setIdImpuesto($rowImpuesto->idImpuesto);
-			$idsImpuestos[] = $rowImpuesto->idImpuesto;
+			$modelImpuesto = new Contabilidad_Model_Impuesto($rowImpuesto->toArray());
+			$modelImpuesto->setIdImpuesto($rowImpuesto->idImpuesto);
+			
+			$modelImpuestos[] = $modelImpuesto;
+			
 		}
-		//return $modelImpuestos;
+		return $modelImpuestos;
 		
-		if (is_null($rowImpuestos)) {
+		/*if (is_null($rowImpuestos)) {
 			return null;
 		}else{
 			return $rowImpuestos->toArray();
-		}
-		
-		
+		}*/
+
 	}
+	
 	public function obtenerImpuesto($idImpuesto)
 	{
 		$tablaImpuesto = $this->tablaImpuesto;
@@ -61,27 +62,49 @@
 	}
 	
 	public function obtenerImpuestoProductos($idImpuesto) {
+		/*Comento la seleccion de tabla Impuesto por que la puedo buscar desde la tabla impuestoProducto	
 		// Obtenemos el IdImpuesto 
 		$tablaImpuesto = $this->tablaImpuesto;
 		$select = $tablaImpuesto->select()->from($tablaImpuesto)->where("idImpuesto=?",$idImpuesto);
 		$rowsImporte = $tablaImpuesto->fetchRow($select);
-		
+		*/
 		//Obtenemos todos los ids de los Productos en la tabla impuestoProducto
 		
 		$tablaImpuestoProductos = $this->tablaImpuestoProductos;
-		$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where ("idImpuesto = ?", $rowsImporte->idImpuesto);
+		$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where ("idImpuesto = ?", $idImpuesto);
 		$rowImpuestoProductos = $tablaImpuestoProductos->fetchAll($select);
+		//print_r("$select");
+		$idsProducto = array();
 		
-		$idsImpuesto = array();
 		foreach ($rowImpuestoProductos as $rowProducto) {
-			$idsImpuesto[] = $rowProducto->idImpuesto;
-	
-		//print_r($idsImpuesto);
-		if(!is_null($rowImpuestoProductos)){
+			$idsProducto[] = $rowProducto->idProducto;
+			
+		}
+		//print_r($idsProducto);
+		
+		//print_r($idProducto);
+		if(!is_null($rowImpuestoProductos) && ! empty($idsProducto)){
+			//Obtenemos los productos
+			/*$tablaProducto = $this->tablaProducto;
+			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto IN (?)",$idsProducto);
+			$rowsProducto = $tablaProducto->fetchAll($select);
+			
+			print_r("$select");*/
+			$tablaImpuestoProductos =$this->tablaImpuestoProductos;
+			$select = $tablaImpuestoProductos->select()
+			->setIntegrityCheck(false)
+			->from($tablaImpuestoProductos, array('idProducto'))
+			->join('Producto', 'impuestoProductos.idProducto = Producto.idProducto', array('producto'))
+			->join('Impuesto', 'impuestoProductos.idImpuesto = Impuesto.idImpuesto', array('descripcion'));
+			return $tablaImpuestoProductos->fetchAll($select);
+			
+		}
+		
+		/*if(!is_null($idProducto)){
 			//Obtenemos todos los productos
 			
 			$tablaProducto =$this->tablaProducto;
-			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $rowProducto->idProducto);
+			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto  =	 ?", $idProducto);
 			$rowProductos = $tablaProducto->fetchAll($select);
 			print_r("$select");
 			$idProducto = array();
@@ -89,13 +112,13 @@
 			foreach($rowProductos as $row){
 				$idProducto[]= $row->idProducto;
 				}
-			}
-		}
-		if (is_null($idProducto)) {
+			}*/
+		
+		/*if (is_null($rowsProducto)) {
 				return NULL;
 			}else{
-				return $idProducto;
-			}
+				return $rowsProducto->toArray();
+			}*/
 		}
 		 			
 		public function obtenerByImpuestos($idImpuesto){
@@ -114,37 +137,28 @@
 		}
 		
 		public function enlazarProductoImpuesto($idImpuesto, $idProducto, $importe, $porcentaje){
-			print_r("El importe es:");
-			print_r($importe);	
+				
 			$tablaImpuestoProducto = $this->tablaImpuestoProductos;
 			$select = $tablaImpuestoProducto->select()->from($tablaImpuestoProducto)->where("idImpuesto =?",$idImpuesto)
 			->where("idProducto = ?", $idProducto);
 			$rowImpuestoProducto = $tablaImpuestoProducto->fetchRow($select);
-			
-			print_r("<br />");
-			print_r("Consulta en ImpuestoProducto si el producto ya esta enlazado");
-			print_r("<br />");
+		
 			if(!is_null($rowImpuestoProducto)){
 				//$idsProductos = explode (",", $rowImpuestoProducto->idsProducto);
 				$idProducto = $rowImpuestoProducto->idProducto;
-				print_r("<br />");
-				print_r("El id del producto es:");
-				print_r("<br />");
-				print_r($idProducto);
 				if(($idProducto == $idProducto)){
-					print_r("Ya existe el Producto");	
+					print_r("Ya existe el Producto");
+					print_r("<br />");	
 				}else{
 					print_r("El producto debe agregarse");
-					//$idProducto[] = $idProducto;
-					//$id= implode(",", $idsProductos);
-					//print_r(implode(",", $idsProductos));
+					/* No entiendo bien para sirve este codigo
 					$where = $tablaImpuestoProducto->getDefaultAdapter()->quoteInto("idImpuesto", $idImpuesto);
 					print_r($where);
-					$tablaImpuestoProducto->update(array("idProducto"=>$idProducto), $where);
+					//$tablaImpuestoProducto->update(array("idProducto"=>$idProducto), $where);*/
 				}
 				
 			}else{
-				$tablaImpuestoProducto->insert(array("idImpuesto"=>$idImpuesto,"idProducto"=>$idProducto));
+				$tablaImpuestoProducto->insert(array("idImpuesto"=>$idImpuesto,"idProducto"=>$idProducto, "importe"=>$importe, "porcentaje"=>$porcentaje));
 			}
 		}
    }

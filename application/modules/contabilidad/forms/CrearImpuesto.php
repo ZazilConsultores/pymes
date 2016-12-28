@@ -14,16 +14,47 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		$eDescripcion->setLabel('Descripción:');
 		$eDescripcion->setAttrib("class", "form-control");
 		
-		$eEstatus = new Zend_Form_Element_Checkbox('estatus');
-		$eEstatus->setLabel('Estatus:');
+		$impuestosDAO = new Contabilidad_DAO_Impuesto;
+		$impuestos = $impuestosDAO->obtenerImpuestos();
 		
-		$eSubmit = new Zend_Form_Element_Submit('submit');
+		$eIdImpuesto = new Zend_Form_Element_Select('idImpuesto');
+		$eIdImpuesto->setLabel('Seleccione Impuesto:');
+		$eIdImpuesto->setAttrib("class", "form-control");
+		
+		foreach($impuestosDAO->obtenerImpuestos() as $impuesto){
+			$eIdImpuesto->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());	
+		}	
+		
+		$productosDAO = new Inventario_DAO_Producto;
+		$productos = $productosDAO->obtenerProductos();
+		
+		$eIdProducto = new Zend_Form_Element_Select('idProducto');
+		$eIdProducto->setLabel('Seleccione Producto:');
+		$eIdProducto->setAttrib("class", "form-control");
+		foreach($productosDAO->obtenerProductos()  as $producto){
+			$eIdProducto->addMultiOption($producto->getIdProducto(), $producto->getProducto());	
+		}
+		
+		$eImporte = new Zend_Form_Element_Text('importe');
+		$eImporte->setLabel('Ingrese Importe:');
+		$eImporte->setAttrib("class", "form-control");
+		
+		$ePorcentaje = new Zend_Form_Element_Text('porcentaje');
+		$ePorcentaje->setLabel('Ingrese Porcententaje:');
+		$ePorcentaje->setAttrib("class", "form-control");
+		
+		$eSubmit = new Zend_Form_Element_Submit('idEnlazarImpuesto');
 		$eSubmit->setLabel("Enviar");
+		$eSubmit->setAttrib("data-toggle", "modal", "data-target = #msgConfirm");
+		
 		$eSubmit->setAttrib("class", "btn btn-warning");
 		
 		$this->addElement($eAbreviatura);
 		$this->addElement($eDescripcion);
-		//$this->addElement($eEstatus);
+		$this->addElement($eIdImpuesto);
+		$this->addElement($eIdProducto);
+		$this->addElement($eImporte);
+		$this->addElement($ePorcentaje);
 		$this->addElement($eSubmit);
         
     }

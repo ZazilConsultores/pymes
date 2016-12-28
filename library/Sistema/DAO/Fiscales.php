@@ -70,7 +70,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
 		$rowsFiscales = $tablaFiscales->fetchAll($select);
-		
+		print_r("$select");
 		//print_r($rowsFiscales->toArray());
 		return $rowsFiscales->toArray();
 	}

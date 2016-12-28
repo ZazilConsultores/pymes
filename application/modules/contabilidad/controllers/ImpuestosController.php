@@ -18,7 +18,9 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
     {
     	//$idImpuestpo =$this->getParam('idImpuesto');
     	//$formulario =  new Contabilidad_Form_CrearImpuesto;
-		$this->view->impuestos = $this->impuestoDAO->obtenerImpuestos();
+    	$impuestoDAO = $this->impuestoDAO;
+		$this->view->impuestos  = $this->impuestoDAO->obtenerImpuestos();
+		
     }
 
     public function altaAction()
@@ -27,14 +29,18 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 		$idImpuesto = $this->getParam("idImpuesto");
 		$formulario = new Contabilidad_Form_CrearImpuesto;
 		$this->view->formulario = $formulario;
+		$formulario->removeElement("idImpuesto");
+		$formulario->removeElement("idProducto");
+		$formulario->removeElement("porcentaje");
+		$formulario->removeElement("importe");
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$datos =$formulario->getValues();
+				$datos = $formulario->getValues();
 				$impuesto = new Contabilidad_Model_Impuesto($datos);
-				//$impuesto->setIdImpuesto($idImpuesto);
+		
+				$impuesto->setIdImpuesto($idImpuesto);
 				//print_r($impuesto);
 				try{
-					//$impuesto = new Contabilidad_Model_Impuesto($datos);
 					$this->impuestoDAO->nuevoImpuesto($impuesto);
 				}catch(Util_Exception_BussinessException $ex){
 					
@@ -83,8 +89,13 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
     	//$productoImpuesto = $this->impuestoDAO->obtenerImpuetoProductos($idImpuesto);
 		  $this->view->fiscalesEmpresas = $this->fiscalesDAO->obtenerFiscalesEmpresas(); */
 		  //Obtener los productos
-		  
+		
+		  $request = $this->getRequest();
+		$formulario = new Contabilidad_Form_CrearImpuesto;
+		$formulario->removeElement("abreviatura");
+		$formulario->removeElement("descripcion");
 		  $this->view->impuestosProducto = $this->productoDAO->obtenerProductos();
+		  $this->view->formulario = $formulario;
     }
 
    
@@ -92,20 +103,27 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
     public function enlazarproductoAction()
     {
         // action body
-        $impuestosDAO = $this->impuestoDAO;
-		$productosDAO = $this->productoDAO;
+        /*//$impuestosDAO = $this->impuestoDAO;
+		//$productosDAO = $this->productoDAO;
         $idImpuesto = $this->getParam("idImpuesto");
 		$idProducto = $this->getParam("idProducto");
-		$idImporte = $this->getParam("importe");
-		$porcentaje = $this->getParam("porcentaje");
-		
+		//$importe = $this->getParam("importe");
+		$importe = $this->getAllParams();
+		$porcentaje = $this->getParam("porcentaje");*/
+		$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_CrearImpuesto;
+		$formulario->removeElement("abreviatura");
+		$formulario->removeElement("descripcion");
+	
 		//$impuestoProducto =  new Contabilidad_Model_ImpuestoProductos($datos);
 		
-		$impuestos = $impuestosDAO->obtenerByImpuestos($idImpuesto);
+		/*$impuestos = $impuestosDAO->obtenerByImpuestos($idImpuesto);
 		$productos = $impuestosDAO->obtenerByProductos($idProducto);
 		
-		//$impuestosDAO->enlazarProductoImpuesto($impuestos["idImpuesto"],$productos["idProducto"], $importe, $porcentaje);
-		print_r($idImporte);
+		$impuestosDAO->enlazarProductoImpuesto($impuestos["idImpuesto"],$productos["idProducto"]);*/
+		print_r($idImpuesto);
+		print_r($idProducto);
+		print_r($importe);
 		print_r($porcentaje);
     }
 

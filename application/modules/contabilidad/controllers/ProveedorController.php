@@ -2,7 +2,8 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
-	private $facturaDAO = null;
+
+    private $facturaDAO = null;
 
     public function init()
     {
@@ -59,7 +60,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         
     }
 
-    public function notaAction() {
+    public function notaAction()
+    {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_NuevaNotaProveedor;
         //$formulario->getSubForm("0")->removeElement("submit");
@@ -149,7 +151,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
     }
-  }
+    }
+
     public function facturaAction()
     {
     	$request = $this->getRequest();
@@ -166,14 +169,14 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$importe = json_decode($formaPago['importes'], TRUE);
 				print_r($productos);
 				
-				$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+				//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 				
-				$saldoProveedor = $this->facturaDAO->actualizaSaldoProveedor($encabezado, $formaPago);
-				$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+				//$saldoProveedor = $this->facturaDAO->actualizaSaldoProveedor($encabezado, $formaPago);
+				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					 	
 				foreach ($productos as $producto){
-					$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
-					
+					//$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+					$calcularImportes = $this->facturaDAO->calcular($producto, $importe);
 				}
 					
 			}
@@ -181,10 +184,18 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}
        
     
-	}
+    }
+
+    public function pagosAction()
+    {
+        $formulario = new Contabilidad_Form_Cuentasxp;
+		$this->view->formulario = $formulario;
+    }
 
 
 }
+
+
 
 
 

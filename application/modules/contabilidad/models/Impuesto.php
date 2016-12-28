@@ -54,16 +54,14 @@ class Contabilidad_Model_Impuesto
     public function setFechaPublicacion($fechaPublicacion) {
         $this->fechaPublicacion = $fechaPublicacion;
     }
-
-    
     
     public function __construct(array $datos){
     	if (array_key_exists("idImpuesto", $datos)) $this->idImpuesto = $datos["idImpuesto"];
     	$this->abreviatura = $datos["abreviatura"];
 		$this->descripcion = $datos["descripcion"];
 		
-		$this->estatus = $datos["estatus"];
-		$this->fechaPublicacion = $datos["fechaPublicacion"];
+		if(array_key_exists("estatus", $datos)) $this->estatus = $datos["estatus"];
+		if(array_key_exists("fechaPublicacion", $datos)) $this->fechaPublicacion = $datos["fechaPublicacion"];
 	}
 	
 	public function toArray()
@@ -79,9 +77,6 @@ class Contabilidad_Model_Impuesto
 		return $datos;		
 		
 	}
-
-	
-
 
 }
 
