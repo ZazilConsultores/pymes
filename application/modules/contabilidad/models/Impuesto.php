@@ -22,8 +22,6 @@ class Contabilidad_Model_Impuesto
         $this->abreviatura = $abreviatura;
     }
 
-	
-
     private $descripcion;
 
     public function getDescripcion() {
