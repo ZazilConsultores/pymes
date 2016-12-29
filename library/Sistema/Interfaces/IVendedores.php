@@ -6,6 +6,6 @@
 	public function obtenerVendedores();
 	public function obtenerVendedor($idVendedor);
 	public function generarClaveVendedor(array $claves);
-  	public function crearEmpresa(array $datos);
+  	//public function crearEmpresa(array $datos);
    
    }

@@ -35,7 +35,7 @@ class Sistema_VendedoresController extends Zend_Controller_Action
 				//print_r($empresa->toArray());
 				try{
 					$this->vendedorDAO->crearVendedor($datos);
-					$this->view->messageSuccess = "Vendedor dado de alta con exitosamente!!";
+					$this->view->messageSuccess = "Vendedor dado de alta exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
