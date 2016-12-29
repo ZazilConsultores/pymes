@@ -1,0 +1,69 @@
+<?php
+	//$currentModule = Zend_Registry::get("currentModule");
+	//$currentUser = Zend_Registry::get("currentUser");
+	$rolDAO = new Sistema_DAO_Rol;
+	$auth = Zend_Auth::getInstance();
+	$identity = null;
+	$modelRol = null;
+	if($auth->hasIdentity()){
+		$identity = $auth->getStorage()->read();
+		//print_r($identity);
+		$modelRol = $rolDAO->obtenerRol($identity->idRol);
+	}
+	
+?>
+<div class="container">
+	<header>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1">
+						<span class="sr-only">Menú</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true); ?>" >
+						Applicacion General 
+					</a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="navbar1">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a class="navbar-brand" href="<?php echo $this->url(array("module"=>"default","controller"=>"usuario","action"=>"perfil","usr"=> (is_null($identity)) ? "default" : $identity->idUsuario ),null,true) ?>">
+								<span class="glyphicon glyphicon-cog"></span> <?php echo $rol = (is_null($modelRol)) ? "default" : $modelRol->getRol(); ?> - <span class="glyphicon glyphicon-user"></span> <?php echo $user = (is_null($identity)) ? "default" : $identity->usuario; ?>
+							</a>
+						</li>
+						<?php
+							$moduloDAO = new Sistema_DAO_Modulo;
+							$configEncuesta = $moduloDAO->getConfig("encuesta");
+						?>
+						<!-- Menú de operaciones de sistema -->
+						<?php echo $this->partial('partials/menus/submenus/sistema.phtml'); ?>
+						<!-- Menú de operaciones de contabilidad -->
+						<?php echo $this->partial('partials/menus/submenus/contabilidad.phtml'); ?>
+						<!-- Menú de operaciones de inventario -->
+						<?php echo $this->partial('partials/menus/submenus/inventario.phtml'); ?>
+						<!-- Menú de operaciones de soporte -->
+						<?php echo $this->partial('partials/menus/submenus/soporte.phtml'); ?>
+						<!-- Menú de operaciones de encuesta -->
+						<?php echo $this->partial('partials/menus/submenus/encuesta.phtml'); ?>
+						
+					</ul>
+				</div>
+			</div>
+		</nav>
+</header>
+</div>
+<script type="text/javascript">
+	$().ready(function() {
+		var viewOperacionE = "<?php echo $configEncuesta['viewOperacion'] ?>";
+		var viewConsultaE = "<?php echo $configEncuesta['viewConsulta'] ?>";
+		var cssViewOperacionE = viewOperacionE == "S" ? "" : "hidden";
+		var cssViewConsultaE = viewConsultaE == "S" ? "" : "hidden";
+		$("a[tipoVista='operacion']").addClass(cssViewOperacionE);
+		$("a[tipoVista='consulta']").addClass(cssViewConsultaE);
+		
+	});
+</script>

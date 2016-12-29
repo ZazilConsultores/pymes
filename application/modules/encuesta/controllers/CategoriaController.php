@@ -9,8 +9,12 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->categoriaDAO = new Encuesta_DAO_Categoria;
-		$this->opcionDAO = new Encuesta_DAO_Opcion;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        
+        $this->categoriaDAO = new Encuesta_DAO_Categoria($dataIdentity["adapter"]);
+		$this->opcionDAO = new Encuesta_DAO_Opcion($dataIdentity["adapter"]);
     }
 
     public function indexAction()
@@ -42,6 +46,20 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
     public function altaAction() {
         // action body
         $request = $this->getRequest();
+        if ($request->isPost()) {
+            $datos = $request->getPost();
+            $datos["fecha"] = date("Y-m-d H:i:s", time());
+            
+            //print_r($datos);
+            
+            try{
+                $this->categoriaDAO->crearCategoria($datos);
+                $this->view->messageSuccess = "La categoría <strong>".$datos["categoria"]."</strong> ha sido creada exitosamente.";
+            }catch(Exception $ex){
+                $this->view->messageFail = $ex->getMessage();
+            }
+        }
+        /*
 		$formulario = new Encuesta_Form_AltaCategoria;
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
@@ -62,6 +80,7 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 				//$this->_helper->redirector->gotoSimple("index", "categoria", "encuesta");
 			}
 		}
+        */
     }
 
     public function editaAction() {

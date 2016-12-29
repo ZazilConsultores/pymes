@@ -8,8 +8,8 @@ class Encuesta_DAO_Nivel implements Encuesta_Interfaces_INivel {
 	
 	private $tablaNivel;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaNivel = new Encuesta_Model_DbTable_NivelEducativo(array('db'=>$dbAdapter));
 		//$this->tablaNivel->setDefaultAdapter($dbAdapter);
@@ -39,11 +39,7 @@ class Encuesta_DAO_Nivel implements Encuesta_Interfaces_INivel {
 	
 	public function crearNivel(array $nivel){
 		$tablaNivel = $this->tablaNivel;
-		try{
-			$tablaNivel->insert($nivel);
-		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("<strong>" . $ex->getMessage() . "</strong>");
-		}
+        $tablaNivel->insert($nivel);
 	}
 	
 	public function editarNivel($idNivel, array $datos){

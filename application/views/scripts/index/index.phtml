@@ -1,12 +1,29 @@
-<br /><br />
-<section class="row">
-	<article class="col-md-4"></article>
-	<article class="col-md-4">
-		<img width="264px" height="481px" src="<?php echo $this->baseUrl() ?>/images/logotipo_horizontal.jpg" />
-	</article>
-	<article class="col-md-4"></article>
-</section>
-<section class="row">
-	<article>
-	</article>
-</section>
+
+<div>
+    <header>
+        <h3>Bienvenidos</h3>
+    </header>
+    <hr />
+    <ul class="list-buttons-vertical">
+        <li>
+            <a class="mebutton mebutton-black mebutton-md" href="<?php echo $this->url(array('module'=>'inventario','controller'=>'inventario','action'=>'index'),null,true) ?>">
+                <span class="fa fa-edit fa-lg"></span> Inventario
+            </a>
+        </li>
+        <li>
+            <a class="mebutton mebutton-blue mebutton-md" href="<?php echo $this->url(array('module'=>'operaciones','controller'=>'index','action'=>'index'),null,true) ?>">
+                <span class="fa fa-cogs fa-lg"></span> Operaciones
+            </a>
+        </li>
+        <li>
+            <a class="mebutton mebutton-green mebutton-md" href="<?php echo $this->url(array('module'=>'Biblioteca','controller'=>'libro','action'=>'index'),null,true) ?>">
+                <span class="fa fa-book fa-lg"></span> Biblioteca
+            </a>
+        </li>
+        <li>
+            <a class="mebutton mebutton-red mebutton-md" href="<?php echo $this->url(array('module'=>'encuesta','controller'=>'home','action'=>'index'),null,true) ?>">
+                <span class="fa fa-bar-chart fa-lg"></span> Encuestas
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,65 +1,73 @@
 <?php $encuestas = $this->encuestas; ?>
-<section class="row">
-	<article class="col-xs-3 col-sm-3 col-md-3 ">
-		<header>
-			<h4>
-				Encuestas
-			</h4>
-		</header>
-		<div id="contenedorEncuestas">
-			<table class="table table-condensed">
-				<tbody>
-					<tr>
-						<td>
-							<a type="button" class="btn btn-block btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index", "action"=>"alta"), null, true) ?>">
-								<span class="glyphicon glyphicon-plus"></span> Nueva
-							</a>
-						</td>
-					</tr>
-					<?php foreach ($encuestas as $encuesta) : ?>
-					<tr>
-						<td>
-							<button type="button" class="btn btn-block btn-default" tipo="encuesta" claveEncuesta="<?php echo $encuesta->getIdEncuesta(); ?>" data-toggle="modal" data-target="#msgDetails">
-								<?php echo $encuesta->getNombreClave(); ?>
-							</button>
-						</td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		
-	</article>
-	
-	<article class="col-xs-3 col-sm-3 col-md-3">
-		<header>
-			<h4>Secciones</h4>
-		</header>
-		<div id="contenedorSecciones">
-			
-		</div>
-	</article>
-	
-	<article class="col-xs-3 col-sm-3 col-md-3">
-		<header>
-			<h4>Grupos</h4>
-		</header>
-		<div id="contenedorGrupos">
-			
-		</div>
-	</article>
-	
-	<article class="col-xs-3 col-sm-3 col-md-3">
-		<header>
-			<h4>Preguntas</h4>
-		</header>
-		<div id="contenedorPreguntas">
-			
-		</div>
-	</article>
-</section>
+<div class="row-fluid">
+    
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-title">
+                <h5>Encuestas</h5>
+            </div>
+            <div class="widget-content">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a type="button" class="btn btn-block btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"index", "action"=>"alta"), null, true) ?>">
+                                    <span class="glyphicon glyphicon-plus"></span> Nueva
+                                </a>
+                            </td>
+                        </tr>
+                        <?php foreach ($encuestas as $encuesta) : ?>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-block btn-default" tipo="encuesta" claveEncuesta="<?php echo $encuesta->getIdEncuesta(); ?>" data-toggle="modal" data-target="#msgDetails">
+                                    <?php echo $encuesta->getNombreClave(); ?>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-title">
+                <h5>Secciones</h5>
+            </div>
+            <div id="contenedorSecciones" class="widget-content">
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-title">
+                <h5>Grupos</h5>
+            </div>
+            <div id="contenedorGrupos" class="widget-content">
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-title">
+                <h5>Preguntas</h5>
+            </div>
+            <div id="contenedorPreguntas" class="widget-content">
+                
+            </div>
+        </div>
+    </div>
+</div>
 
-<section class="row">
+<hr />
+
+<section>
 	<div id="contentDet" class="panel panel-info">
 		<div class="panel-heading">
 			<h3 class="panel-title">Detalles Elemento</h3>
@@ -68,7 +76,9 @@
 		</div>
 	</div>
 </section>
+
 <!-- Detalles -->
+
 <div class="modal fade" id="msgDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -92,4 +102,4 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/js/mencuesta/mainEncuesta.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/public/ext/modules/encuesta/js/mainEncuesta.js"></script>

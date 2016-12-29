@@ -8,7 +8,10 @@ class Encuesta_NivelController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->nivelDAO = new Encuesta_DAO_Nivel;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        $this->nivelDAO = new Encuesta_DAO_Nivel($dataIdentity["adapter"]);
     }
 
     public function indexAction()
@@ -26,11 +29,21 @@ class Encuesta_NivelController extends Zend_Controller_Action
     public function altaAction()
     {
         // action body
-        $formulario = new Encuesta_Form_AltaNivel;
+        //$formulario = new Encuesta_Form_AltaNivel;
 		$request = $this->getRequest();
-		$this->view->formulario = $formulario;
+		//$this->view->formulario = $formulario;
 		
 		if($request->isPost()){
+			$datos = $request->getPost();
+            $datos["fecha"] = date("Y-m-d H:i:s", time());
+            //print_r($datos);
+            try{
+                $this->nivelDAO->crearNivel($datos);
+                $this->view->messageSuccess = "Nivel Educativo: <strong>" .$datos["nivelEducativo"]."</strong> creado exitosamente.";
+            }catch(Util_Exception_BussinessException $ex){
+                $this->view->messageFail = $ex->getMessage();
+            }
+            /*
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				//$nivel = new Encuesta_Model_Nivel($datos);
@@ -42,6 +55,7 @@ class Encuesta_NivelController extends Zend_Controller_Action
 					$this->view->messageFail = $ex->getMessage();
 				}
 			}
+            */
 		}
     }
 

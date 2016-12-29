@@ -14,14 +14,17 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->seccionDAO = new Encuesta_DAO_Seccion;
-		$this->grupoDAO = new Encuesta_DAO_Grupo;
-        $this->preguntaDAO = new Encuesta_DAO_Pregunta;
-		$this->opcionDAO = new Encuesta_DAO_Opcion;
+        $auth = Zend_Auth::getInstance();
+        $this->identity = $auth->getIdentity();
+        
+        $this->seccionDAO = new Encuesta_DAO_Seccion($this->identity["adapter"]);
+		$this->grupoDAO = new Encuesta_DAO_Grupo($this->identity["adapter"]);
+        $this->preguntaDAO = new Encuesta_DAO_Pregunta($this->identity["adapter"]);
+		$this->opcionDAO = new Encuesta_DAO_Opcion($this->identity["adapter"]);
 		
-		$this->gruposDAO = new Encuesta_DAO_Grupos;
-		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
-		$this->registroDAO = new Encuesta_DAO_Registro;
+		$this->gruposDAO = new Encuesta_DAO_Grupos($this->identity["adapter"]);
+		$this->preferenciaDAO = new Encuesta_DAO_Preferencia($this->identity["adapter"]);
+		$this->registroDAO = new Encuesta_DAO_Registro($this->identity["adapter"]);
     }
 
     public function indexAction()

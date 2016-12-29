@@ -7,12 +7,14 @@
 	<strong>Objetivo Encuesta:</strong>  <span style="font-style: italic;"><?php echo $encuesta->getDescripcion(); ?></span><br /><hr />
 </div>
 <div>
-	<table class="table table-striped">
+	<table class="table table-bordered table-striped">
 		<thead>
-			<th>Nombre Clave</th>
-			<th>Creación</th>
-			<th>Estatus</th>
-			<th>Administrar</th>
+		    <tr>
+		        <th>Nombre Clave</th>
+                <th>Creación</th>
+                <th>Estatus</th>
+                <th>Configurar</th>
+		    </tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -20,8 +22,9 @@
 				<td><?php echo $encuesta->getFecha(); ?></td>
 				<td><?php echo $estatus[$encuesta->getEstatus()]; ?></td>
 				<td>
-					<a href="<?php echo $this->url(array("module"=>"encuesta","controller" => "index", "action" => "admin", "idEncuesta" => $encuesta->getIdEncuesta()), null, true) ?>" class="btn btn-warning">
-						<span class="glyphicon glyphicon-cog"></span>  Administrar
+					<a class="btn btn-warning btn-block" 
+					   href="<?php echo $this->url(array("module"=>"encuesta","controller" => "encuestas", "action" => "config", "id" => $encuesta->getIdEncuesta()), null, true) ?>" >
+						<span class="icon icon-cog"></span> Configurar
 					</a>
 				</td>
 			</tr>

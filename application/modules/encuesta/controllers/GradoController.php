@@ -3,20 +3,28 @@
 class Encuesta_GradoController extends Zend_Controller_Action
 {
 
-	private $cicloDAO = null;
-    private $nivelDAO = null;
-    private $gradoDAO = null;
-	private $materiaDAO = null;
+    private $cicloDAO = null;
 
-    public function init() {
+    private $nivelDAO = null;
+
+    private $gradoDAO = null;
+
+    private $materiaDAO = null;
+
+    public function init()
+    {
         /* Initialize action controller here */
-        $this->cicloDAO = new Encuesta_DAO_Ciclo;
-        $this->nivelDAO = new Encuesta_DAO_Nivel;
-        $this->gradoDAO = new Encuesta_DAO_Grado;
-		$this->materiaDAO = new Encuesta_DAO_Materia;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        $this->cicloDAO = new Encuesta_DAO_Ciclo($dataIdentity["adapter"]);
+        $this->nivelDAO = new Encuesta_DAO_Nivel($dataIdentity["adapter"]);
+        $this->gradoDAO = new Encuesta_DAO_Grado($dataIdentity["adapter"]);
+		$this->materiaDAO = new Encuesta_DAO_Materia($dataIdentity["adapter"]);
     }
-	
-    public function indexAction() {
+
+    public function indexAction()
+    {
         // action body
         $idNivel = $this->getParam("idNivel");
 		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
@@ -26,16 +34,28 @@ class Encuesta_GradoController extends Zend_Controller_Action
 		$this->view->grados = $grados;
     }
 
-    public function altaAction() {
+    public function altaAction()
+    {
         // action body
+        $request = $this->getRequest();
         $idNivel = $this->getParam("idNivel");
 		$nivel = $this->nivelDAO->obtenerNivel($idNivel);
-		$formulario = new Encuesta_Form_AltaGrado;
-		$request = $this->getRequest();
-		
+		//$formulario = new Encuesta_Form_AltaGrado;
 		$this->view->nivel = $nivel;
-		$this->view->formulario = $formulario;
+		//$this->view->formulario = $formulario;
 		if($request->isPost()){
+		    $datos = $request->getPost();
+            $datos["idNivelEducativo"] = $idNivel;
+            $datos["fecha"] = date("Y-m-d H:i:s",time());
+            $grado = new Encuesta_Models_GradoEducativo($datos);
+		    //print_r($datos);
+            try {
+                $this->gradoDAO->addGrado($grado);
+                $this->view->messageSuccess = "Grado: <strong>".$grado->getGradoEducativo()."</strong> dado de alta al Nivel: <strong>".$nivel->getNivel()."</strong> exitosamente.";
+            } catch(Util_Exception_BussinessException $ex) {
+                $this->view->messageFail = $ex->getMessage();
+            }
+			/*
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$datos["idNivelEducativo"] = $idNivel;
@@ -48,10 +68,12 @@ class Encuesta_GradoController extends Zend_Controller_Action
 				}
 				
 			}
+            */
 		}
     }
 
-    public function adminAction() {
+    public function adminAction()
+    {
         // action body
 		$idGrado = $this->getParam("idGrado");
 		$grado = $this->gradoDAO->getGradoById($idGrado);
@@ -70,21 +92,24 @@ class Encuesta_GradoController extends Zend_Controller_Action
 		
     }
 
-    public function editaAction() {
+    public function editaAction()
+    {
         // action body
         $idGrado = $this->getParam("idGrado");
         $request = $this->getRequest();
 		$post = $request->getPost();
-		unset($post['submit']);
+		//unset($post['submit']);
 		$this->gradoDAO->editarGrado($idGrado, $post);
 		$this->_helper->redirector->gotoSimple("admin", "grado", "encuesta",array("idGrado"=>$idGrado));
     }
 
-    public function bajaAction() {
+    public function bajaAction()
+    {
         // action body
     }
 
-    public function materiasAction() {
+    public function materiasAction()
+    {
         // action body
         $idGrado = $this->getParam("idGrado");
 		$grado = $this->gradoDAO->getGradoById($idGrado);//->obtenerGrado($idGrado);
@@ -98,5 +123,20 @@ class Encuesta_GradoController extends Zend_Controller_Action
 		//$this->view->formulario = $formulario;
 		$this->view->materias = $materias;
     }
+
+    public function gradosAction()
+    {
+        // action body
+        $idNivel = $this->getParam("idNivel");
+        $nivel = $this->nivelDAO->obtenerNivel($idNivel);
+        $grados = $this->gradoDAO->getGradosByIdNivel($idNivel);
+        
+        $this->view->nivel = $nivel;
+        $this->view->grados = $grados;
+    }
+
+
 }
+
+
 

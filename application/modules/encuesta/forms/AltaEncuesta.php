@@ -46,24 +46,24 @@ class Encuesta_Form_AltaEncuesta extends Zend_Form
 		$inputStandarBootstrapDecorators = array(
 			'ViewHelper',	// Elemento
 			'Errors',		// Errores
-			array(array('data'=>'HtmlTag'), array('tag'=>'div', "class"=>"col-xs-8")),
-			array('Label', array('class' => 'col-xs-4')),
+			array(array('data'=>'HtmlTag'), array('tag'=>'div', "class"=>"span8")),
+			array('Label', array('class' => 'span4')),
 			array(array('element'=>'HtmlTag'), array('tag'=>'div', 'class' => 'form-group'))
 		);
 		
 		$buttonStandarBootstrapDecorators = array(
 			'ViewHelper',	// Elemento
-			array(array('data'=>'HtmlTag'), array('tag'=>'div', "class"=>"col-xs-12")),
+			array(array('data'=>'HtmlTag'), array('tag'=>'div', "class"=>"span12")),
 			//'Label',
 			array(array('element'=>'HtmlTag'), array('tag'=>'div', 'class' => 'form-group'))
 		);
 		
-		$eNombre->setDecorators($inputStandarBootstrapDecorators);
-		$eDetalle->setDecorators($inputStandarBootstrapDecorators);
-		$eDescripcion->setDecorators($inputStandarBootstrapDecorators);
-		$eEstatus->setDecorators($inputStandarBootstrapDecorators);
+		//$eNombre->setDecorators($inputStandarBootstrapDecorators);
+		//$eDetalle->setDecorators($inputStandarBootstrapDecorators);
+		//$eDescripcion->setDecorators($inputStandarBootstrapDecorators);
+		//$eEstatus->setDecorators($inputStandarBootstrapDecorators);
 		
-		$eSubmit->setDecorators($buttonStandarBootstrapDecorators);
+		//$eSubmit->setDecorators($buttonStandarBootstrapDecorators);
 		
 		$this->addElement($eNombre);
 		$this->addElement($eDetalle);

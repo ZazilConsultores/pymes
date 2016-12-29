@@ -1,0 +1,67 @@
+<?php
+    $messageSuccess = $this->messageSuccess;
+    $messageFail = $this->messageFail;
+?>
+<div class="row-fluid">
+    <div class="span12 widget-box">
+        <div class="widget-title">
+            <h5>Nuevo Docente</h5>
+        </div>
+        <div class="widget-content">
+            <div>
+                <a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"docente","action"=>"index"),null,true) ?>">
+                    <span class="icon icon-arrow-left"></span> Regresar a Docentes
+                </a><br />
+                <?php if(!is_null($messageSuccess)){ ?>
+                <br />
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <?php echo $messageSuccess; ?>
+                </div>
+                <?php }elseif(!is_null($messageFail)){ ?>
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <?php echo $messageFail; ?>
+                </div>
+                <?php } ?><br />
+            </div>
+            <hr />
+            <div>
+                <form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+                    <div class="control-group">
+                        <label class="control-label" for="nombres">Nombres: </label>
+                        <div class="controls">
+                            <input name="nombres" type="text" class="span12" placeholder="Nombres Docente..." />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="apellidos">Apellidos: </label>
+                        <div class="controls">
+                            <input name="apellidos" type="text" class="span10" placeholder="Apellidos Docente..." />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="referencia">Referencia: </label>
+                        <div class="controls">
+                            <input name="referencia" type="text" class="span10" placeholder="RFC, matricula" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-success">
+                                <span class="icon icon-save"></span> Guardar Docente
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

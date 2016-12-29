@@ -11,10 +11,13 @@ class Encuesta_GrupoController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->grupoDAO = new Encuesta_DAO_Grupo;
-		$this->seccionDAO = new Encuesta_DAO_Seccion;
-		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
-		$this->opcionDAO = new Encuesta_DAO_Opcion;
+        $auth = Zend_Auth::getInstance();
+        $this->identity = $auth->getIdentity();
+        
+        $this->grupoDAO = new Encuesta_DAO_Grupo($this->identity["adapter"]);
+		$this->seccionDAO = new Encuesta_DAO_Seccion($this->identity["adapter"]);
+		$this->preguntaDAO = new Encuesta_DAO_Pregunta($this->identity["adapter"]);
+		$this->opcionDAO = new Encuesta_DAO_Opcion($this->identity["adapter"]);
     }
 
     public function indexAction()
@@ -70,7 +73,7 @@ class Encuesta_GrupoController extends Zend_Controller_Action
         $request = $this->getRequest();
         $formulario = new Encuesta_Form_AltaGrupo;
 		
-		$idSeccion = $this->getParam("idSeccion");
+		$idSeccion = $this->getParam("id");
 		$seccion = $this->seccionDAO->getSeccionById($idSeccion);
 		
 		$this->view->formulario = $formulario;
@@ -101,13 +104,25 @@ class Encuesta_GrupoController extends Zend_Controller_Action
     {
         // action body
         $request = $this->getRequest();
-		$idGrupo = $this->getParam("idGrupo");
-		$post = $request->getPost();
-		unset($post["submit"]);
+        $idGrupo = $this->getParam("idGrupo");
+        if($request->isPost()){
+            
+            //print_r($idGrupo);
+            //print_r("<br />");
+            //print_r($request->getPost());
+            $this->grupoDAO->editGrupo($idGrupo, $request->getPost());
+            /*
+            $post = $request->getPost();
+            unset($post["submit"]);
+            
+            //$this->encuestaDAO->editarEncuesta($idEncuesta, $post);
+            $this->grupoDAO->editarGrupo($idGrupo, $post);
+            $this->_helper->redirector->gotoSimple("admin", "grupo", "encuesta", array("idGrupo" => $idGrupo));
+            */
+        }
+        
+        $this->_helper->redirector->gotoSimple("admin", "grupo", "encuesta",array("idGrupo"=>$idGrupo));
 		
-		//$this->encuestaDAO->editarEncuesta($idEncuesta, $post);
-		$this->grupoDAO->editarGrupo($idGrupo, $post);
-		$this->_helper->redirector->gotoSimple("admin", "grupo", "encuesta", array("idGrupo" => $idGrupo));
     }
 
     public function bajaAction()
