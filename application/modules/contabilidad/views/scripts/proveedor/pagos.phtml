@@ -1,0 +1,119 @@
+<?php //echo $this->formulario; ?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">Cuentas por Pagar</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-striped table-condensed">
+			<thead>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Empresa.</td>
+					<td>
+						<select id="idCicloEscolar" class="form-control">
+							<option value="0">Buscar...</option>
+							<?php foreach ($ciclosEscolares as $ciclo) : ?>
+							<option value="<?php echo $ciclo->getIdCiclo() ?>"><?php echo $ciclo->getCiclo(); echo $txt = ($ciclo->getVigente() == 1) ? " - Vigente" : "" ; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Proveedor</td>
+					<td>
+						<select id="idNivel" class="form-control">
+							<option value="0">Buscar...</option>
+							<?php foreach ($niveles as $nivel) : ?>
+							<option value="<?php echo $nivel->getIdNivel() ?>"><?php echo $nivel->getNivel(); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Factura.</td>
+					<td>
+						<select id="idGradoEducativo" class="form-control disabled">
+							<option value="0">Ingrese número factura...</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Tipo Movimiento.</td>
+					<td>
+						<select id="idGradoEducativo" class="form-control disabled">
+							<option value="0">Buscar...</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button id="btnQueryEncuesta" class="btn btn-success" disabled>
+							<span class="glyphicon glyphicon-search"></span> Buscar Factura
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div></div>
+</section>
+
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">Detalle pagos factura</h3>
+	</div>
+	<div class="panel-body">
+		<table id="tableDetails" class="table table-striped table-condensed">
+			<thead>
+				<th>Número Factura</th>
+				<th>Proveedor</th>
+				<th>Empresa</th>
+				<th>Detalle</th>
+				<th>Saldo general de proveedor</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">Registrar un pago</h3>
+	</div>
+	<div class="panel-body">
+		<table id="tableDetails" class="table table-striped table-condensed">
+			<thead>
+				<th>Pago en</th>
+				<th>Pago $</th>
+				<th>Fecha pago</th>
+				<th>Concepto pago</th>
+				<th>Forma liquidación </th>
+				<th>Número de Referencia</th>
+				<th>Banco</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title">Registrar un nota de credito</h3>
+	</div>
+	<div class="panel-body">
+		<table id="tableDetails" class="table table-striped table-condensed">
+			<thead>
+				<th>Pago en</th>
+				<th>Pago $</th>
+				<th>Fecha pago</th>
+				<th>Concepto pago</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>

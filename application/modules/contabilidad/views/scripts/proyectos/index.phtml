@@ -8,7 +8,7 @@
 ?>
 
 <section class="row">
-	<div class="panel panel-default">
+	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Proyectos.
@@ -36,13 +36,12 @@
 				<tbody>
 					<?php foreach ($proyectos as $proyecto) :
 						$sucursal = $sucursalDAO->obtenerSucursal($proyecto->getIdSucursal());
-						$fiscales = $fiscalesDAO->obtenerFiscales($proyecto->getIdCoP());
+						//$fiscales = $fiscalesDAO->obtenerFiscales($proyecto->getIdCoP());
 						//print_r($fiscal);
 					?>
 					<tr>
 						<td><?php echo $proyecto->getNumeroFolio() ?></td>
 						<td><?php echo $sucursal->getNombreSucursal() ?></td>
-						<td><?php echo $fiscales->getRazonSocial() ?></td>
 						<td><?php echo $proyecto->getDescripcion() ?></td>
 						<td><?php echo $proyecto->getFechaApertura() ?></td>
 						<td><?php echo $proyecto->getFechaCierre() ?></td>

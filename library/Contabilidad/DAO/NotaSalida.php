@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Areli Morales Palma
- * @copyright 2016, Zazil Consultores S.A. de C.V.
+ * @copyright 2016, Zazil Conslaultores S.A. de C.V.
  * @version 1.0.0
  */
 class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida{

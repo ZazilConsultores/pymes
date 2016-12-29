@@ -53,7 +53,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 				
 				//print_r($contenedor);
 				$this->empresaDAO->crearEmpresa($contenedor);
-				
+				print_r($contenedor);
 				$this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
 			}
 		}

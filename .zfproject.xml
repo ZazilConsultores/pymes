@@ -21,6 +21,9 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="perfil"/>
         </controllerFile>
+        <controllerFile controllerName="Vendedores">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Login"/>
@@ -101,6 +104,9 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="unidades"/>
             </controllerFile>
+            <controllerFile controllerName="Productoterminado">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="Alta"/>
@@ -109,6 +115,7 @@
             <formFile formName="AltaMultiplos"/>
             <formFile formName="AdminInventario"/>
             <formFile formName="EditarTodoInventario"/>
+            <formFile formName="ProductoTerminado"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -202,6 +209,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Inventario">
                 <viewScriptFile forActionName="editartodo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1220,6 +1230,7 @@
               <actionMethod actionName="nota"/>
               <actionMethod actionName="remision"/>
               <actionMethod actionName="factura"/>
+              <actionMethod actionName="pagos"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -1260,6 +1271,14 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
             </controllerFile>
+            <controllerFile controllerName="Impuestos">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="editar"/>
+              <actionMethod actionName="enlazar"/>
+              <actionMethod actionName="enlazarProducto"/>
+              <actionMethod actionName="enlazarproducto"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1283,6 +1302,11 @@
             <formFile formName="AgregarImpuestos"/>
             <formFile formName="AltaProyecto"/>
             <formFile formName="Impuestos"/>
+            <formFile formName="PagosProveedor"/>
+            <formFile formName="CrarImpuesto"/>
+            <formFile formName="CrearImpuesto"/>
+            <formFile formName="AltaVendedor"/>
+            <formFile formName="Cuentasxp"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1302,6 +1326,12 @@
               <dbTableFile dbTableName="Cuentasxc"/>
               <dbTableFile dbTableName="Bancosempresa"/>
               <dbTableFile dbTableName="Proyecto"/>
+              <dbTableFile dbTableName="Factura"/>
+              <dbTableFile dbTableName="FacturaDetalle"/>
+              <dbTableFile dbTableName="Impuestos"/>
+              <dbTableFile dbTableName="Impuesto"/>
+              <dbTableFile dbTableName="FactutaImpuesto"/>
+              <dbTableFile dbTableName="ImpuestoProductos"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1316,6 +1346,13 @@
             <modelFile modelName="Cuentasxc"/>
             <modelFile modelName="Bancosempresa"/>
             <modelFile modelName="Proyecto"/>
+            <modelFile modelName="Factura"/>
+            <modelFile modelName="Facturadet"/>
+            <modelFile modelName="Facturadetalle"/>
+            <modelFile modelName="Impuestos"/>
+            <modelFile modelName="Impuesto"/>
+            <modelFile modelName="FacturaImpuesto"/>
+            <modelFile modelName="ImpuestoProductos"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1439,6 +1476,27 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proyectos">
                 <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="enlazar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="enlazarProducto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="enlazarproducto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="pagos"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1575,6 +1633,11 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="sucursales"/>
             </controllerFile>
+            <controllerFile controllerName="Vendedores">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="editar"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaFiscales"/>
@@ -1590,6 +1653,8 @@
             <formFile formName="AltaUsuario"/>
             <formFile formName="AltaReporte"/>
             <formFile formName="AltaSucursal"/>
+            <formFile formName="Pruebas"/>
+            <formFile formName="AltaVendedor"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1618,6 +1683,7 @@
               <dbTableFile dbTableName="TipoProveedor"/>
               <dbTableFile dbTableName="Sucursal"/>
               <dbTableFile dbTableName="Modulo"/>
+              <dbTableFile dbTableName="Vendedor"/>
             </dbTableDirectory>
             <modelFile modelName="Domicilio"/>
             <modelFile modelName="Telefono"/>
@@ -1635,6 +1701,7 @@
             <modelFile modelName="Clientes"/>
             <modelFile modelName="Proveedores"/>
             <modelFile modelName="Sucursal"/>
+            <modelFile modelName="Vendedor"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1894,6 +1961,15 @@
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="sdomicilio"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Vendedores">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Vendedores">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Vendedores">
+                <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -2088,6 +2164,9 @@
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="logout"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Vendedores">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -2134,6 +2213,9 @@
           <testApplicationControllerFile forControllerName="Usuario">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="perfil"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Vendedores">
+            <testApplicationActionMethod forActionName="index"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
         <testApplicationModulesDirectory>
@@ -2576,6 +2658,11 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="sucursales"/>
               </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Vendedores">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="editar"/>
+              </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
           <testApplicationModuleDirectory forModuleName="contabilidad">
@@ -2613,6 +2700,7 @@
                 <testApplicationActionMethod forActionName="nota"/>
                 <testApplicationActionMethod forActionName="remision"/>
                 <testApplicationActionMethod forActionName="factura"/>
+                <testApplicationActionMethod forActionName="pagos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2653,6 +2741,14 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Impuestos">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="editar"/>
+                <testApplicationActionMethod forActionName="enlazar"/>
+                <testApplicationActionMethod forActionName="enlazarProducto"/>
+                <testApplicationActionMethod forActionName="enlazarproducto"/>
+              </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
           <testApplicationModuleDirectory forModuleName="inventario">
@@ -2691,6 +2787,9 @@
               <testApplicationControllerFile forControllerName="JsonController">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="unidades"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Productoterminado">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

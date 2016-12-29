@@ -112,7 +112,7 @@
 		$("button#asociarProveedorEmpresa").on('click',function() {
 			
 			var selectEmpresa = $("select#selectIdFiscales");
-			var selectCliente = $("select#selectIdProveedor");
+			var selectProveedor = $("select#selectIdProveedores");
 			
 			module = "contabilidad";
 			controller = "opera";
@@ -122,7 +122,7 @@
 			var fproveedor = selectProveedor.val();
 			
 			//console.log(selectEmpresa.val());
-			//console.log(selectCliente.val());
+			console.log(selectProveedor.val());
 			
 			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesProveedor/" + fproveedor;
 			

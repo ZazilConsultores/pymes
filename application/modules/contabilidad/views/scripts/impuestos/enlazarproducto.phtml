@@ -1,0 +1,89 @@
+<?php 
+	$formulario = $this->formulario;
+	//echo $formulario;
+?>
+<section class="row">
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h3 class="panel-title">Asociar Producto a Impuesto</h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-xs-12">
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>Seleccione Impuesto:</td>
+							<td>
+								
+							</td>
+						</tr>
+						<tr>
+							
+						</tr>
+						
+						
+					</tbody>
+				</table>
+			</div>
+			<br /><hr /><br />
+			<?php echo $formulario; ?>
+			<div class="col-xs-12">
+				<table id="impuestosProductos" class="table table-striped table-condensed">
+					<thead>
+						<th>Impuesto</th>
+						<th>Producto</th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	$().ready(function(){
+		
+		$("#idEnlazarImpuesto").on('click', function(){
+			var iproducto = $("select#idProducto");
+			var iimpuesto = $("select#idImpuesto");
+			
+			var producto = iproducto.val();
+			var impuesto = iimpuesto.val();
+			
+			console.log("Hola");
+			console.log(producto);
+			console.log(impuesto);
+
+			/*var url = window.location.origin + "/General/public/"+"contabilidad/impuestos/enlazarproducto/idProducto/" + producto + "/idImpuesto/" + impuesto;
+			console.log(url);
+			
+			$.ajax({
+				url: url,
+			});
+			// Cargar valores actuales 	$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
+			//$url = window.location.origin +"/General/public/"+"contabilidad/json/productos/idProducto/"+producto
+			$url = window.location.origin +"/General/public/contabilidad/json/impuestos/idImpuesto/"+idImpuesto;
+			//console.log($url);
+			
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					
+					var tbody = $("table#impuestosProductos").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].descripcion)).
+							append($('<td>').append(data[i].producto))
+						);
+					});
+				}
+			});*/
+			
+		});
+	});
+</script>

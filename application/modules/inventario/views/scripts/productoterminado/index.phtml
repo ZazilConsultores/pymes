@@ -1,0 +1,103 @@
+<?php
+	//echo $this->formulario;
+	$productos =$this->productos;
+	$busquedaProductoTerminado = $this->busquedaProductoTerminado;
+?>
+<!--despliega los productos correspondientes a la cafeteria-->
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Productos.
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Clave Producto</th>
+						<th>Descripción</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($productos as $producto) : ?>
+					<tr>
+						
+						<td><?php echo $producto->claveProducto ?></td>
+						<td><?php echo $producto->producto ?></td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">Crear Producto Terminado</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-striped table-condensed">
+			<thead>
+				
+			</thead>
+			<tbody>
+				<th>Nombre Producto:
+				<td>
+					<select id="idNombreProducto" class="form-control">
+							<?php foreach ($busquedaProductoTerminado as $productoTerminado) : ?>
+							<option value="<?php echo $productoTerminado->getIdProducto() ?>"><?php echo $productoTerminado->getProducto(); ?></option>
+							<?php endforeach; ?>
+					</select>
+				</td>
+				<td>
+						<button id="btnQueryEncuesta" class="btn btn-info" >
+							<span class="glyphicon glyphicon-search"></span> Buscar Producto Terminado
+						</button>
+					</td>
+				</th>
+
+				
+				<tr>
+					<td>Clave Producto</td>
+					<td>Nombre</td>
+					<td>Cantidad</td>
+					<td>Presentacion</td>
+				</tr>
+				<tr>
+					<td><input id="idClaveProducto" class="form-control"></input></td>
+					<td><input id="nombre" class="form-control"></input></td>
+					<td><input id="cantidad" class="form-control"></input></td>
+					<td><input id="presentacion" class="form-control"></input></td>
+					<td>
+						<button id="agregar" class="btn btn-success" >
+							<span class="glyphicon glyphicon-plus-sign"></span> Agregar
+						</button>
+						<button id="agregar" class="btn btn-warning" >
+							<span class="glyphicon glyphicon-pencil"></span> Editar
+						</button>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div></div>
+</section>
+
+<script>
+	$(document).ready(function() {
+		//===================================================================================
+	    $('table.table').dataTable( {
+	       "pagingType": "full_numbers",
+	        "language": {
+	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
+	        }
+	    } );
+	});
+</script>

@@ -5,13 +5,52 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 
     public function init()
     {
-    	/*Empresa*/
-		$columnas = array('idFiscales', 'razonSocial');
-		$tablaFiscales = new Contabilidad_Model_DbTable_Fiscales();
-		$rowset = $tablaFiscales->obtenerColumnas($columnas);
+    	$decoratorsPresentacion = array(
+			'FormElements',
+			array(array('tabla'=>'Htmltag'),array('tag'=>'table', 'class'=>'table table-striped table-condensed')),
+			array('Fieldset', array('placement'=>'prepend'))
+
+		);
+
+		$decoratorsElemento =array(
+			/*Decoradores*/
+			'ViewHelper',
+			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
+			array('label', array('tag'=>'td')),
+			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+
+		);
 		
+    	$this->setAttrib("id", "agregarFacturaCliente");
+		$subEncabezado = new Zend_Form_SubForm;
+		$subEncabezado->setLegend('Nueva Factura Cliente');
 		
-		$eEmpresa = new Zend_Form_Element_Select('empresa');
+		$tipoMovimiento = new Contabilidad_DAO_TipoMovimiento;
+		$tiposMovimientos =$tipoMovimiento->obtenerTiposMovimientos();
+		
+		$eTipoMovto =  new Zend_Form_Element_Select('idTipoMovimiento');
+		$eTipoMovto->setLabel("Tipo Movimiento:");
+		$eTipoMovto->setAttrib("class", "form-control");
+		foreach($tiposMovimientos AS $movimiento){
+			if($movimiento->getIdTipoMovimiento()=="2"){
+				$eTipoMovto->addMultiOption($movimiento->getIdTipoMovimiento(),$movimiento->getDescripcion());
+			}	
+		}
+    	
+		$eNumFactura = new Zend_Form_Element_Text('numeroFactura');
+		$eNumFactura->setLabel('Número de Factura: ');
+		$eNumFactura->setAttrib("class", "form-control");
+		
+		$eFolioFiscal = new Zend_Form_Element_Text('folioFiscal');
+		$eFolioFiscal->setLabel('Folio Fiscal: ');
+		$eFolioFiscal->setAttrib("minlength", "32");
+		$eFolioFiscal->setAttrib("maxlength", "32" );
+		$eFolioFiscal->setAttrib("class", "form-control");
+		
+		$tablasFiscales = new Inventario_DAO_Empresa();
+		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
+		
+		$eEmpresa = new Zend_Form_Element_Select('idEmpresas');
 		$eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
@@ -19,103 +58,100 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 		
-    	
+    	$eSucursal = new Zend_Form_Element_Select('idSucursal');
+		$eSucursal->setLabel("Sucursal: ");
+		$eSucursal->setAttrib("class", "form-control");
+		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
-		$eCliente =  new Zend_Form_Element_Select('cliente');
-        $eCliente->setLabel('Seleccionar Cliente: ');
-		$eCliente->setAttrib("class", "form-control");
-		
-		//foreach ($rowset as $fila) {
-			
-		//}
-		
-		$eFactura =  new Zend_Form_Element_Select('factura');
-        $eFactura->setLabel('Numero Factura: ');
-		$eFactura->setAttrib("class", "form-control");
-		
-		$eProyecto =  new Zend_Form_Element_Select('proyecto');
+		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
         $eProyecto->setLabel('Seleccionar Proyecto: ');
 		$eProyecto->setAttrib("class", "form-control");
 		
-		//foreach ($rowset as $fila) {
-			
-		//}
-		/*Divisa*/
-		$columnas = array('claveDivisa', 'descripcion');
-		$tablaDivisa = new Contabilidad_Model_DbTable_Divisa();
-		$rowset = $tablaDivisa->obtenerColumnas($columnas);
+    	$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
+		$rowset = $tablaEmpresa->obtenerClientes();
 		
-		
-		$eDivisa = new Zend_Form_Element_Select('divisa');
-		$eDivisa->setLabel('Seleccionar Divisa: ');
-		$eDivisa->setAttrib("class", "form-control");
+		$eCliente =  new Zend_Form_Element_Select('idCoP');
+        $eCliente->setLabel('Seleccionar Cliente: ');
+		$eCliente->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eDivisa->addMultiOption($fila->claveDivisa, $fila->descripcion);
+			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
 		}
 		
+		$vendedorDAO = new Sistema_DAO_Vendedores;
+		$vendedores = $vendedorDAO->obtenerVendedores();
+			
 		$eVendedor = new Zend_Form_Element_Select('vendedor');
         $eVendedor->setLabel('Seleccionar Vendedor:');
 		$eVendedor->setAttrib("class", "form-control");
 		
-		//foreach ($rowset as $fila) {
-			
-		//}
-		$eFechaFac =  new Zend_Form_Element_Text('fechafac');
-        $eFechaFac->setLabel('Fecha Factura: ');
-		$eFechaFac->setAttrib("class", "form-control");
+		foreach ($vendedores as $fila) {
+			$eVendedor->addMultiOption($fila->getIdVendedor(),$fila->getNombre());
+		}
 		
-		$eClave =  new Zend_Form_Element_Text('clave');
-        $eClave->setLabel('Clave: ');
-		$eClave->setAttrib("class", "form-control");
+		$eFecha =  new Zend_Form_Element_Text('fecha');
+        $eFecha->setLabel('Seleccionar Fecha: ');
+		$eFecha->setAttrib("class", "form-control");
 		
-		$eCodigoBarra =  new Zend_Form_Element_Text('codigoBarra');
-        $eCodigoBarra->setLabel('Codigo de Barra: ');
-		$eCodigoBarra->setAttrib("class", "form-control");
+		$subEncabezado->addElements(array($eTipoMovto,$eNumFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eVendedor,$eFecha));
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
-		$eDescripcion =  new Zend_Form_Element_Text('descripcion');
-        $eDescripcion->setLabel('Descripcion: ');
-		$eDescripcion->setAttrib("class", "form-control");
+		$subFormaPago = new Zend_Form_SubForm;
+		$subFormaPago->setLegend("Registrar un pago.");		
 		
-		$ePresentacion =  new Zend_Form_Element_Text('presentacion');
-        $ePresentacion->setLabel('Presentacion: ');
-		$ePresentacion->setAttrib("class", "form-control");
+		$divisaDAO = new Contabilidad_DAO_Divisa;
+		$divisas = $divisaDAO->obtenerDivisas();
+				
+		$eDivisa = new Zend_Form_Element_Select('divisa');
+		$eDivisa->setLabel('Seleccionar Divisa: ');
+		$eDivisa->setAttrib("class", "form-control");
 		
-		$eCantidad =  new Zend_Form_Element_Text('cantidad');
-        $eCantidad->setLabel('Cantidad: ');
-		$eCantidad->setAttrib("class", "form-control");
+		foreach ($divisas as $divisa) {
+			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDescripcion());
+		}
 		
-		$ePrecioUni = new Zend_Form_Element_Text('precioUnitario');
-		$ePrecioUni->setLabel('Precio Unitario: ');
-		$ePrecioUni->setAttrib("class", "form-control");
+		$ePagada = new Zend_Form_Element_Checkbox('Pagada');
+		$ePagada->setLabel("Pagada en una sola exhibición:");
 		
-		$eImporte = new Zend_Form_Element_Text('importe');
-		$eImporte->setLabel('Importe: ');
-		$eImporte->setAttrib("class", "form-control");
+		$ePagos = new Zend_Form_Element_Text('pagos');
+		$ePagos->setLabel('Importe Pago:');
+		$ePagos->setAttrib("class", "form-control");
+		$ePagos->setValue(0);
 		
+		
+		$formaPago = Zend_Registry::get('formaPago');
+		$eFormaLiquidar = new Zend_Form_Element_Select('formaLiquidar');
+		$eFormaLiquidar->setLabel('Forma de Pago:');
+		$eFormaLiquidar->setAttrib("class", "form-control");
+		$eFormaLiquidar->setMultiOptions($formaPago);
+		
+		$eNumReferencia = new Zend_Form_Element_Text('numeroReferenica');
+		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
+		$eNumReferencia->setAttrib("class", "form-control");
+		
+		$bancoDAO = new Inventario_DAO_Banco;
+		$bancos = $bancoDAO->obtenerBancos();
+		
+		$eBanco = new Zend_Form_Element_Select('idBanco');
+		$eBanco->setLabel('Seleccionar Banco');
+		$eBanco->setAttrib("class", "form-control");
+		
+		foreach($bancos as $banco)
+		{
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
+		}
+		
+		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia/*,$eImporte*/));
+		$subFormaPago->setElementDecorators($decoratorsElemento);
+		$subFormaPago->setDecorators($decoratorsPresentacion);
+				
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
-		
-		//Encabezado
-		$this->addElement($eEmpresa);
-		$this->addElement($eCliente);
-		$this->addElement($eVendedor);
-		$this->addElement($eProyecto);
-		$this->addElement($eDivisa);
-		$this->addElement($eFechaFac);
-		
-		//Cuerpo
-		$this->addElement($eClave);
-		$this->addElement($eCodigoBarra);
-		$this->addElement($eDescripcion);
-		$this->addElement($ePresentacion);
-		$this->addElement($eCantidad);
-		$this->addElement($ePrecioUni);
-		$this->addElement($eImporte);
-		
+	
 		//Condiciones de Pago
-		
+		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		$this->addElement($eSubmit);
 	
     }

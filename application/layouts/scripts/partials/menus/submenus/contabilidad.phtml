@@ -21,6 +21,11 @@
 			</ul>
 		</li>
 		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'impuestos', 'action' => 'index'), null, true); ?>">
+				Impuestos
+			</a>
+		</li>
+		<li>
 			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'banco', 'action' => 'index'), null, true); ?>">
 				Bancos
 			</a>
@@ -58,7 +63,7 @@
 						Pagos
 					</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Pago de Factura</a></li>	
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'pagos'), null, true); ?>">Pago de Factura</a></li>	
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Cancelar Pagos</a></li>
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Cancelar Remisiones</a></li>
 					</ul>

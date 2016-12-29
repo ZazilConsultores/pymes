@@ -53,8 +53,12 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 			$modelProductos[] = $modelProducto;
 			
 		}
-		
 		return $modelProductos;
+		/*if(is_null($rowProductos)){
+			return null;
+		}else{
+			return $rowProductos->toArray();
+		}*/
 		
 	}
 	

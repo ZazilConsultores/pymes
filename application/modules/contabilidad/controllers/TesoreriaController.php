@@ -2,9 +2,8 @@
 
 class Contabilidad_TesoreriaController extends Zend_Controller_Action
 {
-	private $fondeoDAO = null;
-	private $subparametroDAO =null;
-
+	private $fondeoDAO;
+	
     public function init()
     {
         /* Initialize action controller here */
@@ -26,11 +25,11 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				print_r($datos);
+				$fondeo = $formulario->getValues();
+				
+				print_r($fondeo);
 				try{
-					$fondeoDAO = new Contabilidad_DAO_Fondeo;
-					$fondeoDAO->guardarFondeo($datos);
+					$this->fondeoDAO->guardarFondeo($fondeo);
 					//print_r("$fondeoDAO");
 				}catch(exception $ex){
 					$this->view->messageFail= "Error";
