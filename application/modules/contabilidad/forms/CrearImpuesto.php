@@ -43,18 +43,21 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		$ePorcentaje->setLabel('Ingrese Porcententaje:');
 		$ePorcentaje->setAttrib("class", "form-control");
 		
+		$eEstatus = new Zend_Form_Element_Text('estatus');
+		$eEstatus->setLabel('Estatus:');
+		$eEstatus->setAttrib("class", "form-control");
+		
 		$eSubmit = new Zend_Form_Element_Submit('idEnlazarImpuesto');
 		$eSubmit->setLabel("Enviar");
-		$eSubmit->setAttrib("data-toggle", "modal", "data-target = #msgConfirm");
-		
 		$eSubmit->setAttrib("class", "btn btn-warning");
 		
 		$this->addElement($eAbreviatura);
 		$this->addElement($eDescripcion);
 		$this->addElement($eIdImpuesto);
 		$this->addElement($eIdProducto);
-		$this->addElement($eImporte);
+		$this->addElement($eImporte);	
 		$this->addElement($ePorcentaje);
+		$this->addElement($eEstatus);
 		$this->addElement($eSubmit);
         
     }
