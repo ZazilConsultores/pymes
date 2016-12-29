@@ -23,12 +23,12 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
 
-		$select = $this->db->select()->from('impuestos');
+		/*$select = $this->db->select()->from('impuestos');
 		$statement = $select->query();
 		$rowImpuesto =$statement->fetchAll();
 		///////////////////
 		$jsonImpuestos = Zend_Json::encode($rowImpuesto);
-		$this->view->jsonImpuestos = $jsonImpuestos;
+		$this->view->jsonImpuestos = $jsonImpuestos;*/
 		
 		//============================================>>>Multiplos
 		//$idProducto = $this->getParam("idProducto");
