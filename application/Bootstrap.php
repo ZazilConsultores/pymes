@@ -62,8 +62,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initPlugins() {
 		// =================================================================  >>>
 		$front = Zend_Controller_Front::getInstance();
-		$front->registerPlugin(new Modules_Controller_Plugin_RequestedModuleLayoutLoader());
-		$front->registerPlugin(new Encuesta_Plugin_Acl(new Encuesta_Security_Acl()));
+		//$front->registerPlugin(new Modules_Controller_Plugin_RequestedModuleLayoutLoader());
+		//$front->registerPlugin(new Encuesta_Plugin_Acl(new Encuesta_Security_Acl()));
 
 	}
     
