@@ -183,8 +183,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			}
 			
 		}
-       
-    
     }
 
     public function pagosAction()
