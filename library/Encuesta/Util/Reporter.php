@@ -349,7 +349,7 @@ class Encuesta_Util_Reporter {
         // ========================================================== >>> Generamos el reporte a partir de plantilla
         $pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteHBE.pdf');
         $pages = $pdfTemplate->pages;
-        $pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/grupal/'.$this->organizacion["directorio"]."/");
+        $pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/grupal/'.$this->organizacion["directorio"]);
         $pdfReport->setYHeaderOffset(160);
         // Clonamos para editar el nuevo documento
         $pageZ = clone $pages[0];
