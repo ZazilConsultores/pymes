@@ -9,7 +9,7 @@ class Encuesta_HomeController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout->setLayout('layout');
+        $this->_helper->layout->setLayout('homeEncuesta');
         $this->service = new Encuesta_Util_Service;
         $this->loginDAO = new Encuesta_DAO_Login();
     }
@@ -23,7 +23,7 @@ class Encuesta_HomeController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $loginDAO = $this->loginDAO;
-        $this->_helper->layout->setLayout('empty');
+        $this->_helper->layout->setLayout('emptyEncuesta');
         // action body
         if($request->isPost()){
             $datos = $request->getPost();

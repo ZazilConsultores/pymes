@@ -11,16 +11,13 @@ class Encuesta_Plugin_Acl extends Zend_Controller_Plugin_Abstract {
     protected $_module;
     protected $_currentRole;
     
-    
-	public function __construct(Zend_Acl $acl, array $options = array()) {
+	function __construct($data) {
 		$this->_auth = Zend_Auth::getInstance();
-        $this->_acl = $acl;
-        //if (is_null($this->_currentRole)) $this->_currentRole = "defaultGuest";
-        //print_r($this->_auth);
+        $this->_acl = $data;
 	}
     
     public function preDispatch(Zend_Controller_Request_Abstract $request) {
-        $this->_init($request);
+        	
         $recurso = $request->getModuleName()."_".$request->getControllerName()."_".$request->getActionName();
         
         $recursoAllControllers = $request->getModuleName();

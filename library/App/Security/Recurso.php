@@ -2,100 +2,38 @@
 /**
  * 
  */
-class Encuesta_Security_Acl extends Zend_Acl {
+class App_Security_Recurso {
 	
 	function __construct() {
-		$aclConfig = Zend_Registry::get('acl');
-        //print_r($aclConfig);
-        //print_r("<br /><br />");
-        
-        $roles = $aclConfig->acl->roles;
-        $resources = $aclConfig->acl->resources;
-        $this->_addRoles($roles);
-        $this->_addResources($resources);
+		
 	}
-    
-    /**
-     * Crea los roles de nuestra estructura ACL
-     */
-    protected function _addRoles($roles) {
-        
-        foreach ($roles as $modulo) {
+	
+	public function getAcl() {
+		$config = Zend_Registry::get('acl');
+		$roles = $config->acl->roles;
+		$recursos = $config->acl->resources;
+		
+		$acl = new Zend_Acl;
+		
+		foreach ($roles as $modulo) {
             foreach ($modulo as $user => $rol) {
                 //print_r($modulo);
                 //print_r("-" . $user.".".$rol."<br />");
                 //print_r("-" . $user."<br />");
                 //print_r("-" . $rol);
-                if (!$this->hasRole($user)) {
+                if (!$acl->hasRole($user)) {
                     // Verificamos los roles padre del rol
                     if (empty($rol)) {
                         $rol = null;
                     } else {
                         $rol = explode(",", $rol);
                     }
-                    $this->addRole(new Zend_Acl_Role($user), $rol);
+                    $acl->addRole(new Zend_Acl_Role($user), $rol);
                 }
             }
         }
-        // Iteramos a travez de los roles
-        /*
-        foreach ($roles as $name => $parents) {
-            // Verificamos que no este el rol ya dado de alta
-            if (!$this->hasRole($name)) {
-                // Verificamos los roles padre del rol
-                if (empty($parents)) {
-                    $parents = null;
-                } else {
-                    $parents = explode(",", $parents);
-                }
-                $this->addRole(new Zend_Acl_Role($name), $parents);
-            }
-        }*/
-        
-        
-    }
-    
-    /**
-     * Agrega los recursos al ACL, y asocia los permisos de acceso (allow, deny)
-     */
-    /*
-    protected function _addResources($resources) {
-        
-        foreach ($resources as $permissions => $controllers) {
-            
-            foreach ($controllers as $controller => $actions) {
-                
-                if ($controller == 'all') {
-                    $controller = null;
-                } else {
-                    if (!$this->has($controller)) {
-                        $this->add(new Zend_Acl_Resource($controller));
-                    }
-                }
-                
-                foreach ($actions as $action => $role) {
-                    
-                    if ($action == 'all') {
-                        $action = null;
-                    }
-                    
-                    if ($permissions == 'allow') {
-                        $this->allow($role,$controller,$action);
-                    }
-                    
-                    if ($permissions == 'deny') {
-                        $this->deny($role, $controller, $action);
-                    }
-                    
-                }
-                
-            }
-        }
-    }*/
-
-    protected function _addResources($resources) {
-        
-        foreach ($resources as $permissions => $modules) {
+		
+		foreach ($recursos as $permissions => $modules) {
             // $permissions = allow | deny : $modules = Zend_Config_Object("todos los modulos")
             //print_r("permiso: ".$permissions."<br />");
             //print_r("==================================<br />");
@@ -136,8 +74,8 @@ class Encuesta_Security_Acl extends Zend_Acl {
                         
                         //$numero = count(explode("_", $recurso));
                         //print_r("Recursos: ". $recurso." Elementos: ".$numero);
-                        if (!$this->has($recurso)) {
-                            $this->add(new Zend_Acl_Resource($recurso));
+                        if (!$acl->has($recurso)) {
+                            $acl->add(new Zend_Acl_Resource($recurso));
                         }
                         
                         if ($nameAction != 'all') {
@@ -145,11 +83,11 @@ class Encuesta_Security_Acl extends Zend_Acl {
                         }
                         
                         if ($permissions == 'allow') {
-                            $this->allow($user,$recurso);
+                            $acl->allow($user,$recurso);
                         }
                         
                         if ($permissions == 'deny') {
-                            $this->deny($user, $recurso);
+                            $acl->deny($user, $recurso);
                         }
                         
                         // Si nameController == all la regla se aplica a todos los controllers
@@ -164,42 +102,12 @@ class Encuesta_Security_Acl extends Zend_Acl {
                         }*/
                         
                         //print_r("<br /><br />");
-                    }
-                }
+                   		}
+                	}
+            	}
             }
-            
-            /*
-            foreach ($controllers as $controller => $actions) {
-                
-                if ($controller == 'all') {
-                    $controller = null;
-                } else {
-                    if (!$this->has($controller)) {
-                        $this->add(new Zend_Acl_Resource($controller));
-                    }
-                }
-                
-                foreach ($actions as $action => $role) {
-                    
-                    if ($action == 'all') {
-                        $action = null;
-                    }
-                    
-                    if ($permissions == 'allow') {
-                        $this->allow($role,$controller,$action);
-                    }
-                    
-                    if ($permissions == 'deny') {
-                        $this->deny($role, $controller, $action);
-                    }
-                    
-                }
-                
-            }*/
-            
-        }
-        //print_r("function addResources <br />");
-    }
-
-
+		
+		//$acl->addResource($resource);
+		return $acl;
+	}
 }
