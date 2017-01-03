@@ -11,8 +11,8 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 	private $tablaGrupoSeccion;
 	private $tablaPregunta;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta(array('db'=>$dbAdapter));
 		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta(array('db'=>$dbAdapter));
@@ -199,7 +199,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		// Asignamos en el model su orden
 		$seccion->setOrden($orden);
 		// Siempre al crearse una seccion esta vacía es decir contiene 0 elementos
-		$seccion->setElementos("0");
+		//$seccion->setElementos("0");
 		$datos = $seccion->toArray();
 		unset($datos["fecha"]);
 		// Insertamos en la TablaSeccion (Puede arrojar Excepcion de la base de datos)

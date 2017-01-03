@@ -1,0 +1,11 @@
+<?php 
+	$links = $this->links;
+	
+	foreach ($links as $key => $value) : ?>
+		<a class="btn btn-primary btn-block"
+			href="<?php echo $this->url($value, null, true); ?>">
+			<?php echo $key; ?>
+		</a>
+<?php 		
+	endforeach
+?>

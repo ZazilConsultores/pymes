@@ -6,8 +6,8 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 	
 	private $tablaMateria;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaMateria = new Encuesta_Model_DbTable_MateriaEscolar(array('db'=>$dbAdapter));
 		//$this->tablaMateria->setDefaultAdapter($dbAdapter);

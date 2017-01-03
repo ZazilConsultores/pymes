@@ -11,18 +11,12 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 	private $tablaCiclo;
 	private $tablaAsignacionGrupo;
 	
-	function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaGrupo = new Encuesta_Model_DbTable_GrupoEscolar(array('db'=>$dbAdapter));
-		//$this->tablaGrupo->setDefaultAdapter($dbAdapter);
-		
 		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloEscolar(array('db'=>$dbAdapter));
-		//$this->tablaCiclo->setDefaultAdapter($dbAdapter);
-		
-		//$this->tablaProfesoresGrupo = new Encuesta_Model_DbTable_ProfesoresGrupo;
 		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
-		//$this->tablaAsignacionGrupo->setDefaultAdapter($dbAdapter);
 	}
 	
 	public function obtenerGrupos($idGrado,$idCiclo){
@@ -54,9 +48,13 @@ class Encuesta_DAO_Grupos implements Encuesta_Interfaces_IGrupos {
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
 		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$idAsignacion);
 		$asignacion = $tablaAsignacion->fetchRow($select);
-		if(is_null($asignacion)) throw new Util_Exception_BussinessException("Error: No hay asignacion de Docente-Materia con el id:<strong>".$idAsignacion."</strong>", 1);
+		//if(is_null($asignacion)) throw new Util_Exception_BussinessException("Error: No hay asignacion de Docente-Materia con el id:<strong>".$idAsignacion."</strong>", 1);
+		if (is_null($asignacion)) {
+			return null;
+		}else{
+		    return $asignacion->toArray();
+		}
 		
-		return $asignacion->toArray();
 	}
 	
 	/**

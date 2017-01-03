@@ -2,14 +2,19 @@
 
 class Encuesta_CicloController extends Zend_Controller_Action
 {
+
     private $cicloDAO = null;
-	private $planDAO = null;
+
+    private $planDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->cicloDAO = new Encuesta_DAO_Ciclo;
-		$this->planDAO = new Encuesta_DAO_Plan;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        $this->cicloDAO = new Encuesta_DAO_Ciclo($dataIdentity["adapter"]);
+		$this->planDAO = new Encuesta_DAO_Plan($dataIdentity["adapter"]);
     }
 
     public function indexAction()
@@ -44,13 +49,30 @@ class Encuesta_CicloController extends Zend_Controller_Action
     public function altaAction()
     {
         // action body
+        $request = $this->getRequest();
         $idPlan = $this->getParam("idPlan");
 		$plan = $this->planDAO->obtenerPlanEstudios($idPlan);
-        $request = $this->getRequest();
-        $formulario = new Encuesta_Form_AltaCiclo;
-		$this->view->formulario = $formulario;
+        //$formulario = new Encuesta_Form_AltaCiclo;
+		//$this->view->formulario = $formulario;
 		$this->view->plan = $plan;
 		if($request->isPost()){
+		    $datos = $request->getPost();
+            if (array_key_exists("vigente", $datos)) $datos["vigente"] = 1;
+            $inicio = new Zend_Date($datos["fechaInicio"], 'yyyy-MM-dd hh:mm:ss');
+            $termino = new Zend_Date($datos["fechaTermino"], 'yyyy-MM-dd hh:mm:ss');
+            $datos["inicio"] = $inicio->toString('yyyy-MM-dd hh:mm:ss');
+            $datos["termino"] = $termino->toString('yyyy-MM-dd hh:mm:ss');
+            $datos["idPlanEducativo"] = $idPlan;
+            $datos["fecha"] = date("Y-m-d H:i:s", time());
+            //print_r($datos);
+            $ciclo = new Encuesta_Models_Ciclo($datos);
+            try{
+                $this->cicloDAO->addCiclo($ciclo);//crearCiclo($datos);
+                $this->view->messageSuccess = "Ciclo Escolar: <strong>".$datos["ciclo"]. "</strong> dato de alta correctamente." ;
+            }catch(Util_Exception_BussinessException $ex){
+                $this->view->messageFail = $ex->getMessage();
+            }
+            /*
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				
@@ -69,6 +91,7 @@ class Encuesta_CicloController extends Zend_Controller_Action
 				}
 				
 			}
+            */
 		}
     }
 
@@ -87,8 +110,20 @@ class Encuesta_CicloController extends Zend_Controller_Action
 		}
     }
 
+    public function ciclosAction()
+    {
+        // action body
+        $idPlan = $this->getParam("idPlan");
+        $ciclos = $this->cicloDAO->getCiclosbyIdPlan($idPlan);//->obtenerCiclos($idPlan);
+        $plan = $this->planDAO->obtenerPlanEstudios($idPlan);
+        $this->view->ciclos = $ciclos;
+        $this->view->plan = $plan;
+    }
+
 
 }
+
+
 
 
 

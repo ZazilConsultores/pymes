@@ -330,12 +330,14 @@
               <actionMethod actionName="edita"/>
               <actionMethod actionName="baja"/>
               <actionMethod actionName="materias"/>
+              <actionMethod actionName="grados"/>
             </controllerFile>
             <controllerFile controllerName="Ciclo">
               <actionMethod actionName="index"/>
               <actionMethod actionName="admin"/>
               <actionMethod actionName="alta"/>
               <actionMethod actionName="edita"/>
+              <actionMethod actionName="ciclos"/>
             </controllerFile>
             <controllerFile controllerName="GrupoE">
               <actionMethod actionName="index"/>
@@ -364,6 +366,8 @@
             <controllerFile controllerName="Normalize">
               <actionMethod actionName="index"/>
               <actionMethod actionName="preferenciap"/>
+              <actionMethod actionName="nmaxvalgrupo"/>
+              <actionMethod actionName="nminvalgrupo"/>
             </controllerFile>
             <controllerFile controllerName="Plan">
               <actionMethod actionName="index"/>
@@ -465,6 +469,50 @@
             <controllerFile controllerName="Consulta">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Dashboard">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="User">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="login"/>
+              <actionMethod actionName="profile"/>
+              <actionMethod actionName="logout"/>
+            </controllerFile>
+            <controllerFile controllerName="Organizacion">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Home">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="login"/>
+              <actionMethod actionName="require"/>
+              <actionMethod actionName="join"/>
+              <actionMethod actionName="results"/>
+            </controllerFile>
+            <controllerFile controllerName="Error">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="noauth"/>
+            </controllerFile>
+            <controllerFile controllerName="Encuestas">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="editar"/>
+              <actionMethod actionName="config"/>
+              <actionMethod actionName="secciones"/>
+            </controllerFile>
+            <controllerFile controllerName="Docente">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="evaluaciones"/>
+            </controllerFile>
+            <controllerFile controllerName="Reporte">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="abiertas"/>
+              <actionMethod actionName="grupal"/>
+              <actionMethod actionName="general"/>
+              <actionMethod actionName="consulta"/>
+              <actionMethod actionName="descarga"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaEncuesta"/>
@@ -489,6 +537,8 @@
             <formFile formName="AltaPlan"/>
             <formFile formName="AltaEvaluacion"/>
             <formFile formName="AltaCapa"/>
+            <formFile formName="Login"/>
+            <formFile formName="Join"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -518,6 +568,16 @@
               <dbTableFile dbTableName="AsignacionGrupo"/>
               <dbTableFile dbTableName="Reporte"/>
               <dbTableFile dbTableName="ECapas"/>
+              <dbTableFile dbTableName="EncuestasOrganizacion"/>
+              <dbTableFile dbTableName="NivelesEducativosOrganizacion"/>
+              <dbTableFile dbTableName="RegistroOrganizacion"/>
+              <dbTableFile dbTableName="PlanesOrganizacion"/>
+              <dbTableFile dbTableName="CategoriasRespOrganizacion"/>
+              <dbTableFile dbTableName="Organizacion"/>
+              <dbTableFile dbTableName="Rol"/>
+              <dbTableFile dbTableName="Usuario"/>
+              <dbTableFile dbTableName="Subscripcion"/>
+              <dbTableFile dbTableName="ReportesEncuesta"/>
             </dbTableDirectory>
             <modelFile modelName="Encuesta"/>
             <modelFile modelName="Seccion"/>
@@ -1035,6 +1095,102 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="encrealizadas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Dashboard">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Organizacion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="login"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="require"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="join"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="login"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Error">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Error">
+                <viewScriptFile forActionName="noauth"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="profile"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="config"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="logout"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="results"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="secciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Ciclo">
+                <viewScriptFile forActionName="ciclos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="grados"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Docente">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Docente">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="abiertas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="grupal"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="general"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Docente">
+                <viewScriptFile forActionName="evaluaciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="nmaxvalgrupo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="nminvalgrupo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="descarga"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2188,12 +2344,14 @@
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="baja"/>
                 <testApplicationActionMethod forActionName="materias"/>
+                <testApplicationActionMethod forActionName="grados"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Ciclo">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="edita"/>
+                <testApplicationActionMethod forActionName="ciclos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="GrupoE">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2222,6 +2380,8 @@
               <testApplicationControllerFile forControllerName="Normalize">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="preferenciap"/>
+                <testApplicationActionMethod forActionName="nmaxvalgrupo"/>
+                <testApplicationActionMethod forActionName="nminvalgrupo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Plan">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2322,6 +2482,50 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Consulta">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Dashboard">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="User">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="login"/>
+                <testApplicationActionMethod forActionName="profile"/>
+                <testApplicationActionMethod forActionName="logout"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Organizacion">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Home">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="login"/>
+                <testApplicationActionMethod forActionName="require"/>
+                <testApplicationActionMethod forActionName="join"/>
+                <testApplicationActionMethod forActionName="results"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Error">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="noauth"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Encuestas">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="editar"/>
+                <testApplicationActionMethod forActionName="config"/>
+                <testApplicationActionMethod forActionName="secciones"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Docente">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="evaluaciones"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Reporte">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="abiertas"/>
+                <testApplicationActionMethod forActionName="grupal"/>
+                <testApplicationActionMethod forActionName="general"/>
+                <testApplicationActionMethod forActionName="consulta"/>
+                <testApplicationActionMethod forActionName="descarga"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

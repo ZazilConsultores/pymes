@@ -1,0 +1,44 @@
+<?php 
+    $organizacion = $this->organizacion;
+    
+?>
+<div class="row">
+    <div class="col-xs-2">
+        
+    </div>
+    <div class="col-xs-10">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h5 class="panel-title"><span class="fa fa-copy"></span> <?php echo (is_null($organizacion)) ? "Consulta de encuestas finalizadas" : $organizacion["nombre"]; ?> </h5>
+            </div>
+            <div class="panel-body">
+                <?php if (is_null($organizacion)) { ?>
+                <form class="form-inline" method="post" enctype="application/x-www-form-urlencoded">
+                    <div class="form-group">
+                        <label for="claveOrganizacion" class="control-label">Clave Organización</label>
+                        <input class="form-control" type="text" name="claveOrganizacion" placeholder="Clave Organización" />
+                    </div>
+                    
+                    <button type="submit" class="btn btn-info">
+                        <span class="glyphicon glyphicon-search"></span> Consultar
+                    </button>
+                </form>
+                <?php } ?>
+                <hr />
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>PDF</th>
+                            <th>Encuesta</th>
+                            <th>Tipo</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src=""></script>

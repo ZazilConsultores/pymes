@@ -8,8 +8,8 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	
 	private $tablaCiclo;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloEscolar(array('db'=>$dbAdapter));
 		//$this->tablaCiclo->setDefaultAdapter($dbAdapter);
@@ -60,8 +60,8 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	 */
 	public function addCiclo(Encuesta_Models_Ciclo $ciclo){
 		$tablaCiclo = $this->tablaCiclo;
-		
-		$tablaCiclo->insert($ciclo);
+		$datos = $ciclo->toArray();
+		$tablaCiclo->insert($datos);
 	}
 	
 	public function editCiclo($idCiclo, array $datos){

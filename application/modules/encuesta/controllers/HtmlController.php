@@ -12,15 +12,15 @@ class Encuesta_HtmlController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
-		
-		$this->encuestaDAO = new Encuesta_DAO_Encuesta;
-		$this->seccionDAO = new Encuesta_DAO_Seccion;
-		$this->grupoDAO = new Encuesta_DAO_Grupo;
-		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
+        $auth = Zend_Auth::getInstance();
+        $this->identity = $auth->getIdentity();
+        $this->encuestaDAO = new Encuesta_DAO_Encuesta($this->identity["adapter"]);
+		$this->seccionDAO = new Encuesta_DAO_Seccion($this->identity["adapter"]);
+		$this->grupoDAO = new Encuesta_DAO_Grupo($this->identity["adapter"]);
+		$this->preguntaDAO = new Encuesta_DAO_Pregunta($this->identity["adapter"]);
     }
 
-    public function indexAction()
-    {
+    public function indexAction() {
         // action body
     }
 

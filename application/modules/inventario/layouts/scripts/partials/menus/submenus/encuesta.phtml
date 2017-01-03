@@ -1,0 +1,44 @@
+<!-- Menú de operaciones de consulta -->
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+		Encuesta
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'consulta', 'action' => 'index'), null, true); ?>" tipoVista="consulta">
+				<span class="glyphicon glyphicon-search"></span> Encuestas Realizadas 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'plan', 'action' => 'index'), null, true); ?>" tipoVista="operacion">
+				Planes de Estudio 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'nivel', 'action' => 'index'), null, true); ?>" tipoVista="operacion">
+				Niveles Escolares 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'profesor', 'action' => 'index'), null, true); ?>" tipoVista="operacion">
+				Profesores 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'registro', 'action' => 'index'), null, true); ?>" tipoVista="consulta">
+				Usuarios
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'categoria', 'action' => 'index'), null, true); ?>" tipoVista="operacion">
+				Categorias 
+			</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'encuesta', 'controller' => 'index', 'action' => 'index'), null, true); ?>" tipoVista="operacion">
+				Encuestas Activas 
+			</a>
+		</li>
+	</ul>
+</li>

@@ -4,49 +4,97 @@
 	$messageSuccess = $this->messageSuccess;
 	$messageFail = $this->messageFail;
 ?>
-<section class="row">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Nuevo Ciclo Escolar
-			</h3>
-		</div>
-		<div class="panel-body">
-			<?php if(!is_null($messageSuccess)){ ?>
-			<div class="alert alert-success" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageSuccess; ?>
-			</div>
-			<?php }elseif(!is_null($messageFail)){ ?>
-			<div class="alert alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageFail; ?>
-			</div>
-			<?php } ?>
-			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index","idPlan"=>$plan["idPlanEducativo"]), null, true); ?>">
-				<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Ciclos Escolares.
-			</a><br /><br />
-			<?php echo $formulario ?>
-		</div>
-	</div>
-</section>
+<div class="row-fluid">
+    <div class="span12 widget-box">
+        <div class="widget-title">
+            <h5>Nuevo Ciclo Escolar</h5>
+        </div>
+        <div class="widget-content">
+            <div>
+                <a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"index","idPlan"=>$plan["idPlanEducativo"]),null,true) ?>">
+                    <span class="icon icon-arrow-left"></span> Regresar a Ciclos Escolares
+                </a><br />
+                <?php if(!is_null($messageSuccess)){ ?>
+                <br />
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <?php echo $messageSuccess; ?>
+                </div>
+                <?php }elseif(!is_null($messageFail)){ ?>
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <?php echo $messageFail; ?>
+                </div>
+                <br />
+                <?php } ?>
+            </div>
+            <hr />
+            <div>
+                <form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+                    <div class="control-group">
+                        <label class="control-label" for="ciclo">Ciclo: </label>
+                        <div class="controls">
+                            <input name="ciclo" class="span10" type="text" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="fechaInicio">Fecha Inicio: </label>
+                        <div class="controls">
+                            <input name="fechaInicio" class="span10" type="text" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="fechaTermino">Fecha Termino</label>
+                        <div class="controls">
+                            <input name="fechaTermino" class="span10" type="text" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="vigente">Ciclo en Curso: </label>
+                        <div class="controls">
+                            <input name="vigente" type="checkbox" />
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="descripcion">Descripcion: </label>
+                        <div class="controls">
+                            <input name="descripcion" class="span10" type="text" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <div class="pull-right">
+                            <button class="btn btn-success" type="submit">
+                                <span class="icon icon-save"></span> Guardar Ciclo Escolar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 	$().ready(function(){
 		$.datepicker.setDefaults( $.datepicker.regional[ "es" ] );
 		//$("input.fechaInicio").datepicker( $.datepicker.regional[ "es" ] );
 		//$("input.fechaTermino").datepicker( $.datepicker.regional[ "es" ] );
-		$("input.fechaInicio").datepicker({
+		$("[name='fechaInicio']").datepicker({
 			//showOn: "both",
 			//minDate: 0,
 			changeMonth: true,
 			changeYear: true,
 			dateFormat: "dd/mm/yy"
 		});
-		$("input.fechaTermino").datepicker({
+		$("[name='fechaTermino']").datepicker({
 			//showOn: "both",
 			minDate: 0,
 			changeMonth: true,

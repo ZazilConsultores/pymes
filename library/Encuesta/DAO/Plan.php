@@ -8,8 +8,8 @@ class Encuesta_DAO_Plan implements Encuesta_Interfaces_IPlan {
 	
 	private $tablaPlanEstudios;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaPlanEstudios = new Encuesta_Model_DbTable_PlanEducativo(array('db'=>$dbAdapter));
 	}
@@ -19,6 +19,7 @@ class Encuesta_DAO_Plan implements Encuesta_Interfaces_IPlan {
 		$tablaPlan = $this->tablaPlanEstudios;
 		$select = $tablaPlan->select()->from($tablaPlan)->where("idPlanEducativo=?",$idPlan);
 		$plan = $tablaPlan->fetchRow($select);
+        //$model = new Encuesta_Models_PlanEducativo();
 		return $plan->toArray();
 	}
 	
@@ -45,11 +46,7 @@ class Encuesta_DAO_Plan implements Encuesta_Interfaces_IPlan {
 	 */
 	public function agregarPlanEstudios(array $plan){
 		$tablaPlan = $this->tablaPlanEstudios;
-		try{
-			$tablaPlan->insert($plan);
-		}catch(Exception $ex){
-			throw new Util_Exception_BussinessException("Error: Problema al agregar nuevo plan de estudios. <br />" . $ex->getMessage());
-		}
+        $tablaPlan->insert($plan);
 	}
 	// =====================================================================================>>>   Actualizar
 	public function actualizarPlanEstudios($idPlan, $datos){

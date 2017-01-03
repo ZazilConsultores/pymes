@@ -12,8 +12,8 @@ class Encuesta_DAO_Respuesta implements Encuesta_Interfaces_IRespuesta {
 	private $tablaPreferenciaSimple;
 	private $tablaERealizadas;
 	
-	function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaCategoria = new Encuesta_Model_DbTable_CategoriasRespuesta(array('db'=>$dbAdapter));
 		

@@ -71,8 +71,8 @@ class Encuesta_Models_Encuesta
 		if(array_key_exists("idEncuesta", $datos)) $this->idEncuesta = $datos["idEncuesta"];
 		$this->nombre = $datos["nombre"];
 		$this->nombreClave = $datos["nombreClave"];
-		$this->estatus = $datos["estatus"];
-		$this->descripcion = $datos["descripcion"];
+        if(array_key_exists("estatus", $datos)) $this->estatus = $datos["estatus"];
+        $this->descripcion = $datos["descripcion"];
 		if(array_key_exists("fecha", $datos)) $this->fecha = $datos["fecha"];
 		
 	}

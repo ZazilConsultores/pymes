@@ -2,12 +2,19 @@
 
 class Encuesta_NormalizeController extends Zend_Controller_Action
 {
-	private $opcionDAO = null;
+
+    private $grupoDAO = null;
+
+    private $opcionDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->opcionDAO = new Encuesta_DAO_Opcion;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        $this->opcionDAO = new Encuesta_DAO_Opcion($dataIdentity["adapter"]);
+        $this->grupoDAO = new Encuesta_DAO_Grupo($dataIdentity["adapter"]);
     }
 
     public function indexAction()
@@ -25,8 +32,26 @@ class Encuesta_NormalizeController extends Zend_Controller_Action
         }
     }
 
+    public function nmaxvalgrupoAction()
+    {
+        // action body
+        $grupoDAO = $this->grupoDAO;
+        $this->view->mensaje = $grupoDAO->normalizarValorMaximo();
+    }
+
+    public function nminvalgrupoAction()
+    {
+        // action body
+        $grupoDAO = $this->grupoDAO;
+        $this->view->mensaje = $grupoDAO->normalizarValorMinimo();
+    }
+
 
 }
+
+
+
+
 
 
 

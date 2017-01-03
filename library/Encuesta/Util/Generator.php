@@ -24,21 +24,21 @@ class Encuesta_Util_Generator {
 	private $decoratorsGrupo;
 	private $decoratorsPregunta;
 	
-	public function __construct() {
-		$this->encuestaDAO = new Encuesta_DAO_Encuesta;
-		$this->seccionDAO = new Encuesta_DAO_Seccion;
-		$this->grupoDAO = new Encuesta_DAO_Grupo;
-		$this->preguntaDAO = new Encuesta_DAO_Pregunta;
-		$this->categoriaDAO = new Encuesta_DAO_Categoria;
-		$this->opcionDAO = new Encuesta_DAO_Opcion;
-		$this->registroDAO = new Encuesta_DAO_Registro;
-		$this->respuestaDAO = new Encuesta_DAO_Respuesta;
-		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
+	public function __construct($dbAdapter) {
+		$this->encuestaDAO = new Encuesta_DAO_Encuesta($dbAdapter);
+		$this->seccionDAO = new Encuesta_DAO_Seccion($dbAdapter);
+		$this->grupoDAO = new Encuesta_DAO_Grupo($dbAdapter);
+		$this->preguntaDAO = new Encuesta_DAO_Pregunta($dbAdapter);
+		$this->categoriaDAO = new Encuesta_DAO_Categoria($dbAdapter);
+		$this->opcionDAO = new Encuesta_DAO_Opcion($dbAdapter);
+		$this->registroDAO = new Encuesta_DAO_Registro($dbAdapter);
+		$this->respuestaDAO = new Encuesta_DAO_Respuesta($dbAdapter);
+		$this->preferenciaDAO = new Encuesta_DAO_Preferencia($dbAdapter);
 		
-		$this->materiaDAO = new Encuesta_DAO_Materia;
-		$this->gruposDAO = new Encuesta_DAO_Grupos;
-		$this->gradoDAO = new Encuesta_DAO_Grado;
-		$this->nivelDAO = new Encuesta_DAO_Nivel;
+		$this->materiaDAO = new Encuesta_DAO_Materia($dbAdapter);
+		$this->gruposDAO = new Encuesta_DAO_Grupos($dbAdapter);
+		$this->gradoDAO = new Encuesta_DAO_Grado($dbAdapter);
+		$this->nivelDAO = new Encuesta_DAO_Nivel($dbAdapter);
 		
 		$this->formDecorators = array(
 			'FormElements',

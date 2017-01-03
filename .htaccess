@@ -1,0 +1,46 @@
+
+#<Directory "/public">
+#	Allow from all
+#	Options +Indexes
+#</Directory>
+RewriteEngine On
+#Variable para produccion
+#SetEnv SITE_URL "http://www.zazil-apps/"
+#Variable para desarrollo hostlocal
+#SetEnv SITE_URL "http://localhost/General"
+#Variable para desarrollo red local 
+#SetEnv SITE_URL "http://localhost/General"
+DirectoryIndex index.php
+
+#Options ExecCGI Includes IncludesNOEXEC SymLinksIfOwnerMatch -Indexes
+Options -Indexes
+#ErrorDocument 500 /errorpages/500.html
+
+
+# The following rule tells Apache that if the requested filename
+# exists, simply serve it.
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+
+#RewriteRule ^/public/(.*)$ http://localhost/Secure/ [R=301,L]
+
+#RewriteRule ^/public/(.*)$ /$1 [R=301,NC,L]
+# The following rewrites all other queries to index.php. The 
+# condition ensures that if you are using Apache aliases to do
+# mass virtual hosting, the base path will be prepended to 
+# allow proper resolution of the index.php file; it will work
+# in non-aliased environments as well, providing a safe, one-size 
+# fits all solution.
+#RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::$
+#RewriteRule ^(.*)$ - [E=BASE:%1]
+#RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+
+#RewriteCond ${HTTP_HOST} ^localhost/General/public/$1 [NC]
+#RewriteRule ^(.*)$ localhost/General/$1 [L, R=301, NC]
+#RewriteRule ^(.*)$ http://localhost/General/$1 [L, R=301, NC]
+#<Directory /public >
+#	Options +Indexes
+#</Directory>

@@ -43,8 +43,46 @@ class Encuesta_NormalizeControllerTest extends Zend_Test_PHPUnit_ControllerTestC
             );
     }
 
+    public function testNmaxvalgrupoAction()
+    {
+        $params = array('action' => 'nmaxvalgrupo', 'controller' => 'Normalize', 'module' => 'encuesta');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
+    public function testNminvalgrupoAction()
+    {
+        $params = array('action' => 'nminvalgrupo', 'controller' => 'Normalize', 'module' => 'encuesta');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
 
 }
+
+
+
+
 
 
 
