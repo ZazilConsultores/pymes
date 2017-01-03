@@ -399,6 +399,11 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$subImpuestos->setElementDecorators($decoratorsElemento);
 
 		$subImpuestos->setDecorators($decoratorsPresentacion);
+		
+		$ePrueba = new Zend_Form_Element_Text('iepss');
+		$ePrueba->setLabel('Prueba IEPS: ');
+		$ePrueba->setAttrib("class", "form-control");
+		
 
 		$eSubmit =  new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
@@ -412,7 +417,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		
 
 		$this->addElement($eSubmit); 
-
+		$this->addElement($ePrueba);
 			
 
     }

@@ -87,7 +87,7 @@
 						</tr>
 					</tfoot>	
 				</table>
-				<table>
+				<table id="impuestos">
 					<thead>
 						
 					</thead>
@@ -124,8 +124,8 @@ $(document).ready(function () {
 	console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		//var jsonImpuestos = <?php echo $this->jsonImpuestos; ?>;
-		
+		//Pruebas ImpuestoProducto 
+		var jsonImpuestoProductos = <?php echo $this->jsonImpuestos; ?>;
 		//console.dir(jsonImpuestos);
 		
     var filasTabla = 1;
@@ -180,6 +180,56 @@ $(document).ready(function () {
 			);
     });
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         calculateRow($(this).closest("tr"));
         calculateGrandTotal();
@@ -208,7 +258,61 @@ function calculateGrandTotal() {
     $("#grandtotal").text(grandTotal.toFixed(2));
     $("#subTotal").val(grandTotal.toFixed(2));
     /*Descuento*/
-     
+   $("table#productos").keyup("input[id^='subtotal']", function(){
+    
+    /*var iproducto = $("#descripcion_");
+	var producto = ($('select[id^="descripcion_"]').val());
+	console.log(producto);*/
+	
+	 $("table#productos").on("change", "select[id^='descripcion_']", function(){
+	 	var descripcion= $(this).attr("id");
+		var arr = descripcion.split('_');
+		var producto = $(this).val();		 	
+    	console.log(producto);
+    	 //La ruta donde comparamos visualizamos los productos
+    	 var url = window.location.origin + "/General/public/";
+    	 var urlImpuestoProducto = url + "contabilidad/json/impuestoproducto/idProducto/"+producto;
+    	 console.log(urlImpuestoProducto); 
+    	 $("input#iepss").val(urlImpuestoProducto.idImpuesto);
+    	$.ajax({
+					url:url,
+					dataType: "json",
+					success: function(data){
+						//console.dir("valor" + data);
+						//$("input#iepss").empty();
+						$("input#iepss").val(data.idImpuesto);
+					}
+				});
+    });
+			    
+     if($("#descuento").val()!== "0") {
+    	console.log("El descuento es diferente de cero");
+    	//$("#descuentoGenerado").val(descuento);
+    	descuento = grandTotal - parseFloat( $("#descuento").val());
+		console.log(grandTotal);
+		console.log($("#descuento").val());
+		//console.log(descuento);
+		//Realiza el total, cuando hay descuento
+		total =  parseFloat($("#descuentoGenerado").val(descuento));
+    	console.log(total);
+    	 // Si el producto esta dentro de la tabla ImpustoProducto
+    	
+    	 var url = window.location.origin + "/General/public/"+"contabilidad/json/impuestoproducto/idProducto/" + producto;
+			console.log(url);
+			
+			$.ajax({
+				url: url,
+			});
+			
+			if (url=="" ){
+				console.log("No contiene ipes");
+				}else{
+				console.log("Contiene IEPS");	
+				}
+			
+    }
+   }); 
+
     /*	 */
   }
   //Funcion Eliminar #btnLimpiar_2
@@ -254,19 +358,23 @@ $("select#idSucursal").on('click', function(){
 				});
 		});
 function descuento() {  
-	var descuento = 0;
+	/*var descuento = 0;
 	var total = 0;	
-	$("table#order-list ").keyup("input[id^='subtotal']", function(){
+	$("table#productos").keyup("input[id^='subtotal']", function(){
   	
     if($("#descuento").val()!== "0") {
     	console.log("El descuento es diferente de cero");
-    	$("#descuentoGenerado").val(descuento);
+    	//$("#descuentoGenerado").val(descuento);
     	descuento = parseFloat($("#subtotal").val()) - parseFloat( $("#descuento").val());
+		console.log($(this).val());
+		console.log($("#descuento").val());
+		console.log(descuento);
 		//Realiza el total, cuando hay descuento
-		total =  parseFloat( $("#descuentoGenerado").val(descuento));
+		/*total =  parseFloat( $("#descuentoGenerado").val(descuento));
     	console.log(total);
-    }
-    }); 
+    	 //$("#descuentoGenerado").val(total.toFixed(2));*/
+    //}
+    //}); 
   
 }
 

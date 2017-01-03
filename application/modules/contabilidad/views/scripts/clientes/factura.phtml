@@ -52,7 +52,8 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		//var jsonImpuestos = <?php echo $this->jsonImpuestos; ?>;
+		//Pruebas ImpuestoProducto 
+		var jsonImpuestoProductos = <?php echo $this->jsonImpuestos; ?>;
 		
 		//console.dir(jsonImpuestos);
 		
@@ -328,8 +329,16 @@
 		}else{
 		$(this).css('background',''); // quitamos el fondo rojo si este esta lleno
 		}
-		return formvalido; // retornamos segun corresponda
+		return formvalido; // retornamos segun orresponda
 	});
 	});
+	
+	//Crea consecutivo, para el consecutivo .... No encuentro json para traer las empresasa
+	$("select#idEmpresas").on('change', function (){
+		//var urlConsultaEncuesta = url + "encuesta/json/grados/idNivel/" + idNivel;
+		var urlConsultaConsetivo = url + "contabilidad/json"
+			
+	});
+	
 	});
 </script>

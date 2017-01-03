@@ -40,6 +40,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eNumFactura = new Zend_Form_Element_Text('numeroFactura');
 		$eNumFactura->setLabel('Número de Factura: ');
 		$eNumFactura->setAttrib("class", "form-control");
+		$eNumFactura->setAttrib("enable","false");
 		
 		$eFolioFiscal = new Zend_Form_Element_Text('folioFiscal');
 		$eFolioFiscal->setLabel('Folio Fiscal: ');
@@ -142,7 +143,13 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
 		}
 		
-		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia/*,$eImporte*/));
+		$eComentario = new Zend_Form_Element_Textarea('comentario');
+		$eComentario->setLabel('Comentario');
+		$eComentario->setAttrib('cols', '3');
+		$eComentario->setAttrib('rows', '3');
+		$eComentario->setAttrib("class","form-control");
+		
+		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia/*,$eImporte*/,$eComentario));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 				

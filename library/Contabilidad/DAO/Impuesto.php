@@ -163,5 +163,17 @@
 				$tablaImpuestoProducto->insert($impuestoProducto->toArray());
 			}
 		}
+		
+		public function obtenerImpuestoProducto($idProducto) {
+			$tablaImpuestoProductos = $this->tablaImpuestoProductos;
+			$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where("idProducto = ?", $idProducto);
+			$rowImpuestoProductos = $tablaImpuestoProductos->fetchRow($select);
+			
+			if (is_null($rowImpuestoProductos)) {
+				return null;
+			}else{
+				return $rowImpuestoProductos->toArray();
+			}
+		}
    }
 ?>

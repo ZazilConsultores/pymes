@@ -121,11 +121,8 @@ $application->bootstrap()
  $connlocal = array(
 
 		'host' => 'localhost',
-
 		'username' => 'zazil',
-
 		'password' => 'admin',
-
 		'dbname' => 'GeneralE',
 
 	);

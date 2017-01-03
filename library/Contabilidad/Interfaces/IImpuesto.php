@@ -9,5 +9,7 @@
 	public function enlazarProductoImpuesto(Contabilidad_Model_ImpuestoProductos $impuestoProducto,$idImpuesto, $idProducto);
 	public function obtenerByImpuestos($idImpuesto);
 	public function obtenerByProductos($idProducto);
+	
+	public function obtenerImpuestoProducto($idProducto);
    }
 ?>
