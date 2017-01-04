@@ -13,12 +13,13 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	private $tablaEmpresa;
 	
 	public function __construct() {
-		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
-		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
-		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
-		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
-		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
+		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
+		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 	}
 
 	public function obtenerProveedores(){

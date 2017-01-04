@@ -11,10 +11,11 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 	private $tablaCuentasxc;
 	
 	public function __construct(){
-		$this->tablaBancosEmpresa = new Contabilidad_Model_DbTable_BancosEmpresa;
-		$this->tablaBanco =  new Contabilidad_Model_DbTable_Banco;
-		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp;
-		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaBancosEmpresa = new Contabilidad_Model_DbTable_BancosEmpresa(array('db'=>$dbAdapter));
+		$this->tablaBanco =  new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
+		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
 	}
 		
 	public function obtenerBancosEmpresas(){

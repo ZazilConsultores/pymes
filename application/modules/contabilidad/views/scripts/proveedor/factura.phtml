@@ -180,56 +180,6 @@ $(document).ready(function () {
 			);
     });
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         calculateRow($(this).closest("tr"));
         calculateGrandTotal();
@@ -264,26 +214,7 @@ function calculateGrandTotal() {
 	var producto = ($('select[id^="descripcion_"]').val());
 	console.log(producto);*/
 	
-	 $("table#productos").on("change", "select[id^='descripcion_']", function(){
-	 	var descripcion= $(this).attr("id");
-		var arr = descripcion.split('_');
-		var producto = $(this).val();		 	
-    	console.log(producto);
-    	 //La ruta donde comparamos visualizamos los productos
-    	 var url = window.location.origin + "/General/public/";
-    	 var urlImpuestoProducto = url + "contabilidad/json/impuestoproducto/idProducto/"+producto;
-    	 console.log(urlImpuestoProducto); 
-    	 $("input#iepss").val(urlImpuestoProducto.idImpuesto);
-    	$.ajax({
-					url:url,
-					dataType: "json",
-					success: function(data){
-						//console.dir("valor" + data);
-						//$("input#iepss").empty();
-						$("input#iepss").val(data.idImpuesto);
-					}
-				});
-    });
+	 
 			    
      if($("#descuento").val()!== "0") {
     	console.log("El descuento es diferente de cero");
@@ -375,6 +306,33 @@ function descuento() {
     	 //$("#descuentoGenerado").val(total.toFixed(2));*/
     //}
     //}); 
+    $("table#productos").on("change", "select[id^='descripcion_']", function(){
+	 	//var cantidad = ("input[id^='idCantidad_']);
+	 	//var 
+	 	var descripcion= $(this).attr("id");
+		var arr = descripcion.split('_');
+		var producto = $(this).val();		 	
+    	console.log(producto);
+    	 //La ruta donde comparamos visualizamos los productos
+    	 var url = window.location.origin + "/General/";
+    	 var urlImpuestoProducto = url + "contabilidad/json/impuestoproducto/idProducto/"+producto;
+    	 //console.log(urlImpuestoProducto); 
+    	 
+    	$.ajax({
+					url:urlImpuestoProducto,
+					dataType: "json",
+					success: function(data){
+						var ieps = data['importe'];
+						console.log(ieps);
+						//var cantidad = $('input[id^="idCantidad_"]').val()
+						//console.log(cantidad);
+						var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
+						//(parseFloat($("#subTotal").val())
+						$('input#ieps').val(impIEPS.toFixed(2))
+					}
+				});
+				
+    });
   
 }
 

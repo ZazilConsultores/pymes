@@ -4,9 +4,9 @@ class Contabilidad_DAO_TipoMovimiento implements Contabilidad_Interfaces_ITipoMo
 
 	private $tablaTipoMovimiento;
 	
-	public function __construct()
-	{
-		$this->tablaTipoMovimiento= new Contabilidad_Model_DbTable_TipoMovimiento;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaTipoMovimiento= new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerTiposMovimientos(){

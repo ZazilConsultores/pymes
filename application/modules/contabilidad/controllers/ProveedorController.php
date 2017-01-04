@@ -11,9 +11,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         //==============Muestra los links del submenu=======================
        	$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		//$this->view->links = $this->links;
-	
-		$this->db = Zend_Db_Table::getDefaultAdapter();
-		
+		$adapter = Zend_Registry::get('dbmodgeneral');
+		//$this->db = Zend_Db_Table::getDefaultAdapter();
+		//$this->db = Zend_Db::factory('pdo_mysql',$adapter);
+		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
@@ -24,7 +25,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$rowsUnidad =  $statement->fetchAll();
 
 		//Impuesto Producto
-		$select = $this->db->select()->from('impuestoProductos');
+		$select = $this->db->select()->from('ImpuestoProductos');
 		$statement = $select->query();
 		$rowImpuesto =$statement->fetchAll();
 		///////////////////

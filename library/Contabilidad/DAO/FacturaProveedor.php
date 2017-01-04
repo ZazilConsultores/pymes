@@ -19,22 +19,25 @@
 		private $tablaProveedor;
 		private $tablaUnidad;
 		private $tablaImpuestoProductos;
+		private $tablaFacturaImpuesto;
 		
 		public function __construct() {
-			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura;
-			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle;
-			
-			$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
-			$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
-			$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
-			$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
-			$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;
-			$this->tablaProducto = new Inventario_Model_DbTable_Producto;
-			$this->tablaBanco = new Contabilidad_Model_DbTable_Banco;
-			$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores;
-			$this->tablaUnidad = new Inventario_Model_DbTable_Unidad;
-			$this->tablaProducto = new Inventario_Model_DbTable_Producto;
-			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos;
+			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
+			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
+		
+			$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
+			$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
+			$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+			$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
+			$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+			$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+			$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
+			$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
+			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
+			//$this->$tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
 		}
 		
 			
@@ -133,6 +136,24 @@
 					);
 					//print_r($mCuentasxp);
 					$bd->insert("Cuentasxp", $mCuentasxp);
+					
+					//Guarda impuestoFactura
+				
+					print_r($idFactura);
+					//Obtine el ultimo id en tabla factura
+				//$idFactura = $bd->lastInsertId("Factura","idFactura");
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+				$rowIdFactura =$tablaFactura->fetchRow($select);
+				$idFactura = $rowIdFactura['idFactura'];
+				print_r($idFactura);
+					$mfacturaImpuesto = array(
+						'idFactura'=>$idFactura ,
+						'idImpuesto'=>24,
+						'importe'=>$encabezado['ieps'],	
+					);
+					//print_r($mCuentasxp);
+					$bd->insert("FacturaImpuesto", $mfacturaImpuesto);
 						
 					}
 				

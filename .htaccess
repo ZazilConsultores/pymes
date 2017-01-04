@@ -10,7 +10,7 @@ RewriteEngine On
 #SetEnv SITE_URL "http://localhost/General"
 #Variable para desarrollo red local 
 #SetEnv SITE_URL "http://localhost/General"
-DirectoryIndex index.php
+#DirectoryIndex index.php
 
 #Options ExecCGI Includes IncludesNOEXEC SymLinksIfOwnerMatch -Indexes
 Options -Indexes

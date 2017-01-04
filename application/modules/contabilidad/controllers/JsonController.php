@@ -22,8 +22,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
 		
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
-
-		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa(array('db'=>$dbAdapter));;
 		
 
     }

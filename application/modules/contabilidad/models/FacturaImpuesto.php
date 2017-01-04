@@ -3,15 +3,6 @@
 class Contabilidad_Model_FacturaImpuesto
 {
 
-	private $idFacturaImpuesto;
-
-    public function getIdFacturaImpuesto() {
-        return $this->idFacturaImpuesto;
-    }
-    
-    public function setIdFacturaImpuesto($idFacturaImpuesto) {
-        $this->idFacturaImpuesto = $idFacturaImpuesto;
-    }
 
 	private $idFactura;
 
@@ -23,55 +14,33 @@ class Contabilidad_Model_FacturaImpuesto
         $this->idFactura = $idFactura;
     }
 	
-    private $isrImporte;
+    private $idImpuesto;
 
-    public function getIsrImporte() {
-        return $this->isrImporte;
+    public function getIdImpuesto() {
+        return $this->idImpuesto;
     }
     
-    public function setIsrImporte($isrImporte) {
-        $this->isrImporte = $isrImporte;
+    public function setIdImpuesto($idImpuesto) {
+        $this->idImpuesto = $idImpuesto;
     }
 
-    	
-    private $iepsImporte;
+       	
+    private $importe;
 
-    public function getIepsImporte() {
-        return $this->iepsImporte;
-    }
-    
-    public function setIepsImporte($iepsImporte) {
-        $this->iepsImporte = $iepsImporte;
-    }
-
-    private $ivaImporte;
-
-    public function getIvaImporte() {
-        return $this->ivaImporte;
+    public function getImporte() {
+        return $this->importe;
     }
     
-    public function setIvaImporte($ivaImporte) {
-        $this->ivaImporte = $ivaImporte;
+    public function setImporte($importe) {
+        $this->importe = $importe;
     }
 
-    private $ishImporte;
-
-    public function getIshImporte() {
-        return $this->ishImporte;
-    }
-    
-    public function setIshImporte($ishImporte) {
-        $this->ishImporte = $ishImporte;
-    }
-
-    
+        
     public function __construct(array $datos){
-    	if (array_key_exists("idFacturaImpuesto", $datos)) $this->idFacturaImpuesto = $datos["idFacturaImpuesto"];
-    	$this->idFactura = $datos["idFactura"];
-		$this->isrImporte = $datos["isrImporte"];
-		$this->iepsImporte = $datos["iepsImporte"];
-		$this->ivaImporte = $datos["ivaImporte"];
-		$this->ishImporte = $datos["ishImporte"];
+    	if (array_key_exists("idFactura", $datos)) $this->idFactura = $datos["idFactura"];
+    	if (array_key_exists("idImpuesto", $datos)) $this->idImpuesto = $datos["idImpuesto"];
+		$this->importe = $datos["importe"];
+		
 		
 	}
 	
@@ -79,19 +48,12 @@ class Contabilidad_Model_FacturaImpuesto
 	{
 		$datos = array();
 		
-		$datos["idFacturaImpuesto"] = $this->idFacturaImpuesto;
 		$datos["idFactura"] = $this->idFactura;
-		$datos["isrImporte"] = $this->isrImporte;	
-		$datos["iepsImporte"] = $this->iepsImporte;
-		$datos["ivaImporte"]=$this->ivaImporte;
-		$datos["ishImporte"]=$this->ishImporte;
-		
+		$datos["idImpuesto"] = $this->idImpuesto;
+		$datos["importe"] = $this->importe;	
 		return $datos;		
 		
 	}
-
-	
-
 
 }
 

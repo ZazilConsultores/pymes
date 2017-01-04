@@ -55,7 +55,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$front->registerPlugin(new App_Plugins_Layout($moduleNames));
 		// Instanciamos el plugin ACL
 		$recursos = new App_Security_Recurso();
-		$front->registerPlugin(new App_Plugins_Acl($recursos->getAcl()));
+		//$front->registerPlugin(new App_Plugins_Acl($recursos->getAcl()));
 		//$front->registerPlugin(new Modules_Controller_Plugin_RequestedModuleLayoutLoader());
 		//$front->registerPlugin(new Encuesta_Plugin_Acl($recursos->getAcl()));
 	}

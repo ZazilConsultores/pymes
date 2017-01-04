@@ -8,11 +8,11 @@
 	private $tablaEmail;
 	
 public function __construct() {
-		//$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$this->tablaVendedores = new Sistema_Model_DbTable_Vendedor;	
-		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio;
-		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono;
-		$this->tablaEmail = new Sistema_Model_DbTable_Email;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaVendedores = new Sistema_Model_DbTable_Vendedor(array('db'=>$dbAdapter));	
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
+		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
 	}
 	
 		

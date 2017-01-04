@@ -8,7 +8,7 @@
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaImpuesto = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
 		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
-		$this->tablaProducto = new Inventario_Model_DbTable_Producto;	
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerImpuestos()
