@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>General Application</title>
+		<meta name="description" content="">
+		<meta name="author" content="Hector Rodriguez">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="<?php echo $this->baseUrl() ?>/images/icono.png">
+		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/images/engranes.jpg">
+		
+		
+		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/css/graficas.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.structure.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery-ui.theme.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/css/responsive.bootstrap.min.css" />
+		
+		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-1.11.2.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.validate.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/additional-methods.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/jquery-ui.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/datepicker-es.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/bootstrap.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/jquery.dataTables.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.bootstrap.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/dataTables.responsive.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/responsive.bootstrap.min.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/generartabla.js"></script>
+		<script src="<?php echo $this->baseUrl(); ?>/js/Chart.js"></script>
+	
+		
+		<style>
+			body{
+				padding-top: 70px;
+			}
+			textarea{
+				resize: none;
+			}
+			.error{
+				color: #FF7F00;
+				font-family: monospace;
+			}
+			.optional{
+				font-family: monospace;
+				color: #005580;
+			}
+			/******************************** Estilos para menus y submenus anidados */
+			.dropdown-submenu {
+				position: relative;
+			}
+			
+			.dropdown-submenu > .dropdown-menu {
+				top: 0;
+				left: 100%;
+				margin-top: -6px;
+				margin-left: -1px;
+				-webkit-border-radius: 0 6px 6px 6px;
+				-moz-border-radius: 0 6px 6px;
+				border-radius: 0 6px 6px 6px;
+			}
+			
+			.dropdown-submenu:hover > .dropdown-menu {
+				display: block;
+			}
+			
+			.dropdown-submenu > a:after {
+				display: block;
+				content: " ";
+				float: right;
+				width: 0;
+				height: 0;
+				border-color: transparent;
+				border-style: solid;
+				border-width: 5px 0 5px 5px;
+				border-left-color: #CCCCCC;
+				margin-top: 5px;
+				margin-right: -10px;
+			}
+			
+			.dropdown-submenu .pull-left > .dropdown-menu {
+				left: -100%;
+				margin-left: 10px;
+				-webkit-border-radius: 0 6px 6px 6px;
+				-moz-border-radius: 0 6px 6px;
+				border-radius: 0 6px 6px 6px; 
+			}
+			
+		</style>
+		<script>
+			$().ready(function(){
+				// Opciones default de jQuery Validator
+				jQuery.validator.setDefaults({
+					wrapper: "div",
+					errorElement: "label"
+				});
+				// Opciones default de ChartJS
+				//Chart.defaults.global.responsive = true;
+				
+			});
+		</script>
+	</head>
+
+	<body>
+		<!-- Menu principal -->
+		<?php echo $this->partial("partials/menus/principal.phtml"); ?>
+		<?php
+			$anchoLateral = "col-md-2";
+			$anchoPrincipal = "col-md-10";
+			$anchoTotal = "col-md-12";
+		 ?>
+		<br />
+		<div class="container">
+			<section class="main row">
+				<aside class="<?php echo $clase = (is_null($this->links)) ? "hidden" : $anchoLateral ; ?>">
+					<header>
+						<h3></h3>
+					</header>
+					<?php if (!is_null($this->links)){?>
+						<?php echo $this->partial("partials/menus/menuAside.phtml", array("links" => $this->links)); ?>
+					<?php } ?>
+				</aside>
+				<!-- Contenido Web -->
+				<article class="<?php echo $clase = (is_null($this->links)) ? $anchoTotal : $anchoPrincipal ; ?>">
+					<?php echo $this->layout()->content; ?>
+				</article>
+			</section>
+		</div>
+		
+		<script>
+			$(document).ready(function() {
+			    $('#table').dataTable( {
+			        "pagingType": "full_numbers"
+			    } );
+			    
+			    // acomodando formularios creados con Zend.
+			    
+			    //$("fieldset > dl > dt").css("display","inline");
+			    $("fieldset > dl > div > dt").css("display","inline-block");
+			    $("fieldset > dl > div > dd").css("display","inline-block");
+			    //$("fieldset > dl > dd").css("clear","left");
+			    
+			} );
+		
+			$(function() { 
+				$( "#fechaInicial" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			
+			$(function() { 
+				$( "#fechaFinal" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			
+			$(function() { 
+				$( "#fechaApertura" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			
+			$(function() { 
+				$( "#fechaCierre" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+			$(function() { 
+				$( "#fecha" ).datepicker({
+					changeMonth: true,
+					changeYear: true
+				});
+			});
+		</script>
+	
+
+	</body>
+</html>
+

@@ -1,0 +1,192 @@
+<?php echo $this->doctype(); ?>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="description" content="">
+        <meta name="author" content="Hector Rodriguez">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>General Application</title>
+		
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/images/favicon.png">
+		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/images/favicon.png">
+		<!-- Otros -->
+		<link rel="stylesheet" href="<?php echo $this->baseUrl() ?>/public/ext/site/css/buttons.css" />
+		
+        <!-- MatrixTemplate CSS -->
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/css/bootstrap.min.css" />
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/css/fullcalendar.css" />
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/css/matrix-style.css" />
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/css/matrix-media.css" />
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/font-awesome/css/font-awesome.css" />
+        
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/css/jquery.gritter.css" />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" type="text/css">
+        <script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/excanvas.min.js"></script>
+        <script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.min.js"></script>
+        <link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/css/jquery-ui.css" />
+        <script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/js/jquery-ui.js"></script>
+        <script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/js/datepicker-es.js"></script>
+    
+	</head>
+	<?php 
+	   $auth = Zend_Auth::getInstance();
+       $data = null;
+       if($auth->hasIdentity()){
+           $data = $auth->getIdentity();
+       }
+	?>
+	<body>
+	    <div id="header">
+	        <h1>
+	            <a>Encuestas</a>
+	        </h1>
+	    </div>
+	    <div id="user-nav" class="navbar navbar-inverse">
+	        <ul class="nav" style="width: auto; margin: 0px;">
+	            <li id="profile-messages" class="dropdown" >
+	                <a class="dropdown-toggle" title="" href="#" data-toggle="dropdown">
+	                    <i class="icon icon-user"></i>
+	                    <span class="text">Bienvenido <strong><?php echo $data["user"]->nickname; ?></strong> </span>
+	                    <b class="caret"></b>
+	                </a>
+	                <ul class="dropdown-menu">
+	                    <li>
+	                        <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"user","action"=>"profile"),null,true) ?>">
+	                            <i class="icon-user"></i>Mi Perfil
+	                        </a>
+	                    </li>
+	                    <li>
+                            <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"user","action"=>"logout"),null,true) ?>">
+                                <i class="icon-signout"></i>Log Out
+                            </a>
+                        </li>
+	                </ul>
+	            </li>
+	        </ul>
+	    </div>
+	    <div id="sidebar">
+	        <a href="#" class="visible-phone">
+	            <span class="icon icon-home"></span> Dashboard
+	        </a>
+	        <ul style="display: block;">
+	            <li>
+	                <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"dashboard","action"=>"index"), null, true) ?>">
+	                    <span class="icon icon-home"></span> Dashboard
+	                </a>
+	            </li>
+	            <li class="submenu">
+	                <a href="#">
+	                    <span class="icon icon-check"></span> 
+	                    Encuestas
+	                    <span class="label label-info"><i class="caret"></i></span>
+	                </a>
+	                <ul>
+	                    <li>
+                            <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"categoria","action"=>"index"), null, true) ?>">
+                                <span class="icon icon-list-ol"></span> Conjuntos Respuesta
+                            </a>
+                        </li>
+	                    <li>
+                            <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"encuestas","action"=>"index"), null, true) ?>">
+                                <span class="icon icon-search"></span> Consultar Encuestas
+                            </a>
+                        </li>
+	                    <li>
+	                        <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"encuestas","action"=>"alta"), null, true) ?>">
+                                <span class="icon icon-plus-sign-alt"></span> Nueva Encuesta
+                            </a>
+	                    </li>
+	                    <li>
+                            <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"reporte","action"=>"consulta"), null, true) ?>">
+                                <span class="icon icon-search"></span> Consultar Reportes
+                            </a>
+                        </li>
+	                </ul>
+	            </li>
+	            <li class="submenu">
+	                <a href="#">
+	                    <span class="icon icon-cogs"></span>
+	                    Encuestas Escolares
+	                    <span class="label label-info"><i class="caret"></i></span>
+	                </a>
+	                <ul>
+	                    <li>
+	                        <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"index"),null,true); ?>">
+	                            <span class="icon icon-search"></span> Planes de Estudios
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"nivel","action"=>"index"),null,true); ?>">
+	                            <span class="icon icon-th-list"></span> Niveles Educativos
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"docente","action"=>"index"), null, true) ?>">
+                                <span class="icon icon-group"></span> Docentes
+                            </a>
+	                    </li>
+	                </ul>
+	            </li>
+	        </ul>
+	    </div>
+	    
+		<div id="content">
+		    <div id="content-header"></div>
+		    <div class="container-fluid">
+		        <?php echo $this->layout()->content; ?>
+		    </div>
+		</div>
+		
+		<div class="row-fluid">
+		    <div id="footer" class="span12">
+		        
+		    </div>
+		</div>
+	</body>
+	<!-- MatrixTemplate JS -->
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.ui.custom.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/bootstrap.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.flot.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.flot.resize.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.peity.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/fullcalendar.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.dashboard.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.gritter.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.interface.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.chat.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.validate.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.form_validation.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.wizard.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.uniform.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/select2.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.popover.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/jquery.dataTables.min.js"></script>
+	<script src="<?php echo $this->baseUrl() ?>/public/ext/modules/encuesta/matrix-template/js/matrix.tables.js"></script>
+	<script>
+	   // This function is called from the pop-up menus to transfer to
+       // a different page. Ignore if the value returned is a null string:
+       function goPage (newURL) {
+           // if url is empty, skip the menu dividers and reset the menu selection to default
+           if (newURL != "") {
+               // if url is "-", it is this page -- reset the menu:
+               if (newURL == "-" ) {
+                   resetMenu();
+               }
+               // else, send page to designated URL
+               else {
+                   document.location.href = newURL;
+               }
+           }
+       }
+       // resets the menu selection upon entry to this page:
+       function resetMenu() {
+          document.gomenu.selector.selectedIndex = 2;
+       }
+	</script>
+</html>
+

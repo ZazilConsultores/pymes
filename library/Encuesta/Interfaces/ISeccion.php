@@ -9,8 +9,8 @@ interface Encuesta_Interfaces_ISeccion{
 	// ============================================================= Simple elemento
 	//public function obtenerSeccion($idSeccion);
 	// ============================================================= Conjunto de elementos
-	public function obtenerPreguntas($idSeccion);
-	public function obtenerGrupos($idSeccion);
+	//public function obtenerPreguntas($idSeccion);
+	//public function obtenerGrupos($idSeccion);
 	// =====================================================================================>>>   Crear
 	//public function crearSeccion(Encuesta_Models_Seccion $seccion);
 	// =====================================================================================>>>   Editar
@@ -18,7 +18,7 @@ interface Encuesta_Interfaces_ISeccion{
 	// =====================================================================================>>>   Eliminar
 	//public function eliminarSeccion($idSeccion);
 	// ============================================================= Conjunto de elementos
-	public function eliminarPreguntas($idSeccion);
+	//public function eliminarPreguntas($idSeccion);
 	public function eliminarGrupos($idSeccion);
 	// **************************************************************************************** IMPLEMENTANDO ESTANDAR DE NOMBRES
 	public function getSeccionesByIdEncuesta($idEncuesta);
@@ -27,5 +27,6 @@ interface Encuesta_Interfaces_ISeccion{
 	public function editSeccion($id, array $datos);
 	// **************************************************************************************** Operaciones Extras
 	public function getGruposByIdSeccion($idSeccion);
+	public function getPreguntasByIdSeccion($idSeccion);
 	
 }

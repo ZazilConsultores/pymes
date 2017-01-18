@@ -200,8 +200,20 @@ class Biblioteca_LibroController extends Zend_Controller_Action
     {
         // action body
         $request = $this->getRequest();
+        $formulario = new Biblioteca_Forms_AltaLibro;
+		if ($request->isGet()) {
+			$this->view->formulario = $formulario;
+		} else {
+			if($formulario->isValid($request->getPost())){
+				print_r("formulario recibido!!");
+			}
+		}
+        
+        /*
+        $request = $this->getRequest();
 		
         $formulario = new Biblioteca_Form_AltaLibro();
+		
 		//$this->view->formulario = $formulario;
 		//print_r($request->getPost());
 		if ( $request->isGet() ) {
@@ -222,6 +234,7 @@ class Biblioteca_LibroController extends Zend_Controller_Action
 			}
 			
 		}
+		*/
     }
 
     public function consultaAction()

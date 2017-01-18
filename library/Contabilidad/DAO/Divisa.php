@@ -4,9 +4,9 @@ class Contabilidad_DAO_Divisa implements Contabilidad_Interfaces_IDivisa {
 		
 	private $tablaDivisa;
 	
-	public function __construct()
-	{
-		$this->tablaDivisa= new Contabilidad_Model_DbTable_Divisa;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaDivisa= new Contabilidad_Model_DbTable_Divisa(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerDivisas(){

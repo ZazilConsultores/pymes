@@ -15,7 +15,7 @@
 		<div class="panel-body">
 			<h4>Grupo: <strong><?php echo $grupo->getGrupo() ?></strong></h4>
 			<h4>Docente: <strong><?php echo $docente->getApellidos().", ".$docente->getNombres() ?></strong></h4>
-			<h4>Pregunta: <strong><?php echo $pregunta->getPregunta() ?></strong></h4>
+			<h4>Pregunta: <strong><?php echo $pregunta->getNombre() ?></strong></h4>
 			
 			<canvas width="550" height="330" id="myChart"></canvas>
 		</div>
@@ -38,8 +38,8 @@
 	var data = {
 	    labels: [
 	    	<?php foreach ($preferencias as $preferencia) {
-	    		$opcion = $opcionDAO->obtenerOpcion($preferencia["idOpcion"]);
-	    		echo "'".$opcion->getOpcion() . "',";
+	    		$opcion = $opcionDAO->obtenerOpcion($preferencia["idOpcionCategoria"]);
+	    		echo "'".$opcion->getNombreOpcion() . "',";
 			} ?>
 			],
 	    datasets: [
@@ -49,7 +49,7 @@
 	            strokeColor: "rgba(220,220,220,0.8)",
 	            highlightFill: "rgba(30,144,255,0.75)",
 	            highlightStroke: "rgba(220,220,220,1)",
-	            data: [65, 59, 80, 81, 56, 55, 40],
+	            //data: [65, 59, 80, 81, 56, 55, 40],
 	            data: [
 	            	<?php foreach ($preferencias as $preferencia) {
 						echo $preferencia["preferencia"] . ",";

@@ -3,14 +3,18 @@
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
+    private $facturaDAO = null;
+
     public function init()
     {
+    	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
         //==============Muestra los links del submenu=======================
        	$this->formatter = new NumberFormatter('es_MX', NumberFormatter::CURRENCY);
 		//$this->view->links = $this->links;
-	
-		$this->db = Zend_Db_Table::getDefaultAdapter();
-		
+		$adapter = Zend_Registry::get('dbmodgeneral');
+		//$this->db = Zend_Db_Table::getDefaultAdapter();
+		//$this->db = Zend_Db::factory('pdo_mysql',$adapter);
+		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
@@ -19,22 +23,33 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
+
+		//Impuesto Producto
+		$select = $this->db->select()->from('ImpuestoProductos');
+		$statement = $select->query();
+		$rowImpuesto =$statement->fetchAll();
+		///////////////////
+		$jsonImpuestoProductos = Zend_Json::encode($rowImpuesto);
+		$this->view->jsonImpuestos = $jsonImpuestoProductos;
 		
 		//============================================>>>Multiplos
 		//$idProducto = $this->getParam("idProducto");
-		$idProducto=14;
-		$select = $this->db->select()->from("Multiplos","idMultiplos")
+	
+		/*$select = $this->db->select()->from("Multiplos","idMultiplos")
 		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
 		$statement = $select->query();
-		$rowsMultiplo = $statement->fetchAll();
+		$rowsMultiplo = $statement->fetchAll();*/
 		
 		// =================================== Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonProductos = $jsonProductos;
+		
 		$jsonUnidad = Zend_Json::encode($rowsUnidad);
 		$this->view->jsonUnidad = $jsonUnidad;
-		$jsonMultiplos = Zend_Json::encode($rowsMultiplo);
-		$this->view->jsonMultiplo = $jsonMultiplos;
+		
+		/*$jsonMultiplos = Zend_Json::encode($rowsMultiplo);
+		$this->view->jsonMultiplo = $jsonMultiplos;*/
+	
     }
 
     public function indexAction()
@@ -47,7 +62,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         
     }
 
-    public function notaAction() {
+    public function notaAction()
+    {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_NuevaNotaProveedor;
         //$formulario->getSubForm("0")->removeElement("submit");
@@ -65,7 +81,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$productos = json_decode($encabezado['productos'],TRUE);
 				//print_r($encabezado);
 				//print_r('<br />');
-				//print_r($productos);
+				print_r($productos);
 				$contador=0;
 			
 				foreach ($productos as $producto){
@@ -103,7 +119,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
-				
 				$encabezado = $datos[0];
 				//print_r($encabezado);
 				$formaPago =$datos[1];
@@ -131,7 +146,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				}
 				//print_r($datos)		
 				//print_r('<br />');
-				//print_r($productos);
 				//print_r(json_decode($datos[0]['productos']));
 				//$notaentrada = new Contabilidad_Model_Movimientos($datos);
 				//$this->notaEntradaDAO->crearNotaEntrada($datos);
@@ -139,19 +153,49 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					
 			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
     }
-  }
+    }
+
     public function facturaAction()
     {
-        // action body
-        $formulario = new Contabilidad_Form_AgregarFacturaProveedor	;
-    	$this->view->formulario = $formulario;
-		$fimpuestos =  new Contabilidad_Form_Impuestos;
-		$this->view->fimpuestos = $fimpuestos;
-    
-	}
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$datos = $formulario->getValues();
+				$encabezado = $datos[0];
+				$formaPago = $datos[1];
+				$productos = json_decode($encabezado['productos'], TRUE);
+				$importe = json_decode($formaPago['importes'], TRUE);
+				print_r($productos);
+				
+				//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+				
+				//$saldoProveedor = $this->facturaDAO->actualizaSaldoProveedor($encabezado, $formaPago);
+				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+					 	
+				foreach ($productos as $producto){
+					//$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+					$calcularImportes = $this->facturaDAO->calcular($producto, $importe);
+				}
+					
+			}
+			
+		}
+    }
+
+    public function pagosAction()
+    {
+        $formulario = new Contabilidad_Form_Cuentasxp;
+		$this->view->formulario = $formulario;
+    }
 
 
 }
+
+
 
 
 

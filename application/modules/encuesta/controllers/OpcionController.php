@@ -12,8 +12,11 @@ class Encuesta_OpcionController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->opcionDAO = new Encuesta_DAO_Opcion;
-		$this->categoriaDAO = new Encuesta_DAO_Categoria;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        $this->opcionDAO = new Encuesta_DAO_Opcion($dataIdentity["adapter"]);
+		$this->categoriaDAO = new Encuesta_DAO_Categoria($dataIdentity["adapter"]);
     }
 
     public function indexAction()
@@ -41,11 +44,43 @@ class Encuesta_OpcionController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
 		$idCategoria = $this->getParam("idCategoria");
-		$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
-		$formulario = new Encuesta_Form_AltaOpcion();
-		$this->view->categoria = $categoria;
-		$this->view->formulario = $formulario;
+		//$categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
+		$this->view->categoria = $this->categoriaDAO->obtenerCategoria($idCategoria);
 		
+		if ($request->isPost()) {
+			$datos = $request->getPost();
+            $datos["idCategoriasRespuesta"] =$idCategoria;
+                
+            switch ($datos["tipoValor"]) {
+                case 'EN':
+                    $datos["valorEntero"] = $datos["valor"];
+                    $datos["valorTexto"] = null;
+                    $datos["valorDecimal"] = null;
+                    break;
+                case 'TX':
+                    $datos["valorEntero"] = null;
+                    $datos["valorTexto"] = $datos["valor"];
+                    $datos["valorDecimal"] = null;
+                    break;
+                case 'DC':
+                    $datos["valorEntero"] = null;
+                    $datos["valorTexto"] = null;
+                    $datos["valorDecimal"] = $datos["valor"];
+                    break;
+            }
+            
+            $datos["fecha"] = date("Y-m-d H:i:s",time());
+            unset($datos["valor"]);
+            //print_r($datos);
+            try{
+                $this->opcionDAO->crearOpcion($idCategoria, $datos);
+                $this->view->messageSuccess = "Opcion: <strong>".$datos["nombreOpcion"]."</strong> dada de alta exitosamente en el sistema";
+            }catch(Util_Exception_BussinessException $ex){
+                $this->view->messageFail = $ex->getMessage();
+            }
+		}
+		
+		/*
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())) {
 				$datos = $formulario->getValues();
@@ -72,6 +107,7 @@ class Encuesta_OpcionController extends Zend_Controller_Action
 				}
 			}
 		}
+        */
     }
 
     public function editaAction()

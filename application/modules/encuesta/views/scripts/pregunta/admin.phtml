@@ -26,7 +26,7 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><?php echo $pregunta->getPregunta() ?></td>
+						<td><?php echo $pregunta->getNombre() ?></td>
 						<td><?php echo $tipo[$pregunta->getTipo()] ?></td>
 						<td><?php echo $pregunta->getFecha() ?></td>
 						<td><?php echo $contenedor = ($pregunta->getOrigen() == "S") ? "Sección" : "Grupo" ; ?></td>

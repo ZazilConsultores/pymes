@@ -33,7 +33,6 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 
     public function altaAction()
     {
-        // action body
         $request = $this->getRequest();
         $formulario = new Sistema_Form_AltaEmpresa;
 		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("CL");

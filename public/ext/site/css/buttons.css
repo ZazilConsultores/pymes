@@ -1,0 +1,36 @@
+/**
+ * 	
+ */
+
+.mebutton{
+	border: none;
+	padding: 15px 32px;
+	margin: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+}
+
+.mebutton-defaut {background-color: #e7e7e7; color: black;} /* Gray */ 
+
+.mebutton-green{background-color: #4CAF50; color: white}/* Green */
+.mebutton-green:hover{background-color: #B350AF; color: black}/* Green */
+
+.mebutton-blue {background-color: #008CBA; color: white} /* Blue */
+.mebutton-blue:hover {background-color: #FF7345; color: black}
+
+.mebutton-red {background-color: #f44336; color: white} /* Red */
+.mebutton-red:hover {background-color: #0BBCC9; color: black}
+
+.mebutton-black {background-color: #555555; color: white} /* Black */ 
+.mebutton-black:hover {background-color: #AAAAAA; color: black} /* Black */ 
+
+.mebutton-md {
+	text-align: left;
+	width: 50%
+}
+
+.list-buttons-vertical{
+	list-style: none
+}

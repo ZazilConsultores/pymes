@@ -6,6 +6,8 @@ class Encuesta_Form_ConsultaGrupos extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
+        $this->setAttrib("class", "form-horizontal");
+		
         $elementDecorators = array(
 			'ViewHelper', //array('ViewHelper', array('class' => 'form-control') ), //'ViewHelper',
 			array('Label', array("class"=>"control-label") ),
@@ -50,20 +52,20 @@ class Encuesta_Form_ConsultaGrupos extends Zend_Form
 		$eNivel->setAttrib("class", "form-control");
 		
 		foreach ($niveles as $nivel) {
-			$eNivel->addMultiOption($nivel["idNivelEducativo"], $nivel["nivelEducativo"]);
+			$eNivel->addMultiOption($nivel->getIdNivel(), $nivel->getNivel());
 		}
 		
 		$idNivel = $eNivel->getId();
 		
 		$gradosDAO = new Encuesta_DAO_Grado;
-		$grados = $gradosDAO->obtenerGrados(1);
+		$grados = $gradosDAO->getGradosByIdNivel(1);
 		$eGradoEscolar = new Zend_Form_Element_Select("grado");
 		$eGradoEscolar->setLabel("Grado");
 		$eGradoEscolar->setAttrib("class", "form-control");
 		//$eGradoEscolar->addMultiOption("0","Seleccione Nivel Educativo");
 		if(!is_null($grados)){
 			foreach ($grados as $index => $grado) {
-				$eGradoEscolar->addMultiOption($grado["idGradoEducativo"], $grado["gradoEducativo"]);
+				$eGradoEscolar->addMultiOption($grado->getIdGradoEducativo(), $grado->getGradoEducativo());
 			}
 		}
 		//$eGradoEscolar->clearMultiOptions();

@@ -3,15 +3,32 @@
 class Encuesta_JsonController extends Zend_Controller_Action
 {
 
+    private $encuestaDAO = null;
+
     private $gradosDAO = null;
 
     private $gruposDAO = null;
 
+    private $cicloDAO = null;
+
+    private $asignacionDAO = null;
+
+    private $materiaDAO = null;
+
+    private $registroDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
+        $this->encuestaDAO = new Encuesta_DAO_Encuesta;
         $this->gradosDAO = new Encuesta_DAO_Grado;
 		$this->gruposDAO = new Encuesta_DAO_Grupos;
+		$this->cicloDAO = new Encuesta_DAO_Ciclo;
+		$this->asignacionDAO = new Encuesta_DAO_AsignacionGrupo;
+		
+		$this->materiaDAO = new Encuesta_DAO_Materia;
+		$this->registroDAO = new Encuesta_DAO_Registro;
+		
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
     }
@@ -21,16 +38,20 @@ class Encuesta_JsonController extends Zend_Controller_Action
         // action body
     }
 
+    /**
+     * Hace una consulta de grados educativos 
+     * en base a un idNivelEducativo proporcionado
+     */
     public function gradosAction()
     {
         // action body
         $idNivel = $this->getParam("idNivel");
-		$grados = $this->gradosDAO->obtenerGrados($idNivel);
+		$grados = $this->gradosDAO->getGradosByIdNivel($idNivel);
 		
 		$arrayGrados = array();
 		
 		foreach ($grados as $grado) {
-			$arrayGrados[] = array("idGrado"=>$grado->getIdGrado(), "grado"=>$grado->getGrado());
+			$arrayGrados[] = array("idGradoEducativo"=>$grado->getIdGradoEducativo(), "gradoEducativo"=>$grado->getGradoEducativo());
 		}
 		
 		echo Zend_Json::encode($arrayGrados);
@@ -41,6 +62,7 @@ class Encuesta_JsonController extends Zend_Controller_Action
         // action body
         $idCiclo = $this->getParam("idCiclo");
 		$idGrado = $this->getParam("idGrado");
+		if(is_null($idCiclo)) $idCiclo = $this->cicloDAO->getCurrentCiclo()->getIdCiclo();
 		$grupos = $this->gruposDAO->obtenerGrupos($idGrado, $idCiclo);
 		$arrayGrupos = array();
 		
@@ -51,10 +73,48 @@ class Encuesta_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($arrayGrupos);
     }
 
-    
+    public function encrealizadasAction()
+    {
+        // action body
+        $idGrupoEscolar = $this->getParam("idGrupo");
+        $encuestaDAO = $this->encuestaDAO;
+		$asignacionDAO = $this->asignacionDAO;
+		//Materia y Docente
+		$materiaDAO = $this->materiaDAO;
+		$registroDAO = $this->registroDAO;
+		
+		$encuestasRealizadas = $encuestaDAO->getEncuestasRealizadasByIdGrupoEscolar($idGrupoEscolar);
+		// array de encuestas realizadas extendido.
+		$arrayERExt = array();
+		foreach ($encuestasRealizadas as $er) {
+			$asignacionGrupo = $asignacionDAO->getAsignacionById($er["idAsignacionGrupo"]);
+			$materia = $materiaDAO->obtenerMateria($asignacionGrupo["idMateriaEscolar"]);
+			$docente = $registroDAO->obtenerRegistro($asignacionGrupo["idRegistro"]);
+			$encuesta = $encuestaDAO->getEncuestaById($er["idEncuesta"]);
+			
+			$contenedor = array();
+			$contenedor["asignacion"] = $er;
+			$contenedor["encuesta"] = $encuesta->toArray();
+			$contenedor["docente"] = $docente->toArray();
+			$contenedor["materia"] = $materia->toArray();
+			
+			$arrayERExt[] = $contenedor;
+		}
+		
+		echo Zend_Json::encode($arrayERExt);
+    }
+
+    public function impuestoProductosAction()
+    {
+        // action body
+    }
 
 
 }
+
+
+
+
 
 
 

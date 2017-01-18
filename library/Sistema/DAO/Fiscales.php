@@ -70,7 +70,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
 		$rowsFiscales = $tablaFiscales->fetchAll($select);
-		
+		print_r("$select");
 		//print_r($rowsFiscales->toArray());
 		return $rowsFiscales->toArray();
 	}
@@ -364,10 +364,12 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			foreach ($rowsClientes as $rowCliente) {
 				$idsEmpresa[] = $rowCliente->idEmpresa;
 			}
+			print_r("<br />");
+			//print_r($idsEmpresa);
 			
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)", $idsEmpresa);
 			$rowsEmpresa = $tablaEmpresa->fetchAll($select);
-			
+			print_r("$select");
 			$idsFiscales = array();
 			foreach ($rowsEmpresa as $rowEmpresa) {
 				$idsFiscales[] = $rowEmpresa->idFiscales;

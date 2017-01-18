@@ -29,7 +29,7 @@
 					?>
 					<tr>
 						<td>
-							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"multiplos","action"=>"edita"),null,true) ?>">
+							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"multiplos","action"=>"edita","idMultiplos"=>$multiplo->getIdMultiplos()),null,true); ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar 
 							</a>
 						</td>

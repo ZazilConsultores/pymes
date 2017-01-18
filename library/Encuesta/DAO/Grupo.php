@@ -11,8 +11,8 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	private $tablaPregunta;
 	private $tablaOpcionCategoria;
 		
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta(array('db'=>$dbAdapter));
 		$this->tablaGrupoSeccion = new Encuesta_Model_DbTable_GrupoSeccion(array('db'=>$dbAdapter));
@@ -31,7 +31,7 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		return $modelGrupo;
 	}
 	*/
-	
+	/*
 	public function obtenerPreguntas($idGrupo) {
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
@@ -47,19 +47,26 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 		
 		return $modelPreguntas;
 	}
+	*/
+	
 	/**
 	 * Un grupo con preguntas de simple seleccion comparte las mismas opciones 
 	 */
 	public function obtenerValorMayorOpcion($idGrupo){
-		$tablaGrupo = $this->tablaGrupoEncuesta;
-		$select = $tablaGrupo->select()->where("idGrupo=?",$idGrupo);
-		$grupo = $tablaGrupo->fetchRow($select);
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$select = $tablaGrupo->select()->where("idGrupoSeccion=?",$idGrupo);
+		$rowGrupo = $tablaGrupo->fetchRow($select);
+        
+        //print_r("Máximo: ".$rowGrupo->valorMaximo."<br />");
+		/*
 		$tablaOpcion = $this->tablaOpcionCategoria;
 		$ids = explode(",", $grupo->opciones);
-		$select = $tablaOpcion->select()->from($tablaOpcion,array("idOpcion", "valor"=>"MAX(valorEntero)"))->where("idOpcion IN (?)",$ids);
+		$select = $tablaOpcion->select()->from($tablaOpcion,array("idOpcionCategoria", "valor"=>"MAX(valorEntero)"))->where("idOpcionCategoria IN (?)",$ids);
 		
 		$row = $tablaOpcion->fetchRow($select);
 		return $row->toArray();
+        */
+        return $rowGrupo->toArray();
 	}
 	
 	public function obtenerValorMenorOpcion($idGrupo){
@@ -115,10 +122,23 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	
 	// **************************************************************************************** IMPLEMENTANDO ESTANDAR DE NOMBRES
 	/**
-	 * 
+	 * function getGruposByIdSeccion($idSeccion) - 
+	 * @param $idSeccion - 
+	 * @param array - conjunto de models Encuesta_Models_Grupo
 	 */
 	public function getGruposByIdSeccion($idSeccion){
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idSeccionEncuesta=?",$idSeccion);
+		$rowsGrupos = $tablaGrupo->fetchAll($select);
 		
+		$modelGrupos = array();
+		foreach ($rowsGrupos as $row) {
+			$model = new Encuesta_Models_Grupo($row->toArray());
+			
+			$modelGrupos[] = $model;
+		}
+		
+		return $modelGrupos;
 	}
 	
 	/**
@@ -127,8 +147,8 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	 * @return $modelGrupo | null - El model o null conseguido de la base de datos
 	 */
 	public function getGrupoById($id){
-		$tablaGrupo = $this->tablaGrupoEncuesta;
-		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $idGrupo);
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$select = $tablaGrupo->select()->from($tablaGrupo)->where("idGrupoSeccion = ?", $id);
 		$rowGrupo = $tablaGrupo->fetchRow($select);
 		
 		if(is_null($rowGrupo)){
@@ -140,16 +160,125 @@ class Encuesta_DAO_Grupo implements Encuesta_Interfaces_IGrupo {
 	}
 	
 	/**
+	 * function getPreguntasByIdGrupo($idGrupo) - Obtiene las preguntas correspondientes al contenedor grupo especificado mediante el $id
+	 * @param $idGrupo - 
 	 * 
 	 */
-	public function addGrupoToSeccion(Encuesta_Models_Grupo $grupo){
+	public function getPreguntasByIdGrupo($idGrupo) {
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "G")->where("idOrigen = ?", $idGrupo);
+		$rowsPreguntas = $tablaPregunta->fetchAll($select);
+		$modelPreguntas = array();
 		
+		if(!is_null($rowsPreguntas)){
+			foreach ($rowsPreguntas as $row) {
+				$modelPregunta = new Encuesta_Models_Pregunta($row->toArray());
+				$modelPreguntas[] = $modelPregunta;
+			}
+		}
+		
+		return $modelPreguntas;
+	}
+	
+	/**
+	 * function addGrupoToSeccion(Encuesta_Models_Grupo $grupo)
+	 * @param $grupo - model Encuesta_Models_Grupo
+	 */
+	public function addGrupoToSeccion(Encuesta_Models_Grupo $grupo) {
+		
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		
+		$datos = $grupo->toArray();
+		unset($datos["fecha"]);
+		$tablaGrupo->insert($datos);
+		// Si se agrego un grupo a una seccion en la seccion se debe incrementar el numero de elementos
+		$tablaSeccion = $this->tablaSeccionEncuesta;
+		$select = $tablaSeccion->select()->from($tablaSeccion)->where("idSeccionEncuesta=?",$grupo->getIdSeccionEncuesta());
+		$rowSeccion = $tablaSeccion->fetchRow($select);
+		$rowSeccion->elementos++;
+		$rowSeccion->save();
 	}
 	
 	/**
 	 * 
 	 */
 	public function editGrupo($id, array $datos){
-		
+		$tablaGrupo = $this->tablaGrupoSeccion;
+		$where = $this->tablaGrupoSeccion->getAdapter()->quoteInto("idGrupoSeccion=?", $id);
+		$tablaGrupo->update($datos, $where);
 	}
+    
+    /**
+     * Metodo general.
+     * Obtiene el valor máximo de las opciones de respuesta (T.OpcionCategoria).
+     */
+    public function normalizarValorMaximo() {
+        $tablaGrupoS = $this->tablaGrupoSeccion;
+        $rowsGrupos = $tablaGrupoS->fetchAll();
+        $tablaOpcionCat = $this->tablaOpcionCategoria;
+        $message = "Número de grupos a normalizar: <strong>".count($rowsGrupos)."</strong>";
+        echo "<div>".$message."</div>";
+        $counter = 0;
+        try{
+            foreach ($rowsGrupos as $rowGrupo) {
+                $counter++;
+                if (!is_null($rowGrupo->opciones)) {
+                    $idsOpciones = explode(",", $rowGrupo->opciones);
+                    $select = $tablaOpcionCat->select()->from($tablaOpcionCat)->where("idOpcionCategoria IN (?)",$idsOpciones);
+                    //print_r($select->__toString());
+                    //print_r("<br />");
+                    $rowsOpcion = $tablaOpcionCat->fetchAll($select);
+                    $valMax = 0;
+                    foreach ($rowsOpcion as $rowOpcion) {
+                        if($rowOpcion->valorEntero > $valMax) $valMax = $rowOpcion->valorEntero;
+                    }
+                    print_r("Normalizacion: <strong>".$counter."</strong> Valor Maximo: ".$valMax."<br />");
+                    $rowGrupo->valorMaximo = $valMax;
+                    $rowGrupo->save();
+                }
+            }
+            $message = "Normalizacion finalizada exitosamente!!";
+        }catch(Exception $ex){
+            $message = $ex->getMessage();
+        }
+        
+        return $message;
+    }
+
+    /**
+     * 
+     */
+    public function normalizarValorMinimo() {
+        $tablaGrupoS = $this->tablaGrupoSeccion;
+        $rowsGrupos = $tablaGrupoS->fetchAll();
+        $tablaOpcionCat = $this->tablaOpcionCategoria;
+        $message = "Número de grupos a normalizar: <strong>".count($rowsGrupos)."</strong>";
+        echo "<div>".$message."</div>";
+        $counter = 0;
+        try{
+            foreach ($rowsGrupos as $rowGrupo) {
+                $counter++;
+                if (!is_null($rowGrupo->opciones)) {
+                    $idsOpciones = explode(",", $rowGrupo->opciones);
+                    $select = $tablaOpcionCat->select()->from($tablaOpcionCat)->where("idOpcionCategoria IN (?)",$idsOpciones);
+                    //print_r($select->__toString());
+                    //print_r("<br />");
+                    $rowsOpcion = $tablaOpcionCat->fetchAll($select);
+                    $valMin = 1;
+                    foreach ($rowsOpcion as $rowOpcion) {
+                        if($rowOpcion->valorEntero < $valMin) $valMin = $rowOpcion->valorEntero;
+                    }
+                    print_r("Normalizacion: <strong>".$counter."</strong> Valor Minimo: ".$valMin."<br />");
+                    $rowGrupo->valorMinimo = $valMin;
+                    $rowGrupo->save();
+                }
+            }
+            $message = "Normalizacion finalizada exitosamente!!";
+        }catch(Exception $ex){
+            $message = $ex->getMessage();
+        }
+        return $message;
+    }
+	
+	
 }

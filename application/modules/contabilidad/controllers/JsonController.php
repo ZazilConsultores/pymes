@@ -5,7 +5,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	private $empresaDAO;
 	private $fiscalesDAO;
-
+	private $productosDAO;
+	private $impuestoProductosDAO;
 
     public function init()
     {
@@ -15,14 +16,19 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         
         $this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
-
+		$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
+		$this->productosDAO = new Inventario_DAO_Producto;
+		$this->vendedorDAO = new Sistema_DAO_Vendedores;
+		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
+		
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
-
-		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa(array('db'=>$dbAdapter));;
+		
 
     }
 
-    public function indexAction() {
+    public function indexAction(){
     	
     }
 	
@@ -84,4 +90,66 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$bancosEmpresa = $this->bancosEmpresaDAO->obtenerBancosEmpresa($idBanco);
 		
 	}
+	
+	//Revisar si aun se utiliza la funcion productosimpuestos
+	public function productosimpuestosAction(){
+		$idProducto = $this->getParam($idProducto);
+		$factura = $this->facturaDAO->buscarProducto($idProducto);
+		//echo Zend_Json::encode($factura);
+	}
+	
+	public function productosAction() {
+		$idProducto = $this->getParam("idProducto");
+		
+		$productos = $this->productosDAO->obtenerProducto($idProducto);
+		if(!is_null($productos)){
+			echo Zend_Json::encode($productos);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+		
+	}
+	
+	public function vendedorAction() {
+		$idVendedor = $this->getParam("idVendedor");
+		
+		$vendedor = $this->vendedorDAO->obtenerVendedor($idVendedor);
+		if(!is_null($vendedor)){
+			echo Zend_Json::encode($vendedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+		
+	}
+	
+	
+	public function impuestosAction() {
+		$idImpuesto = $this->getParam("idImpuesto");
+		
+		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProductos($idImpuesto);
+		
+		if(!is_null($impuestoProducto)){
+			echo Zend_Json::encode($impuestoProducto);
+		}else{
+			echo Zend_Json::encode(array());
+		}	
+		
+	}
+	
+	//Obtener ImpuestoProducto
+	public function impuestoproductoAction() {
+		//$idImpuesto = $this->getParam("idImpuesto");
+		$idProducto = $this->getParam("idProducto");
+		
+		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProducto($idProducto);
+		
+		if(!is_null($impuestoProducto)){
+			echo Zend_Json::encode($impuestoProducto);
+		}else{
+			echo Zend_Json::encode(array());
+		}	
+		
+	}
+	
+	
 }

@@ -10,12 +10,12 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 	
 	private $tablaAsignacionGrupo;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
-		$this->registroDAO = new Encuesta_DAO_Registro(array('db'=>$dbAdapter));
-		$this->materiaDAO = new Encuesta_DAO_Materia(array('db'=>$dbAdapter));
-		$this->gruposDAO = new Encuesta_DAO_Grupos(array('db'=>$dbAdapter));
+		$this->registroDAO = new Encuesta_DAO_Registro($dbAdapter);
+		$this->materiaDAO = new Encuesta_DAO_Materia($dbAdapter);
+		$this->gruposDAO = new Encuesta_DAO_Grupos($dbAdapter);
 		
 		$this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
 		
@@ -66,9 +66,13 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 		
 		$asignaciones = $tablaAsignacion->fetchAll($select);
 		
-		if(is_null($asignaciones)) throw new Util_Exception_BussinessException("Error: No hay Asignaciones para el docente con Id: <strong>".$idDocente."</strong>", 1);
+		//if(is_null($asignaciones)) throw new Util_Exception_BussinessException("Error: No hay Asignaciones para el docente con Id: <strong>".$idDocente."</strong>", 1);
+		if(is_null($asignaciones)){
+		    return null;
+		}else{
+		    return $asignaciones->toArray();
+		}
 		
-		return $asignaciones->toArray();
 	}
 	
 	public function obtenerAsignacionesGrupo($idGrupo){
@@ -100,8 +104,14 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 		foreach ($asignaciones as $asignacion) {
 			$ids[] = $asignacion->idAsignacion;
 		}
-		
-		
-		
 	}
+	
+	public function getAsignacionById($id){
+		$tablaAsignacion = $this->tablaAsignacionGrupo;
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$id);
+		$row = $tablaAsignacion->fetchRow($select);
+		
+		return $row->toArray();
+	}
+	
 }

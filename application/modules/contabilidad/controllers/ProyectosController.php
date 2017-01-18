@@ -20,34 +20,28 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
     }
 
     public function altaAction()
-    {
+    { 
+    			
         $proyectoDAO = new Contabilidad_DAO_Proyecto;
-		
         $request = $this->getRequest();
 		$idProyecto = $this->getParam("idProyecto");
-		$formulario = new Contabilidad_Form_AltaProyecto;
 		
+		$formulario = new Contabilidad_Form_AltaProyecto;
 		$this->view->formulario = $formulario;
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$datos = $formulario->getValue("idCliente");
-				$idCliente = $datos;
-				print_r("Es Cliente:");
-				print_r("<br />");
-				print_r("$idCliente");
-				$datos = $formulario->getValue("idProveedor");
-				$idProveedor = $datos;
-				print_r("Es proveedor:");
-				print_r("<br />");
-				print_r("$idProveedor");
-				/*$proyecto = new Contabilidad_Model_Proyecto($datos);
+				
+				$proyecto = new Contabilidad_Model_Proyecto($datos);
+				//print_r($proyecto);
 				try{
 					$this->proyectoDAO->crearProyecto($proyecto);
+					print_r("<br />");
+					//print_r($proyecto);
 					$this->view->messageSuccess = "Se ha agregado el proyecto: <strong>".$proyecto->getDescripcion()."</strong> exitosamente";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
-				}*/
+				}
 			}
 		}
     }

@@ -8,39 +8,40 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 	
 	private $tablaCiclo;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloEscolar(array('db'=>$dbAdapter));
 		//$this->tablaCiclo->setDefaultAdapter($dbAdapter);
 	}
 	
-	public function obtenerCiclos($idPlan){
+	public function getCiclosbyIdPlan($idPlan){
 		$tablaCiclo = $this->tablaCiclo;
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idPlanEducativo = ?",$idPlan);
 		$rowsCiclos = $tablaCiclo->fetchAll($select);
-		/*
 		$modelCiclos = array();
 		
 		foreach ($rowsCiclos as $row) {
-			$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
+			$modelCiclo = new Encuesta_Models_Ciclo($row->toArray());
 			$modelCiclos[] = $modelCiclo;
-		}*/
+		}
 		
-		return $rowsCiclos->toArray();
+		return $modelCiclos;
 	}
 	
-	public function obtenerCiclo($idCiclo){
+	public function getCicloById($id){
 		$tablaCiclo = $this->tablaCiclo;
-		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idCicloEscolar = ?",$idCiclo);
+		$select = $tablaCiclo->select()->from($tablaCiclo)->where("idCicloEscolar = ?",$id);
 		$row = $tablaCiclo->fetchRow($select);
 		
-		//$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
+		$modelCiclo = new Encuesta_Models_Ciclo($row->toArray());
 		
-		return $row->toArray();
+		return $modelCiclo;
 	}
-	
-	public function obtenerCicloActual(){
+	/**
+	 * Obtiene el ciclo escolar actual
+	 */
+	public function getCurrentCiclo(){
 		$tablaCiclo = $this->tablaCiclo;
 		$select = $tablaCiclo->select()->from($tablaCiclo)->where("vigente = ?","1");
 		$row = $tablaCiclo->fetchRow($select);
@@ -49,27 +50,27 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 			throw new Util_Exception_BussinessException("Error: No hay ciclos escolares");
 		}
 		
-		//$modelCiclo = new Encuesta_Model_Ciclo($row->toArray());
+		$modelCiclo = new Encuesta_Models_Ciclo($row->toArray());
 		
-		return $row->toArray();
+		return $modelCiclo;
 	}
 	
 	/**
 	 * Inserta un nuevo ciclo escolar en el modulo de encuestas
 	 */
-	public function crearCiclo(array $ciclo){
+	public function addCiclo(Encuesta_Models_Ciclo $ciclo){
 		$tablaCiclo = $this->tablaCiclo;
-		
-		$tablaCiclo->insert($ciclo);
+		$datos = $ciclo->toArray();
+		$tablaCiclo->insert($datos);
 	}
 	
-	public function editarCiclo($idCiclo, array $datos){
+	public function editCiclo($idCiclo, array $datos){
 		$tablaCiclo = $this->tablaCiclo;
 		$where = $tablaCiclo->getAdapter()->quoteInto("idCicloEscolar = ?", $idCiclo);
 		$tablaCiclo->update($datos, $where);
 	}
 	
-	public function eliminarCiclo($idCiclo){
+	public function deleteCiclo($idCiclo){
 		$tablaCiclo = $this->tablaCiclo;
 		$where = $tablaCiclo->getAdapter()->quoteInto("idCicloEscolar = ?", $idCiclo);
 		$tablaCiclo->delete($where);

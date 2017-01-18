@@ -7,7 +7,7 @@
 interface Encuesta_Interfaces_IGrupo {
 	// =====================================================================================>>>   Buscar
 	//public function obtenerGrupo($idGrupo);
-	public function obtenerPreguntas($idGrupo);
+	//public function obtenerPreguntas($idGrupo);
 	public function obtenerValorMayorOpcion($idGrupo);
 	public function obtenerValorMenorOpcion($idGrupo);
 	// =====================================================================================>>>   Crear
@@ -22,4 +22,6 @@ interface Encuesta_Interfaces_IGrupo {
 	public function getGrupoById($id);
 	public function addGrupoToSeccion(Encuesta_Models_Grupo $grupo);
 	public function editGrupo($id, array $datos);
+	
+	public function getPreguntasByIdGrupo($idGrupo);
 }

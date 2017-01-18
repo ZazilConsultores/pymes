@@ -14,14 +14,17 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->seccionDAO = new Encuesta_DAO_Seccion;
-		$this->grupoDAO = new Encuesta_DAO_Grupo;
-        $this->preguntaDAO = new Encuesta_DAO_Pregunta;
-		$this->opcionDAO = new Encuesta_DAO_Opcion;
+        $auth = Zend_Auth::getInstance();
+        $this->identity = $auth->getIdentity();
+        
+        $this->seccionDAO = new Encuesta_DAO_Seccion($this->identity["adapter"]);
+		$this->grupoDAO = new Encuesta_DAO_Grupo($this->identity["adapter"]);
+        $this->preguntaDAO = new Encuesta_DAO_Pregunta($this->identity["adapter"]);
+		$this->opcionDAO = new Encuesta_DAO_Opcion($this->identity["adapter"]);
 		
-		$this->gruposDAO = new Encuesta_DAO_Grupos;
-		$this->preferenciaDAO = new Encuesta_DAO_Preferencia;
-		$this->registroDAO = new Encuesta_DAO_Registro;
+		$this->gruposDAO = new Encuesta_DAO_Grupos($this->identity["adapter"]);
+		$this->preferenciaDAO = new Encuesta_DAO_Preferencia($this->identity["adapter"]);
+		$this->registroDAO = new Encuesta_DAO_Registro($this->identity["adapter"]);
     }
 
     public function indexAction()
@@ -35,9 +38,9 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
         // action body
         $idPregunta = $this->getParam("idPregunta");
 		$t = Zend_Registry::get("tipo");
-		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$pregunta = $this->preguntaDAO->getPreguntaById($idPregunta);//->obtenerPregunta($idPregunta);
 		$formulario = new Encuesta_Form_AltaPregunta;
-		$formulario->getElement("pregunta")->setValue($pregunta->getPregunta());
+		$formulario->getElement("nombre")->setValue($pregunta->getNombre());
 		$formulario->getElement("submit")->setLabel("Actualizar Pregunta");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -65,13 +68,13 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 		//=========================================================================================
 		if(!is_null($idGrupo)){
 			$grupoDAO = $this->grupoDAO;
-			$grupo = $grupoDAO->obtenerGrupo($idGrupo);
+			$grupo = $grupoDAO->getGrupoById($idGrupo);//->obtenerGrupo($idGrupo);
 			$tipo = $grupo->getTipo();
 			
 			$formulario->getElement("tipo")->setMultiOptions(array($tipo=>$t[$tipo]));
 			$mensaje = "Grupo: " . $grupo->getNombre();
 			
-			$seccion = $this->seccionDAO->obtenerSeccion($grupo->getIdSeccion());
+			$seccion = $this->seccionDAO->getSeccionById($grupo->getIdSeccionEncuesta());//->obtenerSeccion($grupo->getIdSeccion());
 			$idEncuesta = $seccion->getIdEncuesta();
 		}elseif(!is_null($idSeccion)){
 			$seccionDAO = $this->seccionDAO;
@@ -90,9 +93,9 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 				$datos["origen"] = (is_null($idGrupo)) ? "S" : "G" ;
 				$datos["idOrigen"] = (is_null($idGrupo)) ? $idSeccion : $idGrupo ;
 				$datos["idEncuesta"] = $idEncuesta;
-				$pregunta = new Encuesta_Model_Pregunta($datos);
+				$pregunta = new Encuesta_Models_Pregunta($datos);
 				
-				$pregunta = $this->preguntaDAO->crearPregunta($datos["idOrigen"], $datos["origen"], $pregunta);
+				$pregunta = $this->preguntaDAO->addPregunta($datos["idOrigen"], $datos["origen"], $pregunta);//->crearPregunta($datos["idOrigen"], $datos["origen"], $pregunta);
 				
 				if($pregunta->getTipo() == "AB"){
 					if($datos["origen"] == "S"){
@@ -119,13 +122,13 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
         $request = $this->getRequest();
         $idPregunta = $this->getParam("idPregunta");
 		$preguntaDAO = $this->preguntaDAO;
-		$pregunta = $preguntaDAO->obtenerPregunta($idPregunta);
+		$pregunta = $preguntaDAO->getPreguntaById($idPregunta);//->obtenerPregunta($idPregunta);
         $formulario = new Encuesta_Form_AltaPregunta;
 		
 		if($pregunta->getOrigen() == "G"){
 			//La pregunta viene de un grupo hay que traer el tipo de preguntas del grupo
 			$grupoDAO = $this->grupoDAO;
-			$grupo = $grupoDAO->obtenerGrupo($pregunta->getIdOrigen());
+			$grupo = $grupoDAO->getGrupoById($pregunta->getIdOrigen());//->obtenerGrupo($pregunta->getIdOrigen());
 			$t = Zend_Registry::get("tipo");
 			
 			$formulario->getElement("tipo")->setMultiOptions(array($grupo->getTipo()=>$t[$grupo->getTipo()]));
@@ -140,7 +143,7 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				//Actualiza
-				$preguntaDAO->editarPregunta($idPregunta, $datos);
+				$preguntaDAO->editPregunta($idPregunta, $datos);//->editarPregunta($idPregunta, $datos);
 				$this->_helper->redirector->gotoSimple("admin", "pregunta", "encuesta", array("idPregunta"=>$idPregunta));
 			}
 		}
@@ -151,7 +154,7 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
     {
         // action body
         $idPregunta = $this->getParam("idPregunta");
-		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$pregunta = $this->preguntaDAO->getPreguntaById($idPregunta);//->obtenerPregunta($idPregunta);
 		$this->preguntaDAO->eliminarPregunta($idPregunta);
 		$this->_helper->redirector->gotoSimple("index", "index", "encuesta");
     }
@@ -203,14 +206,14 @@ class Encuesta_PreguntaController extends Zend_Controller_Action
 		$idPregunta = $this->getParam("idPregunta");
 		$idAsignacion = $this->getParam("idAsignacion");
 		
-		$pregunta = $this->preguntaDAO->obtenerPregunta($idPregunta);
+		$pregunta = $this->preguntaDAO->getPreguntaById($idPregunta);//->obtenerPregunta($idPregunta);
 		$asignacion = $this->gruposDAO->obtenerAsignacion($idAsignacion);
 		
 		//$idGrupo = $this->getParam("idGrupo");
 		//$idRegistro = $this->getParam("idDocente");
 		
 		$registro = $this->registroDAO->obtenerRegistro($asignacion["idRegistro"]);
-		$grupo = $this->gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
+		$grupo = $this->gruposDAO->obtenerGrupo($asignacion["idGrupoEscolar"]);
 		//$grupo = $this->gruposDAO->obtenerGrupo($idGrupo);
 		
 		$p = $this->preferenciaDAO->obtenerPreferenciaPregunta($idPregunta, $idAsignacion);

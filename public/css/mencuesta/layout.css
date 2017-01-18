@@ -1,0 +1,21 @@
+body {
+	background-color: #C70039;
+}
+h1, h2, h3, h4, h5, h6 {
+	text-decoration: none;
+	color: #DAF7A6;
+}
+
+.content {
+	background-color: #FF5733;
+	height: inherit;
+	/*height: 100%;*/
+}
+
+.central-panel{
+	padding: 50px;
+}
+
+form{
+	color: #DAF7A6;
+}

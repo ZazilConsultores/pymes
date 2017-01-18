@@ -11,8 +11,8 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	private $tablaOpcion;
 	private $tablaPreferenciaSimple;
 	
-	function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaGrupoSeccion = new Encuesta_Model_DbTable_GrupoSeccion(array('db'=>$dbAdapter));
 		$this->tablaPregunta = new Encuesta_Model_DbTable_Pregunta(array('db'=>$dbAdapter));
@@ -92,7 +92,7 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	 */
 	public function obtenerPreferenciaPregunta($idPregunta,$idAsignacion){
 		$tablaPreferencia = $this->tablaPreferenciaSimple;
-		$select = $tablaPreferencia->select()->from($tablaPreferencia)->where("idPregunta=?",$idPregunta)->where("idAsignacion=?",$idAsignacion);
+		$select = $tablaPreferencia->select()->from($tablaPreferencia)->where("idPregunta=?",$idPregunta)->where("idAsignacionGrupo=?",$idAsignacion);
 		$rowsPreferencia = $tablaPreferencia->fetchAll($select);
 		$objPreferencia = array();
 		
@@ -122,9 +122,10 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 	}
 	
 	/**
-	 * Obtenemos las 
+	 * Obtiene la preferencia total 
 	 */
 	public function obtenerTotalPreferenciaGrupo($idGrupo, $idAsignacion){
+	    //print_r("idGrupoSeccion: ".$idGrupo."<br />");
 		$tablaPregunta = $this->tablaPregunta;
 		$tablaOpcion = $this->tablaOpcion;
 		$tablaPreferenciaS = $this->tablaPreferenciaSimple;
@@ -136,14 +137,14 @@ class Encuesta_DAO_Preferencia implements Encuesta_Interfaces_IPreferencia {
 		//print_r("<br />");
 		$preguntasGrupo = $tablaPregunta->fetchAll($select);
 		foreach ($preguntasGrupo as $pregunta) {
-			$select = $tablaPreferenciaS->select()->from($tablaPreferenciaS)->where("idPregunta=?",$pregunta["idPregunta"])->where("idAsignacion=?",$idAsignacion);
+			$select = $tablaPreferenciaS->select()->from($tablaPreferenciaS)->where("idPregunta=?",$pregunta["idPregunta"])->where("idAsignacionGrupo=?",$idAsignacion);
 			//print_r($select->__toString());
 			//print_r("<br />");
 			$preferencias = $tablaPreferenciaS->fetchAll($select);
 			foreach ($preferencias as $preferencia) {
-				$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcion=?",$preferencia["idOpcion"]);
+				$select = $tablaOpcion->select()->from($tablaOpcion)->where("idOpcionCategoria=?",$preferencia["idOpcionCategoria"]);
 				$rowOpcion = $tablaOpcion->fetchRow($select); 
-				$totalCategoria += $preferencia["preferencia"] * $rowOpcion->vreal;
+				$totalCategoria += $preferencia["preferencia"] * $rowOpcion->valorEntero;
 			}
 		}
 		

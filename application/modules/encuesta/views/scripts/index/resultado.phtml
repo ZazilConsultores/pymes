@@ -32,13 +32,13 @@
 					<?php foreach ($preguntas as $pregunta) : ?>
 					<tr>
 						<td>
-							<?php if ($pregunta->getOrigen() == "G") echo $grupoDAO->obtenerGrupo($pregunta->getIdOrigen())->getNombre() ?>
+							<?php if ($pregunta->getOrigen() == "G") echo $grupoDAO->getGrupoById($pregunta->getIdOrigen())->getNombre() ?>
 							<?php if ($pregunta->getTipo() == "AB") echo "Pregunta Abierta" ?>
 						</td>
-						<td><?php echo $pregunta->getPregunta() ?></td>
+						<td><?php echo $pregunta->getNombre() ?></td>
 						<td>
 							<?php if ($pregunta->getTipo() != "AB"){  ?>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"grafica","idPregunta"=>$pregunta->getIdPregunta(),"idAsignacion"=>$asignacion["idAsignacion"]),null,true) ?>">
+							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"pregunta","action"=>"grafica","idPregunta"=>$pregunta->getIdPregunta(),"idAsignacion"=>$asignacion["idAsignacionGrupo"]),null,true) ?>">
 								<span class="glyphicon glyphicon-stats"></span> Gráfico
 							</a>
 							<?php }else{ ?>

@@ -19,7 +19,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		);
 		
 		$subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nuevo Fondeo");
+		//$subEncabezado->setLegend("Nuevo Fondeo");
 
 		$eTipoMovimiento = new Zend_Form_Element_Select('idTipoMovimiento');
 		$eTipoMovimiento->setLabel('Tipo Movimiento:');
@@ -49,17 +49,18 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel('Sucursal:');
 		$eSucursal->setAttrib("class", "form-control");
+		$eSucursal->setAttrib("required", "true");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Seleccionar fecha:');
 		$eFecha->setAttrib("class", "form-control");
+		$eFecha->setAttrib("required", "true");
 		
 		$eNumFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumFolio->setLabel('Ingresar número de Folio:');
 		$eNumFolio->setAttrib("class", "form-control");
-		
-		
+		$eNumFolio->setAttrib("required", "true");
 		
 		$eProducto = new Zend_Form_Element_Select('idProducto');
 		$eProducto->setLabel('Seleccionar Producto:');
@@ -92,38 +93,34 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		}
 		
 		//==============Obtener Bancos de las empresas
-		$fondeoDAO = new Contabilidad_DAO_Fondeo;
-		$bancoEmpresas = $fondeoDAO->obtenerBancosEmpresas();
-		$bancosDAO = new Inventario_DAO_Banco;
-		//$banco = $bancosDAO->obtenerBanco($idBanco);
-		 
-		$eBancoEntrada =new Zend_Form_Element_Select('idBancoE');
-		$eBancoEntrada->setLabel('Seleccionar Banco de Entrada: ');
+		$tablaBancosEmpresa = new Contabilidad_DAO_Fondeo;
+		$rowset =$tablaBancosEmpresa->obtenerBancosEmpresas();
+		
+		$eBancoEntrada = new Zend_Form_Element_Select('idBancoE');
+		$eBancoEntrada->setLabel('Seleccionar Banco Entrada');
 		$eBancoEntrada->setAttrib("class", "form-control");
-	
-		foreach($bancoEmpresas as $bancoEmpresa){
-			$banco = $bancosDAO->obtenerBanco($bancoEmpresa->getIdBanco());
-			$eBancoEntrada->addMultiOption($bancoEmpresa->getIdEmpresa(), $banco->getCuenta());
-			
-		}	
+		
+		foreach ($rowset as $fila){
+			$eBancoEntrada->addMultiOption($fila->idBancosEmpresas, $fila->cuenta);
+		}
 			
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
 		$eBancoSalida->setLabel('Seleccionar Banco Salida:');
 		$eBancoSalida->setAttrib("class", "form-control");
 		
-		foreach($bancoEmpresas as $bancoEmpresa){
-			$banco = $bancosDAO->obtenerBanco($bancoEmpresa->getIdBanco());
-			$eBancoSalida->addMultiOption($bancoEmpresa->getIdEmpresa(), $banco->getCuenta());
+		foreach($rowset as $fila){
+			$eBancoSalida->addMultiOption($fila->idBancosEmpresas, $fila->cuenta);
 			
 		}
 		
-		$eIva = new Zend_Form_Element_Checkbox('iva');
-		$eIva->setLabel('Iva:');
+		//$eIva = new Zend_Form_Element_Checkbox('iva');
+		//$eIva->setLabel('Iva:');
 		//$eIva->setAttrib("class", "form-control");
 		
 		$eImportePago = new Zend_Form_Element_Text('total');
 		$eImportePago->setLabel('Importe:');
 		$eImportePago->setAttrib("class", "form-control");
+		$eImportePago->setAttrib("required","true");
 		
 			
 		$eSubmit = new Zend_Form_Element_Submit('submit');
@@ -143,7 +140,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		
 		$this->addElement($eBancoEntrada);
 		$this->addElement($eBancoSalida);
-		$this->addElement($eIva);
+		//$this->addElement($eIva);
 		$this->addElement($eImportePago);
 		
 		$this->addElement($eSubmit);

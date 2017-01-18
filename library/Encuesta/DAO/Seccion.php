@@ -11,8 +11,8 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 	private $tablaGrupoSeccion;
 	private $tablaPregunta;
 	
-	public function __construct() {
-		$dbAdapter = Zend_Registry::get('dbmodencuesta');
+	public function __construct($dbAdapter) {
+		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaEncuesta = new Encuesta_Model_DbTable_Encuesta(array('db'=>$dbAdapter));
 		$this->tablaSeccionEncuesta = new Encuesta_Model_DbTable_SeccionEncuesta(array('db'=>$dbAdapter));
@@ -49,6 +49,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		return $modelSecciones;
 	}
 	*/
+	/*
 	public function obtenerPreguntas($idSeccion){
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
@@ -76,6 +77,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		
 		return $modelGrupos;
 	}
+	*/
 	// =====================================================================================>>>   Crear
 	/*
 	public function crearSeccion(Encuesta_Models_Seccion $seccion) {
@@ -111,14 +113,14 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		$tablaSeccion->delete($where);
 	}
 	*/
-	
+	/*
 	public function eliminarPreguntas($idSeccion){
 		$tablaPregunta = $this->tablaPregunta;
 		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
 		
 		$tablaSeccion->delete($select);
 	}
-	
+	*/
 	public function eliminarGrupos($idSeccion){
 		$tablaGrupoSeccion = $this->tablaGrupoSeccion;
 		$tablaPregunta = $this->tablaPregunta;
@@ -151,7 +153,7 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		// Si nuestro conjunto de registros no es nulo enviamos rellenamos el contenedor, si es nulo se va vacío
 		if(!is_null($rowsSecciones)){
 			foreach ($rowsSecciones as $row) {
-				$modelSeccion = new Encuesta_Model_Seccion($row->toArray());
+				$modelSeccion = new Encuesta_Models_Seccion($row->toArray());
 				$modelSecciones[] = $modelSeccion;
 			}
 		}
@@ -197,9 +199,11 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		// Asignamos en el model su orden
 		$seccion->setOrden($orden);
 		// Siempre al crearse una seccion esta vacía es decir contiene 0 elementos
-		$seccion->setElementos("0");
+		//$seccion->setElementos("0");
+		$datos = $seccion->toArray();
+		unset($datos["fecha"]);
 		// Insertamos en la TablaSeccion (Puede arrojar Excepcion de la base de datos)
-		$tablaSeccion->insert($seccion->toArray());
+		$tablaSeccion->insert($datos);
 	}
 	
 	/**
@@ -236,6 +240,25 @@ class Encuesta_DAO_Seccion implements Encuesta_Interfaces_ISeccion {
 		}
 		
 		return $modelGrupos;
+	}
+	
+	/**
+	 * function getPreguntasByIdSeccion($idSeccion)
+	 * @param $idSeccion - el id de la seccion 
+	 * @return $model - 
+	 */
+	public function getPreguntasByIdSeccion($idSeccion){
+		$tablaPregunta = $this->tablaPregunta;
+		$select = $tablaPregunta->select()->from($tablaPregunta)->where("origen = ?", "S")->where("idOrigen = ?", $idSeccion);
+		$rowsPreguntas = $tablaPregunta->fetchAll($select);
+		$modelPreguntas = array();
+		
+		foreach ($rowsPreguntas as $row) {
+			$modelPregunta = new Encuesta_Models_Pregunta($row->toArray());
+			$modelPreguntas[] = $modelPregunta;
+		}
+		
+		return $modelPreguntas;
 	}
 	
 }

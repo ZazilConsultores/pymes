@@ -1,0 +1,16 @@
+<?php
+    $encuestas = $this->encuestas;
+?>
+<div class="central-panel">
+    <section>
+        <header><h3>Busqueda de encuestas por Organización</h3></header>
+        <hr />
+        <form class="form-inline" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="form-group">
+                <label for="claveOrganizacion">Clave Organización: </label>
+                <input id="claveOrganizacion" name="claveOrganizacion" type="text" class="form-control" />
+            </div>
+            <input type="submit" value="Buscar Encuestas" class="btn btn-info" />
+        </form>
+    </section>
+</div>

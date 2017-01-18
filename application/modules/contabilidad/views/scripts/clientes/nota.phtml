@@ -115,7 +115,7 @@
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
-			var filasTabla = $("table#productosNota tbody > tr").length;
+			var filasTabla = $("<tr>");
 			//console.log(filasTabla);
 			// si filasTabla = 0 continuar
 			// si filasTabla <> 0 checar fila actual
@@ -291,9 +291,6 @@
                $('input[type="submit"]').removeAttr('disabled');
             //}
           });
-
-		
-	
 	});//cierra document ready
 </script>
 

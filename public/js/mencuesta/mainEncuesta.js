@@ -20,6 +20,7 @@ $().ready(function() {
 					url: urlQueryEncuesta,
 					dataType: "html",
 					success: function(data){
+						$("div#dynamicContent").html(data);
 						$("div#detalles").html(data);
 						$("div#detalles").attr("claveContenedor", claveEncuesta);
 						$("div#detalles").attr("tipo", tipo);
@@ -62,6 +63,7 @@ $().ready(function() {
 					url: urlQuerySeccion,
 					dataType: "html",
 					success: function(data){
+						$("div#dynamicContent").html(data);
 						$("div#detalles").html(data);
 						//$("div#detalles").attr("tipo", "seccion");
 						$("div#detalles").attr("claveContenedor", claveSeccion);
@@ -99,15 +101,16 @@ $().ready(function() {
 			
 			var tipo = "grupo";
 			var tipoContenedor = $("div#detalles").attr("tipo");
-			
+			//if((tipo != tipoContenedor) || (claveSeccion != claveContenedor) ){
 			if((tipo != tipoContenedor) || (claveGrupo != claveContenedor)){
 				//============================================================================================== Detalles Grupo
-				$urlDetallesGrupo = $urlEncuesta + "html/grupodet/hash/" + $hash;
+				//$urlDetallesGrupo = url + "html/grupodet/hash/" + $hash;
 				var urlQueryGrupo = url + "encuesta/html/grupodet/claveGrupo/"+claveGrupo;
 				$.ajax({
 					url: urlQueryGrupo,
 					dataType: "html",
 					success: function(data){
+						$("div#dynamicContent").html(data);
 						$("div#detalles").html(data);
 						$("div#detalles").attr("claveGrupo", claveGrupo);
 						$("div#detalles").attr("tipo", tipo);
@@ -137,7 +140,7 @@ $().ready(function() {
 			var claveContenedor = $("div#detalles").attr("claveContenedor");
 			var tipo = "grupo";
 			var tipoContenedor = $("div#detalles").attr("tipo");
-			
+			//if((tipo != tipoContenedor) || (claveSeccion != claveContenedor) ){
 			if((tipo != tipoContenedor) || (clavePregunta != claveContenedor) ){
 				//$urlDetallesPregunta = $urlEncuesta + "html/preguntadet/idPadre/"+ $hashPadre+"/tipo/"+$tipo+"/hash/"+$hash;
 				var urlDetallesPregunta = url + "encuesta/html/preguntadet/idPadre/"+clavePadre+"/tipo/"+tipo+"/clavePregunta/"+clavePregunta;
@@ -146,6 +149,7 @@ $().ready(function() {
 					url: urlDetallesPregunta,
 					dataType: "html",
 					success: function(data){
+						$("div#dynamicContent").html(data);
 						$("div#detalles").html(data);
 						//$("div#detalles").attr("tipo", "pregunta");
 						$("div#detalles").attr("claveContenedor", clavePregunta);

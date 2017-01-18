@@ -141,7 +141,7 @@ class Biblioteca_Model_Libro
 		return $this->noItem;
 	}
 	
-	public function getNoItem($noItem)
+	public function setNoItem($noItem)
 	{
 		$this->noItem = $noItem;
 	}

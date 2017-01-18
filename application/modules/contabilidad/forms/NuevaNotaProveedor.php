@@ -97,7 +97,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
-		$eSubmit->setAttrib("disabled", "true");
+		$eSubmit->setAttrib("	", "true");
 		
 		/*$eSubmit1 = new Zend_Form_Element_Button("submit1");
 		$eSubmit1->setLabel("Enviar");

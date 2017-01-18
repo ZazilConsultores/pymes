@@ -2,44 +2,45 @@
 	$plan = $this->plan;
 	$ciclos = $this->ciclos;
 ?>
-<section class="row">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Ciclos Escolares
-			</h3>
-		</div>
-		<div class="panel-body">
-			<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"index"),null,true) ?>">
-				<span class="glyphicon glyphicon-chevron-left"></span> Planes de Estudio
-			</a>
-			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"alta","idPlan"=>$plan["idPlanEducativo"]),null,true) ?>">
-				<span class="glyphicon glyphicon-plus"></span> Nuevo Ciclo
-			</a><br /><br />
-			<table class="table table-striped table-condensed">
-				<thead>
-					<th>Ciclo</th>
-					<th>Inicio</th>
-					<th>Término</th>
-					<th>Configuración</th>
-				</thead>
-				<tbody>
-					<?php foreach ($ciclos as $ciclo) : ?>
-					<tr>
-						<td><?php echo $ciclo["ciclo"]; ?></td>
-						<td><?php echo $ciclo["inicio"]; ?></td>
-						<td><?php echo $ciclo["termino"]; ?></td>
-						<td>
-							<a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo["idCicloEscolar"]),null,true) ?>">
-								<span class="glyphicon glyphicon-cog"></span> Configurar 
-							</a>
-						</td>
-					</tr>
-					<?php endforeach ?>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	
-	
-</section>
+<div class="row-fluid">
+    <div class="span12 widget-box">
+        <div class="widget-title">
+            <h5>Ciclos Escolares</h5>
+        </div>
+        <div class="widget-content">
+            <div>
+                <a class="btn btn-info" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"plan","action"=>"index"),null,true) ?>">
+                    <span class="icon icon-arrow-left"></span> Planes de Estudio
+                </a>
+                <a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"alta","idPlan"=>$plan["idPlanEducativo"]),null,true) ?>">
+                    <span class="icon icon-plus"></span> Nuevo Ciclo
+                </a><br />
+            </div>
+            <hr />
+            <div>
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <th>Ciclo</th>
+                        <th>Inicio</th>
+                        <th>Término</th>
+                        <th>Configuración</th>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($ciclos as $ciclo) : ?>
+                        <tr>
+                            <td><?php echo $ciclo->getCiclo(); ?></td>
+                            <td><?php echo $ciclo->getInicio(); ?></td>
+                            <td><?php echo $ciclo->getTermino(); ?></td>
+                            <td>
+                                <a class="btn btn-link" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"ciclo","action"=>"admin","idCiclo"=>$ciclo->getIdCiclo()),null,true) ?>">
+                                    <span class="icon icon-cog"></span> Configurar 
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

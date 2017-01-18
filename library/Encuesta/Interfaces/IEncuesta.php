@@ -15,7 +15,7 @@ interface Encuesta_Interfaces_IEncuesta{
 	
 	// ============================================================= Conjunto de elementos
 	
-	public function obtenerEncuestasGrupo($idGrupo);
+	//public function obtenerEncuestasGrupo($idGrupo);
 	public function obtenerSecciones($idEncuesta);
 	public function obtenerPreguntas($idEncuesta);
 	public function obtenerNumeroEncuestasRealizadas($idEncuesta, $idAsignacion);

@@ -13,7 +13,8 @@
 	private $tablaMateria;
 	
 	function __construct(){
-		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		//$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter = Zend_Registry::get("dbgenerale");
 		
 		$this->tablaLibrosMateria = new Biblioteca_Model_DbTable_LibrosMateria(array('db'=>$dbAdapter));
 		$this->tablaLibro = new Biblioteca_Model_DbTable_Libro(array('db'=>$dbAdapter));
