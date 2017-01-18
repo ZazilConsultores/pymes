@@ -2,14 +2,14 @@
 
 class Biblioteca_MateriaController extends Zend_Controller_Action
 {
-
+	private $librosDAO = null;
     private $materiaDAO = null;
-
     private $librosMateriaDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
+        $this->librosDAO= new Biblioteca_DAO_Libro;
          $this->materiaDAO= new Biblioteca_DAO_Materia;
 		 $this->librosMateriaDAO = new Biblioteca_DAO_LibrosMateria;
     }
@@ -56,12 +56,12 @@ class Biblioteca_MateriaController extends Zend_Controller_Action
         // action body
     }
 
-    public function agregarlibroAction()
-    {
-     $idMateria = $this -> getParam("idMateria");
+    public function agregarlibroAction() {
+    		
+    	$idMateria = $this -> getParam("idMateria");
 		//print_r($idMateria);
-         $request = $this->getRequest();
-		
+        $request = $this->getRequest();
+		//print_r($this->librosDAO->getAllLibros());
         $formulario = new Biblioteca_Form_AltaLibrosMateria();
 		//$this->view->formulario = $formulario;
 		//print_r($request->getPost());
@@ -89,8 +89,23 @@ class Biblioteca_MateriaController extends Zend_Controller_Action
     public function consultalibroAction()
     {
         // action body
+        $request = $this->getRequest();
+        $formulario = new Biblioteca_Form_ConsultaLibroPorMateria;
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$libros = $this->materiaDAO->getLibrosByIdMateria($datos["idMateria"]);
+				$this->view->libros = $libros;
+				print_r($libros);
+				
+				$librosArray = $libros;
+		
+       
         
-        
+			}
+		}
     }
 
 

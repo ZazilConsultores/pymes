@@ -33,17 +33,17 @@ class Biblioteca_DAO_Libro implements Biblioteca_Interfaces_ILibro {
 	 */
 	public function obtenerLibro($idLibro) {
 		$tablaLibro = $this->tablaLibro;
-		$where = $tablaLibro->getAdapter()->quoteInto("idMateria = ?", $idMateria);
-		$rowLibro = $tablaLibro->fetchAll($where);
+		$where = $tablaLibro->getAdapter()->quoteInto("idLibro = ?", $idLibro);
+		$rowLibro = $tablaLibro->fetchRow($where);
 		
-		$modelLibros = array();
-		
+		$modelLibro = new Biblioteca_Model_Libro($rowLibro->toArray());
+		/*
 		foreach ($rowLibros as $rowLibro) {
 			$modelLibro = new Biblioteca_Model_Libro($rowLibro->toArray());
 			$modelLibros[] = $modelLibro;
 		}
-		
-		return $modelLibros;
+		*/
+		return $modelLibro;
 	}
 	
 	
@@ -52,4 +52,35 @@ class Biblioteca_DAO_Libro implements Biblioteca_Interfaces_ILibro {
 	public function prestamoLibro($libro,$registro) {}
 	public function devolverLibro($libro,$registro) {}
 	public function liberarLibro($libro,$causa,$destino) {}
+	
+	/**
+	 * Actualiza el registro de la tabla Libro especificado por idLibro
+	 * @param $idLibro - el id de libro a modificar
+	 * @param $datos - array de datos a modificar en el registro.
+	 */
+	public function actualizarLibro($idLibro, array $datos){
+		$tablaLibro = $this->tablaLibro;
+		$where = $tablaLibro->getAdapter()->quoteInto("idLibro=?", $idLibro);
+		$tablaLibro->update($datos, $where);
+	}
+	
+	/**
+	 * Obtenemos un array de models Libro
+	 */
+	public function getAllLibros(){
+		$tablaLibro = $this->tablaLibro;
+		$rowsLibro = $tablaLibro->fetchAll();
+		if(!is_null($rowsLibro)){
+			$arrLibros = $rowsLibro->toArray();
+			$arrModelLibro = array();
+			foreach ($arrLibros as $arrLibro) {
+				$modelLibro = new Biblioteca_Model_Libro($arrLibro);
+				$arrModelLibro[] = $modelLibro;
+			}
+			return $arrModelLibro;
+		}else{
+			return array();
+		}
+		
+	}
 }

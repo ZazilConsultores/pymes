@@ -6,13 +6,17 @@
  * @version 1.0.0
  */
 class Biblioteca_DAO_Materia implements Biblioteca_Interfaces_IMateria {
-	
+		
+	private $tablaLibros;
 	private $tablaMateria;
+	private $tablaLibrosMateria;
 	
 	function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
+		$this->tablaLibros = new Biblioteca_Model_DbTable_Libro(array('db'=>$dbAdapter));
 		$this->tablaMateria = new Biblioteca_Model_DbTable_Materia(array('db'=>$dbAdapter));
+		$this->tablaLibrosMateria = new Biblioteca_Model_DbTable_LibrosMateria(array('db'=>$dbAdapter));
 	}
 	
 	/**
@@ -55,8 +59,53 @@ class Biblioteca_DAO_Materia implements Biblioteca_Interfaces_IMateria {
 		$tablaMateria->select($materia->toArray());
 	}
 	
+	public function getAllMaterias(){
+		$tablaMateria = $this->tablaMateria;
+		$rowsMaterias = $tablaMateria->fetchAll();
+		
+		if(!is_null($rowsMaterias)){
+			return $rowsMaterias->toArray();
+		}else{
+			return array();
+		}
+	}
 	
-	
-	
+	/**
+	 * 
+	 */
+	public function getLibrosByIdMateria($idMateria){
+		$tablaLM = $this->tablaLibrosMateria;
+		$tablaLibros = $this->tablaLibros;
+		$select = $tablaLM->select()->from($tablaLM)->where("idMateria=?", $idMateria);
+		$rowLM = $tablaLM->fetchRow($select);
+		
+		if(!is_null($rowLM)){
+			//idsLibro
+			$idsLibros = explode(",", $rowLM->idsLibro);
+			$select = $tablaLibros->select()->from($tablaLibros)->where("idLibro IN (?)", $idsLibros);
+			$rowLibros = $tablaLibros->fetchAll($select);
+			if(!is_null($rowLibros)){
+				$arrModelLibros = array();
+				foreach ($rowLibros as $rowLibro) {
+					$model = new Biblioteca_Model_Libro($rowLibro->toArray());
+					$arrModelLibros[] = $model;
+				}
+				
+				return $arrModelLibros;
+				
+				$db = $this->tablaLibros->getAdapter();
+				$libros = $db->query($select)->fetchAll();
+				
+				$arrModelLibros = $libros;
+				
+				echo Zend_Json::encode($libros);
+				
+			}else{
+				throw new Exception("Error: No existen libros relacionados con la materia", 1);
+			}
+		}else{
+			throw new Exception("Materia con Id: ". $idMateria. " no existe.", 1);
+		}
+	}
 
 }

@@ -1782,13 +1782,15 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
-        <moduleDirectory moduleName="Biblioteca">
+        <moduleDirectory moduleName="biblioteca">
           <configsDirectory enabled="false"/>
           <controllersDirectory>
             <controllerFile controllerName="Libro">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
               <actionMethod actionName="consulta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="edita"/>
             </controllerFile>
             <controllerFile controllerName="Materia">
               <actionMethod actionName="index"/>
@@ -1810,6 +1812,7 @@
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
               <actionMethod actionName="consultabasica"/>
+              <actionMethod actionName="consultapormateria"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1818,6 +1821,7 @@
             <formFile formName="AltaLibrosMateria"/>
             <formFile formName="Categoria"/>
             <formFile formName="AltaCategoria"/>
+            <formFile formName="ConsultaLibroPorMateria"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1909,6 +1913,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="consultabasica"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Libro">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Libro">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="consultapormateria"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2503,6 +2516,8 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="consulta"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="MateriaController">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2538,6 +2553,7 @@
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="consultabasica"/>
+                <testApplicationActionMethod forActionName="consultapormateria"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

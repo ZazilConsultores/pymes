@@ -23,14 +23,15 @@ class Biblioteca_Form_AltaLibrosMateria extends Zend_Form
 		}
 		
 		$libroDAO = new Biblioteca_DAO_Libro;
-		$libros = $libroDAO->obtenerLibro("9");
+		//$libros = $libroDAO->
+		$libros = $libroDAO->getAllLibros();
 		
 		$eLibro = new Zend_Form_Element_Select("idsLibro");
 		$eLibro->setLabel("Selecciona un Libro");
 		$eLibro->setAttrib("class", "form-control");
 		$eLibro->setRegisterInArrayValidator(FALSE);
 		foreach ($libros as $libro) {
-			$eLibro->addMultiOption($libro->getIdLibro(),$libro->getTitulo());
+			$eLibro->addMultiOption($libro->getIdLibro(), $libro->getTitulo());
 		}
 		
 		

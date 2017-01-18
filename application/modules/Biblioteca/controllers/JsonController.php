@@ -2,11 +2,12 @@
 
 class Biblioteca_JsonController extends Zend_Controller_Action
 {
-	
-	private $materiaDAO = null;
-	private $libroDAO = null;
-	//------------------------
-	private $tablaLibro = null;
+
+    private $materiaDAO = null;
+
+    private $libroDAO = null;
+
+    private $tablaLibro = null;
 
     public function init()
     {
@@ -75,8 +76,15 @@ class Biblioteca_JsonController extends Zend_Controller_Action
 		 */
     }
 
+    public function consultapormateriaAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

@@ -1,0 +1,47 @@
+
+<?php
+	$formSteps = $this->formSteps;
+?>
+<div>
+	<?php echo $formSteps; ?>
+</div>
+<script>
+	$().ready(function(){
+		
+		$("#altaLibro").steps({
+			headerTag: "h3",
+			bodyTag: "section",
+			transitionEffect: "slideLeft",
+		});
+		
+		/*
+		var form = $("form#altaLibro").show();
+		// Estructura JSON
+		form.steps({
+			headerTag: "h3",
+			bodyTag: "fieldset",
+			transitionEffect: "slideLeft",
+			onStepChanging: function(event, currentIndex,newIndex){
+				
+				if(currentIndex > newIndex){
+					return true;
+				}
+				
+				if(currentIndex < newIndex){
+					form.find(".body:eq("+newIndex+") label.error").remove();
+					form.find(".body:eq("+newIndex+") .error").removeClass("error");
+				}
+				
+				form.validate().settings.ignore = ":disabled, :hidden";
+				return form.valid();
+			},
+			onFinishing: function(event, currentIndex){
+				form.validate().settings.ignore = ":disabled";
+        		return form.valid();
+			}
+			
+		}).validate();
+		*/
+	});
+	
+</script>
