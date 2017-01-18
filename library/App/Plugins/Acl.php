@@ -24,7 +24,7 @@ class App_Plugins_Acl extends Zend_Controller_Plugin_Abstract {
 		//$this->_controller = $request->getControllerName();
 		//$this->_action = $request->getActionName();
 		$this->_init($request);
-		 
+		print_r($this->_currentRole);
 		if($this->_module != 'default'){
 			$recurso = $request->getModuleName()."_".$request->getControllerName()."_".$request->getActionName();
 			//print_r($recurso);
@@ -45,6 +45,7 @@ class App_Plugins_Acl extends Zend_Controller_Plugin_Abstract {
 	                $module = $request->getModuleName();
 	                $loginController = "home";
 	                $loginAction = "index";
+                    
 	            	break;
 				case 'default':
 					

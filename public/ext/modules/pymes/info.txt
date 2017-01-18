@@ -1,0 +1,14 @@
+
+Librerias a incluir
+	en la pagina: pymes-frontpage.phtml
+	
+-> creative.min.css & creative.min.js
+-> font-awesome (4.6.3)	
+-> magnific-popup
+-> scrollreveal
+
+	en la pagina: pymes.phtml
+	
+-> 
+-> 
+-> 

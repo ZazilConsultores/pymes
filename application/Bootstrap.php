@@ -27,6 +27,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $autoloader->registerNamespace('Encuesta_');
         $autoloader->registerNamespace('Inventario_');
 		$autoloader->registerNamespace('Sistema_');
+        $autoloader->registerNamespace('Pymes_');
 		//$autoloader->registerNamespace('Util_');
 	}
 	
@@ -51,11 +52,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		// =================================================================  >>>
 		$front = Zend_Controller_Front::getInstance();
 		// Instanciamos el Plugin de Layouts
-		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema');
+		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema', 'pymes');
 		$front->registerPlugin(new App_Plugins_Layout($moduleNames));
 		// Instanciamos el plugin ACL
 		$recursos = new App_Security_Recurso();
-		//$front->registerPlugin(new App_Plugins_Acl($recursos->getAcl()));
+		$front->registerPlugin(new App_Plugins_Acl($recursos->getAcl()));
 		//$front->registerPlugin(new Modules_Controller_Plugin_RequestedModuleLayoutLoader());
 		//$front->registerPlugin(new Encuesta_Plugin_Acl($recursos->getAcl()));
 	}

@@ -5,13 +5,25 @@ class Encuesta_HomeController extends Zend_Controller_Action
 
     private $service = null;
     private $loginDAO = null;
+    private $identity = null;
+    private $cicloDAO = null;
+    private $docenteDAO = null;
+    
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout->setLayout('homeEncuesta');
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        $this->identity = $dataIdentity;
+        
+        //print_r($this->identity["adapter"]);
+        
         $this->service = new Encuesta_Util_Service;
         $this->loginDAO = new Encuesta_DAO_Login();
+        $this->cicloDAO = new Encuesta_DAO_Ciclo($this->identity["adapter"]);
+        $this->docenteDAO = new Encuesta_DAO_Registro($this->identity["adapter"]);
+        $this->_helper->layout->setLayout('homeEncuesta');
     }
 
     public function indexAction()
@@ -130,15 +142,24 @@ class Encuesta_HomeController extends Zend_Controller_Action
         // action body
     }
 
-    public function resultsAction()
-    {
+    public function resultsAction() {
         // action body
         $request = $this->getRequest();
-        if($request->isPost()){
+        //print_r($request->getPost());
+        //print_r("<br />");
+        //print_r($this->identity);
+        if ($request->isGet()) {
+            if ($this->identity["rol"]["rol"] == "encuestaTest") {
+                $ciclosEscolares = $this->cicloDAO->getAllCiclos();
+                $this->view->ciclosEscolares = $ciclosEscolares;
+                // Obtenemos los profesores del ciclo escolar seleccionado por default
+                $cicloEscolar = $this->cicloDAO->getCurrentCiclo();
+                $docentes = $this->docenteDAO->getDocentesByIdCiclo($cicloEscolar->getIdCiclo());
+                $this->view->docentes = $docentes;
+            }
+        } else {
             $post = $request->getPost();
-            //$organizacion = $this->loginDAO->getOrganizacionByClave($post["claveOrganizacion"]);
-            print_r($post);
-            print_r($organizacion);
+            $this->loginDAO->loginByClaveOrganizacion($post["claveOrganizacion"]);
         }
     }
 
