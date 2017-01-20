@@ -5,6 +5,7 @@ class Encuesta_CategoriaController extends Zend_Controller_Action
 
     private $categoriaDAO = null;
 	private $opcionDAO = null;
+    
 
     public function init()
     {

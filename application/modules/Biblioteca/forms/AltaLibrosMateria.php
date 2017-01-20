@@ -21,23 +21,23 @@ class Biblioteca_Form_AltaLibrosMateria extends Zend_Form
 			$eMateria->addMultiOption($materia->getIdMateria(),$materia->getMateria());
 		
 		}
-		$eMateria->setValue("9");
 		
 		$libroDAO = new Biblioteca_DAO_Libro;
-		$libros = $libroDAO->obtenerLibro("9");
+		//$libros = $libroDAO->
+		$libros = $libroDAO->getAllLibros();
 		
 		$eLibro = new Zend_Form_Element_Select("idsLibro");
 		$eLibro->setLabel("Selecciona un Libro");
 		$eLibro->setAttrib("class", "form-control");
 		$eLibro->setRegisterInArrayValidator(FALSE);
 		foreach ($libros as $libro) {
-			$eLibro->addMultiOption($libro->getIdLibro(),$libro->getTitulo());
+			$eLibro->addMultiOption($libro->getIdLibro(), $libro->getTitulo());
 		}
-		$eLibro->setValue("9");
+		
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Guardar");
-		$eSubmit->setAttrib("class", "btn btn-succes");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		
 		$this->addElement($eMateria);
