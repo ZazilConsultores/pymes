@@ -68,6 +68,7 @@ class Encuesta_DAO_Login {
             $resultado = $auth->authenticate($authAdapter);
             
             if($resultado->isValid()){
+                //print_r("<br />Autentificado con clave <br />");
                 $data = $authAdapter->getResultRowObject(null,'password');
                 $subscripcion = $this->getSubscripcion($organizacion["idOrganizacion"]);
                 $n_adapter = $subscripcion["adapter"];

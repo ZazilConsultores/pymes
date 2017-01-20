@@ -28,7 +28,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $autoloader->registerNamespace('Inventario_');
 		$autoloader->registerNamespace('Sistema_');
         $autoloader->registerNamespace('Pymes_');
-		//$autoloader->registerNamespace('Util_');
+		$autoloader->registerNamespace('Util_');
 	}
 	
 	/**

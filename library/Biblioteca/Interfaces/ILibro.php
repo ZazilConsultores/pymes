@@ -12,7 +12,8 @@ interface Biblioteca_Interfaces_ILibro {
 	public function prestamoLibro($libro,$registro);
 	public function devolverLibro($libro,$registro);
 	public function liberarLibro($libro,$causa,$destino);
+	public function actualizarLibro($idLibro, array $datos);
 	
-	
+	public function getAllLibros();
 	
 }

@@ -11,8 +11,9 @@ class Biblioteca_DAO_Categoria implements Biblioteca_Interfaces_ICategoria{
 	
 		
 	function __construct() {
-		$this->tablaCategoria = new Biblioteca_Model_DbTable_Categoria;
+		$dbAdapter = Zend_Registry::get("dbgenerale");
 		
+		$this->tablaCategoria = new Biblioteca_Model_DbTable_Categoria(array("db"=>$dbAdapter));
 	}
 	
 		

@@ -11,5 +11,8 @@ interface Biblioteca_Interfaces_IMateria{
 	
 	public function obtenerMateriasB(Biblioteca_Model_Materia $materia);
 	public function obtenerMateriaB($idMateria);
+	
+	public function getAllMaterias();
+	public function getLibrosByIdMateria($idMateria);
 }
 	

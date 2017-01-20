@@ -24,33 +24,51 @@ class App_Plugins_Acl extends Zend_Controller_Plugin_Abstract {
 		//$this->_controller = $request->getControllerName();
 		//$this->_action = $request->getActionName();
 		$this->_init($request);
-		print_r($this->_currentRole);
+		//print_r($this->_currentRole."<br />");
+        //print_r("<br />");
+        //print_r($this->_module."<br />");
 		if($this->_module != 'default'){
+		    //print_r("Estamos aqui!!");
+		    //print_r($this->_module);
+            //print_r();
+			//Obtenemos el recurso completo: modulo.controller.action
 			$recurso = $request->getModuleName()."_".$request->getControllerName()."_".$request->getActionName();
-			//print_r($recurso);
+			//print_r("<br />".$recurso."<br />");
 			
-			$recursoAllControllers = $request->getModuleName();
-	        $recursoAllActions = $recursoAllControllers."_".$request->getControllerName();
+			// en acl ej: allow.encuesta.home.all
+			$recursoAllControllers = $request->getModuleName(); // ej: encuesta
+	        $recursoAllActions = $recursoAllControllers."_".$request->getControllerName(); // ej: encuesta_home
 	        
 			$recursos = $this->_acl->getResources();
-	        $module = "default";
-	        $loginController = "user";
+            // Rutas por default en caso de no estar autorizado por la estructura ACL
+            $defModule = "default";
+            $defController = "index";
+            $defAction = "index";
+            
+	        //$module = "default";
+            // Controllers de Login y Error
+            $loginController = "user";
 	        $loginAction = "login";
+	        
 	        $errorController = "error";
 	        $noauthAction = "noauth";
 	        $notfoundAction = "notfound";
-	        
-	        switch ($request->getModuleName()) {
+            // en caso de aun tener $this->_role == "defaultGuest"
+            switch ($request->getModuleName()) {
 	            case 'encuesta':
-	                $module = $request->getModuleName();
-	                $loginController = "home";
-	                $loginAction = "index";
-                    
+                    if($this->_currentRole == "defaultGuest"){
+                        $module = $request->getModuleName();
+                        $loginController = "home";
+                        $loginAction = "index";
+                        // ----------------------
+                    }
 	            	break;
 				case 'default':
 					
 					break;
 	        }
+            
+            //print_r($recursos);
 			
 			if (in_array($recursoAllControllers, $recursos)) {
 	            //print_r("recurso all controllers disponible");
@@ -65,10 +83,12 @@ class App_Plugins_Acl extends Zend_Controller_Plugin_Abstract {
 	                    $request->setControllerName($errorController);
 	                    $request->setActionName($noauthAction);
 	                }
+	            }else{
+	                print_r("Permitido para acceder a recurso all controllers<br />");
 	            }
 	        }elseif(in_array($recursoAllActions, $recursos)){
 	            // Tiene acceso a todas las acciones disponibles del recurso (No hay redireccion)
-	            //print_r("recurso all actions disponible: <strong>".$recursoAllActions."</strong> <br />");
+	            // print_r("recurso all actions disponible: <strong>".$recursoAllActions."</strong> <br />");
 	            if (!$this->_acl->isAllowed($this->_currentRole, $recursoAllActions, $this->_action)) {
 	                //print_r("Usuario con rol: <strong>".$this->_currentRole."</strong> no permitido!!");
 	                //print_r("<br />");
@@ -76,8 +96,9 @@ class App_Plugins_Acl extends Zend_Controller_Plugin_Abstract {
 	                $request->setControllerName($loginController);
 	                $request->setActionName($loginAction);
 	            }else{
-	                //print_r("Usuario con rol: <strong>".$this->_currentRole."</strong> permitido!!");
+	                //print_r("<br />Usuario con rol: <strong>".$this->_currentRole."</strong> permitido!!<br />");
 	                //print_r("<br />");
+	                //print_r("Permitido para acceder a recurso all controllers<br />");
 	            }
 	        }
 		}
