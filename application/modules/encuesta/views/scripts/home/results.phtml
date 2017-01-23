@@ -2,14 +2,13 @@
     $organizacion = $this->organizacion;
     $auth = Zend_Auth::getInstance();
     $dataIdentity = $auth->getIdentity();
-    /*
+	/*
     if($auth->hasIdentity()){
         print_r("Tiene identidad instanciada");
     }else{
         print_r("No tiene identidad instanciada");
     }
-     * 
-     */
+	*/
     //print_r($dataIdentity);
     $ciclosEscolares = $this->ciclosEscolares;
     $docentes = $this->docentes;
@@ -17,10 +16,7 @@
 ?>
 <?php if (!$auth->hasIdentity()) { ?>
 <div class="row" style="margin-top: 60px">
-    <div class="col-xs-2">
-        
-    </div>
-    <div class="col-xs-10">
+    <div class="col-xs-12">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h5 class="panel-title">
@@ -28,6 +24,10 @@
                     <?php echo (is_null($organizacion)) ? "Consulta de encuestas finalizadas" : $organizacion["nombre"]; ?> </h5>
             </div>
             <div class="panel-body">
+            	<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"encuesta","controller"=>"home","action"=>"index"),null,true) ?>">
+            		<span class="glyphicon glyphicon-chevron-left"></span> Regresar a Home.
+            	</a>
+            	<hr />
                 <?php if (is_null($organizacion)) { ?>
                 <form class="form-inline" method="post" enctype="application/x-www-form-urlencoded">
                     <div class="form-group">
@@ -40,26 +40,13 @@
                     </button>
                 </form>
                 <?php } ?>
-                <hr />
-                <table class="table table-condensed table-striped">
-                    <thead>
-                        <tr>
-                            <th>PDF</th>
-                            <th>Encuesta</th>
-                            <th>Tipo</th>
-                            <th>Detalles</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
 </div>
 <?php } ?>
 <?php if ($auth->hasIdentity()) { ?>
-<div class="row">
+<div class="row" style="margin-top: 60px">
     <div class="col-xs-12">
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -88,8 +75,10 @@
                         <label class="col-xs-2 control-label">Docente: </label>
                         <div class="col-xs-10">
                             <select id="idDocente" class="form-control">
-                                <?php foreach ($docentes as $docente) : ?>
-                                <option value="<?php echo $docente["idRegistro"] ?>"><?php echo $docente["apellidos"].", ".$docente["nombres"]; ?></option>
+                                <?php foreach ($docentes as $docente) : 
+                                	$nombre = $docente["apellidos"].", ".$docente["nombres"];
+                                	?>
+                                <option value="<?php echo $docente["idRegistro"] ?>"><?php echo utf8_encode($nombre); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -136,29 +125,29 @@
 <script>
     $().ready(function(){
         var url = window.location.origin + "/General/";
-        console.log(url);
+        //console.log(url);
         
        $("button#btnConsult").on('click',function(){
-           console.log("mensaje!!");
+           //console.log("mensaje!!");
            var idCicloEscolar = $("#idCicloEscolar").val();
            var idDocente = $("#idDocente").val();
-           console.log($("#idCicloEscolar").val());
-           console.log($("#idDocente").val());
+           //console.log($("#idCicloEscolar").val());
+           //console.log($("#idDocente").val());
            var urlQueryRepos = url + "encuesta/json/reposdocente/idCicloEscolar/"+idCicloEscolar+"/idDocente/"+idDocente;
            console.log(urlQueryRepos);
            $.ajax({
                 url: urlQueryRepos,
                 dataType: "json",
                 success: function(data){
-                    console.log("Respuesta del server");
-                    console.dir(data);
+                    //console.log("Respuesta del server");
+                    //console.dir(data);
                     var tbody = $("table#tResults").find('tbody');
                     tbody.empty();
                     
                     $.each(data,function(i,item){
                         var rep = item;
                         //data[i]
-                        console.log(rep);
+                        //console.log(rep);
                         
                         var encuesta = rep["encuesta"];
                         
@@ -177,7 +166,7 @@
                             append($('<td>').append(nivelEducativo["nivelEducativo"]+", "+
                                                     gradoEducativo["gradoEducativo"]+", "+
                                                     grupoEscolar["grupoEscolar"]+", "+
-                                                    materiaEscolar["materia"])).
+                                                    materiaEscolar["materiaEscolar"])).
                             append($('<td>').append(button))
                             );
                     });
@@ -185,14 +174,5 @@
                 }
             });
        });
-       
-       
-       
-       
-       
-       
-       
-        
-        
     });
 </script>

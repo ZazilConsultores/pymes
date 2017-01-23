@@ -13,17 +13,30 @@ class Encuesta_DAO_Materia implements Encuesta_Interfaces_IMateria {
 		//$this->tablaMateria->setDefaultAdapter($dbAdapter);
 	}
 	
+	public function getMateriaById($idMateria) {
+		$tablaMateria = $this->tablaMateria;
+		$select = $tablaMateria->select()->from($tablaMateria)->where("idMateriaEscolar = ?",$idMateria);
+		$rowMateria = $tablaMateria->fetchRow($select);
+		
+		if(is_null($rowMateria)){
+			return null;
+		}else{
+			//$modelMateria = new Encuesta_Model_Materia($rowMateria->toArray());
+			return $rowMateria->toArray();
+		}
+	}
+	
 	public function obtenerMateria($idMateria) {
 		$tablaMateria = $this->tablaMateria;
 		$select = $tablaMateria->select()->from($tablaMateria)->where("idMateriaEscolar = ?",$idMateria);
 		$rowMateria = $tablaMateria->fetchRow($select);
-		$modelMateria = null;
 		
-		if(!is_null($rowMateria)){
+		if(is_null($rowMateria)){
+			return null;
+		}else{
 			$modelMateria = new Encuesta_Model_Materia($rowMateria->toArray());
+			return $modelMateria;
 		}
-		
-		return $modelMateria;
 	}
 	
 	public function obtenerMaterias($idCiclo,$idGrado){

@@ -158,23 +158,23 @@ class Encuesta_HomeController extends Zend_Controller_Action
             $this->loginDAO->loginByClaveOrganizacion($post["claveOrganizacion"]);
             $identity = $auth->getIdentity();
             
-            $this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
-            $this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
-            
+            //$this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
+            //$this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
+            print_r("Logueado");
         }
-        
+        //$auth = Zend_Auth::getInstance();
         if ($auth->hasIdentity()) {
             //print_r("Auth con identidad");
             $identity = $auth->getIdentity();
             //print_r($identity["adapter"]);
             //$this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
             //$this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
-            $this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
-            $this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
+            $cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
+            $docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
             
-            $ciclosEscolares = $this->cicloDAO->getAllCiclos();
-            $cicloEscolar = $this->cicloDAO->getCurrentCiclo();
-            $docentes = $this->docenteDAO->getDocentesByIdCiclo($cicloEscolar->getIdCiclo());
+            $ciclosEscolares = $cicloDAO->getAllCiclos();
+            $cicloEscolar = $cicloDAO->getCurrentCiclo();
+            $docentes = $docenteDAO->getDocentesByIdCiclo($cicloEscolar->getIdCiclo());
             
             $this->view->ciclosEscolares = $ciclosEscolares;
             $this->view->docentes = $docentes;

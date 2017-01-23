@@ -423,9 +423,27 @@ class Encuesta_DAO_Encuesta implements Encuesta_Interfaces_IEncuesta {
 			return null;
 		}else{
 			// Si no es null enviamos un objeto Model al procedimiento que ejecuto este metodo
-			$modelEncuesta = new Encuesta_Models_Encuesta($rowEncuesta->toArray());
+			$modelEncuesta = new Encuesta_Model_Encuesta($rowEncuesta->toArray());
 			
 			return $modelEncuesta;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public function obtenerEncuestaById($idEncuesta) {
+		// Instanciamos de forma local una referencia a la TablaEncuesta
+		$tablaEncuesta = $this->tablaEncuesta;
+		// Creamos un select para consultar especificamente el $id pasado como parámetro
+		$select = $tablaEncuesta->select()->from($tablaEncuesta)->where("idEncuesta = ?", $idEncuesta);
+		// Ejecutamos el select obteniendo un solo registro especificamente
+		$rowEncuesta = $tablaEncuesta->fetchRow($select);
+		// Si es null nuestro objeto, enviamos null al procedimiento que ejecuto este metodo
+		if(is_null($rowEncuesta)){
+			return null;
+		}else{
+			return $rowEncuesta->toArray();
 		}
 	}
 	

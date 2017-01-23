@@ -12,6 +12,7 @@ class Encuesta_JsonController extends Zend_Controller_Action
     private $registroDAO = null;
     private $reporteDAO = null;
     private $nivelDAO = null;
+	private $encoder = null;
 
     public function init()
     {
@@ -33,6 +34,7 @@ class Encuesta_JsonController extends Zend_Controller_Action
 		
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
+		$this->encoder = new App_Util_Encode;
     }
 
     public function indexAction()
@@ -118,32 +120,45 @@ class Encuesta_JsonController extends Zend_Controller_Action
         
         $idDocente = $this->getParam("idDocente");
         $idCicloEscolar = $this->getParam("idCicloEscolar");
+		
+		// Obtenemos los reportes del docente mediante
+        $reportes = $this->reporteDAO->getReportesDocenteByIdCiclo($idCicloEscolar, $idDocente);
+		$reposEncuestas = array();
         
-        $reporteDAO = $this->reporteDAO;
-        $reportes = $reporteDAO->getReportesDocenteByIdCiclo($idCicloEscolar, $idDocente);
-        $objJSON = array();
-        
-        foreach ($reportes as $reporte) {
-            $obj = array();
-            $obj["reporte"] = $reporte;
-            $encuesta = $this->encuestaDAO->getEncuestaById($reporte["idEncuesta"]);
-            $materia = $this->asignacionDAO->obtenerMateriaAsignacion($reporte["idAsignacionGrupo"]);
-            $grupo = $this->asignacionDAO->obtenerGrupoAsignacion($reporte["idAsignacionGrupo"]);
-            //$grado = $this->materiaDAO->obtenerGradoByIdMateria();
-            $grado = $this->gradosDAO->getGradoById($materia->getIdGrado());
-            $nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivelEducativo());
-            $obj["encuesta"] = $encuesta->toArray();
-            $detalle = array();
-            $detalle["nivel"] = $nivel->toArray();
-            $detalle["grado"] = $grado->toArray();
-            $detalle["materia"] = $materia->toArray();
-            $detalle["grupo"] = $grupo->toArray();
-            $obj["detalle"] = $detalle;
-            
-            $objJSON[] = $obj;
+        foreach ($reportes as $key => $value) {
+        	$container = array();
+			$container["reporte"] = $value;
+			//$reporte = new Encuesta_Model_Registro($value);
+			
+            //Obtenemos la encuesta
+			$encuesta = $this->encuestaDAO->obtenerEncuestaById($value["idEncuesta"]);
+			$encModel = new Encuesta_Model_Encuesta($encuesta);
+			//$encModel->toArray();
+			$container["encuesta"] = $encModel->toArray();
+			$asignacion = $this->asignacionDAO->getAsignacionById($value["idAsignacionGrupo"]);
+			//print_r($asignacion);
+			$materia = $this->materiaDAO->getMateriaById($asignacion["idMateriaEscolar"]);
+			$materiaModel = new Encuesta_Model_Materia($materia);
+			$grupoEscolar = $this->gruposDAO->obtenerGrupo($asignacion["idGrupoEscolar"]);
+			$grado = $this->gradosDAO->getGradoById($grupoEscolar->getIdGrado());
+			$nivel = $this->nivelDAO->obtenerNivel($grado->getIdNivelEducativo());
+			$detalle = array();
+			$detalle["materia"] = $materiaModel->toArray(); // materia viene como array
+			$detalle["grupo"] = $grupoEscolar->toArray();
+			$detalle["grado"] = $grado->toArray();
+			$detalle["nivel"] = $nivel->toArray();
+			
+			$container["detalle"] = $detalle;
+			$reposEncuestas[] = $container;
+			//print_r("<br /><br />");
+			//$container["detalle"] = 
+			//echo json_encode($this->encoder->encodeArray($encuesta));
+			
         }
-        
-        echo Zend_Json::encode($objJSON);
+		
+		//$reposEncuestas = $this->encoder->utf8_encode_deep($reposEncuestas);
+		
+		echo Zend_Json::encode($reposEncuestas);
     }
 
 
