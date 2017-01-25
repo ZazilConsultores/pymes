@@ -68,9 +68,9 @@ class Encuesta_Model_Materia
 		if(array_key_exists("idMateriaEscolar", $datos)) $this->idMateria = $datos["idMateriaEscolar"];
 		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
 		if(array_key_exists("idGradoEducativo", $datos)) $this->idGrado = $datos["idGradoEducativo"];
-		$this->materia = $datos["materiaEscolar"];
-		$this->creditos = $datos["creditos"];
-		$this->fecha = $datos["fecha"];
+		$this->materia = utf8_encode($datos["materiaEscolar"]);
+		$this->creditos = utf8_encode($datos["creditos"]);
+		$this->fecha = utf8_encode($datos["fecha"]);
 	}
 	
 	public function toArray()
@@ -80,7 +80,7 @@ class Encuesta_Model_Materia
 		$datos["idMateriaEscolar"] = $this->idMateria;
 		$datos["idCicloEscolar"] = $this->idCiclo;
 		$datos["idGradoEducativo"] = $this->idGrado;
-		$datos["materia"] = $this->materia;
+		$datos["materiaEscolar"] = $this->materia;
 		$datos["creditos"] = $this->creditos;
 		$datos["fecha"] = $this->fecha;
 		

@@ -14,6 +14,18 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$this->tablaCiclo = new Encuesta_Model_DbTable_CicloEscolar(array('db'=>$dbAdapter));
 		//$this->tablaCiclo->setDefaultAdapter($dbAdapter);
 	}
+    
+    /**
+     * Obtenemos todos los ciclos escolares sin criterio de búsqueda.
+     * 
+     */
+    public function getAllCiclos() {
+        $tablaCiclo = $this->tablaCiclo;
+        $rowsCiclos = $tablaCiclo->fetchAll();
+        $ciclosEscolares = $rowsCiclos->toArray();
+        //print_r($ciclosEscolares);
+        return $ciclosEscolares;
+    }
 	
 	public function getCiclosbyIdPlan($idPlan){
 		$tablaCiclo = $this->tablaCiclo;
@@ -21,7 +33,7 @@ class Encuesta_DAO_Ciclo implements Encuesta_Interfaces_ICiclo {
 		$rowsCiclos = $tablaCiclo->fetchAll($select);
 		$modelCiclos = array();
 		
-		foreach ($rowsCiclos as $row) {
+		foreach ($rowsCiclos as $row) { 
 			$modelCiclo = new Encuesta_Models_Ciclo($row->toArray());
 			$modelCiclos[] = $modelCiclo;
 		}

@@ -6,12 +6,16 @@
  */
 class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 	
-	private $tablaRegistro;
+	private $tablaRegistro = null;
+    private $tablaGrupoEscolar = null;
+    private $tablaAsignacionGrupo = null;
 	
 	public function __construct($dbAdapter) {
 		//$dbAdapter = Zend_Registry::get('dbmodencuesta');
 		
 		$this->tablaRegistro = new Encuesta_Model_DbTable_Registro(array('db'=>$dbAdapter));
+        $this->tablaGrupoEscolar = new Encuesta_Model_DbTable_GrupoEscolar(array('db'=>$dbAdapter));
+        $this->tablaAsignacionGrupo = new Encuesta_Model_DbTable_AsignacionGrupo(array('db'=>$dbAdapter));
 	}
 	
 	// =====================================================================================>>>   Buscar
@@ -81,5 +85,32 @@ class Encuesta_DAO_Registro implements Encuesta_Interfaces_IRegistro {
 		
 	}
 	
+    /**
+     * Obtenemos todos los docentes del ciclo escolar especificado.
+     */
+    public function getDocentesByIdCiclo($idCicloEscolar) {
+        $tablaGrupoE = $this->tablaGrupoEscolar;
+        $select = $tablaGrupoE->select()->from($tablaGrupoE)->where("idCicloEscolar=?",$idCicloEscolar);
+        $gruposEscolares = $tablaGrupoE->fetchAll($select);
+        // Obtuvimos todos los grupos pertenecientes al ciclo escolar.
+        $tablaAG = $this->tablaAsignacionGrupo;
+        $idsDocentes = array(); 
+        // Iteraremos a traves de todos los grupos buscando sus asignaciones
+        foreach ($gruposEscolares as $grupoEscolar) {
+            $select = $tablaAG->select()->from($tablaAG)->where("idGrupoEscolar=?",$grupoEscolar["idGrupoEscolar"]);
+            $asignaciones = $tablaAG->fetchAll($select);
+            foreach ($asignaciones as $asignacion) {
+                if(! in_array($asignacion["idRegistro"], $idsDocentes)){
+                    $idsDocentes[] = $asignacion["idRegistro"];
+                }
+            }
+        }
+        $tablaRegistro = $this->tablaRegistro;
+        $select = $tablaRegistro->select()->from($tablaRegistro)->where("idRegistro IN (?)",$idsDocentes)->order("apellidos ASC");
+        $docentes = $tablaRegistro->fetchAll($select);
+        //print_r($docentes);
+        
+        return $docentes;
+    }
 	
 }
