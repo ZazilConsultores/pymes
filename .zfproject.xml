@@ -55,6 +55,7 @@
           <dbTableFile dbTableName="ProductoImpuesto"/>
           <dbTableFile dbTableName="Vendedor"/>
           <dbTableFile dbTableName="Bancosempresa"/>
+          <dbTableFile dbTableName="Equipo"/>
         </dbTableDirectory>
         <modelFile modelName="Banco"/>
         <modelFile modelName="Divisa"/>
@@ -2192,6 +2193,37 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
+        <moduleDirectory moduleName="soporte">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="Home">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="consulta"/>
+            </controllerFile>
+          </controllersDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false">
+            <layoutScriptsDirectory enabled="false"/>
+          </layoutsDirectory>
+          <modelsDirectory>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Equipo"/>
+            </dbTableDirectory>
+          </modelsDirectory>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
       </modulesDirectory>
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
@@ -2909,6 +2941,14 @@
                 <testApplicationActionMethod forActionName="libros"/>
                 <testApplicationActionMethod forActionName="multimedia"/>
                 <testApplicationActionMethod forActionName="revistas"/>
+              </testApplicationControllerFile>
+            </testApplicationControllerDirectory>
+          </testApplicationModuleDirectory>
+          <testApplicationModuleDirectory forModuleName="soporte">
+            <testApplicationControllerDirectory>
+              <testApplicationControllerFile forControllerName="Home">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="consulta"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

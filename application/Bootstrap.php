@@ -51,7 +51,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		// =================================================================  >>>
 		$front = Zend_Controller_Front::getInstance();
 		// Instanciamos el Plugin de Layouts
-		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema');
+		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema','soporte');
 		$front->registerPlugin(new App_Plugins_Layout($moduleNames));
 		// Instanciamos el plugin ACL
 		$recursos = new App_Security_Recurso();

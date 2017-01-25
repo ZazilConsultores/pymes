@@ -30,16 +30,22 @@ class Biblioteca_Forms_AltaLibro extends Zend_Form {
 		$eEditorial->setAttrib("class", "form-control");
 		$eEditorial->setAttrib("required", "required");
 		//===================================================
-		//$ePublicado = new Zend_Form_Element_Text('publicado');
-		$ePublicado = new Zend_Form_Element_Xhtml('publicado');
+		$ePublicado = new Zend_Form_Element_Text('publicado');
+		//$ePublicado = new Zend_Form_Element_Xhtml('publicado');
 		$ePublicado->setLabel('Año de publicación: ');
 		$ePublicado->setAttrib("type", "number");
 		$ePublicado->setAttrib("class", "form-control");
 		$ePublicado->setAttrib("required", "required");
 		$ePublicado->setAttrib("min", "1900");
-		//$ePublicado->setAttrib("max", "2020"); // Advertencia!! error si se rebasa este valor con la fecha actual
+		$ePublicado->setAttrib("max", "2020"); //Advertencia!! error si se rebasa este valor con la fecha actual
 		$ePublicado->setAttrib("step", "1");
 		$ePublicado->setAttrib("value", "2017");
+		
+		/*$view = new Zend_View();
+		$view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+		$ePublicado = new ZendX_Jquery_Form_Element_Spinner("spinner1",
+		array('label'=>'Spinner:','attribs'=>array('class'=>'flora')));
+		$ePublicado->setJQueryParams(array('min'=>0,'max'=>1000,'start'=>100));*/
 		
 		//=================================================
 		$eIdPais = new Zend_Form_Element_Text('idPaisPub');
