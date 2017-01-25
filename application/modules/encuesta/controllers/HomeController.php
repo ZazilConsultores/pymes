@@ -160,7 +160,7 @@ class Encuesta_HomeController extends Zend_Controller_Action
             
             //$this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
             //$this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
-            print_r("Logueado");
+            //print_r("Logueado");
         }
         //$auth = Zend_Auth::getInstance();
         if ($auth->hasIdentity()) {

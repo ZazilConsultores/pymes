@@ -1809,6 +1809,12 @@
               <actionMethod actionName="multimedia"/>
               <actionMethod actionName="revistas"/>
             </controllerFile>
+            <controllerFile controllerName="Home">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="login"/>
+              <actionMethod actionName="consulta"/>
+              <actionMethod actionName="logout"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaLibro"/>
@@ -1827,6 +1833,21 @@
               <dbTableFile dbTableName="Materia"/>
               <dbTableFile dbTableName="LibrosMateria"/>
               <dbTableFile dbTableName="Categoria"/>
+              <dbTableFile dbTableName="Organizacion"/>
+              <dbTableFile dbTableName="Usuario"/>
+              <dbTableFile dbTableName="Subscripcion"/>
+              <dbTableFile dbTableName="Rol"/>
+              <dbTableFile dbTableName="Tema"/>
+              <dbTableFile dbTableName="Clasificacion"/>
+              <dbTableFile dbTableName="Coleccion"/>
+              <dbTableFile dbTableName="Etiqueta"/>
+              <dbTableFile dbTableName="SubDivGeo"/>
+              <dbTableFile dbTableName="Subcampo"/>
+              <dbTableFile dbTableName="Material"/>
+              <dbTableFile dbTableName="LibroTema"/>
+              <dbTableFile dbTableName="LibroSubdivision"/>
+              <dbTableFile dbTableName="LibroSubDivGeo"/>
+              <dbTableFile dbTableName="LibroSubCrono"/>
             </dbTableDirectory>
             <modelFile modelName="Libro"/>
             <modelFile modelName="Materia"/>
@@ -1929,6 +1950,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Consulta">
                 <viewScriptFile forActionName="revistas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="login"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="logout"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2687,6 +2720,12 @@
                 <testApplicationActionMethod forActionName="libros"/>
                 <testApplicationActionMethod forActionName="multimedia"/>
                 <testApplicationActionMethod forActionName="revistas"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Home">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="login"/>
+                <testApplicationActionMethod forActionName="consulta"/>
+                <testApplicationActionMethod forActionName="logout"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

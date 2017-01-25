@@ -43,6 +43,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		Zend_Registry::set('dbmodgeneral', $resource->getDb('dbmodgeneral'));
 		//Zend_Registry::set('dbmodencuesta', $resource->getDb('dbmodencuesta'));
         Zend_Registry::set('dbbaseencuesta', $resource->getDb('dbbaseencuesta')); //dbgenerale
+        Zend_Registry::set('dbbasebiblio', $resource->getDb('dbbasebiblio')); //dbgenerale
 	}
 	
 	/**

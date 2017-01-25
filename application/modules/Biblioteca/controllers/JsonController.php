@@ -29,6 +29,8 @@ class Biblioteca_JsonController extends Zend_Controller_Action
     public function consultabasicaAction()
     {
         // action body
+        $auth = Zend_Auth::getInstance();
+        $identity = $auth->getIdentity();
         // =============================================================
         $parametros = $this->getAllParams();
 		unset($parametros["module"]);
@@ -50,7 +52,8 @@ class Biblioteca_JsonController extends Zend_Controller_Action
 		//print_r($querySelect);
 		//print_r("<br /><br />");
 		
-		$db = $this->tablaLibro->getAdapter();
+		//$db = $this->tablaLibro->getAdapter();
+        $db = $identity["adapter"];
 		$libros = $db->query($querySelect)->fetchAll();
 		
 		
