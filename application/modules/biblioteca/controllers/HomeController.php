@@ -4,7 +4,6 @@ class Biblioteca_HomeController extends Zend_Controller_Action
 {
 
     private $auth = null;
-
     private $loginDAO = null;
 
     public function init()

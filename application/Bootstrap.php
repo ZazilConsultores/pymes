@@ -23,6 +23,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$autoloader->registerNamespace('Modules_');
 		
 		$autoloader->registerNamespace('Biblioteca_');
+        $autoloader->registerNamespace('Soporte_');
 		$autoloader->registerNamespace('Contabilidad_');
         $autoloader->registerNamespace('Encuesta_');
         $autoloader->registerNamespace('Inventario_');
@@ -44,6 +45,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		//Zend_Registry::set('dbmodencuesta', $resource->getDb('dbmodencuesta'));
         Zend_Registry::set('dbbaseencuesta', $resource->getDb('dbbaseencuesta')); //dbgenerale
         Zend_Registry::set('dbbasebiblio', $resource->getDb('dbbasebiblio')); //dbgenerale
+        Zend_Registry::set('dbbasesoporte', $resource->getDb('dbbasesoporte')); //dbgenerale
 	}
 	
 	/**

@@ -2008,6 +2008,12 @@
             <controllerFile controllerName="Home">
               <actionMethod actionName="index"/>
               <actionMethod actionName="consulta"/>
+              <actionMethod actionName="logout"/>
+              <actionMethod actionName="login"/>
+            </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="consultaequipo"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -2017,6 +2023,11 @@
           <modelsDirectory>
             <dbTableDirectory>
               <dbTableFile dbTableName="Equipo"/>
+              <dbTableFile dbTableName="Equipo2"/>
+              <dbTableFile dbTableName="Organizacion"/>
+              <dbTableFile dbTableName="Subscripcion"/>
+              <dbTableFile dbTableName="Rol"/>
+              <dbTableFile dbTableName="Usuario"/>
             </dbTableDirectory>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
@@ -2027,6 +2038,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Home">
                 <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="logout"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="login"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="consultaequipo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2775,6 +2798,12 @@
               <testApplicationControllerFile forControllerName="Home">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="consulta"/>
+                <testApplicationActionMethod forActionName="logout"/>
+                <testApplicationActionMethod forActionName="login"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Json">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="consultaequipo"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
