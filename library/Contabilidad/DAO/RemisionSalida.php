@@ -15,15 +15,16 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	private $tablaBancos;
 	
 	public function __construct() {
-		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos;
-		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas;
-		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario;
-		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos;
-		$this->tablaCardex = new  Contabilidad_Model_DbTable_Cardex;
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa;	
-		$this->tablaClientes =  new Sistema_Model_DbTable_Clientes;
-		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc;
-		$this->tablaBancos = new Contabilidad_Model_DbTable_Banco;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
+		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
+		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
+		$this->tablaCardex = new  Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));	
+		$this->tablaClientes =  new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
+		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
+		$this->tablaBancos = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerClientes(){
@@ -38,9 +39,11 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 
 	
 	public function restarProducto(array $encabezado, $producto, $formaPago){
-			
-		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-		$bd->beginTransaction();
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+		$dbAdapter->beginTransaction();	
+		//$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		//$bd->beginTransaction();
+		
 		
 		$date = new Zend_Date();
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
@@ -97,7 +100,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 				);
 			
 			//print_r($mMovtos);
-			$bd->insert("Movimientos",$mMovtos);
+			$dbAdapter->insert("Movimientos",$mMovtos);
 			
 			$secuencial = 0;	
 			$tablaCuentasxc = $this->tablaCuentasxc;
@@ -136,7 +139,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 					'total'=>$producto['importe']
 				);   
 			
-				$bd->insert("Cuentasxc",$mCuentasxc);
+				$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 			
 		//======================Resta en capas, inventario y crea Cardex============================================================================*//
 		$tablaMultiplos = $this->tablaMultiplos;
@@ -151,8 +154,8 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			
 		$tablaInventario = $this->tablaInventario;
 		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
-		$row = $tablaInventario->fetchRow($select);
-		$restaCantidad = $row->existencia - $cantidad;
+		$rowInventario = $tablaInventario->fetchRow($select);
+		$restaCantidad = $rowInventario->existencia - $cantidad;
 		
 		//print_r("Cantidad en inventario:");
 		//print_r("$restaCantidad");
@@ -164,12 +167,12 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			$tablaCapas = $this->tablaCapas;
 			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']) 
 			->order("fechaEntrada ASC");
-			$row = $tablaCapas->fetchRow($select);
+			$rowCapas = $tablaCapas->fetchRow($select);
 			//print_r("<br />");
 			print_r("<br />");
 			//print_r("$select");
 			//print_r("<br />");
-			$cant =  $row->cantidad - $cantidad;
+			$cant =  $rowCapas->cantidad - $cantidad;
 			//print_r("Cant <br />");
 			print_r("<br />");
 			//print_r("<Cantidad en Capas />");
@@ -220,7 +223,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 					
 			);
 			//print_r($mCardex);
-			$bd->insert("Cardex",$mCardex);
+			$dbAdapter->insert("Cardex",$mCardex);
 		//===Resta cantidad en inventario
 		
 			$tablaInventario = $this->tablaInventario;
@@ -228,7 +231,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
 		}
 
-			$bd->commit();
+			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -240,8 +243,16 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			print_r($ex->getMessage());
 			print_r("<br />");
 			print_r("<br />");
-			$bd->rollBack();
+			$dbAdapter->rollBack();
 		}
 		
+	}
+	
+	public function editarBanco($formaPago ,$productos){
+		$tablaBancos = $this->tablaBancos;
+		$where = $tablaBancos->getAdapter()->quoteInto("idBanco= ?", $formaPago['idBanco']);
+		$rowBanco = $tablaBancos->fetchRow($where);
+		$importePago = $rowBanco->saldo - $productos[0]['importe'];
+		$tablaBancos->update(array('saldo'=> $importePago), $where);
 	}
 }

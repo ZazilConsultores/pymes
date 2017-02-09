@@ -16,7 +16,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	private $tablaTelefono;
 	private $tablaEmail;
 	
-	function __construct() {
+	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
@@ -91,7 +91,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		$tablaEmpresa = $this->tablaEmpresa;
 		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where('idEmpresa = ?', $idEmpresa);
 		$rowEmpresa = $tablaEmpresa->fetchRow($select);
-		
+		print_r("$rowEmpresa");
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()
 			->setIntegrityCheck(false)
@@ -106,6 +106,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			->join('Municipio', "Municipio.idMunicipio = Domicilio.idMunicipio", array('Municipio'))
 			->join('Estado',"Estado.idEstado = Municipio.idEstado",array('Estado'))
 			->where("Fiscales.idFiscales = ?", $rowEmpresa->idFiscales);
+			//print_r("$select");
 			
 		return $tablaFiscales->fetchRow($select);			
 		//return $select->__toString();
@@ -113,7 +114,6 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 	}
 	public function obtenerInformacionEmpresasIdFiscales()
 	{
-		
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()
 			->setIntegrityCheck(false)
@@ -122,8 +122,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 			->join('Empresas','Empresas.idEmpresa = Fiscales.idFiscales', array())
 			->order("razonSocial ASC");
 		//	return $select->__toString();
-		return $tablaFiscales->fetchAll($select);
-		
+		return $tablaFiscales->fetchAll($select);	
 	}
 
 	

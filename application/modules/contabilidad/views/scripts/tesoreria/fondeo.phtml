@@ -33,7 +33,7 @@
 <script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			$url = "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log($url);
 			$.ajax({
 				url: $url,
@@ -50,7 +50,7 @@
 		});
 		
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/contabilidad/json/bancosempresa/idBanco/" + this.value;
+			$url = "/General/contabilidad/json/bancosempresa/idBanco/" + this.value;
 			console.log($url);
 			$.ajax({
 				url: $url,

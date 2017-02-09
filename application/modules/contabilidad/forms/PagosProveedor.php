@@ -30,6 +30,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eProveedor->setLabel('Seleccionar Proveedor:');
 		$eProveedor->setAttrib("class", "form-control");
 		
+		
 		foreach ($rowset as $fila) {
 			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);	
 		}
@@ -38,11 +39,17 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eNumeroFactura->setLabel('Ingresar Numero Factura');
 		$eNumeroFactura->setAttrib("class", "form-control");
 		$eNumeroFactura->setAttrib("required", "Ingresar Factura");
+		$eNumeroFactura->setAttrib("placeholder", "Numero Factura");
     	
+		$submit = new Zend_Form_Element_Submit('submit');
+		$submit->setLabel('Buscar Factura'); 
+		$submit->setAttrib("class", "btn btn-success");
+		
 		$this->addElement($eEmpresa);
 		$this->addElement($eSucursal);
 		$this->addElement($eProveedor);
 		$this->addElement($eNumeroFactura);
+		$this->addElement($submit);
     }
 
 

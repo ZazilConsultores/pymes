@@ -1243,6 +1243,7 @@
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="generar"/>
             </controllerFile>
             <controllerFile controllerName="GuiaContable">
               <actionMethod actionName="index"/>
@@ -1307,6 +1308,7 @@
             <formFile formName="CrearImpuesto"/>
             <formFile formName="AltaVendedor"/>
             <formFile formName="Cuentasxp"/>
+            <formFile formName="GeneraPoliza"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1332,6 +1334,7 @@
               <dbTableFile dbTableName="Impuesto"/>
               <dbTableFile dbTableName="FactutaImpuesto"/>
               <dbTableFile dbTableName="ImpuestoProductos"/>
+              <dbTableFile dbTableName="FacturaImpuesto"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1497,6 +1500,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proveedor">
                 <viewScriptFile forActionName="pagos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Poliza">
+                <viewScriptFile forActionName="generar"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2713,6 +2719,7 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="generar"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="GuiaContable">
                 <testApplicationActionMethod forActionName="index"/>

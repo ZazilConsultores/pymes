@@ -5,6 +5,7 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 
     public function init()
     {
+    	$this->setAttrib("id", "impuestos");
     	$eAbreviatura = new Zend_Form_Element_Text('abreviatura');
 		$eAbreviatura->setLabel('Abrevitura:');
 		$eAbreviatura->setAttrib("class", "form-control");
@@ -47,6 +48,10 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		$eEstatus->setLabel('Estatus:');
 		$eEstatus->setAttrib("class", "form-control");
 		
+		$eFechaPublicion = new Zend_Form_Element_Hidden('fechaPublicacion');
+		$eFechaPublicion->setAttrib("class", "form-control");
+	
+		
 		$eSubmit = new Zend_Form_Element_Submit('idEnlazarImpuesto');
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-warning");
@@ -58,6 +63,7 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		$this->addElement($eImporte);	
 		$this->addElement($ePorcentaje);
 		$this->addElement($eEstatus);
+		$this->addElement($eFechaPublicion);
 		$this->addElement($eSubmit);
         
     }

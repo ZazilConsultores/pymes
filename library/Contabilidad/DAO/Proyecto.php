@@ -6,7 +6,8 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	
 	public function __construct()
 	{
-		$this->tablaProyecto= new Contabilidad_Model_DbTable_Proyecto;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaProyecto= new Contabilidad_Model_DbTable_Proyecto(array('db'=>$dbAdapter));
 	}
 	
 	public function crearProyecto(Contabilidad_Model_Proyecto $proyecto)

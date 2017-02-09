@@ -1,5 +1,4 @@
 <?php
-	//echo $this->formulario;
 	$formulario = $this->formulario;
 	 echo $formulario; 
 	$messageFail = $this->messageFail;
@@ -56,7 +55,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>Total:</td>
-							<td><input id="total" class="form-control" /></td>	
+							<td><input id="total" class="form-control" disabled="true" /></td>	
 						</tr>
 						
 					</tfoot>	
@@ -69,7 +68,7 @@
 	$(document).ready(function(){
 		
 		$("select#idEmpresas").on('change', function(){
-			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
 			$.ajax({
 				url: url,
@@ -83,13 +82,9 @@
 					
 				}
 			});
-			var id = $("select#idSucursal");
-			//console.log("verificamos idSucursal");
-			//console.log($("select#idSucursal"));
+			
 		});
 		
-		
-	
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
 			rules: {
@@ -131,9 +126,7 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		
-		//console.dir(jsonProductos);
-		
+	
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#productosNota tbody > tr").length;
@@ -163,7 +156,7 @@
 			// precioUnitario
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
-			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
+			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'}).attr({'disabled':'true'});
 			
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
@@ -190,7 +183,7 @@
   			{
   				$("table#productosNota  tbody > tr:last").remove();
   			}
-  			
+  			calculaGrandTotal();
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
@@ -210,52 +203,7 @@
  			
  		});//cierra funcion buscar descripcion del producto
  		
-		//input  cantidad
-		$("table#productosNota").on("change","input[id^='idCantidad_']" ,function() {
-			var idCantidad= $(this).attr("id");
-			var arr = idCantidad.split('_');
-			var numFila =  arr[1];
-			
-			var precioUnitarioFila = $('input#costoUnitario_'+numFila);
-			//console.log(precioUnitarioFila);
-			var precioImporte = $(this).val() * precioUnitarioFila.val();
-
-			$('input#costoTotal_'+numFila).val(precioImporte);
-			//console.log($(this).val())	;
-			
- 		}); //cierra input cantidad
- 		
-		//input  costoTotal
-		
-		$("table#productosNota").on("blur","input[id^='costoTotal_']",function() {
-			var costo=0;
-			
-			 $("table#productosNota").find("input[id^='costoTotal_']").each(function () {
-        		costo += +$(this).val();
-    		});
-			//console.log(costo);
-			//console.log(costoTotal);
-			$("input#total").val(costo);
-		
-		});
-			
- 		//Funcion genera totalColumna
-
- 	
-		//======================
- 		//input precioUnitario
- 		$("table#productosNota").on("change", "input[id^='costoUnitario_']", function(){
- 			var precioUnitario = $(this).attr("id");
- 			var arr = precioUnitario.split('_');
- 			var numFila = arr[1];
- 			
- 			var cantidadFila = $('input#idCantidad_'+numFila);
- 			var precioImporte = $(this).val() * cantidadFila.val();
- 			
- 			$('input#costoTotal_'+numFila).val(precioImporte);
- 			
- 		});//cierra input precioUnitario
- 		//==================================================================== Calcular JsonArray
+	 	//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
  			console.log("En a#generarJsonArray: ");
  			var tabla = $("table#productosNota > tbody  > tr");
@@ -293,37 +241,8 @@
  				
  			};
  			
- 			// create an array restaurants
-			// add objects to the array
-			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
-			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
-			
-		
  		});
- 		//========================================================>>>>Multiplos
- 		/* $("body").on('change', 'select[id^="descripcion_"]', function(){
- 		 	var unidad = $(this).attr("id");
- 			
-		 	var tabla = $("table#productosNota > tbody  > tr");
-		 	console.log($(this).val());
-		 	$url = "/General/public/sistema/json/multiplos/idProducto/" + this.value;
-			
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				
-				success: function(unidad){
-						$("select[id^='idUnidad_']").empty();
-						$.each(unidad, function(i,item){
-							$("select[id^='idUnidad_']").append($("<option></option>").attr("value",unidad[i].idMultiplos).text(unidad[i].unidad)); 
-							
-						});
-						
-				}
-				
-			});
-		 	
-		 });*/
+ 		
 		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
@@ -339,7 +258,28 @@
          
                $("#submit").removeAttr('disabled');
            });
-          
-          
-	});//cierra document ready
+           
+      $("table#productosNota").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
+        	calculaRow($(this).closest("tr"));
+        	calculaGrandTotal();
+    	});
+	
+	function calculaRow(row) {
+		var  precioUnitario= +row.find('input[id^="costoUnitario_"]').val();
+    	var cantidad = +row.find('input[id^="idCantidad_"]').val();
+    	row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
+	}
+	
+	function calculaGrandTotal() {	
+    	var grandTotal = 0;
+        
+    	$("table#productosNota").find('input[id^="costoTotal_"]').each(function () {
+        	grandTotal += +$(this).val(); 
+        	console.log(grandTotal);
+    	});
+    	$("input#total").val(grandTotal.toFixed(2));
+ 	 	  
+   	}
+    
+});//cierra document ready	
 </script>

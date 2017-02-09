@@ -7,6 +7,7 @@ interface Sistema_Interfaces_IEmpresa {
 	public function crearEmpresa(array $datos);
 	
 	public function obtenerEmpresa($idEmpresa);
+	public function obtieneEmpresas($idEmpresa);
 	public function obtenerEmpresaPorIdFiscales($idFiscales);
 	
 	public function obtenerIdFiscalesEmpresas();

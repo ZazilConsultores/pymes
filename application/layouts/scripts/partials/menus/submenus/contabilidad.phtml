@@ -70,10 +70,14 @@
 				</li>
 			</ul>
 		</li>
-		<li>
-			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'index'), null, true); ?>">
+		<li class="dropdown-submenu">
+			<a class="test" tabindex="-1" href="#">
 				Tesoreria
 			</a>
+			<ul class="dropdown-menu">
+				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad', 'controller'=>'tesoreria','action'=>'nomina'), null, true); ?>">Nomina</a></li>
+				
+			</ul>
 		</li>
 		<li>
 			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'index'), null, true); ?>">

@@ -463,6 +463,32 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	/**
 	 * 
 	 */
+	 
+	public function obtieneEmpresas($idEmpresa){
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		$consecutivo = $rowEmpresas['consecutivo'];
+		//print_r("<br />");
+		
+		$consecutivo = $consecutivo +1 ;
+		//print_r($consecutivo);
+		
+		
+		try{
+			//$rowEmpresas = $tablaEmpresas->fetchRow($select);
+			if(is_null($rowEmpresas)){
+				return null;
+			}else{
+				return $rowEmpresas->toArray();
+			}
+			
+		}catch(Exception $ex){
+			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
+		}
+		
+		
+	} 
 	public function agregarEmailSucursal($idSucursal, Sistema_Model_Email $email){
 		
 	}
@@ -472,10 +498,6 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function eliminarTelefonoSucursal($idSucursal, $idTelefono){}
 	public function eliminarEmailSucursal($idSucursal, $idEmail){}
-	
-	
-	
-	
 	
 	
 }

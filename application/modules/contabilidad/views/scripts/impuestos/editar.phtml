@@ -5,10 +5,44 @@
 <section class="row">
 	<div class="panel panel-warning">
 		<div class="panel-heading">
-		Editar Impuesto.			
+			<h3 class="panel-title">Edita Impuesto.</h3>			
 		</div>
-		<div class="col-xs-6">
-		<?php echo $formulario; ?>
-		</div>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<?php echo $formulario; ?>
+			</div>
+		</div>	
 	</div>
 </section>
+<script>
+$(function(){
+	$('#impuestos').validate({
+		rules:{
+			abreviatura:{
+				required: true,
+			},
+			descripcion:{
+				required: true,
+			},
+			estatus:{
+				required: true,
+				rangelength: [0, 1],
+				lettersonly:true,
+			}
+		},
+		messages: {
+			abreviatura:{
+				required: "Debe ingresar abrevitura"
+			},
+			descripcion:{
+				required: "Debe ingresar descripción ",
+			},
+			estatus:{
+				required: "Debe ingresar el estatus",
+                rangelength: "El estatus debe tener máximo 1 caracter",                 
+                lettersonly: "Ingrese A: Activo o C: Cancelado "
+			}
+		}	
+	});
+});
+</script>

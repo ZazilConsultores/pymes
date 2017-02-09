@@ -23,6 +23,8 @@
 		
 		public function __construct() {
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			
+			
 			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
 		
@@ -37,14 +39,14 @@
 			$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
 			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
-			//$this->$tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
+			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
 		}
 		
 			
 		public function guardaFactura(array $encabezado, $importe, $formaPago, $productos)
 		{
-			$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-			$bd->beginTransaction();
+			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			$dbAdapter->beginTransaction();
 				
 			$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
 			$stringFecha = $fechaInicio->toString('YY-mm-dd');
@@ -93,18 +95,18 @@
 						'numeroFactura'=>$encabezado['numeroFactura'],
 						'estatus'=>"A",
 						'conceptoPago'=>$conceptoPago,
-						'descuento'=>$importe[0]['descuento'],
+						'descuento'=>100,
 						'formaPago'=>$formaPago['formaLiquidar'],
 						'fechaFactura'=>$stringFecha,
-						'subTotal'=>$importe[0]['subtotal'],
+						'subTotal'=>$importe[0]['subTotal'],
 						'total'=>$importe[0]['total'],
 						'folioFiscal'=>$encabezado['folioFiscal'],
-						'importePago'=>'0'
+						'importePago'=>$importe[0]['total']
 					);
 					print_r($mFactura);
-					$bd->insert("Factura", $mFactura);
+					$dbAdapter->insert("Factura", $mFactura);
 					//Obtine el ultimo id en tabla factura
-					$idFactura = $bd->lastInsertId("Factura","idFactura");
+					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
 			
 					if($formaPago['pagos']!= 0 ){
 						print_r("Cantidad como pago en la factura");
@@ -130,12 +132,12 @@
 						'numeroReferencia'=>$formaPago['numeroReferencia'],
 						'conceptoPago'=>$conceptoPago,
 						'formaLiquidar'=>$formaPago['formaLiquidar'],
-						'subTotal'=>$importe[0]['subtotal'],
+						'subTotal'=>$importe[0]['subTotal'],
 						'total'=>$importe[0]['total']
 						
 					);
 					//print_r($mCuentasxp);
-					$bd->insert("Cuentasxp", $mCuentasxp);
+					$dbAdapter->insert("Cuentasxp", $mCuentasxp);
 					
 					//Guarda impuestoFactura
 				
@@ -146,19 +148,19 @@
 				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
 				$rowIdFactura =$tablaFactura->fetchRow($select);
 				$idFactura = $rowIdFactura['idFactura'];
-				print_r($idFactura);
+				print_r("$select");
 					$mfacturaImpuesto = array(
 						'idFactura'=>$idFactura ,
 						'idImpuesto'=>24,
-						'importe'=>$encabezado['ieps'],	
+						'importe'=>7.2,	
 					);
 					//print_r($mCuentasxp);
-					$bd->insert("FacturaImpuesto", $mfacturaImpuesto);
+					$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
 						
 					}
 				
 			
-				$bd->commit();
+				$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");
 				print_r("================");
@@ -170,7 +172,7 @@
 				print_r($ex->getMessage());
 				print_r("<br />");
 				print_r("<br />");
-				$bd->rollBack();
+				$dbAdapter->rollBack();
 			}
 		}
 		
@@ -205,14 +207,14 @@
 		}
 		
 		public function guardaDetalleFactura(array $encabezado, $producto, $importe){
-			$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-			$bd->beginTransaction();
-				
+			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			$dbAdapter->beginTransaction();
+		
 			$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
 			$stringFecha = $fechaInicio->toString('YY-mm-dd');
 			
 			try{
-				$secuencial=0;	
+				$secuencial = 0;	
 				$tablaMovimiento = $this->tablaMovimiento;
 				$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
 				->where("idCoP=?",$encabezado['idCoP'])
@@ -221,10 +223,10 @@
 				->where("fecha=?", $stringFecha)
 				->order("secuencial DESC");
 			
-				$row = $tablaMovimiento->fetchRow($select); 
+				$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 				
-				if(!is_null($row)){
-					$secuencial= $row->secuencial +1;
+				if(!is_null($rowMovimiento)){
+					$secuencial= $rowMovimiento->secuencial +1;
 					//print_r($secuencial);
 				}else{
 					$secuencial = 1;	
@@ -234,13 +236,15 @@
 				
 		 		$tablaMultiplos = $this->tablaMultiplos;
 				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-				$row = $tablaMultiplos->fetchRow($select); 
+				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+				
+				print_r("select");
 				
 				//====================Operaciones para convertir unidad minima====================================================== 
 				$cantidad=0;
 				$precioUnitario=0;
-				$cantidad = $producto['cantidad'] * $row->cantidad;
-				$precioUnitario = $producto['precioUnitario'] / $row->cantidad;
+				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
 				/*print_r("<br />");
 				print_r($cantidad);
 	
@@ -259,7 +263,7 @@
 				$select = $tablaUnidad->select()->from($tablaUnidad)->where("idUnidad=?", $producto['unidad']);
 				$rowUnidad = $tablaUnidad->fetchRow($select);
 				
-				if(! is_null($row)){
+				if(! is_null($rowUnidad)){
 					//Guarda Movimiento en tabla Movimientos
 					$mMovimiento = array(
 						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
@@ -277,7 +281,7 @@
 						'costoUnitario'=>$precioUnitario,
 						'totalImporte'=>$producto['importe']
 					);
-				 	$bd->insert("Movimientos",$mMovimiento);
+				 	$dbAdapter->insert("Movimientos",$mMovimiento);
 					
 					$tablaProducto = $this->tablaProducto;
 					$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['descripcion']);
@@ -291,21 +295,18 @@
 						'secuencial'=>$secuencial,
 						'cantidad'=>$cantidad,
 						'descripcion'=>$desProducto,
-						'precioUnitario'=>$precioUnitario,//
+						'precioUnitario'=>$precioUnitario,
 						'importe'=>$producto['importe'],
 						'fechaCaptura'=>$stringFecha,
 						'fechaCancela'=>null
 					);
-				 	$bd->insert("FacturaDetalle",$mFacturaDetalle);
+				 	$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
 					
-					
-				}else{
-					print_r("Puede crear Factura");
 					
 				}
 				
 				
-				$bd->commit();
+				$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");
 				print_r("================");
@@ -317,38 +318,11 @@
 				print_r($ex->getMessage());
 				print_r("<br />");
 				print_r("<br />");
-				$bd->rollBack();
+				$dbAdapter->rollBack();
 			}		
 		}
 	
 			public function calcular (array $producto, $importe){
-				$tablaImpProductos = $this->tablaImpuestoProductos;
-				$select = $tablaImpProductos->select()->from($tablaImpProductos)->where("idProducto = ?", $producto['descripcion']);
-				$rowImpProducto = $tablaImpProductos->fetchRow($select);
-				print_r("$select");
-				
-				
-				
-				if (!is_null($rowImpProducto)){
-					if ($rowImpProducto->porcentaje == 0){
-						print_r("El impuesto tiene porcentaje de 0 ");
-						$tablaMultiplos = $this->tablaMultiplos;
-						$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto = ?", $producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-						$rowMultiplo = $tablaMultiplos->fetchRow($select);
-						//$cantidad=0;
-						$precioUnitario = 0;
-						$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-						$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
-						$ieps = $cantidad * $rowImpProducto['importe'] /1000;
-						print_r($cantidad);
-						print_r("<br />");
-						print_r("<br />");
-						print_r($ieps);
-					}else{
-						print_r("El impuesto tiene porcentaje diferente de cero ");
-					}
-				}	
+					
 			}
-		
-			
 	}

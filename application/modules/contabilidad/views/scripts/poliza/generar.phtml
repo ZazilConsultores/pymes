@@ -1,0 +1,25 @@
+<?php echo $this->formulario; ?>
+<script>
+	$(document).ready(function(){
+		$("select#poliza-idEmpresas").on('change', function (){
+			var url = window.location.origin + "/General/";
+			console.log();
+			var idEmpresa= $(this).val();
+			var urlSucursal = url + "sistema/json/sucursales/idFiscales/" +this.value;
+			$.ajax({
+				url: urlSucursal,
+				dataType: "json",
+				success: function (data){
+					$("select#poliza-idSucursal").empty();
+					$.each(data, function (i,item){
+						$("select#poliza-idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+					});
+				}
+			});
+		});
+		//Fecha
+		$("#poliza-fechaInicial").on('change', function (){
+			console.log("Click en fecha inicial");
+		});
+	});
+</script>

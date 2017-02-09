@@ -65,8 +65,9 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
 		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
-        $eProyecto->setLabel('Seleccionar Proyecto: ');
+        $eProyecto->setLabel("Seleccionar Proyecto:");
 		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setRegisterInArrayValidator(FALSE);
 		
     	$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
 		$rowset = $tablaEmpresa->obtenerClientes();
@@ -94,7 +95,11 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
         $eFecha->setLabel('Seleccionar Fecha: ');
 		$eFecha->setAttrib("class", "form-control");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eNumFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eVendedor,$eFecha));
+		$eProducto = new Zend_Form_Element_Hidden('productos');
+		$eProducto->setAttrib("class", "form-control");
+		$eProducto->setAttrib("required","true");
+		
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente,$eVendedor,$eFecha, $eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
@@ -112,14 +117,14 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDescripcion());
 		}
 		
-		$ePagada = new Zend_Form_Element_Checkbox('Pagada');
+		$ePagada = new Zend_Form_Element_Checkbox('pagada');
 		$ePagada->setLabel("Pagada en una sola exhibición:");
+		$ePagada->setChecked('1');
 		
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('Importe Pago:');
 		$ePagos->setAttrib("class", "form-control");
-		$ePagos->setValue(0);
-		
+		$ePagos->setAttrib("disabled"," true");
 		
 		$formaPago = Zend_Registry::get('formaPago');
 		$eFormaLiquidar = new Zend_Form_Element_Select('formaLiquidar');
@@ -149,7 +154,14 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eComentario->setAttrib('rows', '3');
 		$eComentario->setAttrib("class","form-control");
 		
-		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia/*,$eImporte*/,$eComentario));
+		$eImportes = new Zend_Form_Element_Hidden('importes');
+		$eImportes->setAttrib("class", "form-control");
+		$eImportes->setAttrib("required","true");
+		
+		$impuestos = new Contabilidad_DAO_Impuesto;
+		$tiposImpuestos =$impuestos->obtenerImpuestos();
+		
+		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia,$eComentario, $eImportes));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 				

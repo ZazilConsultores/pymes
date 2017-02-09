@@ -55,6 +55,7 @@ class Contabilidad_Model_Impuesto
     
     public function __construct(array $datos){
     	if (array_key_exists("idImpuesto", $datos)) $this->idImpuesto = $datos["idImpuesto"];
+		if (array_key_exists("abrevitura", $datos)) $this->abreviatura = $datos["abrevitura"];
     	$this->abreviatura = $datos["abreviatura"];
 		$this->descripcion = $datos["descripcion"];
 		

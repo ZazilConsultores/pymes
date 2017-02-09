@@ -34,7 +34,7 @@
 			<a id="generarJsonArray" class="btn btn-warning">
 				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
-			<table id="productosNota" class="table table-striped table-condensed">
+			<table id="remisionSalida" class="table table-striped table-condensed">
 				<thead>
 					<tr>
 						<th>Cantidad</th>
@@ -59,7 +59,7 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>Total:</td>
-						<td><input id="total" class="form-control" /></td>				
+						<td><input id="total" class="form-control" disabled="true" /></td>				
 					</tr>
 				</tfoot>
 			</table>
@@ -68,20 +68,9 @@
 	</div>
 </section>
 <script>
-	$().ready(function(){
-		
-		
-		$("#submit").click(function(){
-			console.log("" + form.valid());
-		});
-		
-	});
-</script>
-<script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
-			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
-			//console.log("$url");
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			$.ajax({
 				url: url,
 				dataType: "json",
@@ -97,7 +86,7 @@
 		});
 		
 		$("select#idSucursal").on('click', function(){
-		var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+		var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
 			//console.log("$url");
 			$.ajax({
 				url: url,
@@ -116,12 +105,10 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-	
-		//console.dir(jsonProductos);
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
-			var filasTabla = $("table#productosNota tbody > tr").length;
+			var filasTabla = $("table#remisionSalida tbody > tr").length;
 			//console.log(filasTabla);
 			// si filasTabla = 0 continuar
 			// si filasTabla <> 0 checar fila actual
@@ -131,7 +118,6 @@
 			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 			// idProducto
 			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 			$.each(jsonUnidad,function(i,item){
@@ -148,13 +134,12 @@
 			// precioUnitario
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
-			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
-			
+			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});	
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
 			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
 
-			var tbody = $("table#productosNota").find('tbody');
+			var tbody = $("table#remisionSalida").find('tbody');
 			tbody.append($('<tr>').
 				append($('<td>').append(inputCantidad)).
 				append($('<td>').append(inputProducto)).
@@ -169,16 +154,16 @@
 		});//cierra el addRow
 		
 		//Funcion Eliminar #btnLimpiar_2
- 		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
+ 		$("table#remisionSalida").on("click", "button[id^='btnLimpiar_']", function(){
  			// si tenemos mas de una fila
-  			if ($("table#productosNota tbody > tr").length >1)
+  			if ($("table#remisionSalida tbody > tr").length >1)
   			{
-  				$("table#productosNota  tbody > tr:last").remove();
+  				$("table#remisionSalida  tbody > tr:last").remove();
   			}
  		});//cierra funcion eliminar
  		
  		//Funcion buscar descripcion del producto
- 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
+ 		$("table#remisionSalida").on("change", "select[id^='descripcion_']", function(){
  			var descripcion= $(this).attr("id");
 			var arr = descripcion.split('_');
 			var id = $(this).val();
@@ -189,71 +174,13 @@
  				if(jsonProductos[i].idProducto == id){
  					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
  				}
- 				
-				//selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
 			});
  			
  		});//cierra funcion buscar descripcion del producto
-
-		//input  cantidad
-		$("table#productosNota").on("change","input[id^='idCantidad_']" ,function() {
-			var idCantidad= $(this).attr("id");
-			var arr = idCantidad.split('_');
-			var numFila =  arr[1];
-			
-			var precioUnitarioFila = $('input#costoUnitario_'+numFila);
-			//console.log(precioUnitarioFila);
-			var precioImporte = $(this).val() * precioUnitarioFila.val();
-
-			$('input#costoTotal_'+numFila).val(precioImporte);
-			//console.log($(this).val())	;
-			
- 		}); //cierra input cantidad
- 		
-		//input  costoTotal
-		
-		$("table#productosNota").on("blur","input[id^='costoTotal_']",function() {
-			var costo=0;
-			
-			 $("table#productosNota").find("input[id^='costoTotal_']").each(function () {
-        		costo += +$(this).val();
-    		});
-			//console.log(costo);
-			//console.log(costoTotal);
-			$("input#total").val(costo);
-		
-		});
-			
- 		//Funcion totalImporte para remision
- 		$("table#productosNota").on("blur","input[id^='total']",function() {
- 			var importe = $(this).val();
- 			console.log(importe);
- 			$("input#1-importePago").val(importe);
-		});
-		
-		$("input#1-importePago").on('click', function(){
- 			console.log("importe");
- 			
-		});
-
- 	
-		//======================
- 		//input precioUnitario
- 		$("table#productosNota").on("change", "input[id^='costoUnitario_']", function(){
- 			var precioUnitario = $(this).attr("id");
- 			var arr = precioUnitario.split('_');
- 			var numFila = arr[1];
- 			
- 			var cantidadFila = $('input#idCantidad_'+numFila);
- 			var precioImporte = $(this).val() * cantidadFila.val();
- 			
- 			$('input#costoTotal_'+numFila).val(precioImporte);
- 			
- 		});//cierra input precioUnitario
- 		//==================================================================== Calcular JsonArray
+		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
  			console.log("En a#generarJsonArray: ");
- 			var tabla = $("table#productosNota > tbody  > tr");
+ 			var tabla = $("table#remisionSalida > tbody  > tr");
  			//Array Json de productos
  			var productos = [];
  			
@@ -276,8 +203,6 @@
  				console.log("costoTotal:"+importe);
  				//console.log("total:"+total);
  				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
- 				
- 			
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -286,37 +211,43 @@
  			if ($("input#productos").val(myString)){
  				
  			};
- 			
- 			// create an array restaurants
-			// add objects to the array
-			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
-			//restaurants.push(new Restaurant("123 Road Dr", "MyCity ST", "555-555-5555", 0));
-			
-		
  		});
  		
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
-		  //this.claveProducto = claveProducto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
 		  this.precioUnitario = precioUnitario;
-		  this.importe = importe;
-		  //this.unidad = unidad;
+		  this.importe = importe;		
 		}
-		 $("a#generarJsonArray").on("click",function(){
-            //if($(this).val() != ''){
-               $('input[type="submit"]').removeAttr('disabled');
-            //}
-              /*$("input#idCantidad_").validate({
-            	rules:{
-            		idCantidad_:{
-            			required:true
-            		}
-            	}
-            });*/
-          });
+		
+		$("a#generarJsonArray").on("click",function(){
+			 $('input[type="submit"]').removeAttr('disabled');
+        });
+        
+        $("table#remisionSalida").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
+        	calculaRow($(this).closest("tr"));
+        	calculaGrandTotal();
+        
+    	});
+    	
+    	function calculaRow(row) {
+   			var  precioUnitario= +row.find('input[id^="costoUnitario_"]').val();
+    		var cantidad = +row.find('input[id^="idCantidad_"]').val();
+    		row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
+		}
+		
+		function calculaGrandTotal() {	
+    	var grandTotal = 0;
+    	$("table#remisionSalida").find('input[id^="costoTotal_"]').each(function () {
+        	grandTotal += +$(this).val(); 
+        	console.log(grandTotal);
+    	});
+    	
+    	 $("input#total").val(grandTotal.toFixed(2));
+    	 $("input#1-importePago").val(grandTotal.toFixed(2));  
+   		}
  	
 	});//cierra document ready
 </script>

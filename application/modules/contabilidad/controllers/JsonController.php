@@ -7,6 +7,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	private $fiscalesDAO;
 	private $productosDAO;
 	private $impuestoProductosDAO;
+	private $facturaClienteDAO;
+	private $pagoProveedorDAO;
 
     public function init()
     {
@@ -20,6 +22,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$this->productosDAO = new Inventario_DAO_Producto;
 		$this->vendedorDAO = new Sistema_DAO_Vendedores;
 		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
+		$this->facturaClienteDAO = new Contabilidad_DAO_FacturaCliente;
+		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
 		
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -147,9 +151,52 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode($impuestoProducto);
 		}else{
 			echo Zend_Json::encode(array());
-		}	
-		
+		}		
 	}
 	
+	//Obtenemos las Empresas para ediatar el consecutivo
+	//La funcion de abajo se puede eliminar
+	public function empresasAction() {
+		$idEmpresa = $this->getParam("idEmpresas");
+		//print_r($idEmpresa);
 	
+		$empresa = $this->empresaDAO->obtieneEmpresas($idEmpresa);
+		if(!is_null($empresa)){
+			echo Zend_Json::encode($empresa);
+		}else{
+			echo Zend_Json::encode(array());
+		}	
+	}
+	
+	//Obtiene idFactura
+	public function facturaAction() {
+		//$idImpuesto = $this->getParam("idImpuesto");
+		$idSucursal = $this->getParam("idSucursal");
+		
+		//$pagoProveedor = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
+		$pagoProveedor = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
+		if(!is_null($pagoProveedor)){
+			echo Zend_Json::encode($pagoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}		
+	}
+	
+	//Buscamos en cuentasxp para facturas proveedor por idSucursal
+	//Obtiene idFactura
+	public function pagosAction(){
+		
+		$idSucursal = $this->getParam("idSucursal");
+		$idCoP = $this->getParam("idCoP");
+		$numeroFactura = $this->getParam("numeroFactura");
+		
+		//$pagoProveedorh = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
+		//$pagosFactura = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
+		$pagosFactura = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal, $idCoP, $numeroFactura);
+		if(!is_null($pagosFactura)){
+			echo Zend_Json::encode($pagosFactura);
+		}else{
+			echo Zend_Json::encode(array());
+		}		
+	}
 }
