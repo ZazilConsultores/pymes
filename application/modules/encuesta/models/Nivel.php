@@ -59,9 +59,9 @@ class Encuesta_Model_Nivel
 		$datos = array();
 		
 		$datos["idNivelEducativo"] = $this->idNivel;
-		$datos["nivelEducativo"] = $this->nivel;
-		$datos["descripcion"] = $this->descripcion;
-		$datos["fecha"] = $this->fecha;
+		$datos["nivelEducativo"] = utf8_encode($this->nivel);
+		$datos["descripcion"] = utf8_encode($this->descripcion);
+		$datos["fecha"] = utf8_encode($this->fecha);
 		
 		return $datos;
 	}

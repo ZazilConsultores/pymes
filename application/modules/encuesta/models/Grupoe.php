@@ -51,7 +51,7 @@ class Encuesta_Model_Grupoe
         if(array_key_exists("idGrupoEscolar", $datos)) $this->idGrupo = $datos["idGrupoEscolar"];
 		if(array_key_exists("idGradoEducativo", $datos)) $this->idGrado = $datos["idGradoEducativo"];
 		if(array_key_exists("idCicloEscolar", $datos)) $this->idCiclo = $datos["idCicloEscolar"];
-		$this->grupo = $datos["grupoEscolar"];
+		$this->grupo = utf8_encode($datos["grupoEscolar"]);
     }
 	
 	public function toArray()

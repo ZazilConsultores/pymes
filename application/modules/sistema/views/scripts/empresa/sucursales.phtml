@@ -151,7 +151,7 @@
 							append($('<td>').append(data["calle"])).
 							append($('<td>').append(data["numeroInterior"])).
 							append($('<td>').append(data["numeroExterior"]))
-						);
+					);
 				}
 			});
 			
@@ -202,7 +202,7 @@
 					var tbody = $("table#tEmailsSucursal").find('tbody');
 					tbody.empty();
 					$.each(data,function(i,item){
-						//selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+						selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
 						var anchorConfigEmail = $('<a>').attr({'class':'btn btn-info'}).attr({'target':'_blank'}).attr({'href':base +"sistema/email/edita/idEmail/"+data[i]["idEmail"]}).text("Configurar");
 						tbody.append($('<tr>').
 							append($('<td>').append(anchorConfigEmail)).

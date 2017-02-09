@@ -26,7 +26,7 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 	 */
 	public function obtenerDocenteAsignacion($idAsignacion){
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
-		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacion=?",$idAsignacion);
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$idAsignacion);
 		$asignacion = $tablaAsignacion->fetchRow($select);
 		
 		$docente = $this->registroDAO->obtenerRegistro($asignacion["idRegistro"]);
@@ -38,10 +38,10 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 	 */
 	public function obtenerGrupoAsignacion($idAsignacion){
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
-		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacion=?",$idAsignacion);
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$idAsignacion);
 		$asignacion = $tablaAsignacion->fetchRow($select);
 		
-		$grupo = $this->gruposDAO->obtenerGrupo($asignacion["idGrupo"]);
+		$grupo = $this->gruposDAO->obtenerGrupo($asignacion["idGrupoEscolar"]);
 		return $grupo;
 	}
 	
@@ -50,10 +50,10 @@ class Encuesta_DAO_AsignacionGrupo implements Encuesta_Interfaces_IAsignacionGru
 	 */
 	public function obtenerMateriaAsignacion($idAsignacion){
 		$tablaAsignacion = $this->tablaAsignacionGrupo;
-		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacion=?",$idAsignacion);
+		$select = $tablaAsignacion->select()->from($tablaAsignacion)->where("idAsignacionGrupo=?",$idAsignacion);
 		$asignacion = $tablaAsignacion->fetchRow($select);
 		
-		$materia = $this->materiaDAO->obtenerMateria($asignacion["idMateria"]);
+		$materia = $this->materiaDAO->obtenerMateria($asignacion["idMateriaEscolar"]);
 		return $materia;
 	}
 	

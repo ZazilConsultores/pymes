@@ -23,11 +23,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$autoloader->registerNamespace('Modules_');
 		
 		$autoloader->registerNamespace('Biblioteca_');
+        $autoloader->registerNamespace('Soporte_');
 		$autoloader->registerNamespace('Contabilidad_');
         $autoloader->registerNamespace('Encuesta_');
         $autoloader->registerNamespace('Inventario_');
 		$autoloader->registerNamespace('Sistema_');
-		//$autoloader->registerNamespace('Util_');
+        $autoloader->registerNamespace('Pymes_');
+		$autoloader->registerNamespace('Util_');
 	}
 	
 	/**
@@ -42,6 +44,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		Zend_Registry::set('dbmodgeneral', $resource->getDb('dbmodgeneral'));
 		//Zend_Registry::set('dbmodencuesta', $resource->getDb('dbmodencuesta'));
         Zend_Registry::set('dbbaseencuesta', $resource->getDb('dbbaseencuesta')); //dbgenerale
+        Zend_Registry::set('dbbasebiblio', $resource->getDb('dbbasebiblio')); //dbgenerale
+        Zend_Registry::set('dbbasesoporte', $resource->getDb('dbbasesoporte')); //dbgenerale
 	}
 	
 	/**
@@ -51,11 +55,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		// =================================================================  >>>
 		$front = Zend_Controller_Front::getInstance();
 		// Instanciamos el Plugin de Layouts
-		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema');
+
+		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema', 'pymes','soporte');
+
+	
 		$front->registerPlugin(new App_Plugins_Layout($moduleNames));
 		// Instanciamos el plugin ACL
 		$recursos = new App_Security_Recurso();
-		//$front->registerPlugin(new App_Plugins_Acl($recursos->getAcl()));
+		$front->registerPlugin(new App_Plugins_Acl($recursos->getAcl()));
 		//$front->registerPlugin(new Modules_Controller_Plugin_RequestedModuleLayoutLoader());
 		//$front->registerPlugin(new Encuesta_Plugin_Acl($recursos->getAcl()));
 	}

@@ -82,10 +82,10 @@ class Encuesta_Models_GradoEducativo {
 		
 		$datos["idGradoEducativo"] = $this->idGradoEducativo;
 		$datos["idNivelEducativo"] = $this->idNivelEducativo;
-		$datos["gradoEducativo"] = $this->gradoEducativo;
-		$datos["abreviatura"] = $this->abreviatura;
-		$datos["descripcion"] = $this->descripcion;
-		$datos["fecha"] = $this->fecha;
+		$datos["gradoEducativo"] = utf8_encode($this->gradoEducativo);
+		$datos["abreviatura"] = utf8_encode($this->abreviatura);
+		$datos["descripcion"] = utf8_encode($this->descripcion);
+		$datos["fecha"] = utf8_encode($this->fecha);
 		
 		return $datos;
 	}

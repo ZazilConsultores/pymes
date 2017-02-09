@@ -80,11 +80,11 @@ class Encuesta_Model_Registro
     public function __construct(array $datos)
     {
     	if(array_key_exists("idRegistro", $datos)) $this->idRegistro = $datos["idRegistro"];
-		$this->referencia = $datos["referencia"];
-		$this->tipo = $datos["tipo"];
-		$this->nombres = $datos["nombres"];
-		$this->apellidos = $datos["apellidos"];
-		$this->fecha = $datos["fecha"];
+		$this->referencia = utf8_encode($datos["referencia"]);
+		$this->tipo = utf8_encode($datos["tipo"]);
+		$this->nombres = utf8_encode($datos["nombres"]);
+		$this->apellidos = utf8_encode($datos["apellidos"]);
+		$this->fecha = utf8_encode($datos["fecha"]);
 		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
     }
 	

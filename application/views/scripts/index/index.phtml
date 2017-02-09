@@ -6,23 +6,23 @@
     <hr />
     <ul class="list-buttons-vertical">
         <li>
-            <a class="mebutton mebutton-black mebutton-md" href="<?php echo $this->url(array('module'=>'inventario','controller'=>'inventario','action'=>'index'),null,true) ?>">
-                <span class="fa fa-edit fa-lg"></span> Inventario
+            <a class="mebutton mebutton-blue mebutton-md" href="<?php echo $this->url(array('module'=>'pymes','controller'=>'index','action'=>'index'),null,true) ?>">
+                <span class="fa fa-cogs fa-lg"></span> Pymes
             </a>
         </li>
         <li>
-            <a class="mebutton mebutton-blue mebutton-md" href="<?php echo $this->url(array('module'=>'operaciones','controller'=>'index','action'=>'index'),null,true) ?>">
-                <span class="fa fa-cogs fa-lg"></span> Operaciones
-            </a>
-        </li>
-        <li>
-            <a class="mebutton mebutton-green mebutton-md" href="<?php echo $this->url(array('module'=>'Biblioteca','controller'=>'libro','action'=>'index'),null,true) ?>">
+            <a class="mebutton mebutton-green mebutton-md" href="<?php echo $this->url(array('module'=>'biblioteca','controller'=>'home','action'=>'index'),null,true) ?>">
                 <span class="fa fa-book fa-lg"></span> Biblioteca
             </a>
         </li>
         <li>
             <a class="mebutton mebutton-red mebutton-md" href="<?php echo $this->url(array('module'=>'encuesta','controller'=>'home','action'=>'index'),null,true) ?>">
                 <span class="fa fa-bar-chart fa-lg"></span> Encuestas
+            </a>
+        </li>
+        <li>
+            <a class="mebutton mebutton-green mebutton-md" href="<?php echo $this->url(array('module'=>'soporte','controller'=>'home','action'=>'index'),null,true) ?>">
+                <span class="fa fa-book fa-lg"></span> Soporte
             </a>
         </li>
     </ul>

@@ -54,6 +54,46 @@ class Encuesta_DAO_Login {
        if (!is_null($rowRol)) return $rowRol->toArray();
         else return null; 
     }
+    /**
+     * Accedemos al sistema solo con la clave de la organizacion
+     * Autentificamos con el usuario: encuestaTest - usuario con privilegios de consulta.
+     */
+    public function loginByClaveOrganizacion($claveOrganizacion) {
+        if(!is_null($claveOrganizacion)){
+            $organizacion = $this->getOrganizacionByClave($claveOrganizacion);
+            $authAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('dbbaseencuesta'),"Usuario","nickname","password",'SHA1(?)');
+            $authAdapter->setIdentity("test")->setCredential("zazil");
+            
+            $auth = Zend_Auth::getInstance();
+            $resultado = $auth->authenticate($authAdapter);
+            
+            if($resultado->isValid()){
+                //print_r("<br />Autentificado con clave <br />");
+                $data = $authAdapter->getResultRowObject(null,'password');
+                $subscripcion = $this->getSubscripcion($organizacion["idOrganizacion"]);
+                $n_adapter = $subscripcion["adapter"];
+                $currentDbConnection = array();
+                $currentDbConnection["host"] = $subscripcion["host"];
+                $currentDbConnection["username"] = $subscripcion["username"];
+                $currentDbConnection["password"] = $subscripcion["password"];
+                $currentDbConnection["dbname"] = $subscripcion["dbname"];
+                
+                $db = Zend_Db::factory(strtoupper($n_adapter), $currentDbConnection);
+                
+                $userInfo = array();
+                $userInfo["user"] = $data;
+                $userInfo["rol"] = $this->getRolbyId($data->idRol);
+                $userInfo["organizacion"] = $organizacion;
+                $userInfo["adapter"] = $db;
+                $auth->getStorage()->clear();
+                $auth->getStorage()->write($userInfo);
+                
+            }else{
+                
+            }
+            
+        }
+    }
     
     
 }

@@ -1,0 +1,154 @@
+<?php echo $this->doctype(); ?>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="description" content="">
+        <meta name="author" content="Hector Rodriguez">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Pymes</title>
+		
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="<?php echo $this->baseUrl() ?>/public/ext/modules/pymes/images/favicon.png">
+		<link rel="apple-touch-icon" href="<?php echo $this->baseUrl() ?>/public/ext/modules/pymes/images/favicon.png">
+		
+		<link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/lib/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl() ?>/public/lib/bootstrap/css/bootstrap-theme.min.css" />
+		
+		<link rel="stylesheet" charset="UTF-8" href="<?php echo $this->baseUrl()."/public/ext/modules/pymes/css/backgrounds.css" ?>" />
+		<style>
+		    .jumbo-container{
+		        padding: 170px;
+		        margin: 25px;
+		    }
+		    .description{
+		        
+		    }
+		    .about-us{
+		        
+		    }
+		    .login{
+		        
+		    }
+		    .container-size{
+		        height: 550px;
+		        background-color: #008080;
+		    }
+		    
+		</style>
+	</head>
+	<?php 
+	   $data = null;
+	   $auth = Zend_Auth::getInstance();
+       
+       if($auth->hasIdentity()) $data = $auth->getIdentity();
+	?>
+	
+	<body style="padding-top: 51px">
+	    <nav class="navbar navbar-default navbar-fixed-top">
+	        <div class="container-fluid">
+	            <div class="navbar-header">
+	                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse">
+	                    
+	                </button>
+	                <a class="navbar-brand" href="#">
+	                    Pymes
+	                </a>
+	            </div>
+	            <div class="collapse navbar-collapse">
+	                <ul class="nav navbar-nav navbar-right">
+	                    <li><a class="page-scroll" href="#description">Descripcion</a></li>
+	                    <li><a class="page-scroll" href="#login">Login</a></li>
+	                    <li><a class="page-scroll" href="#aboutus">Acerca de</a></li>
+	                </ul>
+	            </div>
+	        </div>
+	    </nav>
+	    <div class="container-fluid jumbotron ibg-gears" style="margin: 0px">
+	        <div class="jumbo-container">
+	            <h1>Sistema de PyMES</h1>
+                <p>
+                    Sistema de gestión de PyMES
+                </p>
+                <p>
+                    <a class="btn btn-success" href="#description">
+                        Resumen
+                    </a>
+                </p>
+	        </div>
+	        
+	    </div>
+	    <div id="description" class="container-fluid jumbotron" style="margin: 0px;">
+	        <header>
+	            <h4>Administración</h4>
+	        </header>
+	        <div>
+	            <p>
+	                Gestion de operaciones e inventarios.
+	            </p>
+	        </div>
+	    </div>
+	    <div id="login" class="container-fluid jumbotron ibg-login" style="margin: 0px;">
+	        <header>
+	            <h3>Login</h3>
+	        </header>
+	        <form class="form-horizontal">
+	            <div class="form-group">
+	                <label class="col-sm-2 control-label" for="claveOrganizacion">Clave Organización: </label>
+	                <div class="col-sm-5">
+	                    <input type="text" class="form-control" name="claveOrganizacion" placeholder="clave" />
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <label class="col-sm-2 control-label"  for="usuario">Usuario: </label>
+	                <div class="col-sm-5">
+	                    <input type="text" class="form-control" name="usuario" placeholder="usuario" />
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <label class="col-sm-2 control-label"  for="password">Password: </label>
+	                <div class="col-sm-5">
+	                    <input type="password" class="form-control" name="password" placeholder="password" />
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <div class="col-sm-2">
+	                </div>
+	                <div class="col-sm-5">
+	                    <button type="submit" class="btn btn-info">
+                            Ingresar  <span class="glyphicon glyphicon-send"></span>
+                        </button>
+	                </div>
+	            </div>
+	        </form>
+	    </div>
+	    <div id="aboutus" class="container-fluid" style="margin: 0px;">
+	        <div class="row">
+	            <div class="col-sm-3">
+	                <header>
+	                    <h5>Header</h5>
+	                </header>
+	            </div>
+	            <div class="col-sm-3">
+	                <header>
+                        <h5>Header</h5>
+                    </header>
+	            </div>
+	            <div class="col-sm-3">
+	                <header>
+                        <h5>Header</h5>
+                    </header>
+	            </div>
+	            <div class="col-sm-3">
+	                <header>
+                        <h5>Header</h5>
+                    </header>
+	            </div>
+	        </div>
+	    </div>
+	</body>
+	<script charset="UTF-8" type="text/javascript" src="<?php echo $this->baseUrl() ?>/public/lib/jquery/jquery.min.js"></script>
+	<script charset="UTF-8" type="text/javascript" src="<?php echo $this->baseUrl() ?>/public/lib/bootstrap/js/bootstrap.min.js"></script>
+</html>
+

@@ -322,6 +322,7 @@ class Encuesta_Util_Reporter {
      */
     public function generarReporteGrupalEvaluacionAsignacionDos($idEncuesta, $idAsignacion){
         // ========================================================== >>> Obtenemos los objetos estaticos basicos
+        $textUtil = new App_Util_Text;
         $reporterDAO = $this->reporterDAO;
         
         $encuesta = $reporterDAO->getEncuestaById($idEncuesta);
@@ -334,22 +335,31 @@ class Encuesta_Util_Reporter {
         $grado = $reporterDAO->getGradoEducativoById($grupoEscolar["idGradoEducativo"]);
         $nivel = $reporterDAO->getNivelEducativoById($grado["idNivelEducativo"]);
         //setlocale($category, $locale);
+        
         $nombreArchivo = str_replace(" ", "", $docente["apellidos"].$docente["nombres"])."-". $grupoEscolar['grupoEscolar'] ."-".$idAsignacion."-".$idEncuesta."-RGPH.pdf";
+		$name = utf8_encode($nombreArchivo);
+		$nombreArchivo = $textUtil->normalize_special_characters($name);
+		
+		//print_r("NombreArchivo: ".$nombreArchivo."<br />");
+		//$titulo = str_replace(" ", "", $textUtil->normalize_special_characters($docente["apellidos"].$docente["nombres"]))."-". $grupoEscolar['grupoEscolar'] ."-".$idAsignacion."-".$idEncuesta."-RGPH.pdf";
+        //$string = $textUtil->normalize_special_characters($nombreArchivo);
+        //$titulo = utf8_encode($titulo);
+        //print_r("Titulo: ".$textUtil->normalize_special_characters($titulo)."<br />");
         //print_r("NombreArchivo: ".$nombreArchivo."<br />");
         //print_r("NombreArchivo: ".iconv("UTF-8", "ASCII//TRANSLIT", $nombreArchivo)."<br />");
         //mb_convert_encoding($str, 'UTF-8', 'UTF-8');
-        setlocale(LC_ALL, 'en_US.UTF-8');
-        print_r("NombreArchivo: ".iconv("UTF-8", "ASCII//TRANSLIT", $nombreArchivo )."<br />");
-        print_r("NombreArchivo: ".iconv("UTF-8", "ISO-8859-1//TRANSLIT//IGNORE", $nombreArchivo )."<br />");
-        $string = mb_convert_encoding($nombreArchivo, "HTML-ENTITIES", "UTF-8"); 
+        //setlocale(LC_ALL, 'en_US.UTF-8');
+        //print_r("NombreArchivo: ".iconv("UTF-8", "ASCII//TRANSLIT", $nombreArchivo )."<br />");
+        //print_r("NombreArchivo: ".iconv("UTF-8", "ISO-8859-1//TRANSLIT//IGNORE", $nombreArchivo )."<br />");
+        //$string = mb_convert_encoding($nombreArchivo, "HTML-ENTITIES", "UTF-8"); 
         //$string = html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $nombreArchivo), ENT_QUOTES, 'UTF-8');
-        print_r("NombreArchivo: ".$string);
+        
         //mb_convert_encoding($nombreArchivo, 'ASCII');
         
         // ========================================================== >>> Generamos el reporte a partir de plantilla
         $pdfTemplate = My_Pdf_Document::load(PDF_PATH . '/reports/bases/reporteHBE.pdf');
         $pages = $pdfTemplate->pages;
-        $pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/encuesta/grupal/'.$this->organizacion["directorio"]);
+        $pdfReport = new My_Pdf_Document($nombreArchivo, PDF_PATH . '/reports/Encuesta/grupal/'.$this->organizacion["directorio"]);
         $pdfReport->setYHeaderOffset(160);
         // Clonamos para editar el nuevo documento
         $pageZ = clone $pages[0];
@@ -390,17 +400,17 @@ class Encuesta_Util_Reporter {
         
         $colthA1->setText("Evaluacion: ");
         $colthA1->setWidth($cellWidth);
-        $colthA2->setText($encuesta['nombre']);
+        $colthA2->setText(utf8_encode($encuesta['nombre']));
         $colthB1->setText("Docente: ");
-        $colthB1->setWidth($cellWidth);
-        $colthB2->setText($docente['apellidos'].", ".$docente['nombres']);
+        $colthB1->setWidth($cellWidth); //utf8_encode($docente['apellidos'].", ".$docente['nombres'])
+        $colthB2->setText(utf8_encode($docente['apellidos'].", ".$docente['nombres']));
         $colthC1->setText("Nivel, Grado, Grupo Y Materia: ");
         $colthC1->setWidth($cellWidth);
-        $colthC2->setText($nivel["nivelEducativo"].", ".$grado["gradoEducativo"].", Grupo. ".$grupoEscolar["grupoEscolar"].", ".$materiaEscolar['materiaEscolar']);
+        $colthC2->setText(utf8_encode($nivel["nivelEducativo"].", ".$grado["gradoEducativo"].", Grupo. ".$grupoEscolar["grupoEscolar"].", ".$materiaEscolar['materiaEscolar']));
         
         $colthD1->setText("Grupo: ");
         $colthD1->setWidth($cellWidth);
-        $colthD2->setText($grupoEscolar['grupoEscolar']);
+        $colthD2->setText(utf8_encode($grupoEscolar['grupoEscolar']));
         
         $rowTable1->setColumns(array($colthA1,$colthA2));
         $rowTable1->setCellPaddings(array(5,5,5,5));
@@ -497,7 +507,7 @@ class Encuesta_Util_Reporter {
                     //print_r($select->__toString());
                     $promedio = (10 * $totalPreferencia) / $puntajeMaximo;
                     //print_r("Total: " . $promedio);
-                    $columnHeader->setText($grupoSeccion["nombre"]);
+                    $columnHeader->setText(utf8_encode($grupoSeccion["nombre"]));
                     $columnHeader->setWidth($anchoCelda);
                     //$columnHeader->setAlignment();
                     
@@ -562,7 +572,7 @@ class Encuesta_Util_Reporter {
             $datos["idAsignacionGrupo"] = $idAsignacion;
             $datos["nombreReporte"] = $nombreArchivo;
             $datos["tipoReporte"] = "RGRU";
-            $datos["rutaReporte"] = '/reports/encuesta/grupal/'.$this->organizacion["directorio"].'/';
+            $datos["rutaReporte"] = '/reports/Encuesta/grupal/'.$this->organizacion["directorio"].'/';
             $datos["fecha"] = date("Y-m-d H:i:s", time());
             $idReporte = $tablaReportesEncuesta->insert($datos);
         }else{

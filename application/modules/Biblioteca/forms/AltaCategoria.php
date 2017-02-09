@@ -12,7 +12,7 @@ class Biblioteca_Form_AltaCategoria extends Zend_Form
 		$materias = $materiaDAO->obtenerMateriaB("9");
 		
 		
-		$eMateria = new Zend_Form_Element_Select("idMateria");
+		$eMateria = new Zend_Form_Element_Select("idMateria"); 
 		$eMateria->setLabel("Seleccione Materia: ");
 		$eMateria->setAttrib("class", "form-control");
 		$eMateria->setRegisterInArrayValidator(FALSE);

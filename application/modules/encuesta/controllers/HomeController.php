@@ -4,14 +4,29 @@ class Encuesta_HomeController extends Zend_Controller_Action
 {
 
     private $service = null;
+
     private $loginDAO = null;
+
+    private $identity = null;
+
+    private $cicloDAO = null;
+
+    private $docenteDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout->setLayout('homeEncuesta');
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        $this->identity = $dataIdentity;
+        
+        //print_r($this->identity["adapter"]);
+        
         $this->service = new Encuesta_Util_Service;
         $this->loginDAO = new Encuesta_DAO_Login();
+        //$this->cicloDAO = new Encuesta_DAO_Ciclo($this->identity["adapter"]);
+        //$this->docenteDAO = new Encuesta_DAO_Registro($this->identity["adapter"]);
+        $this->_helper->layout->setLayout('homeEncuesta');
     }
 
     public function indexAction()
@@ -134,16 +149,53 @@ class Encuesta_HomeController extends Zend_Controller_Action
     {
         // action body
         $request = $this->getRequest();
-        if($request->isPost()){
+        $auth = Zend_Auth::getInstance();
+        //print_r($request->getPost());
+        //print_r("<br />");
+        //print_r($this->identity);
+        if ($request->isPost()) {
             $post = $request->getPost();
-            //$organizacion = $this->loginDAO->getOrganizacionByClave($post["claveOrganizacion"]);
-            print_r($post);
-            print_r($organizacion);
+            $this->loginDAO->loginByClaveOrganizacion($post["claveOrganizacion"]);
+            $identity = $auth->getIdentity();
+            
+            //$this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
+            //$this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
+            //print_r("Logueado");
         }
+        //$auth = Zend_Auth::getInstance();
+        if ($auth->hasIdentity()) {
+            //print_r("Auth con identidad");
+            $identity = $auth->getIdentity();
+            //print_r($identity["adapter"]);
+            //$this->cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
+            //$this->docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
+            $cicloDAO = new Encuesta_DAO_Ciclo($identity["adapter"]);
+            $docenteDAO = new Encuesta_DAO_Registro($identity["adapter"]);
+            
+            $ciclosEscolares = $cicloDAO->getAllCiclos();
+            $cicloEscolar = $cicloDAO->getCurrentCiclo();
+            $docentes = $docenteDAO->getDocentesByIdCiclo($cicloEscolar->getIdCiclo());
+            
+            $this->view->ciclosEscolares = $ciclosEscolares;
+            $this->view->docentes = $docentes;
+        }
+        
+        
+        
+    }
+
+    public function logoutAction()
+    {
+        // action body
+        $auth = Zend_Auth::getInstance();
+        $auth->clearIdentity();
+        $this->_helper->redirector->gotoSimple("results", "home", "encuesta");
     }
 
 
 }
+
+
 
 
 
