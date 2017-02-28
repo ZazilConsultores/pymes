@@ -1,7 +1,7 @@
 <?php echo $this->formulario; ?>
 <script>
 	$(document).ready(function(){
-		$("select#poliza-idEmpresas").on('change', function (){
+		$("select#idEmpresas").on('change', function (){
 			var url = window.location.origin + "/General/";
 			console.log();
 			var idEmpresa= $(this).val();
@@ -10,16 +10,20 @@
 				url: urlSucursal,
 				dataType: "json",
 				success: function (data){
-					$("select#poliza-idSucursal").empty();
+					$("select#idSucursal").empty();
 					$.each(data, function (i,item){
-						$("select#poliza-idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
 					});
 				}
 			});
 		});
-		//Fecha
-		$("#poliza-fechaInicial").on('change', function (){
-			console.log("Click en fecha inicial");
+		
+		$("#fechaFinal").on('change', function (){
+			var fechaInicio = $("#fechaInicial").val();
+			if(fechaInicio > $(this).val()){
+				//console.log("");
+				alert('[ERROR] Fecha inicio no puede ser mayor que la fecha final');
+			};		
 		});
 	});
 </script>

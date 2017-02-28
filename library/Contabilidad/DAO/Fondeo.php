@@ -20,9 +20,9 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		
 	public function obtenerBancosEmpresas(){
 		$tablaBancosEmpresa = $this->tablaBancosEmpresa;
-		$select=$tablaBancosEmpresa->select()
+		$select = $tablaBancosEmpresa->select()
 		->setIntegrityCheck(false)
-		->from($tablaBancosEmpresa, array('idBancosEmpresas','idEmpresa'))
+		->from($tablaBancosEmpresa, array('idBanco','idEmpresa'))
 		->join('Banco', 'BancosEmpresa.idBanco = Banco.idBanco', array('cuenta','banco'))
 		->where('Banco.tipo <>"IN"')
 		->order('banco ASC');

@@ -2,8 +2,6 @@
 
 class Contabilidad_Model_FacturaImpuesto
 {
-
-
 	private $idFactura;
 
     public function getIdFactura() {

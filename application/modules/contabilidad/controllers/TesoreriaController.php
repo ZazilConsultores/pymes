@@ -29,7 +29,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				print_r($fondeo);
 		
 				try{
-					$this->tesoreriaDAO->sumaBanco($fondeo);
+					$this->tesoreriaDAO->guardaFondeo($empresa, $fondeo);
 					//print_r("$fondeoDAO");
 				}catch(exception $ex){
 					$this->view->messageFail= "Error";

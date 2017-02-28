@@ -18,8 +18,7 @@ class Contabilidad_Form_GeneraPoliza extends Zend_Form
 			array(array('row'=>'HtmlTag'), array('tag'=>'tr'))
 		);
 		
-		$subDatos = new Zend_Form_SubForm();
-		$subDatos->setLegend("Poliza");
+	
 		
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
@@ -46,17 +45,21 @@ class Contabilidad_Form_GeneraPoliza extends Zend_Form
 		$eFechaFin->setLabel('Seleccionar fecha fin:');
 		$eFechaFin->setAttrib("class", "form-control");
 		$eFechaFin->setAttrib("required","true");
-		
-		$subDatos->addElements(array($eEmpresa,$eSucursal,$eFechaInicio,$eFechaFin));
-		$subDatos->setElementDecorators($decoratorsElemento);
-		$subDatos->setDecorators($decoratorsPresentacion);
 	
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Generar");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
-		$this->addSubForm($subDatos,'poliza');
+				
+		/*$this->addElements(array($eEmpresa,$eSucursal,$eFechaInicio,$eFechaFin));
+		$this->setElementDecorators($decoratorsElemento);
+		$this->setDecorators($decoratorsPresentacion);*/
+		$this->addElement($eEmpresa);
+		$this->addElement($eSucursal);
+		$this->addElement($eFechaInicio);
+		$this->addElement($eFechaFin);
 		$this->addElement($eSubmit);
+		
     }
 }
 

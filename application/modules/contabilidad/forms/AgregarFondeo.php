@@ -101,7 +101,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoEntrada->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila){
-			$eBancoEntrada->addMultiOption($fila->idBancosEmpresas, $fila->banco);
+			$eBancoEntrada->addMultiOption($fila->idBanco, $fila->banco);
 		}
 			
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
@@ -109,8 +109,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoSalida->setAttrib("class", "form-control");
 		
 		foreach($rowset as $fila){
-			$eBancoSalida->addMultiOption($fila->idBancosEmpresas, $fila->banco);
-			
+			$eBancoSalida->addMultiOption($fila->idBanco, $fila->banco);
 		}
 		
 		$eImportePago = new Zend_Form_Element_Text('total');

@@ -36,7 +36,7 @@
 	});
 	function calculaNomina(){
 		var total;  
-		total = parseFloat($("input#1-sueldo").val()) + parseFloat($("input#1-subsidio").val())-$("input#1-imss").val()-$("input#1-ispt").val();
+		total = parseFloat($("input#1-sueldo").val()) + parseFloat($("input#1-subsidio").val())-$("input#1-36").val()-$("input#1-ispt").val();
 		console.log("El total:"+ total);
 		$("#1-nominaxpagar").val(total.toFixed(2));
 	}

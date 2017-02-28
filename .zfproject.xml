@@ -48,6 +48,7 @@
         <modelFile modelName="Vendedor"/>
         <modelFile modelName="Inventario"/>
         <modelFile modelName="Bancosempresa"/>
+        <modelFile modelName="GuiaContable"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -1082,6 +1083,8 @@
               <dbTableFile dbTableName="FactutaImpuesto"/>
               <dbTableFile dbTableName="ImpuestoProductos"/>
               <dbTableFile dbTableName="FacturaImpuesto"/>
+              <dbTableFile dbTableName="GuiaContable"/>
+              <dbTableFile dbTableName="Poliza"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1103,6 +1106,8 @@
             <modelFile modelName="Impuesto"/>
             <modelFile modelName="FacturaImpuesto"/>
             <modelFile modelName="ImpuestoProductos"/>
+            <modelFile modelName="GuiaContable"/>
+            <modelFile modelName="Poliza"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

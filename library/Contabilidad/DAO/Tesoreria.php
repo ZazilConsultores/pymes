@@ -12,13 +12,18 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	private $tablaImpuesto;
 	private $tablaBanco;
 	private $tablaEmpresa;
+	private $tablaCuentasxc;
+	private $tablaCuentasxp;
 	
 	public function __construct(){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
-		$this->tablaEmpresa    = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
-		$this->tablaImpuesto   = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
-		$this->tablaBanco      = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaEmpresa  = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+		$this->tablaImpuesto  = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
+		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
+		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
+		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
 	}
 	public function obtenerEmpleadosNomina(){
 		
@@ -38,114 +43,93 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$tablaBanco = $this->tablaBanco;
 		$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $fondeo['idBancoE']);
 		$rowBanco = $tablaBanco->fetchRow($where);
-		print_r($where);
-		print_r("<br />");
-		$importePago = $rowBanco->saldo;
-		print_r($importePago);
-		//$tablaBanco->update(array('saldo'=>$importePago),$where);
 		
+		if(!is_null($rowBanco)){
+			print_r("La consulta no esta vacia");
+			$importePago = $rowBanco->saldo + $fondeo['total'];
+			$tablaBanco->update(array('saldo'=>$importePago),$where);
+		}
 	}
 	
-	public function restaBanco($nomina){
+	public function restaBanco($fondeo){
 		$tablaBanco = $this->tablaBanco;
-		$where = $tablaBanco->getAdapter()->quoteInto("idBanco", $fondeo['idBancoE']);
+		$where = $tablaBanco->getAdapter()->quoteInto("idBanco", $fondeo['idBancoS']);
 		$rowBanco = $tablaBanco->fetchRow($where);
-		
-		$importePago = $rowBanco->saldo + $fondeo['total'];
-		print_r($importePago);
-		$tablaBanco->update(array('saldo'=>$importePago),$where);
+		if(!is_null($rowBanco)){
+			$importePago = $rowBanco->saldo - $fondeo['total'];
+			$tablaBanco->update(array('saldo'=>$importePago),$where);
+		}
 	}
 	
-	public function guardaFondeo( array $empresa, $nomina){
+	public function guardaFondeo( array $empresa, $fondeo){
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
+		$dateIni = new  Zend_Date($empresa['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');	
+		
+		
 		try{
+			$secuencial=0;	
+			$tablaCuentasxc = $this->tablaCuentasxc;
+			$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("numeroFolio=?",$empresa['numFolio'])
+			->where("idTipoMovimiento =?", $empresa['idTipoMovimiento'])
+			->where("idCoP=?",$fondeo['idBancoS'])
+			->where("idSucursal=?",$empresa['idSucursal'])
+			->where("fechaPago=?", $stringIni)
+			->order("secuencial DESC");
+			$rowCuentasxc = $tablaCuentasxc->fetchRow($select); 
+		
+			if(!is_null($rowCuentasxc)){
+				$secuencial= $rowCuentasxc->secuencial +1;
+			}else{
+				$secuencial = 1;	
+			}
+			
 			$mCuentasxc = array(
-			'idTipoMovimiento'=>$fondeo['idTipoMovimiento'],
-			'idSucursal'=>$fondeo['idSucursal'],
+			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
+			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$datos['idBancoE'],/**/
-			'idBanco'=>$datos['idBancoE'],
-			'idDivisa'=>$datos['idDivisa'],
+			'idCoP'=>$fondeo['idBancoS'],/**/
+			'idBanco'=>$fondeo['idBancoS'],
+			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
-			'numeroFolio'=>$fondeo['numFolio'],
+			'numeroFolio'=>$empresa['numFolio'],
 			'secuencial'=>$secuencial,
-			'fechaCaptura'=>$fecha,
-			'fechaPago'=>$stringfecha,
+			'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+			'fechaPago'=>$stringIni,
 			'estatus'=>"A",
 			'numeroReferencia'=>"",
 			'formaLiquidar'=>"LI",
-			'conceptoPago'=>$datos["formaPago"],
-			'subTotal'=>$datos['total'],
-			'total'=>$datos['total']
+			'conceptoPago'=>$fondeo["formaPago"],
+			'subTotal'=>$fondeo['total'],
+			'total'=>$fondeo['total']
 			);
-			$bd->insert("Cuentasxp",$mCuentasxp);
-			
+			$dbAdapter->insert("Cuentasxc",$mCuentasxc);
+			$sumaBanco = $this->sumaBanco($fondeo);
 			$mCuentasxp = array(
-			'idTipoMovimiento'=>$fondeo['idTipoMovimiento'],
-			'idSucursal'=>$fondeo['idSucursal'],
+			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
+			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$datos['idBancoE'],/**/
-			'idBanco'=>$datos['idBancoE'],
-			'idDivisa'=>$datos['idDivisa'],
+			'idCoP'=>$fondeo['idBancoS'],/**/
+			'idBanco'=>$fondeo['idBancoS'],
+			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
-			'numeroFolio'=>$fondeo['numFolio'],
+			'numeroFolio'=>$empresa['numFolio'],
 			'secuencial'=>$secuencial,
-			'fechaCaptura'=>$fecha,
-			'fechaPago'=>$stringfecha,
+			'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+			'fechaPago'=>$stringIni,
 			'estatus'=>"A",
 			'numeroReferencia'=>"",
-			'conceptoPago'=>$datos["formaPago"],
+			'conceptoPago'=>$fondeo["formaPago"],
 			'formaLiquidar'=>"LI",
-			'subTotal'=>$datos['total'],
-			'total'=>$datos['total']
+			'subTotal'=>$fondeo['total'],
+			'total'=>$fondeo['total']
 			);
-			$bd->insert("Cuentasxp",$mCuentasxp);
 			
-			$mCuentasxc = array(
-			'idTipoMovimiento'=>$fondeo['idTipoMovimiento'],
-			'idSucursal'=>$fondeo['idSucursal'],
-			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$datos['idBancoS'],/**/
-			'idBanco'=>$datos['idBancoS'],
-			'idDivisa'=>$datos['idDivisa'],
-			//'idsImpuestos'=>$datos['idTipoMovimiento'],
-			'numeroFolio'=>$datos[0]['numFolio'],
-			'secuencial'=>$secuencial,
-			'fechaCaptura'=>$fecha,
-			'fechaPago'=>$stringfecha,
-			'estatus'=>"A",
-			'numeroReferencia'=>"",
-			'formaLiquidar'=>$datos['formaPago'],
-			'conceptoPago'=>"LI",
-			'subtotal'=>$datos['total'],
-			'total'=>$datos['total']
-			);
-			$bd->insert("Cuentasxc",$mCuentasxc);
+			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+			$restaBanco = $this->restaBanco($fondeo);
 			
-			//=====================================Actualizar Saldo en Bancos
-			/*$select=$tablaBancosEmpresa->select()
-			->setIntegrityCheck(false)
-			->from($tablaBancosEmpresa, array('idBancosEmpresas','idEmpresa'))
-			->join('Banco', 'BancosEmpresa.idBanco = Banco.idBanco', array('cuenta'))
-			->where('Banco.tipo <>"IN"')
-			->order('cuenta ASC');*/
-			$tablaBanco = $this->tablaBanco;
-			$select = $tablaBanco->select()
-			->setIntegrityCheck(false)
-			->from($tablaBanco,array('idBanco'))
-			->join('BancosEmpresa', 'Banco.idBanco = BancosEmpresa.idBanco',array('idBanco'));
-			 
-			 /*$tablaBanco = $this->tablaBanco;
-			$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco=?",$datos['idBancoE']);
-			$row = $tablaBanco->fetchRow($select);*/
-			
-			/*if (!is_null($row)){
-				$saldo = $row->saldo + $datos['total'];
-				print_r($saldo);
-				$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$row->idBanco);
-				$tablaBanco->update(array('saldo'=>$saldo), $where);
-			}*/
-			
-			$bd->commit();
+			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("==========");
@@ -156,7 +140,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			print_r($ex->getMessage());
 			print_r("<br />");
 			print_r("<br />");
-			$bd->rollBack();
+			$dbAdapter->rollBack();
 		}
 		
 	}
@@ -169,14 +153,14 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		try{
 			$secuencial=0;	
-			/*$tablaMovimiento = $this->tablaMovimiento;
+			$tablaMovimiento = $this->tablaMovimiento;
 			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$empresa['numFolio'])
 			->where("idTipoMovimiento =?", $empresa['idTipoMovimiento'])
 			->where("idCoP=?",$empresa['idCoP'])
 			->where("idSucursal=?",$empresa['idSucursal'])
 			->where("fecha=?", $stringIni)
 			->order("secuencial DESC");
-			$rowMovimiento = $tablaMovimiento->fetchRow($select); */
+			$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 		
 			if(!is_null($rowMovimiento)){
 				$secuencial= $rowMovimiento->secuencial +1;
@@ -200,7 +184,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'totalImporte'=>$nomina['nominaxpagar'] //total a pagar de nomina
 				);
 			//print_r($mMovtos);
-			//$dbAdapter->insert("Movimientos",$mMovtos);
+			$dbAdapter->insert("Movimientos",$mMovtos);
 			//Guardar en factura.
 			$mFactura = array(
 				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
@@ -216,15 +200,26 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'subtotal'=>$nomina['sueldo'],
 				'total'=>$nomina['nominaxpagar'],
 				'folioFiscal'=>0,
-				'importePago'=>0
+				'importePago'=>$nomina['nominaxpagar']
 			);
 			
-			//$dbAdapter->insert("Factura",$mFactura);
+			$dbAdapter->insert("Factura",$mFactura);
 			
-			$tablaImpuesto = $this->tablaImpuesto;
+			/*$tablaImpuesto = $this->tablaImpuesto;
 			$select = $tablaImpuesto->select()->from($tablaImpuesto)->where("idImpuesto = ?", $nomina['36']);
 			$rowImpuesto = $tablaImpuesto->fetchRow($select);
-			print_r("$select");
+			print_r("$select");*/
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura, array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+			$rowIdFactura = $tablaFactura->fetchRow($select);
+			$idFactura = $rowIdFactura['idFactura'];
+			print_r($idFactura);
+			$mFacturaImpuesto = array(
+				'idFactura'=>$idFactura,
+				'idImpuesto'=>36,
+				'importe'=>$nomina['36'],
+			);
+			$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
 			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
