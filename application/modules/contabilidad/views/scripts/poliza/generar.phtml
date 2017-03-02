@@ -4,7 +4,7 @@
 		$("select#idEmpresas").on('change', function (){
 			var url = window.location.origin + "/General/";
 			console.log();
-			var idEmpresa= $(this).val();
+			var idEmpresa = $(this).val();
 			var urlSucursal = url + "sistema/json/sucursales/idFiscales/" +this.value;
 			$.ajax({
 				url: urlSucursal,

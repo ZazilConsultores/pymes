@@ -132,7 +132,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eFormaLiquidar->setAttrib("class", "form-control");
 		$eFormaLiquidar->setMultiOptions($formaPago);
 		
-		$eNumReferencia = new Zend_Form_Element_Text('numeroReferenica');
+		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
 		

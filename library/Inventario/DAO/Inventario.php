@@ -20,7 +20,7 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 		$tablaInventario = $this->tablaInventario;
 		$rowsInventario = $tablaInventario->fetchAll();
 		
-		$modelInventario = array();
+		$modelsInventario = array();
 		
 		foreach($rowsInventario as $rowInventario){
 			$modelInventario = new Inventario_Model_Inventario($rowInventario->toArray());

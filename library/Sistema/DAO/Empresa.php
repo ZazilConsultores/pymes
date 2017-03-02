@@ -376,7 +376,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 */
 	public function obtenerSucursales($idFiscales){
 		$tablaSucursal = $this->tablaSucursal;
-		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idFiscales);
 		$rowsSucursales = $tablaSucursal->fetchAll($select);
 		
 		if(is_null($rowsSucursales)){
@@ -386,6 +386,17 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 	}
 	
+	public function obtenerSucursal($idSucursal){
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal);
+		$rowSucursal = $tablaSucursal->fetchRow($select);
+		
+		if(is_null($rowSucursal)){
+			return null;
+		}else{
+			return $rowSucursal->toArray();
+		}
+	}
 	/**
 	 * Comprueba que la empresa con IdFiscales proporcionada 
 	 * sea parte de las empresas operables en el sistema.
@@ -468,12 +479,6 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$idEmpresa);
 		$rowEmpresas = $tablaEmpresas->fetchRow($select);
-		$consecutivo = $rowEmpresas['consecutivo'];
-		//print_r("<br />");
-		
-		$consecutivo = $consecutivo +1 ;
-		//print_r($consecutivo);
-		
 		
 		try{
 			//$rowEmpresas = $tablaEmpresas->fetchRow($select);

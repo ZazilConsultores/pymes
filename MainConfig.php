@@ -17,8 +17,10 @@ class MainConfig {
 		Zend_Registry::set('tipo', $tipo);
 		$tipoInventario = array('1'=>'PEPS');
 		Zend_Registry::set('tipoInventario',$tipoInventario);
-		$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI');
+		$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
 		Zend_Registry::set('formaPago', $formaPago);
+		$conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
+		Zend_Registry::set('conceptoPago', $conceptoPago);
 		$padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 		Zend_Registry::set('padre', $padre);
 		$estatus = array('A' => 'ACTIVO', 'C' => 'CANCELADO');

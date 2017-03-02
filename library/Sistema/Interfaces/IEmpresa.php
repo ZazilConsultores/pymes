@@ -25,6 +25,7 @@ interface Sistema_Interfaces_IEmpresa {
 	
 	public function agregarSucursal($idFiscales, array $datos, $tipoSucursal);
 	public function obtenerSucursales($idFiscales);
+	public function obtenerSucursal($idSucursal);
 	
 	public function agregarTelefonoSucursal($idSucursal, Sistema_Model_Telefono $telefono);
 	public function agregarEmailSucursal($idSucursal, Sistema_Model_Email $email);

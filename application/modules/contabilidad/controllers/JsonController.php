@@ -155,20 +155,17 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	}
 	
 	//Obtenemos las Empresas para ediatar el consecutivo
-	//La funcion de abajo se puede eliminar
-	public function empresasAction() {
-		$idEmpresa = $this->getParam("idEmpresas");
-		//print_r($idEmpresa);
-	
-		$empresa = $this->empresaDAO->obtieneEmpresas($idEmpresa);
-		if(!is_null($empresa)){
-			echo Zend_Json::encode($empresa);
+	public function sucursalAction() {
+		$idSucursal = $this->getParam("idSucursal");
+		
+		$sucursal = $this->empresaDAO->obtenerSucursal($idSucursal);
+		if(!is_null($sucursal)){
+			echo Zend_Json::encode($sucursal);
 		}else{
 			echo Zend_Json::encode(array());
 		}	
 	}
 	
-	//Obtiene idFactura
 	public function facturaAction() {
 		//$idImpuesto = $this->getParam("idImpuesto");
 		$idSucursal = $this->getParam("idSucursal");

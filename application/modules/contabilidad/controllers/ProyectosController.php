@@ -3,20 +3,17 @@
 class Contabilidad_ProyectosController extends Zend_Controller_Action
 {
 	private $proyectoDAO = null;
+	private $fiscalesDAO = null;
 
     public function init()
     {
         $this->proyectoDAO= new Contabilidad_DAO_Proyecto;
+		$this->fiscalesDAO= new Sistema_DAO_Fiscales;
     }
 
     public function indexAction()
     {
-        $proyectoDAO = $this->proyectoDAO;
-		
-		$formulario = new Contabilidad_Form_AltaProyecto;
-		$this->view->proyectos = $this->proyectoDAO->obtenerProyectos();
-		$this->view->formulario = $formulario;	
-			
+       $this->view->proyectos = $this->proyectoDAO->obtenerProyectos();
     }
 
     public function altaAction()

@@ -139,25 +139,26 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				
 				
 				//try{
-					$this->facturaDAO->guardaIva($encabezado, $importe);
+					//$this->facturaDAO->guardaIva($encabezado, $importe);
 					foreach ($productos as $producto){
-					try{
-						$this->facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
-	
+					//try{
+						//$this->facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
+						$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $producto);
+						$guardaDetalleFactura =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);	
 						//$facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
 						//$facturaProveedorDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
 						//$facturaProveedorDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					$contador++;
-					//}
-				}catch(Util_Exception_BussinessException $ex){
-					$this->view->messageFail = $ex->getMessage();
-				}
+					}
+				//}catch(Util_Exception_BussinessException $ex){
+					//$this->view->messageFail = $ex->getMessage();
+				//}
 				//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos); 
 				//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
 				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 				
 				
-			}
+			//}
 			
 		}
    }
