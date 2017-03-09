@@ -10,6 +10,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	private $facturaClienteDAO;
 	private $pagoProveedorDAO;
 
+
     public function init()
     {
         /* Initialize action controller here */
@@ -180,18 +181,14 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	}
 	
 	//Buscamos en cuentasxp para facturas proveedor por idSucursal
-	//Obtiene idFactura
 	public function pagosAction(){
-		
 		$idSucursal = $this->getParam("idSucursal");
 		$idCoP = $this->getParam("idCoP");
 		$numeroFactura = $this->getParam("numeroFactura");
 		
-		//$pagoProveedorh = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
-		//$pagosFactura = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
-		$pagosFactura = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal, $idCoP, $numeroFactura);
-		if(!is_null($pagosFactura)){
-			echo Zend_Json::encode($pagosFactura);
+		$cuentasxp = $this->pagoProveedorDAO->busca_Cuentasxp($idCoP);
+		if(!is_null($cuentasxp)){
+			echo Zend_Json::encode($cuentasxp);	
 		}else{
 			echo Zend_Json::encode(array());
 		}		

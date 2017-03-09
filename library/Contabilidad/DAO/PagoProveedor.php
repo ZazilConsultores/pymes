@@ -29,11 +29,59 @@
 		}
 		
 		public function obtenerFactura(){
+				
+			$secuencial = 0;	
+			$tablaCuentasxp = $this->tablaCuentasxp;
+			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento=?",4)->where("idSucursal=?",nuevo)->where("idCoP=?",NUEVO)->where("numeroFolio")
+			->order("secuencial DESC");
+			$rowCuentaxp = $tablaCuentasxp->fetchRow($select); 
+				
+				if(!is_null($rowMovimiento)){
+					$secuencial= $rowMovimiento->secuencial +1;
+					//print_r($secuencial);
+				}else{
+					$secuencial = 1;	
+					//print_r($secuencial);
+				}
 			
 		}
 		
 		public function obtenerProveedorFactura(){
 			$tablaFactura = $this->tablaFactura;
+		}
+		
+		public function busca_facturap($idCoP){
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idCoP=?",$idCoP)->where("idTipoMovimiento=?",4)->where("estatus=?","P");
+			$rowsFacturap = $tablaFactura->fetchAll($select);
+			
+			if(is_null($rowsFacturap)){
+				return null;
+			}else{
+				return $rowsFacturap->toArray();
+			}
+		
+		}
+		
+		public function busca_Cuentasxp($idSucursal, $idCoP,$numeroFolio){
+				
+			$tablaCuentasxp = $this->tablaCuentasxp;
+			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento=?",4)->where("idSucursal=?",$idSucursal)->where("idCoP=?",$idCoP)->where("numeroFolio=?",$numeroFolio);
+			$rowCuentaxp = $tablaCuentasxp->fetchRow($select);
+			//print_r("$select");
+			
+			if(!is_null($rowCuentaxp)){
+					$secuencial= $rowCuentaxp->secuencial +1;
+					//print_r($secuencial);
+				}else{
+					$secuencial = 1;	
+					print_r($secuencial);
+				}
+			/*if(is_null($rowFacturap)){
+				return null;
+			}else{
+				return $rowFacturap->toArray();
+			}	*/		
 		}
     }
 ?>

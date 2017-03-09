@@ -13,8 +13,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach($rowset as $fila){
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
-			
+			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);	
 		}
 		
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
@@ -44,6 +43,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$submit = new Zend_Form_Element_Submit('submit');
 		$submit->setLabel('Buscar Factura'); 
 		$submit->setAttrib("class", "btn btn-success");
+		//$submit->setAttrib("disabled", "true");
 		
 		$this->addElement($eEmpresa);
 		$this->addElement($eSucursal);

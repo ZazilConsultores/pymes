@@ -388,7 +388,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function obtenerSucursal($idSucursal){
 		$tablaSucursal = $this->tablaSucursal;
-		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal);
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal)->where("idCoP=?",$idCoP);
 		$rowSucursal = $tablaSucursal->fetchRow($select);
 		
 		if(is_null($rowSucursal)){

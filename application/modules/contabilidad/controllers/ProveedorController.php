@@ -190,52 +190,23 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function pagosAction()
     {
-    	$idSurcusal = $this->getParam("idSucursal");
-		print_r("<br />");
-		print_r($idSurcusal);
 		$idCoP = $this->getParam("idCoP");
-		$numFactur = $this->getParam("numeroFactura");
-        
-		$empresas = $this->inventarioDAO->obtenerInformacionEmpresasIdFiscales();
-		$this->view->empresas =$empresas;
-		$this->view->formulario = $formulario;
-		
-		//$request = $this->getRequest();
-		
-		
-		/*$request = $this->getRequest();
+		$idSucursal = $this->getParam("idSucursal");
+		//$idCoP = $this->getParam("idCoP");
+
+		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_PagosProveedor;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
-			
+		$this->view->formulario = $formulario;
+	
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();	
-				print_r($datos);
-				$this->pagoProveedor->obtenerFactura();
-			}
-		}*/
-		/*$idEmpresa = $this->getParam("idEmpresas");
-		$idProveedor = $this->getParam("idProveedor");
-		$numeroFactura = $this->getParam("numeroFactura");
-		$tipoMovimiento = $this->getParam("tipoMovimiento");
-		$idSucursal = $this->getParam("idScursal");*/
-	/*
-		//$empresas = $this->inventarioDAO->obtenerInformacionEmpresasIdFiscales();
-		
-		//$datos = $datos;
-		//$facturaProveedor = $this->pagoProveedor->obtieneFacturaProveedor($datos['idSucursal']);
-		//$datos = json_decode($encabezado['productos'], TRUE);
-		*/
-		$proveedores = $this->notaEntradaDAO->obtenerProveedores();
-		
-		$this->view->empresas = $empresas;
-		$this->view->proveedores = $proveedores;
-		$this->view->facturaProveedor = $facturaProveedor;
-		
+				$datos = $formulario->getValues();
+				$facturasp = $this->pagoProveedor->busca_facturap($datos["idCoP"]);
+				$cuentaxp = $this->pagoProveedor->busca_Cuentasxp($datos["idSucursal"], $datos["idCoP"],$datos["numeroFactura"]);
+				$this->view->facturasp = $facturasp;
+			}	
+		}
     }
-
-
 }
 
 
