@@ -53,7 +53,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 
     public function adminAction()
     {
-        $idBanco = $this->getParam("idBanco"); //1
+        $idBanco = $this->getParam("idBanco");
 		$banco = $this->bancoDAO->obtenerBanco($idBanco);
 	
 		

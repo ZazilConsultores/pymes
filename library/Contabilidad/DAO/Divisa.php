@@ -24,4 +24,26 @@ class Contabilidad_DAO_Divisa implements Contabilidad_Interfaces_IDivisa {
 		
 		return $modelDivisas;
 	}
+	
+	public function obtenerDivisa($idDivisa){
+		$tablaDivisa = $this->tablaDivisa;
+		$select = $tablaDivisa->select()->from($tablaDivisa)->where($idDivisa);
+		$rowDivisa = $tablaDivisa->fetchRow($select);
+		$modelDivisa= new Contabilidad_Model_Divisa($rowDivisa->toArray());
+		
+		return $modelDivisa;
+		
+	}
+	
+	public function editaDivisa($idDivisa, array $divisa){
+		$tablaDivisa = $this->tablaDivisa;
+		$where = $tablaDivisa->getAdapter()->quoteInto("idDivisa=?", $idDivisa);
+		$tablaDivisa->update($divisa, $where);
+	}
+	
+	public function nuevaDivisa(Contabilidad_Model_Divisa $divisa){
+		$tablaDivisa = $this->tablaDivisa;
+		//$divisa->setDivisa($divisa["descripcion"]);
+		$tablaDivisa->insert($divisa->toArray());
+	}
 }

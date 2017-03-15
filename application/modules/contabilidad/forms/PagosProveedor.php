@@ -39,6 +39,11 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eNumeroFactura->setAttrib("class", "form-control");
 		$eNumeroFactura->setAttrib("required", "Ingresar Factura");
 		$eNumeroFactura->setAttrib("placeholder", "Numero Factura");
+		
+		$eValores = new Zend_Form_Element_Hidden('valores');
+		$eValores->setAttrib("class", "form-control");
+		$eValores->setAttrib("required", "Ingresar Factura");
+
     	
 		$submit = new Zend_Form_Element_Submit('submit');
 		$submit->setLabel('Buscar Factura'); 
@@ -49,6 +54,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$this->addElement($eSucursal);
 		$this->addElement($eProveedor);
 		$this->addElement($eNumeroFactura);
+		//$this->addElement($eValores);
 		$this->addElement($submit);
     }
 

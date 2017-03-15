@@ -5,5 +5,7 @@
 		
 		public function busca_facturap($idCoP);
 		public function busca_Cuentasxp($idSucursal, $idCoP,$numeroFolio);
+		
+		public function guardacxp ($numeroFactura, $valores);
     }
 ?>

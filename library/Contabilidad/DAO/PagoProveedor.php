@@ -71,17 +71,68 @@
 			//print_r("$select");
 			
 			if(!is_null($rowCuentaxp)){
-					$secuencial= $rowCuentaxp->secuencial +1;
-					//print_r($secuencial);
-				}else{
-					$secuencial = 1;	
-					print_r($secuencial);
-				}
-			/*if(is_null($rowFacturap)){
-				return null;
+				$secuencial= $rowCuentaxp->secuencial +1;
+				//print_r($secuencial);
 			}else{
-				return $rowFacturap->toArray();
-			}	*/		
+				$secuencial = 1;	
+				print_r($secuencial);
+			}
+			
+			//Registra pago en cuentasxp
+			/*$mCuentasxp = array(
+						'idTipoMovimiento'=>4,
+						'idSucursal'=>$idSucursal,
+						//'idFactura'=>32,
+						'idCoP'=>$idCoP,
+						'idBanco'=>$Valor['fecha'] //vista idBanco
+						/*'idDivisa'=>$formaPago['idDivisa'], //vista idDivisa
+						'numeroFolio'=>$encabezado['numeroFactura'], //numero de la factura
+						'secuencial'=>$secuencial, //$varible
+						'fechaCaptura'=>date("Y-m-d H:i:s", time()),
+						'fechaPago'=>$stringFecha,//vista fecha Factura
+						'estatus'=>"A",
+						'numeroReferencia'=>$formaPago['numeroReferencia'], //numero Referencia,
+						'conceptoPago'=>$conceptoPago, //conceptoPago
+						'formaLiquidar'=>$formaPago['formaLiquidar'], //formaPago
+						'subTotal'=>$importe[0]['subTotal'],
+						'total'=>$importe[0]['total']
+						*/
+				//	);
+					//print_r($mCuentasxp);
+					//$dbAdapter->insert("Cuentasxp", $mCuentasxp);
+							
+		}
+		public function guardacxp ($numeroFactura, $valores)
+		{
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("estatus=?","P")->where("idFactura =?",$numeroFactura);
+			$rowFacturap = $tablaFactura->fetchAll($select);
+			
+			if(!is_null($rowFacturap))
+			{
+				print_r("Guardara pago en cuentasxp");
+			}
+			//Registra pago en cuentasxp
+			/*$mCuentasxp = array(
+						'idTipoMovimiento'=>4,
+						'idSucursal'=>$idSucursal,
+						//'idFactura'=>32,
+						'idCoP'=>$idCoP,
+						'idBanco'=>$valores['banco'], //vista idBanco
+						'idDivisa'=>$valores['divisa'],
+						'numeroFolio'=>1, //numero de la factura
+						'secuencial'=>$secuencial, //$varible
+						'fechaCaptura'=>date("Y-m-d H:i:s", time()),
+						'fechaPago'=>$stringFecha,//vista fecha Factura
+						'estatus'=>"A",
+						'numeroReferencia'=>$valores['referencia'], //numero Referencia,
+						'conceptoPago'=>$valores['pago'], //conceptoPago
+						'formaLiquidar'=>$valores['formaLiquidar'], //formaPago
+						'subTotal'=>0,
+						'total'=>0
+					
+					);
+					print_r($mCuentasxp);*/
 		}
     }
 ?>

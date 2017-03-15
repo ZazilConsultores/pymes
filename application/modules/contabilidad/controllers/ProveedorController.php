@@ -3,13 +3,12 @@
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
-   
-	private $inventarioDAO = null;
-	private $notaEntradaDAO =null;
-	private $remisionEntradaDAO = null;
-	private $facturaDAO = null;
-	private $pagoProveedor = null;
-
+    private $inventarioDAO = null;
+    private $notaEntradaDAO = null;
+    private $remisionEntradaDAO = null;
+    private $facturaDAO = null;
+    private $pagoProveedor = null;
+	
     public function init()
     {
     	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
@@ -192,8 +191,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
 		$idCoP = $this->getParam("idCoP");
 		$idSucursal = $this->getParam("idSucursal");
-		//$idCoP = $this->getParam("idCoP");
-
+		
+		$fecha = $this->getParam("fecha");
+		print_r($fecha);
+		
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_PagosProveedor;
 		$this->view->formulario = $formulario;
@@ -201,13 +202,27 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				$valores = json_decode($datos['valores'], TRUE);
 				$facturasp = $this->pagoProveedor->busca_facturap($datos["idCoP"]);
 				$cuentaxp = $this->pagoProveedor->busca_Cuentasxp($datos["idSucursal"], $datos["idCoP"],$datos["numeroFactura"]);
+				//$gcxp =$this->pagoProveedor->guardacxp($valores);
 				$this->view->facturasp = $facturasp;
 			}	
 		}
     }
+
+    public function aplicarpagoAction()
+    {
+		$json_string = 'localhost/General/contabilidad/proveedor/pagos.html';
+		print_r($json_string);
+    	$valores = json_decode($json_string['valores'],TRUE);
+		print_r($valores);
+			
+    }
+
 }
+
+
 
 
 
