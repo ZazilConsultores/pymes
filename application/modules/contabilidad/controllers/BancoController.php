@@ -77,12 +77,13 @@ class Contabilidad_BancoController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
 		$idBanco = $this->getParam("idBanco");
+		print_r($idBanco);
 		$datos = $request->getPost();
 		unset($datos["submit"]);
 		
 		$this->bancoDAO->editarBanco($idBanco, $datos);
 		//print_r($datos);
-		$this->_helper->redirector->gotoSimple("admin", "banco", "contabilidad", array("idBanco"=>$idBanco));
+		//$this->_helper->redirector->gotoSimple("admin", "banco", "contabilidad", array("idBanco"=>$idBanco));
     }
 
 		

@@ -85,18 +85,20 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 			
 		}
 		
-		if ($Empresa ="C" ){
+		elseif($Empresa == "C"){
+			print_r("<br />");
+			print_r("Es un cliente");
 			$tablaClientes = $this->tablaClientes;
 			$select = $tablaClientes->select()->from($tablaClientes,'idTipoCliente')
 			->where("idCliente = ?", $Persona);
 			$rowCliente = $tablaClientes->fetchRow($select);
-			//print_r("$select");
-			if(!is_null($rowCliente)){
-				//$nomina = $rowProveedor->idTipoProveedor;
-				return $select;
+			print_r("<br />");
+			print_r("$select");
+			/*if(!is_null($rowCliente)){
+				return $rowCliente->toArray();
 			}else{
 				$nomina = "VENTA";
-			}			
+			}*/			
 		}
 	}
 	
@@ -114,8 +116,11 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 			$tablaProveedoresEmpresa = $this->tablaProveedorEmpresa;
 			$select =$tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa, 'idEmpresas')
 			->where("idProveedores =?", $Persona);
+			print_r("<br />");
+			print_r("$select");
 			$rowProveedoresEmpresa = $tablaProveedoresEmpresa->fetchRow($select); 
 			//return $select;
+			
 			if(!is_null($rowProveedoresEmpresa)){
 				//$nomina = $rowProveedoresEmpresa->idProveedores;
 				$nomina = $rowProveedoresEmpresa->idEmpresas;
@@ -381,7 +386,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 		$rows = $tablaFactura->fetchAll($select);
 		$idProveedores = array();
 		//$facturas = $rows->toArray();
-		//print_r("$select"[]);
+		print_r("$select");
 		$modelFacturas = array();
 		if(!is_null($rows)){
 			foreach($rows as $row){
@@ -411,44 +416,40 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 		$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 		$fechaFinal = new Zend_Date($datos['fechaFinal'],'YY-MM-dd');
 		$stringInicio = $fechaInicio->toString ('yyyy-MM-dd');
-		print_r($stringInicio);
 		$stringFinal = $fechaFinal->toString ('yyyy-MM-dd');
 		
+		//Busca las facturas
 		$tablaFactura = $this->tablaFactura;
 		$select = $tablaFactura->select()->from($tablaFactura)->where('fechaFactura >= ?',$stringInicio)->where('fechaFactura <=?',$stringFinal)->where('idTipoMovimiento=?',2)
 		->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A")->orWhere("estatus=?","I");
-		$rowsFactura = $tablaFactura->fetchAll($select);
-		//$facturas = $rowsFactura->toArray();
-		$idFactura =array();
-	    if (!is_null($rowsFactura)){
-			$facturas = TRUE;
-			do{
-				print_r("se cumple la condicion");
-			}while($facturas != FALSE);
-		}	
-		/*if (!is_null($rowsFactura)){
-			//do{
+		$rows= $tablaFactura->fetchAll($select);
+		//print_r("$select");
+		
+		$idClientes = array();
+		
+		if(!is_null($rows)){
+			print_r("La consulta no esta vacia");
+			foreach($rows as $row){
+				$idClientes[] = $row["idCoP"];
+				//print_r("<br />");
 				
-				$numeroDocumento = $rowsFactura->idFactura;
-				$subtotal = $rowsFactura->subtotal;
-				$ivaImporte = 0;
-				$total = $rowsFactura->total;
-				$fecha = $rowsFactura->fechaFactura;
-				
-				print_r($numeroDocumento);
-				print_r("<br />");
-				print_r($subtotal);
-				print_r("<br />");
-				print_r($ivaImporte);
-				print_r("<b	r />");
-				print_r($total);
-				print_r("<br />");
-				print_r($fecha);
-				print_r("<br />");
-				print_r("<br />");
-				$rowsFactura;
-			//}while(!is_null($rowsFactura));
-		}*/
+				foreach ($idClientes as $idCliente) {
+					//$nomina = $this->busca_Tipo($idCliente, "C");
+					$tablaClientes = $this->tablaClientes;
+					$select = $tablaClientes->select()->from($tablaClientes,'idTipoCliente')
+					->where("idCliente = ?", $idClientes);
+					$rowCliente = $tablaClientes->fetchRow($select);
+					print_r("<br />");
+					print_r("$select");
+					$nomina = "BUENO";
+					$modulo = 6;
+					$tablaGuiaContable = $this->tablaGuiaContable;
+					$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo);
+					$rowGuiaContable = $tablaGuiaContable->fetchRow($select);
+					print_r("$select");
+				}
+			}
+		}
 	}
 	
 }

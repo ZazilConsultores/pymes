@@ -55,7 +55,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$this->view->jsonMultiplo = $jsonMultiplos;*/
 		
 		$this->inventarioDAO = new Inventario_DAO_Empresa;
-	
     }
 
     public function indexAction()
@@ -213,11 +212,12 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function aplicarpagoAction()
     {
-		$json_string = 'localhost/General/contabilidad/proveedor/pagos.html';
-		print_r($json_string);
-    	$valores = json_decode($json_string['valores'],TRUE);
-		print_r($valores);
-			
+    	$idFactura = $this->getParam("idFactura");
+    	print_r($idFactura);
+    	$fecha = $this->getParam($fecha);
+		print_r($fecha);
+		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);
+				
     }
 
 }

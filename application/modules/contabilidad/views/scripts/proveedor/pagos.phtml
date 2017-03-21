@@ -67,6 +67,7 @@
 				<th>Concepto pago</th>
 			</thead>
 			<tbody>
+				
 			</tbody>
 		</table>
 	</div>
@@ -90,7 +91,7 @@
   						<td>
   							<select id="idDivisa" class="form-control">
   								<?php foreach ($divisas as $divisa) : ?>
-									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDivisa(); ?></option>
+									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -125,7 +126,7 @@
 			<div class="modal-footer">
 				<button id="registrarPago" type="button" class="btn btn-success" data-dismiss="modal">
 					<span class="glyphicon glyphicon-ok"></span>  Registrar.
-				</button>
+				</button>	
 				<button type="button" class="btn btn-danger" data-dismiss="modal">
 					<span class="glyphicon glyphicon-close"></span> Cancelar
 				</button>
@@ -153,7 +154,7 @@
   						<td>
   							<select id="idDivisa" class="form-control">
   								<?php foreach ($divisas as $divisa) : ?>
-									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDivisa(); ?></option>
+									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -225,6 +226,8 @@ $(document).ready(function(){
 		var fecha = $("input#fechaInicial")
 		var eFecha = fecha.val();
 		
+		
+		
 		var importePago = $("#importePago").val();
 		var divisa = $("#idDivisa").val();
 		var conceptoPago = $("#conceptoPago").val();
@@ -238,21 +241,37 @@ $(document).ready(function(){
 			if(saldo < importePago){
 				console.log("La cantidad se cubre con "+ saldo );
 			}else{
-				var numeroFactura = $("#numeroFactura").val();
-				console.log("Numero Factuta" + numeroFactura);	
-				var url = window.location.origin + "/General/"+"contabilidad/proveedor/aplicarpago/idFactura/" + numeroFactura;	
-				console.log(url);
+				
 			}
 		}
 	});
 	
 	$("#registrarPago").on("click", function (){
-		console.log("Click en el modal");
-		//var datos = $("#msgConfirm > body  > tr");
- 		//Array Json de productos
- 		var valores = [];
+		var idFactura = $("#numeroFactura").val();
+		var fecha = $("#fechaInicial").val();
+		console.log(fecha);
+		
+		var urlConsultaxp = url + "contabilidad/proveedor/aplicarpago/idFactura/" + idFactura;
+		console.log(urlConsultaxp);
+		/*$.ajax({
+			url: urlConsultaxp,		
+			dataType: "json",
+			success: function(data) {
+				var tbody = ("tabla#detallecxp");
+				$.each(data,function(i,item){
+					/*var anchorDetails = $('<a>').attr({'class':'btn btn-link'}).attr({'target':'_blank'}).attr({'href': url + "contabilidad/json/pagos/idCoP/"+item.idCoP});*/
+						
+						//tbody.append($('<td>').append(item.idSucursal)).
+						//append($('<td>').append(item.idProveedor)).
+						//append($('<td>').append(item.numeroFolio))
+						//append($('<td>').append(anchorDetails))*/
+				//});*/
+			//}	*/
+		//});*/
+		
+ 		//var valores = [];
  		
- 			var fecha = $("input[id^='fechaInicial']").val();
+ 			/*var fecha = $("input[id^='fechaInicial']").val();
  			var importe = $("input[id^='importePago']").val();
  			var divisa = $("select[id^='idDivisa']").val();
  			var pago = $("select[id^='conceptoPago']").val();
@@ -269,14 +288,16 @@ $(document).ready(function(){
  				console.log("referencia:"+referencia);
  						
  				valores.push(new Valor(fecha, importe, divisa, pago, fpago, banco, referencia)); 
- 		
+ 			console.dir("Los valores son los siguientes:");
  			console.dir(valores);
- 			var myString = JSON.stringify(valores);
+ 			/*var myString = JSON.stringify(valores);
  			
  			console.log(myString);
  			if ($("input#valores").val(myString)){
  				
- 			};
+ 			};*/
+ 			
+ 			
 	});
 	function Valor(fecha, importe, divisa, pago, fpago, banco, referencia) {
 		  this.fecha = fecha;

@@ -102,12 +102,12 @@
 					//$dbAdapter->insert("Cuentasxp", $mCuentasxp);
 							
 		}
-		public function guardacxp ($numeroFactura, $valores)
+		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total)
 		{
 			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("estatus=?","P")->where("idFactura =?",$numeroFactura);
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("estatus=?","P")->where("idFactura =?",$idFactura);
 			$rowFacturap = $tablaFactura->fetchAll($select);
-			
+			print_r($select);
 			if(!is_null($rowFacturap))
 			{
 				print_r("Guardara pago en cuentasxp");

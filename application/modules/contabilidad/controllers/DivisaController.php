@@ -42,13 +42,14 @@ class Contabilidad_DivisaController extends Zend_Controller_Action
     {
         $idDivisa = $this->getParam("idDivisa");
 		$divisa = $this->divisaDAO->obtenerDivisa($idDivisa);
+		
 		$formulario = new Contabilidad_Form_AltaDivisa;
 		
-		//$formulario->getElement("cuenta")->setValue($banco->getCuenta());
 		$formulario->getElement("descripcion")->setValue($divisa->getDescripcion());
 		$formulario->getElement("claveDivisa")->setValue($divisa->getClaveDivisa());
 		$formulario->getElement("tipoCambio")->setValue($divisa->getTipoCambio());
 		$formulario->getElement("submit")->setLabel("Actualizar");
+		$this->view->divisa = $divisa;
 		$this->view->formulario = $formulario;
 		
     }
@@ -56,10 +57,14 @@ class Contabilidad_DivisaController extends Zend_Controller_Action
     public function editarAction()
     {
         $request = $this->getRequest();
-		$idDivisa = $this->getParam("idDivisa");	
+		$idDivisa = $this->getParam("idDivisa");
+		print_r($idDivisa);
 		$datos = $request->getPost();
 		unset($datos["submit"]);
+		
 		$this->divisaDAO->editaDivisa($idDivisa, $datos);
+		/*$this->divisaDAO->editaDivisa($idDivisa, $datos);
+		$this->_helper->redirector->gotoSimple("admin", "divisa", "contabilidad", array("idDivisa"=>$idDivisa));*/
 		
     }
 

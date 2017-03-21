@@ -1,7 +1,7 @@
 <?php 
 	$divisa = $this->divisa;
 	$formulario = $this->formulario;
-	$formulario->setAction($this->url(array("module"=>"contabilidad", "controller"=>"divisa","action"=>"editar", "idDivisa"=>$divisa->getIdDivisa()),null,true));
+	$formulario->setAction($this->url(array("module"=>"contabilidad", "controller"=>"divisa", "action" => "editar", "idDivisa"=>$divisa->getIdDivisa()), null, true));
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -24,7 +24,7 @@
 					<tr>
 						<td><?php echo $divisa->getClaveDivisa() ?></td>
 						<td><?php echo $divisa->getDescripcion() ?></td>
-						<td><?php echo $banco->getTipoCambio() ?></td>
+						<td><?php echo $divisa->getTipoCambio() ?></td>
 					</tr>
 				</tbody>
 			</table>
