@@ -7,6 +7,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	private $fiscalesDAO;
 	private $productosDAO;
 	private $impuestoProductosDAO;
+	private $facturaClienteDAO;
+	private $pagoProveedorDAO;
+
 
     public function init()
     {
@@ -20,6 +23,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$this->productosDAO = new Inventario_DAO_Producto;
 		$this->vendedorDAO = new Sistema_DAO_Vendedores;
 		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
+		$this->facturaClienteDAO = new Contabilidad_DAO_FacturaCliente;
+		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
 		
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -147,9 +152,45 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode($impuestoProducto);
 		}else{
 			echo Zend_Json::encode(array());
-		}	
-		
+		}		
 	}
 	
+	//Obtenemos las Empresas para ediatar el consecutivo
+	public function sucursalAction() {
+		$idSucursal = $this->getParam("idSucursal");
+		
+		$sucursal = $this->empresaDAO->obtenerSucursal($idSucursal);
+		if(!is_null($sucursal)){
+			echo Zend_Json::encode($sucursal);
+		}else{
+			echo Zend_Json::encode(array());
+		}	
+	}
 	
+	public function facturaAction() {
+		//$idImpuesto = $this->getParam("idImpuesto");
+		$idSucursal = $this->getParam("idSucursal");
+		
+		//$pagoProveedor = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
+		$pagoProveedor = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
+		if(!is_null($pagoProveedor)){
+			echo Zend_Json::encode($pagoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}		
+	}
+	
+	//Buscamos en cuentasxp para facturas proveedor por idSucursal
+	public function pagosAction(){
+		$idSucursal = $this->getParam("idSucursal");
+		$idCoP = $this->getParam("idCoP");
+		$numeroFactura = $this->getParam("numeroFactura");
+		
+		$cuentasxp = $this->pagoProveedorDAO->busca_Cuentasxp($idCoP);
+		if(!is_null($cuentasxp)){
+			echo Zend_Json::encode($cuentasxp);	
+		}else{
+			echo Zend_Json::encode(array());
+		}		
+	}
 }

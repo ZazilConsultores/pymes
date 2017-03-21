@@ -22,54 +22,14 @@ class Contabilidad_Model_Cuentasxp
         $this->idTipoMovimiento = $idTipoMovimiento;
     }
 	
-	private $idDivisa;
+	private $idSucursal;
 
-    public function getIdDivisa() {
-        return $this->idDivisa;
+    public function getIdSucursal() {
+        return $this->idSucursal;
     }
     
-    public function setIdDivisa($idDivisa) {
-        $this->idDivisa = $idDivisa;
-    }
-	
-	private $secuencial;
-
-    public function getSecuencial() {
-        return $this->secuencial;
-    }
-    
-    public function setSecuencial($secuencial) {
-        $this->secuencial = $secuencial;
-    }
-	
-	private $idEmpresa;
-
-    public function getIdEmpresa() {
-        return $this->idEmpresa;
-    }
-    
-    public function setIdEmpresa($idEmpresa) {
-        $this->idEmpresa = $idEmpresa;
-    }
-
-    private $idCoP;
-
-    public function getIdCoP() {
-        return $this->idCoP;
-    }
-    
-    public function setIdCoP($idCoP) {
-        $this->idCoP = $idCoP;
-    }
-	
-	private $numFolio;
-
-    public function getNumFolio() {
-        return $this->numFolio;
-    }
-    
-    public function setNumFolio($numFolio) {
-        $this->numFolio = $numFolio;
+    public function setIdSucursal($idSucursal) {
+        $this->idSucursal = $idSucursal;
     }
 	
 	private $idFactura;
@@ -82,16 +42,56 @@ class Contabilidad_Model_Cuentasxp
         $this->idFactura = $idFactura;
     }
 
-	private $idProyecto;
+    private $idCoP;
 
-    public function getIdProyecto() {
-        return $this->idProyecto;
+    public function getIdCoP() {
+        return $this->idCoP;
     }
     
-    public function setIdProyecto($idProyecto) {
-        $this->idProyecto = $idProyecto;
+    public function setIdCoP($idCoP) {
+        $this->idCoP = $idCoP;
+    }
+	
+	private $idBanco;
+
+    public function getIdBanco() {
+        return $this->idBanco;
+    }
+    
+    public function setIdBanco($idBanco) {
+        $this->idBanco = $idBanco;
+    }
+	
+	private $idDivisa;
+
+    public function getIdDivisa() {
+        return $this->idDivisa;
+    }
+    
+    public function setIdDivisa($idDivisa) {
+        $this->idDivisa = $idDivisa;
     }
 
+	private $numeroFolio;
+
+    public function getNumeroFolio() {
+        return $this->numeroFolio;
+    }
+    
+    public function setNumeroFolio($numeroFolio) {
+        $this->numeroFolio = $numeroFolio;
+    }
+
+    private $secuencial;
+
+    public function getSecuencial() {
+        return $this->secuencial;
+    }
+    
+    public function setSecuencial($secuencial) {
+        $this->secuencial = $secuencial;
+    }
+	
 	private $fechaCaptura;
 
     public function getFechaCaptura() {
@@ -102,17 +102,17 @@ class Contabilidad_Model_Cuentasxp
         $this->fechaCaptura = $fechaCaptura;
     }
 
-   	private $descripcion;
+	private $fechaPago;
 
-    public function getDescripcion() {
-        return $this->descripcion;
+    public function getFechaPago() {
+        return $this->fechaPago;
     }
     
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
+    public function setFechaPago($fechaPago) {
+        $this->fechaPago = $fechaPago;
     }
 
-	private $estatus;
+   	private $estatus;
 
     public function getEstatus() {
         return $this->estatus;
@@ -120,6 +120,16 @@ class Contabilidad_Model_Cuentasxp
     
     public function setEstatus($estatus) {
         $this->estatus = $estatus;
+    }
+	
+	private $numeroReferencia;
+
+    public function getNumeroReferencia() {
+        return $this->numeroReferencia;
+    }
+    
+    public function setNumeroReferencia($numeroReferencia) {
+        $this->numeroReferencia = $numeroReferencia;
     }
 	
 	private $conceptoPago;
@@ -141,16 +151,7 @@ class Contabilidad_Model_Cuentasxp
     public function setFormaLiquidar($formaLiquidar) {
         $this->formaLiquidar = $formaLiquidar;
     }
-
-	private $fecha;
-    public function getFecha() {
-        return $this->fecha;
-    }
-    
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
-    }
-
+	
     private $subtotal;
 
     public function getSubtotal() {
@@ -171,40 +172,27 @@ class Contabilidad_Model_Cuentasxp
         $this->total = $total;
     }
 	
-	private $idBanco;
-
-    public function getIdBanco() {
-        return $this->idBanco;
-    }
-    
-    public function setIdBanco($idBanco) {
-        $this->idBanco = $idBanco;
-    }
-
-    
 //*********************************
 		
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idCuentasxp", $datos)) $this->idCuentasxp = $datos["idCuentasxp"];
-		if(array_key_exists("idTipoMovimiento", $datos)) $this->tipoMovimiento = $datos["tipoMovimiento"];
-		if(array_key_exists("idEmpresa", $datos)) $this->idEmpresa =$datos["idEmpresa"];
-		if(array_key_exists("idCoP", $datos)) $this->idCoP =$datos["idCoP"];
+		if(array_key_exists("idTipoMovimiento", $datos)) $this->idTipoMovimiento = $datos["idTipoMovimiento"];
+		if(array_key_exists("idSucursal", $datos)) $this->idSucursal =$datos["idSucursal"];
 		if(array_key_exists("idFactura", $datos)) $this->idFactura =$datos["idFactura"];
-		if(array_key_exists("idProyecto", $datos)) $this->idProyecto =$datos["idProyecto"];
-		if(array_key_exists("idBanco", $datos)) $this->idBanco =$datos["idBanco"];
+		if(array_key_exists("idCoP", $datos)) $this->idCoP =$datos["idCoP"];
+		$this->idBanco =$datos["idBanco"];
 		if(array_key_exists("idDivisa", $datos)) $this->idDivisa = $datos["idDivisa"];
-		if(array_key_exists("numFolio", $datos)) $this->numFolio =$datos["numFolio"];
-		if(array_key_exists("descripcion", $datos)) $this->descripcion =$datos["descripcion"];
-		if(array_key_exists("numeroReferencia", $datos)) $this->numeroReferencia =$datos["numeroReferencia"];
-		if(array_key_exists("secuencial", $datos)) $this->secuencial = $datos["secuencial"];
-		if(array_key_exists("estatus", $datos)) $this->estatus =$datos["estatus"];
-		if(array_key_exists("fecha", $datos)) $this->fecha =$datos["fecha"];
-		if(array_key_exists("fechaCaptura", $datos)) $this->fechaCaptura =$datos["fechaCaptura"];
-		if(array_key_exists("formaLiquidar", $datos)) $this->formaLiquidar =$datos["formaLiquidar"];
-		if(array_key_exists("conceptoPago", $datos)) $this->conceptoPago =$datos["conceptoPago"];
-		if(array_key_exists("subTotal", $datos)) $this->subtotal =$datos["subTotal"];
-		if(array_key_exists("total", $datos)) $this->total =$datos["total"];
+		$this->numeroFolio =$datos["numeroFolio"];
+		$this->secuencial = $datos["secuencial"];
+		$this->fechaCaptura =$datos["fechaCaptura"];
+		$this->fechaPago =$datos["fechaPago"];
+		$this->estatus =$datos["estatus"];
+		$this->numeroReferencia =$datos["numeroReferencia"];
+		$this->conceptoPago =$datos["conceptoPago"];
+		$this->formaLiquidar =$datos["formaLiquidar"];
+		$this->subtotal =$datos["subTotal"];
+		$this->total =$datos["total"];
 		
 	}
 
@@ -214,24 +202,22 @@ class Contabilidad_Model_Cuentasxp
 		
 		$datos["idCuentasxp"] = $this->idCuestasxp;
 		$datos["idTipoMovimiento"] = $this->idTipoMovimiento;
-		$datos["idEmpresa"] = $this->idEmpresa;
-		$datos["idCoP"] = $this->idCoP;
+		$datos["idSucursal"] = $this->idSucursal;
 		$datos["idFactura"] = $this->idFactura;
-		$datos["idProyecto"] = $this->idProyecto;
+		$datos["idCoP"] = $this->idCoP;
 		$datos["idBanco"] = $this->idBanco;
 		$datos["idDivisa"] = $this->idDivisa;
-		$datos["numFolio"] = $this->numFolio;
-		$datos["descripcion"] = $this->descripcion;
-		$datos["numeroReferencia"] = $this->numeroReferencia;
+		$datos["numeroFolio"] = $this->numeroFolio;
 		$datos["secuencial"] = $this->secuencial;
-		$datos["estatus"] = $this->estatus;
-		$datos["fecha"] = $this->fecha;
 		$datos["fechaCaptura"] = $this->fechaCaptura;
-		$datos["formaLiquidar"] = $this->formaLiquidar;
+		$datos["fechaPago"] = $this->fechaPago;
+		$datos["estatus"] = $this->estatus;
+		$datos["numeroReferencia"] = $this->numeroReferencia;
 		$datos["conceptoPago"] = $this->conceptoPago;
+		$datos["formaLiquidar"] = $this->formaLiquidar;
 		$datos["subTotal"] = $this->subtotal;
 		$datos["total"] = $this->total;
-			
+		
 		return $datos;
     }
 

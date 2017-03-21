@@ -35,10 +35,8 @@ public function __construct() {
 	
 
 	 public function crearVendedor(array $datos){
-		//$tablaVendedor = $this->tablaVendedores;
-		//$tablaVendedor->insert($datos->toArray());
-		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-		$bd->beginTransaction();
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
 		
 		try {
 			$nombre = $datos[0];
@@ -68,28 +66,28 @@ public function __construct() {
 			
 			//Insertamos en domicilio
 			unset($datos[1]["idEstado"]);
-			$bd->insert("Domicilio", $datos[1]);
-			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			$dbAdapter->insert("Domicilio", $datos[1]);
+			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
 			print_r("<br />");
 			print_r($idDomicilio);
 			//Insertamos en telefono
-			$bd->insert("Telefono", $datos[2]);
-			$idTelefono = $bd->lastInsertId("Telefono", "idTelefono");
+			$dbAdapter->insert("Telefono", $datos[2]);
+			$idTelefono = $dbAdapter->lastInsertId("Telefono", "idTelefono");
 			
 			//Insertamos en email
-			$bd->insert("Email", $datos[3]);
-			$idEmail = $bd->lastInsertId("Email","idEmail");
+			$dbAdapter->insert("Email", $datos[3]);
+			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
 			
 			// Obtenemos el Id de T.Empresa para insertar en Empresas, Clientes o Proveedores 
-			$idEmpresa = $bd->lastInsertId("Empresa", "idEmpresa");
+			$idEmpresa = $dbAdapter->lastInsertId("Empresa", "idEmpresa");
 			
 			//Insertamos en Tabla vendedores
-			$bd->insert("Vendedor", array("idDomicilio"=>$idDomicilio,"idTelefono"=>$idTelefono,"nombre"=>$mnombre['nombre'],"claveVendedor"=>$mnombre['claveVendedor'],"estatus"=>$mnombre['estatus'],
+			$dbAdapter->insert("Vendedor", array("idDomicilio"=>$idDomicilio,"idTelefono"=>$idTelefono,"nombre"=>$mnombre['nombre'],"claveVendedor"=>$mnombre['claveVendedor'],"estatus"=>$mnombre['estatus'],
 			"fechaAlta"=>$mnombre['fechaAlta'],"comision"=>$mnombre['comision'],"idEmail"=>$idEmail));
 			
-		$bd->commit();
+		$dbAdapter->commit();
 		}catch(Exception $ex){
-			$bd->rollBack();
+			$dbAdapter->rollBack();
 			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException(" Vendedor ya registrado en el sistema");
 		}

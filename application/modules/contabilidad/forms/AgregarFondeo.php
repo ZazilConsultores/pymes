@@ -19,8 +19,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		);
 		
 		$subEncabezado = new Zend_Form_SubForm;
-		//$subEncabezado->setLegend("Nuevo Fondeo");
-
+	
 		$eTipoMovimiento = new Zend_Form_Element_Select('idTipoMovimiento');
 		$eTipoMovimiento->setLabel('Tipo Movimiento:');
 		$eTipoMovimiento->setAttrib("class", "form-control");
@@ -74,6 +73,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 				$eProducto->addMultiOption($producto->getIdProducto(), $producto->getProducto());
 			}
 		}
+		$subFondeo = new Zend_Form_SubForm;
 			
 		$formaFondeo = Zend_Registry::get('formaPago');
 		$eFormaFondeo = new Zend_Form_Element_Select('formaPago');
@@ -101,7 +101,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoEntrada->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila){
-			$eBancoEntrada->addMultiOption($fila->idBancosEmpresas, $fila->cuenta);
+			$eBancoEntrada->addMultiOption($fila->idBanco, $fila->banco);
 		}
 			
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
@@ -109,13 +109,8 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoSalida->setAttrib("class", "form-control");
 		
 		foreach($rowset as $fila){
-			$eBancoSalida->addMultiOption($fila->idBancosEmpresas, $fila->cuenta);
-			
+			$eBancoSalida->addMultiOption($fila->idBanco, $fila->banco);
 		}
-		
-		//$eIva = new Zend_Form_Element_Checkbox('iva');
-		//$eIva->setLabel('Iva:');
-		//$eIva->setAttrib("class", "form-control");
 		
 		$eImportePago = new Zend_Form_Element_Text('total');
 		$eImportePago->setLabel('Importe:');
@@ -131,18 +126,12 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
-		$this->addSubForms(array($subEncabezado));
+		$subFondeo->addElements(array($eProducto,$eFormaFondeo,$eDivisa,$eBancoEntrada,$eBancoSalida,$eImportePago));
+		$subFondeo->setElementDecorators($decoratorsElemento);
+		$subFondeo->setDecorators($decoratorsPresentacion);
 		
-		$this->addElement($eProducto);
-		$this->addElement($eDivisa);
-		$this->addElement($eFormaFondeo);
-		
-		
-		$this->addElement($eBancoEntrada);
-		$this->addElement($eBancoSalida);
-		//$this->addElement($eIva);
-		$this->addElement($eImportePago);
-		
+		$this->addSubForms(array($subEncabezado, $subFondeo));
+
 		$this->addElement($eSubmit);
 		
     }

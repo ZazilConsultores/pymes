@@ -42,17 +42,15 @@ class Sistema_Model_Sucursal
         $this->tipoSucursal = $tipoSucursal;
     }
 
-    private $idDomicilio;
+    private $idsDomicilios;
 
-    public function getIdDomicilio() {
-        return $this->idDomicilio;
+    public function getIdsDomicilios() {
+        return $this->idsDomicilios;
     }
     
-    public function setIdDomicilio($idDomicilio) {
-        $this->idDomicilio = $idDomicilio;
+    public function setIdsDomicilios($idsDomicilios) {
+        $this->idsDomicilios = $idsDomicilios;
     }
-
-    
 
     private $idsTelefonos;
 
@@ -73,6 +71,18 @@ class Sistema_Model_Sucursal
     public function setIdsEmails($idsEmails) {
         $this->idsEmails = $idsEmails;
     }
+	
+	private $consecutivo;
+
+    public function getConsecutivo() {
+        return $this->consecutivo;
+    }
+    
+    public function setConsecutivo($consecutivo) {
+        $this->consecutivo = $consecutivo;
+    }
+
+    
 
     public function __construct(array $datos)
     {
@@ -80,9 +90,10 @@ class Sistema_Model_Sucursal
 		if(array_key_exists("idFiscales", $datos)) $this->idFiscales = $datos["idFiscales"];
 		$this->nombreSucursal = $datos["nombreSucursal"];
 		$this->tipoSucursal = $datos["tipoSucursal"];
-		$this->idDomicilio = $datos["idDomicilio"];
+		$this->idsDomicilios = $datos["idsDomicilios"];
 		$this->idsTelefonos = $datos["idsTelefonos"];
 		$this->idsEmails = $datos["idsEmails"];
+		$this->consecutivo = $datos["consecutivo"];
     }
 	
 	public function toArray()
@@ -93,10 +104,10 @@ class Sistema_Model_Sucursal
 		$datos["idFiscales"] = $this->idFiscales;
 		$datos["nombreSucursal"] = $this->nombreSucursal;
 		$datos["tipoSucursal"] = $this->tipoSucursal;
-		$datos["idDomicilio"] = $this->idDomicilio;
+		$datos["idsDomicilios"] = $this->idsDomicilios;
 		$datos["idsTelefonos"] = $this->idsTelefonos;
 		$datos["idsEmails"] = $this->idsEmails;
-		
+		$datos["consecutivo"] = $this->consecutivo;
 		return $datos;
 	}
 	

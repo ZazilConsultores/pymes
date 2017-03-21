@@ -83,14 +83,14 @@ class Contabilidad_Model_Banco
     }
 	private $hash;
 
-    public function getHash() {
+    /*public function getHash() {
     	if(is_null($this->hash)) $this->setHash(Util_Secure::generateKey(array($this->banco)));
         return $this->hash;
     }
     
     public function setHash($hash) {
         $this->hash = $hash;
-    }
+    }*/
 
 	public function __construct(array $datos)
 	{
@@ -102,7 +102,7 @@ class Contabilidad_Model_Banco
 		$this->tipo = $datos["tipo"];
 		$this->fecha = $datos["fecha"];
 		$this->saldo = $datos["saldo"];
-		if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
+		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 		
 		
 	}
@@ -119,7 +119,7 @@ class Contabilidad_Model_Banco
 		$datos["tipo"] = $this->tipo;
 		$datos["fecha"] = $this->fecha;		
 		$datos["saldo"] = $this->saldo;
-		$datos["hash"] = $this->hash;
+		//$datos["hash"] = $this->hash;
 		return $datos;
     }
 

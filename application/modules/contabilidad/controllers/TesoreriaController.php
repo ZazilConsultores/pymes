@@ -2,13 +2,11 @@
 
 class Contabilidad_TesoreriaController extends Zend_Controller_Action
 {
-	private $fondeoDAO;
+	private $tesoreriaDAO = null;
 	
     public function init()
     {
-        /* Initialize action controller here */
-         $this->fondeoDAO = new Contabilidad_DAO_Fondeo;
-		 
+        $this->tesoreriaDAO = new Contabilidad_DAO_Tesoreria; 
     }
 
     public function indexAction()
@@ -25,11 +23,13 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$fondeo = $formulario->getValues();
-				
+				$datos = $formulario->getValues();
+				$empresa = $datos[0];
+				$fondeo = $datos[1];
 				print_r($fondeo);
+		
 				try{
-					$this->fondeoDAO->guardarFondeo($fondeo);
+					$this->tesoreriaDAO->guardaFondeo($empresa, $fondeo);
 					//print_r("$fondeoDAO");
 				}catch(exception $ex){
 					$this->view->messageFail= "Error";
@@ -51,13 +51,29 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 
     public function nominaAction()
     {
-    	$formulario = new Contabilidad_Form_AgregarNomina;
-		$this->view->formulario = $formulario;
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarNomina;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$empresa = $datos[0];
+				$nomina = $datos[1];
+				try{
+					$this->tesoreriaDAO->guardaNomina($empresa, $nomina);
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
+			}else{
+				print_r("El formulario no es valido");
+			}
+		}
     }
 
     public function impuestosAction()
     {
-        // action body
+    	
     }
 
 

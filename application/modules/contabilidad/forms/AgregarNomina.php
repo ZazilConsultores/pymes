@@ -24,9 +24,6 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Nuevo Fondeo");
 		
-		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
-		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
-		
 		$eTipoMovimiento = new Zend_Form_Element_Select('idTipoMovimiento');
 		$eTipoMovimiento->setLabel('Tipo Movimiento:');
 		$eTipoMovimiento->setAttrib("class", "form-control");
@@ -79,6 +76,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eNumFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumFolio->setLabel('Ingresar número de Folio');
 		$eNumFolio->setAttrib("class", "form-control");
+		$eNumFolio->setValue(0);
 		$eNumFolio->setAttrib("required", "true"); 
 		 
 		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio));
@@ -92,32 +90,68 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eSueldo = new Zend_Form_Element_Text('sueldo');
 		$eSueldo->setLabel('Sueldos y Salarios:');
 		$eSueldo->setAttrib("class", "form-control");
+		$eSueldo->setValue(0);
 		
 		$eSubsidio =  new Zend_Form_Element_Text('subsidio');
 		$eSubsidio->setLabel('Subsidio / Importe Exento:');
 		$eSubsidio->setAttrib("class", "form-control");
+		$eSubsidio->setValue(0);
 		
-		$eIMSS = new Zend_Form_Element_Text('imss');
+		$eImpuestoImss = new Zend_Form_Element_Select('idImss');
+		//$eImpuestoImss->setLabel('IMSS:');
+		$eImpuestoImss->setAttrib("class", "form-control");
+		
+		
+		$impuestoDAO = new Contabilidad_DAO_Impuesto;
+		$impuestos = $impuestoDAO->obtenerImpuestos();
+
+		foreach($impuestos as $impuesto){
+			if($impuesto->getIdImpuesto()=="36"){
+				$eImpuestoImss->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());
+			}
+		}
+		
+		$eIMSS = new Zend_Form_Element_Text('36');
 		$eIMSS->setLabel('IMSS:');
+		//$eIMSS->setAttrib("id", "36");
 		$eIMSS->setAttrib("class", "form-control");
+		$eIMSS->setValue(0);
 		
+		$eImpuestoISPT = new Zend_Form_Element_Select('idISPT');
+		$eImpuestoISPT->setLabel('ISPT:');
+		$eImpuestoISPT->setAttrib("class", "form-control");
+		
+		foreach($impuestos as $impuesto){
+			if($impuesto->getIdImpuesto()=="37"){
+				$eImpuestoISPT->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());
+			}
+			
+		}
+
 		$eISPT = new Zend_Form_Element_Text('ispt');
 		$eISPT->setLabel('ISPT / ISR:');
 		$eISPT->setAttrib("class", "form-control");
+		$eISPT->setValue(0);
 		
 		$eNominaxPagar = new Zend_Form_Element_Text('nominaxpagar');
 		$eNominaxPagar->setLabel("Nomina por Pagar:");
 		$eNominaxPagar->setAttrib("class", "form-control");
+		//$eNominaxPagar->setAttrib("disabled", "true");
 		
 		$eSubmit =  new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		//$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio));
-		$subDatosNomina->addElements(array($eSueldo,$eSubsidio,$eIMSS,$eISPT,$eNominaxPagar));
+		$subDatosNomina->addElements(array($eSueldo,$eSubsidio, $eIMSS, $eISPT,$eNominaxPagar));
 		$subDatosNomina->setElementDecorators($decoratorsElemento);
 		$subDatosNomina->setDecorators($decoratorsPresentacion);
 	
+		//$this->addElement($eImpuestoImss);
+		//$eImpuestoImss->setElementDecorators($decoratorsElemento);
+		//$eImpuestoImss->setDecorators($decoratorsPresentacion);
+		
+		
 		$this->addSubForms(array($subEmpresa,$subDatosNomina));
 		$this->addElement($eSubmit);
        

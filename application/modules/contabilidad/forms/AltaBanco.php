@@ -22,7 +22,7 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		
 		foreach ($divisas as $divisa)
 		{
-			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDivisa());		
+			$eDivisa->addMultiOption($divisa->getIdDivisa(), $divisa->getDescripcion());		
 		}
 	
 

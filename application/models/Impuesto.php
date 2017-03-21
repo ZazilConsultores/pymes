@@ -83,7 +83,7 @@ class Application_Model_Impuesto
 		$this->descripcion = $datos["descripcion"];
 		$this->porcentaje = $datos["porcentaje"];
 		$this->estatus = $datos["estatus"];
-	    $this->fechaPublicacion= $datos["fechaPublicaion"];
+	    $this->fechaPublicacion= $datos["fechaPublicacion"];
     }
 	
 	public function toArray()

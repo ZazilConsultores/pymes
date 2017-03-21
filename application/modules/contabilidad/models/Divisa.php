@@ -14,7 +14,7 @@ class Contabilidad_Model_Divisa
         $this->idDivisa = $idDivisa;
     }
 	
-	private $divisa;
+	/*private $divisa;
 
     public function getDivisa() {
         return $this->divisa;
@@ -22,7 +22,7 @@ class Contabilidad_Model_Divisa
     
     public function setDivisa($divisa) {
         $this->divisa = $divisa;
-    }
+    }*/
 	
 	private $claveDivisa;
 
@@ -59,7 +59,7 @@ class Contabilidad_Model_Divisa
 	{
 		if(array_key_exists("idDvisa", $datos)) $this->idDivisa = $datos["idDivisa"];
 		
-		$this->divisa = $datos["divisa"];
+		//$this->divisa = $datos["divisa"];
 		$this->claveDivisa = $datos["claveDivisa"];
 		$this->descripcion = $datos["descripcion"];
 		$this->tipoCambio = $datos["tipoCambio"];
@@ -73,7 +73,7 @@ class Contabilidad_Model_Divisa
         $datos = array();
 		
 		$datos["idDivisa"] = $this->idDivisa;
-		$datos["divisa"] = $this->divisa;
+		//$datos["divisa"] = $this->divisa;
 		$datos["claveDivisa"] = $this->claveDivisa;
 		$datos["descripcion"] = $this->descripcion;
 		$datos["tipoCambio"] = $this->tipoCambio;

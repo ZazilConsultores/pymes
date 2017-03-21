@@ -126,12 +126,16 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
 		$eConceptoPago->setLabel('Seleccionar Concepto Pago:');
 		$eConceptoPago->setAttrib("class", "form-control");
-		//$eConceptoPago->setMultiOptions($conceptoPago);
+		$conceptoPago = array ('LI'=>'LIQUIDACION');
+		foreach($conceptoPago as $key => $value){
+			$eConceptoPago->addMultiOption($key, $value);
+		}
 		
 		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
 		$eImportePago->setAttrib("required", "true");
+		$eImportePago->setAttrib("disabled", "true");
 		
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();

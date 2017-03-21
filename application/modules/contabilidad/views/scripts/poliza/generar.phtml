@@ -1,0 +1,58 @@
+<?php echo $this->formulario; ?>
+<span id="fFinal" class="" ></span>
+<span id="fInicial" class="" ></span>
+<script>
+	$(document).ready(function(){
+		$("select#idEmpresas").on('change', function (){
+			var url = window.location.origin + "/General/";
+			console.log();
+			var idEmpresa = $(this).val();
+			var urlSucursal = url + "sistema/json/sucursales/idFiscales/" +this.value;
+			$.ajax({
+				url: urlSucursal,
+				dataType: "json",
+				success: function (data){
+					$("select#idSucursal").empty();
+					$.each(data, function (i,item){
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+					});
+				}
+			});
+		});
+		
+		$("#fechaFinal").on('change', function (){
+			var fechaInicio = $("#fechaInicial").val();
+			if(fechaInicio > $(this).val()){
+				//console.log("");
+				alert('[ERROR] Fecha inicio no puede ser mayor que la fecha final');
+			};		
+		});
+			//var txtPoliza = document.getElementById('fechaInicial');
+
+
+
+//Valida fechaFinal no se menor que fechaInicial
+$("#fechaFinal").on("change", function(){
+	var fechaInicio = $("#fechaInicial").val();
+	console.log(fechaInicio);
+	//Esta variable representa el mensaje <span> que aparece en la fecha final
+	var fechaFinal = document.getElementById('fFinal');
+	
+    if ((fechaInicio) > $(this).val()){
+       	fechaFinal.innerText = " Fecha Inválida, Fecha Inicio no puede ser mayor a la final";
+        fechaFinal.style.color = "orange";
+    }
+});
+
+/*$("#fechaInicial").on("click", function(){
+	var fechaFin = $("#fechaFin").val();
+	var fechaInicial = document.getElementById('fInicial');
+	
+    if ((fechaFin) <  $(this).val()){
+       	fechaInicial.innerText = " Fecha Inválida, Fecha Inicio no puede ser mayor a la final";
+        fechaInicial.style.color = "orange";
+    }
+});*/
+
+});
+</script>

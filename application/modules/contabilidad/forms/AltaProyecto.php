@@ -31,7 +31,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 	
-		$eCliente = new Zend_Form_Element_Select('idCliente');
+		$eCliente = new Zend_Form_Element_Select('idFiscales');
 		$eCliente->setLabel('Seleccionar Cliente:');
 		$eCliente->setAttrib("class", "form-control");
 
@@ -71,23 +71,6 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eGanancia->setLabel('Total de Ganancia:');
 		$eGanancia->setAttrib("class", "form-control");
 		$eGanancia->setValue("0");
-		
-		/* En Proyecto es necesario idProducto	
-		$eProducto = new Zend_Form_Element_Text('idProducto');
-		$eProducto->setLabel('Seleccionar Producto:');
-		$eProducto->setAttrib("class", "form-control");
-		*/
-	
-		/*$eDivisa =  new Zend_Form_Element_Select('idDivisa');
-		$eDivisa->setLabel('Seleccionar Divisa:');
-		$eDivisa->setAttrib("class", "form-control");
-		
-		$divisaDAO = new Contabilidad_DAO_Divisa;
-		$divisas = $divisaDAO->obtenerDivisas();
-		
-        foreach ($divisas as $fila) {
-			$eDivisa->addMultiOption($fila->getIdDivisa(), $fila->getDescripcion());
-		}*/
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');

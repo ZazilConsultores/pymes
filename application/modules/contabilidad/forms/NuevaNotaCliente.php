@@ -99,10 +99,9 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 		$eSubmit->setAttrib("disabled","true");
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eCliente,/*$eProyecto*/$eProducto));
-		//$subEncabezado->setElementDecorators($decoratorsElemento);
-		//$subEncabezado->setDecorators($decoratorsPresentacion);
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
 		$this->addSubForms(array($subEncabezado));
-		//$this->addElement($eTipoInventario);
 		$this->addElement($eSubmit);
     }
 }

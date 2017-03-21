@@ -1,6 +1,8 @@
 <?php 
 	echo $this->formulario;
 	$facturasProveedorDAO = new Contabilidad_DAO_FacturaProveedor;
+	 $impuestoDAO = new Contabilidad_DAO_Impuesto;
+	 $impuestos = $impuestoDAO->obtenerImpuestos();
 ?>
 
 <section class="row">
@@ -8,7 +10,6 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">Agregar Productos para Factura Entrada.</h3>
 		</div>
-		
 		<div class="panel-body">
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
@@ -16,80 +17,96 @@
 			<a id="generarJsonArray" class="btn btn-primary" data-toggle="modal" data-target="#msgConfirm">
 				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
+			<!--
 			<a class="form-inline">
 				<button id="editarIva" class="btn btn-warning">
 					<span class="glyphicon glyphicon-pencil" ></span> Editar Iva
 				</button>
-				
-				<input id="ivaPorcentaje" type="text" class="form-control" value="16" disabled="disabled">
-			</a>		
-				<table id="productos" class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th>Cantidad</th>
-							<th>Clave Producto</th>
-							<th>Seleccione Unidad</th>
-							<th>Codigo de Barras</th>
-							<th>Descripcion</th>
-							<th>Precio Unitario</th>
-							<th>Importe</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
+				<input id="ivaPorcentaje" type="text" class="form-control" value="16" disabled="disabled" size="5" >
+			</a>-->
+			<a>
+				<select id="editaIva" class="form-control">					
+				</select>
+			</a>
+			<!--<tr>
+							<td>Seleccione Impuesto:</td>
+							<td>
+							<select id="idCicloEscolar" class="form-control">
+							<option value="0">Buscar...</option>
+							<?php foreach ($impuestos as $impuesto) : ?>
+							<option value="<?php echo $impuesto->getIdimpuesto() ?>"><?php echo $impuesto->getAbreviatura() ?></option>
+							<?php endforeach; ?>
+						</select>
+							</td>
+			</tr>-->
+			<hr />
+			<table id="productos" class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Cantidad</th>
+						<th>Clave Producto</th>
+						<th>Seleccione Unidad</th>
+						<th>Codigo de Barras</th>
+						<th>Descripción</th>
+						<th>Precio Unitario</th>
+						<th>Importe</th>
+						<th>Eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
 						  
-					</tbody>
-					<tfoot>
-						<tr>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td><strong>Subtotal:</strong></td>
-							<td><input id="subTotal" class="form-control" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td><strong>Descuento:</strong></td>
-							<td><input id="descuento" class="form-control" value="0" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td><strong>Subtotal generado despues del descuento:</strong></td>
-							<td><input id="descuentoGenerado" class="form-control" value="0" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td><strong>Iva:</strong></td>
-							<td><input id="iva" class="form-control" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td><strong>Total:</strong></td>
-							<td><input id="total" class="form-control" /></td>
-						</tr>
-					</tfoot>	
-				</table>
-				<table id="impuestos">
-					<thead>
-						
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><strong>Subtotal:</strong></td>
+						<td><input id="subTotal" class="form-control" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><strong>Descuento:</strong></td>
+						<td><input id="descuento" class="form-control" value="0" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><strong>Subtotal generado despues del descuento:</strong></td>
+						<td><input id="descuentoGenerado" class="form-control" value="0" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><strong>Iva:</strong></td>
+						<td><input id="iva" class="form-control"></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><strong>Total:</strong></td>
+						<td><input id="total" class="form-control" /></td>
+					</tr>
+				</tfoot>	
+			</table>
+			<table id="impuestos">
+				<thead>
+						<td align="center" ><strong></strong></td>
 					</thead>
 					<tbody>
 						<tr>
@@ -98,7 +115,7 @@
 							<td align="center"><strong>ISR</strong></td>
 						</tr>
 						 <tr>
-            				<td align="left"><input type="text" id="ieps" name="iEPS" size="15" class="form-control" value="0"></td>
+            				<td align="left"><input type="text" id="ieps" name="iEPS" size="15" class="form-control" value="0" ></td>
           				 	<td align="left"><input type="text" id="ish" name="ish" size="15" class="form-control" value="0"></td>
           				 	<td align="left"><input type="text" id="isr" name="isr" size="15" class="form-control" value="0"></td>	
           				 </tr>
@@ -110,75 +127,147 @@
           				 </tr>
 					</tbody>
 					<tfoot>
-						
-						
 					</tfoot>
 					
 				</table>
 		</div>
 	</div>
 </section>	
-
 <script>
 $(document).ready(function () {
 	console.log( "ready!" );
-		var jsonProductos = <?php echo $this->jsonProductos; ?>;
-		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		//Pruebas ImpuestoProducto 
-		var jsonImpuestoProductos = <?php echo $this->jsonImpuestos; ?>;
-		//console.dir(jsonImpuestos);
+	var jsonProductos = <?php echo $this->jsonProductos; ?>;
+	var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
 		
     var filasTabla = 1;
     $("#addRow").on("click", function () {
-        /*filasTabla ++;
-        //var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
-        var newRow = $("<tr>");
-        var cols = "";
-        cols +=  var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
-        cols += '<td>$<input  name="price' + fila + '"/></td>';
-        cols += '<td><input  name="qty' + fila + '"/></td>';
-        cols += '<td>$<input name="linetotal' + fila + '" readonly="readonly"/></td>';
-        cols += '<td><a class="deleteRow"> x </a></td>';
-        newRow.append(cols);*/
-       var newRow = $("<tr>");
-       var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
-			// idProducto
-			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-
-			// idUnidad
-			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});
-			// codigoBarras
-			var inputCodigoBarras = $('<input />').attr({'id': '0' + filasTabla}).attr({'class':'form-control'});
-			// descripcion
-			//var inputdescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-			var selectdescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonProductos,function(i,item){
-				selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
-			});
-			// precioUnitario
-			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
-			// precioImporte
-			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class': 'costoTotal' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
-			
-			// botonLimpiar
-			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
-			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')	;
+    	var newRow = $("<tr>");
+    	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
+		// idProducto
+		var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		// idUnidad
+		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonUnidad,function(i,item){
+			inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+		});
+		// codigoBarras
+		var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
+		// descripcion
+		var selectdescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonProductos,function(i,item){
+			selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+		});
+		// precioUnitario
+		var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
+		// precioImporte
+		var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class': 'costoTotal' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});
+		// botonElimininar Fila
+		var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
+		buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')	;
       
         $("table#productos").append($('<tr>').
-				append($('<td>').append(inputCantidad)).
-				append($('<td>').append(inputProducto)).
-				append($('<td>').append(inputUnidad)).
-				append($('<td>').append(inputCodigoBarras)).
-				append($('<td>').append(selectdescripcion)).
-				append($('<td>').append(inputCostoUnitario)).
-				append($('<td>').append(inputCostoTotal)).
-				append($('<td>').append(buttonLimpiar))
+			append($('<td>').append(inputCantidad)).
+			append($('<td>').append(inputProducto)).
+			append($('<td>').append(inputUnidad)).
+			append($('<td>').append(inputCodigoBarras)).
+			append($('<td>').append(selectdescripcion)).
+			append($('<td>').append(inputCostoUnitario)).
+			append($('<td>').append(inputCostoTotal)).
+			append($('<td>').append(buttonLimpiar))
 				
-			);
+		);
     });
+    
+    //Envia los valores del Producto a la vista de facturaProveedor
+    $("a#generarJsonArray").on("click",function(){
+    	var tabla = $("table#productos > tbody  > tr");
+ 		//Array Json de productos
+ 		var productos = [];
+ 		tabla.each(function(){
+ 			var row = $(this);
+ 			var cantidad = row.find("input[id^='idCantidad_']").val();
+ 			var unidad = row.find("select[id^='idUnidad_']").val();
+ 			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
+ 			var descripcion = row.find("select[id^='descripcion_']").val();
+ 			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
+ 			var importe = row.find("input[id^='costoTotal_']").val();
+ 			
+ 				/*//var total = row.find("input[id^='total']").val();
+ 				var subTotal = row.find("input[id^='subTotal']").val();
+ 				var total = row.find("input[id^='total']").val();*/
+ 				
+ 				console.log("Cantidad:"+cantidad);
+ 				console.log("unidad:"+unidad);
+ 				console.log("codigoBarras:"+codigoBarras);
+ 				console.log("descripcion:"+descripcion);
+ 				console.log("precioUnitario:"+precioUnitario);
+ 				console.log("costoTotal:"+importe);
+ 				
+ 						
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
+ 			});
+ 			console.dir(productos);
+ 			var myString = JSON.stringify(productos);
+ 			
+ 			console.log(myString);
+ 			if ($("input#productos").val(myString)){
+ 				
+ 			};
+ 		});
+ 		
+ 		//Envia los valores de Impuestos a a la vista de facturaProveedor
+   		$("a#generarJsonArray").on("click",function(){
+    	//var tabla = $("table#productos > tfoot  > tr");
+ 		//Array Json de productos
+ 		var impuestos = [];
+ 		
+ 			//var row = $(this);
+ 			var subTotal = $("input#subTotal").val();
+ 			var descuento = $("input#descuento").val();
+ 			var iva = $("input#iva").val();
+ 			var total = $("input#total").val();
+ 			var ieps = $("input#ieps").val();
+ 			var ish = $("input#ish").val();
+ 			var isr = $("input#isr").val();
+ 			
+ 			console.log("subTotal:"+subTotal);
+ 			console.log("descuento:"+descuento);
+ 			console.log("iva:"+iva);
+ 			console.log("total:"+total);
+ 			console.log("ieps:"+ieps);
+ 			console.log("ish:"+ish);
+ 			console.log("isr:"+isr);
+ 			
+ 			impuestos.push(new Impuesto(subTotal, descuento, iva, total, ieps, ish,isr)); 
+ 			
+ 			console.dir(impuestos);
+ 			var myString = JSON.stringify(impuestos);
+ 			
+ 			console.log(myString);
+ 			if ($("input#1-importes").val(myString)){
+ 				
+ 			};
+ 		});
+ 		
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+		  this.cantidad = cantidad;
+		  this.unidad = unidad;
+		  this.codigoBarras = codigoBarras;
+		  this.descripcion = descripcion;
+		  this.precioUnitario = precioUnitario;
+		  this.importe = importe;
+		}
+		
+		function Impuesto(subTotal, descuento, iva, total, ieps, ish, isr) {
+		  this.subTotal = subTotal;
+		  this.descuento = descuento;
+		  this.iva = iva;
+		  this.total = total;
+		  this.ieps = ieps;
+		  this.ish = ish;
+		  this.isr = isr;
+		}
+
     
     $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         calculateRow($(this).closest("tr"));
@@ -186,11 +275,26 @@ $(document).ready(function () {
         descuento();
     });
     
-    $("table#productos").on("click", "a.deleteRow", function (event) {
-        $(this).closest("tr").remove();
-        calculateGrandTotal();
+     $("table#productos").on("keypress",'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
+     	console.log("Esta dentro de cantidad");
+        //soloNumero();
+        soloNumero(evt);
     });
+ 
 });
+
+
+	/*{
+		//Solo permite numeros, pero se pueden ingresar mas de dos puntos decimales
+		//if((event.keyCode !=13) && (event.keyCode != 46) && (event.keyCode < 48 || event.keyCode > 57))
+			//event.returnValue = false;
+		var decimal = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
+		if (decimal.test(valor)){
+			return true;
+		}else{
+			return false;
+		}
+	}*/
     
 function calculateRow(row) {
     var  precioUnitario= +row.find('input[id^="costoUnitario_"]').val();
@@ -200,64 +304,73 @@ function calculateRow(row) {
     
 function calculateGrandTotal() {
     var grandTotal = 0;
-    
+    var ivaPorcentaje;
+    var total;
+    var totalIva;
+    var descuento;
+    var totalDescuento;	    
     $("table#productos").find('input[id^="costoTotal_"]').each(function () {
         grandTotal += +$(this).val();
        
     });
+    
     $("#grandtotal").text(grandTotal.toFixed(2));
     $("#subTotal").val(grandTotal.toFixed(2));
-    /*Descuento*/
-   $("table#productos").keyup("input[id^='subtotal']", function(){
     
-    /*var iproducto = $("#descripcion_");
-	var producto = ($('select[id^="descripcion_"]').val());
-	console.log(producto);*/
-	
-	 
-			    
-     if($("#descuento").val()!== "0") {
-    	console.log("El descuento es diferente de cero");
-    	//$("#descuentoGenerado").val(descuento);
-    	descuento = grandTotal - parseFloat( $("#descuento").val());
-		console.log(grandTotal);
-		console.log($("#descuento").val());
-		//console.log(descuento);
-		//Realiza el total, cuando hay descuento
-		total =  parseFloat($("#descuentoGenerado").val(descuento));
-    	console.log(total);
-    	 // Si el producto esta dentro de la tabla ImpustoProducto
-    	
-    	 var url = window.location.origin + "/General/public/"+"contabilidad/json/impuestoproducto/idProducto/" + producto;
-			console.log(url);
-			
-			$.ajax({
-				url: url,
-			});
-			
-			if (url=="" ){
-				console.log("No contiene ipes");
-				}else{
-				console.log("Contiene IEPS");	
-				}
-			
-    }
-   }); 
-
-    /*	 */
-  }
+    //Calcula iva
+   	ivaPorcentaje= $("#ivaPorcentaje").val();
+   	console.log(ivaPorcentaje);
+    totalIva = (ivaPorcentaje * grandTotal ) /100;
+    console.log(totalIva);
+    $("input#iva").val(totalIva.toFixed(2));
+    
+    //Total
+    total = grandTotal + totalIva;
+    $("input#total").val(total.toFixed(2));
+    /*Descuento*/
+   
+   descuento = $("#descuento").val();
+   if (descuento !=0){
+   	totalIva = 0;
+   	total = 0;
+   	console.log("El descuento es diferenre de cero");
+   	totalDescuento = grandTotal - descuento;
+   	$("input#descuentoGenerado").val(totalDescuento.toFixed(2));
+   	totalIva = (ivaPorcentaje * totalDescuento ) /100;
+   	//total = (totalDescuento * totalIva);
+   	console.log("Iva con descuento :" + totalIva);
+   	$("input#iva").val(totalIva.toFixed(2)); 
+   	total = totalDescuento + totalIva;
+   	$("input#total").val(total.toFixed(2)); 
+   	}			  
+   }
   //Funcion Eliminar #btnLimpiar_2
  		$("table#productos").on("click", "button[id^='btnLimpiar_']", function(){
+ 			 
   			// si tenemos mas de una fila
   			if ($("table#productos tbody > tr").length >1)
   			{
   				$("table#productos  tbody > tr:last").remove();
   			}
-  			
+  			calculateGrandTotal();
  		});//cierra funcion eliminar
+  //Habilita IvaPorcentaje
+ 		 $("#editarIva").on("click",function(){
+ 		 	//calculateGrandTotal();
+         	$("#ivaPorcentaje").removeAttr("disabled");
+         	
+         });
+  //Edita IvaPorcentaje       
+          $("#ivaPorcentaje").on("click",function(){
+          	calculateGrandTotal();
+          });
+  //Calcula por si hay descuento       
+          $("#descuento").on("click",function(){
+          	calculateGrandTotal();
+          });
  		
  $("select#idEmpresas").on('change', function(){
-			var url = window.location.origin + "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
 			$.ajax({
 				url: url,
@@ -274,7 +387,7 @@ function calculateGrandTotal() {
 		});
 		
 $("select#idSucursal").on('click', function(){
-				var url = window.location.origin + "/General/public/sistema/json/proyectos/idSucursal/" + this.value;
+				var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
 				console.log(url);
 				$.ajax({
 					url:url,
@@ -288,27 +401,19 @@ $("select#idSucursal").on('click', function(){
 					}
 				});
 		});
-function descuento() {  
-	/*var descuento = 0;
-	var total = 0;	
-	$("table#productos").keyup("input[id^='subtotal']", function(){
-  	
-    if($("#descuento").val()!== "0") {
-    	console.log("El descuento es diferente de cero");
-    	//$("#descuentoGenerado").val(descuento);
-    	descuento = parseFloat($("#subtotal").val()) - parseFloat( $("#descuento").val());
-		console.log($(this).val());
-		console.log($("#descuento").val());
-		console.log(descuento);
-		//Realiza el total, cuando hay descuento
-		/*total =  parseFloat( $("#descuentoGenerado").val(descuento));
-    	console.log(total);
-    	 //$("#descuentoGenerado").val(total.toFixed(2));*/
-    //}
-    //}); 
+		$("#1-pagada").on("click", function(){
+			console.log("haciendo click");
+			if ($("#1-pagada:checked").val()==1){
+				console.log("input desahabilitado");
+				$("#1-pagos").attr('disabled', 'disabled');
+			}else{
+				$("#1-pagos").removeAttr("disabled");
+				console.log("input habilitado");
+			}
+			
+		});
+function descuento() {
     $("table#productos").on("change", "select[id^='descripcion_']", function(){
-	 	//var cantidad = ("input[id^='idCantidad_']);
-	 	//var 
 	 	var descripcion= $(this).attr("id");
 		var arr = descripcion.split('_');
 		var producto = $(this).val();		 	
@@ -316,24 +421,35 @@ function descuento() {
     	 //La ruta donde comparamos visualizamos los productos
     	 var url = window.location.origin + "/General/";
     	 var urlImpuestoProducto = url + "contabilidad/json/impuestoproducto/idProducto/"+producto;
-    	 //console.log(urlImpuestoProducto); 
-    	 
+    	 console.log(urlImpuestoProducto);
     	$.ajax({
 					url:urlImpuestoProducto,
 					dataType: "json",
 					success: function(data){
 						var ieps = data['importe'];
+						//var idImpuesto = data['idImpuesto'];
 						console.log(ieps);
-						//var cantidad = $('input[id^="idCantidad_"]').val()
-						//console.log(cantidad);
-						var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
-						//(parseFloat($("#subTotal").val())
-						$('input#ieps').val(impIEPS.toFixed(2))
+						//console.log(idImpuesto);
+						if (urlImpuestoProducto != '[]'){
+							var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
+							$('input#ieps').val(impIEPS.toFixed(2));
+						}else{
+							$('input#ieps').val(0);
+						}
 					}
 				});
 				
     });
-  
+  function soloNumero(evt) {
+                var strValue = document.getElementById('<%=textBox.ClientID %>').value;
+                
+                var chCode = evt.keyCode ? evt.keyCode : evt.charCode ? evt.charCode : evt.which;
+                
+                if (chCode >= 48 && chCode <= 57 ||chCode == 46) {
+                        return true;
+                }
+                else
+                    return false;
+            }  
 }
-
 </script>

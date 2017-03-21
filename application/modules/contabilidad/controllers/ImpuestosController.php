@@ -4,14 +4,13 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 {
 
     private $impuestoDAO = null;
-
     private $productoDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->impuestoDAO = new Contabilidad_DAO_Impuesto;
-		$this->productoDAO =  new Inventario_DAO_Producto;
+		$this->productoDAO = new Inventario_DAO_Producto;
     }
 
     public function indexAction()
@@ -25,9 +24,9 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 
     public function altaAction()
     {
-    	$request =$this->getRequest();
-		$idImpuesto = $this->getParam("idImpuesto");
+    	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_CrearImpuesto;
+		$idImpuesto = $this->getParam("idImpuesto");
 		$this->view->formulario = $formulario;
 		$formulario->removeElement("idImpuesto");
 		$formulario->removeElement("idProducto");
@@ -36,14 +35,13 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$impuesto = new Contabilidad_Model_Impuesto($datos);
-		
-				$impuesto->setIdImpuesto($idImpuesto);
-				//print_r($impuesto);
+				$datos["fechaPublicacion"] = date ("Y-m-d H:i:s",time());
+				//print_r($datos);
 				try{
-					$this->impuestoDAO->nuevoImpuesto($impuesto);
-				}catch(Util_Exception_BussinessException $ex){
-					
+					$this->impuestoDAO->nuevoImpuesto($datos);
+					$this->view->messageSuccess = "Impuesto dado de alta exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail =  "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 			}
 		}

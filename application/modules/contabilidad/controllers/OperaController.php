@@ -24,14 +24,14 @@ class Contabilidad_OperaController extends Zend_Controller_Action
         $idFiscalesEmpresa = $this->getParam("idFiscalesEmpresa");
 		$idFiscalesCliente = $this->getParam("idFiscalesCliente");
 		
-		//print_r($idFiscalesCliente . "<br />");
+		print_r($idFiscalesCliente . "<br />");
 		//print_r($idFiscalesEmpresa . "<br />");
 		
-		$fiscalesDAO = $this->fiscalesDAO;
+		/*$fiscalesDAO = $this->fiscalesDAO;
 		
 		$empresa = $fiscalesDAO->getEmpresaByIdFiscales($idFiscalesEmpresa);
 		$cliente = $fiscalesDAO->getClienteByIdFiscales($idFiscalesCliente);
-		
+		*/
 		$fiscalesDAO->asociateClienteEmpresa($empresa["idEmpresas"], $cliente["idCliente"]);
     }
 	

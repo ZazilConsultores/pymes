@@ -2,7 +2,7 @@
 <script>
 	$(document).ready(function(){
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+			$url = "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
 			$.ajax({
 				url: $url,
@@ -17,4 +17,28 @@
 			});
 		});
 	});
+	$("#numFolio").on('keypress' , function(){
+		if((event.keyCode < 48 ) || (event.keyCode > 57))
+		event.returnValue = false;
+	});
+	
+	$("#1-sueldo").on("change", function (){
+		calculaNomina();
+	});
+	$("#1-subsidio").on("change", function (event){
+		calculaNomina();
+	});
+	$("#1-imss").on("change", function (event){
+		calculaNomina();
+	});
+	$("#1-ispt").on("change", function (event){
+		calculaNomina();
+	});
+	function calculaNomina(){
+		var total;  
+		total = parseFloat($("input#1-sueldo").val()) + parseFloat($("input#1-subsidio").val())-$("input#1-36").val()-$("input#1-ispt").val();
+		console.log("El total:"+ total);
+		$("#1-nominaxpagar").val(total.toFixed(2));
+	}
+	
 </script>

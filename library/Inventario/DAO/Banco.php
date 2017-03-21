@@ -51,12 +51,12 @@
 	
 	public function crearBanco(Contabilidad_Model_Banco $banco){
 		$tablaBanco = $this->tablaBanco;
-		$select = $tablaBanco->select()->from($tablaBanco)->where( "hash = ? ", $banco->getHash());
+		/*$select = $tablaBanco->select()->from($tablaBanco)->where( "hash = ? ", $banco->getHash());
 		$row = $tablaBanco->fetchRow($select);
 		
 		if(!is_null($row)) throw new Util_Exception_BussinessException("Banco: <strong>" . $banco->getBanco() . "</strong> duplicado en el sistema");
-		$banco->setHash($banco->getHash());
-		//$banco->setFecha(date("Y-m-d H:i:s", time()));
+		$banco->setHash($banco->getHash());*/
+		$banco->setFecha(date("Y-m-d H:i:s", time()));
 		
 		
 		$tablaBanco->insert($banco->toArray());

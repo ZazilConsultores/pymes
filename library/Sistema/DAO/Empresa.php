@@ -376,7 +376,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 */
 	public function obtenerSucursales($idFiscales){
 		$tablaSucursal = $this->tablaSucursal;
-		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idFiscales);
 		$rowsSucursales = $tablaSucursal->fetchAll($select);
 		
 		if(is_null($rowsSucursales)){
@@ -386,6 +386,17 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 	}
 	
+	public function obtenerSucursal($idSucursal){
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idSucursal)->where("idCoP=?",$idCoP);
+		$rowSucursal = $tablaSucursal->fetchRow($select);
+		
+		if(is_null($rowSucursal)){
+			return null;
+		}else{
+			return $rowSucursal->toArray();
+		}
+	}
 	/**
 	 * Comprueba que la empresa con IdFiscales proporcionada 
 	 * sea parte de las empresas operables en el sistema.
@@ -463,6 +474,26 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	/**
 	 * 
 	 */
+	 
+	public function obtieneEmpresas($idEmpresa){
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		
+		try{
+			//$rowEmpresas = $tablaEmpresas->fetchRow($select);
+			if(is_null($rowEmpresas)){
+				return null;
+			}else{
+				return $rowEmpresas->toArray();
+			}
+			
+		}catch(Exception $ex){
+			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
+		}
+		
+		
+	} 
 	public function agregarEmailSucursal($idSucursal, Sistema_Model_Email $email){
 		
 	}
@@ -472,10 +503,6 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function eliminarTelefonoSucursal($idSucursal, $idTelefono){}
 	public function eliminarEmailSucursal($idSucursal, $idEmail){}
-	
-	
-	
-	
 	
 	
 }

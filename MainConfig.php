@@ -17,8 +17,10 @@ class MainConfig {
 		Zend_Registry::set('tipo', $tipo);
 		$tipoInventario = array('1'=>'PEPS');
 		Zend_Registry::set('tipoInventario',$tipoInventario);
-		$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI');
+		$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
 		Zend_Registry::set('formaPago', $formaPago);
+		$conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
+		Zend_Registry::set('conceptoPago', $conceptoPago);
 		$padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 		Zend_Registry::set('padre', $padre);
 		$estatus = array('A' => 'ACTIVO', 'C' => 'CANCELADO');
@@ -38,5 +40,8 @@ class MainConfig {
 		
 		$gradosEscolares = array(1=>"1°",2=>"2°",3=>"3°",4=>"4°",5=>"5°",6=>"6°",7=>"7°",8=>"8°",9=>"9°");
 		Zend_Registry::set('gradosEscolares', $gradosEscolares);
+		
+		$subCuenta = array('banco' => '2', 'cliente' => '2', 'proveedor' => '2', 'producto' => '2' );
+		Zend_Registry::set('subCuenta', $subCuenta);
 	}
 }

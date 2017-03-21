@@ -48,6 +48,7 @@
         <modelFile modelName="Vendedor"/>
         <modelFile modelName="Inventario"/>
         <modelFile modelName="Bancosempresa"/>
+        <modelFile modelName="GuiaContable"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -978,6 +979,7 @@
               <actionMethod actionName="remision"/>
               <actionMethod actionName="factura"/>
               <actionMethod actionName="pagos"/>
+              <actionMethod actionName="aplicarpago"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -990,6 +992,7 @@
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="generar"/>
             </controllerFile>
             <controllerFile controllerName="GuiaContable">
               <actionMethod actionName="index"/>
@@ -1026,6 +1029,12 @@
               <actionMethod actionName="enlazarProducto"/>
               <actionMethod actionName="enlazarproducto"/>
             </controllerFile>
+            <controllerFile controllerName="Divisa">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="editar"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1054,6 +1063,8 @@
             <formFile formName="CrearImpuesto"/>
             <formFile formName="AltaVendedor"/>
             <formFile formName="Cuentasxp"/>
+            <formFile formName="GeneraPoliza"/>
+            <formFile formName="AltaDivisa"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1079,6 +1090,9 @@
               <dbTableFile dbTableName="Impuesto"/>
               <dbTableFile dbTableName="FactutaImpuesto"/>
               <dbTableFile dbTableName="ImpuestoProductos"/>
+              <dbTableFile dbTableName="FacturaImpuesto"/>
+              <dbTableFile dbTableName="GuiaContable"/>
+              <dbTableFile dbTableName="Poliza"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1100,6 +1114,8 @@
             <modelFile modelName="Impuesto"/>
             <modelFile modelName="FacturaImpuesto"/>
             <modelFile modelName="ImpuestoProductos"/>
+            <modelFile modelName="GuiaContable"/>
+            <modelFile modelName="Poliza"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1244,6 +1260,24 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proveedor">
                 <viewScriptFile forActionName="pagos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Poliza">
+                <viewScriptFile forActionName="generar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="aplicarpago"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Divisa">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Divisa">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Divisa">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Divisa">
+                <viewScriptFile forActionName="editar"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2629,6 +2663,7 @@
                 <testApplicationActionMethod forActionName="remision"/>
                 <testApplicationActionMethod forActionName="factura"/>
                 <testApplicationActionMethod forActionName="pagos"/>
+                <testApplicationActionMethod forActionName="aplicarpago"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2641,6 +2676,7 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="generar"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="GuiaContable">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2676,6 +2712,12 @@
                 <testApplicationActionMethod forActionName="enlazar"/>
                 <testApplicationActionMethod forActionName="enlazarProducto"/>
                 <testApplicationActionMethod forActionName="enlazarproducto"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Divisa">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="admin"/>
+                <testApplicationActionMethod forActionName="editar"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

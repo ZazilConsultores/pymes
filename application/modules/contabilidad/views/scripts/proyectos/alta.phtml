@@ -34,7 +34,7 @@
 
 $(document).ready(function(){
 	$("select#idEmpresas").on('change', function(){
-		$url = "/General/public/sistema/json/sucursales/idFiscales/" + this.value;
+		$url = "/General/sistema/json/sucursales/idFiscales/" + this.value;
 		$.ajax({
 			url: $url,
 			dataType: "json",

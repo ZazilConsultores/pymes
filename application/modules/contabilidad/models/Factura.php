@@ -84,16 +84,15 @@ class Contabilidad_Model_Factura
     }
 	
 
-	private $condicionPago;
+	private $conceptoPago;
 
-    public function getCondicionPago() {
-        return $this->condicionPago;
+    public function getConceptoPago() {
+        return $this->conceptoPago;
     }
     
-    public function setCondicionPago($condicionPago) {
-        $this->condicionPago = $condicionPago;
+    public function setConceptoPago($conceptoPago) {
+        $this->conceptoPago = $conceptoPago;
     }
-    
    
  	private $formaPago;
 
@@ -115,7 +114,7 @@ class Contabilidad_Model_Factura
         $this->fechaFactura = $fechaFactura;
     }
 	
-	private $fechaCancelada;
+	/*private $fechaCancelada;
 
     public function getFechaCancelada() {
         return $this->fechaCancelada;
@@ -123,7 +122,7 @@ class Contabilidad_Model_Factura
     
     public function setFechaCancelada($fechaCancelada) {
         $this->fechaCancelada = $fechaCancelada;
-    }
+    }*/
 
  
 	private $subtotal;
@@ -146,18 +145,18 @@ class Contabilidad_Model_Factura
         $this->total = $total;
     }
     public function __construct(array $datos){
-    	if (array_key_exists("idFactura", $datos)) $this->idFactura = $datos["ïdFactura"];
-		if (array_key_exists("idTipoMovimiento", $datos)) $this->idTipoMovimiento = $datos["ïdTipoMovimiento"];
+    	if (array_key_exists("idFactura", $datos)) $this->idFactura = $datos["idFactura"];
+		if (array_key_exists("idTipoMovimiento", $datos)) $this->idTipoMovimiento = $datos["idTipoMovimiento"];
 		if (array_key_exists("idSucursal", $datos)) $this->idSucursal = $datos["idSucursal"];
     	if (array_key_exists("idCoP", $datos)) $this->idCoP = $datos["idCoP"];
 		if (array_key_exists("idDivisa", $datos)) $this->idDivisa = $datos["idDivisa"];
 		$this->numeroFactura = $datos["numeroFactura"];
 		$this->estatus = $datos["estatus"];
 		$this->descuento = $datos["descuento"];
-		$this->condicionPago = $datos["condicionPago"];
+		$this->conceptoPago = $datos["conceptoPago"];
 		$this->formaPago = $datos["formaPago"];
 		$this->fechaFactura = $datos["fechaFactura"];
-		$this->fechaCancelada = $datos["fechaCancelada"];
+		//$this->fechaCancelada = $datos["fechaCancelada"];
 		$this->subtotal = $datos["subtotal"];
 		$this->total = $datos["total"];
 
@@ -175,10 +174,10 @@ class Contabilidad_Model_Factura
 		$datos["numeroFactura"] = $this->numeroFactura;
 		$datos["estatus"] = $this->estatus;
 		$datos["descuento"]=$this->descuento;
-		$datos["condicionPago"] = $this->condicionPago;
+		$datos["conceptoPago"] = $this->conceptoPago;
 		$datos["formaPago"] = $this->formaPago;
 		$datos["fechaFactura"]=$this->fechaFactura;
-		$datos["fechaCancelada"]= $this->fechaCancelada;
+		//$datos["fechaCancelada"]= $this->fechaCancelada;
 		$datos["subTotal"] = $this->subtotal;
 		$datos["total"] = $this->total;
 		return $datos;		

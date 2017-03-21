@@ -6,7 +6,8 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	
 	public function __construct()
 	{
-		$this->tablaProyecto= new Contabilidad_Model_DbTable_Proyecto;
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaProyecto= new Contabilidad_Model_DbTable_Proyecto(array('db'=>$dbAdapter));
 	}
 	
 	public function crearProyecto(Contabilidad_Model_Proyecto $proyecto)
@@ -16,16 +17,11 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		$stringIni = $fechaApertura->toString('yyyy-MM-dd hh:mm:ss',time());
 	
 		$fechaCierre = $proyecto->getFechaCierre();	
-
 		$Ganancia = $proyecto->getCostoFinal()- $proyecto->getCostoInicial();
-		
 		$proyecto->setFechaApertura($stringIni);
 		
 		if(($fechaCierre=="")){
-			
 			$proyecto->setFechaCierre(date("Y-m-d H:i:s", time()));
-	
-			//print_r("la fecha esta vacia");	
 		}else{
 			$fechaCierre = new Zend_Date($proyecto->getFechaCierre());	
 			$stringIni = $fechaCierre->toString('yyyy-MM-dd');
@@ -36,14 +32,12 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	
 	public function obtenerProyectos(){
 		$tablaProyecto = $this->tablaProyecto;
-		$select = $tablaProyecto->select()->from($tablaProyecto);
-		$rowProyectos = $tablaProyecto->fetchAll($select);
-		
+		$rowProyectos = $tablaProyecto->fetchAll();
 		$modelProyectos = array();
+		
 		
 		foreach ($rowProyectos as $rowProyecto) {
 			$modelProyecto = new Contabilidad_Model_Proyecto($rowProyecto->toArray());
-			$modelProyecto->setIdProyecto($rowProyecto->idProyecto);
 			
 			$modelProyectos[] = $modelProyecto;
 			

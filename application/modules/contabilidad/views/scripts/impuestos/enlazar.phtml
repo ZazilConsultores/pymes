@@ -3,9 +3,9 @@
 ?>
 
 <section class="row">	
-	<div class="panel panel-warning">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">Asociar Producto a Impuesto</h3>
+			<h3 class="panel-title">Asociar Producto a Impuesto.</h3>
 		</div>
 		<div class="panel-body">
 			<div class="col-xs-12">
@@ -13,65 +13,76 @@
 			</div>
 		</div>
 	</div>
-	<br /><br />
-	<div class="col-xs-12">
-				<table id="impuestosProductos" class="table table-striped table-condensed">
-					<thead>
-						<th>Impuesto</th>
-						<th>Producto</th>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
+	<br />
+</section>
+<section class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle.</h4>
+		</div>
+		<table id="impuestosProductos" class="table table-striped table-condensed">
+			<thead>
+				<th>Impuesto</th>
+				<th>Producto</th>
+				<th>Importe</th>
+				<th>Porcentaje</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 </section>
 <script>
+$(function(){
+	$('#impuestos').validate({
+		rules:{
+			importe:{
+				required: true,
+				number: true
+			},
+			porcentaje:{
+				required: true,
+				number: true				
+			}
+		},
+		messages:{
+			importe:{
+				required: "El importe no puede quedar vacío",
+				number: "El valor debe ser numérico"
+			},
+			porcentaje:{
+				required: "El porcentaje no puede quedar vacío",
+				number: "El valor debe ser numérico"				
+			}
+		}
+	});
+});
+
 	$().ready(function(){
 		
-		$("#idEnlazarImpuesto").on('click', function(){
-			console.log("Hola");
-			/*$("span#producto").text($("select#idProducto option:selected").text());
-			$("span#impuesto").text($("select#idImpuesto option:selected").text());*/
-			
-			/////////////////////////////////////////////////
-			var iproducto = $("select#idProducto");
-			var iimpuesto = $("select#idImpuesto");
-			
-			var producto = iproducto.val();
-			var impuesto = iimpuesto.val();
- 			
- 			console.log(producto);
- 			console.log(impuesto);
-			var url = window.location.origin + "/General/public/"+"contabilidad/impuestos/enlazarproducto/idProducto/" + producto + "/idImpuesto/" + impuesto;
-			console.log(url);
-			/*
-			$.ajax({
-				url: url,
-			});
-			// Cargar valores actuales 	$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
-			//$url = window.location.origin +"/General/public/"+"contabilidad/json/productos/idProducto/"+producto
-			$url = window.location.origin +"/General/public/contabilidad/json/impuestos/idImpuesto/"+idImpuesto;
-			//console.log($url);
-			
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				success: function(data){
-					//console.log($url);
-					//console.dir(data);
-					
-					var tbody = $("table#impuestosProductos").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].descripcion)).
-							append($('<td>').append(data[i].producto))
-						);
-					});
-				}
-			});*/
-		
+		var idImpuesto = $("select#idImpuesto").val();
+		var url = window.location.origin + "/General/contabilidad/json/impuestos/idImpuesto/"+idImpuesto;
+		console.log(url);
+		$.ajax({
+			url: url,
+			dataType: "json",
+			success: function(data){
+				console.log(url);
+				console.dir(data);
+				
+				var tbody = $("table#impuestosProductos").find('tbody');
+				tbody.empty();
+				$.each(data, function(i,item){
+					tbody.append($('<tr>').
+					append($('<td>').append(data[i].descripcion)).
+					append($('<td>').append(data[i].producto)).
+					append($('<td>').append(data[i].importe)).
+					append($('<td>').append(data[i].porcentaje))
+					);
+				});
+			}
 		});
+		
 		
 	});
 </script>

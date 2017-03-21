@@ -1,0 +1,43 @@
+<?php
+	$divisas = $this->divisas; 
+	$formulario = $this->formulario;
+?>
+<section class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Divisas.
+			</h3>
+		</div>
+		<div class="panel-body">
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"divisa","action"=>"alta")) ?>">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Divisa
+			</a>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Número divisa</th>
+						<th>Clave divisa</th>
+						<th>Descripcion</th>
+						<th>Tipo cambio</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($divisas as $divisa) : ?>
+					<tr>
+						<td><?php echo $divisa->getIdDivisa() ?></td>
+						<td><?php echo $divisa->getClaveDivisa() ?></td>
+						<td><?php echo $divisa->getDescripcion() ?></td>
+						<td><?php echo $divisa->getTipoCambio() ?></td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"divisa", "action" => "admin", "idDivisa" => $divisa->getIdDivisa()), null, true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Administrar
+							</a>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>

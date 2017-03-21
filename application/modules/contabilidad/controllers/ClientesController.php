@@ -2,16 +2,17 @@
 
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
-    
-
-    public function init()
+	private $facturaDAO = null;
+	private $impuestosDAO = null;
+	
+	public function init()
     {
 		$this->notaSalidaDAO= new Contabilidad_DAO_NotaSalida;
+		$this->facturaDAO = new Contabilidad_DAO_FacturaCliente;
+		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
 		
-		//=============================
-		 
-        /* Initialize action controller here */
-		$this->db = Zend_Db_Table::getDefaultAdapter();
+		$adapter =Zend_Registry::get('dbmodgeneral');
+		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
@@ -29,7 +30,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    	
     }
 
     public function notaAction()
@@ -60,7 +60,10 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				
 				foreach ($productos as $producto){
 					try{
-						$notaSalidaDAO->restarProducto($encabezado, $producto);
+						//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
+						$resta  = $this->notaSalidaDAO->resta($encabezado, $producto);
+						$creaCardex = $this->notaSalidaDAO->creaCardex($encabezado, $producto);
 						$contador++;
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
@@ -87,10 +90,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago =$datos[1];
+				$idBanco = $this->getParam("idBanco");
 				$productos = json_decode($encabezado['productos'], TRUE);
 				print_r('<br />');
 				$contador=0;
-				foreach ($productos as $producto){
+				$remisionSalidaDAO->editarBanco($formaPago, $productos);
+				/*foreach ($productos as $producto){
 					try{
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
 						$contador++;
@@ -99,7 +104,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 						$this->view->messageFail = $ex->getMessage();
 					}
 					
-				}
+				}*/
 			}else{
 				print_r("formulario no valido <br />");
 			}							
@@ -111,12 +116,54 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function facturaAction()
     {
-        // action body
-        $formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		$this->view->formulario = $formulario;
-    }
+    	$this->view->impuestos = $this->impuestosDAO->obtenerImpuestos();
+		//$idEmpresa = $this->getParam("idEmpresas");
+		//print_r($idEmpresa);
+		$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;			
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//$facturaProveedorDAO = new Contabilidad_DAO_FacturaCliente;
+				
+				$encabezado = $datos[0];
+				$formaPago = $datos[1];
+				$productos = json_decode($encabezado['productos'],TRUE);
+				print_r($productos);
+				$importe = json_decode($formaPago['importes'],TRUE);
+				print_r("<br />");
+				print_r($importe);
+				$contador=0;
+				
+				
+				//try{
+					//$this->facturaDAO->guardaIva($encabezado, $importe);
+					foreach ($productos as $producto){
+					//try{
+						//$this->facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
+						$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $producto);
+						$guardaDetalleFactura =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);	
+						//$facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
+						//$facturaProveedorDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
+						//$facturaProveedorDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+					$contador++;
+					}
+				//}catch(Util_Exception_BussinessException $ex){
+					//$this->view->messageFail = $ex->getMessage();
+				//}
+				//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos); 
+				//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
+				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+				
+				
+			//}
+			
+		}
+   }
 
-
+	}
 }
 
 
