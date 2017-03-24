@@ -6,7 +6,10 @@ class Encuesta_Form_MateriasProfesor extends Zend_Form
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
-        $registroDAO = new Encuesta_DAO_Registro;
+        $auth = Zend_Auth::getInstance();
+        $dataIdentity = $auth->getIdentity();
+        
+        $registroDAO = new Encuesta_DAO_Registro($dataIdentity["adapter"]);
 		$docentes = $registroDAO->obtenerDocentes();
         
         $eMateria = new Zend_Form_Element_Select("idMateria");
@@ -29,7 +32,5 @@ class Encuesta_Form_MateriasProfesor extends Zend_Form
 		
 		$this->addElements(array($eMateria,$eDocente,$eSubmit));
     }
-
-
 }
 
