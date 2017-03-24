@@ -74,7 +74,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eProveedor->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eProveedor->addMultiOption($fila->idProveedores, $fila->razonSocial);
 		}
 
 		$eProyecto = new Zend_Form_Element_Select('idProyecto');

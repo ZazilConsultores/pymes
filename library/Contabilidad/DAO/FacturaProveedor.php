@@ -78,9 +78,9 @@
 					
 					//Situacion de Pago
 					$conceptoPago;
-					if(($formaPago['Pagada'])==="1"){
+					if(($formaPago['pagada'])==="1"){
 						$conceptoPago = "LI";
-					}elseif(($formaPago['Pagada'])=== "0"){
+					}elseif(($formaPago['pagada'])=== "0"){
 						$conceptoPago = "PA";
 					}elseif($formaPago['pagos']===""){
 						$conceptoPago = "PE";
@@ -111,7 +111,7 @@
 					if($formaPago['pagos']!= 0 ){
 						print_r("Cantidad como pago en la factura");
 					}
-					if($formaPago['Pagada']==="1"){
+					if($formaPago['pagada']==="1"){
 						
 					}
 					
@@ -151,8 +151,8 @@
 				print_r("$select");
 					$mfacturaImpuesto = array(
 						'idFactura'=>$idFactura ,
-						'idImpuesto'=>24,
-						'importe'=>7.2,	
+						'idImpuesto'=>15,
+						'importe'=>$importe[0]['iva'],	
 					);
 					//print_r($mCuentasxp);
 					$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
