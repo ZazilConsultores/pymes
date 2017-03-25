@@ -31,10 +31,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 	public function generaGruposFacturaProveedor($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
-			
-		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		//$dbAdapter->beginTransaction();
-			
+					
 		$nomina; //Guarda Cliente o proveedor
 		$empresaProveedor; //empresa proveedora cuando el tipo no es bueno (Compras), pero es un proveedor
 		//Iniciamos variables
@@ -287,141 +284,99 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 			}	
 	}
 	
+	
 	public function generaGruposFacturaCliente($datos){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
 		
-		$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
-		$fechaFinal = new Zend_Date($datos['fechaFinal'],'YY-MM-dd');
-		$stringInicio = $fechaInicio->toString ('yyyy-MM-dd');
-		$stringFinal = $fechaFinal->toString ('yyyy-MM-dd');
 		
-		//Busca las facturas cliente
-		$tablaFactura = $this->tablaFactura;
-		$select = $tablaFactura->select()->from($tablaFactura)->where('fechaFactura >= ?',$stringInicio)->where('fechaFactura <=?',$stringFinal)->where('idTipoMovimiento=?',2)
-		->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A")->orWhere("estatus=?","I");
-		$rows= $tablaFactura->fetchAll($select);
-		//print_r("$select");
 		
-		$idClientes = array();
-		
-		if(!is_null($rows)){
-			print_r("La consulta no esta vacia");
-			foreach($rows as $row){
-				$idClientes[] = $row["idCoP"];
-				//print_r("<br />");
-				
-				foreach ($idClientes as $idCliente) {
-					//$nomina = $this->busca_Tipo($idCliente, "C");
-					$idSucursal = $row["idSucursal"];
-					$numdocto = $row["numeroFactura"];
-					$subTotal = $row["subtotal"];
-					//$iva = $row["iva"];
-					print_r($subTotal);
-					$tablaClientes = $this->tablaClientes;
-					$select = $tablaClientes->select()->from($tablaClientes,'idTipoCliente')
-					->where("idCliente = ?", $idClientes);
-					$rowCliente = $tablaClientes->fetchRow($select);
-					print_r("<br />");
-					print_r("$select");
-					
-					$nomina = "BUENO";
-					$modulo = 6;
-					
-					//Comienza guia Contable
-					$tablaGuiaContable = $this->tablaGuiaContable;
-					$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo);
-					$rowGuiaContable = $tablaGuiaContable->fetchRow($select);
-					print_r("$select");
-					if(!is_null($rowGuiaContable)){
-		
-					//select case $rowGuiaContable->origen;
-					$origen = $rowGuiaContable->origen;
-					print_r("<br />"); 
-					print_r($origen);
-					switch($origen){
-					case 'S':
-					$importe = "subTotal";
-					$origen = "SIN";
-				case 'I':
-					$importe = $iva;
-					print_r($importe);
-					$origen = "SIN";
-				case 'T':
-					$importe = "total";
-					$origen	= "PRO";	
-					break;
-			}
-			//Arma descripcion
-			if($origen ="I" or $origen="S" ){
-				$desPol = $rowGuiaContable->descripcion;
+			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
+			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
+			$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
+			$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
+			
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where('fechaFactura >= ?',$stringFechaInicio)->where('fechaFactura <=?',$stringFechaFinal)->where('idTipoMovimiento=?',2)
+			->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
+			$rowsFacturac = $tablaFactura->fetchRow($select);
+			if(!is_null($rowsFacturac)){
+				$idSucursal = $rowsFacturac->idSucursal;
+				$numMov = $rowsFacturac->numeroFactura;
+				$subTotal = $rowsFacturac->subtotal;
+				$iva = 32;
+				$total = $rowsFacturac->total;
+				$fecha = $rowsFacturac->fechaFactura;
+				$idCliente = $rowsFacturac->idCoP;
+				//Verificamos que sea un cliente
+				$tablaClientes = $this->tablaClientes;
+				$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente = ?",$idCliente);
+				$rowClientes = $tablaClientes->fetchRow($select);
+				//Definimos el modulo y el tipo
+				$nomina = 5;
+				$modulo = 6;
+				//Deberia ir la funcion Genera poliza_C
+				$tablaGuiaContable = $this->tablaGuiaContable;
+				$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$nomina);
+				$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
 				print_r("<br />");
-				print_r($desPol);
-			}else{
-			 	switch($modulo){
-					case 1:
-						$delPol = "Factura " + $numov;
-						break;
-					case 2:
-						$delPol = "Pago Factura" +$numov;
-						break;
-					default:
-						$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
-					break;	
-			 	}
-			}
-			
-			if ($importe <> 0){
-				switch($origen){
-					case 'CLI':
-						$posicion = ctaclt;
-						$subcta = $this->busca_SubCuenta($proveedor, $origen);
-						break;
-					case 'PRO':
-						$posicion = ctapro;
-						$subcta = $this->busca_SubCuenta($proveedor, $origen);
-						break;
-					case 'BAN':
-						/*Falta funcion banco*/
-						$posicion = ctaban;
-						$subcta = $this->busca_SubCuenta($proveedor, $origen);
-						break;
-					default:
-						$posicion = "0000";
-						$subcta = 0;
-				}
-				print_r($posicion);
-				//Arma Consulta
-				
-			$mPoliza = array(
-						'idModulo'=> $this->arma_Cuenta('1', $posicion, $subcta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"], $rowGuiaContable["sub4"], $rowGuiaContable["sub5"]));
-			print_r($mPoliza);
-			}
-			
-}
-			
-			//Creamos el registro de poliza
-				//$mPoliza = array(
-						//'idModulo'=> $this->arma_Cuenta(1, $posicion, $subcta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"], $rowGuiaContable["sub4"], $rowGuiaContable["sub5"])
-						/*'idTipoProveedor'=>$encabezado['idEmpresas'],
-						'idSucursal'=>$encabezado['idSucursal'],
-						'idCoP'=>$encabezado['idCoP'],
-						'cta'=>$encabezado['numeroFactura'],
-						'sub1'=>$idFactura,//
-						'sub2'=>$producto['descripcion'],
-						'sub3'=>$encabezado['idProyecto'],
-						'sub4'=>$cantidad,
-						'sub5'=>$stringFecha,
-						'fecha'=>$secuencial,
-						'descripcion'=>"A",
-						'cargo'=>$precioUnitario,
-						'abono'=>$producto['importe'],
-						'numdocto'=>$producto['importe'],
-						'secuencial'=>$producto['importe'],*/
-					//);
-					//print_r($mPoliza);
+				print_r("$select");
+				foreach($rowsGuiaContable as $rowGuiaContable){
+					$origen = $rowGuiaContable->origen;
+							switch($origen){
+							case 'S':
+								$importe = $subTotal;
+								$origen = "SIN"; //No se porque va
+								print_r("<br />");
+								print_r("importe subtotal:"); print_r($importe);
+								break;
+							case 'I':
+								$importe = $iva;
+								$origen = "SIN";
+								$descripcionPol = $rowGuiaContable->descripcion;
+								print_r("<br />");
+								print_r("importe iva:"); print_r($importe);
+								print_r("<br />");
+								print_r("ORIGEN:"); print_r($origen);
+								break;
+							case 'T':
+								$importe = $total;
+								$origen	= "PRO";
+								print_r("<br />");
+								print_r("importe total:"); print_r($importe);
+								print_r("<br />");
+								print_r("ORIGEN:"); print_r($origen);	
+							break;
+							}
+							//Arma descripcion
+							if($rowGuiaContable->origen ='I'){
+								$desPol = $rowGuiaContable->descripcion;
+							}else{
+								print_r("No existe descripcion");
+							}
+							print_r($desPol);
 				}
 			}
+		try{
+					 	
+			
+		//$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
 		}
+		
 	}
+	
 	public function generacxc(){}
 	public function generacxp($datos){
 		$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
