@@ -89,8 +89,8 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$fondeo['idBancoS'],/**/
-			'idBanco'=>$fondeo['idBancoS'],
+			'idCoP'=>$empresa['idEmpresas'],/**/
+			'idBanco'=>$fondeo['idBancoE'],
 			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
 			'numeroFolio'=>$empresa['numFolio'],
@@ -102,7 +102,8 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'formaLiquidar'=>"LI",
 			'conceptoPago'=>$fondeo["formaPago"],
 			'subTotal'=>$fondeo['total'],
-			'total'=>$fondeo['total']
+			'total'=>$fondeo['total'],
+			'comentario'=>""
 			);
 			$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 			$sumaBanco = $this->sumaBanco($fondeo);
@@ -110,7 +111,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$fondeo['idBancoS'],/**/
+			'idCoP'=>$empresa['idEmpresas'],/**/
 			'idBanco'=>$fondeo['idBancoS'],
 			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],

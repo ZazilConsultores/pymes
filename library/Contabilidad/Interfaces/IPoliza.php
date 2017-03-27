@@ -5,7 +5,7 @@ interface Contabilidad_Interfaces_IPoliza {
 	public function generacxc();
 	public function generacxp($datos);
 	public function generacxc_Fo();
-	public function generacxp_Fo();
+	public function generacxp_Fo($datos);
 	public function generaCompra();
 	public function generaVenta();
 	public function generacxpRemisiones();
