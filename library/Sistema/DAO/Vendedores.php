@@ -40,19 +40,7 @@ public function __construct() {
 		
 		try {
 			$nombre = $datos[0];
-			//$nombre['estatus']= 'A';
-			
-			print_r("<br />");
-			print_r("<br />");
-			$domicilio = $datos[1];
-			print_r($domicilio);
-			print_r("<br />");
-			$telefono = $datos[2];
-			print_r($telefono);
-			print_r("<br />");
-			$email = $datos[3];
-			print_r($email);
-			print_r("<br />");
+			//$nombre['estatus']= 'A'
 			
 			$mnombre = array(
 					'nombre' => $nombre['nombre'],
@@ -62,14 +50,14 @@ public function __construct() {
 					'fechaAlta'=>date("Y-m-d H:i:s", time())
 					
 				);
-			print_r($mnombre);
+			//print_r($mnombre);
 			
 			//Insertamos en domicilio
 			unset($datos[1]["idEstado"]);
 			$dbAdapter->insert("Domicilio", $datos[1]);
 			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
 			print_r("<br />");
-			print_r($idDomicilio);
+			//print_r($idDomicilio);
 			//Insertamos en telefono
 			$dbAdapter->insert("Telefono", $datos[2]);
 			$idTelefono = $dbAdapter->lastInsertId("Telefono", "idTelefono");

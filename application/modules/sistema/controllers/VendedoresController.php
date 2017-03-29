@@ -7,15 +7,12 @@ class Sistema_VendedoresController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
          $this->vendedorDAO = new Sistema_DAO_Vendedores;
     }
 
     public function indexAction()
     {
-        // action body
-        
-		$formulario = new Sistema_Form_AltaVendedor;
+     	$formulario = new Sistema_Form_AltaVendedor;
 		$this->view->vendedores = $this->vendedorDAO->obtenerVendedores();
      
     }
@@ -30,9 +27,6 @@ class Sistema_VendedoresController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
-				//$empresa = new Sistema_Model_Fiscal($datos[0]);
-				//print_r($empresa->toArray());
 				try{
 					$this->vendedorDAO->crearVendedor($datos);
 					$this->view->messageSuccess = "Vendedor dado de alta exitosamente!!";

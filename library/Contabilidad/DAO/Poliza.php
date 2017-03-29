@@ -685,10 +685,6 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 					);
 					//print_r($mPoliza);
 					$dbAdapter->insert("Poliza", $mPoliza);
-				
-			
-					 	
-			
 		
 		}else{
 			print_r("No esta registrado en CuentasXP");
@@ -1000,5 +996,71 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 				
 			}
 		}
+	}
+	
+	public function crear_Texto(){
+		//Variables
+		$mensaje;
+		//Agrupampos por movimiento y empresa
+		$tablaPoliza = $this->tablaPoliza;
+		$select = $tablaPoliza->select()->from($tablaPoliza, array('idSucursal','fecha','numDocto','idModulo'))->group('idSucursal')
+		->group('fecha')->group('numDocto')->group('idModulo')->order('idSucursal')->order('numDocto');
+		$rowsPoliza = $tablaPoliza->fetchAll($select);
+		if(!is_null($rowsPoliza)){
+			//while o foreach
+			foreach($rowsPoliza as $rowPoliza){
+				$select = $tablaPoliza->select()->from($tablaPoliza)->where("idSucursal = ?", $rowPoliza->idSucursal)->where("numDocto = ?", $rowPoliza->numDocto)
+				->where("idModulo=?",$rowPoliza->idModulo)->group('idModulo');
+				$rowsPoliz = $tablaPoliza->fetchRow($select);
+				print_r("$select");
+				//Si no esta vacia, contabilizamos el numero de registro
+				print_r("No esta vacio");
+				$select = $tablaPoliza->select()->from($tablaPoliza,  array('count("idMoculo") as contabi'))->where("idSucursal = ?", $rowsPoliza->idSucursal)->where("numDocto = ?", $rowsPoliza->numDocto)
+				->where("idModulo=?",$rowsPoliza->idModulo)->group('idModulo');
+				$rowPoli = $tablaPoliza->fetchRow($select);
+				print_r("$select");
+			}
+			
+			
+			$contabiliza = $rowsPol->contabi;
+			$cont = 0;
+			print_r("<br />");
+			print_r($contabiliza);
+			//WHILE O FOREACH
+			if($cont = 0 ){
+				$mensaje = "Gastos";
+				print_r("Es un gasto");
+			}else{
+				print_r("No esun gasto");
+				$mensaje = $rowsPol->descripcion;
+			}
+			//Convertir el string en fecha
+			$feca = $rowsPoli->fecha;
+			print_r("<br />");
+			print_r("FECHA:");
+			print_r($feca);
+			
+		}
+		$crea_txt = "poliza.txt";
+			if(file_exists($crea_txt)){
+				$mensaje =  "El Archivo $crea_txt se ha modificado";
+				
+			}else{
+				$mensaje = "El archivo $crea_txt se ha creado";
+			}
+			$consecutivo = "     ";		 	
+			if($archivo = fopen($crea_txt, "a"))
+    		{
+       		 if(fwrite($archivo, "".$consecutivo ."". date("d m Y H:m:s"). " ". $mensaje.  "\n"))
+        	{
+            	echo "Se ha ejecutado correctamente";
+        	}
+       	 	else
+        	{
+            	echo "Ha habido un problema al crear el archivo";
+        	}	
+ 
+        	fclose($archivo);
+    		}
 	}
 }
