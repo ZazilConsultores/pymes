@@ -32,28 +32,158 @@
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$dbAdapter->beginTransaction();
 						
-			$nomina; //Guarda Cliente o proveedor
-			$empresaProveedor; //empresa proveedora cuando el tipo no es bueno (Compras), pero es un proveedor
+			$nomina; //Guarda el tipoProveedor, si la ocupamos =====================la borraremos y asignaremos directamente tipo
+			$empresaProveedor; //empresa proveedora cuando el tipo no es bueno (Compras), pero es un proveedor, si se ocupa
 			//Iniciamos variables
-			$subTotal = 0;
+			$subTotal = 0; // si se ocupa
 			$iva = 0;
-			$total = 0;
-			$idProveedor = 0;
+			$total = 0; //si se ocupa
+			$idProveedor = 0; //Si la utilizamos
+			$idFactura = 0; //si la ocupamos
+			$importe = 0;
 			$idBanco =0;
-			$numMov=0;
+			$numMov=0; //si se ocup
 			$consecutivo = 0;
 			$nivel=1;
 			$descripcionPol;
-			try{
+			$fecha; // si se ocupa
 			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
 			$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
 			$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
-			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where('fechaFactura >= ?',$stringFechaInicio)->where('fechaFactura <=?',$stringFechaFinal)->where('idTipoMovimiento=?',4)
-			->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
-			$rows = $tablaFactura->fetchAll($select);
-			$idProveedores = array();
+			
+			try{
+				//Seleccionamos grupoFactura por fecha, tipoMovto = 4 facturaProveedor, idSucursal y estatus
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura)->where('fechaFactura >= ?',$stringFechaInicio)->where('fechaFactura <=?',$stringFechaFinal)->where('idTipoMovimiento=?',4)
+				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
+				$rowsGrupoFacturaP = $tablaFactura->fetchAll($select);
+				//Verificamos que existe facturasProveedor 
+				if(!is_null($rowsGrupoFacturaP)){
+					foreach($rowsGrupoFacturaP as $rowFacturaP){
+						//Obtenemos el idProveedor y el tipo
+						$idCoP = $rowFacturaP["idCoP"];	
+						$tablaProveedores = $this->tablaProveedores;
+						$select = $tablaProveedores->select()->from($tablaProveedores, array('idProveedores','idTipoProveedor'))->where("idProveedores = ?", $idCoP);
+						$rowProveedor = $tablaProveedores->fetchRow($select);
+						//print_r("$select");
+						//Verificamos que el proveedor exista
+						if(!is_null($rowProveedor)){
+							$tipo = $rowProveedor->idTipoProveedor;
+				
+							//Buscamos si es empresaProveedor, si el proveedor no esta en empresaProveedor no se realiza la poliza
+						$tablaProveedoresEmpresa = $this->tablaProveedorEmpresa;
+						$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa, 'idEmpresas')->where("idProveedores =?", $idCoP);
+						$rowProveedoresEmpresa = $tablaProveedoresEmpresa->fetchRow($select); 
+						//Verificamos que el proveedor, sea un proveedor de la empresa selecciona
+						if(!is_null($rowProveedoresEmpresa)){
+							$empresaProveedor = $rowProveedoresEmpresa->idEmpresas;
+							print_r("El tipo es:");
+							print_r($tipo);
+							//Verificamos que el tipo sea= 5 (bueno) y que sea un proveedor empresa de lo contrario  no se relizara poliza.
+							if($tipo == 5  && $empresaProveedor <> "0"){
+								print_r("<br />");		
+								print_r( $empresaProveedor);
+								
+								//asignamos variables
+								$idFactura = $rowFacturaP["idFactura"];
+								$modulo = 1; //Asignamos 1=>"Compra"
+								$numMov = $rowFacturaP["numeroFactura"];
+								$subTotal = $rowFacturaP["subtotal"];
+								$total = $rowFacturaP["total"];
+								$fecha = $rowFacturaP["fechaFactura"];
+								//Buscamos en FacturaImpuesto el iva
+								$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
+								$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $idFactura);
+								$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
+								$iva = $rowFacturaImp->importe; print_r("<br />"); print_r("iva:"); print_r($iva);
+								print_r("<br />");
+								//Seleccionamos en la guia contable el modulo y el tipo
+								$tablaGuiaContable = $this->tablaGuiaContable;
+								$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?", $tipo);
+								$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
+								print_r("$select");
+								//Comprobamos que esta el moduloy el tipo en guia contable
+								if(!is_null($rowsGuiaContable)){
+									foreach($rowsGuiaContable as $rowGuiaContable){
+										$origen =$rowGuiaContable["origen"]; //Indica el importe corresponidente a cada registro
+										switch($origen){
+											case 'S':
+												$importe = $subTotal;
+												$origen = "SIN"; //No se porque va
+												print_r("<br />");
+												print_r("importe subtotal:"); print_r($importe);
+											break;
+											case 'I':
+												$importe = $iva;
+												$origen = "SIN";
+												print_r("importe iva:"); print_r($importe);
+												print_r("<br />");
+												//print_r("ORIGEN:"); print_r($origen);
+											break;
+											case 'T':
+												$importe = $total;
+												$origen	= "PRO";
+												print_r("<br />");
+												print_r("importe total:"); print_r($importe);
+												print_r("<br />");
+												print_r("ORIGEN:"); print_r($origen);
+									
+									
+											break;
+										}//Cierra el switch origen
+										//Arma descripcion
+										if($rowGuiaContable["origen"] ='I' || $rowGuiaContable["origen"] = 'S'){
+											$desPol = $rowGuiaContable->descripcion;
+											print_r("<br />");
+											print_r($desPol);
+										}else{	
+											//Crear descripcion
+											switch($modulo){
+												case '1,6':
+													$desPol = "Factura " . $numMov;
+													break;
+												case 3:
+													$desPol = "Pago Factura " . $numMov;
+													break;
+												default:
+													$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
+											}//Cierra switch en casso de armar descripcion
+										}//Cierra  if arma descripcion
+										print_r($origen);
+										//Busca ctaProveedor
+										if($origen == "PRO"){
+											$tablaProveedores = $this->tablaProveedores;
+											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
+											$rowProveedor = $tablaProveedores->fetchRow($select);
+											print_r("<br />");
+											print_r("<br />");
+											print_r("<br />");
+											print_r("$select");
+											$subcta = $rowProveedor["cuenta"];
+											print_r("<br />");
+											print_r($subcta);
+											
+										}else{
+											print_r("El origen no es un proveedor");
+										}//Cierra if origen proveedor
+									}//cierra forach
+								}//cierra if guiaContable
+							}
+						}else{
+							echo "El proveedor seleccionado no es un proveedor de la empresa";
+						}//Cierra  verificacion proveedorEmpresa
+						}else{
+							echo "El Numero de proveedor que introdujo no esta registrado en proveedores";
+						}//Cierra verificamos que exista proveedor
+						
+						
+					}//Cierra foreach
+					
+				}else{
+					echo "No se no esta registrado Factura";
+				} //Cierra verificacion de que existan factura	
+			/*$idProveedores = array();
 			print_r("$select");
 			$modelFacturas = array();
 			if(!is_null($rows)){
@@ -165,7 +295,7 @@
 									$ctaBanco = $rowBanco->cuenta;
 									print_r("<br />");
 									print_r($ctaBanco);	*/	
-									break;	
+								/*	break;	
 								default:
 									$subcta = "0000";
 									$posicion = 0;
@@ -245,7 +375,7 @@
 									'sub4'=>4, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
 									'sub5'=>5, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
 									*/
-									'sub1'=>'000',
+								/*	'sub1'=>'000',
 									'sub2'=>'000',
 									'sub3'=>'000',
 									'sub4'=>'000',
@@ -266,7 +396,7 @@
 						}
 					}
 				}
-				
+				*/
 			
 			$dbAdapter->commit();
 				}catch(exception $ex){
@@ -281,7 +411,7 @@
 					print_r("<br />");
 					print_r("<br />");
 					$dbAdapter->rollBack();
-				}	
+				}
 		}
 		
 		
