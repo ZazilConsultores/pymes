@@ -19,8 +19,8 @@ interface Contabilidad_Interfaces_IPoliza {
 	public function armaDescripcion($banco, $guia);
 	public function busca_SubCuenta($persona, $origen);
 	//public function busca_SubCuenta($persona, $origen);
-	public function arma_Cuenta($nivel, $posicion, $subcta, $sub1, $sub2, $sub3, $sub4, $sub5);
-	
+	public function arma_Cuenta($nivel, $posicion, $subCta, $sub1, $sub2, $sub3, $sub4, $sub5);
+	//public function arma_Cuenta($nivel, $posicion);
 	public function crear_Texto();
 	
 }

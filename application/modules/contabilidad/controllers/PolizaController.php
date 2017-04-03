@@ -40,6 +40,7 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//$buscaTipoProv = $this->polizaDAO->Busca_Tipo($Persona, $Empresa);
 					//$this->polizaDAO->busca_SubCuenta($persona, $origen);
 					//$this->polizaDAO->genera_Poliza_F();
+					$this->polizaDAO->crear_Texto();
 				}catch(exception $ex){
 					
 				}

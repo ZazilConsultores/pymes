@@ -78,12 +78,12 @@
 						//Verificamos que el proveedor, sea un proveedor de la empresa selecciona
 						if(!is_null($rowProveedoresEmpresa)){
 							$empresaProveedor = $rowProveedoresEmpresa->idEmpresas;
-							print_r("El tipo es:");
-							print_r($tipo);
+							//print_r("El tipo es:");
+							//print_r($tipo);
 							//Verificamos que el tipo sea= 5 (bueno) y que sea un proveedor empresa de lo contrario  no se relizara poliza.
 							if($tipo == 5  && $empresaProveedor <> "0"){
 								print_r("<br />");		
-								print_r( $empresaProveedor);
+								//print_r( $empresaProveedor);
 								
 								//asignamos variables
 								$idFactura = $rowFacturaP["idFactura"];
@@ -96,14 +96,14 @@
 								$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
 								$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $idFactura);
 								$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
-								$iva = $rowFacturaImp->importe; print_r("<br />"); print_r("iva:"); print_r($iva);
+								$iva = $rowFacturaImp->importe; //print_r("<br />"); print_r("iva:"); print_r($iva);
 								print_r("<br />");
 								//Seleccionamos en la guia contable el modulo y el tipo
 								$tablaGuiaContable = $this->tablaGuiaContable;
 								$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?", $tipo);
 								$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
 								print_r("$select");
-								//Comprobamos que esta el moduloy el tipo en guia contable
+								//Comprobamos que esta el modulo y el tipo en guia contable
 								if(!is_null($rowsGuiaContable)){
 									foreach($rowsGuiaContable as $rowGuiaContable){
 										$origen =$rowGuiaContable["origen"]; //Indica el importe corresponidente a cada registro
@@ -112,12 +112,12 @@
 												$importe = $subTotal;
 												$origen = "SIN"; //No se porque va
 												print_r("<br />");
-												print_r("importe subtotal:"); print_r($importe);
+												print_r("importe subtotal:"); //print_r($importe);
 											break;
 											case 'I':
 												$importe = $iva;
 												$origen = "SIN";
-												print_r("importe iva:"); print_r($importe);
+												print_r("importe iva:"); //print_r($importe);
 												print_r("<br />");
 												//print_r("ORIGEN:"); print_r($origen);
 											break;
@@ -125,9 +125,9 @@
 												$importe = $total;
 												$origen	= "PRO";
 												print_r("<br />");
-												print_r("importe total:"); print_r($importe);
+												print_r("importe total:"); //print_r($importe);
 												print_r("<br />");
-												print_r("ORIGEN:"); print_r($origen);
+												print_r("ORIGEN:"); //print_r($origen);
 									
 									
 											break;
@@ -136,7 +136,7 @@
 										if($rowGuiaContable["origen"] ='I' || $rowGuiaContable["origen"] = 'S'){
 											$desPol = $rowGuiaContable->descripcion;
 											print_r("<br />");
-											print_r($desPol);
+											//print_r($desPol);
 										}else{	
 											//Crear descripcion
 											switch($modulo){
@@ -150,23 +150,88 @@
 													$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
 											}//Cierra switch en casso de armar descripcion
 										}//Cierra  if arma descripcion
-										print_r($origen);
-										//Busca ctaProveedor
+										//print_r($origen);
+										//Busca ctaProveedor y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
 										if($origen == "PRO"){
 											$tablaProveedores = $this->tablaProveedores;
 											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
 											$rowProveedor = $tablaProveedores->fetchRow($select);
-											print_r("<br />");
-											print_r("<br />");
-											print_r("<br />");
-											print_r("$select");
-											$subcta = $rowProveedor["cuenta"];
-											print_r("<br />");
-											print_r($subcta);
-											
+											$subCta = $rowProveedor["cuenta"];
+											$posicion = 1;
 										}else{
-											print_r("El origen no es un proveedor");
+											$subCta = "0000";
+											$posicion = 0;
 										}//Cierra if origen proveedor
+										//Creamos switch para Armar_Cuenta
+										print_r("La posicio  es:");
+										print_r($posicion);
+										/*switch($nivel){
+											case '1':
+												if($posicion == 1){
+													$this->arma_Cuenta = $subCta;
+												}else{
+													$armaCuenta = $this->arma_Cuenta = $sub1;
+													 print_r("<br />");
+													 print_r("Hola");
+													 print_r("<br />");
+													 print_r($this->arma_Cuenta);
+													 print_r("<br />");
+												}
+												break;
+											case 2:
+												if($posicion = 2){
+													$arma_Cuenta = $subCta;
+												}else{
+													$arma_Cuenta = substr($rowGuiaContable["sub2"],4);
+												}
+												break;
+											case 3 :
+												if($posicion = 3){
+													$arma_Cuenta = $subCta;
+												}else{
+													$arma_Cuenta = substr($rowGuiaContable["sub3"],3);
+												}
+												break;
+											case 4 :
+												if($posicion = 4){
+													$arma_Cuenta = $subCta;
+												}else{
+													$arma_Cuenta = substr($rowGuiaContable["sub4"],0);
+												}
+												break;
+											case 5:
+												if($posicion = 5){
+													$arma_Cuenta = $subCta;
+												}else{
+													$arma_Cuenta = substr($rowGuiaContable["sub5"],0);
+												}
+												break;
+											
+											}//Cierra switch en caso de armar descripcion
+											print_r($arma_Cuenta);/**/
+										//Agregamos en tablaPoliza.
+										$mPoliza = array(
+										'idModulo'=>$modulo,
+										'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
+										'idSucursal'=>$datos['idSucursal'],
+										'idCoP'=>$idProveedor,
+										'cta'=>$rowGuiaContable["cta"],
+										//'sub4'=>4, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
+										
+										'sub1'=>$this->arma_Cuenta('1', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
+										'sub2'=>$this->arma_Cuenta('2', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
+										'sub3'=>$this->arma_Cuenta('3', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
+										'sub2'=>$this->arma_Cuenta('4', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
+										'sub2'=>$this->arma_Cuenta('5', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
+										'fecha'=>$fecha,
+										'descripcion'=>$desPol,
+										'cargo'=>$importe,
+										'abono'=>$importe,
+										'numdocto'=>$numMov,
+										'secuencial'=>1
+										);
+										print_r($mPoliza);
+										$dbAdapter->insert("Poliza", $mPoliza);
 									}//cierra forach
 								}//cierra if guiaContable
 							}
@@ -970,8 +1035,8 @@
 			
 		}
 		
-		public function arma_Cuenta($nivel, $posicion, $subcta, $sub1, $sub2, $sub3, $sub4, $sub5){
-			switch($nivel){
+		public function arma_Cuenta($nivel, $posicion, $subCta, $sub1, $sub2, $sub3, $sub4, $sub5){
+			/*switch($nivel){
 				case 1:
 					if ($posicion = 1){
 						$armaCuenta = $subcta;
@@ -1014,8 +1079,53 @@
 						$armaCuenta = $sub5;
 					}
 					break;
-			}
-			
+			}*/
+			switch($nivel){
+											case '1':
+												if($posicion == 1){
+													$this->arma_Cuenta = $subCta;
+												}else{
+													$armaCuenta = $this->arma_Cuenta = $sub1;
+													 print_r("<br />");
+													 print_r("Hola");
+													 print_r("<br />");
+													 print_r($this->arma_Cuenta);
+													 print_r("<br />");
+												}
+												break;
+											case 2:
+												if($posicion == 2){
+													$this->arma_Cuenta = $subCta;
+												}else{
+													 $this->arma_Cuenta = $sub2;
+													 print_r("Hola");
+													 print_r("<br />");
+													 print_r($this->arma_Cuenta);
+													 print_r("<br />");
+												}
+												break;
+											case 3 :
+												if($posicion == 3){
+													$this->arma_Cuenta = $subCta;
+												}else{
+													 $this->arma_Cuenta = $sub3;
+												}
+											case 4 :
+												if($posicion == 4){
+													$this->arma_Cuenta = $subCta;
+												}else{
+													 $this->arma_Cuenta = $sub4;
+												}
+												break;
+											case 5:
+												if($posicion == 5){
+													$this->arma_Cuenta = $subCta;
+												}else{
+													 $this->arma_Cuenta = $sub5;
+												}
+												break;
+											
+											}//Cierra switch en caso de armar descripcion*/			
 		}
 		
 		public function genera_Poliza_F($modulo, $tipo, $iva){
@@ -1187,7 +1297,7 @@
 								if($archivo = fopen($crea_txt, "w"))
 	    						{
 	    						//txtfile.Writeline ("P" & Coma & Coma & fecpol & Coma & Coma & Coma & Coma & tipo & Espacio & "1" & Coma & "1" & Coma & "0" & Espacio & Coma & Mensaje & Coma & Coma & Coma & Coma & "11 0 0 ")
-	       		 				if(fwrite($archivo,"P".$coma.$coma .$fechaS.$coma.$coma.$coma.$coma .$tipo .$espacio ."1".$coma ."1".$coma ."0" .$espacio .$coma .$mensaje .$coma .$coma .$coma .$coma ."11 0 0". PHP_EOL))
+	       		 				if(fwrite($archivo,"P".$coma.$coma .$fechaS.$coma.$coma.$coma.$coma.$espacio ."1".$coma ."1".$coma ."0" .$espacio .$coma . str_pad($mensaje,97) .$coma .$coma .$coma .$coma ."11 0 0". PHP_EOL))
 	   	 						
 								$cont = $cont + 1;
 								$numoper = $rowPoliz->numDocto;
