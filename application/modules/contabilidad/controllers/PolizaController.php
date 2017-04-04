@@ -31,12 +31,16 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//$Empresa;
 					//$this->polizaDAO->generaGruposFactura($datos);
 					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
-					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					//$this->polizaDAO->generaGruposFacturaCliente($datos);
 					//$this->polizaDAO->busca_Tipo('31', 'P');
-					//print_r($this->polizaDAO->generaGruposFacturaProveedor($datos));
+					//es la buebaprint_r($this->polizaDAO->generaGruposFacturaProveedor($datos));
+					//La siguiente buena $this->polizaDAO->generaGruposFacturaCliente($datos);
+					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
+					$this->polizaDAO->generaGruposFacturaProveedor($datos);
 					//$buscaTipoProv = $this->polizaDAO->Busca_Tipo($Persona, $Empresa);
 					//$this->polizaDAO->busca_SubCuenta($persona, $origen);
 					//$this->polizaDAO->genera_Poliza_F();
+					$this->polizaDAO->crear_Texto();
 				}catch(exception $ex){
 					
 				}

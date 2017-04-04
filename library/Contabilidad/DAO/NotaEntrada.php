@@ -30,7 +30,9 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
 		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa')
 		->order('razonSocial ASC');
-		return $tablaEmpresa->fetchAll($select);	
+		//print_r("$select");
+		return $tablaEmpresa->fetchAll($select);
+			
 	}
 	
 	

@@ -51,9 +51,9 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		
 		$fecha = date('Y-m-d h:i:s', time());
 		
-		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
 		
-		$bd->beginTransaction();
 		try{
 			//	Obtenemos los datos fiscales
 			$fiscal = $datos[0];
@@ -78,7 +78,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			print_r("<br />");
 			if($tipo == "CL"){
 				if($fiscal["rfc"] != "XAXX010101000") {
-					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$select = $dbAdapter->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 					$rowFiscales = $select->query()->fetchAll();
 					//print_r(count($rowFiscales));
 					if(count($rowFiscales) > 1) {
@@ -99,47 +99,47 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			}
 			
 			//	No genero error por lo que procedemos a insertar en la tabla
-			$bd->insert("Fiscales", $fiscal);
+			$dbAdapter->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
-			$idFiscales = $bd->lastInsertId("Fiscales","idFiscales");
+			$idFiscales = $dbAdapter->lastInsertId("Fiscales","idFiscales");
 			// Creamos registro en la tabla Empresa
-			$bd->insert("Empresa", array("idFiscales"=>$idFiscales));
-			// Obtenemos el Id de T.Empresa para insertar en Empresas, Clientes o Proveedores 
-			$idEmpresa = $bd->lastInsertId("Empresa", "idEmpresa");
+			$dbAdapter->insert("Empresa", array("idFiscales"=>$idFiscales));
+			// Obtenemos el Id de T.Empresa paraar en Empresas, Clientes o Proveedores 
+			$idEmpresa = $dbAdapter->lastInsertId("Empresa", "idEmpresa");
 			//Insertamos en empresa, cliente o proveedor
 			switch ($tipo) {
 				case 'EM':
-					$bd->insert("Empresas", array("idEmpresa"=>$idEmpresa));
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
-					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
+					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa));
+					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
 					break;	
 				case 'CL':
-					$bd->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
+					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
 					break;
 				case 'PR':
-					$bd->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
 					break;
 			}
 			//Insertamos en domicilio
 			unset($datos[1]["idEstado"]);
-			$bd->insert("Domicilio", $datos[1]);
+			$dbAdapter->insert("Domicilio", $datos[1]);
 			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
-			$bd->insert("FiscalesDomicilios", array("idFiscales"=>$idFiscales,"idDomicilio"=>$idDomicilio,"fecha" => $fecha,"esSucursal"=>"N"));
+			$dbAdapter->insert("FiscalesDomicilios", array("idFiscales"=>$idFiscales,"idDomicilio"=>$idDomicilio,"fecha" => $fecha,"esSucursal"=>"N"));
 			
 			//Insertamos en telefono
-			$bd->insert("Telefono", $datos[2]);
-			$idTelefono = $bd->lastInsertId("Telefono", "idTelefono");
-			$bd->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono));
+			$dbAdapter->insert("Telefono", $datos[2]);
+			$idTelefono = $dbAdapter->lastInsertId("Telefono", "idTelefono");
+			$dbAdapter->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono));
 			
 			//Insertamos en email
-			$bd->insert("Email", $datos[3]);
-			$idEmail = $bd->lastInsertId("Email","idEmail");
-			$bd->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
+			$dbAdapter->insert("Email", $datos[3]);
+			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
+			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
 			
-			$bd->commit();
+			$dbAdapter->commit();
 			
 		}catch(Exception $ex){
-			$bd->rollBack();
+			$dbAdapter->rollBack();
 			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
 			
@@ -333,11 +333,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 */
 	public function agregarSucursal($idFiscales, array $datos, $tipoSucursal)
 	{
-		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$dbAdapter = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$fecha = date('Y-m-d h:i:s', time());	
 		
 		try{
-			$bd->beginTransaction();
+			$dbAdapter->beginTransaction();
 			$datosSucursal = $datos[0];
 			$datosDomicilio = $datos[1];
 			$datosTelefonos = $datos[2];
@@ -345,16 +345,16 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			
 			// ===========================================  Insertar Domicilio
 			unset($datosDomicilio["idEstado"]); // Este campo no esta en la tabla domicilio
-			$bd->insert("Domicilio",$datosDomicilio);
-			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			$dbAdapter->insert("Domicilio",$datosDomicilio);
+			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
 			
 			// ===========================================  Insertar Telefono
-			$bd->insert("Telefono",$datosTelefonos);
-			$idTelefono = $bd->lastInsertId("Telefono","idTelefono");
+			$dbAdapter->insert("Telefono",$datosTelefonos);
+			$idTelefono = $dbAdapter->lastInsertId("Telefono","idTelefono");
 			
 			// ===========================================  Insertar Email
-			$bd->insert("Email",$datosEmails);
-			$idEmail = $bd->lastInsertId("Email","idEmail");
+			$dbAdapter->insert("Email",$datosEmails);
+			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
 			
 			// ===========================================  Insertar Sucursal
 			$datosSucursal["idFiscales"] = $idFiscales;
@@ -362,11 +362,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$datosSucursal["idsTelefonos"] = $idTelefono.",";
 			$datosSucursal["idsEmails"] = $idEmail.",";
 			
-			$bd->insert("Sucursal",$datosSucursal);
+			$dbAdapter->insert("Sucursal",$datosSucursal);
 			
-			$bd->commit();
+			$dbAdapter->commit();
 		}catch(Exception $ex){
-			$bd->rollBack();
+			$dbAdapter->rollBack();
 			throw new Util_Exception_BussinessException($ex->getMessage(), 1);
 		}
 	}
