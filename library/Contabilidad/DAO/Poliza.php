@@ -47,6 +47,8 @@
 			$nivel=1;
 			$descripcionPol;
 			$fecha; // si se ocupa
+			$tipoES;
+			$abono;
 			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
 			$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
@@ -132,6 +134,24 @@
 									
 											break;
 										}//Cierra el switch origen
+										//Asigna tipoES
+										if($rowGuiaContable["origen"] =='I'){
+											$tipoES = "I";
+											print_r("<br />");
+											print_r($tipoES);
+										}else{
+											$tipoES = "D";
+											print_r("<br />");
+											print_r($tipoES);
+										}//Cierra tipoES
+										//asigna abono o cargo
+										if($rowGuiaContable["cargo"]=="X"){
+											$cargo = $importe;
+										}
+										
+										if($rowGuiaContable["abono"]=="X"){
+											$abono = $importe;
+										}						
 										//Arma descripcion
 										if($rowGuiaContable["origen"] ='I' || $rowGuiaContable["origen"] = 'S'){
 											$desPol = $rowGuiaContable->descripcion;
@@ -165,50 +185,75 @@
 										//Creamos switch para Armar_Cuenta
 										print_r("La posicio  es:");
 										print_r($posicion);
-										/*switch($nivel){
-											case '1':
-												if($posicion == 1){
-													$this->arma_Cuenta = $subCta;
-												}else{
-													$armaCuenta = $this->arma_Cuenta = $sub1;
-													 print_r("<br />");
-													 print_r("Hola");
-													 print_r("<br />");
-													 print_r($this->arma_Cuenta);
-													 print_r("<br />");
-												}
-												break;
-											case 2:
-												if($posicion = 2){
-													$arma_Cuenta = $subCta;
-												}else{
-													$arma_Cuenta = substr($rowGuiaContable["sub2"],4);
-												}
-												break;
-											case 3 :
-												if($posicion = 3){
-													$arma_Cuenta = $subCta;
-												}else{
-													$arma_Cuenta = substr($rowGuiaContable["sub3"],3);
-												}
-												break;
-											case 4 :
-												if($posicion = 4){
-													$arma_Cuenta = $subCta;
-												}else{
-													$arma_Cuenta = substr($rowGuiaContable["sub4"],0);
-												}
-												break;
-											case 5:
-												if($posicion = 5){
-													$arma_Cuenta = $subCta;
-												}else{
-													$arma_Cuenta = substr($rowGuiaContable["sub5"],0);
-												}
-												break;
+										//Probamos el nivel
+										//$nivel = 1;
+										/*if ($nivel=1){
+											if($posicion =1){
+												$armaCuenta = $subCta;
+											}else{
+												$armaCuenta = $rowGuiaContable["sub1"];
+												print_r($armaCuenta);	
+											}
+										}*/
+										/*$tipoEmpresa = Zend_Registry::get("tipoEmpresa"); */
+										$mascara= Zend_Registry::get("mascara");
+										print_r($mascara);
+										if(!is_null($mascara)){
+											$nivel1 = 1;
+											$nivel2 = 2;
+											$nivel3 = 3;
+											$nivel4 = 4;
+											$nivel5 = 5;
 											
-											}//Cierra switch en caso de armar descripcion
-											print_r($arma_Cuenta);/**/
+											
+										}
+										if($nivel1 == 1){
+											if($posicion == 1){
+												$armaSub1 = $subCta;
+												print_r($armaSub1);
+											}else{
+												$armaSub1 = $rowGuiaContable["sub1"];
+												print_r($armaSub1);
+											}						
+										}
+										if($nivel2 == 2){
+											if($posicion == 2){
+												$armaSub2 = $subCta;
+												print_r($armaSub2);
+											}else{
+												$armaSub2 = $rowGuiaContable["sub2"];
+												print_r($armaSub2);
+											}						
+										}
+										if($nivel3 == 3){
+											if($posicion == 3){
+												$armaSub3 = $subCta;
+												print_r($armaSub3);
+											}else{
+												$armaSub3 = $rowGuiaContable["sub3"];
+												print_r($armaSub3);
+											}						
+										}
+										if($nivel4 == 4){
+											if($posicion == 4){
+												$armaSub4 = $subCta;
+												print_r($armaSub4);
+											}else{
+												$armaSub4 = $rowGuiaContable["sub4"];
+												print_r($armaSub4);
+											}						
+										}
+										if($nivel5 == 5){
+											if($posicion == 5){
+												$armaSub5 = $subCta;
+												print_r($armaSub5);
+											}else{
+												$armaSub5 = $rowGuiaContable["sub5"];
+												print_r($armaSub5);
+											}						
+										}
+										
+										
 										//Agregamos en tablaPoliza.
 										$mPoliza = array(
 										'idModulo'=>$modulo,
@@ -217,16 +262,18 @@
 										'idCoP'=>$idProveedor,
 										'cta'=>$rowGuiaContable["cta"],
 										//'sub4'=>4, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-										
-										'sub1'=>$this->arma_Cuenta('1', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
-										'sub2'=>$this->arma_Cuenta('2', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
-										'sub3'=>$this->arma_Cuenta('3', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
-										'sub2'=>$this->arma_Cuenta('4', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
-										'sub2'=>$this->arma_Cuenta('5', $posicion, $subCta, $rowGuiaContable["sub1"], $rowGuiaContable["sub2"], $rowGuiaContable["sub3"],$rowGuiaContable["sub4"], $rowGuiaContable["sub5"]),
-										'fecha'=>$fecha,
+										//($nivel, $posicion, $subCta, $sub1, $sub2, $sub3, $sub4, $sub5)
+										'sub1'=>$armaSub1,
+										'sub2'=>$armaSub2,
+										'sub3'=>$armaSub3,
+										'sub4'=>$armaSub4,
+										'sub5'=>$armaSub5,
+										'tipoES'=>$tipoES,
+										'fecha'=>$fecha,/**/
 										'descripcion'=>$desPol,
-										'cargo'=>$importe,
-										'abono'=>$importe,
+										'tipoES'=>$tipoES,
+										'cargo'=>$cargo,
+										'abono'=>0,
 										'numdocto'=>$numMov,
 										'secuencial'=>1
 										);
@@ -1080,24 +1127,28 @@
 					}
 					break;
 			}*/
-			switch($nivel){
+			$modulo =1; $tipo=5;
+			$tablaGuiaContable = $this->tablaGuiaContable;
+			$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
+			$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
+			foreach($rowsGuiaContable as $rowGuiaContable){
+				$origen = $rowGuiaContable->origen;
+				switch($nivel){
 											case '1':
 												if($posicion == 1){
 													$this->arma_Cuenta = $subCta;
 												}else{
-													$armaCuenta = $this->arma_Cuenta = $sub1;
-													 print_r("<br />");
-													 print_r("Hola");
-													 print_r("<br />");
-													 print_r($this->arma_Cuenta);
-													 print_r("<br />");
+												$this->arma_Cuenta = $rowGuiaContable["sub1"];
+												print_r("Arma Cuenta");
+												print_r("<br />");
+												print_r($this->arma_Cuenta);
 												}
 												break;
 											case 2:
 												if($posicion == 2){
 													$this->arma_Cuenta = $subCta;
 												}else{
-													 $this->arma_Cuenta = $sub2;
+													 $this->arma_Cuenta = $rowGuiaContable["sub2"];;
 													 print_r("Hola");
 													 print_r("<br />");
 													 print_r($this->arma_Cuenta);
@@ -1125,7 +1176,8 @@
 												}
 												break;
 											
-											}//Cierra switch en caso de armar descripcion*/			
+											}//Cierra switch en caso de armar descripcion*/	
+											}		
 		}
 		
 		public function genera_Poliza_F($modulo, $tipo, $iva){
@@ -1239,120 +1291,5 @@
 		}
 		
 		public function crear_Texto(){
-			//Variables
-			$mensaje;
-			$coma = " ";
-			$espacio = "         ";
-			$tipoo="";
-			$tipo = $tipoo * 1;
-			print_r("<br />");
-			print_r($tipo);
-			//Agrupampos por movimiento y empresa
-			$tablaPoliza = $this->tablaPoliza;
-			$select = $tablaPoliza->select()->from($tablaPoliza, array('idSucursal','fecha','numDocto','idModulo'))->group('idSucursal')
-			->group('fecha')->group('numDocto')->group('idModulo')->order('idSucursal')->order('numDocto');
-			$rowsPoliza = $tablaPoliza->fetchAll($select);
-			if(!is_null($rowsPoliza)){
-				//while o foreach
-				foreach($rowsPoliza as $rowPoliza){
-					$select = $tablaPoliza->select()->from($tablaPoliza)->where("idSucursal = ?", $rowPoliza->idSucursal)->where("numDocto = ?", $rowPoliza->numDocto)
-					->where("idModulo=?",$rowPoliza->idModulo)->order('idSucursal')->order('fecha')->order('numDocto')->order('idModulo');
-					$rowsPoliz = $tablaPoliza->fetchAll($select);
-					print_r("Consulta tabla Poliza");
-					print_r("$select");
-					//Si no esta vacia, contabilizamos el numero de registro
-					if(!is_null($rowsPoliz)){
-						print_r("<br />");
-						$select = $tablaPoliza->select()->from($tablaPoliza,  array('count("idMoculo") as contabi'))->where("idSucursal = ?", $rowPoliza->idSucursal)->where("numDocto = ?", $rowPoliza->numDocto)
-						->where("idModulo=?",$rowPoliza->idModulo)->group('idModulo');
-						$rowPoli = $tablaPoliza->fetchRow($select);
-						print_r("<br />");
-						$contabiliza = $rowPoli->contabi;
-						$cont = 0;
-						print_r($contabiliza);
-						print_r("$select");
-						foreach($rowsPoliz as $rowPoliz){
-							//Falta validar el modulo
-							if($cont=0){
-								$mensaje= "GASTOS";
-							}else{
-								$mensaje = $rowPoliz->descripcion;
-							}
-							//Genera encabezado.
-							if($cont == 0 && $contabiliza=3 ){
-								print_r("<br />");
-								$fecha = $rowPoliz->fecha;
-								$arrayFecha = explode("-", $fecha,3);
-								$fechaS= $arrayFecha[0].$arrayFecha[1].substr($arrayFecha[2], 0, -8);
-								
-								print_r($fechaS	);
-								
-								//Enviamos datos al archivo .txt
-								$crea_txt = "poliza.txt";
-								/*if(file_exists($crea_txt)){
-									$mensaje =  "El Archivo $crea_txt se ha modificado";
-								}else{
-									$mensaje = "El archivo $crea_txt se ha creado";
-								}*/
-								if($archivo = fopen($crea_txt, "w"))
-	    						{
-	    						//txtfile.Writeline ("P" & Coma & Coma & fecpol & Coma & Coma & Coma & Coma & tipo & Espacio & "1" & Coma & "1" & Coma & "0" & Espacio & Coma & Mensaje & Coma & Coma & Coma & Coma & "11 0 0 ")
-	       		 				if(fwrite($archivo,"P".$coma.$coma .$fechaS.$coma.$coma.$coma.$coma.$espacio ."1".$coma ."1".$coma ."0" .$espacio .$coma . str_pad($mensaje,97) .$coma .$coma .$coma .$coma ."11 0 0". PHP_EOL))
-	   	 						
-								$cont = $cont + 1;
-								$numoper = $rowPoliz->numDocto;
-								$cta = $rowPoliz->cta.$rowPoliz->sub1;
-								//Cargo y abono
-								if(is_null($rowPoliz->cargo)){
-									$carg = 0;
-								}else{
-									$carg =$rowPoliz->cargo;
-								}
-								if(is_null($rowPoliz->abono)){
-									$abon = 0;
-								}else{
-									$abon = $rowPoliz->abono;
-								}
-								if($carg <> 0){
-									$importe =$carg;
-									$debehaber =0;
-								}else{
-									$importe= $abon;
-									$debahaber = "1";
-								}
-								$cta = $rowPoliz->cta.$rowPoliz->sub1;
-								//txtfile.Writeline ("M1" & Coma & D1 & D2 & Coma & Coma & Coma & Espacio & Espacio & Coma & Coma & Coma & Coma & numoper & Espacio & Coma & Coma & Coma & Coma & Coma & Coma & debehaber & Coma & Importe & Espacio & Coma & Coma & "0" & Espacio & Coma & "0.0" & Espacio & Espacio & Mensaje & Espacio)
-								fwrite($archivo,"M1".$coma.$cta.$coma.$coma.$coma .$espacio .$espacio .$coma .$coma .$coma .$coma .$numoper.$espacio .$coma.$coma.$coma.$coma.$coma.$coma .$debehaber .$coma .$importe .$espacio .$coma .$coma .'0' .$espacio .$coma .'0.0' .$espacio.$espacio.$mensaje .$espacio);
-								
-	        					fclose($archivo);
-	    						}
-							}
-						}
-					}
-					print_r("No esta vacio");
-					
-				}		
-			}
-			$crea_txt = "poliza1.txt";
-				if(file_exists($crea_txt)){
-					$mensaje =  "El Archivo $crea_txt se ha modificado";
-					
-				}else{
-					$mensaje = "El archivo $crea_txt se ha creado";
-				}
-				$consecutivo = "     ";		 	
-				if($archivo = fopen($crea_txt, "a"))
-	    		{
-	       		 if(fwrite($archivo, "".$consecutivo ."". date("d m Y H:m:s"). " ". $mensaje.  "\n"))
-	        	{
-	            	echo "Se ha ejecutado correctamente";
-	        	}
-	       	 	else
-	        	{
-	            	echo "Ha habido un problema al crear el archivo";
-	        	}	
-	 
-	        	fclose($archivo);
-	    		}
 		}
 	}

@@ -43,5 +43,8 @@ class MainConfig {
 		
 		$subCuenta = array('banco' => '2', 'cliente' => '2', 'proveedor' => '2', 'producto' => '2' );
 		Zend_Registry::set('subCuenta', $subCuenta);
+		
+		$mascara = array('cta' => '4', 'sub1' => '3', 'sub2' => '3', 'sub3' => '0', 'sub4' => '0', 'sub5' => '0' );
+		Zend_Registry::set('mascara', $mascara);
 	}
 }
