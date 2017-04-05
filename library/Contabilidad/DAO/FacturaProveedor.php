@@ -40,6 +40,8 @@
 			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
+			
+			$this->tablaFacturaImpuesto = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		}
 		
 			
@@ -95,7 +97,7 @@
 						'numeroFactura'=>$encabezado['numeroFactura'],
 						'estatus'=>"A",
 						'conceptoPago'=>$conceptoPago,
-						'descuento'=>100,
+						'descuento'=>$importe[0]['descuento'],
 						'formaPago'=>$formaPago['formaLiquidar'],
 						'fechaFactura'=>$stringFecha,
 						'subTotal'=>$importe[0]['subTotal'],
@@ -117,6 +119,7 @@
 					
 						//Guarda Movimiento en Cuentasxp
 					print_r($idFactura);
+					if(($formaPago['pagada'])==="1"){
 					$mCuentasxp = array(
 						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 						'idSucursal'=>$encabezado['idSucursal'],
@@ -136,9 +139,10 @@
 						'total'=>$importe[0]['total']
 						
 					);
+					
 					//print_r($mCuentasxp);
 					$dbAdapter->insert("Cuentasxp", $mCuentasxp);
-					
+					}
 					//Guarda impuestoFactura
 				
 					print_r($idFactura);
@@ -149,13 +153,33 @@
 				$rowIdFactura =$tablaFactura->fetchRow($select);
 				$idFactura = $rowIdFactura['idFactura'];
 				print_r("$select");
+				if(!is_null($rowIdFactura)){
 					$mfacturaImpuesto = array(
 						'idFactura'=>$idFactura ,
 						'idImpuesto'=>15,
 						'importe'=>$importe[0]['iva'],	
 					);
+				
 					//print_r($mCuentasxp);
 					$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
+						
+					}
+		
+				}
+
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+				$rowIdFactura =$tablaFactura->fetchRow($select);
+				$idFactura = $rowIdFactura['idFactura'];
+				print_r("$select");
+				
+				if($importe[0]['ieps']<>0){
+						$mfacturaImpuesto = array(
+						'idFactura'=>$idFactura ,
+						'idImpuesto'=>24,
+						'importe'=>$importe[0]['ieps'],
+						);
+						$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
 						
 					}
 				
@@ -302,9 +326,38 @@
 					);
 				 	$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
 					
-					
 				}
-				
+				//Inventario
+				$tablaInventario = $this->tablaInventario;
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+		$rowInventario = $tablaInventario->fetchRow($select);
+		
+		if(!is_null($rowInventario)){
+			$cantidad = $rowInventario->existencia + $cantidad;
+			$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
+			print ("<br />");
+			print ($cantidad);
+			$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
+			$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
+			//print_r("<br />");
+		}else{		
+			$mInventario = array(
+					'idProducto'=>$producto['descripcion'],
+					'idDivisa'=>1,
+					'idSucursal'=>$encabezado['idSucursal'],
+					'existencia'=>$cantidad,
+					'apartado'=>'0',
+					'existenciaReal'=>$cantidad,
+					'maximo'=>'0',
+					'minimo'=>'0',
+					'fecha'=>$stringFecha,
+					'costoUnitario'=>$precioUnitario,
+					'porcentajeGanancia'=>'0',
+					'cantidadGanancia'=>'0',
+					'costoCliente'=>(($rowInventario->porcentajeGanancia / 100)) 
+				);
+			$dbAdapter->insert("Inventario",$mInventario);
+		}
 				
 				$dbAdapter->commit();
 			}catch(exception $ex){

@@ -273,9 +273,9 @@ $(document).ready(function () {
     });
     
      $("table#productos").on("keypress",'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
-     	console.log("Esta dentro de cantidad");
+     	//console.log("Esta dentro de cantidad");
         //soloNumero();
-        soloNumero(evt);
+        //soloNumero(evt);
     });
  
 });
@@ -324,6 +324,7 @@ function calculateGrandTotal() {
     //Total
     total = grandTotal + totalIva;
     $("input#total").val(total.toFixed(2));
+    $("input#1-pagos").val(total.toFixed(2));
     /*Descuento*/
    
    descuento = $("#descuento").val();

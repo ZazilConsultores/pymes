@@ -145,11 +145,11 @@
 											print_r($tipoES);
 										}//Cierra tipoES
 										//asigna abono o cargo
-										if($rowGuiaContable["cargo"]=="X"){
+										if($rowGuiaContable["cargo"]== "X"){
 											$cargo = $importe;
 										}
 										
-										if($rowGuiaContable["abono"]=="X"){
+										if($rowGuiaContable["abono"]== "X"){
 											$abono = $importe;
 										}						
 										//Arma descripcion
