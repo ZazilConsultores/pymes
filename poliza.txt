@@ -1,2 +1,1 @@
-P               1 1 0          COMPRAS                                                                                              11 0 0
-M1 504                         148               0 50.0000           0          0.0                  COMPRAS         
+P  20170403              1 1 0          IVA PENDIENTE DE ACREDITAR                                                                           11 0 0

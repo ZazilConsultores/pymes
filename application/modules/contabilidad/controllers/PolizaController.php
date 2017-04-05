@@ -37,10 +37,11 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//La siguiente buena $this->polizaDAO->generaGruposFacturaCliente($datos);
 					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
 					$this->polizaDAO->generaGruposFacturaProveedor($datos);
+					$this->polizaDAO->crear_Texto();
 					//$buscaTipoProv = $this->polizaDAO->Busca_Tipo($Persona, $Empresa);
 					//$this->polizaDAO->busca_SubCuenta($persona, $origen);
 					//$this->polizaDAO->genera_Poliza_F();
-					$this->polizaDAO->crear_Texto();
+					
 				}catch(exception $ex){
 					
 				}

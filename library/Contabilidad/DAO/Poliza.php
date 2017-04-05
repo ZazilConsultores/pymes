@@ -115,12 +115,14 @@
 												$origen = "SIN"; //No se porque va
 												print_r("<br />");
 												print_r("importe subtotal:"); //print_r($importe);
+												print_r($importe);
 											break;
 											case 'I':
 												$importe = $iva;
 												$origen = "SIN";
 												print_r("importe iva:"); //print_r($importe);
 												print_r("<br />");
+												print_r($importe);
 												//print_r("ORIGEN:"); print_r($origen);
 											break;
 											case 'T':
@@ -129,9 +131,7 @@
 												print_r("<br />");
 												print_r("importe total:"); //print_r($importe);
 												print_r("<br />");
-												print_r("ORIGEN:"); //print_r($origen);
-									
-									
+												print_r($importe); //print_r($origen);
 											break;
 										}//Cierra el switch origen
 										//Asigna tipoES
@@ -147,10 +147,18 @@
 										//asigna abono o cargo
 										if($rowGuiaContable["cargo"]== "X"){
 											$cargo = $importe;
+											print_r("El cargo, no esta vacio");
+											print_r($cargo);
+										}else{
+											$cargo = 0;
 										}
 										
 										if($rowGuiaContable["abono"]== "X"){
 											$abono = $importe;
+											print_r("El abono, no esta vacio");
+											print_r($abono);
+										}else{
+											$abono = 0;
 										}						
 										//Arma descripcion
 										if($rowGuiaContable["origen"] ='I' || $rowGuiaContable["origen"] = 'S'){
@@ -204,9 +212,8 @@
 											$nivel3 = 3;
 											$nivel4 = 4;
 											$nivel5 = 5;
-											
-											
 										}
+										
 										if($nivel1 == 1){
 											if($posicion == 1){
 												$armaSub1 = $subCta;
@@ -252,14 +259,30 @@
 												print_r($armaSub5);
 											}						
 										}
-										
-										
+										//Asignamos secuencial
+										$secuencial = 0;	
+										$tablaPoliza = $this->tablaPoliza;
+										$select = $tablaPoliza->select()->from($tablaPoliza)->where("idModulo=?",$modulo)
+										->where("idTipoProveedor=?",$tipo)
+										->where("idSucursal=?",$datos['idSucursal'])
+										->where("idCoP=?",$idCoP)
+										->where("numDocto=?", $numMov)
+										->order("secuencial DESC");
+										$rowPoliza = $tablaPoliza->fetchRow($select); 
+										print_r("$select");
+										if(!is_null($rowPoliza)){
+											$secuencial= $rowPoliza->secuencial +1;
+										//print_r($secuencial);
+										}else{
+											$secuencial = 1;	
+										//print_r($secuencial);
+										}
 										//Agregamos en tablaPoliza.
 										$mPoliza = array(
 										'idModulo'=>$modulo,
 										'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
 										'idSucursal'=>$datos['idSucursal'],
-										'idCoP'=>$idProveedor,
+										'idCoP'=>$idCoP,
 										'cta'=>$rowGuiaContable["cta"],
 										//'sub4'=>4, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
 										//($nivel, $posicion, $subCta, $sub1, $sub2, $sub3, $sub4, $sub5)
@@ -273,9 +296,9 @@
 										'descripcion'=>$desPol,
 										'tipoES'=>$tipoES,
 										'cargo'=>$cargo,
-										'abono'=>0,
+										'abono'=>$abono,
 										'numdocto'=>$numMov,
-										'secuencial'=>1
+										'secuencial'=>$secuencial
 										);
 										print_r($mPoliza);
 										$dbAdapter->insert("Poliza", $mPoliza);
@@ -295,221 +318,6 @@
 				}else{
 					echo "No se no esta registrado Factura";
 				} //Cierra verificacion de que existan factura	
-			/*$idProveedores = array();
-			print_r("$select");
-			$modelFacturas = array();
-			if(!is_null($rows)){
-				foreach($rows as $row){
-					$idProveedores[] = $row["idCoP"];
-					foreach ($idProveedores as $idProveedor) {
-						$nomina = $this->busca_Tipo($idProveedor, "P");
-						$empresaProveedor = $this->busca_Proveedor($idProveedor, "P");
-						print_r("<br />"); print_r("empresaProveedor:"); print_r($empresaProveedor);
-						//Busca tipo 
-						if($nomina = 5 && $empresaProveedor <> "0"){
-							$modulo = 1; //Asignamos 1=>"Compra"
-							$tipo = 5; //Ya no deberia de estar
-							$idFactura = $row->idFactura;
-							$numMov = $row->numeroFactura; print_r("<br />"); print_r("numFac:"); print_r($numMov);
-							$subTotal = $row->subtotal; print_r("<br />"); print_r("subTotal:"); print_r($subTotal);
-							$total = $row->total; print_r("<br />"); print_r("total:"); print_r($total);
-							$fechaFactura = $row->fechaFactura; print_r("<br />"); print_r("fecha:"); print_r($fechaFactura);
-							//Buscamos en FacturaImpuesto el iva
-							$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
-							$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $idFactura);
-							$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
-							
-							$iva = $rowFacturaImp->importe; print_r("<br />"); print_r("iva:"); print_r($iva);
-							//deberia ser Funcion Genera poliza, seleccionamos en la guia contable el modulo y el tipo
-							$tablaGuiaContable = $this->tablaGuiaContable;
-							$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
-							$rowGuiaContable = $tablaGuiaContable->fetchAll($select);
-							print_r("<br />");
-							print_r("$select");
-							if(!is_null($rowGuiaContable)){
-								foreach($rowGuiaContable as $row){
-								$origen =$row->origen;
-								switch($origen){
-								case 'S':
-									$importe = $subTotal;
-									$origen = "SIN"; //No se porque va
-									//print_r("<br />");
-									//print_r("importe subtotal:"); print_r($importe);
-									break;
-								case 'I':
-									$importe = $iva;
-									$origen = "SIN";
-									$descripcionPol = $row->descripcion;
-									//print_r("<br />");
-									//print_r("importe iva:"); print_r($importe);
-									//print_r("<br />");
-									//print_r("ORIGEN:"); print_r($origen);
-									break;
-								case 'T':
-									$importe = $total;
-									$origen	= "PRO";
-									print_r("<br />");
-									//print_r("importe total:"); print_r($importe);
-									//print_r("<br />");
-									//print_r("ORIGEN:"); print_r($origen);
-									
-									//print_r("el origen es diferente");
-									//print_r("<br />");
-									//$subcta = "0000";
-	                				//$posicion = 0;
-									//print_r($subcta);
-									
-								break;
-								}
-								print_r("El importe es:");
-								print_r($importe);
-								print_r("<br />");
-								print_r($origen);
-								//Arma descripcion
-								if( $origen =='I' && $origen == 'S'){
-									$descripcionPol = $row->descripcion;
-									
-								}else{
-									//crea descripcion
-								}
-								//switch
-								switch($origen){
-								case 'CLT':
-									$posicion = 1;
-									$subcta = 0;
-									break;
-								case 'PRO':
-									$posicion = 1;
-									//Seleccionamos el Proveedor
-									$tablaProveedores = $this->tablaProveedores;
-									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idProveedor);
-									$rowProveedor = $tablaProveedores->fetchRow($select);
-									print_r("<br />");
-									print_r("<br />");
-									print_r("<br />");
-									print_r("$select");
-									$subcta = $rowProveedor->cuenta;
-									print_r("<br />");
-									//print_r($ctaProv);
-									break;
-								case 'BAN':
-									$posicion = 1;
-									$ctaBanco = 0;
-									$subcta = 0;
-									//Seleccionamos el Banco
-									/*$tablaBancos = $this->tablaBancos;
-									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$idBanco);
-									$rowBanco = $tablaBancos->fetchRow($select);
-									print_r("<br />");
-									print_r("<br />");
-									print_r("<br />");
-									print_r("$select");
-									$ctaBanco = $rowBanco->cuenta;
-									print_r("<br />");
-									print_r($ctaBanco);	*/	
-								/*	break;	
-								default:
-									$subcta = "0000";
-									$posicion = 0;
-									print_r ("<br />");
-									print_r($subcta);
-									print_r ("<br />");
-									print_r($posicion);
-									break;
-								}//Cierra switch origen
-								
-								print_r($origen);
-								if($origen == "BAN"){
-									 $ctaBanco;
-								}else{
-									$cta = $row->cta;
-									print_r("<br />");
-									print_r("la cuenta de banco o de la guia contable es:");
-									print_r($cta);
-								}
-								//Arma Consulta
-								switch($nivel){
-								case 1:
-					if ($posicion = 1){
-						$armaCuenta = $subcta;
-					}else{
-						$armaCuenta = $sub1;
-					}
-					print_r("<br />");
-					print_r("CASO ORIGEN SEA =1");
-					print_r("<br />");
-					print_r($posicion);
-					break;
-				case 2:
-					if ($posicion = 2){
-						$armaCuenta = $subcta;
-					}else{
-						$armaCuenta = $sub2;
-					}
-					break;
-				case 3:
-					if ($posicion = 3){
-						$armaCuenta = $subcta;
-					}else{
-						$armaCuenta = $sub3;
-					}
-					print_r("CASO ORIGEN SEA =2");
-					print_r("<br />");
-					print_r($posicion);
-					break;
-				case 4:
-					if ($posicion = 4){
-						$armaCuenta = $subcta;
-					}else{
-						$armaCuenta = $sub4;
-					}
-					break;
-				case 5:
-					if ($posicion = 5){
-						$armaCuenta = $subcta;
-					}else{
-						$armaCuenta = $sub5;
-					}
-					break;
-				}
-								//Termina ArmaConsulta
-								//Agregamos a poliza;
-								//$subCuenta1 =$this->arma_Cuenta(1, $posicion, $subcta, $row["sub1"], ($row->sub2), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0));
-								$mPoliza = array(
-									'idModulo'=>$modulo,
-									'idTipoProveedor'=>$row->idTipoProveedor,
-									'idSucursal'=>$datos['idSucursal'],
-									'idCoP'=>$idProveedor,
-									'cta'=>$cta,
-									/*'sub1'=>1, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-									'sub2'=>2, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-									'sub3'=>3, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-									'sub4'=>4, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-									'sub5'=>5, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-									*/
-								/*	'sub1'=>'000',
-									'sub2'=>'000',
-									'sub3'=>'000',
-									'sub4'=>'000',
-									'sub5'=>'000',
-									  'fecha'=>$fechaFactura,
-									'descripcion'=>$descripcionPol,
-									'cargo'=>$importe,
-									'abono'=>$importe,
-									'numdocto'=>$numMov,
-									'secuencial'=>1
-							
-						);
-						print_r($mPoliza);
-						$dbAdapter->insert("Poliza", $mPoliza);
-								}//Cierre foreach
-							}//cierra if rowGuiaContable
-							}
-						}
-					}
-				}
-				*/
-			
 			$dbAdapter->commit();
 				}catch(exception $ex){
 					print_r("<br />");
@@ -1291,5 +1099,112 @@
 		}
 		
 		public function crear_Texto(){
-		}
+			$coma = " ";
+			$espacio = "         ";
+			//Agrupamos por movimiento y empresa
+			$tablaPoliza = $this->tablaPoliza;
+			$select = $tablaPoliza->select()->from($tablaPoliza, array('idSucursal','fecha','numDocto','idModulo'))->group('idSucursal')
+			->group('fecha')->group('numDocto')->group('idModulo')->order('idSucursal')->order('numDocto');
+			$rowsGrupoPoliza = $tablaPoliza->fetchAll($select);
+			//print_r("<br />");
+			//print_r("$select");
+			
+			if(!is_null($rowsGrupoPoliza)){
+				//while o foreach
+				foreach($rowsGrupoPoliza as $rowGrupoPoliza){
+					$select = $tablaPoliza->select()->from($tablaPoliza)->where("idSucursal = ?", $rowGrupoPoliza["idSucursal"])->where("numDocto = ?", $rowGrupoPoliza["numDocto"])
+					->where("idModulo=?",$rowGrupoPoliza["idModulo"])->order('idSucursal')->order('fecha')->order('numDocto')->order('idModulo');
+					$rowsPoliza = $tablaPoliza->fetchAll($select);
+					print_r("<br />");
+					print_r("$select");
+					fwrite($archivo,"M1" .$coma.$d1.$d2. PHP_EOL);
+					if(!is_null($rowsPoliza)){
+						//contabilizamos el numero de registro
+						$select = $tablaPoliza->select()->from($tablaPoliza,  array('count("idMoculo") as contabi'))->where("idSucursal = ?", $rowGrupoPoliza["idSucursal"])->where("numDocto = ?", $rowGrupoPoliza["numDocto"])
+						->where("idModulo=?",$rowGrupoPoliza["idModulo"])->group('idModulo');
+						$rowPolizaCont = $tablaPoliza->fetchRow($select);
+						print_r("<br />");
+						$contabiliza = $rowPolizaCont->contabi;
+						$cont = 0;
+						print_r($contabiliza);
+						print_r("$select");
+						foreach($rowsPoliza as $rowPoliza){
+							if($rowPoliza["idModulo"] > 10 && $cont=0){
+								$mensaje = "GASTOS";
+								print_r($mensaje);
+							}else{
+								$mensaje = $rowPoliza["descripcion"] ;
+								print_r($mensaje);
+							}
+							$tipoES = $rowPoliza["tipoES"];
+							switch($tipoES){
+								case 'E'://Egreso
+									$tipo = 1;
+									break;
+								case 'S': //Salida
+									$tipo = 2;
+									break;
+								case 'D': //Deudor
+									$tipo = 3;
+									break;	
+							}
+							//Genera Encabezado
+							if($cont == 0 && $contabiliza = 3){
+								$fecha = $rowPoliza->fecha;
+								$arrayFecha = explode("-", $fecha,3);
+								$fechaS= $arrayFecha[0].$arrayFecha[1].substr($arrayFecha[2], 0, -8);
+								print_r($fechaS	);
+								
+								//Creamos el documento .txt
+								$poliza_txt = "poliza.txt";
+								if($archivo = fopen($poliza_txt, "w")){//Abre archivo
+									fwrite($archivo,"P".$coma.$coma .$fechaS.$coma.$coma.$coma.$coma.$espacio ."1".$coma ."1".$coma ."0" .$espacio .$coma . str_pad($mensaje,97) .$coma .$coma .$coma .$coma ."11 0 0". PHP_EOL);
+									$cont = $cont +1;
+									$numMovto = $rowPoliza["numDocto"];
+									$temNumDocto = strlen($numMovto);
+									print_r("El numero de folio es:");
+									print_r($temNumDocto);
+									if($temNumDocto < 5){
+										foreach ($temNumDocto as $temNumDocto) {
+											$numMovto = " ".$numMovto;
+											$temNumDocto= $temNumDocto + 1;
+										}
+									}
+									if($rowPoliza["cargo"] <> 0){
+										$cargo = $rowPoliza["cargo"];
+										print_r($cargo);
+									}
+									
+									if($rowPoliza["abono"] <> 0){
+										$abono = $rowPoliza["abono"];
+										print_r($abono);
+									}
+									
+									if($cargo<>0){
+										$importe = $cargo;
+										$debeHaber = 0;
+									}else{
+										$importe = $abono;
+										$debeHaber = 1;
+									}
+									//Espacios para importe
+									$temImporte =strlen($importe);
+									//if($temImporte < 10	){
+										//foreach ($temImporte as $temImporte) {
+											//$importe = $importe. " ";
+											//$temImpor = $temImpor + 1;
+										//}
+									//}
+									$moneda =1;
+									$d1 = $rowPoliza["cta"];
+									$d2 = $rowPoliza["sub1"];
+									
+								}//Cierra archivo
+							}
+							
+						}//cierra if $rowsPoliza	
+					}//Cierra if rowsPoliza 	
+				}//Cierra foreach
+			}//cierra if agrupa poliza
+		}//cierra funcion crar_Texto
 	}
