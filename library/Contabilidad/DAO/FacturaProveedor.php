@@ -234,7 +234,7 @@
 				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
 				print_r("$select"); 
-				if(!is_null($rowMultiplo)){
+				//if(!is_null($rowMultiplo)){
 					//====================Operaciones para convertir unidad minima====================================================== 
 					$cantidad=0;
 					$precioUnitario=0;
@@ -288,12 +288,12 @@
 							'fechaCancela'=>null
 						);
 				 		$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
-				}else{
-					echo "El multiplo no existe";
-				}
+				//}else{
+					//echo "El multiplo no existe";
+				//}
 	
 				}
-				/*-//Inventario
+				//Inventario
 				$tablaInventario = $this->tablaInventario;
 		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 		$rowInventario = $tablaInventario->fetchRow($select);
@@ -323,7 +323,7 @@
 					'costoCliente'=>(($rowInventario->porcentajeGanancia / 100)) 
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
-		}*/
+		}
 				
 				$dbAdapter->commit();
 			}catch(exception $ex){

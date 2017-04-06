@@ -91,8 +91,8 @@
 			$select = $tablaImpuestoProductos->select()
 			->setIntegrityCheck(false)
 			->from($tablaImpuestoProductos, array('idProducto','importe','porcentaje'))
-			->join('Producto', 'impuestoProductos.idProducto = Producto.idProducto', array('producto'))
-			->join('Impuesto', 'impuestoProductos.idImpuesto = Impuesto.idImpuesto', array('descripcion'));
+			->join('Producto', 'ImpuestoProductos.idProducto = Producto.idProducto', array('producto'))
+			->join('Impuesto', 'ImpuestoProductos.idImpuesto = Impuesto.idImpuesto', array('descripcion'));
 			return $tablaImpuestoProductos->fetchAll($select);
 			
 		}
