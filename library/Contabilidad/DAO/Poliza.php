@@ -194,15 +194,6 @@
 										print_r("La posicio  es:");
 										print_r($posicion);
 										//Probamos el nivel
-										//$nivel = 1;
-										/*if ($nivel=1){
-											if($posicion =1){
-												$armaCuenta = $subCta;
-											}else{
-												$armaCuenta = $rowGuiaContable["sub1"];
-												print_r($armaCuenta);	
-											}
-										}*/
 										/*$tipoEmpresa = Zend_Registry::get("tipoEmpresa"); */
 										$mascara= Zend_Registry::get("mascara");
 										print_r($mascara);
@@ -284,8 +275,6 @@
 										'idSucursal'=>$datos['idSucursal'],
 										'idCoP'=>$idCoP,
 										'cta'=>$rowGuiaContable["cta"],
-										//'sub4'=>4, $posicion, $subcta, substr($row->sub1,4), substr($row->sub2,4), substr($row->sub3,3), substr($row->sub4,0), substr($row->sub5,0),
-										//($nivel, $posicion, $subCta, $sub1, $sub2, $sub3, $sub4, $sub5)
 										'sub1'=>$armaSub1,
 										'sub2'=>$armaSub2,
 										'sub3'=>$armaSub3,
@@ -338,26 +327,36 @@
 		public function generaGruposFacturaCliente($datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$dbAdapter->beginTransaction();
+			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
+			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
+			$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
+			$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
 			
-			
-			
-				$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
-				$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
-				$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
-				$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
-				
+			try{
+				//Seleccionamos grupoFactura por fecha, tipoMovto = 2 facturaCliente, idSucursal y estatus
 				$tablaFactura = $this->tablaFactura;
 				$select = $tablaFactura->select()->from($tablaFactura)->where('fechaFactura >= ?',$stringFechaInicio)->where('fechaFactura <=?',$stringFechaFinal)->where('idTipoMovimiento=?',2)
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
-				$rowsFacturac = $tablaFactura->fetchRow($select);
-				if(!is_null($rowsFacturac)){
-					$idSucursal = $rowsFacturac->idSucursal;
-					$numMov = $rowsFacturac->numeroFactura;
-					$subTotal = $rowsFacturac->subtotal;
-					$iva = 32;
-					$total = $rowsFacturac->total;
-					$fecha = $rowsFacturac->fechaFactura;
-					$idCliente = $rowsFacturac->idCoP;
+				$rowsGrupoFacturaC = $tablaFactura->fetchRow($select);
+				if(!is_null($rowsGrupoFacturaC)){
+					foreach($rowsGrupoFacturaC as $rowGrupoFacturaC){
+						$idSucursal = $rowsFacturac["idSucursal"];
+						$numMov = $rowsFacturac["numeroFactura"];
+						$subTotal = $rowsFacturac["subtotal"];
+						$total = $rowsFacturac["total"];
+						$fecha = $rowsFacturac["fecha"];
+						$idCoP = $rowsFacturac["idCoP"];
+						//Buscamos la cuenta de cliente
+						$tablaClientes = $this->tablaClientes;
+						$select = $tablaClientes->select()->from($tablaClientes,array('idCliente, cuenta'))->where("idCliente = ?", $idCoP);
+						$rowCliente = $tablaClientes->fetchRow($select);
+						print_r($select);
+						//$iva = 32;
+						
+					}//Cierra foreach
+				}else{
+					echo "No se no esta registrado Factura";
+					
 					//Verificamos que sea un cliente
 					$tablaClientes = $this->tablaClientes;
 					$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente = ?",$idCliente);
@@ -501,7 +500,7 @@
 								
 					}
 				}
-			try{
+			
 						 	
 				
 			$dbAdapter->commit();
@@ -1101,14 +1100,19 @@
 		public function crear_Texto(){
 			$coma = " ";
 			$espacio = "         ";
+			
+			//Creamos el poliza .txt
+			$poliza_txt = "poliza.txt";
+			if($archivo = fopen($poliza_txt, "w")){//Abre archivo
+			
 			//Agrupamos por movimiento y empresa
 			$tablaPoliza = $this->tablaPoliza;
 			$select = $tablaPoliza->select()->from($tablaPoliza, array('idSucursal','fecha','numDocto','idModulo'))->group('idSucursal')
 			->group('fecha')->group('numDocto')->group('idModulo')->order('idSucursal')->order('numDocto');
 			$rowsGrupoPoliza = $tablaPoliza->fetchAll($select);
-			//print_r("<br />");
+			//rowsGrupoPoliza regresa grupo
 			//print_r("$select");
-			
+			$cont =0;
 			if(!is_null($rowsGrupoPoliza)){
 				//while o foreach
 				foreach($rowsGrupoPoliza as $rowGrupoPoliza){
@@ -1116,8 +1120,9 @@
 					->where("idModulo=?",$rowGrupoPoliza["idModulo"])->order('idSucursal')->order('fecha')->order('numDocto')->order('idModulo');
 					$rowsPoliza = $tablaPoliza->fetchAll($select);
 					print_r("<br />");
+					print_r("Busca en poliza desde el grupo");
 					print_r("$select");
-					fwrite($archivo,"M1" .$coma.$d1.$d2. PHP_EOL);
+					
 					if(!is_null($rowsPoliza)){
 						//contabilizamos el numero de registro
 						$select = $tablaPoliza->select()->from($tablaPoliza,  array('count("idMoculo") as contabi'))->where("idSucursal = ?", $rowGrupoPoliza["idSucursal"])->where("numDocto = ?", $rowGrupoPoliza["numDocto"])
@@ -1127,7 +1132,7 @@
 						$contabiliza = $rowPolizaCont->contabi;
 						$cont = 0;
 						print_r($contabiliza);
-						print_r("$select");
+						//print_r("$select");
 						foreach($rowsPoliza as $rowPoliza){
 							if($rowPoliza["idModulo"] > 10 && $cont=0){
 								$mensaje = "GASTOS";
@@ -1136,6 +1141,7 @@
 								$mensaje = $rowPoliza["descripcion"] ;
 								print_r($mensaje);
 							}
+							
 							$tipoES = $rowPoliza["tipoES"];
 							switch($tipoES){
 								case 'E'://Egreso
@@ -1148,46 +1154,57 @@
 									$tipo = 3;
 									break;	
 							}
+							
 							//Genera Encabezado
 							if($cont == 0 && $contabiliza = 3){
 								$fecha = $rowPoliza->fecha;
 								$arrayFecha = explode("-", $fecha,3);
 								$fechaS= $arrayFecha[0].$arrayFecha[1].substr($arrayFecha[2], 0, -8);
 								print_r($fechaS	);
+								fwrite($archivo,"P".$coma.$coma .$fechaS.$coma.$coma.$coma.$coma.$espacio ."1".$coma ."1".$coma ."0" .$espacio .$coma . str_pad($mensaje,97) .$coma .$coma .$coma .$coma ."11 0 0". PHP_EOL);
 								
-								//Creamos el documento .txt
-								$poliza_txt = "poliza.txt";
-								if($archivo = fopen($poliza_txt, "w")){//Abre archivo
-									fwrite($archivo,"P".$coma.$coma .$fechaS.$coma.$coma.$coma.$coma.$espacio ."1".$coma ."1".$coma ."0" .$espacio .$coma . str_pad($mensaje,97) .$coma .$coma .$coma .$coma ."11 0 0". PHP_EOL);
-									$cont = $cont +1;
-									$numMovto = $rowPoliza["numDocto"];
-									$temNumDocto = strlen($numMovto);
-									print_r("El numero de folio es:");
-									print_r($temNumDocto);
-									if($temNumDocto < 5){
-										foreach ($temNumDocto as $temNumDocto) {
-											$numMovto = " ".$numMovto;
-											$temNumDocto= $temNumDocto + 1;
-										}
-									}
-									if($rowPoliza["cargo"] <> 0){
-										$cargo = $rowPoliza["cargo"];
-										print_r($cargo);
-									}
+							}
+							
+							$cont = $cont +1;
+							$numMovto = $rowPoliza["numDocto"];
+							$temNumDocto = strlen($numMovto);
+							
+							if($temNumDocto < 5){
+								foreach ($temNumDocto as $temNumDocto) {
+									$numMovto = " ".$numMovto;
+									$temNumDocto= $temNumDocto + 1;
+								}
+							}else{
+								print_r("el numdocto es mayor o igual a 5");
+							}
+							
+							if($rowPoliza["cargo"] <> 0){
+								$cargo = round($rowPoliza["cargo"]);
+								print_r( "<br />");
+								//print_r("El cardo es igual". "<br />");
+								//print_r($cargo);
+								$importe = $cargo;
+								$debeHaber = 0;
+								print_r( "<br />");
+								print_r("debeHaber". "<br />");
+								print_r($debeHaber);
+	
+							}
 									
-									if($rowPoliza["abono"] <> 0){
-										$abono = $rowPoliza["abono"];
-										print_r($abono);
-									}
-									
-									if($cargo<>0){
-										$importe = $cargo;
-										$debeHaber = 0;
-									}else{
-										$importe = $abono;
-										$debeHaber = 1;
-									}
-									//Espacios para importe
+							if($rowPoliza["abono"] <> 0){
+								$abono = round($rowPoliza["abono"]);
+								print_r( "<br />");
+								print_r($abono);
+								$importe = $abono;
+								$debeHaber = 1;
+								
+								print_r( "<br />");
+								print_r("El debeHaber". "<br />");
+								print_r($debeHaber);
+							}
+	
+							
+							//Espacios para importe
 									$temImporte =strlen($importe);
 									//if($temImporte < 10	){
 										//foreach ($temImporte as $temImporte) {
@@ -1198,13 +1215,12 @@
 									$moneda =1;
 									$d1 = $rowPoliza["cta"];
 									$d2 = $rowPoliza["sub1"];
-									
-								}//Cierra archivo
+									//Prueba txtfile.Writeline ("M1" & Coma & D1 & D2 & Coma & Coma & Coma & Espacio & Espacio & Coma & Coma & numoper & Espacio & Coma & Coma & Coma & Coma & Coma & Coma & debehaber & Coma & Importe & Espacio & Coma & Coma & "0" & Espacio & Coma & "0.0" & Espacio & Espacio & Mensaje & Espacio)
+									fwrite($archivo,"M1" .$coma .$d1 .$d2 .$coma .$coma .$coma .$espacio. $espacio .$coma .$coma .$coma .$coma .$numMovto.$espacio.$coma.$coma.$coma.$coma.$coma.$coma .$debeHaber.$coma.$importe.$espacio.$coma.$coma ."0".$espacio .$coma ."0.0" .$espacio .$espacio . str_pad($mensaje,97).$espacio.PHP_EOL);		
 							}
-							
-						}//cierra if $rowsPoliza	
+						}//cierra foreach $rowsPoliza	
 					}//Cierra if rowsPoliza 	
 				}//Cierra foreach
 			}//cierra if agrupa poliza
-		}//cierra funcion crar_Texto
+		}//cierra funcion crear_Texto
 	}

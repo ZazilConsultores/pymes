@@ -1,6 +1,0 @@
-     05 04 2017 13:04:01 El archivo poliza1.txt se ha creado
-     05 04 2017 13:04:01 El Archivo poliza1.txt se ha modificado
-     05 04 2017 13:04:18 El Archivo poliza1.txt se ha modificado
-     05 04 2017 13:04:18 El Archivo poliza1.txt se ha modificado
-     05 04 2017 13:04:41 El Archivo poliza1.txt se ha modificado
-     05 04 2017 13:04:41 El Archivo poliza1.txt se ha modificado

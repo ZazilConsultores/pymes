@@ -1,1 +1,4 @@
 P  20170403              1 1 0          IVA PENDIENTE DE ACREDITAR                                                                           11 0 0
+M1 1065001                         12345               0 16           0          0.0                  IVA PENDIENTE DE ACREDITAR                                                                                
+M1 2000135                         12345               1 116           0          0.0                  PROVEEDOR                                                                                                 
+M1 5040001                         12345               0 100           0          0.0                  COMPRAS                                                                                                   
