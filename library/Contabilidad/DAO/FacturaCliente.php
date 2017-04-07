@@ -59,7 +59,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				
 				
 		 		$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 				
 				print_r("select");
@@ -86,7 +86,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'idCoP'=>$encabezado['idCoP'],
 						'numeroFolio'=>$encabezado['numeroFactura'],
 						'idFactura'=>$idFactura,//
-						'idProducto'=>$producto['descripcion'],
+						'idProducto'=>$producto['producto'],
 						'idProyecto'=>$encabezado['idProyecto'],
 						'cantidad'=>$cantidad,
 						'fecha'=>$stringFecha,
@@ -98,7 +98,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				 	$dbAdapter->insert("Movimientos",$mMovimiento);
 					
 					$tablaProducto = $this->tablaProducto;
-					$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['descripcion']);
+					$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['producto']);
 					$rowProducto = $tablaProducto->fetchRow($select);
 					$desProducto =$rowProducto['producto']; 
 					
@@ -108,7 +108,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'idUnidad'=>$producto['unidad'],
 						'secuencial'=>$secuencial,
 						'cantidad'=>$cantidad,
-						'descripcion'=>$desProducto,
+						'descripcion'=>$producto["descripcion"],
 						'precioUnitario'=>$precioUnitario,
 						'importe'=>$producto['importe'],
 						'fechaCaptura'=>$stringFecha,
@@ -158,7 +158,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$conceptoPago;
 				if(($formaPago['pagada'])==="1"){
 					$conceptoPago = "LI";
-				}elseif(($formaPago['Pagada'])=== "0"){
+				}elseif(($formaPago['pagada'])=== "0"){
 					$conceptoPago = "PA";
 				}elseif($formaPago['pagos']===""){
 					$conceptoPago = "PE";
@@ -190,6 +190,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					print_r("Cantidad como pago en la factura");
 				}
 				//Guarda Movimiento en Cuentasxp
+				if(($formaPago['pagada'])==="1"){
 				$mCuentasxc = array(
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 					'idSucursal'=>$encabezado['idSucursal'],
@@ -211,7 +212,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				);
 				//print_r($mCuentasxc);
 				$dbAdapter->insert("Cuentasxc", $mCuentasxc);
-						
+			}		
 				//Obtine el ultimo id en tabla factura
 				}
 			$dbAdapter->commit();

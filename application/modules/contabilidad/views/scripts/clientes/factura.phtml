@@ -100,7 +100,10 @@ $(document).ready(function (){
     	var newRow = $("<tr>");
     	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 		// idProducto
-		var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		var selectProducto = $('<select />').attr({'id': 'producto_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonProductos,function(i,item){
+			selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+		});
 		// idUnidad
 		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 		$.each(jsonUnidad,function(i,item){
@@ -109,10 +112,10 @@ $(document).ready(function (){
 		// codigoBarras
 		var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 		// descripcion
-		var selectdescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-		$.each(jsonProductos,function(i,item){
+		var inputdescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		/*$.each(jsonProductos,function(i,item){
 			selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
-		});
+		});*/
 		// precioUnitario
 		var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 		// precioImporte
@@ -123,10 +126,10 @@ $(document).ready(function (){
       
         $("table#productos").append($('<tr>').
 			append($('<td>').append(inputCantidad)).
-			append($('<td>').append(inputProducto)).
+			append($('<td>').append(selectProducto)).
 			append($('<td>').append(inputUnidad)).
 			append($('<td>').append(inputCodigoBarras)).
-			append($('<td>').append(selectdescripcion)).
+			append($('<td>').append(inputdescripcion)).
 			append($('<td>').append(inputCostoUnitario)).
 			append($('<td>').append(inputCostoTotal)).
 			append($('<td>').append(buttonLimpiar))
@@ -142,20 +145,22 @@ $(document).ready(function (){
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
+ 			var producto = row.find("select[id^='producto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
- 			var descripcion = row.find("select[id^='descripcion_']").val();
+ 			var descripcion = row.find("input[id^='descripcion_']").val();
  			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  			var importe = row.find("input[id^='costoTotal_']").val();
  			
  			console.log("Cantidad:"+cantidad);
+ 			console.log("Producto:"+producto);
  			console.log("unidad:"+unidad);
  			console.log("codigoBarras:"+codigoBarras);
  			console.log("descripcion:"+descripcion);
  			console.log("precioUnitario:"+precioUnitario);
  			console.log("costoTotal:"+importe);
  			
- 			productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
+ 			productos.push(new Producto(cantidad, producto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -196,8 +201,9 @@ $(document).ready(function (){
  		};
  		});
  		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Producto(cantidad, producto, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
+		  this.producto = producto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
@@ -214,18 +220,23 @@ $(document).ready(function (){
 		  this.ish = ish;
 		  this.isr = isr;
 		}
+		
+ 		$("table#productos").on("change", "select[id^='Producto_']", function(){
+ 			//console.log("Hola");
+ 		});
+ 		
 		//Funcion buscar descripcion del producto
- 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 		$("table#productos").on("change", "select[id^='producto_']", function(){
  			console.log("Hola");
- 			var descripcion= $(this).attr("id");
-			var arr = descripcion.split('_');
+ 			var producto= $(this).attr("id");
+			var arr = producto.split('_');
 			var id = $(this).val();
 			//console.log(id);
 			var numFila =  arr[1];
  			
  			$.each(jsonProductos,function(i,item){
  				if(jsonProductos[i].idProducto == id){
- 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
+ 					$("input#descripcion_"+numFila).val(jsonProductos[i].producto);
  				}
  				
 			});
