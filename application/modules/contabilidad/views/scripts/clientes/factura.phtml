@@ -214,7 +214,23 @@ $(document).ready(function (){
 		  this.ish = ish;
 		  this.isr = isr;
 		}
-
+		//Funcion buscar descripcion del producto
+ 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 			console.log("Hola");
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			//console.log(id);
+			var numFila =  arr[1];
+ 			
+ 			$.each(jsonProductos,function(i,item){
+ 				if(jsonProductos[i].idProducto == id){
+ 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
+ 				}
+ 				
+			});
+ 			
+ 		});//cierra funcion buscar descripcion del producto
     
    $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         calculateRow($(this).closest("tr"));

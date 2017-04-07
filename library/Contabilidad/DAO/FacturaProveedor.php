@@ -119,10 +119,46 @@
 					//print_r($mCuentasxp);
 					$dbAdapter->insert("Cuentasxp", $mCuentasxp);
 					}
-		
+					
+					//Buscamos el ultimo id en factura
+					//$idFactura = $bd->lastInsertId("Factura","idFactura");
+
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+				$rowIdFactura =$tablaFactura->fetchRow($select);
+				$idFactura = $rowIdFactura['idFactura'];
+				print_r("$select");
+				if(!is_null($rowIdFactura)){
+					$mfacturaImpuesto = array(
+						'idFactura'=>$idFactura ,
+						'idImpuesto'=>4,
+						'importe'=>$importe[0]['iva'],	
+					);
+					//print_r($mCuentasxp);
+					$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
+
+					}
 				}
-				
-			
+
+
+
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+				$rowIdFactura =$tablaFactura->fetchRow($select);
+				$idFactura = $rowIdFactura['idFactura'];
+
+				print_r("$select");
+
+				if($importe[0]['ieps']<>0){
+
+						$mfacturaImpuesto = array(
+						'idFactura'=>$idFactura ,
+						'idImpuesto'=>1,
+						'importe'=>$importe[0]['ieps'],
+						);
+						$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
+					}
+		
 			$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");
@@ -238,12 +274,9 @@
 						);
 				 		$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
 				 	}
-				}else{
-					echo "Multiplo incorrecto";
-				}
-		
-				//Inventario
-				/*$tablaInventario = $this->tablaInventario;
+					//Inventario
+					//Inventario
+				$tablaInventario = $this->tablaInventario;
 		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		
@@ -272,8 +305,10 @@
 					'costoCliente'=>(($rowInventario->porcentajeGanancia / 100)) 
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
-		}*/
-				
+		}
+				}else{
+					echo "Multiplo incorrecto";
+				}
 				$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");

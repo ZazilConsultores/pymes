@@ -116,7 +116,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		
 		foreach ($tiposDivisa as $tipoDivisa)
 		{
-			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
+			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDescripcion());		
 		}
 		//==================Forma de pago
 		$formaPago = Zend_Registry::get('formaPago');
