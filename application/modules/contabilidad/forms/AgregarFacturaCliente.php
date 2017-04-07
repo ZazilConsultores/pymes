@@ -77,7 +77,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eCliente->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eCliente->addMultiOption($fila->idCliente, $fila->razonSocial);
 		}
 		
 		$vendedorDAO = new Sistema_DAO_Vendedores;

@@ -7,14 +7,14 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 	
 	public function init()
     {
-		$this->notaSalidaDAO= new Contabilidad_DAO_NotaSalida;
+		$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 		$this->facturaDAO = new Contabilidad_DAO_FacturaCliente;
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
-		$select = $this->db->select()->from("Producto")->order("producto ASC");
+		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
@@ -116,9 +116,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function facturaAction()
     {
-    	$this->view->impuestos = $this->impuestosDAO->obtenerImpuestos();
-		//$idEmpresa = $this->getParam("idEmpresas");
-		//print_r($idEmpresa);
+    	//$this->view->impuestos = $this->impuestosDAO->obtenerImpuestos();
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
 		if($request->isGet()){
@@ -126,8 +124,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//$facturaProveedorDAO = new Contabilidad_DAO_FacturaCliente;
-				
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);

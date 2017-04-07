@@ -16,7 +16,6 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
-		//$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
 		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
@@ -26,8 +25,6 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
-		
-		
 		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 	}
 	public function guardaDetalleFactura(array $encabezado, $producto, $importe){
@@ -38,37 +35,55 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			$stringFecha = $fechaInicio->toString ('yyyy-MM-dd');
 			
 			try{
-				$secuencial = 0;	
-				$tablaMovimiento = $this->tablaMovimiento;
-				$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
-				->where("idCoP=?",$encabezado['idCoP'])
-				->where("idSucursal=?",$encabezado['idSucursal'])
-				->where("numeroFolio=?",$encabezado['numeroFactura'])
-				->where("fecha=?", $stringFecha)
-				->order("secuencial DESC");
-			
-				$rowMovimiento = $tablaMovimiento->fetchRow($select); 
+				//Valida que la factura no exista
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
+				->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
+				$rowFactura = $tablaFactura->fetchRow($select);
+				print_r("$select");
+				if(!is_null($rowFactura)){
+					//obtenemos el secuencial por factura
+					$secuencial = 0;	
+					$tablaMovimiento = $this->tablaMovimiento;
+					$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
+					->where("idCoP=?",$encabezado['idCoP'])
+					->where("idSucursal=?",$encabezado['idSucursal'])
+					->where("numeroFolio=?",$encabezado['numeroFactura'])
+					->where("fecha=?", $stringFecha)
+					->order("secuencial DESC");			
+					$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 				
-				if(!is_null($rowMovimiento)){
-					$secuencial= $rowMovimiento->secuencial +1;
-					//print_r($secuencial);
+					if(!is_null($rowMovimiento)){
+						$secuencial= $rowMovimiento->secuencial +1;
+					}else{
+						$secuencial = 1;	
+					}
+					$tablaMultiplos = $this->tablaMultiplos;
+					$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
+					$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+					if(!is_null($rowMultiplo)){
+						
+					//====================Operaciones para convertir unidad minima====================================================== 
+					$cantidad=0;
+					$precioUnitario=0;
+					$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+	
+						
+					}else{
+						echo "Multiplo incorrecto";
+					}
+									{
+						
+					}
 				}else{
-					$secuencial = 1;	
-					//print_r($secuencial);
+					echo "La factura ya existe";
 				}
 				
 				
-		 		$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
-				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 				
-				print_r("select");
 				
-				//====================Operaciones para convertir unidad minima====================================================== 
-				$cantidad=0;
-				$precioUnitario=0;
-				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+		 		
 				
 				$tablaFactura = $this->tablaFactura;
 				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
@@ -158,10 +173,10 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$conceptoPago;
 				if(($formaPago['pagada'])==="1"){
 					$conceptoPago = "LI";
-				}elseif(($formaPago['pagada'])=== "0"){
-					$conceptoPago = "PA";
-				}elseif($formaPago['pagos']===""){
+				}elseif(($formaPago['pagada'])=== "0" AND $formaPago['pagos'] ==="0"){
 					$conceptoPago = "PE";
+				}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
+					$conceptoPago = "PA";
 				}	
 				//Guarda Movimiento en tabla factura
 				$mFactura = array(
@@ -172,13 +187,13 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'numeroFactura'=>$encabezado['numeroFactura'],
 					'estatus'=>"A",
 					'conceptoPago'=>$conceptoPago,
-					'descuento'=>100,
+					'descuento'=>$importe[0]['descuento'],
 					'formaPago'=>$formaPago['formaLiquidar'],
 					'fechaFactura'=>$stringFecha,
 					'subTotal'=>$importe[0]['subTotal'],
 					'total'=>$importe[0]['total'],
 					'folioFiscal'=>$encabezado['folioFiscal'],
-					'importePago'=>$importe[0]['total']
+					'importePago'=>$formaPago['pagos']
 				);
 					
 				$dbAdapter->insert("Factura", $mFactura);
