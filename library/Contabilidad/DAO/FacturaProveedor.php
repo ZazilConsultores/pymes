@@ -280,7 +280,7 @@
 		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['producto']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		
-		if(!is_null($rowInventario)){
+		/*if(!is_null($rowInventario)){
 			$cantidad = $rowInventario->existencia + $cantidad;
 			$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
 			print ("<br />");
@@ -305,7 +305,7 @@
 					'costoCliente'=>(($rowInventario->porcentajeGanancia / 100)) 
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
-		}
+		}*/
 				
 				$dbAdapter->commit();
 			}catch(exception $ex){
