@@ -215,7 +215,7 @@
 			try{
 				
 		 		$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
 				print_r("$select"); 
 				
@@ -245,18 +245,18 @@
 							'idCoP'=>$encabezado['idCoP'],
 							'numeroFolio'=>$encabezado['numeroFactura'],
 							'idFactura'=>$idFactura,//
-							'idProducto'=>$producto['descripcion'],
+							'idProducto'=>$producto['producto'],
 							'idProyecto'=>$encabezado['idProyecto'],
 							'cantidad'=>$cantidad,
 							'fecha'=>$stringFecha,
-							'secuencial'=>$secuencial,
+							'secuencial'=>1,
 							'estatus'=>"A",
 							'costoUnitario'=>$precioUnitario,
 							'totalImporte'=>$producto['importe']
 						);
 					 	$dbAdapter->insert("Movimientos",$mMovimiento);
 						$tablaProducto = $this->tablaProducto;
-						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['descripcion']);
+						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['producto']);
 						$rowProducto = $tablaProducto->fetchRow($select);
 						$desProducto =$rowProducto['producto']; 
 					
@@ -264,7 +264,7 @@
 						$mFacturaDetalle = array(
 							'idFactura'=>$idFactura,
 							'idUnidad'=>$producto['unidad'],
-							'secuencial'=>$secuencial,
+							'secuencial'=>1,
 							'cantidad'=>$cantidad,
 							'descripcion'=>$desProducto,
 							'precioUnitario'=>$precioUnitario,
@@ -277,7 +277,7 @@
 					//Inventario
 					//Inventario
 				$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['producto']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		
 		if(!is_null($rowInventario)){
@@ -290,7 +290,7 @@
 			//print_r("<br />");
 		}else{		
 			$mInventario = array(
-					'idProducto'=>$producto['descripcion'],
+					'idProducto'=>$producto['producto'],
 					'idDivisa'=>1,
 					'idSucursal'=>$encabezado['idSucursal'],
 					'existencia'=>$cantidad,
