@@ -141,7 +141,10 @@ $(document).ready(function () {
     	var newRow = $("<tr>");
     	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 		// idProducto
-		var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		var selectProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonProductos,function(i,item){
+			selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+		});
 		// idUnidad
 		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 		$.each(jsonUnidad,function(i,item){
@@ -150,10 +153,10 @@ $(document).ready(function () {
 		// codigoBarras
 		var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 		// descripcion
-		var selectdescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-		$.each(jsonProductos,function(i,item){
-			selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
-		});
+		var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		//$.each(jsonProductos,function(i,item){
+			//selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+		//});
 		// precioUnitario
 		var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 		// precioImporte
@@ -164,10 +167,10 @@ $(document).ready(function () {
       
         $("table#productos").append($('<tr>').
 			append($('<td>').append(inputCantidad)).
-			append($('<td>').append(inputProducto)).
+			append($('<td>').append(selectProducto)).
 			append($('<td>').append(inputUnidad)).
 			append($('<td>').append(inputCodigoBarras)).
-			append($('<td>').append(selectdescripcion)).
+			append($('<td>').append(inputDescripcion)).
 			append($('<td>').append(inputCostoUnitario)).
 			append($('<td>').append(inputCostoTotal)).
 			append($('<td>').append(buttonLimpiar))
@@ -183,9 +186,10 @@ $(document).ready(function () {
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
+ 			var producto = row.find("select[id^='idProducto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
- 			var descripcion = row.find("select[id^='descripcion_']").val();
+ 			var descripcion = row.find("input[id^='descripcion_']").val();
  			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  			var importe = row.find("input[id^='costoTotal_']").val();
  			
@@ -194,6 +198,7 @@ $(document).ready(function () {
  				var total = row.find("input[id^='total']").val();*/
  				
  				console.log("Cantidad:"+cantidad);
+ 				console.log("Producto:"+producto);
  				console.log("unidad:"+unidad);
  				console.log("codigoBarras:"+codigoBarras);
  				console.log("descripcion:"+descripcion);
@@ -201,7 +206,7 @@ $(document).ready(function () {
  				console.log("costoTotal:"+importe);
  				
  						
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
+ 				productos.push(new Producto(cantidad, producto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -211,7 +216,22 @@ $(document).ready(function () {
  				
  			};
  		});
- 		
+ 		//Funcion buscar descripcion del producto
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
+ 			var producto= $(this).attr("id");
+			var arr = producto.split('_');
+			var id = $(this).val();
+			//console.log(id);
+			var numFila =  arr[1];
+ 			
+ 			$.each(jsonProductos,function(i,item){
+ 				if(jsonProductos[i].idProducto == id){
+ 					$("input#descripcion_"+numFila).val(jsonProductos[i].producto);
+ 				}
+ 				
+			});
+ 			
+ 		});//cierra funcion buscar descripcion del producto
  		//Envia los valores de Impuestos a a la vista de facturaProveedor
    		$("a#generarJsonArray").on("click",function(){
     	//var tabla = $("table#productos > tfoot  > tr");
@@ -246,8 +266,9 @@ $(document).ready(function () {
  			};
  		});
  		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Producto(cantidad, producto,  unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
+		  this.producto = producto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
@@ -265,23 +286,7 @@ $(document).ready(function () {
 		  this.isr = isr;
 		}
 
-    //Funcion buscar descripcion del producto
- 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
- 			console.log("Hola");
- 			var descripcion= $(this).attr("id");
-			var arr = descripcion.split('_');
-			var id = $(this).val();
-			//console.log(id);
-			var numFila =  arr[1];
- 			
- 			$.each(jsonProductos,function(i,item){
- 				if(jsonProductos[i].idProducto == id){
- 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
- 				}
- 				
-			});
- 			
- 		});//cierra funcion buscar descripcion del producto
+    
     $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         calculateRow($(this).closest("tr"));
         calculateGrandTotal();
@@ -341,8 +346,18 @@ function calculateGrandTotal() {
     total = grandTotal + totalIva;
     $("input#total").val(total.toFixed(2));
     $("input#1-pagos").val(total.toFixed(2));
+    
+   	ieps = $('input#ieps').val();
+   	if (ieps != 0){
+   		iepsIva = $("#subTotal").val() - ieps;
+   		ivaIeps = iepsIva * 0.16
+   		$("input#iva").val(ivaIeps);
+   		
+   		totalI = parseFloat($("#subTotal").val()) + ivaIeps;
+   		$("input#total").val(totalI);
+   	}
+    
     /*Descuento*/
-   
    descuento = $("#descuento").val();
    if (descuento !=0){
    	totalIva = 0;
@@ -356,7 +371,8 @@ function calculateGrandTotal() {
    	$("input#iva").val(totalIva.toFixed(2)); 
    	total = totalDescuento + totalIva;
    	$("input#total").val(total.toFixed(2)); 
-   	}			  
+   }
+   	
    }
   //Funcion Eliminar #btnLimpiar_2
  		$("table#productos").on("click", "button[id^='btnLimpiar_']", function(){
@@ -428,8 +444,36 @@ $("select#idSucursal").on('click', function(){
 			}
 			
 		});
+$("table#productos").on("change", "select[id^='idProducto_']", function(){
+	var producto = $(this).attr("id");
+	var arr = producto.split('_');
+	var claveProducto = $(this).val();		 	
+    console.log(claveProducto);
+    	 //La ruta donde comparamos visualizamos los productos
+    	 var url = window.location.origin + "/General/";
+    	 var urlImpuestoProducto = url + "contabilidad/json/impuestoproducto/idProducto/"+claveProducto;
+    	 console.log(urlImpuestoProducto);
+    	$.ajax({
+					url:urlImpuestoProducto,
+					dataType: "json",
+					success: function(data){
+						var ieps = data['importe'];
+						//var idImpuesto = data['idImpuesto'];
+						//console.log(ieps);
+						//console.log(idImpuesto);
+						if (urlImpuestoProducto != '[]'){
+							var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
+							$('input#ieps').val(impIEPS.toFixed(2));
+						}else{
+							$('input#ieps').val(0);
+						}
+					}
+				});
+			
+});
 function descuento() {
-    $("table#productos").on("change", "select[id^='descripcion_']", function(){
+    $("table#productos").on("change", "select[id^='idProducto_']", function(){
+    	console.log("Gooo");
 	 	var descripcion= $(this).attr("id");
 		var arr = descripcion.split('_');
 		var producto = $(this).val();		 	
@@ -444,14 +488,14 @@ function descuento() {
 					success: function(data){
 						var ieps = data['importe'];
 						//var idImpuesto = data['idImpuesto'];
-						console.log(ieps);
+						//console.log(ieps);
 						//console.log(idImpuesto);
-						if (urlImpuestoProducto != '[]'){
+						/*if (urlImpuestoProducto != '[]'){
 							var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
 							$('input#ieps').val(impIEPS.toFixed(2));
 						}else{
 							$('input#ieps').val(0);
-						}
+						}*/
 					}
 				});
 				

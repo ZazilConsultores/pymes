@@ -61,15 +61,15 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);	
 		}
 		
-		$eNumeroFactura = new Zend_Form_Element_Text('numeroFactura');
+		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
 		$eNumeroFactura->setLabel('Ingresar Numero Factura');
 		$eNumeroFactura->setAttrib("class", "form-control");
 		$eNumeroFactura->setAttrib("required", "Ingresar Factura");
 		$eNumeroFactura->setAttrib("placeholder", "Numero Factura");
 		
-		$eValores = new Zend_Form_Element_Hidden('valores');
+		/*$eValores = new Zend_Form_Element_Hidden('valores');
 		$eValores->setAttrib("class", "form-control");
-		$eValores->setAttrib("required", "Ingresar Factura");
+		$eValores->setAttrib("required", "Ingresar Factura");*/
 
     	
 		$subFoo = new Zend_Form_SubForm;
@@ -78,19 +78,20 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$submit->setLabel('Buscar Factura'); 
 		$submit->setAttrib("class", "btn btn-success");
 		
-		$sCancelar = new Zend_Form_Element_Submit('cancelar');
+		/*$sCancelar = new Zend_Form_Element_Submit('cancelar');
 		$sCancelar->setLabel('Cancelar'); 
-		$sCancelar->setAttrib("class", "btn btn-info");
+		$sCancelar->setAttrib("class", "btn btn-info");*/
 		
 		
 		$this->addElement($eEmpresa);
 		$this->addElement($eSucursal);
 		$this->addElement($eProveedor);
 		$this->addElement($eNumeroFactura);
+		$this->addElement($submit);
 		//$this->addElement($eValores);
-		$subFoo->addElements(array($submit,$sCancelar));
+		/*$subFoo->addElements(array($submit,$sCancelar));
 		$subFoo->setElementDecorators($decoratorsElemento);
-		$subFoo->setDecorators($decoratorsPresentacion);
+		$subFoo->setDecorators($decoratorsPresentacion);*/
 		//$this->addSubForm($subFoo);
 		$this->addSubForm($subFoo, "pie");
     }

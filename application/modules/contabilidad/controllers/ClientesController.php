@@ -134,24 +134,22 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador=0;
 				
 				
-				//try{
-					//$this->facturaDAO->guardaIva($encabezado, $importe);
+				try{
+					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+					//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
+				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					foreach ($productos as $producto){
 					//try{
 						//$this->facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
-						$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $producto);
-						$guardaDetalleFactura =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);	
-						//$facturaDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
-						//$facturaProveedorDAO->guardaImportesImpuesto($encabezado, $importe, $producto);
-						//$facturaProveedorDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+						
+						
 					$contador++;
 					}
-				//}catch(Util_Exception_BussinessException $ex){
-					//$this->view->messageFail = $ex->getMessage();
-				//}
-				//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos); 
-				//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
-				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+					$this->view->messageSuccess = "Se ha agregado Factura exitosamente";
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}
+				
 				
 				
 			//}

@@ -5,19 +5,19 @@
 	$divisas = $divisaDAO->obtenerDivisas();
 	$bancosDAO = new Inventario_DAO_Banco;
 	$bancos = $bancosDAO->obtenerBancos();
-	$facturasp = $this->facturasp;
+	$facturasxp = $this->facturasxp;
 	$conceptoPagos =array("AN"=>"ANTICIPO", "LI"=>"LIQUIDADO","PA"=>"PAGO");
 	$formasPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
 ?>
 <section class="panel panel-success">
 	<div class="panel-heading">
-		<h3 class="panel-title">Cuentas por Pagar</h3>
+		<h3 class="panel-title">Ingresa datos para busqueda factura por pagar:</h3>
 	</div>
 	<div class="panel-body">
 		<?php  echo $this->formulario; ?>
 	</div>
 </section>
-<?php if(!is_null($facturasp)) { ?>
+
 	<section class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">Cuentas por pagar.</h3>
@@ -29,23 +29,22 @@
 					<th>IdProveedor</th>
 					<th>Número factura</th>
 					<th>Fecha </th>
-					<th>$ Total</th>
+					<th>$Total</th>
 				</thead>
 				<tbody>
-					<?php foreach($facturasp as $facturap): ?>
+					<?php foreach($facturasxp as $facturaxp): ?>
 						<tr>
-							<td><?php echo $facturap["idSucursal"]; ?></td>
-							<td><?php echo $facturap["idCoP"]; ?></td>
-							<td><?php echo $facturap["numeroFactura"]; ?></td>
-							<td><?php echo $facturap["fechaFactura"]; ?></td>
-							<td id="total"><?php echo $facturap["total"]; ?> </td> 
-							<td><button type="button" class="btn btn-info " id="pago" data-toggle="modal" data-target="#msgConfirm">
+							<td><?php echo $facturaxp->getIdSucursal(); ?></td>
+							<td><?php echo $facturaxp->getIdCoP(); ?></td>
+							<td id="idFactura" ><?php echo $facturaxp->getNumeroFactura(); ?></td>
+							<td><?php echo $facturaxp->getFechaFactura(); ?></td>
+							<td><?php echo $facturaxp->getTotal(); ?></td>
+							<td><button type="button" class="btn btn-info " id="pago_" data-toggle="modal" data-target="#msgConfirm">
 								<span class="glyphicon glyphicon-pencil"></span> Registrar un pago. 
 							</button></td>
 							<td><button   type="button" class="btn btn-primary btnBusqueda" id="nomina" data-toggle="modal" data-target="#msgConfirmN" >
 								<span class="glyphicon glyphicon-pencil"></span> Registara una nomina de Credito.
 							</button></td>
-							<td><input type="hidden" id="valores" class="form-control"/> </td>
 						</tr>
 						<?php endforeach; ?>
 				</tbody>
@@ -53,10 +52,10 @@
 		</div>
 	</section>
 	
-<?php } ?>
+
 <section class="panel panel-info">
 	<div class="panel-heading">
-		<h3 class="panel-title">Registrar un nota de credito</h3>
+		<h3 class="panel-title">Registrar</h3>
 	</div>
 	<div class="panel-body">
 		<table id="tableDetails" class="table table-striped table-condensed">
@@ -82,7 +81,10 @@
 				<h4 class="modal-title">Cuentas por pagar.</h4>
 			</div>
 			<div class="modal-body">
+						
 				<tr>
+					<label id="factura">Factura</label>
+					<input type="text" id="factura" class="form-control"/>
 					<label for="fecha">Fecha</label>
   					<input type="text" id="fechaInicial" class="form-control"/>
   					<label for="fecha">Pago $</label>
@@ -174,6 +176,20 @@
 <script>
 $(document).ready(function(){
 	console.log("ready");
+	//$("table#detalleCxP tbody tr").click(function() {
+		$("table#detalleCxP").on("click", "button[id^='pago']", function(){
+		console.log("click");
+		$("table#detalleCxP tr").each(function(){
+			var customerId = $(this).find("td#idfactura").html();  
+			//var celdas = $(this).find('td');
+			
+			//Mostrar el valor de cada celda
+			//celdas.each(function(){
+				
+				console.log(customerId);
+			});
+		});
+	//});
 	var url = window.location.origin + "/General/";
 	
 	$("select#idEmpresas").on('change', function(){
@@ -193,6 +209,8 @@ $(document).ready(function(){
 			});
 		}
 	});
+	
+	
 	
 	$("select#idCoP").on('change', function(){
 		console.log("Boton Presionado");
@@ -222,7 +240,7 @@ $(document).ready(function(){
 		});
 	});
 	
-	$("#registrarPago").on('click', function (){
+	/*$("#registrar").on('click', function (){
 		var fecha = $("input#fechaInicial")
 		var eFecha = fecha.val();
 		
@@ -244,7 +262,7 @@ $(document).ready(function(){
 				
 			}
 		}
-	});
+	});*/
 	
 	$("#registrarPago").on("click", function (){
 		var idFactura = $("#numeroFactura").val();

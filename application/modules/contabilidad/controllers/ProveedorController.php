@@ -14,13 +14,13 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
 		$this->notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 		$this->remisionEntradaDAO =  new Contabilidad_DAO_RemisionEntrada;
-		$this->pagoProveedor = new Contabilidad_DAO_PagoProveedor;
+		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
         //==============Muestra los links del submenu=======================
 		//$this->view->links = $this->links;
 		$adapter = Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
-		$select = $this->db->select()->from("Producto")->order("producto ASC");
+		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
@@ -124,7 +124,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$encabezado = $datos[0];
 				$formaPago =$datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				print_r('<br />');
+				//print_r('<br />');
 				$contador=0;
 				//$saldoBanco = $this->remisionEntradaDAO->actulizaSaldoBanco($encabezado, $formaPago);
 				$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
@@ -133,9 +133,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					//$producto->encabezado();
 					//sprint_r($producto);
 					//$notaEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
-					/*$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
+					$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
 					print_r($remisionEntradaDAO);
-					$contador++;*/
+					$contador++;
 					//try{
 						//$guardaProducto =$this-($encabezado, $producto, $formaPago);
 						//$guardaMovimiento = $this->remisionEntradaDAO->
@@ -200,23 +200,29 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 	
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
+				$pagosDAO = new Contabilidad_DAO_PagoProveedor;
 				$datos = $formulario->getValues();
-				$valores = json_decode($datos['valores'], TRUE);
-				$facturasp = $this->pagoProveedor->busca_facturap($datos["idCoP"]);
-				$cuentaxp = $this->pagoProveedor->busca_Cuentasxp($datos["idSucursal"], $datos["idCoP"],$datos["numeroFactura"]);
+				//$valores = json_decode($datos['valores'], TRUE);
+				//$facturasp = $this->pagoProveedor->busca_facturap($datos["idCoP"]);
+				//$cuentaxp = $this->pagoProveedor->busca_Cuentasxp($datos["idSucursal"], $datos["idCoP"],$datos["numeroFactura"]);
 				//$gcxp =$this->pagoProveedor->guardacxp($valores);
-				$this->view->facturasp = $facturasp;
+				//$this->pagoProveedor->busca_Facturasxp($datos);
+				//
+				$this->view->facturasxp = $pagosDAO->busca_Facturasxp();
+				//$this->view->facturasp = $facturasp;
 			}	
 		}
     }
 
     public function aplicarpagoAction()
     {
-    	$idFactura = $this->getParam("idFactura");
+    	//$idFactura = $this->getParam("idFactura");
+    	$idFactura = $this->getParam("numeroFactura");
     	print_r($idFactura);
-    	$fecha = $this->getParam($fecha);
+		$this->pagoProveedorDAO->aplica_Pago();
+    	/*$fecha = $this->getParam($fecha);
 		print_r($fecha);
-		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);
+		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);*/
 				
     }
 

@@ -68,24 +68,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					$precioUnitario=0;
 					$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
 					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
-	
-						
-					}else{
-						echo "Multiplo incorrecto";
-					}
-									{
-						
-					}
-				}else{
-					echo "La factura ya existe";
-				}
-				
-				
-				
-				
-		 		
-				
-				$tablaFactura = $this->tablaFactura;
+					
+					$tablaFactura = $this->tablaFactura;
 				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
 				$rowIdFactura =$tablaFactura->fetchRow($select);
 				$idFactura = $rowIdFactura['idFactura'];
@@ -130,6 +114,15 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'fechaCancela'=>null
 					);
 				 	$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);	
+				}
+	
+						
+					}else{
+						echo "Multiplo incorrecto";
+					}
+				
+				}else{
+					echo "La factura ya existe";
 				}
 				
 				

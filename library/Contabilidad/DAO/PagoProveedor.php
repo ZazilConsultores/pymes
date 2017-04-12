@@ -9,6 +9,30 @@
 			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 			$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
 		}
+		public function busca_Facturasxp(){
+			//Buscamos facturasxp, facturaProveedor = 4
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",4)->where("estatus <> ?", "C")->where("conceptoPago <>?","LI");
+			$rowsFacturaxp = $tablaFactura->fetchAll($select);
+		
+			$modelFacturas = array();
+		
+		foreach ($rowsFacturaxp as $rowFacturaxp) {
+			$modelFactura = new Contabilidad_Model_Factura($rowFacturaxp->toArray());
+			$modelFactura->setIdFactura($rowFacturaxp->idFactura);
+			
+			$modelFacturas[] = $modelFactura;
+			
+		}
+		return $modelFacturas;
+		}
+		public function aplica_Pago (){
+			//Valida que no exista ningun pago.
+			
+			$tablaCuentasxp = $this->tablaCuentasxp;
+			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovto= ?",4);
+			print_r("$select");
+		}
 		public function obtieneFacturaProveedor($idSucursal, $idCoP, $numeroFactura){
 			$tablaCuentasxp = $this->tablaCuentasxp;
 			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)
@@ -50,7 +74,7 @@
 			$tablaFactura = $this->tablaFactura;
 		}
 		
-		public function busca_facturap($idCoP){
+			public function busca_facturap($idCoP){
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idCoP=?",$idCoP)->where("idTipoMovimiento=?",4)->where("estatus=?","P");
 			$rowsFacturap = $tablaFactura->fetchAll($select);
@@ -104,8 +128,10 @@
 		}
 		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total)
 		{
+			//tipoMovimiento facaturaProveedor = 4
 			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("estatus=?","P")->where("idFactura =?",$idFactura);
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("estatus=?","A")
+			->where("conceptoPago <>?", "LI")->where("idFactura =?",$idFactura);
 			$rowFacturap = $tablaFactura->fetchAll($select);
 			print_r($select);
 			if(!is_null($rowFacturap))
@@ -134,5 +160,7 @@
 					);
 					print_r($mCuentasxp);*/
 		}
+
+		
     }
 ?>
