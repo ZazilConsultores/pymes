@@ -219,7 +219,7 @@
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
 				print_r("$select"); 
 				
-				if(!is_null($rowMultiplo)){
+				//if(!is_null($rowMultiplo)){
 					//====================Operaciones para convertir unidad minima====================================================== 
 					$cantidad=0;
 					$precioUnitario=0;
@@ -306,9 +306,7 @@
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
 		}
-				}else{
-					echo "Multiplo incorrecto";
-				}
+				
 				$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");

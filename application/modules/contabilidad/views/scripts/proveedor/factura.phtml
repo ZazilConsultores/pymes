@@ -338,25 +338,25 @@ function calculateGrandTotal() {
     //Calcula iva
    	ivaPorcentaje= $("#ivaPorcentaje").val();
    	console.log(ivaPorcentaje);
-    totalIva = (ivaPorcentaje * grandTotal ) /100;
-    console.log(totalIva);
+    totalIva =  ($("#subTotal").val() * ivaPorcentaje ) /100;
+    console.log("total iva"+totalIva);
     $("input#iva").val(totalIva.toFixed(2));
     
     //Total
     total = grandTotal + totalIva;
-    $("input#total").val(total.toFixed(2));
-    $("input#1-pagos").val(total.toFixed(2));
-    
+  
+   
+      
    	ieps = $('input#ieps').val();
    	if (ieps != 0){
    		iepsIva = $("#subTotal").val() - ieps;
    		ivaIeps = iepsIva * 0.16
    		$("input#iva").val(ivaIeps);
-   		
-   		totalI = parseFloat($("#subTotal").val()) + ivaIeps;
-   		$("input#total").val(totalI);
+   
    	}
     
+    $("input#1-pagos").val(total.toFixed(2));
+    $("input#total").val(total.toFixed(2));
     /*Descuento*/
    descuento = $("#descuento").val();
    if (descuento !=0){
@@ -366,7 +366,7 @@ function calculateGrandTotal() {
    	totalDescuento = grandTotal - descuento;
    	$("input#descuentoGenerado").val(totalDescuento.toFixed(2));
    	totalIva = (ivaPorcentaje * totalDescuento ) /100;
-   	//total = (totalDescuento * totalIva);
+   	total = (totalDescuento * totalIva);
    	console.log("Iva con descuento :" + totalIva);
    	$("input#iva").val(totalIva.toFixed(2)); 
    	total = totalDescuento + totalIva;
@@ -388,7 +388,7 @@ function calculateGrandTotal() {
  		
   //Habilita IvaPorcentaje
  		 $("#editarIva").on("click",function(){
- 		 	//calculateGrandTotal();
+ 		 	calculateGrandTotal();
          	$("#ivaPorcentaje").removeAttr("disabled");
          	
          });
@@ -463,6 +463,7 @@ $("table#productos").on("change", "select[id^='idProducto_']", function(){
 						//console.log(idImpuesto);
 						if (urlImpuestoProducto != '[]'){
 							var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
+							console.log("Ieps: "+impIEPS);
 							$('input#ieps').val(impIEPS.toFixed(2));
 						}else{
 							$('input#ieps').val(0);
