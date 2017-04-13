@@ -81,7 +81,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);		
-		$eProyecto->setAttrib("required", "true");
+		//$eProyecto->setAttrib("required", "true");
 
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
@@ -149,7 +149,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
-		$eNumReferencia->setAttrib("required", "true");
+		//$eNumReferencia->setAttrib("required", "true");
 
 		$bancoDAO = new Inventario_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();

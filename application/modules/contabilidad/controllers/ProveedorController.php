@@ -155,10 +155,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function facturaAction()
     {
-    	//$idImpuesto = $this->getParam("idImpuesto");
-		//$idImpuesto = $this->setParam($paramName, $value)
-		$idImpuesto = $this->setParam("idImpuesto", '15');
-		//print_r($idImpuesto);
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
 		if($request->isGet()){
@@ -170,17 +166,18 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
 				$importe = json_decode($formaPago['importes'], TRUE);
-				print_r($productos);
-				
-				$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
-				
-				$saldoProveedor = $this->facturaDAO->actualizaSaldoProveedor($encabezado, $formaPago);
-				$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
-					 	
+				//print_r($productos);
+				$contador = 0;
+				try{
+					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);		 	
 				foreach ($productos as $producto){
-					$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);	
+					$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+					$contador++;	
 				}
-					
+					$this->view->messageSuccess = "Se ha guardado la factura exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente";
+				}	
 			}
 			
 		}

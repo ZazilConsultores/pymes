@@ -27,7 +27,6 @@
 			
 			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
-		
 			$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
 			$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 			$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
@@ -40,7 +39,6 @@
 			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
-			
 			$this->tablaFacturaImpuesto = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		}
 		
@@ -59,7 +57,7 @@
 				$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
 				->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
 				$rowFactura = $tablaFactura->fetchRow($select);
-				print_r("$select");
+				//print_r("$select");
 				if(!is_null($rowFactura)){
 				 	echo"La factura ya esta registrada";
 				}else{
@@ -90,75 +88,36 @@
 						'folioFiscal'=>$encabezado['folioFiscal'],
 						'importePago'=>$formaPago['pagos'],
 					);
-					print_r($mFactura);
-					$dbAdapter->insert("Factura", $mFactura);
+					//print_r($mFactura);
+					//$dbAdapter->insert("Factura", $mFactura);
 					//Obtine el ultimo id en tabla factura
 					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
-					print_r($idFactura);
-					//Guarda Movimiento en Cuentasxp
+					//print_r($idFactura);
+					
+					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
 					if(($formaPago['pagada'])==="1"){
-					$mCuentasxp = array(
-						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-						'idSucursal'=>$encabezado['idSucursal'],
-						'idFactura'=>$idFactura,
-						'idCoP'=>$encabezado['idCoP'],
-						'idBanco'=>$formaPago['idBanco'],
-						'idDivisa'=>$formaPago['idDivisa'],
-						'numeroFolio'=>$encabezado['numeroFactura'],
-						'secuencial'=>1,
-						'fechaCaptura'=>date("Y-m-d H:i:s", time()),
-						'fechaPago'=>$stringFecha,//Revisar fecha en pagos factura proveedor
-						'estatus'=>"A",
-						'numeroReferencia'=>$formaPago['numeroReferencia'],
-						'conceptoPago'=>$conceptoPago,
-						'formaLiquidar'=>$formaPago['formaLiquidar'],
-						'subTotal'=>$importe[0]['subTotal'],
-						'total'=>$importe[0]['total']	
-					);
-					
-					//print_r($mCuentasxp);
-					$dbAdapter->insert("Cuentasxp", $mCuentasxp);
-					}
-					
-					//Buscamos el ultimo id en factura
-					//$idFactura = $bd->lastInsertId("Factura","idFactura");
-
-				$tablaFactura = $this->tablaFactura;
-				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
-				$rowIdFactura =$tablaFactura->fetchRow($select);
-				$idFactura = $rowIdFactura['idFactura'];
-				print_r("$select");
-				if(!is_null($rowIdFactura)){
-					$mfacturaImpuesto = array(
-						'idFactura'=>$idFactura ,
-						'idImpuesto'=>4,
-						'importe'=>$importe[0]['iva'],	
-					);
-					//print_r($mCuentasxp);
-					$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
-
-					}
-				}
-
-
-
-				$tablaFactura = $this->tablaFactura;
-				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
-				$rowIdFactura =$tablaFactura->fetchRow($select);
-				$idFactura = $rowIdFactura['idFactura'];
-
-				print_r("$select");
-
-				if($importe[0]['ieps']<>0){
-
-						$mfacturaImpuesto = array(
-						'idFactura'=>$idFactura ,
-						'idImpuesto'=>1,
-						'importe'=>$importe[0]['ieps'],
+						$mCuentasxp = array(
+							'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+							'idSucursal'=>$encabezado['idSucursal'],
+							'idFactura'=>$idFactura,
+							'idCoP'=>$encabezado['idCoP'],
+							'idBanco'=>$formaPago['idBanco'],
+							'idDivisa'=>$formaPago['idDivisa'],
+							'numeroFolio'=>$encabezado['numeroFactura'],
+							'secuencial'=>1,
+							'fechaCaptura'=>date("Y-m-d H:i:s", time()),
+							'fechaPago'=>$stringFecha,//Revisar fecha en pagos factura proveedor
+							'estatus'=>"A",
+							'numeroReferencia'=>$formaPago['numeroReferencia'],
+							'conceptoPago'=>$conceptoPago,
+							'formaLiquidar'=>$formaPago['formaLiquidar'],
+							'subTotal'=>$importe[0]['subTotal'],
+							'total'=>$importe[0]['total']	
 						);
-						$dbAdapter->insert("FacturaImpuesto", $mfacturaImpuesto);
-					}
-		
+						//print_r($mCuentasxp);
+						//$dbAdapter->insert("Cuentasxp", $mCuentasxp);
+					}	
+				}		
 			$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");
@@ -215,48 +174,59 @@
 			try{
 				
 		 		$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
-				print_r("$select"); 
+				//print_r("$select"); 
 				
-				//if(!is_null($rowMultiplo)){
+				if(!is_null($rowMultiplo)){
 					//====================Operaciones para convertir unidad minima====================================================== 
 					$cantidad=0;
 					$precioUnitario=0;
 					$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
 					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
 					$tablaFactura = $this->tablaFactura;
+					//Asigna secuencial
 					
+					$tablaMovimiento = $this->tablaMovimiento;
+					$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
+					->where("idCoP=?",$encabezado['idCoP'])
+					->where("idSucursal=?",$encabezado['idSucursal'])
+					->where("fecha=?", $stringFecha)
+					->order("secuencial DESC");
+					$rowMovimiento = $tablaMovimiento->fetchRow($select); 
+		
+					if(!is_null($rowMovimiento)){
+						$secuencial= $rowMovimiento->secuencial +1;
+					}else{
+						$secuencial = 1;	
+					}
+					//Obtenemos el id de la ultima factura
 					$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
 					$rowIdFactura =$tablaFactura->fetchRow($select);
 					$idFactura = $rowIdFactura['idFactura'];
-					print_r($idFactura);
-					//=======================Obtiene la unidad
-					$tablaUnidad= $this->tablaUnidad;
-					$select = $tablaUnidad->select()->from($tablaUnidad)->where("idUnidad=?", $producto['unidad']);
-					$rowUnidad = $tablaUnidad->fetchRow($select);
-					
-					if(! is_null($rowUnidad)){
-						//Guarda Movimiento en tabla Movimientos
+					//Guarda Movimiento en tabla Movimientos
 						$mMovimiento = array(
 							'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 							'idEmpresas'=>$encabezado['idEmpresas'],
 							'idSucursal'=>$encabezado['idSucursal'],
 							'idCoP'=>$encabezado['idCoP'],
 							'numeroFolio'=>$encabezado['numeroFactura'],
-							'idFactura'=>$idFactura,//
-							'idProducto'=>$producto['producto'],
+							'idFactura'=>$idFactura,
+							'idProducto'=>$producto['claveProducto'],
 							'idProyecto'=>$encabezado['idProyecto'],
 							'cantidad'=>$cantidad,
 							'fecha'=>$stringFecha,
-							'secuencial'=>1,
+							'secuencial'=>$secuencial,
 							'estatus'=>"A",
 							'costoUnitario'=>$precioUnitario,
 							'totalImporte'=>$producto['importe']
 						);
-					 	$dbAdapter->insert("Movimientos",$mMovimiento);
-						$tablaProducto = $this->tablaProducto;
-						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['producto']);
+						//print_r($mMovimiento);
+					 	//$dbAdapter->insert("Movimientos",$mMovimiento);
+					 	
+					 	//Buscamos descipcion del producto.
+					 	$tablaProducto = $this->tablaProducto;
+						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
 						$rowProducto = $tablaProducto->fetchRow($select);
 						$desProducto =$rowProducto['producto']; 
 					
@@ -272,12 +242,25 @@
 							'fechaCaptura'=>$stringFecha,
 							'fechaCancela'=>null
 						);
-				 		$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
-				 	}
+						//print_r($mFacturaDetalle);
+				 		//$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
+						
+						//seleccionamos producto en ImpuestosProductos
+						$tablaProductoImp = $this->tablaImpuestoProductos;
+						$select = $tablaProductoImp->select()->from($tablaProductoImp)->where("idProducto=?",$producto['claveProducto']);
+						$rowProdImp = $tablaProductoImp->fetchRow($select);
+						print_r("$select");
+						
+						}else{
+					print_r("<br />");
+					echo "El multiplo es incorrecto";
+				}
+					
+					/*
 					//Inventario
 					//Inventario
 				$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['producto']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['claveProducto']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		
 		/*if(!is_null($rowInventario)){

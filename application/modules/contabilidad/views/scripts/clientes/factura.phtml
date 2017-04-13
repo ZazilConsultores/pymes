@@ -100,9 +100,9 @@ $(document).ready(function (){
     	var newRow = $("<tr>");
     	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 		// idProducto
-		var selectProducto = $('<select />').attr({'id': 'producto_' + filasTabla}).attr({'class':'form-control'});
+		var selectClaveProducto = $('<select />').attr({'id': 'producto_' + filasTabla}).attr({'class':'form-control'});
 		$.each(jsonProductos,function(i,item){
-			selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+			selectClaveProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
 		});
 		// idUnidad
 		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
@@ -126,7 +126,7 @@ $(document).ready(function (){
       
         $("table#productos").append($('<tr>').
 			append($('<td>').append(inputCantidad)).
-			append($('<td>').append(selectProducto)).
+			append($('<td>').append(selectClaveProducto)).
 			append($('<td>').append(inputUnidad)).
 			append($('<td>').append(inputCodigoBarras)).
 			append($('<td>').append(inputdescripcion)).
@@ -145,7 +145,7 @@ $(document).ready(function (){
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
- 			var producto = row.find("select[id^='producto_']").val();
+ 			var claveProducto = row.find("select[id^='producto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
  			var descripcion = row.find("input[id^='descripcion_']").val();
@@ -153,14 +153,14 @@ $(document).ready(function (){
  			var importe = row.find("input[id^='costoTotal_']").val();
  			
  			console.log("Cantidad:"+cantidad);
- 			console.log("Producto:"+producto);
+ 			console.log("Producto:"+claveProducto);
  			console.log("unidad:"+unidad);
  			console.log("codigoBarras:"+codigoBarras);
  			console.log("descripcion:"+descripcion);
  			console.log("precioUnitario:"+precioUnitario);
  			console.log("costoTotal:"+importe);
  			
- 			productos.push(new Producto(cantidad, producto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
+ 			productos.push(new Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -201,9 +201,9 @@ $(document).ready(function (){
  		};
  		});
  		
- 		function Producto(cantidad, producto, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
-		  this.producto = producto;
+		  this.claveProducto = claveProducto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
