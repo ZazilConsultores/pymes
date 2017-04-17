@@ -17,13 +17,15 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
-		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
-		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
 		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
-		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
+		//$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		
+		
 	}
 	
 	public function obtenerProveedores(){
@@ -37,13 +39,14 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 	}
 	
 	public function agregarProducto(array $encabezado, $producto, $formaPago){
-		
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
-		$dbAdapter->beginTransaction();
+		//$dbAdapter->beginTransaction();
+		
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		try{
+			
 			$secuencial=0;	
 			$tablaMovimiento = $this->tablaMovimiento;
 			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
@@ -54,40 +57,50 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 		
 			if(!is_null($rowMovimiento)){
-				$secuencial= $row->secuencial +1;
+				$secuencial= $rowMovimiento->secuencial +1;
 			}else{
 				$secuencial = 1;	
 			}
+			
 			//=================Selecciona producto y unidad=======================================
 			$tablaMultiplos = $this->tablaMultiplos;
 			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-			$rowMultiplo = $tablaMultiplos->fetchRow($select); 
-		
-			//====================Operaciones para convertir unidad minima====================================================== 
-			$cantidad=0;
-			$precioUnitario=0;
-			$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+			$rowMultiplo = $tablaMultiplos->fetchRow($select);
+			//print_r("$select");	 
 			
-			$mMovtos = array(
+			if(!is_null($rowMultiplo)){
+				//====================Operaciones para convertir unidad minima====================================================== 
+				$cantidad=0;
+				$precioUnitario=0;
+				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+				//print_r($precioUnitario);
+				
+				$mMovtos = array(
+					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 					'idEmpresas'=>$encabezado['idEmpresas'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'idCoP'=>$encabezado['idCoP'],
+					'idProyecto'=>$encabezado['idProyecto'],
 					'numeroFolio'=>$encabezado['numFolio'],
 					//'idFactura'=>0,
-					'idProducto' => $producto['descripcion'],
-					'idProyecto'=>$encabezado['idProyecto'],
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringIni,
-					'secuencial'=> $secuencial,
 					'estatus'=>"A",
+					'secuencial'=> $secuencial,
 					'costoUnitario'=>$precioUnitario,
 					'totalImporte'=>$producto['importe']
 				);
-			
+					
 			//print_r($mMovtos);
-			$dbAdapter->insert("Movimientos",$mMovtos);	
+			$dbAdapter->insert("Movimientos",$mMovtos);
+			}else{
+				echo "Multiplo Incorrecto";
+			}
+			
+			
+			
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -121,7 +134,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$rowCuentasxp = $tablaCuentasxp->fetchRow($select); 
 			
 			if(!is_null($rowCuentasxp)){
-				$secuencial= $row->secuencial +1;
+				$secuencial= $rowCuentasxp->secuencial +1;
 			}else{
 				$secuencial = 1;	
 			}

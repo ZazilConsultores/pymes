@@ -11,6 +11,8 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
+		
 	}
 	
 	public function obtenerUnidad($idUnidad)
@@ -72,6 +74,17 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 		$tablaUnidad = $this->tablaUnidad;
 		$where = $tablaUnidad->getAdapter()->quoteInto("idUnidad = ?", $idUnidad);		
 		$tablaUnidad->delete($where);
+	}
+	
+	public function obtenerMultiplos($idProducto)
+	{
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()
+		->setIntegrityCheck(false)
+		->from($tablaMultiplos)
+		->join('Producto', 'Multiplos.idProducto = Producto.idProducto')->where("Multiplos.idProducto = ?", $idProducto);
+		print_r("$select");
+		return $tablaMultiplos->fetchAll($select);
 	}
 	
 	

@@ -1,37 +1,38 @@
 <?php
 	$formulario = $this->formulario;
-	 echo $formulario; 
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
+		
 ?>
+<?php if(!is_null($messageSuccess)){ ?>
+	<div class="alert alert-success" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<?php echo $messageSuccess; ?>
+	</div>
+<?php }elseif(!is_null($messageFail)){ ?>
+	<div class="alert alert-danger" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<?php echo $messageFail; ?>
+	</div>
+<?php } ?>
+<?php echo $formulario ?>
 <section class="row">
-	<div class="panel panel-primary">
+	<div class="panel panel-success ">
 		<div class="panel-heading">
 			<h3 class="panel-title">Agregar Productos para Nota Entrada.</h3>
 		</div>
-		
 		<div class="panel-body">
-			<?php if (!is_null($messageSuccess)){?>
-			<div class="alert-success" role="alert">
-				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
-					<span arial-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageSuccess; ?>
-			</div>
-			<?php }elseif(!is_null($messageFail)){ ?>
-			<div class="alert alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert" arial-label="close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageFail; ?>
-			</div>
-			<?php }?><br />
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
 			<a id="generarJsonArray" class="btn btn-warning">
 				<span class="glyphicon glyphicon-cog" ></span> Cargar
 			</a>
+			 
 			<table id="productosNota" class="table table-striped table-condensed">
 					<thead>
 						<tr>
@@ -63,8 +64,8 @@
 		</div>
 	</div>
 </section>
-<script>
 
+<script>
 	$(document).ready(function(){
 		
 		$("select#idEmpresas").on('change', function(){
@@ -79,7 +80,6 @@
 					$.each(data, function(i,item){	
 						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
 					});
-					
 				}
 			});
 			
@@ -120,11 +120,12 @@
 		
 	});
 </script>
+
 <script>
 	$( document ).ready(function() {
-	
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
+		var jsonMultiplos = <?php echo $this->jsonMultiplos; ?>;
 		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
 	
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
@@ -203,6 +204,37 @@
  			
  		});//cierra funcion buscar descripcion del producto
  		
+ 		//Funcion buscar Multiplo del producto
+ 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
+ 			console.log("Hola");
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			console.log(id);
+			var numFila =  arr[1];
+
+			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
+			console.log($url);
+			/*$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log(url);
+					console.dir(data);
+					$.each(data, function(i,item){
+						if(data[i].idProducto == id){
+							console.log("Es un multiplo del producto");
+							$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+						}	
+						//$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idMultiplo).text(data[i].abreviatura));
+					});
+					
+				}
+				
+			});*/
+ 			
+ 		});//cierra funcion buscar descripcion del producto
+ 		
 	 	//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
  			console.log("En a#generarJsonArray: ");
@@ -214,6 +246,7 @@
  				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
+ 				var claveProducto = row.find("input[id^='idProducto_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
  				var codigoBarras = row.find("input[id^='codigoBarras_']").val();
  				var descripcion = row.find("select[id^='descripcion_']").val();
@@ -229,7 +262,7 @@
  				console.log("precioUnitario:"+precioUnitario);
  				console.log("costoTotal:"+importe);
  				//console.log("total:"+total);
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				productos.push(new Producto(cantidad, claveProducto,  unidad, codigoBarras, descripcion, precioUnitario, importe)); 
  				
  			
  			});
@@ -244,9 +277,9 @@
  		});
  		
 		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
-		  //this.claveProducto = claveProducto;
+		  this.claveProducto = claveProducto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;

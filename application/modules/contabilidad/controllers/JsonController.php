@@ -193,4 +193,5 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}		
 	}
+	
 }

@@ -3,7 +3,7 @@
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
-    private $inventarioDAO = null;
+    //private $inventarioDAO = null;
     private $notaEntradaDAO = null;
     private $remisionEntradaDAO = null;
     private $facturaDAO = null;
@@ -24,25 +24,21 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
+		/*$select = $this->db->select()->from("Multiplos")->order("idUnidad ASC");
+		$statement = $select->query();
+		$rowsMultiplos =  $statement->fetchAll();*/
+		
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
-
-		//Impuesto Producto
-		$select = $this->db->select()->from('ImpuestoProductos');
-		$statement = $select->query();
-		$rowImpuesto =$statement->fetchAll();
-		///////////////////
-		$jsonImpuestoProductos = Zend_Json::encode($rowImpuesto);
-		$this->view->jsonImpuestos = $jsonImpuestoProductos;
 		
 		//============================================>>>Multiplos
 		//$idProducto = $this->getParam("idProducto");
 	
-		/*$select = $this->db->select()->from("Multiplos","idMultiplos")
-		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad")->where("idProducto=?",$idProducto);
+		$select = $this->db->select()->from("Multiplos")
+		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad");
 		$statement = $select->query();
-		$rowsMultiplo = $statement->fetchAll();*/
+		$rowsMultiplos = $statement->fetchAll();
 		
 		// =================================== Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
@@ -51,8 +47,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$jsonUnidad = Zend_Json::encode($rowsUnidad);
 		$this->view->jsonUnidad = $jsonUnidad;
 		
-		/*$jsonMultiplos = Zend_Json::encode($rowsMultiplo);
-		$this->view->jsonMultiplo = $jsonMultiplos;*/
+		$jsonMultiplos = Zend_Json::encode($rowsMultiplos);
+		$this->view->jsonMultiplos = $jsonMultiplos;
 		
 		$this->inventarioDAO = new Inventario_DAO_Empresa;
     }
@@ -71,12 +67,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_NuevaNotaProveedor;
-        //$formulario->getSubForm("0")->removeElement("submit");
-        
-		//$formulario->removeElement("submit");
-		if($request->isGet()){
-			$this->view->formulario = $formulario;		
-		}elseif($request->isPost()){
+        $this->view->formulario = $formulario;	
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
@@ -84,26 +76,13 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$encabezado = $datos[0];
 				//print_r($encabezado);
 				$productos = json_decode($encabezado['productos'],TRUE);
-				//print_r($encabezado);
-				//print_r('<br />');
-				print_r($productos);
-				$contador=0;
-			
-				foreach ($productos as $producto){
-					//$producto->encabezado();
-					//sprint_r($producto);
-					try{
-						$agregarProducto = $this->notaEntradaDAO->agregarProducto($encabezado, $producto);
-						$suma = $this->notaEntradaDAO->suma($encabezado, $producto);
-						//$notaEntradaDAO->agregarProducto($encabezado, $producto);
-						//print_r($contador);
-						$contador++;
-					}catch(Util_Exception_BussinessException $ex){
+				try{
+					$notaentrada =$this->notaEntradaDAO->agregarProducto($encabezado, $productos);
+					$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
+					$this->view->messageSuccess = "Numero de Nota: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
+				}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}
-						
-				}
-				
 			}/*else{
 				print_r("formulario no valido <br />");
 			}	*/				
@@ -116,35 +95,30 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         // action body
 		$request = $this->getRequest();
         $formulario = new Contabilidad_Form_AgregarRemisionProveedor;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;	
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
+				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
+				//print_r($encabezado);
 				$formaPago =$datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
 				//print_r('<br />');
 				$contador=0;
-				//$saldoBanco = $this->remisionEntradaDAO->actulizaSaldoBanco($encabezado, $formaPago);
+				try{
 				$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
-				$editaBanco = $this->remisionEntradaDAO->editarBanco($formaPago, $productos); 
+				$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
+				//$editaBanco = $this->remisionEntradaDAO->editarBanco($formaPago, $productos); 
 				foreach ($productos as $producto){
-					//$producto->encabezado();
-					//sprint_r($producto);
-					//$notaEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
+					
 					$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
-					print_r($remisionEntradaDAO);
 					$contador++;
-					//try{
-						//$guardaProducto =$this-($encabezado, $producto, $formaPago);
-						//$guardaMovimiento = $this->remisionEntradaDAO->
-						//$suma = $this->notaEntradaDAO->suma($encabezado, $producto);
-						//$guardaProducto = $this->remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
-						//$contador++;
-						//$this->view->messageSuccess ="Remision de Entrada realizada efectivamente" ;
-					//}catch(Util_Exception_BussinessException $ex){
-						//$this->view->messageFail = $ex->getMessage();
+				}
+					//$suma = $this->notaEntradaDAO->suma($encabezado, $producto);
+					$this->view->messageSuccess = "Remision: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
 					}
 					
 				}
@@ -157,10 +131,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
-			if($formulario->isValid($request->getPost())){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
+				if($formulario->isValid($request->getPost())){
+				//$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
@@ -169,15 +143,18 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				//print_r($productos);
 				$contador = 0;
 				try{
-					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);		 	
+					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);	
+						 	
 				foreach ($productos as $producto){
+					$suma = $this->facturaDAO->suma($encabezado, $producto);
 					$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 					$contador++;	
 				}
-					$this->view->messageSuccess = "Se ha guardado la factura exitosamente";
+				$this->view->messageSuccess = "Factura: <strong>" .$encabezado["numeroFactura"] . " </strong> guardada exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente";
 				}	
+				
 			}
 			
 		}

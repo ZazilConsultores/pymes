@@ -7,7 +7,8 @@ interface Contabilidad_Interfaces_IFacturaProveedor {
 	public function actualizarSaldoBanco($formaPago);
 	public function actualizaSaldoProveedor($encabezado, $formaPago);
 	public function guardaDetalleFactura(array $encabezado, $producto, $importe);
-
+	
+	public function suma(array $encabezado, $producto);
 	
 	//public function existeFactura($numeroFactura,$idTipoMovimiento,$idCoP, $idSucursal);
 	

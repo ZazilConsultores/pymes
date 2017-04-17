@@ -32,6 +32,20 @@ class Inventario_JsonController extends Zend_Controller_Action
 		}
 		echo Zend_Json::encode($arrayUnidades);
     }
+	
+	public function multiplosAction()
+    {
+        // action body
+        $idProducto = $this->getParam("descripcion");
+		print_r($idProducto);
+       	$multiplos = $this->unidadDAO->obtenerMultiplos();
+
+		if(!is_null($multiplos)){
+			echo Zend_Json::encode($multiplos);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
 
 
 }

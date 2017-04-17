@@ -36,7 +36,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	}
 	
 	
-	public function agregarProducto(array $encabezado, $producto){
+	public function agregarProducto(array $encabezado, $productos){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dbAdapter->beginTransaction();
 	
@@ -44,7 +44,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		try{
-		
+		foreach ($productos as $producto) {
 			$secuencial=0;	
 			$tablaMovimiento = $this->tablaMovimiento;
 			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
@@ -53,7 +53,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			->where("numeroFolio=?",$encabezado['numFolio'])
 			->where("fecha=?", $stringIni)
 			->order("secuencial DESC");
-	
+			
 			$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 		
 			if(!is_null($rowMovimiento)){
@@ -61,21 +61,21 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			}else{
 				$secuencial = 1;	
 			}
-
 			//=================Selecciona producto y unidad=======================================
 			$tablaMultiplos = $this->tablaMultiplos;
 			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-			$multiplo = $tablaMultiplos->fetchRow($select); 
-			//print_r("$rowMultiplo");
-			//====================Operaciones para convertir unidad minima====================================================== 
-			$cantidad=0;
-			$precioUnitario=0;
-			$cantidad = $producto['cantidad'] * $multiplo->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $multiplo->cantidad;
-			//print_r($cantidad);
-			//print_r($precioUnitario);
+			$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+			print_r("$select");
+			
+			if(!is_null($rowMultiplo)){
 				
-			$mMovtos = array(
+				//====================Operaciones para convertir unidad minima====================================================== 
+				$cantidad=0;
+				$precioUnitario=0;
+				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+				
+				$mMovtos = array(
 					'idProducto' => $producto['descripcion'],
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 					'idEmpresas'=>$encabezado['idEmpresas'],
@@ -94,8 +94,15 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			
 			//print_r($mMovtos);
 			$dbAdapter->insert("Movimientos",$mMovtos);
+				
+			}else{
+				echo("Error: <strong>"."</strong> Multiplo incorrecto");
+			}
+			
+		}
 			$dbAdapter->commit();
 		}catch(exception $ex){
+			print_r("Excepcion Lanzada:<strong>" .$ex->getMessage()."</strong>");
 			print_r("<br />");
 			print_r("================");
 			print_r("<br />");
@@ -123,7 +130,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)
-		->where("numeroFolio=?",$encabezado['numFolio'])
+		->where("numeroFolio=?",$encabezado['numeroFactura'])
 		->where("fechaEntrada=?", $stringIni)
 		->order("secuencial DESC");
 	
@@ -140,16 +147,17 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
 		//print_r("$select");
-		
+	
 		//====================Operaciones para convertir unidad minima====================================================== 
-			$cantidad=0;
+		if(!is_null($rowMultiplos)){	
+		 	$cantidad=0;
 			$precioUnitario=0;
 			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
 			$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
 			
 			//print_r($cantidad);
 			
-		if(!is_null($rowMultiplos)){
+		
 			$mCapas = array(
 					'idProducto' => $producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],

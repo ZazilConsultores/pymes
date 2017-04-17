@@ -39,7 +39,7 @@
 			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
-			$this->tablaFacturaImpuesto = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+	
 		}
 		
 			
@@ -88,12 +88,21 @@
 						'folioFiscal'=>$encabezado['folioFiscal'],
 						'importePago'=>$formaPago['pagos'],
 					);
-					//print_r($mFactura);
-					//$dbAdapter->insert("Factura", $mFactura);
+					print_r($mFactura);
+					$dbAdapter->insert("Factura", $mFactura);
 					//Obtine el ultimo id en tabla factura
 					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
 					//print_r($idFactura);
-					
+					//Guarda em facturaImpuesto
+					/*$mfImpuesto = array(
+							'idFactura'=>$idFactura,
+							'idImpuesto'=>4, //Iva
+							'importe'=>$importe[0]['iva']
+							
+						);
+						print_r($mfImpuesto);
+						//$dbAdapter->insert("ImpuestoProductos", $mfImpuesto);*/
+						
 					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
 					if(($formaPago['pagada'])==="1"){
 						$mCuentasxp = array(
@@ -115,7 +124,13 @@
 							'total'=>$importe[0]['total']	
 						);
 						//print_r($mCuentasxp);
-						//$dbAdapter->insert("Cuentasxp", $mCuentasxp);
+						$dbAdapter->insert("Cuentasxp", $mCuentasxp);
+						//Obtine el ultimo id en tabla factura
+
+						//print_r("Obtenemos el ultimo idFactura :" );
+						//print_r($idFactura);
+						
+						
 					}	
 				}		
 			$dbAdapter->commit();
@@ -174,7 +189,7 @@
 			try{
 				
 		 		$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
 				//print_r("$select"); 
 				
@@ -212,7 +227,7 @@
 							'idCoP'=>$encabezado['idCoP'],
 							'numeroFolio'=>$encabezado['numeroFactura'],
 							'idFactura'=>$idFactura,
-							'idProducto'=>$producto['claveProducto'],
+							'idProducto'=>$producto['producto'],
 							'idProyecto'=>$encabezado['idProyecto'],
 							'cantidad'=>$cantidad,
 							'fecha'=>$stringFecha,
@@ -222,11 +237,11 @@
 							'totalImporte'=>$producto['importe']
 						);
 						//print_r($mMovimiento);
-					 	//$dbAdapter->insert("Movimientos",$mMovimiento);
+					 	$dbAdapter->insert("Movimientos",$mMovimiento);
 					 	
 					 	//Buscamos descipcion del producto.
 					 	$tablaProducto = $this->tablaProducto;
-						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
+						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['producto']);
 						$rowProducto = $tablaProducto->fetchRow($select);
 						$desProducto =$rowProducto['producto']; 
 					
@@ -243,27 +258,131 @@
 							'fechaCancela'=>null
 						);
 						//print_r($mFacturaDetalle);
-				 		//$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
+				 		$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
 						
 						//seleccionamos producto en ImpuestosProductos
 						$tablaProductoImp = $this->tablaImpuestoProductos;
-						$select = $tablaProductoImp->select()->from($tablaProductoImp)->where("idProducto=?",$producto['claveProducto']);
+						$select = $tablaProductoImp->select()->from($tablaProductoImp)->where("idProducto=?",$producto['producto']);
 						$rowProdImp = $tablaProductoImp->fetchRow($select);
 						print_r("$select");
+						if(!is_null($rowProdImp)){
+							switch($rowProdImp["idProducto"]){
+											case '29':
+												$importe = $importe[0]['ieps'];
+												print_r("importe subtotal:"); //print_r($importe);
+												print_r($importe);
+											break;
+											case '30':
+												$importe = $importe[0]['isr'];
+												print_r("importe subtotal:");
+												print_r("importe iva:"); //print_r($importe);
+												print_r("<br />");
+												print_r($importe);
+												//print_r("ORIGEN:"); print_r($origen);
+											break;
+											case '30':
+												$importe = $importe[0]['ieps'];
+												print_r($importe); //print_r($origen);
+											break;
+										}//Cierra el switch origen
+								
+									if($importe<> 0 ){
+										//Obtenemos el id de la ultima factura
+					/*$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+					$rowIdFactura =$tablaFactura->fetchRow($select);
+					$idFactura = $rowIdFactura['idFactura'];*/
+									/*$mfImpuesto = array(
+										'idFactura'=>$idFactura,
+										'idImpuesto'=>$rowProdImp["idImpuesto"],//iva
+										'importe'=>$importe
+									);
+								    //print_r(//print_r($mfImpuesto);
+									$dbAdapter->insert("ImpuestoProducto", $mfImpuesto);*/
+								}
+						}
 						
 						}else{
 					print_r("<br />");
 					echo "El multiplo es incorrecto";
 				}
-					
-					/*
-					//Inventario
-					//Inventario
-				$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['claveProducto']);
+				
+				$dbAdapter->commit();
+			}catch(exception $ex){
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r("Excepcion Lanzada");
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r($ex->getMessage());
+				print_r("<br />");
+				print_r("<br />");
+				$dbAdapter->rollBack();
+			}		
+		}
+		
+		public function suma(array $encabezado, $producto){
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+		$dbAdapter->beginTransaction();
+		
+		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+			
+		try{
+		//========================Secuencial==================================================
+		$secuencial=0;	
+		
+		$tablaCapas = $this->tablaCapas;
+		$select = $tablaCapas->select()->from($tablaCapas)
+		->where("numeroFolio=?",$encabezado['numeroFactura'])
+		->where("fechaEntrada=?", $stringIni)
+		->order("secuencial DESC");
+	
+		$rowCapas = $tablaCapas->fetchRow($select); 
+		
+		if(!is_null($rowCapas)){
+			$secuencial= $rowCapas->secuencial +1;
+		}else{
+			$secuencial = 1;	
+		}
+		
+		//=================Selecciona producto y unidad=======================================
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
+		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
+		//print_r("$select");
+	
+		//====================Operaciones para convertir unidad minima====================================================== 
+		if(!is_null($rowMultiplos)){	
+		 	$cantidad=0;
+			$precioUnitario=0;
+			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
+			$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
+			
+			//print_r($cantidad);
+			
+		
+			$mCapas = array(
+					'idProducto' => $producto['producto'],
+					'idDivisa'=>1,
+					'idSucursal'=>$encabezado['idSucursal'],
+					'numeroFolio'=>$encabezado['numeroFactura'],
+					'secuencial'=>$secuencial,
+					'cantidad'=>$cantidad,
+					'fechaEntrada'=>$stringIni,
+					'costoUnitario'=>$precioUnitario
+			);
+			
+			$dbAdapter->insert("Capas",$mCapas);
+		}
+		
+		
+		$tablaInventario = $this->tablaInventario;
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['producto']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		
-		/*if(!is_null($rowInventario)){
+		if(!is_null($rowInventario)){
 			$cantidad = $rowInventario->existencia + $cantidad;
 			$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
 			print ("<br />");
@@ -281,28 +400,27 @@
 					'existenciaReal'=>$cantidad,
 					'maximo'=>'0',
 					'minimo'=>'0',
-					'fecha'=>$stringFecha,
+					'fecha'=>$stringIni,
 					'costoUnitario'=>$precioUnitario,
 					'porcentajeGanancia'=>'0',
 					'cantidadGanancia'=>'0',
-					'costoCliente'=>(($rowInventario->porcentajeGanancia / 100)) 
+					'costoCliente'=>($precioUnitario * ($rowInventario->porcentajeGanancia / 100) + $precioUnitario) 
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
-		}*/
-				
-				$dbAdapter->commit();
-			}catch(exception $ex){
-				print_r("<br />");
-				print_r("================");
-				print_r("<br />");
-				print_r("Excepcion Lanzada");
-				print_r("<br />");
-				print_r("================");
-				print_r("<br />");
-				print_r($ex->getMessage());
-				print_r("<br />");
-				print_r("<br />");
-				$dbAdapter->rollBack();
-			}		
 		}
+			$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
+		}
+	}
 	}

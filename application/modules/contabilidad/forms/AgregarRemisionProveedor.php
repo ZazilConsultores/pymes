@@ -164,7 +164,8 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eSubmit->setAttrib("disabled","true");
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eProducto));
-	
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago,$eFormaPago,$eImportePago));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
