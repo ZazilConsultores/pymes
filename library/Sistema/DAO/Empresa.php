@@ -88,7 +88,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				}
 			}elseif($tipo == "PR"){
 				if($fiscal["rfc"] != "XBXX010101000") {
-					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$select = $dbAdapter->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 					$rowFiscales = $select->query()->fetchAll();
 					//print_r(count($rowFiscales));
 					if(count($rowFiscales) > 1) {
@@ -109,7 +109,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//Insertamos en empresa, cliente o proveedor
 			switch ($tipo) {
 				case 'EM':
-					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa));
+					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>$idEmpresa));
 					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
 					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
 					break;	
@@ -123,13 +123,13 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//Insertamos en domicilio
 			unset($datos[1]["idEstado"]);
 			$dbAdapter->insert("Domicilio", $datos[1]);
-			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
 			$dbAdapter->insert("FiscalesDomicilios", array("idFiscales"=>$idFiscales,"idDomicilio"=>$idDomicilio,"fecha" => $fecha,"esSucursal"=>"N"));
 			
 			//Insertamos en telefono
 			$dbAdapter->insert("Telefono", $datos[2]);
 			$idTelefono = $dbAdapter->lastInsertId("Telefono", "idTelefono");
-			$dbAdapter->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono));
+			$dbAdapter->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono, "fecha"=>date("Y-m-d h:i:s",time()) ));
 			
 			//Insertamos en email
 			$dbAdapter->insert("Email", $datos[3]);

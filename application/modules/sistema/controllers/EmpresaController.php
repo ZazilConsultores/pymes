@@ -44,7 +44,7 @@ class Sistema_EmpresaController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
+				print_r($datos);
 				//$empresa = new Sistema_Model_Fiscal($datos[0]);
 				//print_r($empresa->toArray());
 				try{
