@@ -26,11 +26,24 @@
 		}
 		return $modelFacturas;
 		}
-		public function aplica_Pago (){
+		public function aplica_Pago ($idFactura){
 			//Valida que no exista ningun pago.
 			
 			$tablaCuentasxp = $this->tablaCuentasxp;
-			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovto= ?",4);
+			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",4)->where("idFactura=?", $idFactura);
+			$rowCuentasxp = $tablaCuentasxp->fetchAll($select);
+			print_r("$select");
+			
+			if(is_null($rowCuentasxp)){
+				$secuencial = 1;
+			}else{
+				foreach ($rowCuentasxp as$rowCuentaxp) {
+					$secuencial = $rowCuentaxp["secuencial"];
+				}	
+			}
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura =?", $idFactura);
+			$rowFactura = $tablaFactura->fetchRow($select);
 			print_r("$select");
 		}
 		public function obtieneFacturaProveedor($idSucursal, $idCoP, $numeroFactura){

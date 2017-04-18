@@ -9,6 +9,6 @@
 		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total);
 	
 		public function busca_Facturasxp ();
-		public function aplica_Pago ();
+		public function aplica_Pago ($idFactura);
     }
 ?>

@@ -82,8 +82,8 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 		$select = $tablaMultiplos->select()
 		->setIntegrityCheck(false)
 		->from($tablaMultiplos)
-		->join('Producto', 'Multiplos.idProducto = Producto.idProducto')->where("Multiplos.idProducto = ?", $idProducto);
-		print_r("$select");
+		->join('Unidad', 'Multiplos.idUnidad = Unidad.idUnidad')->where("Multiplos.idProducto = ?", $idProducto);
+		//print_r($select->__toString());
 		return $tablaMultiplos->fetchAll($select);
 	}
 	

@@ -33,6 +33,12 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRazonSocial->setLabel('Razon Social:');
 		$eRazonSocial->setAttrib("class", "form-control");
 		
+		$eCuenta = new Zend_Form_Element_Text("cuenta");
+		$eCuenta->setAttrib("class", "form-control");
+		$eCuenta->setLabel("Cuenta: ");
+		$eCuenta->setAttrib("maxlength", "15");
+		$eCuenta->setAttrib("required", "required");
+		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar Fiscales');
 		$eSubmit->setAttrib("class", "btn btn-success");
@@ -40,7 +46,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		//$this->setElementDecorators($decoratorsElemento);
 		//$this->setDecorators($decoratorsCategoria);
 		
-		$this->addElements(array($eRFC,$eRazonSocial,$eSubmit));
+		$this->addElements(array($eRFC,$eRazonSocial, $eCuenta,$eSubmit));
     }
 
 

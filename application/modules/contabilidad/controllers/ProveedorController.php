@@ -161,27 +161,26 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     }
 
     public function pagosAction()
-    {
-		$idCoP = $this->getParam("idCoP");
-		$idSucursal = $this->getParam("idSucursal");
-		
-		$fecha = $this->getParam("fecha");
-		print_r($fecha);
-		
+    {	
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_PagosProveedor;
+		$formulario->getSubForm("0")->getElement("idEmpresas");
+		$formulario->getSubForm("0")->getElement("idEmpresas");
+		$formulario->getSubForm("0")->getElement("idSucursal");
+		$formulario->getSubForm("0")->getElement("idCoP");
+		$formulario->getSubForm("0")->getElement("numFactura");
+		$formulario->removeSubForm("1");
 		$this->view->formulario = $formulario;
-	
+		
+		//if($request->isGet()){
+			//$this->view->formulario = $formulario;	
+		//}elseif($request->isPost()){
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$pagosDAO = new Contabilidad_DAO_PagoProveedor;
 				$datos = $formulario->getValues();
-				//$valores = json_decode($datos['valores'], TRUE);
-				//$facturasp = $this->pagoProveedor->busca_facturap($datos["idCoP"]);
-				//$cuentaxp = $this->pagoProveedor->busca_Cuentasxp($datos["idSucursal"], $datos["idCoP"],$datos["numeroFactura"]);
-				//$gcxp =$this->pagoProveedor->guardacxp($valores);
 				//$this->pagoProveedor->busca_Facturasxp($datos);
-				//
+
 				$this->view->facturasxp = $pagosDAO->busca_Facturasxp();
 				//$this->view->facturasp = $facturasp;
 			}	
@@ -190,10 +189,26 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function aplicarpagoAction()
     {
-    	//$idFactura = $this->getParam("idFactura");
-    	$idFactura = $this->getParam("numeroFactura");
-    	print_r($idFactura);
-		$this->pagoProveedorDAO->aplica_Pago();
+    	
+    	$request = $this->getRequest();
+		$idFactura = $this->getParam("idFactura");
+    	$formulario = new Contabilidad_Form_PagosProveedor;
+		
+		$formulario->getElement("fecha");
+		$formulario->removeSubForm("0");
+		$formulario->getElement("submit")->setLabel("Aplicar");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				try{
+					$this->pagoProveedorDAO->aplica_Pago($idFactura);
+					}catch(Exception $ex){
+				}
+			}
+		}
+    	
     	/*$fecha = $this->getParam($fecha);
 		print_r($fecha);
 		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);*/

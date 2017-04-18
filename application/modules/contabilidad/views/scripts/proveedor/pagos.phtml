@@ -39,9 +39,14 @@
 							<td id="idFactura" ><?php echo $facturaxp->getNumeroFactura(); ?></td>
 							<td><?php echo $facturaxp->getFechaFactura(); ?></td>
 							<td><?php echo $facturaxp->getTotal(); ?></td>
-							<td><button type="button" class="btn btn-info">
+							<td>
+								<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor", "action"=>"aplicarpago","idFactura"=>$facturaxp->getIdFactura()), null, true); ?>">
+									<span class="glyphicon glyphicon-pencil"></span>Pago
+								</a>
+							</td>
+							<!--<td><button type="button" class="btn btn-info">
 								<span class="glyphicon glyphicon-pencil"></span> Registrar un pago. 
-							</button></td>
+							</button></td>-->
 							<td><button   type="button" class="btn btn-primary btnBusqueda" id="nomina" data-toggle="modal" data-target="#msgConfirmN" >
 								<span class="glyphicon glyphicon-pencil"></span> Registara una nomina de Credito.
 							</button></td>

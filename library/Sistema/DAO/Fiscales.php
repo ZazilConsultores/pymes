@@ -479,4 +479,14 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 	}
 	
+	public function obtenerCuenta($idFiscales){
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales = ?", $idFiscales);
+		$rowFiscal = $tablaFiscales->fetchRow($select);
+		$modelFiscal = new Sistema_Model_Fiscales($rowFiscal->toArray());
+		
+		return $modelFiscal;
+	}
+	
+	
 }

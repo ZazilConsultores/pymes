@@ -130,7 +130,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)
-		->where("numeroFolio=?",$encabezado['numeroFactura'])
+		->where("numeroFolio=?",$encabezado['numeroFolio'])
 		->where("fechaEntrada=?", $stringIni)
 		->order("secuencial DESC");
 	

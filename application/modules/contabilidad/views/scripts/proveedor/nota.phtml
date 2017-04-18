@@ -126,7 +126,7 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonMultiplos = <?php echo $this->jsonMultiplos; ?>;
-		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
+		//var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
 	
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
@@ -143,9 +143,9 @@
 
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});
+			//$.each(jsonUnidad,function(i,item){
+				//inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			//});
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -215,23 +215,24 @@
 
 			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
 			console.log($url);
-			/*$.ajax({
+			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					console.log(url);
+					console.log($url);
 					console.dir(data);
+					$("select#idUnidad_"+numFila).empty();
 					$.each(data, function(i,item){
 						if(data[i].idProducto == id){
-							console.log("Es un multiplo del producto");
-							$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idMultiplos).text(data[i].unidad));
 						}	
-						//$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idMultiplo).text(data[i].abreviatura));
+						
 					});
 					
 				}
 				
-			});*/
+			});
  			
  		});//cierra funcion buscar descripcion del producto
  		

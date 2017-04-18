@@ -5,32 +5,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 
     public function init()
     {
-    	$decoratorsPresentacion = array(
-			'FormElements',
-			//array(array('tabla'=>'Htmltag'),array('tag'=>'table', 'class'=>'table table-striped table-condensed')),
-			array('Fieldset', array('placement'=>'prepend'))
-
-		);
-		
-		/*$decoratorsElemento =array(
-			
-			'ViewHelper',
-			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
-			array('label', array('tag'=>'td')),
-			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
-
-		);*/
-
-		$decoratorsElemento =array(
-			/*Decoradores*/
-			'ViewHelper',
-			//array(array('element'=>'HtmlTag'), array('tag'=>'tr')),
-			//array('element' => 'td', array('tag'=>'tr')),
-			 //array(array('element'=>'HtmlTag'), array('tag'=>'td'), array(array('row'=>'HtmlTag'),array('tag'=>'td')))
-			//array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
-			array('element' =>'HtmlTag', array('tag' => 'tr', 'row' => 'HtmlTag'),array('tag'=>'tr'))
-
-		);
+    	$subBusqueda = new Zend_Form_SubForm();
 		
     	$tablaFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablaFiscales->obtenerInformacionEmpresasIdFiscales();
@@ -64,36 +39,71 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
 		$eNumeroFactura->setLabel('Ingresar Numero Factura');
 		$eNumeroFactura->setAttrib("class", "form-control");
-		$eNumeroFactura->setAttrib("required", "Ingresar Factura");
+		$eNumeroFactura->setAttrib("required", "true");
 		$eNumeroFactura->setAttrib("placeholder", "Numero Factura");
-		
-		/*$eValores = new Zend_Form_Element_Hidden('valores');
-		$eValores->setAttrib("class", "form-control");
-		$eValores->setAttrib("required", "Ingresar Factura");*/
 
-    	
-		$subFoo = new Zend_Form_SubForm;
+		$subBusqueda->addElements(array($eEmpresa, $eSucursal, $eProveedor, $eNumeroFactura));
+	
+		$subAplicar = new Zend_Form_SubForm();
+				
+		$eFecha = new Zend_Form_Element_Text('fecha');
+		$eFecha->setLabel('Seleccionar Fecha:');
+		$eFecha->setAttrib("class", "form-control");
+		$eFecha->setAttrib("required","Seleccionar fecha");
 		
-		$submit = new Zend_Form_Element_Submit('submit');
-		$submit->setLabel('Buscar Factura'); 
-		$submit->setAttrib("class", "btn btn-success");
+		$ePago = new Zend_Form_Element_Text('pago');
+		$ePago->setLabel('Pago $:');
+		$ePago->setAttrib("class", "form-control");
 		
-		/*$sCancelar = new Zend_Form_Element_Submit('cancelar');
-		$sCancelar->setLabel('Cancelar'); 
-		$sCancelar->setAttrib("class", "btn btn-info");*/
+		$eDivisa = new Zend_Form_Element_Select('idDivisa');
+		$eDivisa->setLabel('Seleccione Divisa:');
+		$eDivisa->setAttrib("class", "form-control");
 		
+		$tipoDivisaDAO = new Contabilidad_DAO_Divisa;
+		$tiposDivisa = $tipoDivisaDAO->obtenerDivisas();
 		
-		$this->addElement($eEmpresa);
-		$this->addElement($eSucursal);
-		$this->addElement($eProveedor);
-		$this->addElement($eNumeroFactura);
-		$this->addElement($submit);
-		//$this->addElement($eValores);
-		/*$subFoo->addElements(array($submit,$sCancelar));
-		$subFoo->setElementDecorators($decoratorsElemento);
-		$subFoo->setDecorators($decoratorsPresentacion);*/
-		//$this->addSubForm($subFoo);
-		$this->addSubForm($subFoo, "pie");
+		foreach ($tiposDivisa as $tipoDivisa)
+		{
+			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDescripcion());		
+		}
+		$conceptoPago = Zend_Registry::get('conceptoPago');
+		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
+		$eConceptoPago->setLabel('Concepto Pago:');
+		$eConceptoPago->setAttrib("class", "form-control");
+		$eConceptoPago->setMultiOptions($conceptoPago);
+		
+		$formaPago = Zend_Registry::get('formaPago');
+		$eFormaPago = new Zend_Form_Element_Select('formaPago');
+		$eFormaPago->setLabel('Forma Pago:');
+		$eFormaPago->setAttrib("class", "form-control");
+		$eFormaPago->setAttrib("required", "true");
+		$eFormaPago->setMultiOptions($formaPago);
+		
+		$eBanco = new Zend_Form_Element_Select('idBanco');
+		$eBanco->setLabel('Seleccionar Banco:');
+		$eBanco->setAttrib("class", "form-control");
+		
+		$bancoDAO = new Inventario_DAO_Banco;
+		$bancos = $bancoDAO->obtenerBancos();
+		foreach($bancos as $banco)
+		{
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getCuenta());
+		}			
+		
+		$eNumeroReferencia = new Zend_Form_Element_Text('numeroReferencia');
+		$eNumeroReferencia->setLabel('Número de referencia:');
+		$eNumeroReferencia->setAttrib("class", "form-control");
+		$eNumeroReferencia->setAttrib("required", "true");
+		
+		$subAplicar->addElements(array($ePago, $eDivisa, $eConceptoPago, $eFormaPago, $eBanco, $eNumeroReferencia));
+		$this->addElement($eFecha);
+		$this->addSubForms(array($subBusqueda,$subAplicar));
+		$eSubmit = new Zend_Form_Element_Submit("submit");
+		$eSubmit->setLabel("Buscar Empresa");
+		$eSubmit->setAttrib("class", "btn btn-success");
+		
+		$this->addElement($eSubmit);
+		
     }
 
 

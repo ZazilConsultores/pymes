@@ -98,7 +98,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				}
 			}
 			
-			//	No genero error por lo que procedemos a insertar en la tabla
+			//No genero error por lo que procedemos a insertar en la tabla
 			$dbAdapter->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
 			$idFiscales = $dbAdapter->lastInsertId("Fiscales","idFiscales");
@@ -111,13 +111,13 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				case 'EM':
 					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>$idEmpresa));
 					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
-					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta));
 					break;	
 				case 'CL':
 					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
 					break;
 				case 'PR':
-					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta));
 					break;
 			}
 			//Insertamos en domicilio
