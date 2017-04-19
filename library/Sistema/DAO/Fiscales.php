@@ -48,6 +48,16 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 		return $modelFiscal;
 	}
+	public function obtenerFiscalesCuentaContable($idFiscales){
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()
+		->setIntegrityCheck(false)
+		->from($tablaFiscales, array('Fiscales.idFiscales'))
+		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
+		->join('Proveedores', 'Empresa.idEmpresa = Proveedores.idEmpresa',array('idProveedores','idTipoProveedor','cuenta'))
+		->where("Fiscales.idFiscales = ?", $idFiscales);
+		 return $tablaFiscales->fetchRow($select);
+	}
 	
 	public function obtenerFiscalesEmpresas() {
 		$tablaEmpresas = $this->tablaEmpresas;
@@ -167,6 +177,30 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaFiscales = $this->tablaFiscales;
 		$where = $tablaFiscales->getAdapter()->quoteInto("idFiscales=?", $idFiscales);
 		$tablaFiscales->update($datos, $where);
+	}
+	
+	public function actualizarFiscalesCuentaContable($idFiscales, $rfc, $razonSocial,$tipoProveedor, $cuenta) {
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales);
+		$where = $tablaFiscales->getAdapter()->quoteInto("idFiscales=?", $idFiscales);
+		$tablaFiscales->update(array("rfc" => $rfc,"razonSocial" => $razonSocial), $where);
+		$rowFisacales = $tablaFiscales->fetchRow($where);
+		print_r("$select");
+		if(!is_null($rowFisacales)){
+			$tablaEmpresa = $this->tablaEmpresa;
+			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales =?", $rowFisacales["idFiscales"]);
+			$rowEmpresa = $tablaEmpresa->fetchRow($select);
+			if(!is_null($rowEmpresa)){
+				$tablaProveedor = $this->tablaProveedores;
+				$select = $tablaProveedor->select()->from($tablaProveedor);
+				$idEmpresa = $rowEmpresa["idEmpresa"];
+				print_r("idEmpresa");
+				print_r($idEmpresa);
+				$where = $tablaProveedor->getAdapter()->quoteInto("idEmpresa=?", $idEmpresa);
+				$tablaProveedor->update(array("cuenta"=>$cuenta,"idTipoProveedor"=>$tipoProveedor), $where);
+			}
+		}
 	}
 	
 	public function agregarDomicilioFiscal($idFiscales, Sistema_Model_Domicilio $domicilio){

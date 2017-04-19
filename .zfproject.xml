@@ -1116,6 +1116,7 @@
             <modelFile modelName="ImpuestoProductos"/>
             <modelFile modelName="GuiaContable"/>
             <modelFile modelName="Poliza"/>
+            <modelFile modelName="TipoProveedor"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1483,6 +1484,7 @@
             <modelFile modelName="Proveedores"/>
             <modelFile modelName="Sucursal"/>
             <modelFile modelName="Vendedor"/>
+            <modelFile modelName="TipoProveedor"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

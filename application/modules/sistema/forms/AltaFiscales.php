@@ -24,7 +24,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 			//array('Description', array('tag' => 'td', 'class' => 'label')), 
 			array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
 		);
-        
+        $empresaDAO = new Sistema_DAO_Empresa;
         $eRFC = new Zend_Form_Element_Text('rfc');
 		$eRFC->setLabel('RFC:');
 		$eRFC->setAttrib("class", "form-control");
@@ -32,6 +32,14 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRazonSocial = new Zend_Form_Element_Text('razonSocial');
 		$eRazonSocial->setLabel('Razon Social:');
 		$eRazonSocial->setAttrib("class", "form-control");
+		
+		$eTipoProveedor = new Zend_Form_Element_Select("tipoProveedor");
+		$eTipoProveedor->setLabel("Tipo Proveedor:");
+		$eTipoProveedor->setAttrib("class", "form-control");
+		$rTiposProveedor = $empresaDAO->obtenerTipoProveedor();
+		foreach ($rTiposProveedor as $rTipoProveedor) {
+			$eTipoProveedor->addMultiOption($rTipoProveedor["idTipoProveedor"], $rTipoProveedor["descripcion"]);
+		}
 		
 		$eCuenta = new Zend_Form_Element_Text("cuenta");
 		$eCuenta->setAttrib("class", "form-control");
@@ -46,7 +54,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		//$this->setElementDecorators($decoratorsElemento);
 		//$this->setDecorators($decoratorsCategoria);
 		
-		$this->addElements(array($eRFC,$eRazonSocial, $eCuenta,$eSubmit));
+		$this->addElements(array($eRFC,$eRazonSocial, $eTipoProveedor,$eCuenta,$eSubmit));
     }
 
 

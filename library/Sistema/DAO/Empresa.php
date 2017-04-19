@@ -328,6 +328,17 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		
 	}
 	
+	public function obtenerTipoProv($idTipoProveedor){
+		$tablaTipoProveedor = $this->tablaTipoProveedor;
+		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->where("idTipoProveedor=?",$idTipoProveedor);
+		$rowTipo = $tablaTipoProveedor->fetchRow($select);
+		
+		$tipoModel = new Sistema_Model_TipoProveedor($rowTipo->toArray());
+		$tipoModel->setIdTipoProveedor($rowTipo->idTipoProveedor);
+		
+		return $tipoModel;
+	}
+	
 	/**
 	 * Agrega una nueva sucursal al domicilio fiscal.
 	 */

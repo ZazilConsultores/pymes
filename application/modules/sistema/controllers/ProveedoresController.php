@@ -58,7 +58,9 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
 		//	======================================================
 		$idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		$fiscalesCuentaContable = $this->fiscalesDAO->obtenerFiscalesCuentaContable($idFiscales);
 		$this->view->fiscales = $fiscales;
+		$this->view->fiscalesCuentaContable = $fiscalesCuentaContable;
 		$this->view->fiscalesDAO = $this->fiscalesDAO;
     }
 
