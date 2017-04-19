@@ -181,20 +181,6 @@
 <script>
 $(document).ready(function(){
 	console.log("ready");
-	//$("table#detalleCxP tbody tr").click(function() {
-		$("table#detalleCxP").on("click", "button[id^='pago']", function(){
-		console.log("click");
-		$("table#detalleCxP tr").each(function(){
-			var customerId = $(this).find("td#idfactura").html();  
-			//var celdas = $(this).find('td');
-			
-			//Mostrar el valor de cada celda
-			//celdas.each(function(){
-				
-				console.log(customerId);
-			});
-		});
-	//});
 	var url = window.location.origin + "/General/";
 	
 	$("select#idEmpresas").on('change', function(){
@@ -213,6 +199,13 @@ $(document).ready(function(){
 				}
 			});
 		}
+	});
+	
+	$("select#idSucursal").on('click', function(){
+		var idSucursal = $(this).val();
+		console.log(idSucursal);
+		var urlBuscaxEmpresa = url + "contabilidad/json/buscafactura/idSucursal/" + this.value ;
+		console.log(urlBuscaxEmpresa);
 	});
 	
 	
@@ -245,29 +238,7 @@ $(document).ready(function(){
 		});
 	});
 	
-	/*$("#registrar").on('click', function (){
-		var fecha = $("input#fechaInicial")
-		var eFecha = fecha.val();
-		
-		
-		
-		var importePago = $("#importePago").val();
-		var divisa = $("#idDivisa").val();
-		var conceptoPago = $("#conceptoPago").val();
-		var formaPago = $("#formaPago").val();
-		var banco = $("#idBanco").val();
-		var numeroRef = $("#numeroReferencia").val();
-		
-		if(importePago != 0 && importePago !="") {
-			var saldo = $("#total").text();
-			console.log(saldo);
-			if(saldo < importePago){
-				console.log("La cantidad se cubre con "+ saldo );
-			}else{
-				
-			}
-		}
-	});*/
+
 	
 	$("#registrarPago").on("click", function (){
 		var idFactura = $("#numeroFactura").val();

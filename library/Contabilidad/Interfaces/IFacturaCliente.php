@@ -11,5 +11,8 @@
 	public function guardaIva(array $encabezado, $importe);
 	
 	public function guardaDetalleFactura(array $encabezado, $producto, $importe);
+	
+	public function resta(array $encabezado, $producto);
+	public function creaCardex(array $encabezado, $producto);
   } 
 ?>

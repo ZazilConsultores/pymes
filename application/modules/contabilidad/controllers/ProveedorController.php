@@ -169,18 +169,14 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$formulario->getSubForm("0")->getElement("idSucursal");
 		$formulario->getSubForm("0")->getElement("idCoP");
 		$formulario->getSubForm("0")->getElement("numFactura");
+		$formulario->removeElement("fecha");
 		$formulario->removeSubForm("1");
 		$this->view->formulario = $formulario;
-		
-		//if($request->isGet()){
-			//$this->view->formulario = $formulario;	
-		//}elseif($request->isPost()){
+	
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$pagosDAO = new Contabilidad_DAO_PagoProveedor;
 				$datos = $formulario->getValues();
-				//$this->pagoProveedor->busca_Facturasxp($datos);
-
 				$this->view->facturasxp = $pagosDAO->busca_Facturasxp();
 				//$this->view->facturasp = $facturasp;
 			}	
@@ -202,8 +198,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				$pago = $datos[1];
+				print_r($pago);
 				try{
-					$this->pagoProveedorDAO->aplica_Pago($idFactura);
+					$this->pagoProveedorDAO->aplica_Pago($idFactura,$pago);
 					}catch(Exception $ex){
 				}
 			}

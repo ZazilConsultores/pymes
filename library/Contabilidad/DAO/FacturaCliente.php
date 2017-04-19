@@ -26,6 +26,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
+		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
+			
 	}
 	public function guardaDetalleFactura(array $encabezado, $producto, $importe){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -59,7 +62,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						$secuencial = 1;	
 					}
 					$tablaMultiplos = $this->tablaMultiplos;
-					$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
+					$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
 					$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 					if(!is_null($rowMultiplo)){
 						
@@ -85,7 +88,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'idCoP'=>$encabezado['idCoP'],
 						'numeroFolio'=>$encabezado['numeroFactura'],
 						'idFactura'=>$idFactura,//
-						'idProducto'=>$producto['producto'],
+						'idProducto'=>$producto['claveProducto'],
 						'idProyecto'=>$encabezado['idProyecto'],
 						'cantidad'=>$cantidad,
 						'fecha'=>$stringFecha,
@@ -97,7 +100,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				 	$dbAdapter->insert("Movimientos",$mMovimiento);
 					
 					$tablaProducto = $this->tablaProducto;
-					$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['producto']);
+						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
 					$rowProducto = $tablaProducto->fetchRow($select);
 					$desProducto =$rowProducto['producto']; 
 					
@@ -107,7 +110,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'idUnidad'=>$producto['unidad'],
 						'secuencial'=>$secuencial,
 						'cantidad'=>$cantidad,
-						'descripcion'=>$producto["descripcion"],
+						'descripcion'=>$producto["claveProducto"],
 						'precioUnitario'=>$precioUnitario,
 						'importe'=>$producto['importe'],
 						'fechaCaptura'=>$stringFecha,
@@ -295,7 +298,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$dbAdapter->beginTransaction();
 		
 		$tablaImpuestoProductos = $this->tablaImpuestoProductos;
-		$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where("idProducto=?",$producto['descripcion']);
+		$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where("idProducto=?",$producto['claveProducto']);
 		$rowImpuestoProductos =$tablaImpuestoProductos->fetchRow($select);
 		
 		$idImpuesto = $rowImpuestoProductos->idImpuesto;
@@ -360,7 +363,162 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		}		
 	}
 		
-	
+	/////////////////////////////////////////////////////////////////Inventario y cardex
+	public function resta(array $encabezado, $producto){
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+		$dbAdapter->beginTransaction();
+		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		
+		try{
+		//======================Resta en capas, inventario============================================================================*//
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
+		$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+		
+		$cantidad = 0;
+		$precioUnitario = 0;
+		$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+		$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+			
+			
+		$tablaInventario = $this->tablaInventario;
+		//$tablaInventario =$this->ta
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['claveProducto']);
+		$rowInventario = $tablaInventario->fetchRow($select);
+		$restaCantidad = $rowInventario->existencia - $cantidad;
+		
+		//print_r("Cantidad en inventario:");
+		//print_r("$restaCantidad");
+		
+
+		if(!is_null($rowInventario)){
+			//print_r("la cantidad en inventario no es menor que 0");
+			/*print_r("<br />");
+			$tablaCapas = $this->tablaCapas;
+			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['claveProducto']) 
+			->order("fechaEntrada ASC");
+			$rowCapas = $tablaCapas->fetchRow($select);
+			//print_r("<br />");
+			print_r("<br />");
+			//print_r("$select");
+			//print_r("<br />");
+			$cant =  $rowCapas->cantidad - $cantidad;
+			//print_r("Cant <br />");
+			print_r("<br />");
+			//print_r("<Cantidad en Capas />");
+			print_r("<br />");
+			//print_r($cant);
+			print_r("<br />");
+			
+			
+		//=====================================================================Resta 
+		if(!$cant <= 0){
+			
+			$where = $tablaCapas->getAdapter()->quoteInto("idProducto =?",$rowCapas->idProducto,"fechaEntrada =?",$rowCapas->fechaEntrada );
+			print_r("<br />");
+			//print_r("query seleccion producto:");		
+			print_r("<br />");
+			//print_r("$where");
+			print_r("<br />");
+			//print_r($cant);
+			print_r("<br />");
+			$tablaCapas->update(array('cantidad'=>$cant), $where);
+			print_r("<br />");
+			print_r("<br />");
+			//print_r("$where");
+		}else{
+		
+			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?", $rowCapas->fechaEntrada,"idProducto =?",$rowCapas->idProducto);	
+			$tablaCapas->delete($where);
+		}**/
+		
+		//===Resta cantidad en inventario
+		
+			$tablaInventario = $this->tablaInventario;
+			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['claveProducto']);
+			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
+		}
+		$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
+		}
+	}
+	public function creaCardex(array $encabezado, $producto){
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+		$dbAdapter->beginTransaction();
+		
+		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		try{
+		$tablaCapas = $this->tablaCapas;
+		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['claveProducto'])
+		//->where("fechaEntrada )
+		->order("fechaEntrada ASC");
+		$rowCapas = $tablaCapas->fetchRow($select);
+		
+		//=======================================Seleccionar tabla Movimiento
+		$tablaMovimiento = $this->tablaMovimiento;
+			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
+			->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
+			->where("idCoP=?",$encabezado['idCoP'])
+			->where("idEmpresas=?",$encabezado['idEmpresas'])
+			->where("fecha=?", $stringIni)
+			->order("secuencial DESC");
+		$rowMovimiento = $tablaMovimiento->fetchRow($select); 
+		
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
+		$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+		$utilidad = ($rowMovimiento->costoUnitario - $rowCapas['costoUnitario'])* $rowMovimiento->cantidad;
+		//print_r($utilidad);
+		$cantidad = 0;
+		$precioUnitario = 0;
+		$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+		$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+		
+		$mCardex = array(
+					'idSucursal'=>$encabezado['idSucursal'],
+					'numerofolio'=>$encabezado['numeroFactura'],
+					'idProducto'=>$producto['claveProducto'],
+					'idDivisa'=>1,
+					'secuencialEntrada'=>1,
+					'fechaEntrada'=>$rowCapas['fechaEntrada'],
+					'secuencialSalida'=>$rowMovimiento->secuencial,
+					'fechaSalida'=>$stringIni,
+					'cantidad'=>$cantidad,
+					'costo'=>$rowCapas['costoUnitario'],
+					'costoSalida'=>$producto['importe'],
+					'utilidad'=>$utilidad
+					
+			);
+			//print_r($mCardex);
+			//$dbAdapter->insert("Cardex",$mCardex);
+			$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
+		}
+	}
 	
 }
     

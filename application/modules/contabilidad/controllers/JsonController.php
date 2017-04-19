@@ -181,12 +181,12 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	}
 	
 	//Buscamos en cuentasxp para facturas proveedor por idSucursal
-	public function pagosAction(){
+	public function buscafacturaAction(){
 		$idSucursal = $this->getParam("idSucursal");
 		$idCoP = $this->getParam("idCoP");
 		$numeroFactura = $this->getParam("numeroFactura");
 		
-		$cuentasxp = $this->pagoProveedorDAO->busca_Cuentasxp($idCoP);
+		$cuentasxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal);
 		if(!is_null($cuentasxp)){
 			echo Zend_Json::encode($cuentasxp);	
 		}else{

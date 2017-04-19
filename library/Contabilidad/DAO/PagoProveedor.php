@@ -26,8 +26,10 @@
 		}
 		return $modelFacturas;
 		}
-		public function aplica_Pago ($idFactura){
+		public function aplica_Pago ($idFactura, $pago){
 			//Valida que no exista ningun pago.
+			$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+			//$dbAdapter->beginTransaction();
 			
 			$tablaCuentasxp = $this->tablaCuentasxp;
 			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",4)->where("idFactura=?", $idFactura);
@@ -45,6 +47,34 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura =?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
 			print_r("$select");
+			
+			if($pago["pago"]<> ""){
+				if($rowFactura["total"] < $pago["pago"]){
+					echo "La cantidad se cubre con:" . number_format($rowFactura["total"], 2, '.', '')  ;	
+				}
+				
+			}
+			$mCuentasxp = array(
+					'idTipoMovimiento'=>4,
+					'idSucursal'=>2,
+					'idCoP'=>3,
+					'idFactura'=>$idFactura,
+					'idBanco'=>$pago['idBanco'],
+					'idDivisa'=>$pago['idDivisa'],
+					'numeroFolio'=>123,
+					'numeroReferencia'=>$pago['numeroReferencia'],
+					'secuencial'=>1,
+					'estatus'=>"A",
+					'fechaPago'=>date('Y-m-d h:i:s', time()),
+					'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+					'formaLiquidar'=>$pago['formaPago'],
+					'conceptoPago'=>$pago['conceptoPago'],
+					'subTotal'=>0,
+					'total'=>$pago['pago']
+				);   
+				
+				//print_r($mCuentasxp);
+				$dbAdapter->insert("Cuentasxp",$mCuentasxp);
 		}
 		public function obtieneFacturaProveedor($idSucursal, $idCoP, $numeroFactura){
 			$tablaCuentasxp = $this->tablaCuentasxp;
@@ -100,9 +130,22 @@
 		
 		}
 		
-		public function busca_Cuentasxp($idSucursal, $idCoP,$numeroFolio){
+		public function busca_Cuentasxp($idSucursal){
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",4)->where("estatus <> ?", "C")->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal);
+			$rowsFacturaxp = $tablaFactura->fetchAll($select);
+		
+			$modelFacturas = array();
+			
+			foreach ($rowsFacturaxp as $rowFacturaxp) {
+				$modelFactura = new Contabilidad_Model_Factura($rowFacturaxp->toArray());
+				$modelFactura->setIdFactura($rowFacturaxp->idFactura);
+				$modelFacturas[] = $modelFactura;
+			
+			}
+			return $modelFacturas;
 				
-			$tablaCuentasxp = $this->tablaCuentasxp;
+			/*$tablaCuentasxp = $this->tablaCuentasxp;
 			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento=?",4)->where("idSucursal=?",$idSucursal)->where("idCoP=?",$idCoP)->where("numeroFolio=?",$numeroFolio);
 			$rowCuentaxp = $tablaCuentasxp->fetchRow($select);
 			//print_r("$select");
@@ -136,7 +179,7 @@
 						*/
 				//	);
 					//print_r($mCuentasxp);
-					//$dbAdapter->insert("Cuentasxp", $mCuentasxp);
+					//$dbAdapter->insert("Cuentasxp", $mCuentasxp);*/
 							
 		}
 		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total)

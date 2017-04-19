@@ -99,7 +99,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente,$eVendedor,$eFecha, $eProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente/*$eVendedor*/,$eFecha, $eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
