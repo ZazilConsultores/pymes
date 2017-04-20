@@ -33,19 +33,6 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRazonSocial->setLabel('Razon Social:');
 		$eRazonSocial->setAttrib("class", "form-control");
 		
-		$eTipoProveedor = new Zend_Form_Element_Select("tipoProveedor");
-		$eTipoProveedor->setLabel("Tipo Proveedor:");
-		$eTipoProveedor->setAttrib("class", "form-control");
-		$rTiposProveedor = $empresaDAO->obtenerTipoProveedor();
-		foreach ($rTiposProveedor as $rTipoProveedor) {
-			$eTipoProveedor->addMultiOption($rTipoProveedor["idTipoProveedor"], $rTipoProveedor["descripcion"]);
-		}
-		
-		$eCuenta = new Zend_Form_Element_Text("cuenta");
-		$eCuenta->setAttrib("class", "form-control");
-		$eCuenta->setLabel("Cuenta: ");
-		$eCuenta->setAttrib("maxlength", "15");
-		$eCuenta->setAttrib("required", "required");
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar Fiscales');
@@ -54,7 +41,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		//$this->setElementDecorators($decoratorsElemento);
 		//$this->setDecorators($decoratorsCategoria);
 		
-		$this->addElements(array($eRFC,$eRazonSocial, $eTipoProveedor,$eCuenta,$eSubmit));
+		$this->addElements(array($eRFC,$eRazonSocial,$eSubmit));
     }
 
 

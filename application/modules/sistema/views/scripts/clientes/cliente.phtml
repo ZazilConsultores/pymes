@@ -2,6 +2,7 @@
 	// ==========================================================================
 	$fiscalesDAO = $this->fiscalesDAO;
 	$fiscales = $this->fiscales;
+	$fiscalesCuentaContable = $this->fiscalesCuentaContable;
 	
 	//$fiscal = $fiscalesDAO->obtenerFiscales($ecliente["idFiscales"]);
 	$domiciliosFiscales = $fiscalesDAO->obtenerDomiciliosPorIdFiscal($fiscales->getIdFiscales());
@@ -27,11 +28,12 @@
 				<th>Sucursales</th>
 				<th>R.F.C.</th>
 				<th>Razon Social</th>
+				<th>Cuenta Contable</th>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
-						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"clientes","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
 							<span class="glyphicon glyphicon-pencil"></span> Configurar
 						</a>
 					</td>
@@ -42,6 +44,7 @@
 					</td>
 					<td><?php echo $fiscales->getRfc() ?></td>
 					<td><?php echo $fiscales->getRazonSocial() ?></td>
+					<td><?php echo $fiscalesCuentaContable["cuenta"] ?></td>
 				</tr>
 			</tbody>
 		</table>

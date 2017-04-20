@@ -28,13 +28,11 @@ class Sistema_FiscalesController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
-		$fiscalesCuentaContable = $this->fiscalesDAO->obtenerFiscalesCuentaContable($idFiscales);
+		
 		$formulario = new Sistema_Form_AltaFiscales;
 		$formulario->getElement("rfc")->setValue($fiscales->getRfc());
 		$formulario->getElement("razonSocial")->setValue($fiscales->getRazonSocial());
 		$formulario->getElement("rfc")->setValue($fiscales->getRfc());
-		$formulario->getElement("tipoProveedor")->setValue($fiscalesCuentaContable["idTipoProveedor"]);
-		$formulario->getElement("cuenta")->setValue($fiscalesCuentaContable["cuenta"]);
 		$formulario->getElement("submit")->setLabel("Actualizar	Fiscales");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -42,15 +40,11 @@ class Sistema_FiscalesController extends Zend_Controller_Action
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$rfc = $formulario->getValue('rfc');
-				$razonSocial = $formulario->getValue('razonSocial');
-				$tipoProveedor = $formulario->getValue('tipoProveedor');
-				$cuenta = $formulario->getValue('cuenta');
-				
+				$datos = $formulario->getValues();
+
 				try{
-					//$this->fiscalesDAO->actualizarFiscales($idFiscales, $datos);
-					//$this->fiscalesDAO->actualizarFiscalesCuentaContable($idFiscales, $rfc, $razonSocial, $cuenta);
-					$this->fiscalesDAO->actualizarFiscalesCuentaContable($idFiscales, $rfc, $razonSocial,$tipoProveedor, $cuenta);
+					$this->fiscalesDAO->actualizarFiscales($idFiscales, $datos);
+			
 					$this->view->messageSuccess = "Los datos fiscales se han actualizado correctamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "No se pudo actualizar los datos fiscales. Error: <strong>".$ex->getMessage()."</strong>";
