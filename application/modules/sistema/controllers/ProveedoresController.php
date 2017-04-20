@@ -64,7 +64,41 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
 		$this->view->fiscalesDAO = $this->fiscalesDAO;
     }
 
-
+	public function editaAction(){
+		$request = $this->getRequest();
+		$idFiscales = $this->getParam("idFiscales");
+		$fiscalesCuentaContable = $this->fiscalesDAO->obtenerFiscalesCuentaContable($idFiscales);
+		$formulario = new Sistema_Form_AltaEmpresa;
+		$formulario->getSubForm("0")->getElement("tipo")->setMultiOptions(array("PR"=>"Proveedor"));
+		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("EM");
+		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("CL");
+		$formulario->getSubForm("0")->removeElement("tipo");
+		
+		$formulario->getSubForm("0")->getElement("razonSocial")->setValue($fiscalesCuentaContable["razonSocial"]);
+		$formulario->getSubForm("0")->getElement("rfc")->setValue($fiscalesCuentaContable["rfc"]);
+		$formulario->getSubForm("0")->getElement("cuenta")->setValue($fiscalesCuentaContable["cuenta"]);
+		$formulario->getSubForm("0")->getElement("tipoProveedor")->setValue($fiscalesCuentaContable["idTipoProveedor"]);
+		$formulario->getElement("submit")->setLabel("Actualizar	Fiscales");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario->removeSubForm("1");
+		$formulario->removeSubForm("2");
+		$formulario->removeSubForm("3");
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$rfc = $formulario->getSubForm("0")->getValue("rfc");
+				$razonSocial = $formulario->getSubForm("0")->getValue('razonSocial');
+				$tipoProveedor = $formulario->getSubForm("0")->getValue('tipoProveedor');
+				$cuenta = $formulario->getSubForm("0")->getValue('cuenta');
+				try{
+					$this->fiscalesDAO->actualizarFiscalesCuentaContable($idFiscales, $rfc, $razonSocial, $tipoProveedor, $cuenta);
+					$this->view->messageSuccess = "Los datos fiscales se han actualizado correctamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "No se pudo actualizar los datos fiscales. Error: <strong>".$ex->getMessage()."</strong>";
+				}
+			}
+		}
+	}
 }
 
 

@@ -48,15 +48,16 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 		return $modelFiscal;
 	}
+	
 	public function obtenerFiscalesCuentaContable($idFiscales){
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()
 		->setIntegrityCheck(false)
-		->from($tablaFiscales, array('Fiscales.idFiscales'))
+		->from($tablaFiscales, array('Fiscales.idFiscales','rfc','razonSocial'))
 		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
 		->join('Proveedores', 'Empresa.idEmpresa = Proveedores.idEmpresa',array('idProveedores','idTipoProveedor','cuenta'))
 		->where("Fiscales.idFiscales = ?", $idFiscales);
-		 return $tablaFiscales->fetchRow($select);
+		return $tablaFiscales->fetchRow($select);
 	}
 	
 	public function obtenerFiscalesCuentaContableCli($idFiscales){
@@ -67,7 +68,6 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
 		->join('Clientes', 'Empresa.idEmpresa = Clientes.idEmpresa',array('idCliente','cuenta'))
 		->where("Fiscales.idFiscales = ?", $idFiscales);
-		 print_r("$select");
 		 return $tablaFiscales->fetchRow($select);
 	}
 	public function obtenerFiscalesEmpresas() {
@@ -197,7 +197,6 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$where = $tablaFiscales->getAdapter()->quoteInto("idFiscales=?", $idFiscales);
 		$tablaFiscales->update(array("rfc" => $rfc,"razonSocial" => $razonSocial), $where);
 		$rowFisacales = $tablaFiscales->fetchRow($where);
-		print_r("$select");
 		if(!is_null($rowFisacales)){
 			$tablaEmpresa = $this->tablaEmpresa;
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales =?", $rowFisacales["idFiscales"]);
@@ -206,8 +205,6 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 				$tablaProveedor = $this->tablaProveedores;
 				$select = $tablaProveedor->select()->from($tablaProveedor);
 				$idEmpresa = $rowEmpresa["idEmpresa"];
-				print_r("idEmpresa");
-				print_r($idEmpresa);
 				$where = $tablaProveedor->getAdapter()->quoteInto("idEmpresa=?", $idEmpresa);
 				$tablaProveedor->update(array("cuenta"=>$cuenta,"idTipoProveedor"=>$tipoProveedor), $where);
 			}
@@ -230,8 +227,6 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 				$tablaClientes = $this->tablaClientes;
 				$select = $tablaClientes->select()->from($tablaClientes);
 				$idEmpresa = $rowEmpresa["idEmpresa"];
-				print_r("idEmpresa");
-				print_r($idEmpresa);
 				$where = $tablaClientes->getAdapter()->quoteInto("idEmpresa=?", $idEmpresa);
 				$tablaClientes->update(array("cuenta"=>$cuenta), $where);
 			}

@@ -64,7 +64,7 @@ class Sistema_ClientesController extends Zend_Controller_Action
 		$idFiscales = $this->getParam("idFiscales");
 		$fiscalesCuentaContable = $this->fiscalesDAO->obtenerFiscalesCuentaContableCli($idFiscales);
 		$formulario = new Sistema_Form_AltaEmpresa;
-		//$formulario->getSubForm("0")->getElement("tipo")->setMultiOptions(array("CL"=>"Cliente"));
+		$formulario->getSubForm("0")->getElement("tipo")->setMultiOptions(array("CL"=>"Cliente"));
 		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("EM");
 		$formulario->getSubForm("0")->getElement("tipo")->removeMultiOption("PR");
 		$formulario->getSubForm("0")->removeElement("tipo");
@@ -84,10 +84,7 @@ class Sistema_ClientesController extends Zend_Controller_Action
 				$razonSocial = $formulario->getSubForm("0")->getValue('razonSocial');
 				$tipoProveedor = $formulario->getSubForm("0")->getValue('tipoProveedor');
 				$cuenta = $formulario->getSubForm("0")->getValue('cuenta');
-				print_r($rfc);
 				try{
-					//$this->fiscalesDAO->actualizarFiscales($idFiscales, $datos);
-					//$this->fiscalesDAO->actualizarFiscalesCuentaContable($idFiscales, $rfc, $razonSocial, $cuenta);
 					$this->fiscalesDAO->actualizarFiscalesCuentaContableCli($idFiscales, $rfc, $razonSocial, $cuenta);
 					$this->view->messageSuccess = "Los datos fiscales se han actualizado correctamente!!";
 				}catch(Exception $ex){
