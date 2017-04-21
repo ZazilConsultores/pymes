@@ -360,7 +360,7 @@ function calculateGrandTotal() {
 			
 		});
 	
-	$("select#idSucursal").on('click', function(){
+	$("select#id").on('click', function(){
 		var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
 		console.log(url);
 		$.ajax({

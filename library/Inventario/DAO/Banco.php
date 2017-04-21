@@ -49,17 +49,21 @@
 		return $modelBanco;
 	}
 	
-	public function crearBanco(Contabilidad_Model_Banco $banco){
-		$tablaBanco = $this->tablaBanco;
-		/*$select = $tablaBanco->select()->from($tablaBanco)->where( "hash = ? ", $banco->getHash());
-		$row = $tablaBanco->fetchRow($select);
+	public function crearBanco(array $datos){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		//$dbAdapter->beginTransaction();
 		
-		if(!is_null($row)) throw new Util_Exception_BussinessException("Banco: <strong>" . $banco->getBanco() . "</strong> duplicado en el sistema");
-		$banco->setHash($banco->getHash());*/
-		$banco->setFecha(date("Y-m-d H:i:s", time()));
+		$dbAdapter->insert("BancosEmpresa", array("idEmpresa"=>$datos["idEmpresas"],"idBanco"=>$datos["idSucursal"]));
+		if($datos["idEmpresas"] <> 0){
+
+			$fecha= date("Y-m-d h:i:s",time());
+			unset($datos["idEmpresas"]);
+			unset($datos["idSucursal"]);
+			$datos['fecha']=$fecha;
+			$tablaBanco = $this->tablaBanco;
+			$dbAdapter->insert("Banco", $datos);
+		}
 		
-		
-		$tablaBanco->insert($banco->toArray());
 	}
 		
 	

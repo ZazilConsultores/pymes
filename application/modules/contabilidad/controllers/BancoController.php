@@ -30,18 +30,17 @@ class Contabilidad_BancoController extends Zend_Controller_Action
     {
        	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AltaBanco;
+		$formulario->removeElement("idEmpresas");
+		$formulario->removeElement("idSucursal");
 		$this->view->formulario = $formulario;
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$banco = new Contabilidad_Model_Banco($datos);
-				//$this->bancoDAO->crearBanco($banco);
-				//print_r($datos);
 				try{
-					$this->bancoDAO->crearBanco($banco);
+					$this->bancoDAO->crearBanco($datos);
 					//print_r($subparametro->toArray());
-					$mensaje = "Banco <strong>" . $banco->getBanco() . "</strong> creado exitosamente";
+					$mensaje = "Banco <strong>" . $datos["banco"] . "</strong> creado exitosamente";
 					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
@@ -58,12 +57,12 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 	
 		
 		$formulario = new Contabilidad_Form_AltaBanco;
-		
+		$formulario->removeElement("idEmpresas");
+		$formulario->removeElement("idSucursal");
 		$formulario->getElement("cuenta")->setValue($banco->getCuenta());
 		$formulario->getElement("banco")->setValue($banco->getBanco());
 		$formulario->getElement("cuentaContable")->setValue($banco->getCuentaContable());
 		$formulario->getElement("tipo")->setValue($banco->getTipo());
-		$formulario->getElement("fecha")->setValue($banco->getFecha());
 		$formulario->getElement("saldo")->setValue($banco->getSaldo());
 
 		$formulario->getElement("submit")->setLabel("Actualizar");
@@ -86,7 +85,10 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		//$this->_helper->redirector->gotoSimple("admin", "banco", "contabilidad", array("idBanco"=>$idBanco));
     }
 
-		
+	public function editaAction()
+    {
+    	
+    }	
     
 
 }

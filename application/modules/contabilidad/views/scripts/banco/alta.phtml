@@ -5,25 +5,49 @@
 	$messageFail = $this->messageFail;
 ?>
 <section class="row">
-	<article>
-		<div>
-			<?php echo $formulario; ?>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Nuevo Banco</h3>
 		</div>
-		<?php if(!is_null($messageSuccess)){ ?>
-		<div class="alert alert-success" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-			<?php echo $messageSuccess; ?>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<?php if(!is_null($messageSuccess)){ ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+				<div class="alert alert-danger" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageFail; ?>
+				</div>
+				<?php } ?><br />
+				<?php echo $formulario; ?>
+			</div>
 		</div>
-		<?php }elseif(!is_null($messageFail)){ ?>
-		<div class="alert alert-danger" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-			<?php echo $messageFail; ?>
-		</div>
-		
-		<?php } ?>
-	</article>
+	</div>
 </section>
+<script>
+$(document).ready(function(){
+	$("select#idEmpresas").on('change', function(){
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
+			console.log(url);
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
+					//console.dir(data);
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+				}
+			});
+			
+		});
+});
+</script>

@@ -5,7 +5,7 @@
 ?>
 
 <section class="row">
-	<div class="panel panel-default">
+	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Bancos.
@@ -39,8 +39,13 @@
 						<td><?php echo $banco->getFecha() ?></td>
 						<td><?php echo $banco->getSaldo() ?></td>
 						<td>
-							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "admin", "idBanco" => $banco->getIdBanco()), null, true); ?>">
+							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "admin", "idBanco" => $banco->getIdBanco()), null, true); ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar
+							</a>
+						</td>
+						<td>
+							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "admin", "idBanco" => $banco->getIdBanco()), null, true); ?>">
+								<span class="glyphicon glyphicon-cog"></span> Enlazar Empresa
 							</a>
 						</td>
 					</tr>
