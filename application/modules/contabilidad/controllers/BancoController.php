@@ -32,6 +32,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		$formulario = new Contabilidad_Form_AltaBanco;
 		$formulario->removeElement("idEmpresas");
 		$formulario->removeElement("idSucursal");
+		$formulario->removeElement("idBanco");
 		$this->view->formulario = $formulario;
 		
 		if($request->isPost()){
@@ -52,42 +53,67 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 
     public function adminAction()
     {
-        $idBanco = $this->getParam("idBanco");
+       
+    }
+
+    public function editaAction()
+    {
+    	$idBanco = $this->getParam("idBanco");
 		$banco = $this->bancoDAO->obtenerBanco($idBanco);
-	
 		
 		$formulario = new Contabilidad_Form_AltaBanco;
 		$formulario->removeElement("idEmpresas");
 		$formulario->removeElement("idSucursal");
+		$formulario->removeElement("idBanco");
 		$formulario->getElement("cuenta")->setValue($banco->getCuenta());
 		$formulario->getElement("banco")->setValue($banco->getBanco());
 		$formulario->getElement("cuentaContable")->setValue($banco->getCuentaContable());
 		$formulario->getElement("tipo")->setValue($banco->getTipo());
 		$formulario->getElement("saldo")->setValue($banco->getSaldo());
-
 		$formulario->getElement("submit")->setLabel("Actualizar");
-		
-		//$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		$this->view->banco = $banco;
 		$this->view->formulario = $formulario;
-    }
+		$request = $this->getRequest();
+       	if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos=$formulario->getValues();
+				try{
+					$this->bancoDAO->editarBanco($idBanco, $datos);
+					$this->view->messageSuccess = "Banco se han actualizado correctamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "No se pudo actualizar Error: <strong>".$ex->getMessage()."</strong>";
+				}
+			}
+		}
+	}
 
-    public function editaAction()
+	public function enlazarAction()
     {
-        $request = $this->getRequest();
+    	$request = $this->getRequest();
+		//Obtenemos el idProducto y el idImpuesto
+		$idEmpresa = $this->getParam("idEmpresa");
 		$idBanco = $this->getParam("idBanco");
-		print_r($idBanco);
-		$datos = $request->getPost();
-		unset($datos["submit"]);
+		$formulario = new Contabilidad_Form_AltaBanco;
+		$this->view->formulario = $formulario; 
+		$formulario->removeElement("cuenta");
+		$formulario->removeElement("banco");
+		$formulario->removeElement("idDivisa");
+		$formulario->removeElement("tipo");
+		$formulario->removeElement("cuentaContable");
+		$formulario->removeElement("saldo");
 		
-		$this->bancoDAO->editarBanco($idBanco, $datos);
-		//print_r($datos);
-		//$this->_helper->redirector->gotoSimple("admin", "banco", "contabilidad", array("idBanco"=>$idBanco));
-    }
-
-	public function editaAction()
-    {
-    	
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost()))
+			{
+				$datos = $formulario->getValues();
+		   		/*$impuestoProducto = new Contabilidad_Model_ImpuestoProductos($datos);
+				try{
+		   			$this->impuestoDAO->enlazarProductoImpuesto($impuestoProducto, $idImpuesto, $idProducto);
+				}catch(exception $ex){
+					
+				}*/
+			}
+    	}
     }	
     
 

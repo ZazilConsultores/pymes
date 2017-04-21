@@ -7,6 +7,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	private $fiscalesDAO;
 	private $productosDAO;
 	private $impuestoProductosDAO;
+	private $BancosEmpresaDAO;
 	private $facturaClienteDAO;
 	private $pagoProveedorDAO;
 
@@ -22,6 +23,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
 		$this->productosDAO = new Inventario_DAO_Producto;
 		$this->vendedorDAO = new Sistema_DAO_Vendedores;
+		$this->BancosEmpresaDAO = new Inventario_DAO_Banco;
 		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
 		$this->facturaClienteDAO = new Contabilidad_DAO_FacturaCliente;
 		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
@@ -150,6 +152,18 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		
 		if(!is_null($impuestoProducto)){
 			echo Zend_Json::encode($impuestoProducto);
+		}else{
+			echo Zend_Json::encode(array());
+		}		
+	}
+	
+	//obtenerBancosEmpresa
+	public function bancosEmpresaAction() {
+		$idEmpresa = $this->getParam("idEmpresas");
+		$bancosEmpresa = $this->obtenerBancosEmpresaAction($idEmpresa);
+		
+		if(!is_null($bancosEmpresa)){
+			echo Zend_Json::encode($bancosEmpresa);
 		}else{
 			echo Zend_Json::encode(array());
 		}		

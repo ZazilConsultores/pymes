@@ -8,11 +8,13 @@
  
 
 	private $tablaBanco;
+	private $tablaBancosEmpresa;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaBancosEmpresa = new Contabilidad_Model_DbTable_BancosEmpresa(array('db'=>$dbAdapter));
 	}
 	public function obtenerBancos()
 	{
@@ -77,5 +79,32 @@
 	public function eliminarBanco($idBanco){
 		
 	}
+	
+	public function bancosEmpresa($idEmpresa) {
+		
+		$tablaBancosEmpresa = $this->tablaBancosEmpresa;
+		$select = $tablaBancosEmpresa->select()->from($tablaBancosEmpresa)->where ("idEmpresa = ?", $idEmpresa);
+		$rowBancosEmpresa = $tablaBancosEmpresa->fetchAll($select);
+		//print_r("$select");
+		$idsBancos = array();
+		
+		foreach ($rowBancosEmpresa as $rowBancoEmpresa) {
+			$idsBancos[] = $rowBancoEmpresa->idEmpresa;
+			
+		}
+	
+		if(!is_null($rowBancosEmpresa) && ! empty($idsBancos)){
+			//Obtenemos los productos
+			$tablaBancosEmpresa =$this->tablaBancosEmpresa;
+			$select = $tablaBancosEmpresa->select()
+			->setIntegrityCheck(false)
+			->from($tablaBancosEmpresa)
+			->join('Empresa', 'BancosEmpresa.idEmpresa = Empresa.idEmpresa')
+			->join('Banco', 'BancosEmpresa.idBanco = Banco.idBanco', array('banco'));
+			return $tablaBancosEmpresa->fetchAll($select);
+			
+		}
+		
+		}
 
  }
