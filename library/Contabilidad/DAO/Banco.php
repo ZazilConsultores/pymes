@@ -99,7 +99,7 @@
 		public function altaBancoEmpresa($idEmpresas, $idCliente){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			
-			$tablaBcosEmp = $this->tablaBancosEmpresa;
+		/*	$tablaBcosEmp = $this->tablaBancosEmpresa;
 			$select = $tablaBcosEmp->select()->from($tablaBcosEmp)->where("idEmpresa = ?", $idEmpresa);
 			$rowBcosEmp = $tablaBcosEmp->fetchRow($select);
 			print_r("$select");
@@ -116,7 +116,7 @@
 				}
 			}else{
 				$tablaBcosEmp->insert(array("idEmpresa" =>  $idEmpresa, "idBanco" => implode(",", array($idBanco))));
-			}
+			}*/
 			
 		}
  }
