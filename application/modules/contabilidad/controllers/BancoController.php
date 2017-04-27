@@ -62,7 +62,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		$banco = $this->bancoDAO->obtenerBanco($idBanco);
 		
 		$formulario = new Contabilidad_Form_AltaBanco;
-		$formulario->removeElement("idEmpresas");
+		$formulario->removeElement("idEmpresa");
 		$formulario->removeElement("idSucursal");
 		$formulario->removeElement("idBanco");
 		$formulario->getElement("cuenta")->setValue($banco->getCuenta());
