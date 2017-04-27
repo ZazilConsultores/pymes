@@ -10,7 +10,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->bancoDAO = new Inventario_DAO_Banco;
+        $this->bancoDAO = new Contabilidad_DAO_Banco;
 	
     }
 
@@ -103,17 +103,22 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		$formulario->removeElement("saldo");
 		
 		if($request->isPost()){
-			if($formulario->isValid($request->getPost()))
-			{
+			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-		   		/*$impuestoProducto = new Contabilidad_Model_ImpuestoProductos($datos);
+				unset($datos["idSucursal"]);
+				$idEmpresa = $datos["idEmpresa"];
+				$idSucursal = $datos["idSucursal"];
 				try{
-		   			$this->impuestoDAO->enlazarProductoImpuesto($impuestoProducto, $idImpuesto, $idProducto);
-				}catch(exception $ex){
-					
-				}*/
+					//$this->bancoDAO->altaBancoEmpresa($datos);
+					//print_r($subparametro->toArray());
+					$mensaje = "Banco <strong>" . $datos["idEmpresa"] . "</strong> creado exitosamente";
+					$this->view->messageSuccess = $mensaje;
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
+				}			
 			}
-    	}
+			//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
+		}
     }	
     
 

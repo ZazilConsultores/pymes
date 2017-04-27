@@ -136,7 +136,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
 		
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 		
 		$eBanco = new Zend_Form_Element_Select('idBanco');

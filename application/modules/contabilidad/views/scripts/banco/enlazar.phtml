@@ -35,7 +35,7 @@
 <script>
 $(document).ready(function () {
 		
-		$("select#idEmpresas").on('change', function(){
+		$("select#idEmpresa").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
 			$.ajax({
@@ -50,20 +50,18 @@ $(document).ready(function () {
 					
 				}
 			});
-		});
-		
-		//Obtiene el valor empresa
-		var idEmpresas = $("select#idEmpresas").val();
-		var url = window.location.origin + "/General/contabilidad/json/bancosEmpresa/idEmpresa/"+idEmpresas;
-		console.log(url);
-		$.ajax({
-			url: url,
-			dataType: "json",
-			success: function(data){
+			
+			//Obtiene el valor empresa
+			var url = window.location.origin + "/General/contabilidad/json/bancosempresa/emp/"+ this.value;
+			console.log(url);
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
 				console.log(url);
 				console.dir(data);
 				
-				var tbody = $("table#impuestosProductos").find('tbody');
+				/*var tbody = $("table#impuestosProductos").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
 					tbody.append($('<tr>').
@@ -72,8 +70,12 @@ $(document).ready(function () {
 					append($('<td>').append(data[i].importe)).
 					append($('<td>').append(data[i].porcentaje))
 					);
-				});
+				});*/
 			}
 		});
+			
+		});
+		
+		
 });
 </script>

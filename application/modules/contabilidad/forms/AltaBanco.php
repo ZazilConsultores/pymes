@@ -8,13 +8,13 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
     	$divisaDAO = new Contabilidad_DAO_Divisa;
 		$divisas = $divisaDAO->obtenerDivisas();
 		
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 		
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
-		$eEmpresa = new Zend_Form_Element_Select('idEmpresas');
+		$eEmpresa = new Zend_Form_Element_Select('idEmpresa');
 		$eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		

@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
- class Inventario_DAO_Banco implements Inventario_Interfaces_IBanco {
+ class Contabilidad_DAO_Banco implements Contabilidad_Interfaces_IBanco {
  
 
 	private $tablaBanco;
@@ -33,12 +33,12 @@
 	}
 	public function obtenerBancosEmpresasFondeo(Contabilidad_Model_Banco $banco)
 	{
-		$tablaBanco = $this->tablaBanco;
+		/*$tablaBanco = $this->tablaBanco;
 		$select = $tablaBanco->select()->from($tablaBanco)->where('tipo = "IN"');
 		$rowBanco = $tablaBanco->fetchRow($select);
 		$modelBanco = new Contabilidad_Model_Banco($rowBanco->toArray());
 		
-		return $modelBanco;
+		return $modelBanco;*/
 		
 	}
 	
@@ -53,19 +53,14 @@
 	
 	public function crearBanco(array $datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		//$dbAdapter->beginTransaction();
-		
-		$dbAdapter->insert("BancosEmpresa", array("idEmpresa"=>$datos["idEmpresas"],"idBanco"=>$datos["idSucursal"]));
-		if($datos["idEmpresas"] <> 0){
-
+	
 			$fecha= date("Y-m-d h:i:s",time());
 			unset($datos["idEmpresas"]);
 			unset($datos["idSucursal"]);
 			$datos['fecha']=$fecha;
-			$tablaBanco = $this->tablaBanco;
-			$dbAdapter->insert("Banco", $datos);
-		}
 		
+			$dbAdapter->insert("Banco", $datos);
+			
 	}
 		
 	
@@ -80,31 +75,48 @@
 		
 	}
 	
-	public function bancosEmpresa($idEmpresa) {
+	public function obtenerBancosEmpresa($idEmpresa) {
+		$tableBanco = $this->tablaBanco;
+		$tableBcosEmp = $this->tablaBancosEmpresa;
+		$select = $tableBcosEmp->select()->from($tableBcosEmp)->where("idEmpresa=?",$idEmpresa);
+		$rowsBcosEmp = $tableBcosEmp->fetchAll($select);
 		
-		$tablaBancosEmpresa = $this->tablaBancosEmpresa;
-		$select = $tablaBancosEmpresa->select()->from($tablaBancosEmpresa)->where ("idEmpresa = ?", $idEmpresa);
-		$rowBancosEmpresa = $tablaBancosEmpresa->fetchAll($select);
-		//print_r("$select");
 		$idsBancos = array();
 		
-		foreach ($rowBancosEmpresa as $rowBancoEmpresa) {
-			$idsBancos[] = $rowBancoEmpresa->idEmpresa;
-			
-		}
-	
-		if(!is_null($rowBancosEmpresa) && ! empty($idsBancos)){
-			//Obtenemos los productos
-			$tablaBancosEmpresa =$this->tablaBancosEmpresa;
-			$select = $tablaBancosEmpresa->select()
-			->setIntegrityCheck(false)
-			->from($tablaBancosEmpresa)
-			->join('Empresa', 'BancosEmpresa.idEmpresa = Empresa.idEmpresa')
-			->join('Banco', 'BancosEmpresa.idBanco = Banco.idBanco', array('banco'));
-			return $tablaBancosEmpresa->fetchAll($select);
-			
+		foreach ($rowsBcosEmp as $rowBcoEmpresa) {
+			$idsBancos[] = $rowBcoEmpresa->idBanco;
 		}
 		
+		//print_r($idsBancos);
+		
+		$select = $tableBanco->select()->from($tableBanco)->where("idBanco IN (?)",$idsBancos);
+		$rowsBancos = $tableBanco->fetchAll($select)->toArray();
+		
+		return $rowsBancos;
+		
 		}
-
+		
+		public function altaBancoEmpresa($idEmpresas, $idCliente){
+			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			
+			$tablaBcosEmp = $this->tablaBancosEmpresa;
+			$select = $tablaBcosEmp->select()->from($tablaBcosEmp)->where("idEmpresa = ?", $idEmpresa);
+			$rowBcosEmp = $tablaBcosEmp->fetchRow($select);
+			print_r("$select");
+			
+			if(!is_null($rowBcosEmp)){
+				$idsBanco = explode ("," , $rowBcosEmp->idBanco);
+				if(in_array($idBanco, $idsBanco)){
+					print_r("Ya esta asociado el banco");
+				}else{
+					$idsBanco[] = $idBanco;
+					$ids = implode(",", $idsBanco);
+					$where = $tablaBcosEmp->getDefaultAdapter()->quoteInto("idEmpresa =?", $idEmpresa);
+					$tablaBcosEmp->update(array("idBanco" => $ids), $where);
+				}
+			}else{
+				$tablaBcosEmp->insert(array("idEmpresa" =>  $idEmpresa, "idBanco" => implode(",", array($idBanco))));
+			}
+			
+		}
  }

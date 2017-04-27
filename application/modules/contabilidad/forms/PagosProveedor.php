@@ -83,7 +83,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eBanco->setLabel('Seleccionar Banco:');
 		$eBanco->setAttrib("class", "form-control");
 		
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 		foreach($bancos as $banco)
 		{
