@@ -328,15 +328,12 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		
 	}
 	
-	public function obtenerTipoProv($idTipoProveedor){
-		$tablaTipoProveedor = $this->tablaTipoProveedor;
-		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->where("idTipoProveedor=?",$idTipoProveedor);
-		$rowTipo = $tablaTipoProveedor->fetchRow($select);
+	public function obtenerTipoProv($idFiscales){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
 		
-		$tipoModel = new Sistema_Model_TipoProveedor($rowTipo->toArray());
-		$tipoModel->setIdTipoProveedor($rowTipo->idTipoProveedor);
 		
-		return $tipoModel;
 	}
 	
 	/**

@@ -25,6 +25,7 @@ class Sistema_FiscalesController extends Zend_Controller_Action
     public function editaAction()
     {
         // action body
+        $request = $this->getRequest();
 		$idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
 		

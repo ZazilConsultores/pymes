@@ -107,9 +107,9 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				unset($datos["idSucursal"]);
 				$idEmpresa = $datos["idEmpresa"];
-				$idSucursal = $datos["idSucursal"];
+				$idBanco = $datos["idBanco"];
 				try{
-					//$this->bancoDAO->altaBancoEmpresa($datos);
+					$this->bancoDAO->altaBancoEmpresa($idEmpresa, $idBanco);
 					//print_r($subparametro->toArray());
 					$mensaje = "Banco <strong>" . $datos["idEmpresa"] . "</strong> creado exitosamente";
 					$this->view->messageSuccess = $mensaje;
