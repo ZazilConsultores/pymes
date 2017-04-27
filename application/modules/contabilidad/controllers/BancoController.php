@@ -30,7 +30,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
     {
        	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AltaBanco;
-		$formulario->removeElement("idEmpresas");
+		$formulario->removeElement("idEmpresa");
 		$formulario->removeElement("idSucursal");
 		$formulario->removeElement("idBanco");
 		$this->view->formulario = $formulario;
