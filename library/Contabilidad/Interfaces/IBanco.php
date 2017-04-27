@@ -9,7 +9,7 @@ interface Contabilidad_Interfaces_IBanco{
 	public function obtenerBancos();
 	public function obtenerBanco($idBanco);
 	public function crearBanco(array $datos);
-	public function altaBancoEmpresa(array $datos);
+	//public function altaBancoEmpresa(idEmpresas, $idCliente);
 	public function editarBanco($idBanco,array $banco);
 	public function eliminarBanco($idBanco);
 	public function obtenerBancosEmpresa($idEmpresa);
