@@ -85,7 +85,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		//$this->_helper->redirector->gotoSimple("admin", "banco", "contabilidad", array("idBanco"=>$idBanco));
     }
 
-	public function editaAction()
+	public function enlazaAction()
     {
     	
     }	
