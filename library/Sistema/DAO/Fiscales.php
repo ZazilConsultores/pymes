@@ -121,8 +121,6 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
-		$rowsFiscales = $tablaFiscales->fetchAll($select);
-		print_r("$select");
 		//print_r($rowsFiscales->toArray());
 		return $rowsFiscales->toArray();
 	}
@@ -464,7 +462,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)", $idsEmpresa);
 			$rowsEmpresa = $tablaEmpresa->fetchAll($select);
-			print_r("$select");
+			//print_r("$select");
 			$idsFiscales = array();
 			foreach ($rowsEmpresa as $rowEmpresa) {
 				$idsFiscales[] = $rowEmpresa->idFiscales;
@@ -500,7 +498,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
 		$rowEmpresas = $tablaEmpresas->fetchRow($select);
 		print_r("$select");
-		//return $rowEmpresas->toArray();
+		return $rowEmpresas->toArray();
 	}
 	
 	/**
@@ -547,7 +545,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 				print_r("<br />");
 				$ids = implode(",", $idsClientes);
 				print_r(implode(",", $idsClientes));
-				$where = $tablaClientesE->getDefaultAdapter()->quoteInto("idEmpresas = ?", $idEmpresas);
+				$where = $tablaClientesE->getAdapter()->quoteInto("idEmpresas = ?", $idEmpresas);
 				print_r($where);
 				$tablaClientesE->update(array("idsClientes" => $ids), $where);
 				//$tablaClientesE->update(implode(",", $idsClientes), $where);

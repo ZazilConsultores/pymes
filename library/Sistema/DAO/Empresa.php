@@ -331,9 +331,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	public function obtenerTipoProv($idFiscales){
 		$tablaEmpresa = $this->tablaEmpresa;
 		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
-		$rowEmpresa = $tablaEmpresa->fetchRow($select);
-		
-		
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);	
 	}
 	
 	/**
