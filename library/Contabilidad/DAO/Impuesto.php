@@ -123,21 +123,21 @@
 			$rowImpuestoProducto = $tablaImpuestoProducto->fetchRow($select);
 		
 			if(!is_null($rowImpuestoProducto)){
-				//$idsProductos = explode (",", $rowImpuestoProducto->idsProducto);
+				$idsProductos = explode (",", $rowImpuestoProducto->idsProducto);
 				$idProducto = $rowImpuestoProducto->idProducto;
 				if(($idProducto == $idProducto)){
-					//print_r("Ya existe el Producto");
+					print_r("Ya existe el Producto");
 					//print_r("<br />");	
 				}else{
 					//print_r("El producto debe agregarse");
-					/* No entiendo bien para sirve este codigo
+					
 					$where = $tablaImpuestoProducto->getDefaultAdapter()->quoteInto("idImpuesto", $idImpuesto);
 					print_r($where);
-					//$tablaImpuestoProducto->update(array("idProducto"=>$idProducto), $where);*/
+					$tablaImpuestoProducto->update(array("idProducto"=>$idProducto), $where);
 				}
 				
 			}else{
-				//$tablaImpuestoProducto->insert(array("idImpuesto"=>$idImpuesto,"idProducto"=>$idProducto));
+				$tablaImpuestoProducto->insert(array("idImpuesto"=>$idImpuesto,"idProducto"=>$idProducto));
 				$tablaImpuestoProducto->insert($impuestoProducto->toArray());
 			}
 		}

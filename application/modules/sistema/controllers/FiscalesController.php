@@ -44,7 +44,6 @@ class Sistema_FiscalesController extends Zend_Controller_Action
 
 				try{
 					$this->fiscalesDAO->actualizarFiscales($idFiscales, $datos);
-			
 					$this->view->messageSuccess = "Los datos fiscales se han actualizado correctamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "No se pudo actualizar los datos fiscales. Error: <strong>".$ex->getMessage()."</strong>";

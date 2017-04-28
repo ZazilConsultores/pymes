@@ -82,7 +82,7 @@
 		});
 		
 		var idFiscales = $("select#selectIdFiscales").val();
-		var url = window.location.origin + "/General/public/contabilidad/json/proveedorese/idFiscales/"+idFiscales;
+		var url = window.location.origin + "/General/contabilidad/json/proveedorese/idFiscales/"+idFiscales;
 		
 		$.ajax({
 			url: url,
@@ -124,7 +124,7 @@
 			//console.log(selectEmpresa.val());
 			console.log(selectProveedor.val());
 			
-			var url = window.location.origin + "/General/public/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesProveedor/" + fproveedor;
+			var url = window.location.origin + "/General/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesProveedor/" + fproveedor;
 			
 			console.log(url);
 			
@@ -140,7 +140,7 @@
 			controller = "json";
 			action = "proveedorese";
 			
-			$url = window.location.origin + "/General/public/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
+			$url = window.location.origin + "/General/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
 			
 			//console.log($url);
 			

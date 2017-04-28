@@ -49,6 +49,7 @@ class Sistema_Model_TipoProveedor
 		$datos["idTipoProveedor"] = $this->idTipoProveedor;
 		$datos["clave"] = $this->clave;
 		$datos["descripcion"] = $this->descripcion;
+		
 		return $datos;
     }
 }

@@ -129,9 +129,9 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 		$impuestos = $impuestosDAO->obtenerByImpuestos($idImpuesto);
 		$productos = $impuestosDAO->obtenerByProductos($idProducto);
 		
-		//$impuestosDAO->enlazarProductoImpuesto($impuestos["idImpuesto"],$productos["idProducto"]);
-		$impuestosDAO->enlazarProductoImpuesto($impuestoProducto, $impuestos ["idImpuesto"], $productos["idProducto"]);
-		
+		$impuestosDAO->enlazarProductoImpuesto($impuestos["idImpuesto"],$productos["idProducto"]);
+		//$impuestosDAO->enlazarProductoImpuesto($impuestoProducto, $impuestos ["idImpuesto"], $productos["idProducto"]);
+
 		print_r($idImpuesto);
 		print_r($idProducto);
 		print_r($importe);

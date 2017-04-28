@@ -146,7 +146,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eImportePago->setAttrib("disabled", "true");
 		$eImportePago->setAttrib("required", "true");
 		
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 		
 		$eBanco = new Zend_Form_Element_Select('idBanco');

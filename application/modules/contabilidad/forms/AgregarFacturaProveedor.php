@@ -151,7 +151,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eNumReferencia->setAttrib("class", "form-control");
 		//$eNumReferencia->setAttrib("required", "true");
 
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 
 		$eBanco = new Zend_Form_Element_Select('idBanco');

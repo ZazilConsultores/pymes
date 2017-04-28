@@ -8,10 +8,13 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
     	$divisaDAO = new Contabilidad_DAO_Divisa;
 		$divisas = $divisaDAO->obtenerDivisas();
 		
+		$bancoDAO = new Contabilidad_DAO_Banco;
+		$bancos = $bancoDAO->obtenerBancos();
+		
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
 		
-		$eEmpresa = new Zend_Form_Element_Select('idEmpresas');
+		$eEmpresa = new Zend_Form_Element_Select('idEmpresa');
 		$eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
 		
@@ -23,6 +26,13 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		$eSucursal->setLabel("Sucursal: ");
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
+		
+		$eIdBanco = new Zend_Form_Element_Select('idBanco');
+		$eIdBanco->setLabel("Banco: ");
+		$eIdBanco->setAttrib("class", "form-control");
+		foreach ($bancos as $fila) {
+			$eIdBanco->addMultiOption($fila->getIdBanco(), $fila->getBanco());
+		}
     		
      	$eNumCuenta = new Zend_Form_Element_Text('cuenta');
 		$eNumCuenta->setLabel('Número de Cuenta: ');
@@ -71,6 +81,7 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		
 		$this->addElement($eEmpresa);
 		$this->addElement($eSucursal);
+		$this->addElement($eIdBanco);
 		$this->addElement($eNumCuenta);
 		$this->addElement($eBanco);
 		$this->addElement($eDivisa);

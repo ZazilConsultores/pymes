@@ -3,7 +3,7 @@
 	$formulario = $this->formulario;
 	$divisaDAO = new Contabilidad_DAO_Divisa;
 	$divisas = $divisaDAO->obtenerDivisas();
-	$bancosDAO = new Inventario_DAO_Banco;
+	$bancosDAO = new Contabilidad_DAO_Banco;
 	$bancos = $bancosDAO->obtenerBancos();
 	$facturasxp = $this->facturasxp;
 	$conceptoPagos =array("AN"=>"ANTICIPO", "LI"=>"LIQUIDADO","PA"=>"PAGO");

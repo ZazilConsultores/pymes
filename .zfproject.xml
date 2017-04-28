@@ -1035,6 +1035,13 @@
               <actionMethod actionName="admin"/>
               <actionMethod actionName="editar"/>
             </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="bancosempresa"/>
+              <actionMethod actionName="impuestos"/>
+              <actionMethod actionName="clientese"/>
+              <actionMethod actionName="proveedorese"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1279,6 +1286,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Divisa">
                 <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="bancosempresa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="impuestos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="clientese"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proveedorese"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2720,6 +2742,13 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="editar"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Json">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="bancosempresa"/>
+                <testApplicationActionMethod forActionName="impuestos"/>
+                <testApplicationActionMethod forActionName="clientese"/>
+                <testApplicationActionMethod forActionName="proveedorese"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

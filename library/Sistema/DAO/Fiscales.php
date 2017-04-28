@@ -9,7 +9,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	private $tablaEmpresas;
 	private $tablaClientes;
 	private $tablaProveedores;
-	
+	private $tablaTipoProveedor;
 	private $tablaClientesEmpresa;
 	private $tablaProveedoresEmpresa;
 	
@@ -38,6 +38,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$this->tablaFiscalesTelefonos = new Sistema_Model_DbTable_FiscalesTelefonos(array('db'=>$dbAdapter));
 		$this->tablaEmail = new Sistema_Model_DbTable_Email(array('db'=>$dbAdapter));
 		$this->tablaFiscalesEmail = new Sistema_Model_DbTable_FiscalesEmail(array('db'=>$dbAdapter));
+		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerFiscales($idFiscales){
@@ -57,8 +58,37 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
 		->join('Proveedores', 'Empresa.idEmpresa = Proveedores.idEmpresa',array('idProveedores','idTipoProveedor','cuenta'))
 		->where("Fiscales.idFiscales = ?", $idFiscales);
+		$rowFiscales = $tablaFiscales->fetchAll($select);
 		return $tablaFiscales->fetchRow($select);
+		
 	}
+	
+	public function obtenerFiscalesTipoProveedor($idFiscales){
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()
+		->setIntegrityCheck(false)
+		->from($tablaFiscales, array('Fiscales.idFiscales','rfc','razonSocial'))
+		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
+		->join('Proveedores', 'Empresa.idEmpresa = Proveedores.idEmpresa',array('idProveedores','idTipoProveedor','cuenta'))
+		->where("Fiscales.idFiscales = ?", $idFiscales);
+		$rows = $tablaFiscales->fetchAll($select);
+		
+		$modelsTipo = array();
+		$tablaTipoProve = $this->tablaTipoProveedor;
+		
+		foreach ($rows as $row) {
+			$select = $tablaTipoProve->select()->from($tablaTipoProve)->where("idTipoProveedor=?",$row->idTipoProveedor);
+			//print_r($select->__toString());
+			$row = $tablaTipoProve->fetchRow($select);
+			$modelTProv = new Sistema_Model_TipoProveedor($row->toArray());
+			$modelsTipo[] = $modelTProv;
+		}
+		
+		return $modelsTipo;
+		
+	}
+	
+	
 	
 	public function obtenerFiscalesCuentaContableCli($idFiscales){
 		$tablaFiscales = $this->tablaFiscales;
@@ -70,6 +100,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		->where("Fiscales.idFiscales = ?", $idFiscales);
 		 return $tablaFiscales->fetchRow($select);
 	}
+	
 	public function obtenerFiscalesEmpresas() {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$rowsEmpresas = $this->tablaEmpresas->fetchAll();
@@ -468,8 +499,8 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
 		$rowEmpresas = $tablaEmpresas->fetchRow($select);
-		
-		return $rowEmpresas->toArray();
+		print_r("$select");
+		//return $rowEmpresas->toArray();
 	}
 	
 	/**
