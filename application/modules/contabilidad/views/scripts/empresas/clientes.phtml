@@ -123,21 +123,22 @@
 			var fcliente = selectCliente.val();
 			
 			var url = window.location.origin + "/General/"+"contabilidad/opera/asocclientee/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;	
-			console.log(url);
+				console.log(url);
 			
 			$.ajax({
 				url: url,
 			});
 			// Volvemos a cargar la tabla, asi traemos los valores actualizados.
 			$url = window.location.origin + "/General/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
+			
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					//console.log($url);
-					//console.dir(data);
+					console.log($url);
+					console.dir(data);
 					
-					var tbody = $("table#clientesEmpresa").find('tbody');
+					var tbody = $("table#mpresa").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
 						tbody.append($('<tr>').
@@ -153,16 +154,17 @@
 		/**
 		 * Buscamos los clientes ya asociados de la empresa seleccionada
 		 */
-		$("select#selectIdFiscales").on('change',function() {
-			
-			$url = window.location.origin + "/General/"+"contabilidad/json/clientese/idFiscales/"+$(this).val();
-			console.log($url);
+		$("select#selectIdFiscales").on('click',function() {
+			var url = window.location.origin + "/General/";
+			var urlClientese = url + "contabilidad/json/clientese/idFiscales/"+ $(this).val();
+			//url = window.location.origin + "/General/contabilidad/json/clientese/idFiscales/"+ $(this).val();
+			console.log("Buscamos los clientes asociados ");
+			console.log(urlClientese);
 			$.ajax({
-				url: $url,
+				url: urlClientese,
 				dataType: "json",
 				success: function(data){
-					//console.log($url);
-					//console.dir(data);
+					console.dir(data);
 					
 					var tbody = $("table#clientesEmpresa").find('tbody');
 					tbody.empty();

@@ -77,8 +77,23 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function sucursalAction()
+    {
+        // action body
+        $idSucursal = $this->getParam("idSucursal");
+		
+		$sucursal = $this->empresaDAO->obtenerSucursal($idSucursal);
+		if(!is_null($sucursal)){
+			echo Zend_Json::encode($sucursal);
+		}else{
+			echo Zend_Json::encode(array());
+		}	
+    }
+
 
 }
+
+
 
 
 

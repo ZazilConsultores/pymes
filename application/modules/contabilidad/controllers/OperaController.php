@@ -32,7 +32,7 @@ class Contabilidad_OperaController extends Zend_Controller_Action
 		$empresa = $fiscalesDAO->getEmpresaByIdFiscales($idFiscalesEmpresa);
 		$cliente = $fiscalesDAO->getClienteByIdFiscales($idFiscalesCliente);
 		*/
-		$fiscalesDAO->asociateClienteEmpresa($empresa["idEmpresas"], $cliente["idCliente"]);
+		$this->fiscalesDAO->asociateClienteEmpresa($idFiscalesEmpresa, $idFiscalesCliente);
     }
 	
 	public function asocproveedoreAction() {

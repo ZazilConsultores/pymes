@@ -48,7 +48,6 @@
         <modelFile modelName="Vendedor"/>
         <modelFile modelName="Inventario"/>
         <modelFile modelName="Bancosempresa"/>
-        <modelFile modelName="GuiaContable"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -994,9 +993,6 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="generar"/>
             </controllerFile>
-            <controllerFile controllerName="GuiaContable">
-              <actionMethod actionName="index"/>
-            </controllerFile>
             <controllerFile controllerName="NuevaNotaProveedor">
               <actionMethod actionName="index"/>
             </controllerFile>
@@ -1041,6 +1037,14 @@
               <actionMethod actionName="impuestos"/>
               <actionMethod actionName="clientese"/>
               <actionMethod actionName="proveedorese"/>
+              <actionMethod actionName="sucursal"/>
+            </controllerFile>
+            <controllerFile controllerName="Guiacontable">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="editar"/>
+              <actionMethod actionName="altmodulos"/>
+              <actionMethod actionName="altamodulos"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1072,6 +1076,7 @@
             <formFile formName="Cuentasxp"/>
             <formFile formName="GeneraPoliza"/>
             <formFile formName="AltaDivisa"/>
+            <formFile formName="GuiaContable"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1098,8 +1103,8 @@
               <dbTableFile dbTableName="FactutaImpuesto"/>
               <dbTableFile dbTableName="ImpuestoProductos"/>
               <dbTableFile dbTableName="FacturaImpuesto"/>
-              <dbTableFile dbTableName="GuiaContable"/>
               <dbTableFile dbTableName="Poliza"/>
+              <dbTableFile dbTableName="Modulos"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1119,11 +1124,10 @@
             <modelFile modelName="Facturadetalle"/>
             <modelFile modelName="Impuestos"/>
             <modelFile modelName="Impuesto"/>
-            <modelFile modelName="FacturaImpuesto"/>
             <modelFile modelName="ImpuestoProductos"/>
-            <modelFile modelName="GuiaContable"/>
             <modelFile modelName="Poliza"/>
             <modelFile modelName="TipoProveedor"/>
+            <modelFile modelName="Modulos"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -1165,9 +1169,6 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Poliza">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="GuiaContable">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Banco">
@@ -1301,6 +1302,24 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="proveedorese"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="sucursal"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="altmodulos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="altamodulos"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2702,9 +2721,6 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="generar"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="GuiaContable">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="NuevaNotaProveedor">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
@@ -2749,14 +2765,19 @@
                 <testApplicationActionMethod forActionName="impuestos"/>
                 <testApplicationActionMethod forActionName="clientese"/>
                 <testApplicationActionMethod forActionName="proveedorese"/>
+                <testApplicationActionMethod forActionName="sucursal"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Guiacontable">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="editar"/>
+                <testApplicationActionMethod forActionName="altmodulos"/>
+                <testApplicationActionMethod forActionName="altamodulos"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
           <testApplicationModuleDirectory forModuleName="inventario">
             <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="GuiaContable">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Producto">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
