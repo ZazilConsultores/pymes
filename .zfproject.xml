@@ -1038,6 +1038,9 @@
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
               <actionMethod actionName="bancosempresa"/>
+              <actionMethod actionName="impuestos"/>
+              <actionMethod actionName="clientese"/>
+              <actionMethod actionName="proveedorese"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1289,6 +1292,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="bancosempresa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="impuestos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="clientese"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proveedorese"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2734,6 +2746,9 @@
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="bancosempresa"/>
+                <testApplicationActionMethod forActionName="impuestos"/>
+                <testApplicationActionMethod forActionName="clientese"/>
+                <testApplicationActionMethod forActionName="proveedorese"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

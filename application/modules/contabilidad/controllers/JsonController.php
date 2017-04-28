@@ -2,12 +2,20 @@
 
 class Contabilidad_JsonController extends Zend_Controller_Action
 {
-	private $bancoDAO;
+
+    private $bancoDAO = null;
+
+    private $fiscalesDAO = null;
+
+    private $impuestoProductosDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->bancoDAO = new Contabilidad_DAO_Banco;
+		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		
     }
 
     public function indexAction()
@@ -29,8 +37,54 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function impuestosAction()
+    {
+        // action body
+        $idImpuesto = $this->getParam("idImpuesto");
+		
+		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProductos($idImpuesto);
+		
+		if(!is_null($impuestoProducto)){
+			echo Zend_Json::encode($impuestoProducto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function clienteseAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		
+		$fiscalesClientes = $this->fiscalesDAO->getFiscalesClientesByIdFiscalesEmpresa($idFiscales);
+		if(!is_null($fiscalesClientes)){
+			echo Zend_Json::encode($fiscalesClientes);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proveedoreseAction()
+    {
+        // action body
+        $idFiscales = $this->getParam("idFiscales");
+		
+		$fiscalesProveedores = $this->fiscalesDAO->getFiscalesProveedoresByIdFiscalesEmpresa($idFiscales);
+		if(!is_null($fiscalesProveedores)){
+			echo Zend_Json::encode($fiscalesProveedores);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
+
+
+
+
+
+
 
 
 

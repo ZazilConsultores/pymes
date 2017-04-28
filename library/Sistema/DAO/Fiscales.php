@@ -499,8 +499,8 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		$tablaEmpresas = $this->tablaEmpresas;
 		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
 		$rowEmpresas = $tablaEmpresas->fetchRow($select);
-		
-		return $rowEmpresas->toArray();
+		print_r("$select");
+		//return $rowEmpresas->toArray();
 	}
 	
 	/**

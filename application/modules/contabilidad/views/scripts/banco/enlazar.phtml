@@ -18,14 +18,14 @@
 <section class="row">
 	<div class="panel panel-info">
 		<div class="panel-heading">
-			<h4 class="panel-title">Detalle.</h4>
+			<h4 class="panel-title">Detalle </h4>
 		</div>
-		<table id="impuestosProductos" class="table table-striped table-condensed">
+		<table id="bancosEmpresa" class="table table-striped table-condensed">
 			<thead>
-				<th>Impuesto</th>
-				<th>Producto</th>
-				<th>Importe</th>
-				<th>Porcentaje</th>
+				<th>Empresa</th>
+				<th>Sucursal</th>
+				<th>Banco</th>
+				
 			</thead>
 			<tbody>
 			</tbody>
@@ -61,16 +61,15 @@ $(document).ready(function () {
 				console.log(url);
 				console.dir(data);
 				
-				/*var tbody = $("table#impuestosProductos").find('tbody');
+				var tbody = $("table#bancosEmpresa").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
 					tbody.append($('<tr>').
-					append($('<td>').append(data[i].descripcion)).
-					append($('<td>').append(data[i].producto)).
-					append($('<td>').append(data[i].importe)).
-					append($('<td>').append(data[i].porcentaje))
+					append($('<td>').append(data[i].banco)).
+					append($('<td>').append(data[i].banco)).
+					append($('<td>').append(data[i].banco))
 					);
-				});*/
+				});
 			}
 		});
 			

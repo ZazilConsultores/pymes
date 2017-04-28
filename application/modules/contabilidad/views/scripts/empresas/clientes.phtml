@@ -86,7 +86,7 @@
 		});
 		
 		var idFiscales = $("select#selectIdFiscales").val();
-		var url = window.location.origin + "/General/public/contabilidad/json/clientese/idFiscales/"+idFiscales;
+		var url = window.location.origin + "/General/contabilidad/json/clientese/idFiscales/"+idFiscales;
 		
 		$.ajax({
 			url: url,
@@ -122,14 +122,14 @@
 			var fempresa = selectEmpresa.val();
 			var fcliente = selectCliente.val();
 			
-			var url = window.location.origin + "/General/public/"+"contabilidad/opera/asocclientee/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;	
+			var url = window.location.origin + "/General/"+"contabilidad/opera/asocclientee/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;	
 			console.log(url);
 			
 			$.ajax({
 				url: url,
 			});
 			// Volvemos a cargar la tabla, asi traemos los valores actualizados.
-			$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
+			$url = window.location.origin + "/General/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
 			$.ajax({
 				url: $url,
 				dataType: "json",
@@ -155,7 +155,7 @@
 		 */
 		$("select#selectIdFiscales").on('change',function() {
 			
-			$url = window.location.origin + "/General/public/"+"contabilidad/json/clientese/idFiscales/"+$(this).val();
+			$url = window.location.origin + "/General/"+"contabilidad/json/clientese/idFiscales/"+$(this).val();
 			console.log($url);
 			$.ajax({
 				url: $url,
