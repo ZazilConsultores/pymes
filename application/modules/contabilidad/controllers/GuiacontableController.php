@@ -53,11 +53,7 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
         
     }
 
-    public function altamodulosAction()
-    {
     
-
-	}
 		
 }
 
