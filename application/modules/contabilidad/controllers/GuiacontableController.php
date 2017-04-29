@@ -55,30 +55,9 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
 
     public function altamodulosAction()
     {
-    	$request = $this->getRequest();
-        $formulario = new Contabilidad_Form_GuiaContable;
-		$formulario->removeSubForm("0");
-		
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				$modulo = new Contabilidad_Model_Modulos($datos);
-				print_r($modulo);
-				try{
-					//$thos  ->nuevaDivisa($divisa);
-					//$mensaje = "Divisa <strong>". $divisa->getDescripcion()."</stong> creado exitosamente";
-					//$this->view->messageSuccess = $mensaje;
-				}catch(Util_Exception_BussinessException $ex){
-					//$this->view->messageFail = $ex->getMessage();
-				
-				//
-				}
-			}
-    	}
+    
 
-		}
+	}
 		
 }
 
