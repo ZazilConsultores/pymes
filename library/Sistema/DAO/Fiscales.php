@@ -121,6 +121,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
+		$rowsFiscales = $tablaFiscales->fetchAll($select);
 		//print_r($rowsFiscales->toArray());
 		return $rowsFiscales->toArray();
 	}
@@ -370,7 +371,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			$idsFiscales[] = $rowEmpresa->idFiscales;
 		}
 		$tablaFiscales = $this->tablaFiscales;
-		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales)->order(array('razonSocial ASC'));
 		$rowsFiscales = $tablaFiscales->fetchAll($select);
 		
 		//print_r($rowsFiscales->toArray());
@@ -405,7 +406,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		}
 		
 		$tablaFiscales = $this->tablaFiscales;
-		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales)->order(array('razonSocial ASC'));
 		$rowsFiscales = $tablaFiscales->fetchAll($select);
 		
 		if (is_null($rowsFiscales)) {
@@ -430,25 +431,10 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		// Obtenemos todos los ids de Cliente de la tabla ClientesEmpresa
 		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
 		$select = $tablaClientesEmpresa->select()->from($tablaClientesEmpresa)->where("idEmpresas=?",$rowEmpresas->idEmpresas);
-		//$rowsClientesEmpresa = $tablaClientesEmpresa->fetchAll($select);
 		$rowClientesEmpresa = $tablaClientesEmpresa->fetchRow($select);
 		
 		$idsCliente = explode(",", $rowClientesEmpresa->idsClientes);
-		/*
-		if (is_null($rowClientesEmpresa->idsClientes)) {
-			print_r("es nulo");
-		}
-		*/
-		/*
-		foreach ($rowsClientesEmpresa as $rowClientesEmpresa) {
-			$idsCliente[] = $rowClientesEmpresa->idCliente;
-		}
-		*/
-		//print_r($idsCliente);
-		// Si hay ids de Cliente
-		
 		if(! is_null($rowClientesEmpresa->idsClientes) && ! empty($idsCliente)) {
-			// Obtenemos todos los Clientes
 			$tablaClientes = $this->tablaClientes;
 			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente IN (?)", $idsCliente);
 			$rowsClientes = $tablaClientes->fetchAll($select);
@@ -457,21 +443,19 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			foreach ($rowsClientes as $rowCliente) {
 				$idsEmpresa[] = $rowCliente->idEmpresa;
 			}
-			print_r("<br />");
-			//print_r($idsEmpresa);
 			
 			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)", $idsEmpresa);
 			$rowsEmpresa = $tablaEmpresa->fetchAll($select);
-			//print_r("$select");
+			
 			$idsFiscales = array();
 			foreach ($rowsEmpresa as $rowEmpresa) {
 				$idsFiscales[] = $rowEmpresa->idFiscales;
 			}
-			
+			//print_r($idsEmpresa);
 			$tablaFiscales = $this->tablaFiscales;
-			$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales IN (?)", $idsFiscales);
+			$select = $tablaFiscales->select()->from($tablaFiscales,array('rfc','razonSocial'))->where("idFiscales IN (?)", $idsFiscales);
 			$rowsFiscales = $tablaFiscales->fetchAll($select);
-			
+
 			if (is_null($rowsFiscales)) {
 				return NULL;
 			}else{
@@ -480,9 +464,54 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		}else{
 			return NULL;
 		}
+						
 	}
 	
 	public function getFiscalesProveedoresByIdFiscalesEmpresa ($idFiscales){
+		// Obtenemos el IdEmpresa de la empresa del idFiscales proporcionado
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		// Obtenemos el IdEmpresas de la empresa mediante el IdEmpresa
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		// Obtenemos todos los ids de Cliente de la tabla ClientesEmpresa
+		$tablaProveedoresEmpresa = $this->tablaProveedoresEmpresa;
+		$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa)->where("idEmpresas=?",$rowEmpresas->idEmpresas);
+		$rowProveedorEmpresa = $tablaProveedoresEmpresa->fetchRow($select);
+		
+		$idsProveedor = explode(",", $rowProveedorEmpresa->idProveedores);
+		if(! is_null($rowProveedorEmpresa->idProveedores) && ! empty($idsProveedor)) {
+			$tablaProveedores = $this->tablaProveedores;
+			$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores IN (?)", $idsProveedor);
+			$rowsProveedores = $tablaProveedores->fetchAll($select);
+			
+			$idsEmpresa = array();
+			foreach ($rowsProveedores as $rowProveedor) {
+				$idsEmpresa[] = $rowProveedor->idEmpresa;
+			}
+			
+			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa IN (?)", $idsEmpresa);
+			$rowsEmpresa = $tablaEmpresa->fetchAll($select);
+			
+			$idsFiscales = array();
+			foreach ($rowsEmpresa as $rowEmpresa) {
+				$idsFiscales[] = $rowEmpresa->idFiscales;
+			}
+			
+			$tablaFiscales = $this->tablaFiscales;
+			$select = $tablaFiscales->select()->from($tablaFiscales,array('rfc','razonSocial'))->where("idFiscales IN (?)", $idsFiscales);
+			$rowsFiscales = $tablaFiscales->fetchAll($select);
+
+			if (is_null($rowsFiscales)) {
+				return NULL;
+			}else{
+				return $rowsFiscales->toArray();
+			}
+		}else{
+			return NULL;
+		}
 		
 	}
 	
@@ -528,6 +557,11 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		return $rowProveedor->toArray();
 	}
 	
+	/**
+	 * Agrega un nuevo cliente en la tabla ClientesEmpresa de la bd
+	 * @param $idEmpresas Id de la Empresa
+	 * @param $idCliente Id del Cliente a asociar
+	 */
 	public function asociateClienteEmpresa($idEmpresas, $idCliente) {
 		$tablaClientesE = $this->tablaClientesEmpresa;
 		$select = $tablaClientesE->select()->from($tablaClientesE)->where("idEmpresas=?",$idEmpresas);
@@ -535,19 +569,20 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 		if(! is_null($rowCliente)){
 			$idsClientes = explode(",", $rowCliente->idsClientes);
-			print_r($idsClientes);
-			if(in_array($idCliente, $idsClientes)){
-				print_r("Ya existe el cliente, no se agrega<br /><br />");
-			}else{
-				print_r("<br /> No existe el cliente, en clientes, hay que agregarlo<br />");
+			//print_r($idsClientes);
+			if(! in_array($idCliente, $idsClientes)){
+				//print_r("<br /> No existe el cliente, en clientes, hay que agregarlo<br />");
 				$idsClientes[] = $idCliente;
-				print_r($idsClientes);
-				print_r("<br />");
+				//print_r($idsClientes);
+				//print_r("<br />");
 				$ids = implode(",", $idsClientes);
-				print_r(implode(",", $idsClientes));
-				$where = $tablaClientesE->getAdapter()->quoteInto("idEmpresas = ?", $idEmpresas);
-				print_r($where);
-				$tablaClientesE->update(array("idsClientes" => $ids), $where);
+				//print_r(implode(",", $idsClientes));
+				//$where = $tablaClientesE->getAdapter()->quoteInto("idEmpresas = ?", $idEmpresas);
+				//print_r($where);
+				//$tablaClientesE->update(array("idsClientes" => $ids), $where);
+				
+				$rowCliente->idsClientes = $ids;
+				$rowCliente->save();
 				//$tablaClientesE->update(implode(",", $idsClientes), $where);
 				
 			}
@@ -557,8 +592,8 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		//$tablaClientesE->insert(array("idEmpresas"=>$idEmpresas, "idCliente"=>$idCliente));
 	}
 	
-	public function asociateProveedorEmpresa($idEmpresa, $idProveedor) {
-		$tablaProveedoresE = $this->tablaProveedoresEmpresa;
+	public function asociateProveedorEmpresa($idEmpresas, $idProveedor) {
+		/*$tablaProveedoresE = $this->tablaProveedoresEmpresa;
 		$select = $tablaProveedoresE->select()->from($tablaProveedoresE)->where("idEmpresas=?",$idEmpresa);
 		$rowProveedoresE = $tablaProveedoresE->fetchRow($select);
 		
@@ -568,7 +603,34 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		}else{
 			// Insertamos el primer registro con esta empresa
 			$tablaProveedoresE->insert(array("idEmpresas" => $idEmpresa, "idsProveedores" => implode(",", array($idProveedor))));
+		}*/
+		$tablaProveedoresE = $this->tablaProveedoresEmpresa;
+		$select = $tablaProveedoresE->select()->from($tablaProveedoresE)->where("idEmpresas=?",$idEmpresas);
+		$rowProveedor = $tablaProveedoresE->fetchRow($select);
+		
+		if(! is_null($rowProveedor)){
+			$idsProveedores = explode(",", $rowProveedor->idProveedores);
+			//print_r($idsClientes);
+			if(! in_array($idProveedor, $idsProveedores)){
+				//print_r("<br /> No existe el cliente, en clientes, hay que agregarlo<br />");
+				$idsProveedores[] = $idProveedor;
+				//print_r($idsClientes);
+				//print_r("<br />");
+				$ids = implode(",", $idsProveedores);
+				//print_r(implode(",", $idsClientes));
+				//$where = $tablaClientesE->getAdapter()->quoteInto("idEmpresas = ?", $idEmpresas);
+				//print_r($where);
+				//$tablaClientesE->update(array("idsClientes" => $ids), $where);
+				
+				$rowProveedor->idProveedores = $ids;
+				$rowProveedor->save();
+				//$tablaClientesE->update(implode(",", $idsClientes), $where);
+				
+			}
+		}else{
+			$tablaProveedoresE->insert(array("idEmpresas" => $idEmpresas, "idProveedores" => implode(",", array($idProveedor))));
 		}
+		//$tablaClientesE->insert(array("idEmpresas"=>$idEmpresas, "idCliente"=>$idCliente));
 		
 	}
 	

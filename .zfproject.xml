@@ -1038,6 +1038,8 @@
               <actionMethod actionName="clientese"/>
               <actionMethod actionName="proveedorese"/>
               <actionMethod actionName="sucursal"/>
+              <actionMethod actionName="asociace"/>
+              <actionMethod actionName="asociape"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1320,6 +1322,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Guiacontable">
                 <viewScriptFile forActionName="altamodulos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="asociace"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="asociape"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2766,6 +2774,8 @@
                 <testApplicationActionMethod forActionName="clientese"/>
                 <testApplicationActionMethod forActionName="proveedorese"/>
                 <testApplicationActionMethod forActionName="sucursal"/>
+                <testApplicationActionMethod forActionName="asociace"/>
+                <testApplicationActionMethod forActionName="asociape"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

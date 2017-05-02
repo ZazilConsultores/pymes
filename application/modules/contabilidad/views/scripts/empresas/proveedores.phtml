@@ -29,12 +29,20 @@
 								</button>
 							</td>
 							<td>
-								<select id="selectIdProveedores" class="form-control"></select>
+								<select id="selectIdProveedores" class="form-control">
+									<?php foreach ($fiscalesProveedores as $fiscales) : ?>
+										<option value="<?php echo $fiscales["idFiscales"]; ?>"><?php echo $fiscales["razonSocial"] ?></option>
+									<?php endforeach; ?>	
+								</select>
 							</td>
 						</tr>
 					</tbody>
 				</table><br	/><hr /><br />
 				<div class="col-xs-12">
+					<button id="queryProveedoresEmpresa" type="button" class="btn btn-success">
+						<i class="fa fa-search"></i> Buscar Proveedores Asociados
+					</button>
+					<hr />
 					<table id="proveedoresEmpresa" class="table table-striped table-condensed">
 						<thead>
 							<th>R.F.C.</th>
@@ -75,22 +83,18 @@
 </div>
 <script>
 	$().ready(function(){
+		var url = window.location.origin + "/General/";
 		
-		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesProveedores()); ?>;
-		$.each(fiscales, function(i,item) {
-			$("select#selectIdProveedores").append($("<option></option>").attr("value",fiscales[i].idFiscales).text(fiscales[i].razonSocial));
-		});
-		
+		$("button#queryProveedoresEmpresa").on('click',function() {
 		var idFiscales = $("select#selectIdFiscales").val();
-		var url = window.location.origin + "/General/contabilidad/json/proveedorese/idFiscales/"+idFiscales;
+		var urlProveedoresEmpresas = url + "/contabilidad/json/proveedorese/idFiscales/" + idFiscales;
+		console.log(urlProveedoresEmpresas);
 		
 		$.ajax({
-			url: url,
+			url: urlProveedoresEmpresas,
 			dataType: "json",
 			success: function(data){
-				//console.log(url);
-				//console.dir(data);
-				
+				console.dir(data);
 				var tbody = $("table#proveedoresEmpresa").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
@@ -101,10 +105,9 @@
 				});
 			}
 		});
-		
+		});
 		$("button#asociarProveedor").on('click',function() {
-			//console.log($("select#selectIdClientes option:selected ").text());
-			//console.log($("select#selectIdFiscales option:selected ").text());
+			
 			$("span#proveedor").text($("select#selectIdProveedores option:selected ").text());
 			$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
 		});
@@ -115,8 +118,8 @@
 			var selectProveedor = $("select#selectIdProveedores");
 			
 			module = "contabilidad";
-			controller = "opera";
-			action = "asocproveedore";
+			controller = "json";
+			action = "asociape";
 			
 			var fempresa = selectEmpresa.val();
 			var fproveedor = selectProveedor.val();
@@ -124,7 +127,7 @@
 			//console.log(selectEmpresa.val());
 			console.log(selectProveedor.val());
 			
-			var url = window.location.origin + "/General/"+ module + "/" + controller + "/" + action + "/idFiscalesEmpresa/" + fempresa + "/idFiscalesProveedor/" + fproveedor;
+			var url = window.location.origin + "/General/"+ module + "/" + controller + "/" + action + "/em/" + fempresa + "/pr/" + fproveedor;
 			
 			console.log(url);
 			

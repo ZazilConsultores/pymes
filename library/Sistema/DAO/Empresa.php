@@ -190,10 +190,44 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}catch(Exception $ex){
 			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
 		}
-		
-		
 	}
 	
+	/**
+	 * Obtenemos el idEmpresas de la T.Empresas correspondiente al idEmpresa de la T.Empresa proporcionado
+	 */
+	public function getEmpresasByIdEmpresa($idEmpresa) {
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select)->toArray();
+		
+		return $rowEmpresas;
+	}
+	
+	/**
+	 * Obtenemos el idClientes de la T.Clientes correspondiente al idEmpresa de la T.Empresa proporcionado
+	 */
+	public function getClienteByIdEmpresa($idEmpresa) {
+		$tablaClientes = $this->tablaClientes;
+		$select = $tablaClientes->select()->from($tablaClientes)->where("idEmpresa=?",$idEmpresa);
+		$rowCliente = $tablaClientes->fetchRow($select)->toArray();
+		
+		return $rowCliente;
+	}
+	
+	/**
+	 * Obtenemos el idProveedores de la T.Proveedores correspondiente al idEmpresa de la T.Empresa proporcionado
+	 */
+	public function getProveedorByIdEmpresa($idEmpresa) {
+		$tablaProveedores= $this->tablaProveedores;
+		$select = $tablaProveedores->select()->from($tablaProveedores)->where("idEmpresa=?",$idEmpresa);
+		$rowProveedor = $tablaProveedores->fetchRow($select)->toArray();
+		
+		return $rowProveedor;
+	}
+	
+	/**
+	 * Obtenemos solo los Id's Fiscales de las Empresas operables.
+	 */
 	public function obtenerIdFiscalesEmpresas(){
 		//Obtenemos todas las empresas
 		$tablaEmpresas = $this->tablaEmpresas;

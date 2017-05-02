@@ -84,7 +84,7 @@
 			$idsProducto[] = $rowProducto->idProducto;
 			
 		}
-	
+		
 		if(!is_null($rowImpuestoProductos) && ! empty($idsProducto)){
 			//Obtenemos los productos
 			$tablaImpuestoProductos =$this->tablaImpuestoProductos;

@@ -1,8 +1,8 @@
 <?php
 	$fiscalesEmpresas = $this->fiscalesEmpresas;
 	$fiscalesDAO = new Sistema_DAO_Fiscales;
-	$fiscalesClientes = $fiscalesDAO->obtenerFiscalesClientes();
-	$fiscalesDAO->getFiscalesClientes();
+	
+	$fiscalesClientes = $fiscalesDAO->getFiscalesClientes();
 ?>
 <section class="row">
 	<div class="panel panel-warning">
@@ -11,6 +11,10 @@
 		</div>
 		<div class="panel-body">
 			<div class="col-xs-12">
+				<button id="queryClientesEmpresa" type="button" class="btn btn-success">
+					<i class="fa fa-search"></i> Buscar Clientes
+				</button>
+				<hr />
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
@@ -31,6 +35,10 @@
 							</td>
 							<td>
 								<select id="selectIdClientes" class="form-control">
+									<option value="0">Seleccione Cliente...</option>
+									<?php foreach ($fiscalesClientes as $fiscales) : ?>
+										<option value="<?php echo $fiscales["idFiscales"]; ?>"><?php echo $fiscales["razonSocial"]; ?></option>
+									<?php endforeach; ?>
 								</select>
 							</td>
 						</tr>
@@ -78,92 +86,25 @@
 
 <script>
 	$().ready(function() {
+		var url = window.location.origin + "/General/";
+		//var fiscales = <?php //echo Zend_Json::encode($fiscalesDAO->getFiscalesClientes()); ?>;
 		
-		var fiscales = <?php echo Zend_Json::encode($fiscalesDAO->getFiscalesClientes()); ?>;
 		// Cargamos el combo de clientes con el JSON recien cargado
+		/*
 		$.each(fiscales, function(i,item) {
 			$("select#selectIdClientes").append($("<option></option>").attr("value",fiscales[i].idFiscales).text(fiscales[i].razonSocial));
 		});
-		
-		var idFiscales = $("select#selectIdFiscales").val();
-		var url = window.location.origin + "/General/contabilidad/json/clientese/idFiscales/"+idFiscales;
-		
-		$.ajax({
-			url: url,
-			dataType: "json",
-			success: function(data){
-				console.log(url);
-				console.dir(data);
-				
-				var tbody = $("table#clientesEmpresa").find('tbody');
-				tbody.empty();
-				$.each(data, function(i,item){
-					tbody.append($('<tr>').
-						append($('<td>').append(data[i].rfc)).
-						append($('<td>').append(data[i].razonSocial))
-					);
-				});
-			}
-		});
-		
-		$("button#asociarCliente").on('click',function() {
-			$("span#cliente").text($("select#selectIdClientes option:selected ").text());
-			$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
-		});
-		
-		/**
-		 * Aqui hacemos la asociacion real
-		 */
-		$("button#asociarClienteEmpresa").on('click',function() {
-			
-			var selectEmpresa = $("select#selectIdFiscales");
-			var selectCliente = $("select#selectIdClientes");
-			
-			var fempresa = selectEmpresa.val();
-			var fcliente = selectCliente.val();
-			
-			var url = window.location.origin + "/General/"+"contabilidad/opera/asocclientee/idFiscalesEmpresa/" + fempresa + "/idFiscalesCliente/" + fcliente;	
-				console.log(url);
-			
+		*/
+		$("button#queryClientesEmpresa").on('click',function() {
+			var idFiscales = $("select#selectIdFiscales").val();
+			var urlClientesEmpresas = url  +"contabilidad/json/clientese/idFiscales/" + idFiscales;
+			console.log(idFiscales);
+			console.log(urlClientesEmpresas);
 			$.ajax({
-				url: url,
-			});
-			// Volvemos a cargar la tabla, asi traemos los valores actualizados.
-			$url = window.location.origin + "/General/"+"contabilidad/json/clientese/idFiscales/"+fempresa;
-			
-			$.ajax({
-				url: $url,
+				url: urlClientesEmpresas,
 				dataType: "json",
 				success: function(data){
-					console.log($url);
-					console.dir(data);
-					
-					var tbody = $("table#mpresa").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].rfc)).
-							append($('<td>').append(data[i].razonSocial))
-						);
-					});
-				}
-			});
-			
-		});
-		
-		/**
-		 * Buscamos los clientes ya asociados de la empresa seleccionada
-		 */
-		$("select#selectIdFiscales").on('click',function() {
-			var url = window.location.origin + "/General/";
-			var urlClientese = url + "contabilidad/json/clientese/idFiscales/"+ $(this).val();
-			//url = window.location.origin + "/General/contabilidad/json/clientese/idFiscales/"+ $(this).val();
-			console.log("Buscamos los clientes asociados ");
-			console.log(urlClientese);
-			$.ajax({
-				url: urlClientese,
-				dataType: "json",
-				success: function(data){
+					console.log("Hola");
 					console.dir(data);
 					
 					var tbody = $("table#clientesEmpresa").find('tbody');
@@ -174,10 +115,55 @@
 							append($('<td>').append(data[i].razonSocial))
 						);
 					});
+				},
+				error: function(e){
+					console.log(e);
 				}
 			});
-			
 		});
 		
-	});
+		/**
+		 * 
+		 */
+		$("button#asociarCliente").on('click',function() {
+			$("span#cliente").text($("select#selectIdClientes option:selected ").text());
+			$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
+		});
+		
+		/**
+		 * click en idFiscales
+		 *
+		$("select#selectIdFiscales").on('click', function(){
+			var idFiscales = $("select#selectIdFiscales").val();
+			var urlClientesEmpresas = url  +"contabilidad/json/clientese/idFiscales/" + idFiscales;
+			console.log(urlClientesEmpresas);
+			$.ajax({
+				url: urlClientesEmpresas,
+				dataType: "json",
+				success: function(data){
+					console.log("Hola");
+
+				}
+			});
+	
+		});
+		*/
+		
+		$("button#asociarClienteEmpresa").on('click',function() {
+			//$("span#cliente").text($("select#selectIdClientes option:selected ").text());
+			//$("span#empresa").text($("select#selectIdFiscales option:selected ").text());
+			var idEmpresa = $("select#selectIdFiscales").val();
+			var idCliente = $("select#selectIdClientes").val();
+			var urlAsociaClienteEmpresa = url  +"contabilidad/json/asociace/em/" + idEmpresa+"/cl/"+idCliente;
+			console.log(urlAsociaClienteEmpresa);
+			$.ajax({
+				url: urlAsociaClienteEmpresa,
+				dataType: "json",
+				success: function(data){
+					console.log(data);
+				}
+			});
+		});
+		
+	});	
 </script>
