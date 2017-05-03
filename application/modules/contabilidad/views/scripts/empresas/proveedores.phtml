@@ -137,35 +137,5 @@
 			
 		});
 		
-		$("select#selectIdFiscales").on('change',function() {
-			
-			module = "contabilidad";
-			controller = "json";
-			action = "proveedorese";
-			
-			$url = window.location.origin + "/General/"+module+"/"+controller+"/"+action+"/idFiscales/"+$(this).val();
-			
-			//console.log($url);
-			
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				success: function(data){
-					//console.log($url);
-					//console.dir(data);
-					
-					var tbody = $("table#proveedoresEmpresa").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].rfc)).
-							append($('<td>').append(data[i].razonSocial))
-						);
-					});
-				}
-			});
-			
-		});
-		
 	});
 </script>
