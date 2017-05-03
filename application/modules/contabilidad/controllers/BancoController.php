@@ -85,10 +85,9 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 				}
 			}
 		}
-	}
+    }
 
-	
-	public function enlazaAction()
+    public function enlazaAction()
     {
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
@@ -107,10 +106,35 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 			}
 			//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
 		}
-    }	
-    
+    }
+
+    public function enlazarAction()
+    {
+        $request = $this->getRequest();
+		$idEmpresa = $this->getParam("idEmpresa");
+		$idBanco = $this->getParam("idBanco");
+		$formulario = new Contabilidad_Form_AltaBanco;
+		$this->view->formulario = $formulario;
+		$formulario->removeElement("cuenta");
+		$formulario->removeElement("banco");
+		$formulario->removeElement("idDivisa");
+		$formulario->removeElement("tipo");
+		$formulario->removeElement("cuentaContable");
+		$formulario->removeElement("saldo");
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$bancosEmpresa = new Contabilidad_Model_BancosEmpresa($datos);
+				$this->bancoDAO->altaBancoEmpresa($bancosEmpresa, $idEmpresa, $idBanco);
+			}
+		}
+    }
+
 
 }
+
+
 
 
 

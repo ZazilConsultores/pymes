@@ -593,45 +593,21 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	}
 	
 	public function asociateProveedorEmpresa($idEmpresas, $idProveedor) {
-		/*$tablaProveedoresE = $this->tablaProveedoresEmpresa;
-		$select = $tablaProveedoresE->select()->from($tablaProveedoresE)->where("idEmpresas=?",$idEmpresa);
-		$rowProveedoresE = $tablaProveedoresE->fetchRow($select);
-		
-		if(!is_null($rowProveedoresE)){
-			$idsProveedor = explode(",", $rowProveedoresE->idsProveedores);
-			print_r($idsProveedor);
-		}else{
-			// Insertamos el primer registro con esta empresa
-			$tablaProveedoresE->insert(array("idEmpresas" => $idEmpresa, "idsProveedores" => implode(",", array($idProveedor))));
-		}*/
 		$tablaProveedoresE = $this->tablaProveedoresEmpresa;
 		$select = $tablaProveedoresE->select()->from($tablaProveedoresE)->where("idEmpresas=?",$idEmpresas);
 		$rowProveedor = $tablaProveedoresE->fetchRow($select);
 		
 		if(! is_null($rowProveedor)){
 			$idsProveedores = explode(",", $rowProveedor->idProveedores);
-			//print_r($idsClientes);
 			if(! in_array($idProveedor, $idsProveedores)){
-				//print_r("<br /> No existe el cliente, en clientes, hay que agregarlo<br />");
 				$idsProveedores[] = $idProveedor;
-				//print_r($idsClientes);
-				//print_r("<br />");
 				$ids = implode(",", $idsProveedores);
-				//print_r(implode(",", $idsClientes));
-				//$where = $tablaClientesE->getAdapter()->quoteInto("idEmpresas = ?", $idEmpresas);
-				//print_r($where);
-				//$tablaClientesE->update(array("idsClientes" => $ids), $where);
-				
 				$rowProveedor->idProveedores = $ids;
 				$rowProveedor->save();
-				//$tablaClientesE->update(implode(",", $idsClientes), $where);
-				
 			}
 		}else{
 			$tablaProveedoresE->insert(array("idEmpresas" => $idEmpresas, "idProveedores" => implode(",", array($idProveedor))));
 		}
-		//$tablaClientesE->insert(array("idEmpresas"=>$idEmpresas, "idCliente"=>$idCliente));
-		
 	}
 	
 	public function obtenerCuenta($idFiscales){

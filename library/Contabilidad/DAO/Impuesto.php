@@ -116,7 +116,7 @@
 		
 		//public function enlazarProductoImpuesto($idImpuesto, $idProducto, $importe, $porcentaje){
 			//Sistema_Model_Subparametro $subparametro
-			public function enlazarProductoImpuesto(Contabilidad_Model_ImpuestoProductos $impuestoProducto,$idImpuesto, $idProducto ){	
+			public function enlazarProductoImpuesto(Contabilidad_Model_ImpuestoProductos $impuestoProducto, $idImpuesto, $idProducto ){	
 			$tablaImpuestoProducto = $this->tablaImpuestoProductos;
 			$select = $tablaImpuestoProducto->select()->from($tablaImpuestoProducto)->where("idImpuesto =?",$idImpuesto)
 			->where("idProducto = ?", $idProducto);

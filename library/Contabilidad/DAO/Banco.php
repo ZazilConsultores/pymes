@@ -96,27 +96,31 @@
 		
 		}
 		
-		public function altaBancoEmpresa($idEmpresa, $idBanco){
+		public function altaBancoEmpresa(Contabilidad_Model_BancosEmpresa $bancosEmpresa, $idEmpresa, $idBanco){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			
 			$tablaBcosEmp = $this->tablaBancosEmpresa;
-			$select = $tablaBcosEmp->select()->from($tablaBcosEmp)->where("idEmpresa = ?", $idEmpresa);
-			$rowBcosEmp = $tablaBcosEmp->fetchRow($select);
-			print_r("$select");
-			
-			if(!is_null($rowBcosEmp)){
-				$idsBanco = explode ("," , $rowBcosEmp->idBanco);
-				if(in_array($idBanco, $idsBanco)){
-					print_r("Ya esta asociado el banco");
+			$select = $tablaBcosEmp->select()->from($tablaBcosEmp)->where("idEmpresa = ?", $idEmpresa)
+			->where("idBanco = ?", $idBanco);
+			$rowBancoEmpresa= $tablaBcosEmp->fetchRow($select);
+		
+			if(!is_null($rowBancoEmpresa)){
+				$idsBancos= explode (",", $rowBancoEmpresa->idBanco);
+				$idBanco = $rowBancoEmpresa->idBanco;
+				if(($idsBancos == $idBanco)){
+					print_r("Ya existe el Producto");
+					//print_r("<br />");	
 				}else{
-					$idsBanco[] = $idBanco;
-					$ids = implode(",", $idsBanco);
-					$where = $tablaBcosEmp->getAdapter()->quoteInto("idEmpresa = ?", $idEmpresa);
-					$tablaBcosEmp->update(array("idBanco" => $ids), $where);
+					//print_r("El producto debe agregarse");
+					
+					$where = $tablaBcosEmp->getAdapter()->quoteInto("idEmpresa", $idEmpresa);
+					print_r($where);
+					$tablaBcosEmp->update(array("idBanco"=>$idBanco), $where);
 				}
+				
 			}else{
-				$tablaBcosEmp->insert(array("idEmpresa" =>  $idEmpresa, "idBanco" => implode(",", array($idBanco))));
+				$tablaBcosEmp->insert(array("idEmpresa"=>$idEmpresa,"idBanco"=>$idBanco));
+				//$tablaBcosEmp->insert($rowBancoEmpresa->toArray());
 			}
-			
 		}
  }
