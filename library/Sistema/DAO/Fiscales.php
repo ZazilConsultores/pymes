@@ -599,6 +599,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		
 		if(! is_null($rowProveedor)){
 			$idsProveedores = explode(",", $rowProveedor->idProveedores);
+			print_r($idsProveedores);
 			if(! in_array($idProveedor, $idsProveedores)){
 				$idsProveedores[] = $idProveedor;
 				$ids = implode(",", $idsProveedores);

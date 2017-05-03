@@ -22,9 +22,9 @@
 		</div>
 		<table id="bancosEmpresa" class="table table-striped table-condensed">
 			<thead>
-				<th>Empresa</th>
 				<th>Banco</th>
-				
+				<th>Cuenta Banco</th>
+				<th>Cuenta Contable</th>
 			</thead>
 			<tbody>
 			</tbody>
@@ -36,7 +36,7 @@
 	$().ready(function(){
 		$("select#idEmpresa").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
-			console.log(url);
+			//console.log(url);
 			$.ajax({
 				url: url,
 				dataType: "json",
@@ -50,8 +50,28 @@
 			});
 			
 		});
- 		//Obtenemos el idEmpresa
- 		var idEmpresas = $("#idEmpresa").val();
- 		console.log(idEmpresas);
+		
+ 		//Obtenemos el idEmpresa para obtener bancosEmpresa por idEmpresa
+ 		$("select#idEmpresa").on('change', function(){
+ 			var idEmpresas = $("#idEmpresa").val();
+ 			var url = window.location.origin + "/General/contabilidad/json/bancosempresa/emp/" + this.value;
+ 			$.ajax({
+ 				url:url,
+ 				dataType: "json",
+ 				success: function(data){
+ 					console.dir(data);
+ 					var tbody = $("table#bancosEmpresa").find('tbody');
+ 					tbody.empty();
+ 					$.each(data, function(i,item){
+ 						tbody.append($('<tr>').
+ 							append($('<td>').append(data[i].cuenta)).
+							append($('<td>').append(data[i].banco)).
+							append($('<td>').append(data[i].cuentaContable))
+ 						);	
+ 					});
+ 				} 
+ 			});
+ 		});
+ 		
 	});
 </script>

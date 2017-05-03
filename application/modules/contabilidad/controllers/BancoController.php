@@ -125,8 +125,12 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$bancosEmpresa = new Contabilidad_Model_BancosEmpresa($datos);
-				$this->bancoDAO->altaBancoEmpresa($bancosEmpresa, $idEmpresa, $idBanco);
+				//$bancosEmpresa = new Contabilidad_Model_BancosEmpresa($datos);
+				try{
+					$this->bancoDAO->altaBancoEmpresa($idEmpresa, $idBanco);
+				}catch(exception $ex){
+					
+				}			
 			}
 		}
     }

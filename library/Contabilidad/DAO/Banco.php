@@ -76,51 +76,41 @@
 	}
 	
 	public function obtenerBancosEmpresa($idEmpresa) {
-		$tableBanco = $this->tablaBanco;
+		//Obtenemos fila de bancosEmpresa por empresa
 		$tableBcosEmp = $this->tablaBancosEmpresa;
 		$select = $tableBcosEmp->select()->from($tableBcosEmp)->where("idEmpresa=?",$idEmpresa);
-		$rowsBcosEmp = $tableBcosEmp->fetchAll($select);
+		$rowsBcosEmp = $tableBcosEmp->fetchRow($select);
 		
-		$idsBancos = array();
-		
-		foreach ($rowsBcosEmp as $rowBcoEmpresa) {
-			$idsBancos[] = $rowBcoEmpresa->idBanco;
+		$idsBanco= explode(",", $rowsBcosEmp->idBanco);
+		if(! is_null($rowsBcosEmp->idBanco) && ! empty($idsBanco)) {
+			$tableBanco = $this->tablaBanco;
+			$select = $tableBanco->select()->from($tableBanco)->where("idBanco IN (?)",$idsBanco);
+			$rowsBancos = $tableBanco->fetchAll($select)->toArray();
+			//print_r("$select");
 		}
 		
-		//print_r($idsBancos);
-		
-		$select = $tableBanco->select()->from($tableBanco)->where("idBanco IN (?)",$idsBancos);
-		$rowsBancos = $tableBanco->fetchAll($select)->toArray();
 		
 		return $rowsBancos;
 		
 		}
 		
-		public function altaBancoEmpresa(Contabilidad_Model_BancosEmpresa $bancosEmpresa, $idEmpresa, $idBanco){
-			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		public function altaBancoEmpresa( $idEmpresa, $idBanco){
 			
-			$tablaBcosEmp = $this->tablaBancosEmpresa;
-			$select = $tablaBcosEmp->select()->from($tablaBcosEmp)->where("idEmpresa = ?", $idEmpresa)
-			->where("idBanco = ?", $idBanco);
-			$rowBancoEmpresa= $tablaBcosEmp->fetchRow($select);
+			$tablaBancosEmp = $this->tablaBancosEmpresa;
+			$select = $tablaBancosEmp->select()->from($tablaBancosEmp)->where("idEmpresa=?",$idEmpresa);
+			$rowBancoEmp = $tablaBancosEmp->fetchRow($select);	
+			if(! is_null($rowBancoEmp)){
+				$idsBanco = explode(",", $rowBancoEmp->idBanco);
 		
-			if(!is_null($rowBancoEmpresa)){
-				$idsBancos= explode (",", $rowBancoEmpresa->idBanco);
-				$idBanco = $rowBancoEmpresa->idBanco;
-				if(($idsBancos == $idBanco)){
-					print_r("Ya existe el Producto");
-					//print_r("<br />");	
-				}else{
-					//print_r("El producto debe agregarse");
+				if(! in_array($idBanco, $idsBanco)){
+					$idsBanco[] = $idBanco;
+					$ids = implode(",", $idsBanco);
 					
-					$where = $tablaBcosEmp->getAdapter()->quoteInto("idEmpresa", $idEmpresa);
-					print_r($where);
-					$tablaBcosEmp->update(array("idBanco"=>$idBanco), $where);
+					$rowBancoEmp->idBanco = $ids;
+					$rowBancoEmp->save();
 				}
-				
 			}else{
-				$tablaBcosEmp->insert(array("idEmpresa"=>$idEmpresa,"idBanco"=>$idBanco));
-				//$tablaBcosEmp->insert($rowBancoEmpresa->toArray());
+				$tablaBancosEmp->insert(array("idEmpresa"=>$idEmpresa, "idBanco"=> implode(",",array( $idBanco))));
 			}
 		}
  }

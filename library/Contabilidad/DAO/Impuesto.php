@@ -116,29 +116,17 @@
 		
 		//public function enlazarProductoImpuesto($idImpuesto, $idProducto, $importe, $porcentaje){
 			//Sistema_Model_Subparametro $subparametro
-			public function enlazarProductoImpuesto(Contabilidad_Model_ImpuestoProductos $impuestoProducto, $idImpuesto, $idProducto ){	
+			public function enlazarProductoImpuesto(Contabilidad_Model_ImpuestoProductos $impuestoProducto, $idImpuesto, $idProducto){	
 			$tablaImpuestoProducto = $this->tablaImpuestoProductos;
 			$select = $tablaImpuestoProducto->select()->from($tablaImpuestoProducto)->where("idImpuesto =?",$idImpuesto)
 			->where("idProducto = ?", $idProducto);
 			$rowImpuestoProducto = $tablaImpuestoProducto->fetchRow($select);
 		
-			if(!is_null($rowImpuestoProducto)){
-				$idsProductos = explode (",", $rowImpuestoProducto->idsProducto);
-				$idProducto = $rowImpuestoProducto->idProducto;
-				if(($idProducto == $idProducto)){
-					print_r("Ya existe el Producto");
-					//print_r("<br />");	
-				}else{
-					//print_r("El producto debe agregarse");
-					
-					$where = $tablaImpuestoProducto->getDefaultAdapter()->quoteInto("idImpuesto", $idImpuesto);
-					print_r($where);
-					$tablaImpuestoProducto->update(array("idProducto"=>$idProducto), $where);
-				}
-				
-			}else{
-				$tablaImpuestoProducto->insert(array("idImpuesto"=>$idImpuesto,"idProducto"=>$idProducto));
+			if(is_null($rowImpuestoProducto)){
+				//$tablaImpuestoProducto->insert(array("idImpuesto"=>$idImpuesto,"idProducto"=>$idProducto));
 				$tablaImpuestoProducto->insert($impuestoProducto->toArray());
+			}else{
+				echo "El producto ya existe";
 			}
 		}
 		
