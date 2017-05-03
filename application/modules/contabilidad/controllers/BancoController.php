@@ -87,7 +87,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		}
     }
 
-    public function enlazaAction()
+    /*public function enlazaAction()
     {
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
@@ -106,7 +106,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 			}
 			//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
 		}
-    }
+    }*/
 
     public function enlazarAction()
     {
