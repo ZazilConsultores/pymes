@@ -87,27 +87,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		}
     }
 
-    /*public function enlazaAction()
-    {
-		if($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				unset($datos["idSucursal"]);
-				$idEmpresa = $datos["idEmpresa"];
-				$idBanco = $datos["idBanco"];
-				try{
-					$this->bancoDAO->altaBancoEmpresa($idEmpresa, $idBanco);
-					//print_r($subparametro->toArray());
-					$mensaje = "Banco <strong>" . $datos["idEmpresa"] . "</strong> creado exitosamente";
-					$this->view->messageSuccess = $mensaje;
-				}catch(Util_Exception_BussinessException $ex){
-					$this->view->messageFail = $ex->getMessage();
-				}			
-			}
-			//$this->_helper->redirector->gotoSimple("index", "banco", "contabilidad");
-		}
-    }*/
-
+    
     public function enlazarAction()
     {
         $request = $this->getRequest();
@@ -121,11 +101,12 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		$formulario->removeElement("tipo");
 		$formulario->removeElement("cuentaContable");
 		$formulario->removeElement("saldo");
+		$formulario->getElement("submit")->setLabel("Enlazar");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//$bancosEmpresa = new Contabilidad_Model_BancosEmpresa($datos);
 				try{
 					$this->bancoDAO->altaBancoEmpresa($idEmpresa, $idBanco);
 				}catch(exception $ex){
