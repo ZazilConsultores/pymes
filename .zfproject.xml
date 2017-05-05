@@ -980,6 +980,7 @@
               <actionMethod actionName="factura"/>
               <actionMethod actionName="pagos"/>
               <actionMethod actionName="aplicarpago"/>
+              <actionMethod actionName="pagodos"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -1041,6 +1042,8 @@
               <actionMethod actionName="sucursal"/>
               <actionMethod actionName="asociace"/>
               <actionMethod actionName="asociape"/>
+              <actionMethod actionName="sucursalese"/>
+              <actionMethod actionName="buscafacxp"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1332,6 +1335,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Banco">
                 <viewScriptFile forActionName="enlazar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="pagodos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="sucursalese"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscafacxp"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2720,6 +2732,7 @@
                 <testApplicationActionMethod forActionName="factura"/>
                 <testApplicationActionMethod forActionName="pagos"/>
                 <testApplicationActionMethod forActionName="aplicarpago"/>
+                <testApplicationActionMethod forActionName="pagodos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2781,6 +2794,8 @@
                 <testApplicationActionMethod forActionName="sucursal"/>
                 <testApplicationActionMethod forActionName="asociace"/>
                 <testApplicationActionMethod forActionName="asociape"/>
+                <testApplicationActionMethod forActionName="sucursalese"/>
+                <testApplicationActionMethod forActionName="buscafacxp"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

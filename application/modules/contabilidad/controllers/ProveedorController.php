@@ -3,12 +3,16 @@
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
-    //private $inventarioDAO = null;
     private $notaEntradaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $pagoProveedor = null;
 	
+	private $empresaDAO = null;
+
     public function init()
     {
     	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
@@ -51,6 +55,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$this->view->jsonMultiplos = $jsonMultiplos;
 		
 		$this->inventarioDAO = new Inventario_DAO_Empresa;
+		
+		$this->empresaDAO = new Sistema_DAO_Empresa;
     }
 
     public function indexAction()
@@ -161,7 +167,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     }
 
     public function pagosAction()
-    {	
+    {
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_PagosProveedor;
 		$formulario->getSubForm("0")->getElement("idEmpresas");
@@ -213,7 +219,19 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				
     }
 
+    public function pagodosAction()
+    {
+        // action body
+        //Enviamos las empresas
+        //print_r();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;
+    }
+
+
 }
+
+
 
 
 

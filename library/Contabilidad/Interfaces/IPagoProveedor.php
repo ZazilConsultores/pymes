@@ -4,7 +4,7 @@
 		public function obtenerFactura();
 		
 		public function busca_facturap($idCoP);
-		public function busca_Cuentasxp($idSucursal);
+		public function busca_Cuentasxp($idSucursal,$pr);
 		
 		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total);
 	

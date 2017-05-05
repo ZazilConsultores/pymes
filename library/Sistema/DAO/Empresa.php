@@ -41,6 +41,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
 		
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
 	}
 	
 	/**
@@ -245,6 +247,27 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 		
 		return $idFiscales;
+	}
+	
+	/**
+	 * Obtenemos los registros de la T.Fiscales correspondientes a las empresas operables
+	 */
+	public function obtenerFiscalesEmpresas() {
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas,array('idEmpresas'));
+		$rowsEmpresas = $tablaEmpresas->fetchAll($select)->toArray();
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa, array('idFiscales'))->where("idEmpresa IN (?)", array_values($rowsEmpresas));
+		$rowsEmpresa = $tablaEmpresa->fetchAll($select)->toArray();
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where('idFiscales IN (?)', array_values($rowsEmpresa));
+		$fiscales = $tablaFiscales->fetchAll($select)->toArray();
+		
+		return $fiscales;
+		
+		
 	}
 	
 	public function obtenerEmpresasClientes(){

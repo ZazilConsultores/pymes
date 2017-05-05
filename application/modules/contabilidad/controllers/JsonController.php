@@ -4,12 +4,11 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 {
 
     private $bancoDAO = null;
-
     private $fiscalesDAO = null;
-
     private $impuestoProductosDAO = null;
-
-    private $empresaDAO = null;
+	private $empresaDAO = null;
+	private $pagosDAO = null;
+	
 
     public function init()
     {
@@ -19,6 +18,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	        $this->bancoDAO = new Contabilidad_DAO_Banco;
 			$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
 			$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+			$this->pagosDAO = new Contabilidad_DAO_PagoProveedor;
 			
 			$this->empresaDAO = new Sistema_DAO_Empresa;
 			
@@ -86,6 +86,22 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			}
     }
 
+    public function sucursaleseAction()
+    {
+        // action body
+        
+        $idFiscales = $this->getParam("idFiscales");
+			
+		$sucursales = $this->empresaDAO->obtenerSucursales($idFiscales);
+		
+		if(!is_null($sucursales)){
+			echo Zend_Json::encode($sucursales);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
     public function sucursalAction()
     {
 	        // action body
@@ -129,10 +145,26 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$this->fiscalesDAO->asociateProveedorEmpresa($empresa['idEmpresas'], $proveedor['idProveedores']);
     }
 
+    public function buscafacxpAction()
+    {
+        // action body
+        $idSucursal = $this->getParam("idSucursal");
+        $proveedor = $this->getParam("pro");
+		
+		$buscafacxp = $this->pagosDAO->busca_Cuentasxp($idSucursal, $proveedor);
+		if(!is_null($buscafacxp)){
+			echo Zend_Json::encode($buscafacxp);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
 
+
+
 	
 	
 	
@@ -144,5 +176,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
 
 

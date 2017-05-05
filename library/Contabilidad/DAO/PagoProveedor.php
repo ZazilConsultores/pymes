@@ -130,12 +130,14 @@
 		
 		}
 		
-		public function busca_Cuentasxp($idSucursal){
+		public function busca_Cuentasxp($idSucursal,$pr){
 			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",4)->where("estatus <> ?", "C")->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal);
-			$rowsFacturaxp = $tablaFactura->fetchAll($select);
-		
-			$modelFacturas = array();
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",4)->where("estatus <> ?", "C")
+			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pr);
+			$rowsFacturaxp = $tablaFactura->fetchAll($select)->toArray();
+			
+			return $rowsFacturaxp;
+			/*$modelFacturas = array();
 			
 			foreach ($rowsFacturaxp as $rowFacturaxp) {
 				$modelFactura = new Contabilidad_Model_Factura($rowFacturaxp->toArray());
@@ -143,43 +145,9 @@
 				$modelFacturas[] = $modelFactura;
 			
 			}
-			return $modelFacturas;
+			return $modelFacturas;*/
 				
-			/*$tablaCuentasxp = $this->tablaCuentasxp;
-			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento=?",4)->where("idSucursal=?",$idSucursal)->where("idCoP=?",$idCoP)->where("numeroFolio=?",$numeroFolio);
-			$rowCuentaxp = $tablaCuentasxp->fetchRow($select);
-			//print_r("$select");
-			
-			if(!is_null($rowCuentaxp)){
-				$secuencial= $rowCuentaxp->secuencial +1;
-				//print_r($secuencial);
-			}else{
-				$secuencial = 1;	
-				print_r($secuencial);
-			}
-			
-			//Registra pago en cuentasxp
-			/*$mCuentasxp = array(
-						'idTipoMovimiento'=>4,
-						'idSucursal'=>$idSucursal,
-						//'idFactura'=>32,
-						'idCoP'=>$idCoP,
-						'idBanco'=>$Valor['fecha'] //vista idBanco
-						/*'idDivisa'=>$formaPago['idDivisa'], //vista idDivisa
-						'numeroFolio'=>$encabezado['numeroFactura'], //numero de la factura
-						'secuencial'=>$secuencial, //$varible
-						'fechaCaptura'=>date("Y-m-d H:i:s", time()),
-						'fechaPago'=>$stringFecha,//vista fecha Factura
-						'estatus'=>"A",
-						'numeroReferencia'=>$formaPago['numeroReferencia'], //numero Referencia,
-						'conceptoPago'=>$conceptoPago, //conceptoPago
-						'formaLiquidar'=>$formaPago['formaLiquidar'], //formaPago
-						'subTotal'=>$importe[0]['subTotal'],
-						'total'=>$importe[0]['total']
-						*/
-				//	);
-					//print_r($mCuentasxp);
-					//$dbAdapter->insert("Cuentasxp", $mCuentasxp);*/
+		
 							
 		}
 		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total)
