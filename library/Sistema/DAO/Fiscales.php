@@ -486,7 +486,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			$tablaProveedores = $this->tablaProveedores;
 			$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores IN (?)", $idsProveedor);
 			$rowsProveedores = $tablaProveedores->fetchAll($select);
-			print_r("$select");
+			//print_r("$select");
 			$idsEmpresa = array();
 			foreach ($rowsProveedores as $rowProveedores) {
 				$idsEmpresa[] = $rowProveedores->idEmpresa;
@@ -503,16 +503,18 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			/*$tablaFiscales = $this->tablaFiscales;
 			$select = $tablaFiscales->select()->from($tablaFiscales,array('rfc','razonSocial'))->where("idFiscales IN (?)", $idsFiscales);
 			$rowsFiscales = $tablaFiscales->fetchAll($select);*/
-			$tablaEmpresa = $this->tablaEmpresa;
-			$select= $tablaEmpresa->select()
+			$tablaFiscales = $this->tablaFiscales;
+			$tablaProveedores = $this->tablaProveedores;
+			$select= $tablaFiscales->select()
 			->setIntegrityCheck(false)
-			->from($tablaEmpresa, array('idEmpresa'))
-			->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
+			->from($tablaFiscales, array('idFiscales','rfc','razonSocial'))
+			//->join($tablaProveedores)->where("idProveedores IN (?)", $idsProveedor);
+			->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales')
 			->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa')
 			->order('razonSocial ASC')->where("Fiscales.idFiscales IN (?)", $idsFiscales);
 			//print_r("$select");
-			//return $tablaEmpresa->fetchAll($select);
-			$rowsFiscales = $tablaEmpresa->fetchAll($select);
+			//return $tablaEmpresa->fetchAll($select);*/
+			$rowsFiscales = $tablaFiscales->fetchAll($select);
 			if (is_null($rowsFiscales)) {
 				return NULL;
 			}else{
