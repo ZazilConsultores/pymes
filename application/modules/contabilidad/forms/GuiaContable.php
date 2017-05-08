@@ -73,20 +73,28 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$eModulo->setLabel("Modulo: ");
 		$eModulo->setAttrib("required", "required");
 		
+		$eClaveProv = new Zend_Form_Element_Text("clave");
+		$eClaveProv->setAttrib("class", "form-control");
+		$eClaveProv->setAttrib("maxlength", "2");
+		$eClaveProv->setLabel("Clave Proveedor: ");
+		$eClaveProv->setAttrib("required", "required");
 		
-		
+		$eTipoProv = new Zend_Form_Element_Text("descripcionTipoProveedor");
+		$eTipoProv->setAttrib("class", "form-control");
+		$eTipoProv->setLabel("Descripción Tipo Proveedor: ");
+		$eTipoProv->setAttrib("required", "required");
 		
 		$subCuenta->addElements(array($eCuenta, $eSub1,$eSub2,$eSub3,$eSub4,$eSub5));
 		$subCuenta->setElementDecorators($decoratorsElemento);
 		$subCuenta->setDecorators($decoratorsCategoria);
 		
-		$subParametros->addElements(array($eModulo));
+		$subParametros->addElements(array($eModulo, $eClaveProv, $eTipoProv));
 		$subParametros->setElementDecorators($decoratorsElemento);
 		$subParametros->setDecorators($decoratorsCategoria);
 		
 		$this->addSubForms(array($subCuenta, $subParametros));
 		$eSubmit = new Zend_Form_Element_Submit("submit");
-		$eSubmit->setLabel("Crear Empresa");
+		$eSubmit->setLabel("Crear");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		$this->addElement($eSubmit);

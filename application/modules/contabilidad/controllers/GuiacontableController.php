@@ -39,13 +39,12 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
+				
 				$datos = $formulario->getValues();
-				print_r($datos);
+				$descripcion =$datos[1];
 				try{
-					$this->modulosDAO->altaModulo($datos);
-					$this->view->messageSuccess = "Empresa dada de alta con exitosamente!!";
+					$this->guiaContable->altaModulo($descripcion);
 				}catch(Exception $ex){
-					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 				
 			}
@@ -53,9 +52,34 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
         
     }
 
-    
-		
+    public function altatipoproveedorAction()
+    {
+    	$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_GuiaContable;
+		$formulario->removeSubForm("0");
+		$formulario->getSubForm("1")->removeElement("descripcion");
+	
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$tipoProveedor = $datos[1];
+				print_r($tipoProveedor);
+				try{
+					$this->guiaContable->altaTipoProvedor($tipoProveedor);
+				}catch(Exception $ex){
+				}
+				
+			}
+		}
+        
+    }
+
+
 }
+
+
 
 
 

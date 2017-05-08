@@ -1051,6 +1051,7 @@
               <actionMethod actionName="editar"/>
               <actionMethod actionName="altmodulos"/>
               <actionMethod actionName="altamodulos"/>
+              <actionMethod actionName="altatipoproveedor"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -1344,6 +1345,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="buscafacxp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="altatipoproveedor"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2803,6 +2807,7 @@
                 <testApplicationActionMethod forActionName="editar"/>
                 <testApplicationActionMethod forActionName="altmodulos"/>
                 <testApplicationActionMethod forActionName="altamodulos"/>
+                <testApplicationActionMethod forActionName="altatipoproveedor"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
