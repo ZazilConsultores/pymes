@@ -965,6 +965,7 @@
               <actionMethod actionName="nota"/>
               <actionMethod actionName="remision"/>
               <actionMethod actionName="factura"/>
+              <actionMethod actionName="cobros"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1348,6 +1349,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Guiacontable">
                 <viewScriptFile forActionName="altatipoproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cobros"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2721,6 +2725,7 @@
                 <testApplicationActionMethod forActionName="nota"/>
                 <testApplicationActionMethod forActionName="remision"/>
                 <testApplicationActionMethod forActionName="factura"/>
+                <testApplicationActionMethod forActionName="cobros"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>

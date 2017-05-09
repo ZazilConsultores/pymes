@@ -34,7 +34,7 @@
 	public function obtenerModulo($idModulo){
 		
 	}
-	public function odtenerModulos(){
+	public function obtenerModulos(){
 		
 	}
 	public function editarModulo(){
@@ -44,7 +44,16 @@
 		
 	}
 	public function obtenerCuentasGuia(){
+		$tablaGuiaConta = $this->tablaGuiaContable;
+		$rowsGuiaContable = $tablaGuiaConta->fetchAll();
 		
+		$modelsGuiaContable = array();
+		foreach($rowsGuiaContable as $rowGuiaContable){
+			$modelGuiaContable = new Contabilidad_Model_GuiaContable($rowGuiaContable->toArray());
+			$modelGuiaContable->setIdGuiaContable($rowGuiaContable->idGuiaContable);
+			$modelsGuiaContable [] = $modelGuiaContable;		
+		}
+		return $modelsGuiaContable;
 	}
 	public function editarCuentaGuia(){
 		

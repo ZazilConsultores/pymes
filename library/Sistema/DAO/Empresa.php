@@ -254,7 +254,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 */
 	public function obtenerFiscalesEmpresas() {
 		$tablaEmpresas = $this->tablaEmpresas;
-		$select = $tablaEmpresas->select()->from($tablaEmpresas,array('idEmpresas'));
+		$select = $tablaEmpresas->select()->from($tablaEmpresas,array('idEmpresa'));
 		$rowsEmpresas = $tablaEmpresas->fetchAll($select)->toArray();
 		
 		$tablaEmpresa = $this->tablaEmpresa;
@@ -264,7 +264,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where('idFiscales IN (?)', array_values($rowsEmpresa));
 		$fiscales = $tablaFiscales->fetchAll($select)->toArray();
-		
+		//print_r("$select");
 		return $fiscales;
 		
 		

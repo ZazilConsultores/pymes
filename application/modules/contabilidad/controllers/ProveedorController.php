@@ -222,10 +222,28 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     public function pagodosAction()
     {
         // action body
+        $request = $this->getRequest();
         //Enviamos las empresas
         //print_r();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;
+		
+		if($request->isPost()){
+			$datos = $request->getPost();
+			print_r($datos);
+			
+			switch ($datos["tipoFormulario"]) {
+				case 'PF': // Pago Factura Proveedor
+					print_r("Es un pago Factura");
+					break;
+				
+				case 'NP': // Nomina de Credito de Proveedor
+					print_r("Es una nomina de ");
+					break;
+			}
+			
+		}
+		
     }
 
 

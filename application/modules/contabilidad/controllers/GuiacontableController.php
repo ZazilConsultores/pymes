@@ -14,13 +14,15 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-			
+        $guiaContableDAO = $this->guiaContable;
+		$this->view->guiaContable = $guiaContableDAO->obtenerCuentasGuia();        
     }
 
     public function altaAction()
     {
         // action body
         $formulario = new Contabilidad_Form_GuiaContable;
+		$formulario->getSubForm("1")->removeElement("clave");
 		$this->view->formulario = $formulario;
     }
 
@@ -34,6 +36,7 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_GuiaContable;
 		$formulario->removeSubForm("0");
+		
 		
 		if($request->isGet()){
 			$this->view->formulario = $formulario;

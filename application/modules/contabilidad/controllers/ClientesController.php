@@ -2,14 +2,19 @@
 
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
-	private $facturaDAO = null;
-	private $impuestosDAO = null;
+
+    private $facturaDAO = null;
+
+    private $impuestosDAO = null;
+	private $empresaDAO = null;
 	
-	public function init()
+
+    public function init()
     {
 		$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 		$this->facturaDAO = new Contabilidad_DAO_FacturaCliente;
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
+		$this->empresaDAO = new Sistema_DAO_Empresa;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
@@ -113,7 +118,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     	
     }
 
-
     public function facturaAction()
     {
     	//$this->view->impuestos = $this->impuestosDAO->obtenerImpuestos();
@@ -159,8 +163,19 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
    }
 
-	}
+    }
+
+    public function cobrosAction()
+    {
+        // action body
+        $empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;
+    }
+
+
 }
+
+
 
 
 
