@@ -8,6 +8,7 @@
 	$sucursalesDAO = new Sistema_DAO_Sucursal;
 	$empresas = $this->empresas;
 	//$sucursal = $sucursalesDAO->obtenerSucursal($idSucursal);  
+	$facturasxp = $this->facturasxp;
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -21,7 +22,8 @@
 				</div>
 				<hr />
 				<div>
-					<div class="form-horizontal">
+					<!--<div class="form-horizontal">-->
+						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 						<!-- Empresas -->
 						<div class="form-group">
 							<label for="empresa" class="col-md-2">Empresas: </label>
@@ -53,19 +55,20 @@
 						<!-- Boton consulta -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="button" class="btn btn-success">
+								<button id="queryFacturas" type="submit" class="btn btn-success">
 									<i class="fa fa-search"></i> Consultar Facturas
 								</button>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
-<div class="row">
+<!-- Muesta el resultado de la busqueda -->
+<?php if(!is_null($facturasxp)){ ?>
+	<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
 			<div class="panel-heading">
@@ -76,6 +79,7 @@
 					<table id="detalleFacturaxp" class="table table-striped table-condensed">
 						<thead>
 							<tr>
+								<th>idFactura</th>
 								<th>Sucursal</th>
 								<th>Proveedor</th>
 								<th>Número Factura</th>
@@ -86,6 +90,23 @@
 							</tr>
 						</thead>
 						<tbody>
+							<?php foreach ($facturasxp as $facturaxp) :?>
+								<tr>
+									<td><?php echo $facturaxp["idFactura"]; ?></td>
+									<td><?php echo $facturaxp["idSucursal"]; ?></td>
+									<td><?php echo $facturaxp["idCoP"]; ?></td>
+									<td><?php echo $facturaxp["numeroFactura"]; ?></td>
+									<td><?php echo $facturaxp["fechaFactura"]; ?></td>
+									<td><?php echo $facturaxp["total"]; ?></td>
+									<td>
+									<a class="btn btn-success"   type="submit" class="btn btn-info btnBusqueda" href="<?php echo $this->url(array("modulo"=>"contabilidad", "controller"=>"proveedor", "action"=>"aplicarpago","idFactura" => $facturaxp["idFactura"]))?>">
+										<span class="glyphicon glyphicon-pencil"></span> Pago
+									</a></td>
+									<td><button   type="submit" class="btn btn-success btnBusqueda" idFactura="<?php echo $facturasxp["idFactura"]; ?>" data-toggle="modal" data-target="#msgDetalle">
+										<span class="glyphicon glyphicon-pencil"></span> Nota de Credito
+									</button></td>
+								</tr>
+							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
@@ -93,32 +114,34 @@
 			
 		</div>
 	</div>
-</div>
-
-<!-- Registra pago -->
-<div id="registroPago" class="row hidden">
-	<div class="col-md-12">
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				<h5 class="panel-title">Registro de Pago Factura</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
-						<!-- Fecha -->
-						<div class="form-group">
-							<label for="fecha" class="control-label col-md-2">Fecha de Pago: </label>
-							<div class="col-md-10">
-								<input id="fecha" name="fecha" type="text" class="form-control" required="La fecha no puede quedar vacía"/>
-							</div>
+</div>	
+<?php } ?>
+<!--Modal para realizar un  pago -->
+<div class="modal fade" id="modalPago" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role= "document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss"modal">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Realiza pago:</h4>
+			</div><!--heder-->
+			<div class="modal-body">
+				<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="form-group">
+						<label for="fecha" class="control-label col-md-2">Fecha de Pago: </label>
+						<div class="col-md-10">
+							<input id="fecha" name="fecha" type="text" class="form-control" />
 						</div>
-						<!-- Pago -->
-						<div class="form-group">
-							<label for="pago" class="control-label col-md-2">Monto: </label>
-							<div class="col-md-10">
-								<input id="pago" name="pago" type="text" class="form-control" />
-							</div>
+					</div>
+						
+					<div class="form-group">
+						<label for="pago" class="control-label col-md-2">Monto: </label>
+						<div class="col-md-10">
+							<input id="pago" name="pago" type="text" class="form-control" />
 						</div>
+					</div>
+					
 						<!-- Divisa -->
 						<div class="form-group">
 							<label for="divisa" class="control-label col-md-2">Divisa: </label>
@@ -170,12 +193,6 @@
 								<input id="referencia" name="referencia" type="text" class="form-control" placeholder="(Opcional)..." />
 							</div>
 						</div>
-						<!-- TipoFormulario -->
-						<div class="form-group">
-							<div class="col-md-10">
-								<input name="tipoFormulario" type="hidden" class="form-control" value="PF" />
-							</div>
-						</div>
 						<!-- BotonEnvio -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
@@ -183,69 +200,45 @@
 									<i class="fa fa-save"></i> Registrar Pago
 								</button>
 							</div>
-						</div>
-					</form>
+						</div>		
+				</form>
+					
+			</div><!--body-->
+		</div><!--modal-content-->
+	</div><!--modal-dialog-->
+</div><!--modal-->
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Relación de Pagos</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id="detalleFacturaxp" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>idFactura</th>
+								<th>Sucursal</th>
+								<th>Proveedor</th>
+								<th>Número Factura</th>
+								<th>Fecha</th>
+								<th>$total</th>
+								<th>Pago</th>
+								<th>Nomina</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 </div>
 
-<!-- Registra Nomina -->
-<div id="registroNomina" class="row hidden">
-	<div class="col-md-12">
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				<h5 class="panel-title">Registrar una Nota Crédito</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
-						<!-- Fecha -->
-						<div class="form-group">
-							<label for="fecha" class="control-label col-md-2">Fecha: </label>
-							<div class="col-md-10">
-								<input id="fecha" name="fecha" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- Pago -->
-						<div class="form-group">
-							<label for="pago" class="control-label col-md-2">Monto: </label>
-							<div class="col-md-10">
-								<input name="pago" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- Divisa -->
-						<div class="form-group">
-							<label for="divisa" class="control-label col-md-2">Divisa: </label>
-							<div class="col-md-10">
-								<select name="divisa"  class="form-control">
-									<?php foreach ($divisas as $divisa) : ?>
-									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
-								<?php endforeach; ?>
-								</select>
-							</div>
-						</div>
-						<!-- TipoFormulario -->
-						<div class="form-group">
-							<div class="col-md-10">
-								<input name="tipoFormulario" type="hidden" class="form-control" value="NP" />
-							</div>
-						</div>
-						<!-- BotonEnvio -->
-						<div class="form-group">
-							<div class="col-md-offset-2 col-md-10">
-								<button type="submit" class="btn btn-warning">
-									<i class="fa fa-save"></i> Registrar Pago
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <script>
 	$().ready(function(){
@@ -293,51 +286,7 @@
 			}
 		});
 		
-		$("#queryFacturas").on('click', function(){
-			//Traer Id's de Empresa, Sucursal y Proveedor
-			var idSucursal = $("#idSucursal").val();
-			var proveedor = $("#idProveedor").val();
-			console.log($("#idFiscales").val());
-			console.log($("#idSucursal").val());
-			console.log($("#idProveedor").val());
-			var urlFacturaxp = url + 'contabilidad/json/buscafacxp/idSucursal/' + idSucursal + '/pro/' + proveedor;
-			console.log(urlFacturaxp);
-			//Comenzamaos eventos ajax
-			$.ajax({
-				url: urlFacturaxp,
-				dataType:"json",
-				success: function (data){
-					console.dir(data);
-					var tbody = $("#detalleFacturaxp").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						var botonPago = $('<button></button>').attr("tipo","pago").attr("factura",data[i].idFactura).attr("class","btn btn-link").text("Pago");
-						var botonNomina = $('<button></button>').attr("tipo","nomina").attr("factura",data[i].idFactura).attr("class","btn btn-link").text("Nomina de Crédito");
-						
-						tbody.append( $('<tr>').
-							append($('<td>').append(data[i].idSucursal)).
-							append($('<td>').append(data[i].idCoP)).
-							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].fechaFactura)).
-							append($('<td>').append(data[i].total)).
-							append($('<td>').append(botonPago)).
-							append($('<td>').append(botonNomina))
-						);
-					});
-				}
-			});
-			
-		});
 		
-		$("#detalleFacturaxp").on('click', "button[tipo='pago']", function(){
-			$("#registroPago").removeClass("hidden");
-			$("#registroNomina").addClass("hidden");
-		});
-		
-		$("#detalleFacturaxp").on('click', "button[tipo='nomina']", function(){
-			$("#registroNomina").removeClass("hidden");
-			$("#registroPago").addClass("hidden");
-		});
 		
 	});
 </script>

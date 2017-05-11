@@ -4,48 +4,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 {
 
     public function init()
-    {
-    	$subBusqueda = new Zend_Form_SubForm();
-		
-    	$tablaFiscales = new Inventario_DAO_Empresa();
-		$rowset = $tablaFiscales->obtenerInformacionEmpresasIdFiscales();
-		
-		$eEmpresa = new Zend_Form_Element_Select('idEmpresas');     
-    	$eEmpresa->setLabel('Seleccionar Empresa');
-		$eEmpresa->setAttrib("class", "form-control");
-		
-		foreach($rowset as $fila){
-			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);	
-		}
-		
-		$eSucursal = new Zend_Form_Element_Select('idSucursal');
-		$eSucursal->setLabel('Sucursal:');
-		$eSucursal->setAttrib("class", "form-control");
-		$eSucursal->setRegisterInArrayValidator(FALSE);
-		$eSucursal->setAttrib("required", "true");
-		
-		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
-		$rowset = $tablaEmpresa->obtenerProveedores();
-		
-		$eProveedor = new Zend_Form_Element_Select('idCoP');
-		$eProveedor->setLabel('Seleccionar Proveedor:');
-		$eProveedor->setAttrib("class", "form-control");
-		
-		
-		foreach ($rowset as $fila) {
-			$eProveedor->addMultiOption($fila->idEmpresa, $fila->razonSocial);	
-		}
-		
-		$eNumeroFactura = new Zend_Form_Element_Text('numFactura');
-		$eNumeroFactura->setLabel('Ingresar Numero Factura');
-		$eNumeroFactura->setAttrib("class", "form-control");
-		$eNumeroFactura->setAttrib("required", "true");
-		$eNumeroFactura->setAttrib("placeholder", "Numero Factura");
-
-		$subBusqueda->addElements(array($eEmpresa, $eSucursal, $eProveedor, $eNumeroFactura));
-	
-		$subAplicar = new Zend_Form_SubForm();
-				
+    {		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
@@ -66,6 +25,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		{
 			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDescripcion());		
 		}
+		
 		$conceptoPago = Zend_Registry::get('conceptoPago');
 		$eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
 		$eConceptoPago->setLabel('Concepto Pago:');
@@ -95,13 +55,16 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$eNumeroReferencia->setAttrib("class", "form-control");
 		$eNumeroReferencia->setAttrib("required", "true");
 		
-		$subAplicar->addElements(array($ePago, $eDivisa, $eConceptoPago, $eFormaPago, $eBanco, $eNumeroReferencia));
-		$this->addElement($eFecha);
-		$this->addSubForms(array($subBusqueda,$subAplicar));
 		$eSubmit = new Zend_Form_Element_Submit("submit");
-		$eSubmit->setLabel("Buscar Empresa");
+		$eSubmit->setLabel("Aplica pago");
 		$eSubmit->setAttrib("class", "btn btn-success");
-		
+		$this->addElement($eFecha);
+		$this->addElement($ePago);
+		$this->addElement($eDivisa);
+		$this->addElement($eConceptoPago);
+		$this->addElement($eFormaPago);
+		$this->addElement($eBanco);
+		$this->addElement($eNumeroReferencia);
 		$this->addElement($eSubmit);
 		
     }

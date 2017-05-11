@@ -20,8 +20,7 @@
 							
 		}
 		
-		public function aplica_Pago ($idFactura, $pago){
-			//Valida que el importe no se mayor a saldo, vacio 0 igual a cero.
+		public function aplica_Pago ($idFactura, array $datos){
 			
 			$tablaCuentasxp = $this->tablaCuentasxp;
 			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",4)->where("idFactura=?", $idFactura);
@@ -33,9 +32,22 @@
 			}else{
 				foreach ($rowCuentasxp as$rowCuentaxp) {
 					$secuencial = $rowCuentaxp["secuencial"];
-				}	
 			}
-			$tablaFactura = $this->tablaFactura;
+			//Valida que el importe no sea mayor al saldo, vacio ó  igual a cero.
+			if($datos["pago"]==0  || $datos["pago"] == " "){
+				print_r("El monto del saldo es incorrecto");
+			}else{
+				$tablaFactura = $this->tablaFactura;
+				$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
+				$rowFactura = $tablaFactura->fetchRow($select);
+				print_r($select->__toString());
+				
+				if($datos["pago"]>= $rowFactura["total"] ){
+					echo "El importe de pago no puede ser mayor que el importe de la factura";
+				}
+			}				
+		}
+			 /*w$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura =?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
 			print_r("$select");
@@ -66,7 +78,7 @@
 				);   
 				
 				//print_r($mCuentasxp);
-				$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+				$dbAdapter->insert("Cuentasxp",$mCuentasxp);*/
 		}
 		
 		public function actualiza_Saldo(){
