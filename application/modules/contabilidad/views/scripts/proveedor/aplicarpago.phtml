@@ -1,6 +1,34 @@
 <?php
 	$formulario = $this->formulario;
+	$datosFactura = $this->datosFactura;
+	$proveedorFac = $this->proveedorFac;
 ?>
+
+<!--Datos de factura-->
+<section class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class= "panel-title">Datos Factura</h3>
+	</div>
+	<div class="panel-body">
+		<!--Numero de factura-->
+		<div class="form-group">
+			<label for="numeroFactura" class="control-label col-md-2">Factura:</label>
+			<div class="col-md-10">
+				<input id="numeroFactura" name="numeroFactura" type="text" value="<?php echo $datosFactura["numeroFactura"]; ?>" class="form-control" disabled="true"/>
+			</div>
+		</div>
+		<!--Numero de Proveedor-->
+		<div class="form-group">
+			<label for="proveedor" class="control-label col-md-2">Proveedor:</label>
+			<div class="col-md-10">
+				<input id="proveedor" name="proveedor" type="text" value="<?php echo $proveedorFac["razonSocial"];  ?>" class="form-control"/>
+			</div>
+		</div>
+		<!--Numero de Empresa-->
+		
+	</div>
+</section>
+
 <section class="panel panel-warning">
 	<div class="panel-heading">
 		<h3 class="panel-title">Realizar Pago Factura</h3>

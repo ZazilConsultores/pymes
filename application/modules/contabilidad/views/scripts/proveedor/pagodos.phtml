@@ -79,7 +79,7 @@
 					<table id="detalleFacturaxp" class="table table-striped table-condensed">
 						<thead>
 							<tr>
-								<th>idFactura</th>
+								<th>Ver Pagos</th>
 								<th>Sucursal</th>
 								<th>Proveedor</th>
 								<th>Número Factura</th>
@@ -92,8 +92,12 @@
 						<tbody>
 							<?php foreach ($facturasxp as $facturaxp) :?>
 								<tr>
+									<td>
+										<a class="btn btn-info" href="<?php echo $this->url(array("modulo"=>"contabilidad", "controller"=>"proveedor", "action"=>"pagodos","idFactura" => $facturaxp["idFactura"]))?>" >
+											<span class="glyphicon glyphicon-list"></span> Ver Pagos
+										</a>	
+									</td>
 									<td><?php echo $facturaxp["idFactura"]; ?></td>
-									<td><?php echo $facturaxp["idSucursal"]; ?></td>
 									<td><?php echo $facturaxp["idCoP"]; ?></td>
 									<td><?php echo $facturaxp["numeroFactura"]; ?></td>
 									<td><?php echo $facturaxp["fechaFactura"]; ?></td>
@@ -219,10 +223,10 @@
 					<table id="detalleFacturaxp" class="table table-striped table-condensed">
 						<thead>
 							<tr>
-								<th>idFactura</th>
-								<th>Sucursal</th>
-								<th>Proveedor</th>
-								<th>Número Factura</th>
+								<th>Movimiento</th>
+								<th>Pago</th>
+								<th>Divisa</th>
+								<th>Importe</th>
 								<th>Fecha</th>
 								<th>$total</th>
 								<th>Pago</th>
@@ -290,4 +294,5 @@
 		
 	});
 </script>
+
 

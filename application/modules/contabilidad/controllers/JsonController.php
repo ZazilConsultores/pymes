@@ -158,7 +158,19 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-
+	
+	public function buscapagoxpAction()
+    {
+        // action body
+        $idFactura = $this->getParam("idFactura");
+     
+		$buscapago= $this->pagosDAO->busca_PagosCXP($idFactura);
+		if(!is_null($buscapago)){
+			echo Zend_Json::encode($buscapago);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
 
 }
 

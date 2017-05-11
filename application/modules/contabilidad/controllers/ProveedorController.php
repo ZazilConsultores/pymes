@@ -194,13 +194,18 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	
     	$request = $this->getRequest();
 		$idFactura = $this->getParam("idFactura");
-		print_r($idFactura);
+		
     	$formulario = new Contabilidad_Form_PagosProveedor;
 		$this->view->formulario = $formulario;
+		$pagosDAO = new Contabilidad_DAO_PagoProveedor;
+		//$proveedores = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
+		$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
+		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				//print_r($datos);
 				try{
 					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 					}catch(Exception $ex){
