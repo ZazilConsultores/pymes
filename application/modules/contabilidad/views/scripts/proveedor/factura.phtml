@@ -370,7 +370,7 @@ function calculateGrandTotal() {
    
    	}
     
-    $("input#1-pagos").val(total.toFixed(2));
+    //$("input#1-pagos").val(total.toFixed(2));
     $("input#total").val(total.toFixed(2));
     /*Descuento*/
    descuento = $("#descuento").val();
@@ -440,12 +440,16 @@ $("select#idSucursal").on('click', function(){
 				});
 		});
 		$("#1-pagada").on("click", function(){
-			console.log("haciendo click");
+			var total = $("#total").val();
+			console.log(total);
 			if ($("#1-pagada:checked").val()==1){
 				console.log("input desahabilitado");
 				$("#1-pagos").attr('disabled', 'disabled');
+				$("#1-pagos").val(total); 
+				//calculateGrandTotal();
 			}else{
 				$("#1-pagos").removeAttr("disabled");
+				$("#1-pagos").val(0);
 				console.log("input habilitado");
 			}
 			

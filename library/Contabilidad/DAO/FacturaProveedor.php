@@ -86,7 +86,8 @@
 						'subTotal'=>$importe[0]['subTotal'],
 						'total'=>$importe[0]['total'],
 						'folioFiscal'=>$encabezado['folioFiscal'],
-						'importePago'=>$formaPago['pagos'],
+						'importePagado'=>$formaPago['pagos'],
+						'saldo'=>$importe[0]['total']
 					);
 					print_r($mFactura);
 					$dbAdapter->insert("Factura", $mFactura);

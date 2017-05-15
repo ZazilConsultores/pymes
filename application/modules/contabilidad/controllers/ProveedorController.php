@@ -201,6 +201,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		//$proveedores = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
 		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
+		$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
@@ -208,7 +209,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				//print_r($datos);
 				try{
 					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-					}catch(Exception $ex){
+					$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+				}catch(Exception $ex){
 				}
 			}
 		}
@@ -224,9 +226,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;
-		
-		if($request->isPost()){		
+        $this->view->empresas = $empresas;	
+		if($request->isGet()){
+			$this->view->empresas = $empresas;	
+		}if($request->isPost()){		
 			$datos = $request->getPost();
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			print_r($datos);
@@ -234,27 +237,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         	$pr = $this->getParam("proveedor"); 
         	//Enviamos la busqueda a la consulta
         	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
-			$this->view->facturasxp = $facturaxp;
-			/*switch ($datos["tipoFormulario"]) {
-				case 'PF': // Pago Factura Proveedor
-					print_r("Es un pago Factura");
-					break;
-				
-				case 'NP': // Nomina de Credito de Proveedor
-					print_r("Es una nomina de ");
-					break;
-			}*/
-			
-		}
-		
-		if($request->isPost()){		
-			$datos = $request->getPost();
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			print_r($datos);
-			$idFactura = $this->getParam("idFactura");
-        	$pr = $this->getParam("proveedor"); 
-        	//Enviamos la busqueda a la consulta
-        	//$facturaxp = $this->pagoProveedorDAO->aplica_Pago($idFactura);
 			$this->view->facturasxp = $facturaxp;
 			/*switch ($datos["tipoFormulario"]) {
 				case 'PF': // Pago Factura Proveedor
