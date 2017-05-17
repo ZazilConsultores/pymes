@@ -38,18 +38,19 @@
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');
 			
 			try{
-				$secuencial;
+				
 				$tablaCuentasxp = $this->tablaCuentasxp;
-				$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",4)->where("idFactura=?", $idFactura);
-				$rowCuentasxp = $tablaCuentasxp->fetchAll($select);
-			
-				if(is_null($rowCuentasxp)){
-					$secuencial = 1;
+				$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",15)->where("idFactura=?", $idFactura)
+				->order("secuencial DESC");
+				$rowCuentasxp = $tablaCuentasxp->fetchRow($select);
+				print_r($select->__toString());
+				
+				if(!is_null($rowCuentasxp)){
+					$secuencial= $rowCuentasxp->secuencial +1;
 				}else{
-					foreach ($rowCuentasxp as$rowCuentaxp) {
-						$secuencial = $rowCuentaxp["secuencial"];
-					}
+					$secuencial = 1;	
 				}
+				
 				//Valida que el importe no sea mayor al saldo, vacio ó  igual a cero.
 				if($datos["pago"]==0  || $datos["pago"] == " "){
 					print_r("El monto del saldo es incorrecto");
@@ -72,7 +73,7 @@
 							'idDivisa'=>$datos['idDivisa'],
 							'numeroFolio'=>$rowFactura['numeroFactura'],
 							'numeroReferencia'=>$datos['numeroReferencia'],
-							'secuencial'=>1,
+							'secuencial'=>$secuencial,
 							'estatus'=>"A",
 							'fechaPago'=>$stringIni,
 							'fechaCaptura'=>date('Y-m-d h:i:s', time()),
@@ -83,7 +84,7 @@
 						);
 						//print_r("Agrega movimiento a cuentasxp");   
 						//print_r($mCuentasxp);
-						//$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+						$dbAdapter->insert("Cuentasxp",$mCuentasxp);
 					}	
 				}	
 			}catch(exception $ex){
@@ -104,11 +105,16 @@
 		
 		public function obtiene_Factura ($idFactura){
 			$tablaFactura = $this->tablaFactura;
-			$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
 			//print_r($select->__toString());
-			return $rowFactura;
+			if(is_null($rowFactura)) {
+				//return null;
+			}else{
+				return $rowFactura;
+			}
 		}
+		
 		/*Obtiene proveedor por idFactura*/
 		public function obtenerProveedoresEmpresa($idFactura) {
 			$tablaFactura = $this->tablaFactura;
@@ -189,17 +195,16 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
 			$saldo = $rowFactura->saldo - $datos["pago"];
-			//if($rowFactura->saldo - $datos["pago"]){
-				/*echo "El monto de la factura se cubre con";*/
-			//}else{
-				/*$rowFactura = $tablaFactura->fetchRow($select);
-				$sFactura = $rowFactura->saldo - $datos["pago"];
-				$rowFactura->saldo = $sFactura;
-				//Actualiza el importe pago
-				$iFactura = $rowFactura->importePagado + $datos["pago"];
-				$rowFactura->importePagado = $iFactura;
-				$rowFactura->save();*/	
-			//}
+			print_r($saldo);
+			
+			$rowFactura->saldo = $saldo;
+			//Actualiza el importe pago 	
+			$iFactura = $rowFactura->importePagado + $datos["pago"];
+			$rowFactura->importePagado = $iFactura;
+			if($saldo <= $datos["pago"]){
+				$rowFactura->conceptoPago = "LI";
+			}
+			$rowFactura->save();	
 			
 		}
     }

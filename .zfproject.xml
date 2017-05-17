@@ -1045,6 +1045,7 @@
               <actionMethod actionName="asociape"/>
               <actionMethod actionName="sucursalese"/>
               <actionMethod actionName="buscafacxp"/>
+              <actionMethod actionName="obtenerfacturaxp"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1352,6 +1353,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="cobros"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="obtenerfacturaxp"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2805,6 +2809,7 @@
                 <testApplicationActionMethod forActionName="asociape"/>
                 <testApplicationActionMethod forActionName="sucursalese"/>
                 <testApplicationActionMethod forActionName="buscafacxp"/>
+                <testApplicationActionMethod forActionName="obtenerfacturaxp"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

@@ -21,9 +21,24 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
     public function altaAction()
     {
         // action body
+        $request = $this->getRequest();
+		
         $formulario = new Contabilidad_Form_GuiaContable;
 		$formulario->getSubForm("1")->removeElement("clave");
 		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$cta = $datos[0];
+				$subparametro = $datos[1];
+				print_r($cta);
+				print_r($subparametro);
+				
+				//$guiacontable = new Contabilidad_Model_GuiaContable($cta, $subparametro);
+				//print_r($guiacontable);
+			}
+		}
     }
 
     public function editarAction()

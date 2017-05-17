@@ -2,3 +2,26 @@
 	$formulario = $this->formulario;	
 ?>
 <?php echo $formulario; ?>
+<script>
+	$().ready(function(){
+		$("#1-cargo").on ("change", function(){
+			console.log("Hola");
+			if ($("#1-cargo:checked").val()==1){
+				$("#1-abono").attr("disabled", true);
+				$("#1-cargo").val("X");
+			}else{
+				$("#1-abono").removeAttr("disabled");
+			}
+		});
+		
+		$("#1-abono").on ("click", function(){
+			console.log("Hola");
+			if ($("#1-abono:checked").val()==1){
+				$("#1-cargo").attr("disabled", true);
+				$("#1-abono").val("X");
+			}else{
+				$("#1-cargo").removeAttr("disabled");
+			}
+		});
+	});
+</script>

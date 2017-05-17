@@ -11,7 +11,7 @@ interface Contabilidad_Interfaces_IGuiaContable{
 	public function obtenerModulo($idModulo);
 	public function obtenerModulos();
 	public function editarModulo();
-	public function altaCuentaGuia();
+	public function altaCuentaGuia(Contabilidad_Model_GuiaContable $cta, $subparametro);
 	public function obtenerCuentasGuia();
 	public function editarCuentaGuia();
 	

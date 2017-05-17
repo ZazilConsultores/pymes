@@ -4,11 +4,14 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 {
 
     private $bancoDAO = null;
+
     private $fiscalesDAO = null;
+
     private $impuestoProductosDAO = null;
-	private $empresaDAO = null;
-	private $pagosDAO = null;
-	
+
+    private $empresaDAO = null;
+
+    private $pagosDAO = null;
 
     public function init()
     {
@@ -158,8 +161,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	
-	public function buscapagoxpAction()
+
+    public function buscapagoxpAction()
     {
         // action body
         $idFactura = $this->getParam("idFactura");
@@ -172,11 +175,25 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function obtenerfacturaxpAction()
+    {
+        // action body
+        $idFactura = $this->getParam("idFactura");
+		$obtenerFac= $this->pagosDAO->obtiene_Factura($idFactura);
+		if(!is_null($obtenerFac)){
+			echo Zend_Json::encode($obtenerFac);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+
 }
 
 
 
 
+
 	
 	
 	
@@ -188,6 +205,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

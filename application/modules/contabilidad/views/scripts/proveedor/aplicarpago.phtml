@@ -72,6 +72,19 @@
 						</thead>
 						<tbody>
 						</tbody>
+						<tfoot>
+   							<tr>
+      							<td>Adeudo Factura:
+      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["total"]; ?>" class="form-control" disabled="true"/>
+								</td>		
+								<td>Saldo:
+      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["saldo"]; ?>" class="form-control" disabled="true"/>
+								</td>
+      							<td>Importe Pagado:
+      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["importePagado"]; ?>" class="form-control" disabled="true"/>
+								</td>
+   							 </tr>
+   						</tr> 
 					</table>
 				</div>
 			</div>
@@ -111,12 +124,15 @@
 							append($('<td>').append("PF")).
 							append($('<td>').append(data[i].secuencial)).
 							append($('<td>').append(data[i].total)).
-							append($('<td>').append(data[i].idDivisa))
+							append($('<td>').append("MN"))
 							);
 						});
 					}		
-			});
+		});	
 		});
+		
+		// Saldos
+		
 		
 	});
 </script>

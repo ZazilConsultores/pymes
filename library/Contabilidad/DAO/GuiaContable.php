@@ -18,7 +18,7 @@
 		$this->tablaModulos = new Contabilidad_Model_DbTable_Modulos(array('db'=>$dbAdapter));
 		$this->tablaTipoProveedores = new Sistema_Model_DbTable_TipoProveedor(array('db'=>$dbAdapter));
 		
-	}
+	}	
 	
 	public function altaModulo($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -35,14 +35,26 @@
 		
 	}
 	public function obtenerModulos(){
+		$tablaModulo = $this->tablaModulos;
+		$rowModulos = $tablaModulo->fetchAll();
+		
+		if(is_null($rowModulos)){
+			return null;
+		}else{
+			return $rowModulos->toArray();
+		}
 		
 	}
 	public function editarModulo(){
 		
 	}
-	public function altaCuentaGuia(){
-		
+	public function altaCuentaGuia(Contabilidad_Model_GuiaContable $cta, $subparametro){
+	
+		$tablaGuiaContable = $this->tablaGuiaContable;
+		$guiacontable->setFechaCaptura(date("Y-m-d H:i:s", time()));
+		$tablaGuiaContable->insert($guiacontable->toArray());
 	}
+	
 	public function obtenerCuentasGuia(){
 		$tablaGuiaConta = $this->tablaGuiaContable;
 		$rowsGuiaContable = $tablaGuiaConta->fetchAll();

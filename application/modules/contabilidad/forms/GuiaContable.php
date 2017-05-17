@@ -26,12 +26,16 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$subCuenta = new Zend_Form_SubForm();
 		$subCuenta->setLegend("Datos Cuenta Contable");
 		
-
-		$eCuenta = new Zend_Form_Element_Text("cuenta");
+		$eCuenta = new Zend_Form_Element_Text("cta");
 		$eCuenta->setAttrib("class", "form-control");
 		$eCuenta->setLabel("Cuenta: ");
 		$eCuenta->setAttrib("maxlength", "3");
 		$eCuenta->setAttrib("minlength", "3");
+		$eCuenta->setAttrib("required", "required");
+		
+		$eDescripcion = new Zend_Form_Element_Text("descripcion");
+		$eDescripcion->setAttrib("class", "form-control");
+		$eDescripcion->setLabel("Descripción: ");
 		$eCuenta->setAttrib("required", "required");
 		
 		$eSub1 = new Zend_Form_Element_Text("sub1");
@@ -68,27 +72,51 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$subParametros = new Zend_Form_SubForm();
 		$subParametros->setLegend("Parametros");
 		
-		$eModulo = new Zend_Form_Element_Text("descripcion");
-		$eModulo->setAttrib("class", "form-control");
-		$eModulo->setLabel("Modulo: ");
-		$eModulo->setAttrib("required", "required");
+		$modulosDAO = new Contabilidad_DAO_GuiaContable;
+		$modulos = $modulosDAO->obtenerModulos();
 		
-		$eClaveProv = new Zend_Form_Element_Text("clave");
+		$eModulo = new Zend_Form_Element_Select("idModulo");
+		$eModulo->setAttrib("class", "form-control");
+		$eModulo->setLabel("Seleccionar Módulo: ");
+		
+		foreach ($modulos as $modulo) {
+			$eModulo->addMultiOption($modulo["idModulo"] , $modulo["descripcion"]);
+		}
+		
+		$tiposProvDAO = new Sistema_DAO_Empresa;
+		$tipos = $tiposProvDAO->obtenerTipoProveedor();
+		
+		$eTipoProv = new Zend_Form_Element_select("idTipoProveedor");
+		$eTipoProv->setAttrib("class", "form-control");
+		$eTipoProv->setLabel("Descripción Tipo Proveedor: ");
+		
+		foreach ($tipos as $tipo) {
+			$eTipoProv->addMultiOption($tipo["idTipoProveedor"] , $tipo["descripcion"]);
+		}
+	
+		$eCargo = new Zend_Form_Element_Checkbox("cargo");
+		$eCargo->setLabel("Cargo:");
+		
+		$eAbono = new Zend_Form_Element_Checkbox("abono");
+		$eAbono->setLabel("Abono:");
+		
+		$origen = Zend_Registry::get('origen');
+		$eOrigen = new Zend_Form_Element_Select("origen");
+		$eOrigen->setLabel('Origen:');
+		$eOrigen->setAttrib("class", "form-control");
+		$eOrigen->setMultiOptions($origen);
+		//$eCargo->setAttrib("class", "form-control");
+		/*$eClaveProv = new Zend_Form_Element_Text("clave");
 		$eClaveProv->setAttrib("class", "form-control");
 		$eClaveProv->setAttrib("maxlength", "2");
 		$eClaveProv->setLabel("Clave Proveedor: ");
-		$eClaveProv->setAttrib("required", "required");
-		
-		$eTipoProv = new Zend_Form_Element_Text("descripcionTipoProveedor");
-		$eTipoProv->setAttrib("class", "form-control");
-		$eTipoProv->setLabel("Descripción Tipo Proveedor: ");
-		$eTipoProv->setAttrib("required", "required");
-		
-		$subCuenta->addElements(array($eCuenta, $eSub1,$eSub2,$eSub3,$eSub4,$eSub5));
+		$eClaveProv->setAttrib("required", "required");*/
+	
+		$subCuenta->addElements(array($eCuenta, $eDescripcion, $eSub1,$eSub2,$eSub3,$eSub4,$eSub5));
 		$subCuenta->setElementDecorators($decoratorsElemento);
 		$subCuenta->setDecorators($decoratorsCategoria);
 		
-		$subParametros->addElements(array($eModulo, $eClaveProv, $eTipoProv));
+		$subParametros->addElements(array($eModulo, $eTipoProv, $eCargo, $eAbono, $eOrigen));
 		$subParametros->setElementDecorators($decoratorsElemento);
 		$subParametros->setDecorators($decoratorsCategoria);
 		

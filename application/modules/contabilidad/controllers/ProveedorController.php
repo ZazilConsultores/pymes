@@ -232,7 +232,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}if($request->isPost()){		
 			$datos = $request->getPost();
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			print_r($datos);
+			
 			$idSucursal = $this->getParam("sucursal");
         	$pr = $this->getParam("proveedor"); 
         	//Enviamos la busqueda a la consulta
