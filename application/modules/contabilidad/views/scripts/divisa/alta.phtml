@@ -4,17 +4,18 @@
 	$messageFail = $this->messageFail;
 ?>
 <section class="row">
-	<article>
-		<div>
-			<?php echo $formulario; ?>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<strong> Nueva Divisa.</strong> 
 		</div>
+		<div class="panel-body">
 		<?php if(!is_null($messageSuccess)){ ?>
-		<div class="alert alert-success" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-			<?php echo $messageSuccess; ?>
-		</div>
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
 		<?php }elseif(!is_null($messageFail)){ ?>
 		<div class="alert alert-danger" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -22,7 +23,14 @@
 			</button>
 			<?php echo $messageFail; ?>
 		</div>
-		
-		<?php } ?>
-	</article>
+		<?php } ?><br />
+		<?php echo $formulario ?>
+	</div>
 </section>
+<script>
+$(document).ready(function(){
+	$("#tipoCambio").keyup(function (){
+		 this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
+});
+</script>

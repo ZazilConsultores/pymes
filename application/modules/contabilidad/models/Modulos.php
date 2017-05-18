@@ -5,11 +5,12 @@ class Contabilidad_Model_Modulos
 	protected $_name = 'Modulos';
 	
 	private $idModulo;
+	
     public function getIdModulo() {
         return $this->idModulo;
     }
     
-    public function setIdModulod($idModulo) {
+    public function setIdModulo($idModulo) {
         $this->idModulo = $idModulo;
     }
 

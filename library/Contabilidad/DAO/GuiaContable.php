@@ -32,6 +32,14 @@
 	}
 	
 	public function obtenerModulo($idModulo){
+		$tablaModulo = $this->tablaModulos;
+		$select = $tablaModulo->select()->from($tablaModulo)->where("idModulo = ?",$idModulo);
+		$rowModulo = $tablaModulo->fetchRow($select);
+		
+		$moduloModel = new Contabilidad_Model_Modulos($rowModulo->toArray());
+		$moduloModel->setIdModulo($rowModulo->idModulo);
+		
+		return $moduloModel;
 		
 	}
 	public function obtenerModulos(){
@@ -48,11 +56,37 @@
 	public function editarModulo(){
 		
 	}
-	public function altaCuentaGuia(Contabilidad_Model_GuiaContable $cta, $subparametro){
-	
-		$tablaGuiaContable = $this->tablaGuiaContable;
+	public function altaCuentaGuia(array $cta, $subparametro){
+		/*$tablaGuiaContable = $this->tablaGuiaContable;
 		$guiacontable->setFechaCaptura(date("Y-m-d H:i:s", time()));
-		$tablaGuiaContable->insert($guiacontable->toArray());
+		$tablaGuiaContable->insert($guiacontable->toArray());*/
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		//$dbAdapter->beginTransaction();
+		try{
+			
+		$mGuiaContable = array(
+			'idModulo'=>$subparametro['idModulo'],
+			'idTipoProveedor'=>$subparametro['idTipoProveedor'],
+			'cta'=>$cta['cta'],
+			'sub1'=>$cta['sub1'],
+			'sub2'=>$cta['sub2'],
+			'sub3'=>$cta['sub3'],
+			'sub4'=>$cta['sub4'],
+			'sub5'=>$cta['sub5'],
+			'origen'=>$subparametro['origen'],
+			'descripcion'=>$cta['descripcion'],
+			'cargo'=>$subparametro['cargo'],
+			'abono'=>$subparametro['abono'],
+			'fechaCaptura'=>date("Y-m-d H:i:s", time())
+		);
+		print_r($mGuiaContable);
+		$dbAdapter->insert("GuiaContable", $mGuiaContable);
+		}catch(Exception $ex){
+			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			throw new Util_Exception_BussinessException("Error: La cuenta ya registrada en el sistema");
+			
+		}
 	}
 	
 	public function obtenerCuentasGuia(){
@@ -67,8 +101,22 @@
 		}
 		return $modelsGuiaContable;
 	}
-	public function editarCuentaGuia(){
-		
+	
+	public function obtieneCuentaGuia($idGuiaContable){
+		$tablaGuiaContable = $this->tablaGuiaContable;
+		$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idGuiaContable=?",$idGuiaContable);
+		$rowGuiaContable = $tablaGuiaContable->fetchRow($select);
+		//print_r("$select");
+		if(is_null($rowGuiaContable)){
+			return null;
+		}else{
+			return $rowGuiaContable->toArray();
+		}
 	}
 	
+	public function actualizarGuiaContable($idGuiaContable, $datos) {
+		$tablaGuiaContable = $this->tablaGuiaContable;
+		$where = $tablaGuiaContable->getAdapter()->quoteInto("idGuiaContable=?", $idGuiaContable);
+		$tablaGuiaContable->update($datos, $where);
+	}
  }

@@ -96,9 +96,13 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 	
 		$eCargo = new Zend_Form_Element_Checkbox("cargo");
 		$eCargo->setLabel("Cargo:");
+		$eCargo->setUncheckedValue(" ");
+		$eCargo->setCheckedValue("X");
 		
 		$eAbono = new Zend_Form_Element_Checkbox("abono");
 		$eAbono->setLabel("Abono:");
+		$eAbono->setUncheckedValue(" ");
+		$eAbono->setCheckedValue("X");
 		
 		$origen = Zend_Registry::get('origen');
 		$eOrigen = new Zend_Form_Element_Select("origen");
