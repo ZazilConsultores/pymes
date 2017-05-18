@@ -55,7 +55,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
     	$eEmpresa =  new Zend_Form_Element_Select('idEmpresas');
         $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
-
+		
 		foreach ($rowset as $fila) {
 			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
@@ -167,7 +167,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 	
-		$eSubmit =  new Zend_Form_Element_Submit("submit");
+		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class","btn btn-success");
 		

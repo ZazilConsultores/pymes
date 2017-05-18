@@ -520,6 +520,20 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		}
 	}
 	
+	/*Actuliza consecutivo por idSucursal*/
+	public function editaNumeroFactura($idSucursal){
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?",$idSucursal)
+		->order("numeroFactura ASC");
+		$rowFactura = $tablaFactura->fetchRow($select);
+		print_r("Hola");
+		//print_r($select->__toString());
+		if(is_null($rowFactura)) {
+			return null;
+		}else{
+			return $rowFactura;
+		}
+	}
 }
     
 ?>

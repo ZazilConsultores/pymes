@@ -56,13 +56,14 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
     	$eSucursal = new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel("Sucursal: ");
 		$eSucursal->setAttrib("class", "form-control");
-		$eSucursal->setRegisterInArrayValidator(FALSE);
+		//$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
 		
 		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
         $eProyecto->setLabel("Seleccionar Proyecto:");
@@ -165,7 +166,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 				
-		$eSubmit = new Zend_Form_Element_Submit('submit');
+		$eSubmit = new Zend_Form_Element_Submit('button');
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
 	

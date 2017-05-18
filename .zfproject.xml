@@ -966,6 +966,7 @@
               <actionMethod actionName="remision"/>
               <actionMethod actionName="factura"/>
               <actionMethod actionName="cobros"/>
+              <actionMethod actionName="consecutivofactura"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1046,6 +1047,7 @@
               <actionMethod actionName="sucursalese"/>
               <actionMethod actionName="buscafacxp"/>
               <actionMethod actionName="obtenerfacturaxp"/>
+              <actionMethod actionName="consecutivo"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1356,6 +1358,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="obtenerfacturaxp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="consecutivofactura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="consecutivo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2730,6 +2738,7 @@
                 <testApplicationActionMethod forActionName="remision"/>
                 <testApplicationActionMethod forActionName="factura"/>
                 <testApplicationActionMethod forActionName="cobros"/>
+                <testApplicationActionMethod forActionName="consecutivofactura"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2810,6 +2819,7 @@
                 <testApplicationActionMethod forActionName="sucursalese"/>
                 <testApplicationActionMethod forActionName="buscafacxp"/>
                 <testApplicationActionMethod forActionName="obtenerfacturaxp"/>
+                <testApplicationActionMethod forActionName="consecutivo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

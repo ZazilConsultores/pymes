@@ -12,6 +12,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     private $empresaDAO = null;
 
     private $pagosDAO = null;
+	private $facturaCliDAO = null;
 
     public function init()
     {
@@ -22,8 +23,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
 			$this->fiscalesDAO = new Sistema_DAO_Fiscales;
 			$this->pagosDAO = new Contabilidad_DAO_PagoProveedor;
-			
 			$this->empresaDAO = new Sistema_DAO_Empresa;
+			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
 			
 			$this->_helper->layout->disableLayout();
 			$this->_helper->viewRenderer->setNoRender(true);
@@ -187,6 +188,17 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function consecutivoAction()
+    {
+	    $idSucursal = $this->getParam("sucursal");
+		$consecutivoFac= $this->facturaCliDAO->editaNumeroFactura($idSucursal);
+		if(!is_null($consecutivoFac)){
+			echo Zend_Json::encode($consecutivoFac);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -194,6 +206,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -205,6 +218,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

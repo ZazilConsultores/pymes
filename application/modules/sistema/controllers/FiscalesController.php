@@ -41,7 +41,6 @@ class Sistema_FiscalesController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-
 				try{
 					$this->fiscalesDAO->actualizarFiscales($idFiscales, $datos);
 					$this->view->messageSuccess = "Los datos fiscales se han actualizado correctamente!!";
