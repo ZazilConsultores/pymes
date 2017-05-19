@@ -91,8 +91,15 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_GuiaContable;
-		$formulario->removeSubForm("0");
+		$formulario->getSubForm("0")->getElement("descripcion");
+		$formulario->getSubForm("0")->removeElement("cta");
+		$formulario->getSubForm("0")->removeElement("sub1");
+		$formulario->getSubForm("0")->removeElement("sub2");
+		$formulario->getSubForm("0")->removeElement("sub3");
+		$formulario->getSubForm("0")->removeElement("sub4");
+		$formulario->getSubForm("0")->removeElement("sub5");
 		
+		$formulario->removeSubForm("1");
 		
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
@@ -100,7 +107,7 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				
 				$datos = $formulario->getValues();
-				$descripcion =$datos[1];
+				$descripcion = $datos[0];
 				try{
 					$this->guiaContable->altaModulo($descripcion);
 				}catch(Exception $ex){
@@ -115,8 +122,14 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_GuiaContable;
-		$formulario->removeSubForm("0");
-		$formulario->getSubForm("1")->removeElement("descripcion");
+		$formulario->removeSubForm("1");
+		$formulario->getSubForm("0")->getElement("descripcion");
+		$formulario->getSubForm("0")->removeElement("cta");
+		$formulario->getSubForm("0")->removeElement("sub1");
+		$formulario->getSubForm("0")->removeElement("sub2");
+		$formulario->getSubForm("0")->removeElement("sub3");
+		$formulario->getSubForm("0")->removeElement("sub4");
+		$formulario->getSubForm("0")->removeElement("sub5");
 	
 		if($request->isGet()){
 			$this->view->formulario = $formulario;

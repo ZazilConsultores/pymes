@@ -109,7 +109,7 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$eOrigen->setLabel('Origen:');
 		$eOrigen->setAttrib("class", "form-control");
 		$eOrigen->setMultiOptions($origen);
-		//$eCargo->setAttrib("class", "form-control");
+		
 		/*$eClaveProv = new Zend_Form_Element_Text("clave");
 		$eClaveProv->setAttrib("class", "form-control");
 		$eClaveProv->setAttrib("maxlength", "2");
@@ -132,7 +132,5 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$this->addElement($eSubmit);
 		
     }
-	
-
 }
 
