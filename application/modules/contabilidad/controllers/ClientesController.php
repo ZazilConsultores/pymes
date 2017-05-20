@@ -173,28 +173,18 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     }
 
     public function consecutivofacturaAction(){
-    	$request = $this->getRequest(); 
-		$idSucursal = $this->getParam("idSucursal");
-		print_r($idSucursal);
-	   	
-	   	$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-	   	$formulario->getSubForm("0")->getElement("idEmpresas");
-		$formulario->getSubForm("0")->getElement("idSucursal");
-		$formulario->getSubForm("0")->removeElement("idTipoMovimiento");
-		$formulario->getSubForm("0")->removeElement("idProyecto");
-		$formulario->getSubForm("0")->removeElement("numeroFactura");
-		$formulario->getSubForm("0")->removeElement("folioFiscal");
-		$formulario->getSubForm("0")->removeElement("idCoP");
-		$formulario->getSubForm("0")->removeElement("fecha");
-		$formulario->removeSubForm("1");
-		$formulario->getElement("button")->setLabel("Buscar");
-		$formulario->getElement("button")->setAttrib("class", "btn btn-info");
-		$this->view->formulario = $formulario;
-		
-		$facturac = $this->facturaDAO->editaNumeroFactura($idSucursal);
-		$this->view->facturac = $facturac;
-		
-		
+    	$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas; 
+		if($request->isGet()){
+			$this->view->empresas = $empresas;	
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
+			
+			$idSucursal = $this->getParam("idSucursal");
+        	print_r($idSucursal); 
+		}
     }
 	
 }

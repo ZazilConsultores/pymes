@@ -23,8 +23,6 @@
 						<th>sub1</th>
 						<th>sub2</th>
 						<th>sub3</th>
-						<th>sub4</th>
-						<th>sub5</th>
 						<th>Origen</th>
 						<th>Descripción</th>
 						<th>Cargo</th>
@@ -35,27 +33,22 @@
 					<?php foreach ($guiaContable as $guiaCon) :
 						$tipo = $tiposDAO->obtenerTipoProveedorIdTipoProveedor($guiaCon->getIdTipoProveedor());
 						$modulo = $moduloDAO->obtenerModulo($guiaCon->getIdModulo());
-					?>
-						
+					?>	
 					<tr>
-						
 						<td><?php echo $modulo->getDescripcion(); ?></td>
 						<td><?php echo $tipo->getDescripcion(); ?></td>
-						<td><?php echo $guiaCon->getCta() ?></td>
-						<td><?php echo $guiaCon->getSub1() ?></td>
-						<td><?php echo $guiaCon->getSub2() ?></td>
-						<td><?php echo $guiaCon->getSub3() ?></td>
-						<td><?php echo $guiaCon->getSub4() ?></td>
-						<td><?php echo $guiaCon->getSub5() ?></td>
-						<td><?php echo $guiaCon->getOrigen() ?></td>
-						<td><?php echo $guiaCon->getDescripcion() ?></td>
-						<td><?php echo $guiaCon->getCargo() ?></td>
-						<td><?php echo $guiaCon->getAbono() ?></td>
+						<td><?php echo $guiaCon->getCta(); ?></td>
+						<td><?php echo $guiaCon->getSub1(); ?></td>
+						<td><?php echo $guiaCon->getSub2(); ?></td>
+						<td><?php echo $guiaCon->getSub3(); ?></td>
+						<td><?php echo $guiaCon->getOrigen(); ?></td>
+						<td><?php echo $guiaCon->getDescripcion(); ?></td>
+						<td><?php echo $guiaCon->getCargo(); ?></td>
+						<td><?php echo $guiaCon->getAbono(); ?></td>
 						<td>
 							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"guiacontable", "action" => "editar","idGuiaContable"=>$guiaCon->getIdGuiaContable()), null, true); ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar
 							</a>
-						</td>	
 						</td>
 					</tr>
 					<?php endforeach; ?>

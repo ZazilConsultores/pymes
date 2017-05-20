@@ -1116,6 +1116,7 @@
               <dbTableFile dbTableName="FacturaImpuesto"/>
               <dbTableFile dbTableName="Poliza"/>
               <dbTableFile dbTableName="Modulos"/>
+              <dbTableFile dbTableName="Consecutivo"/>
             </dbTableDirectory>
             <modelFile modelName="Divisa"/>
             <modelFile modelName="Banco"/>
@@ -1139,6 +1140,7 @@
             <modelFile modelName="Poliza"/>
             <modelFile modelName="TipoProveedor"/>
             <modelFile modelName="Modulos"/>
+            <modelFile modelName="Consecutivo"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -2173,6 +2175,23 @@
                 <viewScriptFile forActionName="consultaequipo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="consecutivo">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory/>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false">
+            <layoutScriptsDirectory enabled="false"/>
+          </layoutsDirectory>
+          <modelsDirectory>
+            <dbTableDirectory enabled="false"/>
+          </modelsDirectory>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory/>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
           </viewsDirectory>

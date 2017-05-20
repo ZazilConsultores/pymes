@@ -9,9 +9,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	private $tablaSucursal;
 	private $tablaMultiplos;
 	private $tablaProducto;
-	
 	private $tablaEmpresa;
 	private $tablaImpuestoProductos;
+	private $tablaConsecutivo;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -28,6 +28,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
+		$this->tablaConsecutivo = new Contabilidad_Model_DbTable_Consecutivo(array('db'=>$dbAdapter));
 			
 	}
 	public function guardaDetalleFactura(array $encabezado, $producto, $importe){
@@ -522,17 +523,15 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	
 	/*Actuliza consecutivo por idSucursal*/
 	public function editaNumeroFactura($idSucursal){
-		$tablaFactura = $this->tablaFactura;
-		$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?",$idSucursal)
-		->order("numeroFactura ASC");
-		$rowFactura = $tablaFactura->fetchRow($select);
-		print_r("Hola");
-		//print_r($select->__toString());
-		if(is_null($rowFactura)) {
+		$tablaConsecutivo = $this->tablaConsecutivo;
+		$select = $tablaConsecutivo->select()->from($tablaConsecutivo)->where("idTipoMovimiento=?",2)->where("idSucursal=?",$idSucursal);
+		$rowConsecutivo = $tablaConsecutivo->fetchRow($select);
+		print_r($select->__toString());
+		/*if(is_null($rowConsecutivo)) {
 			return null;
 		}else{
-			return $rowFactura;
-		}
+			return $rowConsecutivo;
+		}*/
 	}
 }
     

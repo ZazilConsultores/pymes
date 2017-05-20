@@ -1,8 +1,57 @@
 <?php 
-	$formulario = $this->formulario; echo $formulario;
-	$facturac = $this->facturac; 
+	//$formulario = $this->formulario; echo $formulario;
+	//$facturac = $this->facturac;
+	$empresas = $this->empresas; 
 ?>
-<!-- Muesta el resultado de la busqueda -->
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h4 class="panel-title">Consecutivo Factura.<strong></strong></h4>
+			</div>
+			<div class="panel-body">
+				<div>
+					
+				</div>
+				<hr />
+				<div>
+					<!--<div class="form-horizontal">-->
+						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+						<!-- Empresas -->
+						<div class="form-group">
+							<label for="empresa" class="col-md-2">Empresas: </label>
+							<div class="col-md-10">
+								<select name="empresa" id="idFiscales" class="form-control">
+									<option value="0">Seleccione Empresa</option>
+									<?php foreach ($empresas as $empresa) : ?>
+									<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+						</div>
+						<!-- Sucursales -->
+						<div class="form-group">
+							<label for="sucursal" class="col-md-2">Sucursal: </label>
+							<div class="col-md-10">
+								<select name="sucursal" id="idSucursal" class="form-control">
+								</select>
+							</div>
+						</div>
+						<!-- Boton consulta -->
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<button id="query" type="submit" class="btn btn-success">
+									<i class="fa fa-search"></i> Consultar
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Muesta el resultado de la busqueda 
 <?php if(!is_null($facturac)){ ?>
 	<div id="facturac" class="row hidden">
 	<div class="col-md-12">
@@ -33,7 +82,7 @@
 		</div>
 	</div>
 </div>	
-<?php } ?>
+<?php } ?>-->
 
 <script>
 	$(document).ready(function(){
@@ -41,29 +90,31 @@
 		console.log("ready");
 		var url = window.location.origin + "/General/";
 		//Sucursal
-		$("select#idEmpresas").on('change', function(){
-			var idEmpresa = $(this).val();
-			if (idEmpresa !=0){
-				var urlSucursal = url + "sistema/json/sucursales/idFiscales/" + this.value;
-				console.log(urlSucursal);
+		$("select#idFiscales").on('change',function(){
+			console.log($(this).val());
+			var idFiscal = $(this).val();
+			if(idFiscal != 0){
+				// Traer sucursales de la empresa seleccionada y llenar combo de sucursales
+				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+				console.log(urlQuerySucursales);
 				$.ajax({
-					url: urlSucursal,
+					url: urlQuerySucursales,
 					dataType: "json",
-					success: function (data){
-						//$("select#idSucursal").empty();
+					success: function(data){
+						console.dir(data);
+						$("#idSucursal").empty();
+						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
 						$.each(data, function (i,item){
-							$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
 						});
-					}
+					}		
 				});
 			}
+			
 		});
 		
-		//Tabla
-		$("#submit").on('click', function(){
-			console.log("hola");
-			$("#facturac").removeClass("hidden");
-			
-		});	
+		$("button#query").on('click',function(){
+			console.log("click en button");
+		});
 	});
 </script>
