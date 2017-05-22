@@ -1,19 +1,17 @@
-<?php 
-	//$formulario = $this->formulario; echo $formulario;
-	//$facturac = $this->facturac;
-	$empresas = $this->empresas; 
+<?php
+	$empresas = $this->empresas;
+	$facturaDAO = new Contabilidad_DAO_FacturaCliente;
+	$formulario = $this->formulario;
+	//$obtenerFactura = $this->$obtenerFactura;
 ?>
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-success">
 			<div class="panel-heading">
-				<h4 class="panel-title">Consecutivo Factura.<strong></strong></h4>
+				<h4 class="panel-title">Consecutivos.<strong></strong></h4>
 			</div>
 			<div class="panel-body">
-				<div>
-					
-				</div>
-				<hr />
 				<div>
 					<!--<div class="form-horizontal">-->
 						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
@@ -33,15 +31,16 @@
 						<div class="form-group">
 							<label for="sucursal" class="col-md-2">Sucursal: </label>
 							<div class="col-md-10">
-								<select name="sucursal" id="idSucursal" class="form-control">
+								<select required name="sucursal" id="idSucursal" class="form-control" >
 								</select>
 							</div>
 						</div>
 						<!-- Boton consulta -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button id="query" type="submit" class="btn btn-success">
-									<i class="fa fa-search"></i> Consultar
+								<button id="query" type="button" class="btn btn-success">
+									<i class="glyphicon glyphicon-search"></i> Consultar
+									
 								</button>
 							</div>
 						</div>
@@ -51,9 +50,50 @@
 		</div>
 	</div>
 </div>
-<!-- Muesta el resultado de la busqueda 
-<?php if(!is_null($facturac)){ ?>
-	<div id="facturac" class="row hidden">
+
+<!-- Muesta el resultado de la busqueda -->
+<div class="row " >
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Detalle Consecutivo.</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id="detalleConsecutivo" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Movimiento</th>
+								<th>Número</th>
+								<th>Edita</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Muesta el resultado de la busqueda -->
+<div class="row " >
+	<div class="col-md-12">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h5 class="panel-title">Actualiza Consecutivo.</h5>
+			</div>
+			<div class="panel-body">
+			<form id="actualizaConsecutivo" class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--
+<?php if(!is_null($obtenerFactura)){ ?>
+	<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
 			<div class="panel-heading">
@@ -61,18 +101,23 @@
 			</div>
 			<div class="panel-body">
 				<div>
-					<table  class="table table-striped table-condensed">
+					<table id ="detalle"  class="table table-striped table-condensed">
 						<thead>
 							<tr>
 								<th>Movimiento</th>
 								<th>Número Factura</th>
+								<th>Editar</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><?php echo $facturac["idTipoMovimiento"]; ?></td>
-								<td><?php echo $facturac["idSucursal"]; ?></td>
-								
+								<td>Factura Cliente</td>
+								<td><?php echo $obtenerFactura["numero"]; ?></td>
+								<td>
+									<a class="btn btn-info" id="consecutivo" type="submit" >
+										<span class="glyphicon glyphicon-pencil"></span> Edita Consecutivo.
+									</a>
+								</td>
 							</tr>	
 						</tbody>
 					</table>
@@ -82,7 +127,47 @@
 		</div>
 	</div>
 </div>	
-<?php } ?>-->
+<?php } ?>
+-->
+<!-- Muesta el resultado de la busqueda -->
+<div id="actulizaConsecutivo" class="row hidden " >
+	<div class="col-md-12">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h5 class="panel-title">Edita Consecutivo.</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+						
+						<div class="form-group">
+							<label for="movimiento" class="control-label col-md-2">Movimiento: </label>
+							<div class="col-md-10">
+								<input  name="movimiento" value="<?php echo $obtenerFactura["idTipoMovimiento"]; ?>" type="text" class="form-control" />
+							</div>
+						</div>
+						<!-- numeroFactura -->
+						<div class="form-group">
+							<label for="numeroFactura" class="control-label col-md-2">Consecutivo: </label>
+							<div class="col-md-10">
+								<input  name="numeroFactura" type="text" class="form-control" value="<?php echo $obtenerFactura["numero"]; ?>" />
+							</div>
+						</div>
+						<!-- BotonEnvio -->
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<button type="submit" class="btn btn-warning">
+									<i class="fa fa-save"></i> Actualizar Consecutivo.
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>	
 
 <script>
 	$(document).ready(function(){
@@ -105,6 +190,7 @@
 						$("#idSucursal").empty();
 						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
 						$.each(data, function (i,item){
+							
 							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
 						});
 					}		
@@ -112,9 +198,36 @@
 			}
 			
 		});
-		
-		$("button#query").on('click',function(){
-			console.log("click en button");
+		//
+		$("#query").on('click', function(){
+			//Traer Id Sucursal r
+			var sucursal = $("#idSucursal").val();
+			console.log($("#idSucursal").val());
+			
+			var urlFacturaxc = url + 'contabilidad/json/consecutivo/sucursal/' + sucursal;
+			console.log(urlFacturaxc);
+			//Comenzamaos eventos ajax
+			$.ajax({
+				url: urlFacturaxc,
+				dataType:"json",
+				success: function (data){
+					console.dir(data);
+					var tbody = $("table#detalleConsecutivo").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						//var boton = $('<button></button>').attr("class","btn btn-info").text("Actualizar Consecutivo");
+						var boton = $('<button />').attr({'id': 'editarConsecutivo' }).attr({'class':'btn btn-info'});
+						boton.html('<span class="glyphicon glyphicon-pencil"></span> Editar Consecutivo')
+						
+						tbody.append( $('<tr>').
+						append($('<td>').append("Factura Cliente")).
+						append($('<td>').append(data[i].numero)).
+						append($('<td>').append(boton))); 
+					});
+				}
+			});
+			
 		});
+
 	});
 </script>

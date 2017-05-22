@@ -172,22 +172,45 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $this->view->empresas = $empresas;
     }
 
-    public function consecutivofacturaAction(){
-    	$request = $this->getRequest();
+    public function consecutivofacturaAction()
+    {
+        $request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas; 
-		if($request->isGet()){
+        $this->view->empresas = $empresas;
+		/*$idSucursal = $this->getParam("sucursal");
+		$obtenerFactura = $this->facturaDAO->editaNumeroFactura($idSucursal);
+		$this->view->obtenerFactura = $obtenerFactura;
+		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
+		$formulario->getSubForm("0")->removeElement("idEmpresas");
+		$formulario->getSubForm("0")->removeElement("idSucursal");
+		$formulario->getSubForm("0")->removeElement("idProyecto");
+		$formulario->getSubForm("0")->removeElement("folioFiscal");
+		$formulario->getSubForm("0")->removeElement("idCoP");
+		$formulario->getSubForm("0")->removeElement("fecha");
+		$formulario->getSubForm("0")->getElement("numeroFactura")->setValue($obtenerFactura["numeroFactura"]);
+		
+		$formulario->removeSubForm("1");
+		$formulario -> getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario -> getElement("submit")->setLabel("Actualizar Consecutivo");
+		$this -> view -> formulario = $formulario;			
+		/*if($request->isGet()){
 			$this->view->empresas = $empresas;	
 		}if($request->isPost()){		
 			$datos = $request->getPost();
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			
-			$idSucursal = $this->getParam("idSucursal");
-        	print_r($idSucursal); 
-		}
+					
+		}*/
     }
-	
+
+    public function editaconsecutivoAction()
+    {
+        // action body
+    }
+
+
 }
+
+
 
 
 

@@ -525,8 +525,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	public function editaNumeroFactura($idSucursal){
 		$tablaConsecutivo = $this->tablaConsecutivo;
 		$select = $tablaConsecutivo->select()->from($tablaConsecutivo)->where("idTipoMovimiento=?",2)->where("idSucursal=?",$idSucursal);
-		$rowConsecutivo = $tablaConsecutivo->fetchRow($select);
-		print_r($select->__toString());
+		$rowConsecutivo = $tablaConsecutivo->fetchAll($select);
+		return $rowConsecutivo;
+		///print_r($select->__toString());
 		/*if(is_null($rowConsecutivo)) {
 			return null;
 		}else{

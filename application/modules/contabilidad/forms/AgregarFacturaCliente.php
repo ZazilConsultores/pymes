@@ -166,7 +166,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 				
-		$eSubmit = new Zend_Form_Element_Submit('button');
+		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
 	

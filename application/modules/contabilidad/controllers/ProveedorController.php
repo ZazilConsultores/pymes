@@ -234,6 +234,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			
 			$idSucursal = $this->getParam("sucursal");
+			print_r($idSucursal);
         	$pr = $this->getParam("proveedor"); 
         	//Enviamos la busqueda a la consulta
         	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
