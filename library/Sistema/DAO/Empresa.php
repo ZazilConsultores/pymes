@@ -264,8 +264,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$tablaFiscales = $this->tablaFiscales;
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where('idFiscales IN (?)', array_values($rowsEmpresa));
 		$fiscales = $tablaFiscales->fetchAll($select)->toArray();
-		//print_r("$select");
-		return $fiscales;
+		print_r("$select");
+		//return $fiscales;
 		
 		
 	}
@@ -449,9 +449,9 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 */
 	public function obtenerSucursales($idFiscales){
 		$tablaSucursal = $this->tablaSucursal;
-		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idFiscales);
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales = ?",$idFiscales);
 		$rowsSucursales = $tablaSucursal->fetchAll($select);
-		
+		//print_r("$select");
 		if(is_null($rowsSucursales)){
 			return null;
 		}else{

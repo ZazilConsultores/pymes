@@ -4,7 +4,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $facturaDAO = null;
-
+	private $sucursalesDAO = null;
     private $impuestosDAO = null;
 
     private $empresaDAO = null;
@@ -15,6 +15,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$this->facturaDAO = new Contabilidad_DAO_FacturaCliente;
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
 		$this->empresaDAO = new Sistema_DAO_Empresa;
+		$this->sucursalesDAO = new Sistema_DAO_Sucursal;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
@@ -177,8 +178,17 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;
-		/*$idSucursal = $this->getParam("sucursal");
-		$obtenerFactura = $this->facturaDAO->editaNumeroFactura($idSucursal);
+		$idFiscales = $this->getParam("empresa");
+		print_r($idFiscales);
+		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
+		/*$sucursal = $this->getParam("sucursal");
+		print_r($sucursal);*/
+		
+        /*$this->view->sucursal = $sucursal;*/
+		
+		
+		 
+		/*$obtenerFactura = $this->facturaDAO->editaNumeroFactura($idSucursal);
 		$this->view->obtenerFactura = $obtenerFactura;
 		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
 		$formulario->getSubForm("0")->removeElement("idEmpresas");
@@ -205,6 +215,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function editaconsecutivoAction()
     {
         // action body
+        $idFiscales = $this->getParam("empresa");
+		print_r($idFiscales);
+		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
     }
 
 
