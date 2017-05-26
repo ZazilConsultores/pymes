@@ -18,29 +18,27 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFondeo;
+		$formulario->getElement("submit")->setLabel("Agregar Fondeo");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-success");
 		$this->view->$formulario = $formulario;
-		if ($request->isGet()){
+		if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$empresa = $datos[0];
 				$fondeo = $datos[1];
-				print_r($fondeo);
-		
+				//print_r($fondeo);
 				try{
 					$this->tesoreriaDAO->guardaFondeo($empresa, $fondeo);
-					//print_r("$fondeoDAO");
+					$this->view->messageSuccess = "Se ha generado fondeo: <strong>".$empresa["numFolio"]."</strong> exitosamente";
 				}catch(exception $ex){
-					$this->view->messageFail= "Error";
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
-			//}
-			}else{
-				print_r("formulario no valido <br />");
+			//}else{
+				//print_r("formulario no valido <br />");
 			}				
-			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}	
-		
     }
 
     public function inversionesAction()

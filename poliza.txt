@@ -1,5 +1,0 @@
-P  20170524              1 1 0          BANCOS                                                                                               11 0 0
-M1 1020000                           123               1         58           0          0.0                  BANCOS                                                                                                    
-M1 1060001                           123               0         55           0          0.0                  IVA ACREDITABLE                                                                                           
-M1 1065001                           123               1         55           0          0.0                  IVA POR ACREDITAR                                                                                         
-M1 2000002                           123               0         58           0          0.0                  PROVEEDOR                                                                                                 

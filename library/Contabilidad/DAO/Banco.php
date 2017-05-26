@@ -19,7 +19,9 @@
 	public function obtenerBancos()
 	{
 		$tablaBanco = $this->tablaBanco;
-		$rowBancos = $tablaBanco->fetchAll();
+		$select = $tablaBanco->select()->from($tablaBanco)->order("banco");
+		$rowBancos = $tablaBanco->fetchAll($select);
+		//$rowBancos = $tablaBanco->fetchAll()->order("banco");
 		
 		$modelBancos = array();
 		foreach ($rowBancos as $rowBanco) {

@@ -42,7 +42,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
@@ -93,23 +93,23 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		}
 		
 		//==============Obtener Bancos de las empresas
-		$tablaBancosEmpresa = new Contabilidad_DAO_Fondeo;
-		$rowset =$tablaBancosEmpresa->obtenerBancosEmpresas();
+		$bancoDAO = new Contabilidad_DAO_Banco;
+		$bancos = $bancoDAO->obtenerBancos();
 		
 		$eBancoEntrada = new Zend_Form_Element_Select('idBancoE');
 		$eBancoEntrada->setLabel('Seleccionar Banco Entrada');
 		$eBancoEntrada->setAttrib("class", "form-control");
 		
-		foreach ($rowset as $fila){
-			$eBancoEntrada->addMultiOption($fila->idBanco, $fila->banco);
+		foreach ($bancos as $fila){
+			$eBancoEntrada->addMultiOption($fila->getIdBanco(), $fila->getBanco());
 		}
 			
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
 		$eBancoSalida->setLabel('Seleccionar Banco Salida:');
 		$eBancoSalida->setAttrib("class", "form-control");
 		
-		foreach($rowset as $fila){
-			$eBancoSalida->addMultiOption($fila->idBanco, $fila->banco);
+		foreach($bancos as $fila){
+			$eBancoSalida->addMultiOption($fila->getIdBanco(), $fila->getBanco());
 		}
 		
 		$eImportePago = new Zend_Form_Element_Text('total');

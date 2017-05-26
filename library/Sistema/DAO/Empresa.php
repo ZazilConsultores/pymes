@@ -136,7 +136,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//Insertamos en email
 			$dbAdapter->insert("Email", $datos[3]);
 			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
-			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
+			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail, "fecha"=>date("Y-m-d h:i:s",time())));
 			
 			$dbAdapter->commit();
 			

@@ -45,7 +45,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$rowBanco = $tablaBanco->fetchRow($where);
 		
 		if(!is_null($rowBanco)){
-			print_r("La consulta no esta vacia");
+			
 			$importePago = $rowBanco->saldo + $fondeo['total'];
 			$tablaBanco->update(array('saldo'=>$importePago),$where);
 		}
@@ -95,7 +95,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			//'idsImpuestos'=>$datos['idProducto'],
 			'numeroFolio'=>$empresa['numFolio'],
 			'secuencial'=>$secuencial,
-			'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+			'fecha'=>date('Y-m-d h:i:s', time()),
 			'fechaPago'=>$stringIni,
 			'estatus'=>"A",
 			'numeroReferencia'=>"",
@@ -117,7 +117,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			//'idsImpuestos'=>$datos['idProducto'],
 			'numeroFolio'=>$empresa['numFolio'],
 			'secuencial'=>$secuencial,
-			'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+			'fecha'=>date('Y-m-d h:i:s', time()),
 			'fechaPago'=>$stringIni,
 			'estatus'=>"A",
 			'numeroReferencia'=>"",

@@ -26,7 +26,8 @@ class Contabilidad_DAO_Fondeo implements Contabilidad_Interfaces_IFondeo{
 		->join('Banco', 'BancosEmpresa.idBanco = Banco.idBanco', array('cuenta','banco'))
 		->where('Banco.tipo <>"IN"')
 		->order('banco ASC');
-		return $tablaBancosEmpresa->fetchAll($select);	
+		print_r($select->__toString());
+		//return $tablaBancosEmpresa->fetchAll($select);	
 	}
 	
 		public function guardarFondeo(array $datos){
