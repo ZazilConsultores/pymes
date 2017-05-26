@@ -4,8 +4,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $facturaDAO = null;
-	private $sucursalesDAO = null;
+
+    private $sucursalesDAO = null;
+
     private $impuestosDAO = null;
+
+    private $cobroClienteDAO = null;
 
     private $empresaDAO = null;
 
@@ -16,6 +20,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
 		$this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->sucursalesDAO = new Sistema_DAO_Sucursal;
+		$this->cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
@@ -168,9 +173,18 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function cobrosAction()
     {
-        // action body
-        $empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;
+    	$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;	
+		if($request->isPost()){		
+			$datos = $request->getPost();
+			$idSucursal = $this->getParam("sucursal");
+			$cl = $this->getParam("cliente");
+			print_r($idSucursal);
+			print_r($cl);
+			$facturasxc = $this->cobroClienteDAO->busca_Cuentasxc($idSucursal, $cl);
+			$this->view->facturasxc = $facturasxc;
+		}
     }
 
     public function consecutivofacturaAction()
@@ -220,8 +234,17 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
     }
 
+    public function aplicacobroAction()
+    {
+    	$idFactura = $this->getParam("idFactura");
+        $cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
+		$this->view->datosFactura = $cobroClienteDAO->obtiene_Factura($idFactura);	
+    }
+
 
 }
+
+
 
 
 

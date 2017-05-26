@@ -968,6 +968,7 @@
               <actionMethod actionName="cobros"/>
               <actionMethod actionName="consecutivofactura"/>
               <actionMethod actionName="editaconsecutivo"/>
+              <actionMethod actionName="aplicacobro"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1370,6 +1371,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="editaconsecutivo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="aplicacobro"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2763,6 +2767,7 @@
                 <testApplicationActionMethod forActionName="cobros"/>
                 <testApplicationActionMethod forActionName="consecutivofactura"/>
                 <testApplicationActionMethod forActionName="editaconsecutivo"/>
+                <testApplicationActionMethod forActionName="aplicacobro"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>

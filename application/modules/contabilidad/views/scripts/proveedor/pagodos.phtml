@@ -266,7 +266,7 @@
 			
 				// Traer proveedores de la empresa seleccionada y llenar combo de proveedores
 				var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
-				
+				console.log(urlQueryProveedores);
 				$.ajax({
 					url: urlQueryProveedores,
 					dataType: "json",

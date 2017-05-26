@@ -452,7 +452,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 				$idsFiscales[] = $rowEmpresa->idFiscales;
 			}
 			//print_r($idsEmpresa);
-			$tablaFiscales = $this->tablaFiscales;
+			/*$tablaFiscales = $this->tablaFiscales;
 			$select = $tablaFiscales->select()->from($tablaFiscales,array('rfc','razonSocial'))->where("idFiscales IN (?)", $idsFiscales);
 			$rowsFiscales = $tablaFiscales->fetchAll($select);
 
@@ -462,7 +462,27 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 				return $rowsFiscales->toArray();
 			}
 		}else{
+			return NULL;*/
+			$tablaFiscales = $this->tablaFiscales;
+			$tablaClientes = $this->tablaClientes;
+			$select= $tablaFiscales->select()
+			->setIntegrityCheck(false)
+			->from($tablaFiscales, array('idFiscales','rfc','razonSocial'))
+			//->join($tablaProveedores)->where("idProveedores IN (?)", $idsProveedor);
+			->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales')
+			->join('Clientes','Empresa.idEmpresa = Clientes.idEmpresa')
+			->order('razonSocial ASC')->where("Fiscales.idFiscales IN (?)", $idsFiscales);
+			//print_r("$select");
+			//return $tablaEmpresa->fetchAll($select);*/
+			$rowsFiscales = $tablaFiscales->fetchAll($select);
+			if (is_null($rowsFiscales)) {
+				return NULL;
+			}else{
+				return $rowsFiscales->toArray();
+			}
+		}else{
 			return NULL;
+		
 		}
 						
 	}

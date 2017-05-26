@@ -171,7 +171,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_PagosProveedor;
 		$formulario->getSubForm("0")->getElement("idEmpresas");
-		$formulario->getSubForm("0")->getElement("idEmpresas");
 		$formulario->getSubForm("0")->getElement("idSucursal");
 		$formulario->getSubForm("0")->getElement("idCoP");
 		$formulario->getSubForm("0")->getElement("numFactura");
@@ -232,7 +231,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}if($request->isPost()){		
 			$datos = $request->getPost();
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			
 			$idSucursal = $this->getParam("sucursal");
 			print_r($idSucursal);
         	$pr = $this->getParam("proveedor"); 

@@ -1,13 +1,6 @@
 <?php
-	$divisaDAO = new Contabilidad_DAO_Divisa;
-	$divisas = $divisaDAO->obtenerDivisas();
-	$bancosDAO = new Contabilidad_DAO_Banco;
-	$bancos = $bancosDAO->obtenerBancos();
-	$conceptoPagos =array("AN"=>"ANTICIPO", "LI"=>"LIQUIDADO","PA"=>"PAGO");
-	$formasPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
-	$sucursalesDAO = new Sistema_DAO_Sucursal;
 	$empresas = $this->empresas;
-	
+	$facturasxc = $this->facturasxc;
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -21,7 +14,8 @@
 				</div>
 				<hr />
 				<div>
-					<div class="form-horizontal">
+					<!--<div class="form-horizontal">-->
+						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 						<!-- Empresas -->
 						<div class="form-group">
 							<label for="empresa" class="col-md-2">Empresas: </label>
@@ -38,33 +32,36 @@
 						<div class="form-group">
 							<label for="sucursal" class="col-md-2">Sucursal: </label>
 							<div class="col-md-10">
-								<select name="sucursal" id="idSucursal" class="form-control">
+								<select required name="sucursal" id="idSucursal" class="form-control" >
 								</select>
 							</div>
 						</div>
-						<!-- Proveedores -->
+						<!--Clientes -->
 						<div class="form-group">
-							<label for="proveedor" class="col-md-2">Cliente: </label>
+							<label for="cliente" class="col-md-2">Clientes: </label>
 							<div class="col-md-10">
-								<select name="cliente" id="idProveedor" class="form-control">
+								<select required name="cliente" id="idCliente" class="form-control">
 								</select>
 							</div>
 						</div>
 						<!-- Boton consulta -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="button" class="btn btn-success">
+								<button id="queryFacturas" type="submit" class="btn btn-success">
 									<i class="fa fa-search"></i> Consultar Facturas
 								</button>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="row">
+
+<!-- Muesta el resultado de la busqueda -->
+<?php if(!is_null($facturasxc)){ ?>
+	<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
 			<div class="panel-heading">
@@ -72,11 +69,11 @@
 			</div>
 			<div class="panel-body">
 				<div>
-					<table id="detalleFacturaxp" class="table table-striped table-condensed">
+					<table id="detalleFacturaxc" class="table table-striped table-condensed">
 						<thead>
 							<tr>
 								<th>Sucursal</th>
-								<th>Cliente</th>
+								<th>Proveedor</th>
 								<th>Número Factura</th>
 								<th>Fecha</th>
 								<th>$total</th>
@@ -85,6 +82,23 @@
 							</tr>
 						</thead>
 						<tbody>
+							<?php foreach ($facturasxc as $facturaxc) :?>
+								<tr>
+									<td><?php echo $facturaxc["idSucursal"]; ?></td>
+									<td><?php echo $facturaxc["idCoP"]; ?></td>
+									<td><?php echo $facturaxc["numeroFactura"]; ?></td>
+									<td><?php echo $facturaxc["fecha"]; ?></td>
+									<td><?php echo "$" .number_format($facturaxc["total"],2) ?></td>
+									<td>	
+										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"clientes","action"=>"aplicacobro","idFactura"=>$facturaxc["idFactura"]),null, true)?>">
+											<span class="glyphicon glyphicon-pencil"></span> Pago
+										</a
+									</td>
+									<td><button   type="submit" class="btn btn-primary btnBusqueda" >
+										<span class="glyphicon glyphicon-pencil"></span> Nota de Credito
+									</button></td>
+								</tr>
+							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
@@ -92,147 +106,8 @@
 			
 		</div>
 	</div>
-</div>
-<!-- Registra pago -->
-<div id="registroPago" class="row hidden">
-	<div class="col-md-12">
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				<h5 class="panel-title">Registro de Pago Factura</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<div class="form-horizontal">
-						<!-- Fecha -->
-						<div class="form-group">
-							<label for="fecha" class="control-label col-md-2">Fecha de Pago: </label>
-							<div class="col-md-10">
-								<input id="fecha" name="fecha" type="text" class="form-control" required="La fecha no puede quedar vacía"/>
-							</div>
-						</div>
-						<!-- Pago -->
-						<div class="form-group">
-							<label for="pago" class="control-label col-md-2">Monto: </label>
-							<div class="col-md-10">
-								<input id="pago" name="pago" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- Divisa -->
-						<div class="form-group">
-							<label for="divisa" class="control-label col-md-2">Divisa: </label>
-							<div class="col-md-10">
-								<select id="idDivisa" class="form-control">
-									<?php foreach ($divisas as $divisa) : ?>
-									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
-								<?php endforeach; ?>
-								</select>
-							</div>
-						</div>
-						<!-- Concepto -->
-						<div class="form-group">
-							<label for="concepto" class="control-label col-md-2">Concepto: </label>
-							<div class="col-md-10">
-								<select id="conceptoPago" class="form-control">
-									<?php foreach ($conceptoPagos as $key =>$value): ?>
-										<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-									<?php endforeach; ?>	
-								</select>
-							</div>
-						</div>
-						<!-- FormaPago -->
-						<div class="form-group">
-							<label for="formaPago" class="control-label col-md-2">Forma de Pago</label>
-							<div class="col-md-10">
-								<select id="formaPago" class="form-control">
-									<?php foreach ($formasPago as $key => $value): ?>
-										<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-									<?php endforeach ?>	
-								</select>
-							</div>
-						</div>
-						<!-- Banco -->
-						<div class="form-group">
-							<label for="banco" class="control-label col-md-2">Banco: </label>
-							<div class="col-md-10">
-								<select id="idBanco" class="form-control">
-									<?php foreach ($bancos as $banco) :?>
-										<option value="<?php echo $banco->getIdBanco(); ?>"> <?php echo $banco->getBanco(); ?></option>
-									<?php endforeach?>
-								</select>
-							</div>
-						</div>
-						<!-- Referencia -->
-						<div class="form-group">
-							<label for="referencia" class="control-label col-md-2">Referencia: </label>
-							<div class="col-md-10">
-								<input id="referencia" name="referencia" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- BotonEnvio -->
-						<div class="form-group">
-							<div class="col-md-offset-2 col-md-10">
-								<button type="button" class="btn btn-warning" role="button">
-									<i class="fa fa-save"></i> Registrar Pago
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Registra Nomina -->
-<div id="registroNomina" class="row hidden">
-	<div class="col-md-12">
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				<h5 class="panel-title">Registrar una Nota Crédito</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<div class="form-horizontal">
-						<!-- Fecha -->
-						<div class="form-group">
-							<label for="fecha" class="control-label col-md-2">Fecha: </label>
-							<div class="col-md-10">
-								<input id="fecha" name="fecha" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- Pago -->
-						<div class="form-group">
-							<label for="pago" class="control-label col-md-2">Monto: </label>
-							<div class="col-md-10">
-								<input id="pago" name="pago" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- Divisa -->
-						<div class="form-group">
-							<label for="divisa" class="control-label col-md-2">Divisa: </label>
-							<div class="col-md-10">
-								<select id="idDivisa" class="form-control">
-									<?php foreach ($divisas as $divisa) : ?>
-									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
-								<?php endforeach; ?>
-								</select>
-							</div>
-						</div>
-						<!-- BotonEnvio -->
-						<div class="form-group">
-							<div class="col-md-offset-2 col-md-10">
-								<button type="button" class="btn btn-warning" role="button">
-									<i class="fa fa-save"></i> Registrar Pago
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
+</div>	
+<?php } ?>
 <script>
 	$().ready(function(){
 		
@@ -242,16 +117,13 @@
 			//console.log($(this).val());
 			var idFiscal = $(this).val();
 			if(idFiscal != 0){
-				// Traer sucursales de la empresa seleccionada y llenar combo de sucursales
-				
 				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				
+				console.log(urlQuerySucursales);
 				$.ajax({
 					url: urlQuerySucursales,
 					dataType: "json",
 					success: function(data){
 						console.dir(data);
-						
 						$("#idSucursal").empty();
 						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
 						$.each(data, function (i,item){
@@ -260,19 +132,19 @@
 					}
 				});
 				
-				// Traer proveedores de la empresa seleccionada y llenar combo de proveedores
+				// Traer Clientes de la empresa seleccionada y llenar combo de clientes
 				
-				var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
-				
+				var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
+				console.log(urlQueryClientes);
 				$.ajax({
-					url: urlQueryProveedores,
+					url: urlQueryClientes,
 					dataType: "json",
 					success: function(data){
 						console.dir(data);
-						$("select#idProveedor").empty();
-						$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
+						$("select#idCliente").empty();
+						$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
 						$.each(data, function (i,item){
-							$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
+							$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
 						});
 					}
 				});
@@ -280,39 +152,7 @@
 		});
 		
 		$("#queryFacturas").on('click', function(){
-			//Traer Id's de Empresa, Sucursal y Proveedor
-			var idSucursal = $("#idSucursal").val();
-			var proveedor = $("#idProveedor").val();
-			console.log($("#idFiscales").val());
-			console.log($("#idSucursal").val());
-			console.log($("#idProveedor").val());
-			var urlFacturaxp = url + 'contabilidad/json/buscafacxp/idSucursal/' + idSucursal + '/pro/' + proveedor;
-			console.log(urlFacturaxp);
-			//Comenzamaos eventos ajax
-			$.ajax({
-				url: urlFacturaxp,
-				dataType:"json",
-				success: function (data){
-					console.dir(data);
-					var tbody = $("#detalleFacturaxp").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						var botonPago = $('<button></button>').attr("tipo","pago").attr("factura",data[i].idFactura).attr("class","btn btn-link").text("Pago");
-						var botonNomina = $('<button></button>').attr("tipo","nomina").attr("factura",data[i].idFactura).attr("class","btn btn-link").text("Nomina de Crédito");
-						
-						tbody.append( $('<tr>').
-							append($('<td>').append(data[i].idSucursal)).
-							append($('<td>').append(data[i].idCoP)).
-							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].fechaFactura)).
-							append($('<td>').append(data[i].total)).
-							append($('<td>').append(botonPago)).
-							append($('<td>').append(botonNomina))
-						);
-					});
-				}
-			});
-			
+			console.log("Ha dado click");
 		});
 		
 		$("#detalleFacturaxp").on('click', "button[tipo='pago']", function(){
