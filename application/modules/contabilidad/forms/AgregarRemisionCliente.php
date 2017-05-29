@@ -50,7 +50,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
 		$eSucursal =  new Zend_Form_Element_Select('idSucursal');
@@ -112,7 +112,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		
 		foreach ($tiposDivisa as $tipoDivisa)
 		{
-			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
+			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDescripcion());		
 		}
 		//==================Forma de pago
 		$formaPago = Zend_Registry::get('formaPago');

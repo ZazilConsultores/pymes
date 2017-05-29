@@ -24,7 +24,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$adapter = Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
-		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
+		$select = $this->db->select()->from("Producto")->order("Producto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
@@ -137,17 +137,24 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
-		$this->view->formulario = $formulario;
-		if($request->isPost()){
-				if($formulario->isValid($request->getPost())){
-				//$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
+				print_r($encabezado);
+				print_r("<br />");
 				$formaPago = $datos[1];
+				print_r($formaPago);
+				print_r("<br />");
 				$productos = json_decode($encabezado['productos'], TRUE);
+				print_r($productos);
+				print_r("<br />");
 				$importe = json_decode($formaPago['importes'], TRUE);
-				//print_r($productos);
-				$contador = 0;
+				print_r($importe);
+				print_r("<br />");
+				
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);	
 						 	
@@ -156,14 +163,14 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 					$contador++;	
 				}
-				$this->view->messageSuccess = "Factura: <strong>" .$encabezado["numeroFactura"] . " </strong> guardada exitosamente!!";
+				$this->view->messageSuccess = "Factura: <strong>" .$guardaDetalle["numeroFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Exception $ex){
-					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente";
-				}	
-				
+					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;
+				}
 			}
 			
 		}
+			
     }
 
     public function pagosAction()

@@ -20,6 +20,7 @@ class Inventario_Form_AltaProducto extends Zend_Form
 			$elemento->setLabel($parametro->getParametro());
 			$elemento->setRegisterInArrayValidator(FALSE);	
 			$elemento->addMultiOption("0","Seleccione opcion");
+			$elemento->setAttrib('required' , 'true');
 			$elemento->setAttrib("class", "form-control");
 				
 			foreach ($subparametros as $subparametro ){
@@ -37,7 +38,7 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		$eProducto = new Zend_Form_Element_Text('producto');
 		$eProducto->setLabel('Producto:');
 		$eProducto->setAttrib('class','form-control');
-		
+		$eProducto->setAttrib('required' , 'true');
 		$eClaveProducto = new Zend_Form_Element_Hidden("claveProducto");
 		//$eClaveProducto->setLabel('Clave Producto:');
 		//$eClaveProducto->setAttrib('class','form-control');

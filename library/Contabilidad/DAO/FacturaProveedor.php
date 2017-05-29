@@ -93,7 +93,7 @@
 					$dbAdapter->insert("Factura", $mFactura);
 					//Obtine el ultimo id en tabla factura
 					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
-					//print_r($idFactura);
+					print_r($idFactura);
 					//Guarda em facturaImpuesto
 					/*$mfImpuesto = array(
 							'idFactura'=>$idFactura,

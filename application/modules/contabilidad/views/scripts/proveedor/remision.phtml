@@ -152,8 +152,6 @@
 	
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
-		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#productos tbody > tr").length;
@@ -169,9 +167,7 @@
 
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});
+	
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -226,6 +222,38 @@
 		});
  			
  		});//cierra funcion buscar descripcion del producto
+ 		
+ 		//Funcion buscar Multiplo del producto
+ 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 			console.log("Hola");
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			console.log(id);
+			var numFila =  arr[1];
+
+			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#idUnidad_"+numFila).empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == id){
+							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idMultiplos).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
+ 			
+ 		});//cierra funcion  Multiplo del producto
 
  		//Funcion totalImporte para remision
  		$("table#productos").on("blur","input[id^='total']",function() {

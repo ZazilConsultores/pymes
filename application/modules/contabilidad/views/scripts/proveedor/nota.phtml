@@ -126,7 +126,6 @@
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		var jsonMultiplos = <?php echo $this->jsonMultiplos; ?>;
-		//var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
 	
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
@@ -234,7 +233,7 @@
 				
 			});
  			
- 		});//cierra funcion buscar descripcion del producto
+ 		});//cierra funcion buscar Multiplo de Producto
  		
 	 	//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){

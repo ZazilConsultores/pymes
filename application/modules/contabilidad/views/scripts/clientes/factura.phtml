@@ -93,22 +93,20 @@
 $(document).ready(function (){
 	console.log( "ready!" );
 	var jsonProductos = <?php echo $this->jsonProductos; ?>;
-	var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		
-    var filasTabla = 1;
+	
     $("#addRow").on("click", function () {
-    	var newRow = $("<tr>");
+    	var filasTabla = $("table#productos tbody > tr").length;
+    	filasTabla ++;
+    	//var newRow = $("<tr>");
     	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 		// idProducto
-		var selectClaveProducto = $('<select />').attr({'id': 'producto_' + filasTabla}).attr({'class':'form-control'});
+		var selectProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 		$.each(jsonProductos,function(i,item){
-			selectClaveProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+			selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
 		});
 		// idUnidad
 		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-		$.each(jsonUnidad,function(i,item){
-			inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-		});
+		
 		// codigoBarras
 		var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 		// descripcion
@@ -126,7 +124,7 @@ $(document).ready(function (){
       
         $("table#productos").append($('<tr>').
 			append($('<td>').append(inputCantidad)).
-			append($('<td>').append(selectClaveProducto)).
+			append($('<td>').append(selectProducto)).
 			append($('<td>').append(inputUnidad)).
 			append($('<td>').append(inputCodigoBarras)).
 			append($('<td>').append(inputdescripcion)).
@@ -226,10 +224,10 @@ $(document).ready(function (){
  		});
  		
 		//Funcion buscar descripcion del producto
- 		$("table#productos").on("change", "select[id^='producto_']", function(){
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
  			console.log("Hola");
- 			var producto= $(this).attr("id");
-			var arr = producto.split('_');
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
 			var id = $(this).val();
 			//console.log(id);
 			var numFila =  arr[1];
@@ -242,6 +240,38 @@ $(document).ready(function (){
 			});
  			
  		});//cierra funcion buscar descripcion del producto
+ 		//Funcion buscar Multiplo del producto
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
+ 			console.log("Mexico");
+ 			var claveProd= $(this).attr("id");
+			var arr = claveProd.split('_');
+			var id = $(this).val();
+			console.log(id);
+			var numFila =  arr[1];
+
+			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#idUnidad_"+numFila).empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == id){
+							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idMultiplos).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
+ 			
+ 		});//cierra funcion Multiplo del producto
+
     
    $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         calculateRow($(this).closest("tr"));
