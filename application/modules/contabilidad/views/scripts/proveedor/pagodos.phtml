@@ -94,7 +94,7 @@
 									<td><?php echo $facturaxp["idSucursal"]; ?></td>
 									<td><?php echo $facturaxp["idCoP"]; ?></td>
 									<td><?php echo $facturaxp["numeroFactura"]; ?></td>
-									<td><?php echo $facturaxp["fechaFactura"]; ?></td>
+									<td><?php echo $facturaxp["fecha"]; ?></td>
 									<td><?php echo "$" .number_format($facturaxp["total"],2) ?></td>
 									<td>	
 										<a class="btn btn-success" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor","action"=>"aplicarpago","idFactura"=>$facturaxp["idFactura"]),null, true)?>">

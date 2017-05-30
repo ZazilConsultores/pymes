@@ -111,7 +111,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//Insertamos en empresa, cliente o proveedor
 			switch ($tipo) {
 				case 'EM':
-					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>$idEmpresa));
+					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>0));
 					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
 					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta));
 					break;	

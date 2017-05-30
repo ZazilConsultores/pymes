@@ -95,9 +95,9 @@
 								$fecha = $rowFacturaP["fecha"];
 								//Buscamos en FacturaImpuesto el iva
 								$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
-								$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $idFactura);
+								$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $idFactura)->where("idTipoMovimiento =?",4);
 								$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
-								$iva = 8.1376; //print_r("<br />"); print_r("iva:"); print_r($iva);
+								$iva = $rowFacturaImp->importe; //print_r("<br />"); print_r("iva:"); print_r($iva);
 								print_r("<br />");
 								//Seleccionamos en la guia contable el modulo y el tipo
 								$tablaGuiaContable = $this->tablaGuiaContable;
@@ -612,10 +612,20 @@
 							$numeroFolio = $rowCxp["numeroFolio"];
 							$fecha = $rowCxp["fechaPago"];
 							$subtotal = $rowCxp["subtotal"];
-							$iva = 55;
 							$total = $rowCxp["total"];
 							$secuencial = $rowCxp["secuencial"];
 							print_r($secuencial);
+							//Buscamos en FacturaImpuesto el iva
+							$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
+							$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowCxp->idFactura)->where("idTipoMovimiento =?",15);
+							$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
+							print_r("<br />");
+							print_r("<br />");
+							print_r("<br />");
+							print_r("<br />");
+							print_r("$select");
+							$iva = $rowFacturaImp->importe; //print_r("<br />"); print_r("iva:"); print_r($iva);
+							print_r("<br />");
 							//Iniciamos polizaP
 							$tablaGuiaContable = $this->tablaGuiaContable;
 							$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);

@@ -187,8 +187,7 @@
  		});//cierra funcion buscar descripcion del producto
  		
  		//Funcion buscar Multiplo del producto
- 		$("table#productosNota").on("change", "select[id^='idProducto_']", function(){
- 			console.log("Mexico");
+ 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
  			var claveProd= $(this).attr("id");
 			var arr = claveProd.split('_');
 			var id = $(this).val();

@@ -76,7 +76,7 @@
 							'secuencial'=>$secuencial,
 							'estatus'=>"A",
 							'fechaPago'=>$stringIni,
-							'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+							'fecha'=>date('Y-m-d h:i:s', time()),
 							'formaLiquidar'=>$datos['formaPago'],
 							'conceptoPago'=>$datos['conceptoPago'],
 							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
@@ -85,6 +85,19 @@
 						//print_r("Agrega movimiento a cuentasxp");   
 						//print_r($mCuentasxp);
 						$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+						//GuardaIva em facturaImpuesto
+						$tablaCuentasxp = $this->tablaCuentasxp;
+						$select= $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
+						$rowcxp = $tablaFactura->fetchRow($select);
+						$mfImpuesto = array(
+							'idTipoMovimiento'=>15,
+							'idFactura'=>$rowFactura['idFactura'],
+							'idImpuesto'=>4, //Iva
+							'importe'=>$datos["pago"]- $rowcxp->subtotal
+							
+						);
+						print_r($mfImpuesto);
+						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 					}	
 				}	
 			}catch(exception $ex){

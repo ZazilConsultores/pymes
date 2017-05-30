@@ -82,7 +82,7 @@
 						'conceptoPago'=>$conceptoPago,
 						'descuento'=>$importe[0]['descuento'],
 						'formaPago'=>$formaPago['formaLiquidar'],
-						'fechaFactura'=>$stringFecha,
+						'fecha'=>$stringFecha,
 						'subTotal'=>$importe[0]['subTotal'],
 						'total'=>$importe[0]['total'],
 						'folioFiscal'=>$encabezado['folioFiscal'],
@@ -95,14 +95,15 @@
 					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
 					print_r($idFactura);
 					//Guarda em facturaImpuesto
-					/*$mfImpuesto = array(
+					$mfImpuesto = array(
+							'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 							'idFactura'=>$idFactura,
 							'idImpuesto'=>4, //Iva
 							'importe'=>$importe[0]['iva']
 							
 						);
 						print_r($mfImpuesto);
-						//$dbAdapter->insert("ImpuestoProductos", $mfImpuesto);*/
+						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 						
 					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
 					if(($formaPago['pagada'])==="1"){
@@ -115,7 +116,7 @@
 							'idDivisa'=>$formaPago['idDivisa'],
 							'numeroFolio'=>$encabezado['numeroFactura'],
 							'secuencial'=>1,
-							'fechaCaptura'=>date("Y-m-d H:i:s", time()),
+							'fecha'=>date("Y-m-d H:i:s", time()),
 							'fechaPago'=>$stringFecha,//Revisar fecha en pagos factura proveedor
 							'estatus'=>"A",
 							'numeroReferencia'=>$formaPago['numeroReferencia'],
