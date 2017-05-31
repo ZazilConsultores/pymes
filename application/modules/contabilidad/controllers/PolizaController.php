@@ -23,7 +23,7 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
+				//print_r($datos);
 				try{
 					//$this->polizaDAO->generacxp($datos);
 					//$buscaTipoProv = $this->polizaDAO->buscaTipoProveedor($Persona,$Empresa);
@@ -37,11 +37,12 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					
 					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
-					/*$this->polizaDAO->generaGruposFacturaCliente($datos);
-					$this->polizaDAO->generacxp($datos);
+					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					/*$this->polizaDAO->generacxp($datos);
 					$this->polizaDAO->generaGruposFacturaProveedor($datos);*/
 					//$this->polizaDAO->generacxpRemisiones($datos);
-					$this->polizaDAO->generacxp_Fo($datos);
+					//$this->polizaDAO->generacxp_Fo($datos);
+					//$this->polizaDAO->generacxc_Fo($datos);
 					//$this->polizaDAO->crear_Texto();
 					//$buscaTipoProv = $this->polizaDAO->Busca_Tipo($Persona, $Empresa);
 					//$this->polizaDAO->busca_SubCuenta($persona, $origen);

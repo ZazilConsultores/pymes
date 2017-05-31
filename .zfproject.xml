@@ -85,6 +85,7 @@
             </controllerFile>
             <controllerFile controllerName="Productoterminado">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="crear"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -94,6 +95,7 @@
             <formFile formName="AdminInventario"/>
             <formFile formName="EditarTodoInventario"/>
             <formFile formName="ProductoTerminado"/>
+            <formFile formName="CrearProductoTerminado"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -175,6 +177,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Productoterminado">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="crear"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2896,6 +2901,7 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Productoterminado">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="crear"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

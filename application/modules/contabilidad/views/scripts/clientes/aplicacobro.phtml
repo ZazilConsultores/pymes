@@ -1,17 +1,23 @@
 <?php 
+	$formulario = $this->formulario;
+	$formularioCobro = $this->formularioCobro;
 	$datosFactura = $this->datosFactura;
 ?>
-<!--Detalle datos factura-->
 <section class="panel panel-info">
+	<div class="panel-body">
+		<br />
+		<?php echo $formulario ?>
+	</div>
+</section>
+<!--Formulario Cobro-->
+<section class="panel panel-warning">
 	<div class="panel-heading">
-		<h3 class="panel-title">Datos Factura Seleccionada.</h3>
+		<h3 class="panel-title">Realizar Pago Factura</h3>
 	</div>
 	<div class="panel-body">
-		<div class="form-group">
-		<label>Factura:</label> 
-		<div class="col-md-2 al">
-			<input type="text" class="form-control" />	
-		</div>
+		<div class="col-md-12" >
+			<?php echo $formularioCobro; ?>
 		</div>
 	</div>
 </section>
+

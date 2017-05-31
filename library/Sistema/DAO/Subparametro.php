@@ -4,12 +4,14 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	
 	private $tablaSubparametro;
 	private $tablaParametro;
+	private $tablaProducto;
 	
 	function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaSubparametro = new Sistema_Model_DbTable_Subparametro(array('db'=>$dbAdapter));
 		$this->tablaParametro = new Sistema_Model_DbTable_Parametro(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 	}
 	
 	public function generarClaveProducto(array $claves){
@@ -106,6 +108,17 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$tablaSubparametro = $this->tablaSubparametro;
 		$where = $tablaSubparametro->getAdapter()->quoteInto("idSubparametro = ?", $idSubparametro);
 		$tablaSubparametro->update($subParametro, $where);
+	}
+	
+	public function obtenerSubparametroMateria($idSubparametro) //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4'.'%');
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		print_r($select->__toString());
+		//return $subparametroModel;
+		
 	}	
 	
 		

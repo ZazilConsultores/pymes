@@ -143,7 +143,7 @@ $(document).ready(function (){
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
- 			var claveProducto = row.find("select[id^='producto_']").val();
+ 			var claveProducto = row.find("select[id^='idProducto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
  			var descripcion = row.find("input[id^='descripcion_']").val();
@@ -390,7 +390,7 @@ function calculateGrandTotal() {
 			
 		});
 	
-	$("select#id").on('click', function(){
+	$("select#idSucursal").on('click', function(){
 		var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
 		console.log(url);
 		$.ajax({
@@ -405,20 +405,6 @@ function calculateGrandTotal() {
 			}
 		});
 	});
-	$("select#idSucursal").on('click', function(){
-		var url = window.location.origin + "/General/";
-		var urlSucursal = url + "contabilidad/json/sucursal/idSucursal/" + this.value;
-		console.log(urlSucursal);
-		$.ajax({
-			url: urlSucursal,
-			dataType: "json",
-			success: function(data){
-				console.log("EL consecutivo de la factura es:");
-				var consecutivo = data['consecutivo'];
-				console.log(consecutivo);
-				var consecutivoi = parseInt(consecutivo) + 1 ;
-				$("input#numeroFactura").val(consecutivoi);
-			}
-		});
-	});
+	
+	//});
 </script>

@@ -32,7 +32,7 @@
 							
 		}
 		
-		public function aplica_Pago ($idFactura, array $datos){
+		public function aplica_Cobro ($idFactura, array $datos){
 			$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 			//$dbAdapter->beginTransaction();
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
@@ -40,14 +40,14 @@
 			
 			try{
 				
-				$tablaCuentasxp = $this->tablaCuentasxp;
-				$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",15)->where("idFactura=?", $idFactura)
+				$tablaCuentasxc = $this->tablaCuentasxc;
+				$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento= ?",16)->where("idFactura=?", $idFactura)
 				->order("secuencial DESC");
-				$rowCuentasxp = $tablaCuentasxp->fetchRow($select);
+				$rowCuentasxc = $tablaCuentasxc->fetchRow($select);
 				print_r($select->__toString());
 				
-				if(!is_null($rowCuentasxp)){
-					$secuencial= $rowCuentasxp->secuencial +1;
+				if(!is_null($rowCuentasxc)){
+					$secuencial= $rowCuentasxc->secuencial +1;
 				}else{
 					$secuencial = 1;	
 				}
@@ -65,7 +65,7 @@
 						echo "El importe no puede ser mayor al total de la factura";
 					}else{
 						//Aplicamos movimiento en cuentasxp;
-						$mCuentasxp = array(
+						$mCuentasxc = array(
 							'idTipoMovimiento'=>15,
 							'idSucursal'=>$rowFactura['idSucursal'],
 							'idCoP'=>$rowFactura['idCoP'],
@@ -77,15 +77,27 @@
 							'secuencial'=>$secuencial,
 							'estatus'=>"A",
 							'fechaPago'=>$stringIni,
-							'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+							'fecha'=>date('Y-m-d h:i:s', time()),
 							'formaLiquidar'=>$datos['formaPago'],
 							'conceptoPago'=>$datos['conceptoPago'],
 							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
 							'total'=>$datos["pago"]
 						);
-						//print_r("Agrega movimiento a cuentasxp");   
-						//print_r($mCuentasxp);
 						$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+						//GuardaIva em facturaImpuesto
+						$tablaCuentasxc = $this->tablaCuentasxc;
+						$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
+						$rowcxc = $tablaFactura->fetchRow($select);
+						$mfImpuesto = array(
+							'idTipoMovimiento'=>15,
+							'idFactura'=>$rowFactura['idFactura'],
+							'idImpuesto'=>4, //Iva
+							'importe'=>$datos["pago"]- $rowcxp->subtotal
+							
+						);
+						print_r($mfImpuesto);
+						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+						
 					}	
 				}	
 			}catch(exception $ex){

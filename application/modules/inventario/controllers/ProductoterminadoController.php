@@ -2,7 +2,8 @@
 
 class Inventario_ProductoterminadoController extends Zend_Controller_Action
 {
-	private $productoTerminado = null;
+
+    private $productoTerminado = null;
 
     public function init()
     {
@@ -21,6 +22,15 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
         
     }
 
+    public function crearAction()
+    {
+        // action body
+        $formulario = new Inventario_Form_CrearProductoTerminado;
+		$this->view->formulario = $formulario;
+    }
+
 
 }
+
+
 

@@ -114,7 +114,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'descripcion'=>$producto["claveProducto"],
 						'precioUnitario'=>$precioUnitario,
 						'importe'=>$producto['importe'],
-						'fechaCaptura'=>$stringFecha,
+						'fecha'=>$stringFecha,
 						'fechaCancela'=>null
 					);
 				 	$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);	
@@ -186,11 +186,12 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'conceptoPago'=>$conceptoPago,
 					'descuento'=>$importe[0]['descuento'],
 					'formaPago'=>$formaPago['formaLiquidar'],
-					'fechaFactura'=>$stringFecha,
+					'fecha'=>$stringFecha,
 					'subTotal'=>$importe[0]['subTotal'],
 					'total'=>$importe[0]['total'],
+					'saldo'=>$importe[0]['total'],
 					'folioFiscal'=>$encabezado['folioFiscal'],
-					'importePago'=>$formaPago['pagos']
+					'importePagado'=>$formaPago['pagos']
 				);
 					
 				$dbAdapter->insert("Factura", $mFactura);
@@ -212,7 +213,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'idDivisa'=>$formaPago['divisa'],
 					'numeroFolio'=>$encabezado['numeroFactura'],
 					'secuencial'=>1,
-					'fechaCaptura'=>date("Y-m-d H:i:s", time()),
+					'fecha'=>date("Y-m-d H:i:s", time()),
 					'fechaPago'=>$stringFecha,//Revisar fecha en pagos factura proveedor
 					'estatus'=>"A",
 					'numeroReferencia'=>$formaPago['numeroReferencia'],
@@ -224,6 +225,15 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				);
 				//print_r($mCuentasxc);
 				$dbAdapter->insert("Cuentasxc", $mCuentasxc);
+				//Guarda em facturaImpuesto
+				$mfImpuesto = array(
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idFactura'=>$idFactura,
+					'idImpuesto'=>4, //Iva
+					'importe'=>$importe[0]['iva']
+				);
+				//print_r($mfImpuesto);
+				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 			}		
 				//Obtine el ultimo id en tabla factura
 				}

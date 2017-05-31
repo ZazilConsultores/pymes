@@ -62,7 +62,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
     	$eSucursal = new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel("Sucursal: ");
 		$eSucursal->setAttrib("class", "form-control");
-		//$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setRegisterInArrayValidator(FALSE);
 		$eSucursal->setAttrib("required", "true");
 		
 		$eProyecto =  new Zend_Form_Element_Select('idProyecto');

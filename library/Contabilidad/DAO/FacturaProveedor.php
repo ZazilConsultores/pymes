@@ -101,9 +101,9 @@
 							'idImpuesto'=>4, //Iva
 							'importe'=>$importe[0]['iva']
 							
-						);
-						print_r($mfImpuesto);
-						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+					);
+					print_r($mfImpuesto);
+					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 						
 					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
 					if(($formaPago['pagada'])==="1"){

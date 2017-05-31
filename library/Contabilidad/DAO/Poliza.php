@@ -3,6 +3,7 @@
 	class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 			
 		private $tablaCuentasxp;
+		private $tablaCuentasxc;
 		private $tablaProveedores;
 		private $tablaFactura;
 		private $tablaProveedorEmpresa;
@@ -17,6 +18,7 @@
 		public function __construct() {
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
+			$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
 			$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
 			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 			$this->tablaProveedorEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa(array('db'=>$dbAdapter));
@@ -344,17 +346,23 @@
 				if(!is_null($rowsGrupoFacturaC)){
 					foreach($rowsGrupoFacturaC as $rowGrupoFacturaC){
 						$idSucursal = $rowGrupoFacturaC["idSucursal"];
+						$idFactura = $rowGrupoFacturaC["idFactura"];
 						$numMov = $rowGrupoFacturaC["numeroFactura"];
 						$subTotal = $rowGrupoFacturaC["subtotal"];
 						$total = $rowGrupoFacturaC["total"];
 						$fecha = $rowGrupoFacturaC["fecha"];
 						$idCoP = $rowGrupoFacturaC["idCoP"];
-						$iva = 23;
+						//Buscamos en FacturaImpuesto el iva
+						$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
+						$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $idFactura)->where("idTipoMovimiento =?",2);
+						$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
+						$iva = $rowFacturaImp->importe; //print_r("<br />"); print_r("iva:"); print_r($iva);
+						//print_r("<br />");
 						//Buscamos la cuenta de cliente
 						$tablaClientes = $this->tablaClientes;
 						$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente = ?", $idCoP);
 						$rowCliente = $tablaClientes->fetchRow($select);
-						print_r("$select");
+						//print_r("$select");
 						if(!is_null($rowCliente)){
 							
 							//Definimos el modulo y el tipo
@@ -369,37 +377,36 @@
 							print_r("$select");
 							if(!is_null($rowsGuiaContable)){
 								foreach($rowsGuiaContable as $rowGuiaContable){
-						$origen = $rowGuiaContable->origen;
+								$origen = $rowGuiaContable->origen;
 								switch($origen){
 								case 'S':
 									$importe = $subTotal;
 									$origen = "SIN"; //No se porque va
 									print_r("<br />");
-									print_r("importe subtotal:"); print_r($importe);
+									//print_r("importe subtotal:"); print_r($importe);
 									break;
 								case 'I':
 									$importe = $iva;
 									$origen = "SIN";
-									$descripcionPol = $rowGuiaContable->descripcion;
-									print_r("<br />");
+									/*print_r("<br />");
 									print_r("importe iva:"); print_r($importe);
 									print_r("<br />");
-									print_r("ORIGEN:"); print_r($origen);
+									print_r("ORIGEN:"); print_r($origen);*/
 									break;
 								case 'T':
 									$importe = $total;
-									if($tipo == 2 && $rowGuiaContable->abono == "X"){
+									if($tipo == 5 && $rowGuiaContable->abono == "X"){
 										$origen	= "CLI";	
 									}else{
-										if($tipo == 2 && $rowGuiaContable->cargo == "X" && $modulo == 6){
+										if($tipo == 5 && $rowGuiaContable->cargo == "X" && $modulo == 5){
 											$origen = "CLI";
 										}else{
 											$origen= "BAN";
 										}
 									}
 									
-									print_r("<br />");
-									print_r("importe total:"); print_r($importe);
+									//print_r("<br />");
+									//print_r("importe total:"); print_r($importe);
 									print_r("<br />");
 									print_r("ORIGEN:"); print_r($origen);	
 								break;
@@ -407,31 +414,34 @@
 								//asigna abono o cargo
 								if($rowGuiaContable["cargo"]== "X"){
 									$cargo = $importe;
-									print_r("El cargo, no esta vacio");
-									print_r($cargo);
+									//print_r("El cargo, no esta vacio");
+									//print_r($cargo);
 								}else{
 									$cargo = "0";
 								}
 								if($rowGuiaContable["abono"]== "X"){
 									$abono = $importe;
-									print_r("El abono, no esta vacio");
-									print_r($abono);
+									//print_r("El abono, no esta vacio");
+									//print_r($abono);
 								}else{
 									$abono = 0;
 								}						
 								//Arma descripcion
-								if($rowGuiaContable["origen"] ='I' || $rowGuiaContable["origen"] = 'S'){
+								if($rowGuiaContable["origen"] == 'I' || $rowGuiaContable["origen"] == 'S'){
 									$desPol = $rowGuiaContable->descripcion;
 									print_r("<br />");
 									//print_r($desPol);
-								}else{	
+								}else{
 									//Crear descripcion
 									switch($modulo){
-									case '1,6':
-										$desPol = "Factura " . $numMov;
+									case '1':
+										$desPol = "Factura " .$numMov;
 										break;
-									case 3:
-										$desPol = "Pago Factura " . $numMov;
+									case '5':
+										$desPol = "Factura" .$numMov ;
+										break;
+									case '3':
+										$desPol = "Pago Factura " .$numMov;
 										break;
 									default:
 										$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
@@ -831,7 +841,50 @@
 			}
 			
 		}
-		public function generacxc_Fo($datos){}
+		public function generacxc_Fo($datos){
+			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			$dbAdapter->beginTransaction();
+			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
+			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
+			$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
+			$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
+			try{
+				//Buscamos en grupo cuentasxp, fondeo = 3
+				$tablaCXC = $this->tablaCuentasxc;
+				$select = $tablaCXC->select()->from($tablaCXC)->where('fechaPago >= ?',$stringFechaInicio)->where('fechaPago <=?',$stringFechaFinal)->where('idTipoMovimiento=?',3)
+				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
+				$rowsCXCF = $tablaCXC->fetchAll($select);
+				//print_r($select->__toString());
+				//Verificamos que existe facturasProveedor 
+				if(!is_null($rowsCXCF)){
+					foreach($rowsCXCF as $rowCXCF){
+						$idSucursal = $rowCXCF->idSucursal;
+						$numMov = $rowCXCF->numeroFolio;
+						$subTotal = $rowCXCF->subtotal;
+						$iva = 0; //ver si es necesaria
+						$total = $rowCXCF->total;
+						$fecha = $rowCXCF->fecha;
+						$idCliente = $rowCXCF->idCoP;
+						$tipo =6;
+						$banco = $rowCXCF->idBanco;
+						$consecutivo = $rowCXCF->secuencial;
+					}	
+				}
+				$dbAdapter->commit();
+			}catch(exception $ex){
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r("Excepcion Lanzada");
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r($ex->getMessage());
+				print_r("<br />");
+				print_r("<br />");
+				$dbAdapter->rollBack();
+			}
+		}
 		public function generacxp_Fo($datos){
 			
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');

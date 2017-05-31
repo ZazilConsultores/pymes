@@ -9,26 +9,26 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 	
 	public function __construct()
 	{
-		$this->tablaProducto = new Inventario_Model_DbTable_Producto;
-		$this->tablaInventario = new Inventario_Model_DbTable_Inventario;
+		//$this->tablaProducto = new Inventario_Model_DbTable_Producto;
+		//$this->tablaInventario = new Inventario_Model_DbTable_Inventario;
 		
 	}
 	public function obtenerProducto()
 	{
-		$tablaProducto = $this->tablaProducto;
+		/*$tablaProducto = $this->tablaProducto;
 		$select = $tablaProducto->select()->setIntegrityCheck(false)
 		->from($tablaProducto, array('claveProducto','producto'))
 		->join('Inventario','Producto.idProducto = Inventario.idProducto', array())
 		->where('Inventario.idSucursal=2')
 		->order('producto ASC');
 		
-		return $tablaProducto->fetchAll($select);
+		return $tablaProducto->fetchAll($select);*/
 	}
 	
 	
 	public function obtenerProductoTerminado()
 	{
-		$tablaProducto = $this->tablaProducto;
+		/*$tablaProducto = $this->tablaProducto;
 		$select = $tablaProducto->select()->from($tablaProducto)->where('claveProducto like?','PTVT%')
 		->order("producto");
 		$rowProductos = $tablaProducto->fetchAll($select);
@@ -43,6 +43,6 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 			
 		}
 		
-		return $modelProductos;
+		return $modelProductos;*/
 	}
 }

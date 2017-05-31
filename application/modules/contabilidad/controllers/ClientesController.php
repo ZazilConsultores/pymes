@@ -130,10 +130,11 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
 		if($request->isGet()){
-			$this->view->formulario = $formulario;			
+			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
+				//print_r($datos);
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
@@ -142,13 +143,11 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				print_r("<br />");
 				print_r($importe);
 				$contador=0;
-				
-				
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 				
 					//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
-				//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					foreach ($productos as $producto){
 					//try{
 						$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
@@ -160,13 +159,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					$this->view->messageSuccess = "Se ha agregado Factura exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
+				}/*}else{
+					print_r("formulario no valido <br />");*/
 				}
 				
 				
 				
 			//}
 			
-		}
+		//}
    }
 
     }
@@ -236,9 +237,32 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function aplicacobroAction()
     {
+    	$request = $this->getRequest();
     	$idFactura = $this->getParam("idFactura");
         $cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
-		$this->view->datosFactura = $cobroClienteDAO->obtiene_Factura($idFactura);	
+        $cobroFactura = $cobroClienteDAO->obtiene_Factura($idFactura);
+		$this->view->datosFactura = $cobroClienteDAO->obtiene_Factura($idFactura);
+		
+		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
+		$formulario->getSubForm("0")->getElement("numeroFactura")->setLabel("Factura seleccionada:");
+		$formulario->getSubForm("0")->getElement("numeroFactura")->setValue($cobroFactura["numeroFactura"]);
+		$formulario->getSubForm("0")->getElement("idEmpresas")->setLabel("Empresa:");
+		$formulario->getSubForm("0")->getElement("idEmpresas")->setValue($cobroFactura["idSucursal"]);
+		$formulario->getSubForm("0")->getElement("idEmpresas")->setLabel("Cliente:");
+		$formulario->getSubForm("0")->getElement("idCoP")->setValue($cobroFactura["idCoP"]);
+		$formulario->getSubForm("0")->removeElement	("idTipoMovimiento");
+		$formulario->getSubForm("0")->removeElement	("idSucursal");
+		$formulario->getSubForm("0")->removeElement	("idProyecto");
+		$formulario->getSubForm("0")->removeElement	("folioFiscal");
+		$formulario->getSubForm("0")->removeElement	("fecha");
+		$formulario->getSubForm("0")->setLegend("Cuentas por cobrar");
+		
+		$formulario->removeSubForm("1");
+		$formulario->removeElement("submit");
+		$this->view->formulario = $formulario;
+		
+		$formularioCobro = new Contabilidad_Form_PagosProveedor;
+		$this->view->formularioCobro = $formularioCobro;
     }
 
 
