@@ -66,7 +66,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$tablaMultiplos = $this->tablaMultiplos;
 			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 			$rowMultiplo = $tablaMultiplos->fetchRow($select);
-			//print_r("$select");	 
+			print_r("$select");	 
 			
 			if(!is_null($rowMultiplo)){
 				//====================Operaciones para convertir unidad minima====================================================== 
@@ -118,7 +118,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 	
 	public function guardaPago (array $encabezado, $formaPago,$productos){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
-		$dbAdapter->beginTransaction();
+		//$dbAdapter->beginTransaction();
 		//$fecha = date('Y-m-d h:i:s', time());
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
@@ -151,7 +151,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 					'secuencial'=>$secuencial,
 					'estatus'=>"A",
 					'fechaPago'=>$stringIni,
-					'fechaCaptura'=>date('Y-m-d h:i:s', time()),
+					'fecha'=>date('Y-m-d h:i:s', time()),
 					'formaLiquidar'=>$formaPago['formaLiquidar'],
 					'conceptoPago'=>$formaPago['conceptoPago'],
 					'subTotal'=>0,

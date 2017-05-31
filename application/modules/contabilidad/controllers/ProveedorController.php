@@ -114,7 +114,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$contador=0;
 				try{
 				$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
-				$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
+				//$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
 				//$editaBanco = $this->remisionEntradaDAO->editarBanco($formaPago, $productos); 
 				foreach ($productos as $producto){
 					

@@ -107,6 +107,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			);
 			$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 			$sumaBanco = $this->sumaBanco($fondeo);
+			
 			$mCuentasxp = array(
 			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 			'idSucursal'=>$empresa['idSucursal'],

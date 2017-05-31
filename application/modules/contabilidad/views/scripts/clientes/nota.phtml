@@ -206,7 +206,7 @@
 					$.each(data, function(i,item){
 						if(data[i].idProducto == id){
 							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
-							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idMultiplos).text(data[i].unidad));
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
 						}	
 						
 					});
