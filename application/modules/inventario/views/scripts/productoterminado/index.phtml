@@ -2,8 +2,21 @@
 	//echo $this->formulario;
 	$productos =$this->productos;
 	$busquedaProductoTerminado = $this->busquedaProductoTerminado;
+	$productoDAO = new Sistema_DAO_Subparametro;
+	$subBebidas = $productoDAO->obtenerSubparametroBebida();
+	$subAbarrotes = $productoDAO->obtenerSubparametroAbarrotes();
+	$subCarnes = $productoDAO->obtenerSubparametroCarnes();
+	$subFrutas = $productoDAO->obtenerSubparametroFrutas();
+	$subLacteos = $productoDAO->obtenerSubparametroLacteos();
+	$subLicores = $productoDAO->obtenerSubparametroLicores();
+	$subPanaderia = $productoDAO->obtenerSubparametroPanaderia();
+	$subPescados = $productoDAO->obtenerSubparametroPescadosyMa();
+	$subSemillas = $productoDAO->obtenerSubparametroSemillas();
+	$subVerduras = $productoDAO->obtenerSubparametroVerduras();
+	$subDulces = $productoDAO->obtenerSubparametroDulceria();
+	$subPTS = $productoDAO->obtenerPT();
 ?>
-<!--despliega los productos correspondientes a la cafeteria-->
+<!--despliega los productos correspondientes a la cafeteria
 <section class="row">
 	<div class="panel panel-success">
 		<div class="panel-heading">
@@ -32,7 +45,7 @@
 		</div>
 	</div>
 </section>
-
+-->
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">Crear Producto Terminado</h3>
@@ -40,25 +53,132 @@
 	<div class="panel-body">
 		<table class="table table-striped table-condensed">
 			<thead>
-				
+				<th>Busca Producto Terminado:</th>
+					<td>
+						<select  class="form-control">
+							<?php foreach ($subPTS as $subPT) : ?>
+								<option value="<?php echo $subPT["idProducto"] ?>"><?php echo $subPT["producto"]; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+					
 			</thead>
 			<tbody>
-				<th>Nombre Producto:
-				<td>
-					<select id="idNombreProducto" class="form-control">
-							<?php foreach ($busquedaProductoTerminado as $productoTerminado) : ?>
-							<option value="<?php echo $productoTerminado->getIdProducto() ?>"><?php echo $productoTerminado->getProducto(); ?></option>
+				<tr>
+					<th>Seleccionar Bebida:
+					<td>
+						<select id="subBedida"  class="form-control">
+								<?php foreach ($subBebidas as $subBebida) : ?>
+								<option value="<?php echo $subBebida["idProducto"] ?>"><?php echo $subBebida["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+					<th>Seleccionar Abarrotes:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subAbarrotes as $subAbarrote) : ?>
+								<option value="<?php echo $subAbarrote["idProducto"] ?>"><?php echo $subAbarrote["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Seleccionar Carne:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subCarnes as $subCarne) : ?>
+								<option value="<?php echo $subCarne["idProducto"] ?>"><?php echo $subCarne["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+					
+					<th>Seleccionar Fruta:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subFrutas as $subFruta) : ?>
+								<option value="<?php echo $subFruta["idProducto"] ?>"><?php echo $subFruta["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Seleccionar Lacteo:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subLacteos as $subLacteo) : ?>
+								<option value="<?php echo $subLacteo["idProducto"] ?>"><?php echo $subLacteo["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+					<th>Seleccionar Licor:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subLicores as $subLicor) : ?>
+								<option value="<?php echo $subLicor["idProducto"] ?>"><?php echo $subLicor["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Seleccionar Panederia:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subPanaderia as $subPan) : ?>
+								<option value="<?php echo $subPan["idProducto"] ?>"><?php echo $subPan["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+					<th>Seleccionar Pescados y Mariscos:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subPescados as $subPescado) : ?>
+								<option value="<?php echo $subPescado["idProducto"] ?>"><?php echo $subPescado["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Seleccionar Semilla:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subSemillas as $subSemilla) : ?>
+								<option value="<?php echo $subSemilla["idProducto"] ?>"><?php echo $subSemilla["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+					<th>Seleccionar Verdura:
+					<td>
+						<select  class="form-control">
+							<?php foreach ($subVerduras as $subVerdura) : ?>
+								<option value="<?php echo $subVerdura["idProducto"] ?>"><?php echo $subVerdura["producto"]; ?></option>
 							<?php endforeach; ?>
-					</select>
-				</td>
-				<td>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Seleccionar Dulce:
+					<td>
+						<select  class="form-control">
+								<?php foreach ($subDulces as $subDulce) : ?>
+								<option value="<?php echo $subDulce["idProducto"] ?>"><?php echo $subDulce["producto"]; ?></option>
+								<?php endforeach; ?>
+						</select>
+					</td>
+					<th>Seleccionar Producto terminado:
+					<td>
+						<select  class="form-control">
+						</select>
+					</td>
+				</tr>
+				<!--<td>
 						<button id="btnQueryEncuesta" class="btn btn-info" >
 							<span class="glyphicon glyphicon-search"></span> Buscar Producto Terminado
 						</button>
 					</td>
-				</th>
-
-				
+				</th>-->
+				<br />	
+				<tr></tr>
+							
 				<tr>
 					<td>Clave Producto</td>
 					<td>Nombre</td>
@@ -74,9 +194,6 @@
 						<button id="agregar" class="btn btn-success" >
 							<span class="glyphicon glyphicon-plus-sign"></span> Agregar
 						</button>
-						<button id="agregar" class="btn btn-warning" >
-							<span class="glyphicon glyphicon-pencil"></span> Editar
-						</button>
 					</td>
 				</tr>
 				
@@ -90,14 +207,37 @@
 	<div></div>
 </section>
 
+<!--Tabla detalle ProductoTerminado-->
+<section class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle.</h4>
+		</div>
+		<table id="impuestosProductos" class="table table-striped table-condensed">
+			<thead>
+				<th>Clave </th>
+				<th>Producto</th>
+				<th>Presentación</th>
+				<th>Precio unitario</th>
+				<th>Importe</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
 <script>
 	$(document).ready(function() {
-		//===================================================================================
-	    $('table.table').dataTable( {
-	       "pagingType": "full_numbers",
-	        "language": {
-	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
-	        }
-	    } );
+	
+	   
+	   //Select idSubBebida
+	   $("#subBebida").on('change',function (){
+	   	 console.log("ha selecccionado bebida");
+	   });
+	   
+	   $("#idClaveProducto").on('click',function (){
+	   	 console.log("ha selecccionado bebida");
+	   });
+	   	
 	});
 </script>

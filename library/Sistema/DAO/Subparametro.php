@@ -110,17 +110,131 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		$tablaSubparametro->update($subParametro, $where);
 	}
 	
-	public function obtenerSubparametroMateria($idSubparametro) //Solo subparametro 2
+	public function obtenerSubparametroBebida() //Solo subparametro 2
 	{
 		$tablaProducto = $this->tablaProducto;
-		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4'.'%');
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,56%')->order("producto");
 		$rowSubparametro = $tablaProducto->fetchAll($select);
 	
-		print_r($select->__toString());
-		//return $subparametroModel;
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	
+	public function obtenerSubparametroAbarrotes() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,58%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	
+	public function obtenerSubparametroCarnes() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,59%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	
+	public function obtenerSubparametroFrutas() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,60%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
 		
 	}	
 	
+	public function obtenerSubparametroLacteos() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,61%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
 		
+	}
+	public function obtenerSubparametroLicores() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,62%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	public function obtenerSubparametroPanaderia() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,63%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	
+	public function obtenerSubparametroPescadosyMa() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,64%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	public function obtenerSubparametroSemillas() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,65%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	
+	public function obtenerSubparametroVerduras() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,66%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	public function obtenerSubparametroDulceria() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '4,67%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	public function obtenerPT() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '5,%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}		
 }
 
