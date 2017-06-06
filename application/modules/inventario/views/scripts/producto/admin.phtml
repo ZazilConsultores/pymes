@@ -1,4 +1,4 @@
-	<?php
+<?php
 	$producto= $this->producto;
 	$formulario = $this->formulario;
 	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"Producto", "action" => "edita", "idProducto"=> $producto->getIdProducto()), null, true));

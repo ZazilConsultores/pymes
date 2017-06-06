@@ -66,7 +66,7 @@
 					}else{
 						//Aplicamos movimiento en cuentasxp;
 						$mCuentasxc = array(
-							'idTipoMovimiento'=>15,
+							'idTipoMovimiento'=>16,
 							'idSucursal'=>$rowFactura['idSucursal'],
 							'idCoP'=>$rowFactura['idCoP'],
 							'idFactura'=>$rowFactura['idFactura'],
@@ -83,7 +83,7 @@
 							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
 							'total'=>$datos["pago"]
 						);
-						$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+						$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 						//GuardaIva em facturaImpuesto
 						$tablaCuentasxc = $this->tablaCuentasxc;
 						$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
@@ -92,7 +92,7 @@
 							'idTipoMovimiento'=>15,
 							'idFactura'=>$rowFactura['idFactura'],
 							'idImpuesto'=>4, //Iva
-							'importe'=>$datos["pago"]- $rowcxp->subtotal
+							'importe'=>$datos["pago"]- $rowcxc->subtotal
 							
 						);
 						print_r($mfImpuesto);
@@ -196,7 +196,6 @@
 			print_r("<br />");
 			//Actuliza saldoBando
 			$tablaBancos= $this->tablaBancos;
-			$select = $tablaBancos;
 			$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco =?",$datos["idBanco"]);
 			$rowBanco = $tablaBancos->fetchRow($select);
 			$sBanco = $rowBanco->saldo -  $datos["pago"];

@@ -45,4 +45,27 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		
 		return $modelProductos;*/
 	}
+	
+	
+	public function crearProductoTerminado(array $datos){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		//$dbAdapter->beginTransaction();
+		
+		//$productoTer = $datos;
+		try{
+			$mProductoTer = array(
+				'idProducto' =>$datos[0]['idProducto'],
+				'productoEnlazado' => $datos[0]['productoEnlazado'],
+				'cantidad' => $datos[0]['cantidad'],
+				'descripcion' => $datos[0]['descripcion'],
+				'presentacion' => $datos[0]['presentacion'],
+				
+			);
+			$dbAdapter->insert("ProductoCompuesto", $mProductoTer);
+		}catch(Exception $ex){
+			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			
+		}
+	}
 }

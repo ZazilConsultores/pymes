@@ -34,7 +34,6 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		
 		$productoModel = new Inventario_Model_Producto($rowProducto->toArray());
 		$productoModel->setIdProducto($rowProducto->idProducto);
-		
 		return $productoModel;
 		
 	}
@@ -82,13 +81,23 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 		$where = $tablaProducto->getAdapter()->quoteInto("idProducto = ?", $idProducto);
 		$tablaProducto->update($producto, $where);
 	}
-	
-	
-	
+
 	public function eliminarProducto($idProducto){
 		$tablaProducto = $this->tablaProducto;
 		$where = $tablaProducto->getAdapter()->quoteInto("idProducto = ?", $idProducto);
 		
 		$tablaProducto->delete($where);
+	}
+	
+	public function getProducto($idProducto){
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?",$idProducto);
+		$rowProducto = $tablaProducto->fetchAll($select);
+		//print_r("$select");
+		if(is_null($rowProducto)){
+			return null;
+		}else{
+			return $rowProducto->toArray();
+		}
 	}
 }

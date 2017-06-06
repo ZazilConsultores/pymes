@@ -263,6 +263,17 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		
 		$formularioCobro = new Contabilidad_Form_PagosProveedor;
 		$this->view->formularioCobro = $formularioCobro;
+		if($request->isPost()){
+			if($formularioCobro->isValid($request->getPost())){
+				$datos = $formularioCobro->getValues();
+				print_r($datos);
+				try{
+					$this->cobroClienteDAO->aplica_Cobro($idFactura, $datos);
+					$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+				}catch(Exception $ex){
+				} 	
+			}
+		}
     }
 
 

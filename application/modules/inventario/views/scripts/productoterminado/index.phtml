@@ -1,8 +1,11 @@
 <?php
-	//echo $this->formulario;
-	$productos =$this->productos;
+	$formulario = $this->formulario;
+	
+	$productos = $this->productos;
 	$busquedaProductoTerminado = $this->busquedaProductoTerminado;
 	$productoDAO = new Sistema_DAO_Subparametro;
+	$productosDAO = new Inventario_DAO_Producto;
+	$productosB = $productosDAO->obtenerProductos();
 	$subBebidas = $productoDAO->obtenerSubparametroBebida();
 	$subAbarrotes = $productoDAO->obtenerSubparametroAbarrotes();
 	$subCarnes = $productoDAO->obtenerSubparametroCarnes();
@@ -16,6 +19,7 @@
 	$subDulces = $productoDAO->obtenerSubparametroDulceria();
 	$subPTS = $productoDAO->obtenerPT();
 ?>
+<?php echo $formulario ?> 	 	
 <!--despliega los productos correspondientes a la cafeteria
 <section class="row">
 	<div class="panel panel-success">
@@ -55,7 +59,7 @@
 			<thead>
 				<th>Busca Producto Terminado:</th>
 					<td>
-						<select  class="form-control">
+						<select class="form-control" id="productoTerminado">
 							<?php foreach ($subPTS as $subPT) : ?>
 								<option value="<?php echo $subPT["idProducto"] ?>"><?php echo $subPT["producto"]; ?></option>
 							<?php endforeach; ?>
@@ -67,7 +71,8 @@
 				<tr>
 					<th>Seleccionar Bebida:
 					<td>
-						<select id="subBedida"  class="form-control">
+						<select id="subBebida"  class="form-control">
+							<option value="0">Seleccione Bebida</option>
 								<?php foreach ($subBebidas as $subBebida) : ?>
 								<option value="<?php echo $subBebida["idProducto"] ?>"><?php echo $subBebida["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -76,6 +81,7 @@
 					<th>Seleccionar Abarrotes:
 					<td>
 						<select id="subAbarrotes" class="form-control">
+							<option value="0">Seleccione Bebida</option>
 								<?php foreach ($subAbarrotes as $subAbarrote) : ?>
 								<option value="<?php echo $subAbarrote["idProducto"] ?>"><?php echo $subAbarrote["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -86,6 +92,7 @@
 					<th>Seleccionar Carne:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Carne</option>
 								<?php foreach ($subCarnes as $subCarne) : ?>
 								<option value="<?php echo $subCarne["idProducto"] ?>"><?php echo $subCarne["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -95,9 +102,10 @@
 					<th>Seleccionar Fruta:
 					<td>
 						<select  class="form-control">
-								<?php foreach ($subFrutas as $subFruta) : ?>
+							<option value="0">Seleccione Fruta</option>
+							<?php foreach ($subFrutas as $subFruta) : ?>
 								<option value="<?php echo $subFruta["idProducto"] ?>"><?php echo $subFruta["producto"]; ?></option>
-								<?php endforeach; ?>
+							<?php endforeach; ?>
 						</select>
 					</td>
 				</tr>
@@ -105,6 +113,7 @@
 					<th>Seleccionar Lacteo:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Lacteo</option>
 								<?php foreach ($subLacteos as $subLacteo) : ?>
 								<option value="<?php echo $subLacteo["idProducto"] ?>"><?php echo $subLacteo["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -113,6 +122,7 @@
 					<th>Seleccionar Licor:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Licor</option>
 								<?php foreach ($subLicores as $subLicor) : ?>
 								<option value="<?php echo $subLicor["idProducto"] ?>"><?php echo $subLicor["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -123,6 +133,7 @@
 					<th>Seleccionar Panederia:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Pan</option>
 								<?php foreach ($subPanaderia as $subPan) : ?>
 								<option value="<?php echo $subPan["idProducto"] ?>"><?php echo $subPan["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -131,6 +142,7 @@
 					<th>Seleccionar Pescados y Mariscos:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Pescados y Mariscos</option>
 								<?php foreach ($subPescados as $subPescado) : ?>
 								<option value="<?php echo $subPescado["idProducto"] ?>"><?php echo $subPescado["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -141,6 +153,7 @@
 					<th>Seleccionar Semilla:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Semilla</option>
 								<?php foreach ($subSemillas as $subSemilla) : ?>
 								<option value="<?php echo $subSemilla["idProducto"] ?>"><?php echo $subSemilla["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -149,6 +162,7 @@
 					<th>Seleccionar Verdura:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Verdura</option>
 							<?php foreach ($subVerduras as $subVerdura) : ?>
 								<option value="<?php echo $subVerdura["idProducto"] ?>"><?php echo $subVerdura["producto"]; ?></option>
 							<?php endforeach; ?>
@@ -159,6 +173,7 @@
 					<th>Seleccionar Dulce:
 					<td>
 						<select  class="form-control">
+							<option value="0">Seleccione Dulce</option>
 								<?php foreach ($subDulces as $subDulce) : ?>
 								<option value="<?php echo $subDulce["idProducto"] ?>"><?php echo $subDulce["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -189,14 +204,13 @@
 					<td><input id="idClaveProducto" class="form-control"></input></td>
 					<td><input id="nombre" class="form-control"></input></td>
 					<td><input id="cantidad" class="form-control"></input></td>
-					<td><input id="presentacion" class="form-control"></input></td>
+					<td><select id="presentacion" class="form-control">></select></td>
 					<td>
-						<button id="agregar" class="btn btn-success" >
+						<button id="agregar" class="btn btn-success" type="submit" >
 							<span class="glyphicon glyphicon-plus-sign"></span> Agregar
 						</button>
 					</td>
 				</tr>
-				
 				<tr>
 					<td></td>
 					
@@ -228,22 +242,121 @@
 </section>
 <script>
 	$(document).ready(function() {
-		//Select abarrotes
-	   $("table#productoTerminado").on("change","select[id^='subAbarrotes']", function (){
-	   	var abarrote = $(this).val();
-	   	console.log(abarrote);
-	   	$("#idClaveProducto").val(abarrote);
-	   });
-	   //Trae multiplo
-	   $("table#productoTerminado").on("change","select[id^='subAbarrotes']", function (){
-	   	var abarrote = $(this).val();
-	   	console.log(abarrote);
-	   	$("#idClaveProducto").val(abarrote);
-	   });
-	   
-	   $("#idClaveProducto").on('click',function (){
-	   	 console.log("ha selecccionado bebida");
-	   });
+		//Select abarrotes y claveProducto
+		$("table#productoTerminado").on("change","select[id^='subAbarrotes']", function (){
+			var abarrote = $(this).val();
+	   		//console.log(abarrote);
+	   		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + abarrote ;
+	   		//console.log($urlProducto);
+	   		$.ajax({
+	   			url: $urlProducto,
+	   			dataType: "json",
+				success: function(data){
+					//console.log($urlProducto);
+					//console.dir(data);
+					$("input#idClaveProducto").empty();
+					$("input#nombre").empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == abarrote){
+							$("#idClaveProducto").attr("value",data[i].claveProducto);
+							$("#nombre").attr("value",data[i].producto);
+						}	
+						
+					});
+					
+				}
+	   		});
+	   	
+	   	});
+	   	
+	   	//Select bebidas y claveProducto
+		$("table#productoTerminado").on("change","select[id^='subBebida']", function (){
+			var bebida = $(this).val();
+	   		//console.log(abarrote);
+	   		//$("#idClaveProducto").val(abarrote);
+	   		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + bebida ;
+	   		//console.log($urlProducto);
+	   		$.ajax({
+	   			url: $urlProducto,
+	   			dataType: "json",
+				success: function(data){
+					//console.log($urlProducto);
+					//console.dir(data);
+					$("input#idClaveProducto").empty();
+					$("input#nombre").empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == bebida){
+							$("#idClaveProducto").attr("value",data[i].claveProducto);
+							$("#nombre").attr("value",data[i].producto);
+						}	
+						
+					});
+					
+				}
+	   		});
+	   	
+	   	});
+	   	
+	   	//Funcion buscar Multiplo del producto
+ 	   	$("table#productoTerminado").on("change", "select[id^='subAbarrotes']", function(){
+ 	   		var idProducto = $(this).val();
+ 	   		console.log("La clave del producto es :");
+ 	   		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + idProducto ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#presentacion").empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == idProducto){
+							$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
+ 			
+ 	   });
+ 	   
+ 	   //Genera array para enviar datos al controller
+ 	   $("#agregar").on("click",function(){
+ 	   	var datos = [];
+ 	   	
+ 		var idProducto = $("select#productoTerminado").val();
+ 		var productoEnlazado = $("select#subAbarrotes").val();
+ 		var cantidad = $("input#cantidad").val();
+ 		var descripcion = $("input#nombre").val();
+ 		var presentacion = $("select#presentacion").val();
+ 	
+ 		console.log("producto:"+idProducto);
+ 		console.log("productoEnl:"+productoEnlazado);
+ 		console.log("cantidad:"+cantidad);
+ 		console.log("presentacion:"+presentacion);
+ 		
+ 		datos.push(new Dato(idProducto, productoEnlazado, cantidad,descripcion, presentacion));
+ 		console.dir(datos);
+ 		
+ 		var myString = JSON.stringify(datos);
+ 		console.log(myString);
+ 		if ($("input#datos").val(myString)){}
+ 			
+ 	   });
+ 	   	   
+ 	   /*var myString = JSON.stringify(datos);
+ 	   if ($("input#datos").val(myString)){};*/
+ 	  
+ 	  function Dato(idProducto, productoEnlazado, cantidad, descripcion, presentacion) {
+		  this.idProducto = idProducto;
+		  this.productoEnlazado = productoEnlazado;
+		  this.cantidad = cantidad;
+		  this.descripcion = descripcion;
+		  this.presentacion = presentacion;
+	}
 	   	
 	});
 </script>

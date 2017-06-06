@@ -4,6 +4,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 {
 
     private $unidadDAO = null;
+	private $productoDAO = null;
 
     public function init()
     {
@@ -12,6 +13,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 		$this->_helper->viewRenderer->setNoRender(true);
 		
 		$this->unidadDAO = new Inventario_DAO_Unidad;
+		$this->productoDAO = new Inventario_DAO_Producto;
     }
 
     public function indexAction()
@@ -42,6 +44,20 @@ class Inventario_JsonController extends Zend_Controller_Action
 
 		if(!is_null($multiplos)){
 			echo Zend_Json::encode($multiplos);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+	
+	public function productosAction()
+    {
+        // action body
+        $idProducto = $this->getParam("idProducto");
+		//print_r($idProducto);
+       	$productos= $this->productoDAO->getProducto($idProducto);
+
+		if(!is_null($productos)){
+			echo Zend_Json::encode($productos);
 		}else{
 			echo Zend_Json::encode(array());
 		}
