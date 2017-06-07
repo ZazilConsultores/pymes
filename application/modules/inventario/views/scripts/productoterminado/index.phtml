@@ -81,7 +81,7 @@
 					<th>Seleccionar Abarrotes:
 					<td>
 						<select id="subAbarrotes" class="form-control">
-							<option value="0">Seleccione Bebida</option>
+							<option value="0">Seleccione Abarrote</option>
 								<?php foreach ($subAbarrotes as $subAbarrote) : ?>
 								<option value="<?php echo $subAbarrote["idProducto"] ?>"><?php echo $subAbarrote["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -265,7 +265,28 @@
 					});
 					
 				}
-	   		});
+	   		});//Termina busca producto
+	   		
+	   		//Busca producto desde el select subAbarrotes
+	   		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + abarrote ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#presentacion").empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == abarrote){
+							$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
 	   	
 	   	});
 	   	
@@ -294,6 +315,27 @@
 					
 				}
 	   		});
+	   		
+	   		//Busca producto desde el select subAbarrotes
+	   		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + bebida ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					//console.log($url);
+					//console.dir(data);
+					$("select#presentacion").empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == bebida){
+							$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
 	   	
 	   	});
 	   	
@@ -301,7 +343,7 @@
  	   	$("table#productoTerminado").on("change", "select[id^='subAbarrotes']", function(){
  	   		var idProducto = $(this).val();
  	   		console.log("La clave del producto es :");
- 	   		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + idProducto ;
+ 	   		/*var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + idProducto ;
 			console.log($url);
 			$.ajax({
 				url: $url,
@@ -319,7 +361,7 @@
 					
 				}
 				
-			});
+			});*/
  			
  	   });
  	   
@@ -329,6 +371,9 @@
  	   	
  		var idProducto = $("select#productoTerminado").val();
  		var productoEnlazado = $("select#subAbarrotes").val();
+ 		if(productoEnlazado == 0){
+ 			console.log("El productoEnlazado no pertenece a subAbarrotes");
+ 		}
  		var cantidad = $("input#cantidad").val();
  		var descripcion = $("input#nombre").val();
  		var presentacion = $("select#presentacion").val();
