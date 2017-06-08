@@ -34,8 +34,9 @@
 
 <script>
 	$(document).ready(function(){
+		var url = window.location.origin + "/General/";
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/sistema/json/sucursales/idFiscales/" + this.value;
+			$url = url +"/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log($url);
 			$.ajax({
 				url: $url,
@@ -52,16 +53,16 @@
 		});
 		
 		$("select#idEmpresas").on('change', function(){
-			$url = "/General/contabilidad/json/bancosempresa/idBanco/" + this.value;
+			$url = url + "contabilidad/json/bancosempresa/emp/" + this.value;
 			console.log($url);
 			$.ajax({
 				url: $url,
 				//console.log($ajax);
 				dataType: "json",
 				success: function(data){
-					$("select#idBancoE").empty();
+					$("select#1-idBancoE").empty();
 					$.each(data, function(i,item){	
-						$("select#idBancoE").append($("<option></option>").attr("value",data[i].idBancosEmpresas).text(data[i].idBanco)); 
+						$("select#1-idBancoE").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco)); 
 					});
 				}
 			});

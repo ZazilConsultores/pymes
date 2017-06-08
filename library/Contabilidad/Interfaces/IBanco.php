@@ -14,6 +14,6 @@ interface Contabilidad_Interfaces_IBanco{
 	public function eliminarBanco($idBanco);
 	public function obtenerBancosEmpresa($idEmpresa);
 	
-	public function obtenerBancosEmpresasFondeo(Contabilidad_Model_Banco $banco);
+	public function obtenerBancosEmpresas($idEmpresa);
 	
 }

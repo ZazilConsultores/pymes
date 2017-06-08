@@ -100,9 +100,9 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoEntrada->setLabel('Seleccionar Banco Entrada');
 		$eBancoEntrada->setAttrib("class", "form-control");
 		
-		foreach ($bancos as $fila){
+		/*foreach ($bancos as $fila){
 			$eBancoEntrada->addMultiOption($fila->getIdBanco(), $fila->getBanco());
-		}
+		}*/
 			
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
 		$eBancoSalida->setLabel('Seleccionar Banco Salida:');

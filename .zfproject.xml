@@ -48,6 +48,7 @@
         <modelFile modelName="Vendedor"/>
         <modelFile modelName="Inventario"/>
         <modelFile modelName="Bancosempresa"/>
+        <modelFile modelName="ProductoCompuesto"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="inventario">
@@ -106,11 +107,13 @@
               <dbTableFile dbTableName="Producto"/>
               <dbTableFile dbTableName="Unidad"/>
               <dbTableFile dbTableName="Multiplos"/>
+              <dbTableFile dbTableName="ProductoCompuesto"/>
             </dbTableDirectory>
             <modelFile modelName="Inventario"/>
             <modelFile modelName="Producto"/>
             <modelFile modelName="Unidad"/>
             <modelFile modelName="Multiplos"/>
+            <modelFile modelName="ProductoCompuesto"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

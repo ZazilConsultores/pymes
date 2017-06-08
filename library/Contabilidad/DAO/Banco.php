@@ -6,13 +6,13 @@
  */
  class Contabilidad_DAO_Banco implements Contabilidad_Interfaces_IBanco {
  
-
+	private $tablaEmpresas;
 	private $tablaBanco;
 	private $tablaBancosEmpresa;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		
+		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas(array('db'=>$dbAdapter));
 		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
 		$this->tablaBancosEmpresa = new Contabilidad_Model_DbTable_BancosEmpresa(array('db'=>$dbAdapter));
 	}
@@ -33,14 +33,26 @@
 		
 		return $modelBancos;
 	}
-	public function obtenerBancosEmpresasFondeo(Contabilidad_Model_Banco $banco)
+	public function obtenerBancosEmpresas($idEmpresa)
 	{
-		/*$tablaBanco = $this->tablaBanco;
-		$select = $tablaBanco->select()->from($tablaBanco)->where('tipo = "IN"');
-		$rowBanco = $tablaBanco->fetchRow($select);
-		$modelBanco = new Contabilidad_Model_Banco($rowBanco->toArray());
+		//Seleccionamos idEmpresa de la tabla BancosEmpresa
+		$tablaBancosEmpresa = $this->tablaBancosEmpresa;
+		$select = $tablaBancosEmpresa->select()->from($tablaBancosEmpresa)->where("idEmpresas=?",$idEmpresa);
+		$rowBancosEmp = $tablaBancosEmpresa->fetchRow($select);
+		$idsBancos = explode(",", $rowBancosEmp->idBanco);
+		if(!is_null($idsBancos)){
+			$tablaBanco = $this->tablaBanco;
+			$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco IN (?)", $idsBancos);
+			$rowsBancos= $tablaBanco->fetchAll($select);
+			print_r("select");
+			
+			/*$idsEmpresa = array();
+			foreach ($rowsClientes as $rowCliente) {
+				$idsEmpresa[] = $rowCliente->idEmpresa;
+			}*/
+			
+		}
 		
-		return $modelBanco;*/
 		
 	}
 	
@@ -88,11 +100,11 @@
 			$tableBanco = $this->tablaBanco;
 			$select = $tableBanco->select()->from($tableBanco)->where("idBanco IN (?)",$idsBanco);
 			$rowsBancos = $tableBanco->fetchAll($select)->toArray();
-			//print_r("$select");
+			return $rowsBancos;
 		}
 		
 		
-		return $rowsBancos;
+		//return $rowsBancos;
 		
 		}
 		

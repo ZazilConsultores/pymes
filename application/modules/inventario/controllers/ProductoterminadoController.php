@@ -16,7 +16,7 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
     	$productoTerminadoDAO = new Inventario_DAO_Productoterminado;
 		
 		$this->view->productos = $productoTerminadoDAO->obtenerProducto();
-		$this->view->busquedaProductoTerminado = $productoTerminadoDAO->obtenerProductoTerminado();
+		$this->view->busquedaProductoTerminado = $productoTerminadoDAO->obtenerProductosTerminados();
     	
     	$formulario = new Inventario_Form_CrearProductoTerminado;
 		$this->view->formulario = $formulario;
