@@ -13,29 +13,9 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
     public function indexAction()
     {
     	$request = $this->getRequest();
-    	$productoTerminadoDAO = new Inventario_DAO_Productoterminado;
-		
-		$productos = $this->view->productos = $productoTerminadoDAO->obtenerProducto();
-		$this->view->busquedaProductoTerminado = $productoTerminadoDAO->obtenerProductosTerminados();
-    	
-    	/**$formulario = new Inventario_Form_CrearProductoTerminado;
-		$this->view->formulario = $formulario;
-		if($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				//print_r($datos);
-				$envio = json_decode($datos['datos'],TRUE);
-				print_r($envio);
-				try{
-					$this->productoTerDAO->crearProductoTerminado($envio);
-					$this->view->messageSuccess = "El producto terminado fue creado exitosamente";
-				}catch(Exception $ex){
-					$this->view->messageFail = "Error al crear el producto terminado";
-				}
-			}		
-		}*/
+		$PT = $this->productoTerDAO->obtenerProductosTerminados();
 		if($request->isGet()){
-			$this->view->productos = $produstos;	
+			$this->view->pt = $PT;	
 		}if($request->isPost()){		
 			$datos = $request->getPost();
 			print_r($datos);
