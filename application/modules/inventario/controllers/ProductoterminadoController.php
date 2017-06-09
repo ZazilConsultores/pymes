@@ -15,10 +15,10 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
     	$request = $this->getRequest();
     	$productoTerminadoDAO = new Inventario_DAO_Productoterminado;
 		
-		$this->view->productos = $productoTerminadoDAO->obtenerProducto();
+		$productos = $this->view->productos = $productoTerminadoDAO->obtenerProducto();
 		$this->view->busquedaProductoTerminado = $productoTerminadoDAO->obtenerProductosTerminados();
     	
-    	$formulario = new Inventario_Form_CrearProductoTerminado;
+    	/**$formulario = new Inventario_Form_CrearProductoTerminado;
 		$this->view->formulario = $formulario;
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
@@ -33,6 +33,12 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
 					$this->view->messageFail = "Error al crear el producto terminado";
 				}
 			}		
+		}*/
+		if($request->isGet()){
+			$this->view->productos = $produstos;	
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+			print_r($datos);
 		}
         
     }

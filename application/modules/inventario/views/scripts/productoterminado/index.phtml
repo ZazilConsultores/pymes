@@ -20,7 +20,7 @@
 	$subDulces = $productoDAO->obtenerSubparametroDulceria();
 	$subPTS = $productoDAO->obtenerPT();
 ?>
-<?php echo $formulario ?> 	 	
+<!--<?php echo $formulario ?> -->	 	
 <!--despliega los productos correspondientes a la cafeteria
 <section class="row">
 	<div class="panel panel-success">
@@ -56,6 +56,7 @@
 		<h3 class="panel-title">Crear Producto Terminado</h3>
 	</div>
 	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 		<table id="productoTerminado" class="table table-striped table-condensed">
 			<thead>
 				<th>Busca Producto Terminado:</th>
@@ -70,7 +71,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<th>Seleccionar Bebida:
+					<th>Bebidas:
 					<td>
 						<select id="subBebida"  class="form-control">
 							<option value="0">Seleccione Bebida</option>
@@ -79,7 +80,7 @@
 								<?php endforeach; ?>
 						</select>
 					</td>
-					<th>Seleccionar Abarrotes:
+					<th>Abarrotes:
 					<td>
 						<select id="subAbarrotes" class="form-control">
 							<option value="0">Seleccione Abarrote</option>
@@ -90,7 +91,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Seleccionar Carne:
+					<th> Carne:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Carne</option>
@@ -100,7 +101,7 @@
 						</select>
 					</td>
 					
-					<th>Seleccionar Fruta:
+					<th> Fruta:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Fruta</option>
@@ -111,7 +112,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Seleccionar Lacteo:
+					<th> Lacteos:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Lacteo</option>
@@ -120,7 +121,7 @@
 								<?php endforeach; ?>
 						</select>
 					</td>
-					<th>Seleccionar Licor:
+					<th>Licores:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Licor</option>
@@ -131,7 +132,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Seleccionar Panederia:
+					<th>Panederia:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Pan</option>
@@ -140,7 +141,7 @@
 								<?php endforeach; ?>
 						</select>
 					</td>
-					<th>Seleccionar Pescados y Mariscos:
+					<th>Pescados y Mariscos:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Pescados y Mariscos</option>
@@ -151,7 +152,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Seleccionar Semilla:
+					<th>Semillas:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Semilla</option>
@@ -160,7 +161,7 @@
 								<?php endforeach; ?>
 						</select>
 					</td>
-					<th>Seleccionar Verdura:
+					<th>Verduras:
 					<td>
 						<select id="subVerduras" class="form-control">
 							<option value="0">Seleccione Verdura</option>
@@ -171,7 +172,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Seleccionar Dulce:
+					<th>Dulces:
 					<td>
 						<select  class="form-control">
 							<option value="0">Seleccione Dulce</option>
@@ -218,6 +219,7 @@
 				</tr>
 			</tbody>
 		</table>
+		</form>
 	</div>
 	<div></div>
 </section>
@@ -226,13 +228,14 @@
 <section class="row">
 	<div class="panel panel-info">
 		<div class="panel-heading">
-			<h4 class="panel-title">Detalle.</h4>
+			<h4 class="panel-title">Detalle Producto Terminado.</h4>
 		</div>
 		<table id="detalleProductoTer" class="table table-striped table-condensed">
 			<thead>
 				<th>Clave </th>
 				<th>Producto</th>
 				<th>Presentación</th>
+				<th>Cantidad</th>
 				<th>Precio unitario</th>
 				<th>Importe</th>
 			</thead>
@@ -395,7 +398,7 @@
  	   	var datos = [];
  	   	
  		var idProducto = $("select#productoTerminado").val();
- 		var productoEnlazado = $("select#subVerduras").val();
+ 		var productoEnlazado = $("select#subAbarrotes").val();
  		if(productoEnlazado == 0){
  			console.log("El productoEnlazado no pertenece a subAbarrotes");
  		}
@@ -442,22 +445,34 @@
 				console.dir(data);
 				var tbody = $("table#detalleProductoTer").find('tbody');
 				tbody.empty();
-				var unidades = <?php echo Zend_Json::encode($unidadDAO->obtenerUnidades()); ?>;
 				
+				//data[i].presentacion
 				$.each(data, function(i,item){
-					
 					var importe = data[i].cantidad * data[i].costoUnitario;
+					var costoUnitario = data[i].costoUnitario;
 					tbody.append($('<tr>').
-					append($('<td>').append(data[i].productoEnlazado)).
-					append($('<td>').append(data[i].productoEnlazado)).
-					append($('<td>').append(data[i].presentacion)).
-					append($('<td>').append(data[i].costoUnitario)).
-					append($('<td>').append(importe))
-					);
+						append($('<td>').append(data[i].claveProducto)).
+						append($('<td>').append(data[i].producto)).
+						append($('<td>').append(data[i].abreviatura)).
+						append($('<td>').append(data[i].cantidad)).
+						append($('<td>').append(data[i].costoUnitario)).
+						append($('<td>').append(importe).attr("id", "importe")));
 				});
+				tbody.append($('<tr>').append($('<td>').append().attr("id", "total")));
+				calculaTotal();
 			}
 		});
-		
+		//Click en el importe de tabla detalleProductoComuesto
+		  //$("table#detalleProductoTer").on("click","td[id^='importe']", function (){
+		  function calculaTotal() {	
+		   var total = 0;
+		   $("table#detalleProductoTer").find("td[id^='importe']").each(function(){
+		   	console.log($(this).text());
+		  	 total += +$(this).text(); 
+        		console.log(total);
+        		$("input#idClaveProducto").val(total.toFixed(2));
+		  });
+		}
 	  });
 	   	
 	});

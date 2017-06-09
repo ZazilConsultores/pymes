@@ -50,7 +50,7 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 	}
 	public function obtenerProductoTerminado($idProductoTerminado){
 		
-		$tablaProdCom = $this->tablaProductoCompuesto;
+		/*$tablaProdCom = $this->tablaProductoCompuesto;
 		$select = $tablaProdCom->select()->from($tablaProdCom)->where("idProducto = ?", $idProductoTerminado);
 		$rowProductoComp = $tablaProdCom->fetchAll($select);
 		
@@ -58,7 +58,16 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 			return null;
 		}else{
 			return $rowProductoComp->toArray();
-		}
+		}*/
+		$tablaProdCom = $this->tablaProductoCompuesto;
+		$select = $tablaProdCom->select()
+		->setIntegrityCheck(false)
+		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto'))
+		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
+		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
+		->where("ProductoCompuesto.idProducto = ?", $idProductoTerminado);
+		//print_r($select->__toString());
+		return $tablaProdCom->fetchAll($select)->toArray();
 	}
 	
 	
@@ -71,7 +80,7 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 			$tablaMuliplos = $this->tablaMultiplos;
 			$select = $tablaMuliplos->select()->from($tablaMuliplos)->where("idProducto = ?",$datos[0]['productoEnlazado'])->where("idUnidad=?",$datos[0]['presentacion']);
 			$rowMultiplo = $tablaMuliplos->fetchRow($select);
-			//print_r("$select");
+			print_r("$select");
 			if(!is_null($rowMultiplo)){
 				$tablaInventario = $this->tablaInventario;
 				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto = ?",$datos[0]['productoEnlazado']);
@@ -97,9 +106,11 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 							'presentacion' => $datos[0]['presentacion'],
 							'costoUnitario' => $costoUnitario
 						);
+						print_r("<br />");
+						print_r($mProductoTer);
 						$dbAdapter->insert("ProductoCompuesto", $mProductoTer);
 					}else{
-						echo "El producto " .$datos['productoEnlazado'] ."ya existe" ;
+						echo "El producto ya existe" ;
 					}
 				}else{
 					echo "El producto no esta en inventario";

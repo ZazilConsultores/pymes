@@ -130,7 +130,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		
 		$tablaCapas = $this->tablaCapas;
 		$select = $tablaCapas->select()->from($tablaCapas)
-		->where("numeroFolio=?",$encabezado['numeroFolio'])
+		->where("numeroFolio=?",$encabezado['numFolio'])
 		->where("fechaEntrada=?", $stringIni)
 		->order("secuencial DESC");
 	
@@ -144,7 +144,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		
 		//=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto[0]['descripcion'])->where("idUnidad=?",$producto[0]['unidad']);
 		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
 		//print_r("$select");
 	
@@ -152,14 +152,14 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		if(!is_null($rowMultiplos)){	
 		 	$cantidad=0;
 			$precioUnitario=0;
-			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
+			$cantidad = $producto[0]['cantidad'] * $rowMultiplos->cantidad;
+			$precioUnitario = $producto[0]['precioUnitario'] / $rowMultiplos->cantidad;
 			
 			//print_r($cantidad);
 			
 		
 			$mCapas = array(
-					'idProducto' => $producto['descripcion'],
+					'idProducto' =>$producto[0]['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numeroFolio'=>$encabezado['numFolio'],
@@ -174,7 +174,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		
 		
 		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto[0]['descripcion']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		
 		if(!is_null($rowInventario)){
@@ -187,7 +187,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 			//print_r("<br />");
 		}else{		
 			$mInventario = array(
-					'idProducto'=>$producto['descripcion'],
+					'idProducto'=>$producto[0]['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'existencia'=>$cantidad,
