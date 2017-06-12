@@ -155,29 +155,81 @@
 			</table>
 	</div>
 </section>
+
+<!--Tabla detalle ProductoTerminado-->
+<section>
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h4 class="panel-title">Detalle Producto Terminado.</h4>
+			</div>
+			<table id="detalleProductoTer" class="table table-striped table-condensed">
+				<thead>
+					<th>Clave </th>
+					<th>Producto</th>
+					<th>Presentación</th>
+					<th>Cantidad</th>
+					<th>Precio unitario</th>
+					<th>Importe</th>
+					<th>Editar</th>
+					<th>Eliminar</th>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</section>
 <!--Tabla eniva datos ProductoTerminado-->
 <section class="panel panel-warning">
 	<div class="panel-heading">
-		<h5>Producto Seleccionado</h5>
+		<h5>Producto Enlazado.</h5>
 	</div>
 	<div class="panel-body">
 		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
-			<!-- Proveedores -->
-						<div class="form-group">
-							<label for="proveedor" class="col-md-2">Proveedor: </label>
-							<div class="col-md-10">
-								<input id="pago" name="pago" type="text" class="form-control" />
-							</div>
-						</div>
-						<!-- Boton consulta -->
-						<div class="form-group">
-							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="submit" class="btn btn-success">
-									<i class="fa fa-search"></i> Consultar Facturas
-								</button>
-							</div>
-						</div>
-		
+			<!--Datos -->
+			<div class="form-group hidden">
+				<label for="datos" class="col-md-1">Datos: </label>
+				<div class="col-md-4">
+					<input id="datos" name="datos" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Clave producto -->
+			<div class="form-group">
+				<label for="clave" class="col-md-1">Clave Producto: </label>
+				<div class="col-md-4">
+					<input id="idClaveProducto" name="clave" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Nombre -->
+			<div class="form-group">
+				<label for="nombre" class="col-md-1">Nombre: </label>
+				<div class="col-md-4">
+					<input id="nombre" name="nombre" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Cantidad -->
+			<div class="form-group">
+				<label for="cantidad" class="col-md-1">Cantidad: </label>
+				<div class="col-md-4">
+					<input id="cantidad" name="cantidad" type="text" class="form-control" required="Cantidad no puede quedar vacía" />
+				</div>
+			</div>
+			<!--Multiplo -->
+			<div class="form-group">
+				<label for="multiplo" class="control-label col-md-1">Multiplo: </label>
+				<div class="col-md-4">
+					<select id="presentacion" name="multiplo" class="form-control col-md-2">
+						
+					</select>
+				</div>
+			</div
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="query" type="submit" class="btn btn-success">
+						<i class="fa fa-search"></i> Agregar
+					</button>
+				</div>
+			</div>
 		</form>
 			
 		<!--<table id="enviaPT" class="table table-striped table-condensed">
@@ -205,26 +257,6 @@
 	</div>
 </section>
 
-<!--Tabla detalle ProductoTerminado-->
-<section>
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h4 class="panel-title">Detalle Producto Terminado.</h4>
-			</div>
-			<table id="detalleProductoTer" class="table table-striped table-condensed">
-				<thead>
-					<th>Clave </th>
-					<th>Producto</th>
-					<th>Presentación</th>
-					<th>Cantidad</th>
-					<th>Precio unitario</th>
-					<th>Importe</th>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</section>
 <script>
 $(document).ready(function() {
 	//Select abarrotes y claveProducto
@@ -620,14 +652,36 @@ $(document).ready(function() {
 		   	
 	 	   
 	 	   //Genera array para enviar datos al controller
-	 	   /*$("#agregar").on("click",function(){
+	 	   $("#query").on("click",function(){
 	 	   	var datos = [];
-	 	   	
+	 	   	var productoEnlazado ;
 	 		var idProducto = $("select#productoTerminado").val();
-	 		var productoEnlazado = $("select#subAbarrotes").val();
-	 		if(productoEnlazado == 0){
-	 			console.log("El productoEnlazado no pertenece a subAbarrotes");
+	
+	 		if($("select#subAbarrotes").val() != 0){
+	 			console.log("Es abarrote");
+	 			productoEnlazado = $("select#subAbarrotes").val();
+	 		}else if($("select#subBebidas").val() != 0 ){
+	 			productoEnlazado = $("select#subBebidas").val();
+	 		}else if($("select#subCarnes").val() != 0 ){
+	 			productoEnlazado = $("select#subCarnes").val();
+	 		}else if($("select#subFrutas").val() != 0 ){
+	 			productoEnlazado = $("select#subFrutas").val();
+	 		}else if($("select#subLacteos").val() != 0 ){
+	 			productoEnlazado = $("select#subLacteos").val();
+	 		}else if($("select#subLicores").val() != 0 ){
+	 			productoEnlazado = $("select#subLicores").val();
+	 		}else if($("select#subPanaderia").val() != 0 ){
+	 			productoEnlazado = $("select#subPanaderia").val();
+	 		}else if($("select#subPescadosyMar").val() != 0 ){
+	 			productoEnlazado = $("select#subPescadosyMar").val();
+	 		}else if($("select#subSemillas").val() != 0 ){
+	 			productoEnlazado = $("select#subSemillas").val();
+	 		}else if($("select#subVerduras").val() != 0 ){
+	 			productoEnlazado = $("select#subVerduras").val();
+	 		}else if($("select#subDulces").val() != 0 ){
+	 			productoEnlazado = $("select#subDulces").val();
 	 		}
+	 		
 	 		var cantidad = $("input#cantidad").val();
 	 		var descripcion = $("input#nombre").val();
 	 		var presentacion = $("select#presentacion").val();
@@ -646,7 +700,7 @@ $(document).ready(function() {
 	 			
 	 	   });
 	 	   	   
-	 	   /*var myString = JSON.stringify(datos);
+	 	   var myString = JSON.stringify(datos);
 	 	   if ($("input#datos").val(myString)){};
 	 	  
 	 	  function Dato(idProducto, productoEnlazado, cantidad, descripcion, presentacion) {
@@ -655,7 +709,7 @@ $(document).ready(function() {
 			  this.cantidad = cantidad;
 			  this.descripcion = descripcion;
 			  this.presentacion = presentacion;
-		  }*/
+		  }
 		 
 		  //Llena tabla del producto terminado correspondiente
 		  $("table#subPT").on("change","select[id^='productoTerminado']", function (){
@@ -674,15 +728,19 @@ $(document).ready(function() {
 					
 					//data[i].presentacion
 					$.each(data, function(i,item){
+						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("producto",data[i].idProductoCompuesto);
+						var botonEliminar = $('<button></button>').attr("class","btn btn-danger").text("Eliminar");
 						var importe = data[i].cantidad * data[i].costoUnitario;
 						var costoUnitario = data[i].costoUnitario;
 						tbody.append($('<tr>').
-							append($('<td>').append(data[i].claveProducto)).
+							append($('<td>').append(data[i].claveProducto)).attr("id","claveProd").
 							append($('<td>').append(data[i].producto)).
 							append($('<td>').append(data[i].abreviatura)).
 							append($('<td>').append(data[i].cantidad)).
 							append($('<td>').append(data[i].costoUnitario)).
-							append($('<td>').append(importe).attr("id", "importe")));
+							append($('<td>').append(importe).attr("id", "importe")).
+							append($('<td>').append(botonActualizar)).
+							append($('<td>').append(botonEliminar)));
 					});
 					tbody.append($('<tr>').append($('<td>').append().attr("id", "total")));
 					calculaTotal();
@@ -694,11 +752,19 @@ $(document).ready(function() {
 			   var total = 0;
 			   $("table#detalleProductoTer").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
-			  	 total += +$(this).text(); 
-	        		console.log(total);
-	        		$("input#idClaveProducto").val(total.toFixed(2));
+			   	total += +$(this).text(); 
+			   	console.log(total);
+	        		
 			  });
 			}
+		  });
+		  
+		   //Llena tabla del producto terminado correspondiente
+		  $("table#detalleProductoTer").on("click","button[id^='editar']", function (){
+		  	var idProducto = $("select#productoTerminado").val();
+		  	console.log(idProducto);
+		  	var clave = $("button.producto").val();
+			console.log(clave);
 		  });
 		   	
 });

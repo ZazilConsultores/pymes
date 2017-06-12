@@ -62,7 +62,7 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		$tablaProdCom = $this->tablaProductoCompuesto;
 		$select = $tablaProdCom->select()
 		->setIntegrityCheck(false)
-		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto'))
+		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto'))
 		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
 		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
 		->where("ProductoCompuesto.idProducto = ?", $idProductoTerminado);
@@ -80,24 +80,24 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 			$tablaMuliplos = $this->tablaMultiplos;
 			$select = $tablaMuliplos->select()->from($tablaMuliplos)->where("idProducto = ?",$datos[0]['productoEnlazado'])->where("idUnidad=?",$datos[0]['presentacion']);
 			$rowMultiplo = $tablaMuliplos->fetchRow($select);
-			print_r("$select");
+			//print_r("$select");
 			if(!is_null($rowMultiplo)){
 				$tablaInventario = $this->tablaInventario;
 				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto = ?",$datos[0]['productoEnlazado']);
 				$rowInventario = $tablaInventario->fetchRow($select);
-				print_r("$select");
+				//print_r("$select");
 				if(!is_null($rowInventario)){
 					//print_r("Existe producto en inventario");
 					$costoUnitario = $rowInventario->costoUnitario * $rowMultiplo->cantidad;
 					print_r("<br />");
-					print_r($costoUnitario);
+					//print_r($costoUnitario);
 					//Buscamos que el producto enlazado no se repita dentro del producto.
 					$tablaProductoCom = $this->tablaProductoCompuesto;
 					$select = $tablaProductoCom->select()->from($tablaProductoCom)->where("idProducto = ?",$datos[0]['idProducto'])->where("productoEnlazado = ?",$datos[0]['productoEnlazado']);
 					$rowProductoCom = $tablaProductoCom->fetchRow($select);
-					print_r("$select");
+					//print_r("$select");
 					if(is_null($rowProductoCom)){
-						print_r("El producto enlazado, no esta dentro del producto terminado");
+						//print_r("El producto enlazado, no esta dentro del producto terminado");
 						$mProductoTer = array(
 							'idProducto' =>$datos[0]['idProducto'],
 							'productoEnlazado' => $datos[0]['productoEnlazado'],
@@ -107,13 +107,13 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 							'costoUnitario' => $costoUnitario
 						);
 						print_r("<br />");
-						print_r($mProductoTer);
+						//print_r($mProductoTer);
 						$dbAdapter->insert("ProductoCompuesto", $mProductoTer);
 					}else{
 						echo "El producto ya existe" ;
 					}
 				}else{
-					echo "El producto no esta en inventario";
+					echo " No hay existencia del producto";
 				}
 			}//if multiplo
 			

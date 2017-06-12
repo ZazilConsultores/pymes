@@ -17,8 +17,12 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
 		if($request->isGet()){
 			$this->view->pt = $PT;	
 		}if($request->isPost()){		
-			$datos = $request->getPost();
-			print_r($datos);
+			$datosf = $request->getPost();
+			print_r($datosf);
+			$datos = json_decode($datosf['datos'], TRUE);
+				print_r($datos);
+				print_r("<br />");
+			$this->productoTerDAO->crearProductoTerminado($datos);
 		}
         
     }
@@ -41,8 +45,15 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
 		}*/
     }
 
+    public function editarAction()
+    {
+        // 
+    }
+
 
 }
+
+
 
 
 
