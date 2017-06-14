@@ -39,127 +39,98 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 	public function agregarProducto(array $encabezado, $productos){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dbAdapter->beginTransaction();
-	
 		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		try{
-		foreach ($productos as $producto) {
-			$secuencial=0;	
-			$tablaMovimiento = $this->tablaMovimiento;
-			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
-			->where("idCoP=?",$encabezado['idCoP'])
-			->where("idSucursal=?",$encabezado['idSucursal'])
-			->where("numeroFolio=?",$encabezado['numFolio'])
-			->where("fecha=?", $stringIni)
-			->order("secuencial DESC");
-			
-			$rowMovimiento = $tablaMovimiento->fetchRow($select); 
-		
-			if(!is_null($rowMovimiento)){
-				$secuencial= $rowMovimiento->secuencial +1;
-			}else{
-				$secuencial = 1;	
+			foreach ($productos as $producto) {
+				$secuencial=0;	
+				$tablaMovimiento = $this->tablaMovimiento;
+				$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
+				->where("idCoP=?",$encabezado['idCoP'])
+				->where("idSucursal=?",$encabezado['idSucursal'])
+				->where("numeroFolio=?",$encabezado['numFolio'])
+				->where("fecha=?", $stringIni)
+				->order("secuencial DESC");
+				$rowMovimiento = $tablaMovimiento->fetchRow($select); 
+				if(!is_null($rowMovimiento)){
+					$secuencial= $rowMovimiento->secuencial +1;
+				}else{
+					$secuencial = 1;	
+				}
+				//=================Selecciona producto y unidad=======================================
+				$tablaMultiplos = $this->tablaMultiplos;
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+				//print_r("$select");
+				if(!is_null($rowMultiplo)){
+					//====================Operaciones para convertir unidad minima====================================================== 
+					$cantidad=0;
+					$precioUnitario=0;
+					$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+				
+					$mMovtos = array(
+						'idProducto' => $producto['descripcion'],
+						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+						'idEmpresas'=>$encabezado['idEmpresas'],
+						'idSucursal'=>$encabezado['idSucursal'],
+						'idCoP'=>$encabezado['idCoP'],
+						//'idProyecto'=>$encabezado['idProyecto'],
+						'numeroFolio'=>$encabezado['numFolio'],
+						//'idFactura'=>0,
+						'cantidad'=>$cantidad,
+						'fecha'=>$stringIni,
+						'estatus'=>"A",
+						'secuencial'=> $secuencial,
+						'costoUnitario'=>$precioUnitario,
+						'totalImporte'=>$producto['importe']
+					);
+					//print_r($mMovtos);
+					$dbAdapter->insert("Movimientos",$mMovtos);
+				}
+				
 			}
-			//=================Selecciona producto y unidad=======================================
-			$tablaMultiplos = $this->tablaMultiplos;
-			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-			$rowMultiplo = $tablaMultiplos->fetchRow($select); 
-			print_r("$select");
-			
-			if(!is_null($rowMultiplo)){
-				
-				//====================Operaciones para convertir unidad minima====================================================== 
-				$cantidad=0;
-				$precioUnitario=0;
-				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
-				
-				$mMovtos = array(
-					'idProducto' => $producto['descripcion'],
-					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					'idEmpresas'=>$encabezado['idEmpresas'],
-					'idSucursal'=>$encabezado['idSucursal'],
-					'idCoP'=>$encabezado['idCoP'],
-					//'idProyecto'=>$encabezado['idProyecto'],
-					'numeroFolio'=>$encabezado['numFolio'],
-					//'idFactura'=>0,
-					'cantidad'=>$cantidad,
-					'fecha'=>$stringIni,
-					'estatus'=>"A",
-					'secuencial'=> $secuencial,
-					'costoUnitario'=>$precioUnitario,
-					'totalImporte'=>$producto['importe']
-				);
-			
-			//print_r($mMovtos);
-			$dbAdapter->insert("Movimientos",$mMovtos);
-				
-			}else{
-				echo("Error: <strong>"."</strong> Multiplo incorrecto");
-			}
-			
-		}
 			$dbAdapter->commit();
 		}catch(exception $ex){
-			print_r("Excepcion Lanzada:<strong>" .$ex->getMessage()."</strong>");
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r("Excepcion Lanzada");
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r($ex->getMessage());
-			print_r("<br />");
-			print_r("<br />");
 			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			throw new Util_Exception_BussinessException("Error");	
 		}
 	}
 	
-	public function suma(array $encabezado, $producto){
+	public function suma(array $encabezado, $productos){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dbAdapter->beginTransaction();
-		
 		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
-			
 		try{
+			foreach ($productos as $producto) {
 		//========================Secuencial==================================================
 		$secuencial=0;	
-		
 		$tablaCapas = $this->tablaCapas;
-		$select = $tablaCapas->select()->from($tablaCapas)
-		->where("numeroFolio=?",$encabezado['numFolio'])
-		->where("fechaEntrada=?", $stringIni)
+		$select = $tablaCapas->select()->from($tablaCapas)->where("numeroFolio=?",$encabezado['numFolio'])->where("fechaEntrada=?", $stringIni)
 		->order("secuencial DESC");
-	
 		$rowCapas = $tablaCapas->fetchRow($select); 
-		
 		if(!is_null($rowCapas)){
 			$secuencial= $rowCapas->secuencial +1;
 		}else{
 			$secuencial = 1;	
 		}
-		
 		//=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto[0]['descripcion'])->where("idUnidad=?",$producto[0]['unidad']);
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
 		//print_r("$select");
-	
 		//====================Operaciones para convertir unidad minima====================================================== 
 		if(!is_null($rowMultiplos)){	
 		 	$cantidad=0;
-			$precioUnitario=0;
-			$cantidad = $producto[0]['cantidad'] * $rowMultiplos->cantidad;
-			$precioUnitario = $producto[0]['precioUnitario'] / $rowMultiplos->cantidad;
-			
-			//print_r($cantidad);
-			
-		
+			$precioUnitario = 0;
+			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
+			$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
+			print_r($precioUnitario);
 			$mCapas = array(
-					'idProducto' =>$producto[0]['descripcion'],
+					'idProducto' =>$producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numeroFolio'=>$encabezado['numFolio'],
@@ -168,26 +139,30 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					'fechaEntrada'=>$stringIni,
 					'costoUnitario'=>$precioUnitario
 			);
-			
 			$dbAdapter->insert("Capas",$mCapas);
 		}
 		
-		
 		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto[0]['descripcion']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 		$rowInventario = $tablaInventario->fetchRow($select);
-		
 		if(!is_null($rowInventario)){
-			$cantidad = $rowInventario->existencia + $cantidad;
-			$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
-			print ("<br />");
-			print ($cantidad);
-			$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
-			$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
-			//print_r("<br />");
-		}else{		
+			$tablaProducto = $this->tablaProducto;
+			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$rowInventario['idProducto']);
+			$rowProducto = $tablaProducto->fetchRow($select);
+			$ProductoInv = substr($rowProducto->claveProducto, 0,2);
+			print_r($ProductoInv);
+			if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
+				$cantidad = $rowInventario->existencia + $cantidad;
+				$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
+				print ("<br />");
+				//print ($cantidad);
+				$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
+				$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
+				//print_r("<br />");
+			}
+		}else{	
 			$mInventario = array(
-					'idProducto'=>$producto[0]['descripcion'],
+					'idProducto'=>$producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'idSucursal'=>$encabezado['idSucursal'],
 					'existencia'=>$cantidad,
@@ -199,23 +174,16 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					'costoUnitario'=>$precioUnitario,
 					'porcentajeGanancia'=>'0',
 					'cantidadGanancia'=>'0',
-					'costoCliente'=>($precioUnitario * ($rowInventario->porcentajeGanancia / 100) +$precioUnitario) 
+					'costoCliente'=>($precioUnitario * ($rowInventario->porcentajeGanancia / 100) + $precioUnitario) 
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
+		}	
 		}
 			$dbAdapter->commit();
 		}catch(exception $ex){
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r("Excepcion Lanzada");
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r($ex->getMessage());
-			print_r("<br />");
-			print_r("<br />");
 			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			throw new Util_Exception_BussinessException("Error");
 		}
 	}
 }

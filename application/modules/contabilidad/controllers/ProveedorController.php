@@ -2,23 +2,22 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
-
+	private $empresaDAO = null;
     private $notaEntradaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $pagoProveedor = null;
 	
-	private $empresaDAO = null;
+	
 
     public function init()
     {
+    	$this->empresaDAO = new Sistema_DAO_Empresa;
+    	$this->notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
+    	$this->remisionEntradaDAO =  new Contabilidad_DAO_RemisionEntrada;
     	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
-		$this->notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
-		$this->remisionEntradaDAO =  new Contabilidad_DAO_RemisionEntrada;
 		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
+		
         //==============Muestra los links del submenu=======================
 		//$this->view->links = $this->links;
 		$adapter = Zend_Registry::get('dbmodgeneral');
@@ -28,16 +27,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
-		/*$select = $this->db->select()->from("Multiplos")->order("idUnidad ASC");
-		$statement = $select->query();
-		$rowsMultiplos =  $statement->fetchAll();*/
-		
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
-		
-		//============================================>>>Multiplos
-		//$idProducto = $this->getParam("idProducto");
 	
 		$select = $this->db->select()->from("Multiplos")
 		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad");
@@ -53,20 +45,11 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		
 		$jsonMultiplos = Zend_Json::encode($rowsMultiplos);
 		$this->view->jsonMultiplos = $jsonMultiplos;
-		
-		$this->inventarioDAO = new Inventario_DAO_Empresa;
-		
-		$this->empresaDAO = new Sistema_DAO_Empresa;
     }
 
     public function indexAction()
     {
   
-    }
-
-    public function agregarnotaentradaAction()
-    {
-        
     }
 
     public function notaAction()
@@ -78,17 +61,16 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
-				//print_r($datos);
 				$encabezado = $datos[0];
 				//print_r($encabezado);
 				$productos = json_decode($encabezado['productos'],TRUE);
 				try{
-					$notaentrada =$this->notaEntradaDAO->agregarProducto($encabezado, $productos);
+					$notaentrada = $this->notaEntradaDAO->agregarProducto($encabezado, $productos);
 					$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
 					$this->view->messageSuccess = "Numero de Nota: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
-						$this->view->messageFail = $ex->getMessage();
-					}
+					$this->view->messageFail = "Error al crear el Nota Proveedor: <strong>".$ex->getMessage()."</strong>";
+				}
 			}/*else{
 				print_r("formulario no valido <br />");
 			}	*/				
