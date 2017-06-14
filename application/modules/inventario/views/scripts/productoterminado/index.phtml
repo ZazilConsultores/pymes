@@ -7,6 +7,7 @@
 		$productosDAO = new Inventario_DAO_Producto;
 		$productosB = $productosDAO->obtenerProductos();
 		$subBebidas = $productoDAO->obtenerSubparametroBebida();
+		$subsPT = $productoDAO->obtenerSubparametroPT();
 		$subAbarrotes = $productoDAO->obtenerSubparametroAbarrotes();
 		$subCarnes = $productoDAO->obtenerSubparametroCarnes();
 		$subFrutas = $productoDAO->obtenerSubparametroFrutas();
@@ -147,7 +148,11 @@
 						</td>
 						<td>Seleccionar Producto Compuesto:</td>
 						<td>
-							<select  class="form-control">
+							<select id="subPCS" class="form-control">
+								<option value="0">Seleccione Producto Compuesto</option>
+								<?php foreach ($subsPT as $subPT) : ?>
+									<option value="<?php echo $subPT["idProducto"] ?>"><?php echo $subPT["producto"]; ?></option>
+								<?php endforeach; ?>
 							</select>
 						</td>
 					</tr>
@@ -649,6 +654,41 @@ $(document).ready(function() {
 			}
 		});
 	});
+	//Producto Compuesto
+	//Select dulces y claveProducto
+	$("table#subPT").on("change","select[id^='subPCS']", function (){
+		var ProdComp = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + ProdComp ;
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == ProdComp){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Producto Compuesto
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + ProdComp ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == ProdComp){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+		});
+	});
 		   	
 	 	   
 	 	   //Genera array para enviar datos al controller
@@ -680,6 +720,8 @@ $(document).ready(function() {
 	 			productoEnlazado = $("select#subVerduras").val();
 	 		}else if($("select#subDulces").val() != 0 ){
 	 			productoEnlazado = $("select#subDulces").val();
+	 		}else{
+	 			productoEnlazado = $("select#subPCS").val();
 	 		}
 	 		
 	 		var cantidad = $("input#cantidad").val();
@@ -728,8 +770,13 @@ $(document).ready(function() {
 					
 					//data[i].presentacion
 					$.each(data, function(i,item){
-						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("producto",data[i].idProductoCompuesto);
-						var botonEliminar = $('<button></button>').attr("class","btn btn-danger").text("Eliminar");
+						var  baseUrl ="localhost/General";
+						var urlEdita = "<?php echo $this->baseUrl()?>"+"/public/inventario/productoterminado/editar";
+						
+						var botonActualizar = $('<button></button>').attr("href", urlEdita).attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("producto",data[i].idProductoCompuesto);
+						console.log("urlEdita");
+						console.log(urlEdita);
+						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar");
 						var importe = data[i].cantidad * data[i].costoUnitario;
 						var costoUnitario = data[i].costoUnitario;
 						tbody.append($('<tr>').
@@ -761,10 +808,54 @@ $(document).ready(function() {
 		  
 		   //Llena tabla del producto terminado correspondiente
 		  $("table#detalleProductoTer").on("click","button[id^='editar']", function (){
-		  	var idProducto = $("select#productoTerminado").val();
-		  	console.log(idProducto);
-		  	var clave = $("button.producto").val();
-			console.log(clave);
+		  	var producto= $(this).attr("producto");
+		  	console.log(producto);
+			//Seleccionar el idProductoTerminado
+			var urlPT = window.location.origin + "/General/inventario/json/llenaproducto/idPC/"+ producto;
+			console.log(urlPT);
+			
+			$.ajax({
+				url: urlPT,
+				dataType: "json",
+				success: function(data){
+					console.log(producto);
+					$.each(data, function(i,item){
+						if(data[i].idProductoCompuesto == producto){
+							$("#idClaveProducto").attr("value",data[i].claveProducto);
+							$("#nombre").attr("value",data[i].producto);
+							$("#cantidad").attr("value",data[i].cantidad);
+							
+							//Busca Multiplos
+							var idProducto = data[i].productoEnlazado
+							console.log("El producto Enlazado es:");
+							console.log(idProducto);
+							var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + idProducto ;
+							console.log($url);
+							//Ajax multiplos
+							$.ajax({
+								url: $url,
+								dataType: "json",
+								success: function(data){
+									console.log($url);
+									console.dir(data);
+									$("select#presentacion").empty();
+									$.each(data, function(i,item){
+										if(data[i].idProducto == idProducto){
+											$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+										}	
+						
+									});
+								}
+							});
+						}	
+					});
+				}
+			});
+			
+		  });
+		  
+		  $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
+		  	$("table#detalleProductoTer  tbody > tr:last").remove();
 		  });
 		   	
 });

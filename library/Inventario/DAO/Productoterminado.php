@@ -28,6 +28,18 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		return $tablaProducto->fetchAll($select);*/
 	}
 	
+	public function editaProductoTerminado($idPC){
+		$tablaProdCom = $this->tablaProductoCompuesto;
+		$select = $tablaProdCom->select()
+		->setIntegrityCheck(false)
+		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto','productoEnlazado'))
+		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
+		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
+		->where("ProductoCompuesto.idProductoCompuesto = ?", $idPC);
+		//print_r($select->__toString());
+		return $tablaProdCom->fetchAll($select)->toArray();
+		
+	}
 	
 	public function obtenerProductosTerminados()
 	{

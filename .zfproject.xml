@@ -88,6 +88,7 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="crear"/>
               <actionMethod actionName="editar"/>
+              <actionMethod actionName="eliminar"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -187,6 +188,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Productoterminado">
                 <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="eliminar"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2910,6 +2914,7 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="crear"/>
                 <testApplicationActionMethod forActionName="editar"/>
+                <testApplicationActionMethod forActionName="eliminar"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

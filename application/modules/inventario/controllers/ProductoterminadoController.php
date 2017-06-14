@@ -47,11 +47,18 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
 
     public function editarAction()
     {
-        // 
+       
+    }
+
+    public function eliminarAction()
+    {
+        // action body
     }
 
 
 }
+
+
 
 
 

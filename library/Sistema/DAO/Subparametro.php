@@ -121,6 +121,18 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 	}
 	
+	public function obtenerSubparametroPT() //Solo subparametro 2
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '5,68%')->where("idsSubparametros NOT LIKE ?", '%853%')
+		->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}	
+	
 	public function obtenerSubparametroAbarrotes() //Solo subparametro 2
 	{
 		$tablaProducto = $this->tablaProducto;
