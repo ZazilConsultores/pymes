@@ -85,7 +85,7 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 	
 	public function crearProductoTerminado(array $datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		//$dbAdapter->beginTransaction();
+		$dbAdapter->beginTransaction();
 		
 		try{
 			//Realiza costoUnitatio por producto

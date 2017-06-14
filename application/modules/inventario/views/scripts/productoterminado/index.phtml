@@ -788,8 +788,9 @@ $(document).ready(function() {
 							append($('<td>').append(importe).attr("id", "importe")).
 							append($('<td>').append(botonActualizar)).
 							append($('<td>').append(botonEliminar)));
+							//tbody.append($('<tr>').append());
 					});
-					tbody.append($('<tr>').append($('<td>').append().attr("id", "total")));
+					AddRow();
 					calculaTotal();
 				}
 			});
@@ -801,6 +802,7 @@ $(document).ready(function() {
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
+			   	$("#total").val(total.toFixed(2));
 	        		
 			  });
 			}
@@ -857,6 +859,11 @@ $(document).ready(function() {
 		  $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
 		  	$("table#detalleProductoTer  tbody > tr:last").remove();
 		  });
+		   
+		  function AddRow()
+		  	{
+    			 $('#detalleProductoTer tbody').append('<tr><td></td><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
+    		}
 		   	
 });
 </script>
