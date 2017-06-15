@@ -59,7 +59,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         $this->view->formulario = $formulario;	
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$notaEntradaDAO = new Contabilidad_DAO_NotaEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				//print_r($encabezado);

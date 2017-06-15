@@ -11,6 +11,8 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 	private $tablaMultiplos;
 	private $tablaCardex;
 	private $tablaClientes;
+	private $tablaProducto;
+	private $tablaProductoCompuesto;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -19,7 +21,9 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
 		$this->tablaCardex = new  Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
-		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));	
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));	
 	}
 	
 	public function obtenerClientes(){
@@ -40,13 +44,7 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 		
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
-		
-		/*$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-		$multiplos = $tablaMultiplos->fetchRow($select); 
-		//print_r($row);
-		if(is_null($multiplos)) throw new Util_Exception_BussinessException("Error: Favor de verificar Multiplo");
-		*/
+	
 		try{
 			//=======================Crea secuencial, convierte a unidad minima y guarda registro en tabla Movimiento=======================================
 			$tablaMovimiento = $this->tablaMovimiento;
@@ -177,12 +175,19 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?", $rowCapas->fechaEntrada,"idProducto =?",$rowCapas->idProducto);	
 			$tablaCapas->delete($where);
 		}
+		//===Resta cantidad en inventario, cuando el producto es diferente a PT o VS
+		$tablaProducto = $this->tablaProducto;
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$rowInventario['idProducto']);
+				$rowProducto = $tablaProducto->fetchRow($select);
+				$ProductoInv = substr($rowProducto->claveProducto, 0,2);
+				//print_r($ProductoInv);
+				//Si el producto es ProductoTerminado o servicio solo se ingresa una vez en inventario	
+				if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
 		
-		//===Resta cantidad en inventario
-		
-			$tablaInventario = $this->tablaInventario;
-			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
-			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
+					$tablaInventario = $this->tablaInventario;
+					$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
+					$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
+				}
 		}
 		$dbAdapter->commit();
 		}catch(exception $ex){
@@ -264,4 +269,25 @@ class Contabilidad_DAO_NotaSalida implements Contabilidad_Interfaces_INotaSalida
 			$dbAdapter->rollBack();
 		}
 	}
+	
+	public function restaPT(array $encabezado, $producto){
+		
+		$tablaProductoComp = $this->tablaProductoCompuesto;
+		$select = $tablaProductoComp->select()->from($tablaProductoComp)->where("idProducto=?",$producto['idProducto']);
+		$rowProductoTer = $tablaProductoComp->fetchAll($select); 
+		//Busca si el productoTerminado esta compuesto por otro productoCompuesto
+		if(!is_null($rowProductoTer)){
+			foreach ($rowProductoTer as $productoComp) {
+				$tablaProductoComp = $this->tablaProductoCompuesto;
+				$select = $tablaProductoComp->select()->from($tablaProductoComp)->where("productoEnlazado=?",$productoComp['productoEnlazado']);
+				$rowsProductoCom = $tablaProductoComp->fetchAll($select);
+				if(!is_null($rowsProductoCom)){
+					foreach ($rowsProductoCom as $rowProductoCom){
+						
+					}
+				}
+			}
+		}
+	}
+	
 }

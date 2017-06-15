@@ -2,30 +2,28 @@
 
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
-
+	private $empresaDAO = null;
+	private $notaSalidaDAO = null;
+	private $remisionEntradaDAO = null;
     private $facturaDAO = null;
-
-    private $sucursalesDAO = null;
-
     private $impuestosDAO = null;
-
     private $cobroClienteDAO = null;
 
-    private $empresaDAO = null;
+    
 
     public function init()
     {
+    	$this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
+		$this->remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
 		$this->facturaDAO = new Contabilidad_DAO_FacturaCliente;
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
-		$this->empresaDAO = new Sistema_DAO_Empresa;
-		$this->sucursalesDAO = new Sistema_DAO_Sucursal;
 		$this->cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
-		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
+		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
@@ -53,25 +51,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				//print_r($encabezado);
-				/*print_r('<br />');
-				
-				$notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
-				$datos = $formulario->getValues();
-				$encabezado = $datos[0];
-				$productos = json_decode($encabezado['productos'],TRUE);
-				/*print_r($encabezado);
-				print_r('<br />');
-				print_r($productos);*/
 				$contador=0;
-				
 				foreach ($productos as $producto){
 					try{
-						//$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
 						$resta  = $this->notaSalidaDAO->resta($encabezado, $producto);
 						$creaCardex = $this->notaSalidaDAO->creaCardex($encabezado, $producto);

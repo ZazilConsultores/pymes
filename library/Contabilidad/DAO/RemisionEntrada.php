@@ -40,7 +40,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 	
 	public function agregarProducto(array $encabezado, $producto, $formaPago){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
-		//$dbAdapter->beginTransaction();
+		$dbAdapter->beginTransaction();
 		
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');

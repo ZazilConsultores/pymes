@@ -104,32 +104,32 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 		$dbAdapter->beginTransaction();
 		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		
 		try{
 			foreach ($productos as $producto) {
-		//========================Secuencial==================================================
-		$secuencial=0;	
-		$tablaCapas = $this->tablaCapas;
-		$select = $tablaCapas->select()->from($tablaCapas)->where("numeroFolio=?",$encabezado['numFolio'])->where("fechaEntrada=?", $stringIni)
-		->order("secuencial DESC");
-		$rowCapas = $tablaCapas->fetchRow($select); 
-		if(!is_null($rowCapas)){
-			$secuencial= $rowCapas->secuencial +1;
-		}else{
-			$secuencial = 1;	
-		}
-		//=================Selecciona producto y unidad=======================================
-		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
-		//print_r("$select");
-		//====================Operaciones para convertir unidad minima====================================================== 
-		if(!is_null($rowMultiplos)){	
-		 	$cantidad=0;
-			$precioUnitario = 0;
-			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
-			$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
-			print_r($precioUnitario);
-			$mCapas = array(
+		
+			$secuencial=0;	
+			$tablaCapas = $this->tablaCapas;
+			$select = $tablaCapas->select()->from($tablaCapas)->where("numeroFolio=?",$encabezado['numFolio'])->where("fechaEntrada=?", $stringIni)
+			->order("secuencial DESC");
+			$rowCapas = $tablaCapas->fetchRow($select); 
+			if(!is_null($rowCapas)){
+				$secuencial= $rowCapas->secuencial +1;
+			}else{
+				$secuencial = 1;	
+			}
+			//=================Selecciona producto y unidad=======================================
+			$tablaMultiplos = $this->tablaMultiplos;
+			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+			$rowMultiplos = $tablaMultiplos->fetchRow($select); 
+			//====================Operaciones para convertir unidad minima====================================================== 
+			if(!is_null($rowMultiplos)){	
+			 	$cantidad=0;
+				$precioUnitario = 0;
+				$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
+				$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
+				//print_r($precioUnitario);
+				$mCapas = array(
 					'idProducto' =>$producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'idSucursal'=>$encabezado['idSucursal'],
@@ -138,30 +138,33 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					'cantidad'=>$cantidad,
 					'fechaEntrada'=>$stringIni,
 					'costoUnitario'=>$precioUnitario
-			);
-			$dbAdapter->insert("Capas",$mCapas);
-		}
-		
-		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
-		$rowInventario = $tablaInventario->fetchRow($select);
-		if(!is_null($rowInventario)){
-			$tablaProducto = $this->tablaProducto;
-			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$rowInventario['idProducto']);
-			$rowProducto = $tablaProducto->fetchRow($select);
-			$ProductoInv = substr($rowProducto->claveProducto, 0,2);
-			print_r($ProductoInv);
-			if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
-				$cantidad = $rowInventario->existencia + $cantidad;
-				$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
-				print ("<br />");
-				//print ($cantidad);
-				$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
-				$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
-				//print_r("<br />");
+				);
+				$dbAdapter->insert("Capas",$mCapas);
 			}
-		}else{	
-			$mInventario = array(
+		
+			$tablaInventario = $this->tablaInventario;
+			$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+			$rowInventario = $tablaInventario->fetchRow($select);
+			//print_r("$select");
+			$porcentajeGanancia = $rowInventario['porcentajeGanancia'];
+			if(!is_null($rowInventario)){
+				$tablaProducto = $this->tablaProducto;
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$rowInventario['idProducto']);
+				$rowProducto = $tablaProducto->fetchRow($select);
+				$ProductoInv = substr($rowProducto->claveProducto, 0,2);
+				//print_r($ProductoInv);
+				//Si el producto es ProductoTerminado o servicio solo se ingresa una vez en inventario	
+				if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
+					$cantidad = $rowInventario->existencia + $cantidad;
+					$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
+					print ("<br />");
+				//print ($cantidad);
+					$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
+					$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
+				//print_r("<br />");
+				}
+			}else{
+				$mInventario = array(
 					'idProducto'=>$producto['descripcion'],
 					'idDivisa'=>$encabezado['idDivisa'],
 					'idSucursal'=>$encabezado['idSucursal'],
@@ -174,12 +177,12 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					'costoUnitario'=>$precioUnitario,
 					'porcentajeGanancia'=>'0',
 					'cantidadGanancia'=>'0',
-					'costoCliente'=>($precioUnitario * ($rowInventario->porcentajeGanancia / 100) + $precioUnitario) 
+					'costoCliente'=>($precioUnitario * ($porcentajeGanancia / 100) + $precioUnitario) 
 				);
-			$dbAdapter->insert("Inventario",$mInventario);
-		}	
+				$dbAdapter->insert("Inventario",$mInventario);
+			}	
 		}
-			$dbAdapter->commit();
+		$dbAdapter->commit();
 		}catch(exception $ex){
 			$dbAdapter->rollBack();
 			print_r($ex->getMessage());
