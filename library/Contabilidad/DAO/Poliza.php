@@ -396,10 +396,10 @@
 								case 'T':
 									$importe = $total;
 									if($tipo == 5 && $rowGuiaContable->abono == "X"){
-										$origen	= "CLI";	
+										$origen	= "CLT";	
 									}else{
 										if($tipo == 5 && $rowGuiaContable->cargo == "X" ){
-											$origen = "CLI";
+											$origen = "CLT";
 										}else{
 											$origen= "BAN";
 										}
@@ -453,14 +453,14 @@
 									$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?",$idCoP);
 									$rowCliente = $tablaClientes->fetchRow($select);
 									$subCta = $rowCliente["cuenta"];
+									//$subCta = 0150;
 									$posicion = 1;
 								}else{
 									$subCta = "0000";
 									$posicion = 0;
 								}//Cierra if origen <cliente></cliente>
 								//Creamos switch para Armar_Cuenta
-								print_r("La posicio  es:");
-								print_r($posicion);
+								
 								//Probamos el nivel
 								/*$tipoEmpresa = Zend_Registry::get("tipoEmpresa"); */
 								$mascara= Zend_Registry::get("mascara");
@@ -545,7 +545,7 @@
 									'idSucursal'=>$datos['idSucursal'],
 									'idCoP'=>$idCoP,
 									'cta'=>$rowGuiaContable["cta"],
-									'sub1'=>'0150',
+									'sub1'=>$armaSub1,
 									'sub2'=>$armaSub2,
 									'sub3'=>$armaSub3,
 									'sub4'=>$armaSub4,
