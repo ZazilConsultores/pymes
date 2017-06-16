@@ -1,9 +1,4 @@
-P  20170501              1 1 0          BANCOS                                                                                               11 0 0
-M1 1020000                           236               1         50           0          0.0                  BANCOS                                                                                                    
-M1 1060001                           236               0          7           0          0.0                  IVA ACREDITABLE                                                                                           
-M1 1065001                           236               1          7           0          0.0                  IVA POR ACREDITAR                                                                                         
-M1 2000135                           236               0         50           0          0.0                  PROVEEDOR                                                                                                 
-P  20170501              1 1 0          IVA PENDIENTE DE ACREDITAR                                                                           11 0 0
-M1 1065001                           236               0         21           0          0.0                  IVA PENDIENTE DE ACREDITAR                                                                                
-M1 2000135                           236               1        151           0          0.0                  PROVEEDOR                                                                                                 
-M1 5040001                           236               0        130           0          0.0                  COMPRAS                                                                                                   
+P  20170531              1 1 0          Factura1149                                                                                          11 0 0
+M1 1030000                          1149               0      52200           0          0.0                  Factura1149                                                                                               
+M1 2045001                          1149               1       7200           0          0.0                  IVA POR CAUSAR                                                                                            
+M1 4000001                          1149               1      45000           0          0.0                  VENTAS                                                                                                    
