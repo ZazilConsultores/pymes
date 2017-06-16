@@ -205,7 +205,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				//Guarda Movimiento en Cuentasxp
 				if(($formaPago['pagada'])==="1"){
 				$mCuentasxc = array(
-					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idTipoMovimiento'=>16,
 					'idSucursal'=>$encabezado['idSucursal'],
 					'idFactura'=>$idFactura,
 					'idCoP'=>$encabezado['idCoP'],

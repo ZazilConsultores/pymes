@@ -30,7 +30,7 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//$Persona =0;
 					//$Empresa;
 					//$this->polizaDAO->generaGruposFactura($datos);
-					$this->polizaDAO->generaGruposFacturaProveedor($datos);
+					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
 					//$this->polizaDAO->generaGruposFacturaCliente($datos);
 					//$this->polizaDAO->busca_Tipo('31', 'P');
 					//es la buebaprint_r($this->polizaDAO->generaGruposFacturaProveedor($datos));
@@ -38,10 +38,10 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
 					$this->polizaDAO->generaGruposFacturaCliente($datos);
-					$this->polizaDAO->generacxp($datos);
+					//$this->polizaDAO->generacxp($datos);
 					$this->polizaDAO->generacxc($datos);
 					/*$this->polizaDAO->generaGruposFacturaProveedor($datos);*/
-					$this->polizaDAO->generacxpRemisiones($datos);
+					//$this->polizaDAO->generacxpRemisiones($datos);
 					//$this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generacxc_Fo($datos);
 					//$this->polizaDAO->crear_Texto();

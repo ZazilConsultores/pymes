@@ -2,7 +2,7 @@
 
 interface Contabilidad_Interfaces_IPoliza {
 	
-	public function generacxc();
+	public function generacxc($datos);
 	public function generacxp($datos);
 	public function generacxc_Fo($datos);
 	public function generacxp_Fo($datos);
