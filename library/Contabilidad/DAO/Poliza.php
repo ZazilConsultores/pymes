@@ -656,7 +656,7 @@
 									break;
 								case 'T':
 									$importe = $total;
-									if($tipo == 5 && $rowGuiaContable->abono == "X"){
+									if($tipo == 5 && $rowGuiaContable->abono == "X" && $modulo){
 										$origen	= "CLT";
 									}else{
 										if($tipo == 5  &&  $rowGuiaContable->cargo == "X" && $modulo == 5){
@@ -718,6 +718,16 @@
 									$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?",$idCoP);
 									$rowCliente = $tablaClientes->fetchRow($select);
 									$subCta = $rowCliente["cuenta"];
+									$posicion = 1;
+								}else{
+									$subCta = "0000";
+									$posicion = 0;
+								}//Cierra if origen cliente
+								if($origen == "BAN"){
+									$tablaBancos = $this->tablaBancos;
+									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+									$rowBanco = $tablaBancos->fetchRow($select);
+									$subCta = $rowBanco["cuentaContable"];
 									$posicion = 1;
 								}else{
 									$subCta = "0000";
