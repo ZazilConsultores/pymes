@@ -38,8 +38,9 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
 					$this->polizaDAO->generaGruposFacturaCliente($datos);
-					/*$this->polizaDAO->generacxp($datos);
-					$this->polizaDAO->generaGruposFacturaProveedor($datos);*/
+					$this->polizaDAO->generacxp($datos);
+					$this->polizaDAO->generacxc($datos);
+					/*$this->polizaDAO->generaGruposFacturaProveedor($datos);*/
 					$this->polizaDAO->generacxpRemisiones($datos);
 					//$this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generacxc_Fo($datos);
