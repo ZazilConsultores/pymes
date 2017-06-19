@@ -62,6 +62,7 @@
 				$select = $tablaFactura->select()->from($tablaFactura)->where('fecha >= ?',$stringFechaInicio)->where('fecha <=?',$stringFechaFinal)->where('idTipoMovimiento=?',4)
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 				$rowsGrupoFacturaP = $tablaFactura->fetchAll($select);
+				print_r("$select");
 				//Verificamos que existe facturasProveedor 
 				if(!is_null($rowsGrupoFacturaP)){
 					foreach($rowsGrupoFacturaP as $rowFacturaP){
@@ -70,7 +71,7 @@
 						$tablaProveedores = $this->tablaProveedores;
 						$select = $tablaProveedores->select()->from($tablaProveedores, array('idProveedores','idTipoProveedor'))->where("idProveedores = ?", $idCoP);
 						$rowProveedor = $tablaProveedores->fetchRow($select);
-						//print_r("$select");
+						print_r("$select");
 						//Verificamos que el proveedor exista
 						if(!is_null($rowProveedor)){
 							$tipo = $rowProveedor->idTipoProveedor;
@@ -78,6 +79,7 @@
 						$tablaProveedoresEmpresa = $this->tablaProveedorEmpresa;
 						$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa, 'idEmpresas')->where("idProveedores =?", $idCoP);
 						$rowProveedoresEmpresa = $tablaProveedoresEmpresa->fetchRow($select); 
+						print_r("$select");
 						//Verificamos que el proveedor, sea un proveedor de la empresa selecciona
 						//if(!is_null($rowProveedoresEmpresa)){
 							$empresaProveedor = $rowProveedoresEmpresa["idEmpresas"];
@@ -636,7 +638,7 @@
 							print_r("$select");
 							foreach($rowsGuiaContable as $rowGuiaContable){
 								$origen = $rowGuiaContable->origen;
-								print_r($origen);
+								//print_r($origen);
 								print_r("<br />");
 								switch($origen){
 								case 'S':
@@ -656,19 +658,20 @@
 									break;
 								case 'T':
 									$importe = $total;
-									if($tipo == 5 && $rowGuiaContable->abono == "X" && $modulo){
+									if($tipo == 5 && $rowGuiaContable->abono == "X" && $modulo = 3 ){
 										$origen	= "CLT";
+										print_r("origen es:");
+										print_r($origen);
 									}else{
-										if($tipo == 5  &&  $rowGuiaContable->cargo == "X" && $modulo == 5){
-											$origen = "CLT";
-										}else{
+										if($tipo == 5  &&  $rowGuiaContable->cargo == "X" ){
 											$origen = "BAN";
 										}
 									}
 									//print_r("<br />");
-									//print_r("importe total:"); print_r($importe);
-									//print_r("<br />");
-									//print_r("<origen></origen>:"); print_r($origen);	
+									print_r("el origen es:"); 
+									print_r("<br />");
+									//print_r("<origen></origen>:"); print_r($origen);
+									print_r($origen);		
 								break;
 								}
 								//asigna abono o cargo
@@ -699,7 +702,7 @@
 											
 										break;
 										case '3':
-											$desPol = "Pago Factura " .$numeroFolio;
+											$desPol = "Cobro Factura " .$numeroFolio;
 											print_r("<br />");
 											print_r("<br />");
 											print_r("<br />");
@@ -713,17 +716,30 @@
 									}//Cierra switch en casso de armar descripcion
 								}//Cierra  if arma descripcion
 								//Busca ctaCliente y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
-								if($origen == "CLT"){
+								switch($origen){
+								case 'BAN':
+									$tablaBancos = $this->tablaBancos;
+									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+									$rowBanco = $tablaBancos->fetchRow($select);
+									$subCta = $rowBanco["cuentaContable"];
+									$posicion = 1;
+									break;
+								case 'CLT':
 									$tablaClientes = $this->tablaClientes;
 									$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?",$idCoP);
 									$rowCliente = $tablaClientes->fetchRow($select);
 									$subCta = $rowCliente["cuenta"];
+									print_r("la cuenta es:");
+									print_r($subCta);
+									print_r("la cuenta es:");
 									$posicion = 1;
-								}else{
+									break;
+								default:
 									$subCta = "0000";
 									$posicion = 0;
-								}//Cierra if origen cliente
-								if($origen == "BAN"){
+								}
+								
+								/*if($origen == "BAN"){
 									$tablaBancos = $this->tablaBancos;
 									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 									$rowBanco = $tablaBancos->fetchRow($select);
@@ -733,6 +749,13 @@
 									$subCta = "0000";
 									$posicion = 0;
 								}//Cierra if origen cliente
+								if($origen == "CLT"){
+									
+								}else{
+									$subCta = "0000";
+									$posicion = 0;
+								}//Cierra if origen cliente*/
+								
 								//Creamos switch para Armar_Cuenta
 								print_r($posicion);
 								$mascara= Zend_Registry::get("mascara");
@@ -745,6 +768,7 @@
 									$nivel5 = 5;
 								}
 								if($nivel1 == 1){
+									print_r($posicion);
 									if($posicion == 1){
 										$armaSub1 = $subCta;
 										print_r("arma");

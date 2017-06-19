@@ -9,7 +9,25 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 	}
     public function indexAction()
     {
-        // action body
+        $request = $this->getRequest();
+		$formulario = new Contabilidad_Form_GeneraPoliza;
+		$this->view->$formulario = $formulario;   
+		if($request->isGet()){$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				try{
+					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					$grupoFacProv = $this->polizaDAO->generaGruposFacturaProveedor($datos);
+					$this->polizaDAO->generacxp($datos);
+					$this->polizaDAO->generacxc($datos);
+					/*$this->polizaDAO->generacxpRemisiones($datos);
+					$this->polizaDAO->crear_Texto();*/
+					}catch(exception $ex){
+					
+				}
+			}
+		}
     }
 
     public function generarAction()
@@ -37,18 +55,18 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					
 					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
-					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					/*$this->polizaDAO->generaGruposFacturaCliente($datos);
 					//$this->polizaDAO->generacxp($datos);
 					$this->polizaDAO->generacxc($datos);
 					/*$this->polizaDAO->generaGruposFacturaProveedor($datos);*/
 					//$this->polizaDAO->generacxpRemisiones($datos);
 					//$this->polizaDAO->generacxp_Fo($datos);
 					//$this->polizaDAO->generacxc_Fo($datos);
-					$this->polizaDAO->crear_Texto();
+					/*$this->polizaDAO->crear_Texto();
 					//$buscaTipoProv = $this->polizaDAO->Busca_Tipo($Persona, $Empresa);
 					//$this->polizaDAO->busca_SubCuenta($persona, $origen);
 					//$this->polizaDAO->genera_Poliza_F();
-					
+					*/
 				}catch(exception $ex){
 					
 				}
