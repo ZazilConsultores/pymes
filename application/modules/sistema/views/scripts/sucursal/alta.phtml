@@ -1,27 +1,12 @@
 <?php 
 	$formulario = $this->formulario;
-	$fiscal = $this->fiscal;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
-	$tipoSucursal = $this->tipoSucursal;
-	$controller = null;
-	$action = null;
-	if($tipoSucursal == "SE"){
-		$controller = "empresa";
-		$action = "empresas";
-	}elseif($tipoSucursal == "SC"){
-		$controller = "empresa";
-		$action = "clientes";
-	}elseif($tipoSucursal == "SP"){
-		$controller = "empresa";
-		$action = "proveedores";
-	}
-	
 ?>
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Alta de Sucursal en Empresa: <strong><?php echo $fiscal->getRazonSocial() ?></strong> 
+			
 		</h3>
 	</div>
 	<div class="panel-body">

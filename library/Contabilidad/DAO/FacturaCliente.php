@@ -167,13 +167,19 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				print_r("La Factura Ya existe");
 			 }else{
 				print_r("Puede crear Factura");
-				$conceptoPago;
-				if(($formaPago['pagada'])==="1"){
+				
+				if(($formaPago['pagada']) =="1"){
 					$conceptoPago = "LI";
-				}elseif(($formaPago['pagada'])=== "0" AND $formaPago['pagos'] ==="0"){
+					$importePagado = $formaPago['pagos'];
+					$saldo = 0;
+				}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
 					$conceptoPago = "PE";
+					$importePagado = 0;
+					$saldo = $importe[0]['total'];
 				}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
 					$conceptoPago = "PA";
+					$importePagado = $formaPago['pagos'];
+					$saldo = $importe[0]['total']- $formaPago['pagos'];
 				}	
 				//Guarda Movimiento en tabla factura
 				$mFactura = array(
@@ -189,9 +195,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'fecha'=>$stringFecha,
 					'subTotal'=>$importe[0]['subTotal'],
 					'total'=>$importe[0]['total'],
-					'saldo'=>$importe[0]['total'],
+					'saldo'=>$saldo,
 					'folioFiscal'=>$encabezado['folioFiscal'],
-					'importePagado'=>$formaPago['pagos']
+					'importePagado'=>$importePagado
 				);
 					
 				$dbAdapter->insert("Factura", $mFactura);
@@ -397,8 +403,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		//$tablaInventario =$this->ta
 		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['claveProducto']);
 		$rowInventario = $tablaInventario->fetchRow($select);
-		$restaCantidad = $rowInventario->existencia - $cantidad;
-		
+		//$restaCantidad = $rowInventario->existencia - $cantidad;
+		$restaCantidad = 0;
 		//print_r("Cantidad en inventario:");
 		//print_r("$restaCantidad");
 		

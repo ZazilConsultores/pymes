@@ -28,7 +28,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				
+				print_r ($datos);
 				$proyecto = new Contabilidad_Model_Proyecto($datos);
 				//print_r($proyecto);
 				try{

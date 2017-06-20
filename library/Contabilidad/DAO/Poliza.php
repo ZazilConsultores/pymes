@@ -77,9 +77,11 @@
 							$tipo = $rowProveedor->idTipoProveedor;
 							//Buscamos si es empresaProveedor
 						$tablaProveedoresEmpresa = $this->tablaProveedorEmpresa;
-						$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa, 'idEmpresas')->where("idProveedores =?", $idCoP);
+						$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa)->where("idProveedores =?", $idCoP);
 						$rowProveedoresEmpresa = $tablaProveedoresEmpresa->fetchRow($select); 
 						print_r("$select");
+						$idsProveedor = explode(",", $rowProveedoresEmpresa->idProveedores);
+						print_r($idsProveedor);
 						//Verificamos que el proveedor, sea un proveedor de la empresa selecciona
 						//if(!is_null($rowProveedoresEmpresa)){
 							$empresaProveedor = $rowProveedoresEmpresa["idEmpresas"];
@@ -364,7 +366,7 @@
 						$tablaClientes = $this->tablaClientes;
 						$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente = ?", $idCoP);
 						$rowCliente = $tablaClientes->fetchRow($select);
-						//print_r("$select");
+						print_r("$select");
 						if(!is_null($rowCliente)){
 							
 							//Definimos el modulo y el tipo
@@ -585,7 +587,7 @@
 		
 		public function generacxc($datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			//$dbAdapter->beginTransaction();
+			$dbAdapter->beginTransaction();
 			
 			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');

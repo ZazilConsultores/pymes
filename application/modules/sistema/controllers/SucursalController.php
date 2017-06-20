@@ -21,7 +21,7 @@ class Sistema_SucursalController extends Zend_Controller_Action
     {
         // action body
         $request = $this->getRequest();
-        $idFiscales = $this->getParam("idFiscales");
+        /*$idFiscales = $this->getParam("idFiscales");
 		$tipoSucursal = $this->getParam("tipoSucursal");
 		
 		$empresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
@@ -38,27 +38,22 @@ class Sistema_SucursalController extends Zend_Controller_Action
 			// Si no es empresa cambiamos el valor por defecto del formulario tipoSucursal
 			$formulario->getSubForm("0")->getElement("tipoSucursal")->setMultiOptions(array($tipoSucursal=> ($tipoSucursal == "SC") ? "Sucursal Cliente" : "Sucursal Proveedor"));
 		}
-		
-		$this->view->fiscal = $fiscal;
-		
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->fiscal = $fiscal;*/
+		$formulario = new Sistema_Form_AltaSucursal;
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
-				//print_r("<br />");
-				//print_r("==========================================");
-				//print_r("<br />");
+				print_r($datos);
 				try{
-					$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
-					$this->view->messageSuccess = "Sucursal dada de alta exitosamente en la empresa: <strong>".$fiscal->getRazonSocial()."</strong>";
+					$this->empresaDAO->agregarSucursal($datos);
+					$this->view->messageSuccess = "Sucursal creado exitosamente";
 				}catch(Exception $ex){
-					$this->view->messageFail = "Ha ocurrido un error: <strong>".$ex->getMessage()."</strong>";
+					$this->view->messageFail = "Error al crear el cliente: <strong>".$ex->getMessage()."</strong>";
 				}
-				//$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
+				//$this->_helper->redirector->gotoSimple("clientes", "empresa", "sistema");
 			}
-		} 
+		}
     }
 	
 	public function edomicilioAction()

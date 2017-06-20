@@ -125,7 +125,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('Importe Pago:');
 		$ePagos->setAttrib("class", "form-control");
-		$ePagos->setAttrib("disabled"," true");
+		$ePagos->setValue(0);
 		
 		$formaPago = Zend_Registry::get('formaPago');
 		$eFormaLiquidar = new Zend_Form_Element_Select('formaLiquidar');

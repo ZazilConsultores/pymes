@@ -21,7 +21,6 @@
 					<tr>
 						<th>Número Folio</th>
 						<th>Sucursal</th>
-						<th>Cliente</th>
 						<th>Descripción</th>
 						<th>Fecha Apertura</th>
 						<th>Fecha Cierre</th>
@@ -34,12 +33,11 @@
 					
 					<?php foreach ($proyectos as $proyecto) : 
 						$sucursal = $sucursalDAO->obtenerSucursal($proyecto->getIdSucursal());
-						$clientes = $clientesDAO->obtenerFiscales($proyecto->getIdFiscales());
+						//$clientes = $clientesDAO->obtenerFiscales($proyecto->getIdFiscales());
 					?>
 					<tr>
 						<td><?php echo $proyecto->getNumeroFolio() ?></td>
 						<td><?php echo $sucursal->getNombreSucursal() ?></td>
-						<td><?php echo $clientes->getRazonSocial() ?></td>
 						<td><?php echo $proyecto->getDescripcion() ?></td>
 						<td><?php echo $proyecto->getFechaApertura() ?></td>
 						<td><?php echo $proyecto->getFechaCierre() ?></td>

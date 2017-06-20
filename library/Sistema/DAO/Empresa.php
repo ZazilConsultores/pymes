@@ -43,6 +43,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
 		
 		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
+		
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
 	}
 	
 	/**
@@ -404,59 +406,23 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	/**
 	 * Agrega una nueva sucursal al domicilio fiscal.
 	 */
-	public function agregarSucursal($idFiscales, array $datos, $tipoSucursal)
+	public function agregarSucursal(array $datos)
 	{
 		$dbAdapter = Zend_Db_Table_Abstract::getDefaultAdapter();
-		$fecha = date('Y-m-d h:i:s', time());	
-		
+		//$dbAdapter->beginTransaction();
+		$fecha = date('Y-m-d h:i:s', time());
 		try{
-			$dbAdapter->beginTransaction();
 			$datosSucursal = $datos[0];
-			$datosDomicilio = $datos[1];
-			$datosTelefonos = $datos[2];
-			$datosEmails = $datos[3];
-			
-			// ===========================================  Insertar Domicilio
-			unset($datosDomicilio["idEstado"]); // Este campo no esta en la tabla domicilio
-			$dbAdapter->insert("Domicilio",$datosDomicilio);
-			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
-			
-			// ===========================================  Insertar Telefono
-			$dbAdapter->insert("Telefono",$datosTelefonos);
-			$idTelefono = $dbAdapter->lastInsertId("Telefono","idTelefono");
-			
-			// ===========================================  Insertar Email
-			$dbAdapter->insert("Email",$datosEmails);
-			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
-			
-			// ===========================================  Insertar Sucursal
-			$datosSucursal["idFiscales"] = $idFiscales;
-			$datosSucursal["idDomicilio"] = $idDomicilio;
-			$datosSucursal["idsTelefonos"] = $idTelefono.",";
-			$datosSucursal["idsEmails"] = $idEmail.",";
-			
-			$dbAdapter->insert("Sucursal",$datosSucursal);
-			
-			$dbAdapter->commit();
-		}catch(Exception $ex){
+			$datosDom = $datos[1];
+			print_r($datos[1]);
+			$dbAdapter->insert("Domicilio", $datosDom);	
+			}catch(Exception $ex){
 			$dbAdapter->rollBack();
-			throw new Util_Exception_BussinessException($ex->getMessage(), 1);
+			print_r($ex->getMessage());
+			throw new Util_Exception_BussinessException("Error: Sucursal ya registrada en el sistema");
+			
 		}
-	}
-	
-	/**
-	 * Sucursales de la empresa
-	 */
-	public function obtenerSucursales($idFiscales){
-		$tablaSucursal = $this->tablaSucursal;
-		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales = ?",$idFiscales);
-		$rowsSucursales = $tablaSucursal->fetchAll($select);
-		//print_r("$select");
-		if(is_null($rowsSucursales)){
-			return null;
-		}else{
-			return $rowsSucursales->toArray();
-		}
+		
 	}
 	
 	public function obtenerSucursal($idSucursal){
@@ -469,6 +435,9 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}else{
 			return $rowSucursal->toArray();
 		}
+	}
+	public function obtenerSucursales($idFiscales){
+		
 	}
 	/**
 	 * Comprueba que la empresa con IdFiscales proporcionada 

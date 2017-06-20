@@ -23,7 +23,8 @@ interface Sistema_Interfaces_IEmpresa {
 	public function esProveedor($idFiscales);
 	// =============================================================== Operaciones sobre sucursales
 	
-	public function agregarSucursal($idFiscales, array $datos, $tipoSucursal);
+	/*public function agregarSucursal($idFiscales, array $datos, $tipoSucursal);*/
+	public function agregarSucursal( array $datos);
 	public function obtenerSucursales($idFiscales);
 	public function obtenerSucursal($idSucursal);
 	

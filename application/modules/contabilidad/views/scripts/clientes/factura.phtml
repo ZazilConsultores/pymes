@@ -311,7 +311,7 @@ function calculateGrandTotal() {
     //Total y pagos
     total = grandTotal + totalIva;
     $("input#total").val(total.toFixed(2));
-    $("input#1-pagos").val(total.toFixed(2));
+    //$("input#1-pagos").val(total.toFixed(2));
     
    descuento = $("#descuento").val();
    if (descuento !=0){
@@ -326,7 +326,7 @@ function calculateGrandTotal() {
    	$("input#iva").val(totalIva.toFixed(2)); 
    	total = totalDescuento + totalIva;
    	$("input#total").val(total.toFixed(2));
-   	$("input#1-pagos").val(total.toFixed(2));  
+   	//$("input#1-pagos").val(total.toFixed(2));  
    	}			  
    }
   
@@ -361,11 +361,13 @@ function calculateGrandTotal() {
           	calculateGrandTotal();
           });
           $("#1-pagada").on("change", function(){
-			console.log("haciendo click");
+			var total = $("#total").val();
+			console.log(total);
 			if ($("#1-pagada:checked").val()==1){
 				console.log("input desahabilitado");
 				$("#1-pagos").attr('disabled', 'disabled');
-				calculateGrandTotal();
+				$("#1-pagos").val(total); 
+				//calculateGrandTotal();
 			}else{
 				$("#1-pagos").removeAttr("disabled");
 				$("#1-pagos").val(0);

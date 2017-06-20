@@ -5,7 +5,7 @@
 interface Sistema_Interfaces_ISucursal{
 	public function obtenerSucursal($idSucursal);
 	public function obtenerSucursales($idFiscales);	
-	public function agregarSucursal($idFiscales, array $datos);
+	//public function agregarSucursal( array $datos);
 	
 	public function obtenerDomicilioSucursal($idSucursal);
 	public function obtenerTelefonosSucursal($idSucursal);
