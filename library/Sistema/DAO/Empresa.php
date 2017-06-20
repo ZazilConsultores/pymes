@@ -406,21 +406,40 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	/**
 	 * Agrega una nueva sucursal al domicilio fiscal.
 	 */
-	public function agregarSucursal(array $datos)
+	public function agregarSucursal($idFiscales ,array $datos)
 	{
-		$dbAdapter = Zend_Db_Table_Abstract::getDefaultAdapter();
-		//$dbAdapter->beginTransaction();
-		$fecha = date('Y-m-d h:i:s', time());
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+		$dbAdapter->beginTransaction();
+		
 		try{
+			
 			$datosSucursal = $datos[0];
-			$datosDom = $datos[1];
-			print_r($datos[1]);
-			$dbAdapter->insert("Domicilio", $datosDom);	
-			}catch(Exception $ex){
+			$datosDomicilio = $datos[1];
+			$datosTelefonos = $datos[2];
+			$datosEmails = $datos[3];
+			//========================================================= Insertar en Domicilio
+			unset($datosDomicilio["idEstado"]);
+			$dbAdapter->insert("Domicilio", $datosDomicilio);
+			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
+			//========================================================= Insertar en Telefono
+			$dbAdapter->insert("Telefono", $datosTelefonos);
+			$idTelefono = $dbAdapter->lastInsertId("Telefono","idTelefono");
+			//========================================================= Insertar en Email
+			$dbAdapter->insert("Email", $datosEmails);
+			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
+			//========================================================= Insertar en Sucursal
+			$datosSucursal["idFiscales"] = $idFiscales;
+			$datosSucursal["idDomicilio"] = $idDomicilio;
+			$datosSucursal["idsTelefonos"] = $idTelefono. ",";
+			$datosSucursal["idsEmails"] = $idEmail.",";
+			$dbAdapter->insert("Sucursal", $datosSucursal);
+			
+		
+		$dbAdapter->commit();
+		}catch(exception $ex){
 			$dbAdapter->rollBack();
 			print_r($ex->getMessage());
-			throw new Util_Exception_BussinessException("Error: Sucursal ya registrada en el sistema");
-			
+			//throw new Util_Exception_BussinessException("Error");	
 		}
 		
 	}
@@ -437,6 +456,14 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 	}
 	public function obtenerSucursales($idFiscales){
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
+		$rowsSucursales = $tablaSucursal->fetchAll($select);
+		if(is_null($rowsSucursales)){
+			return null;
+		}else{
+			return $rowsSucursales->toArray();
+		}
 		
 	}
 	/**
