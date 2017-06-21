@@ -1,25 +1,8 @@
 <li class="dropdown">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-		Contabilidad <span class="caret"></span>
+		Operacion <span class="caret"></span>
 	</a>
 	<ul class="dropdown-menu multi-level" role="menu">
-		<li class="dropdown-submenu">
-			<a class="test" tabindex="-1" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"empresas","action"=>"index"), null, true) ?>">
-				Empresas
-			</a>
-			<ul class="dropdown-menu">
-				<li>
-					<a href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"empresas","action"=>"clientes"),null,true) ?>">
-						Clientes
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"empresas","action"=>"proveedores"),null,true) ?>">
-						Proveedores
-					</a>
-				</li>
-			</ul>
-		</li>
 		<li>
 			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'impuestos', 'action' => 'index'), null, true); ?>">
 				Impuestos
@@ -94,11 +77,6 @@
 		<li>
 			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'poliza', 'action' => 'index'), null, true); ?>">
 				Poliza
-			</a>
-		</li>
-		<li>
-			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'guiacontable', 'action' => 'index'), null, true); ?>">
-				Guia Contable
 			</a>
 		</li>
 	</ul>
