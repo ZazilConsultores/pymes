@@ -587,7 +587,7 @@
 		
 		public function generacxc($datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			$dbAdapter->beginTransaction();
+			//$dbAdapter->beginTransaction();
 			
 			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
