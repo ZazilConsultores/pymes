@@ -83,7 +83,7 @@
 							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
 							'total'=>$datos["pago"]
 						);
-						//$dbAdapter->insert("Cuentasxc",$mCuentasxc);
+						$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 						//GuardaIva em facturaImpuesto
 						$tablaCuentasxc = $this->tablaCuentasxc;
 						$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
@@ -97,7 +97,7 @@
 							
 						);
 						print_r($mfImpuesto);
-						//$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 						
 					}	
 				}	
