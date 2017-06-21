@@ -42,11 +42,6 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eNumFactura->setAttrib("class", "form-control");
 		$eNumFactura->setAttrib("enable","false");
 		
-		$eInputEmpresa = new Zend_Form_Element_Text('razonSocial');
-		$eInputEmpresa->setLabel('Número de Factura: ');
-		$eInputEmpresa->setAttrib("class", "form-control");
-		$eInputEmpresa->setAttrib("enable","false");
-		
 		$eFolioFiscal = new Zend_Form_Element_Text('folioFiscal');
 		$eFolioFiscal->setLabel('Folio Fiscal: ');
 		$eFolioFiscal->setAttrib("minlength", "32");
@@ -105,7 +100,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal,$eInputEmpresa, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente/*$eVendedor*/,$eFecha, $eProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente/*$eVendedor*/,$eFecha, $eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		

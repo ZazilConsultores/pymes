@@ -11,15 +11,21 @@
 		<h3 class= "panel-title">Datos Factura</h3>
 	</div>
 	<div class="panel-body">
-		<!--Numero de factura-->
-		<div class="form-group">
-			<label>Factura Seleccionada:</label>
+		<!--Numero de factura
+		<label class="col-md-2">Factura:</label>
+		<div class="form-group">	
 			<div class="col-md-10">
-				<input id="numeroFactura" name="numeroFactura" type="text" value="<?php echo $datosFactura["idFactura"]; ?>" class="form-control" disabled="true"/>
+				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["numeroFactura"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
 			</div>
-		</div>	
+		</div>-->	
 		<!--Proveedor-->
-		<label >Proveedor:</label>
+		<label>Factura:</label>
+		<div class="form-group">
+			<div class="col-md-12">
+				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["numeroFactura"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+			</div>	
+		</div>
+		<label>Proveedor:</label>
 		<div class="form-group">
 			<div class="col-md-2">
 				<input id="numeroProveedor" name="numeroProveedor" type="text" value="<?php echo $datosFactura["idCoP"];  ?>" class="form-control" disabled="true" />
@@ -35,6 +41,13 @@
 			</div>
 			<div class="col-md-10">
 				<input id="proveedor" name="proveedor" type="text" value="<?php echo $sucursalFac["nombreSucursal"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+			</div>	
+		</div>
+		
+		<label>Total:</label>
+		<div class="form-group">
+			<div class="col-md-12">
+				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["total"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
 			</div>	
 		</div>
 		<!--idFactura-->
@@ -130,9 +143,6 @@
 					}		
 		});	
 		});
-		
-		// Saldos
-		
 		
 	});
 </script>

@@ -12,6 +12,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     private $empresaDAO = null;
 
     private $pagosDAO = null;
+	private $cobrosDAO = null;
 	private $facturaCliDAO = null;
 
     public function init()
@@ -23,6 +24,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
 			$this->fiscalesDAO = new Sistema_DAO_Fiscales;
 			$this->pagosDAO = new Contabilidad_DAO_PagoProveedor;
+			$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
 			$this->empresaDAO = new Sistema_DAO_Empresa;
 			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
 			
@@ -171,6 +173,18 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		$buscapago= $this->pagosDAO->busca_PagosCXP($idFactura);
 		if(!is_null($buscapago)){
 			echo Zend_Json::encode($buscapago);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+	public function buscacobroxpAction()
+    {
+        // action body
+        $idFactura = $this->getParam("idFactura");
+     	$buscaCobro= $this->cobrosDAO->busca_CobrosCXC($idFactura);
+		//$buscacobro= $this->cobrosDAO busca_PagosCXP($idFactura);
+		if(!is_null($buscaCobro)){
+			echo Zend_Json::encode($buscaCobro);
 		}else{
 			echo Zend_Json::encode(array());
 		}

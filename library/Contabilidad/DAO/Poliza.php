@@ -587,7 +587,7 @@
 		
 		public function generacxc($datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			$dbAdapter->beginTransaction();
+			//$dbAdapter->beginTransaction();
 			
 			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
@@ -601,7 +601,7 @@
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 				$rowsCuentaxc = $tablaCtsxc->fetchAll($select);
 		
-				//print_r($select->__toString());
+				print_r($select->__toString());
 				if(!is_null($rowsCuentaxc)){
 					foreach($rowsCuentaxc as $rowcxc){
 						$idCoP = $rowcxc["idCoP"];

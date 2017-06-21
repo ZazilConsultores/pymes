@@ -18,7 +18,8 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				try{
 					$this->polizaDAO->generaGruposFacturaCliente($datos);
-					}catch(exception $ex){
+					$this->polizaDAO->generacxc($datos);
+				}catch(exception $ex){
 					
 				}
 			}
