@@ -40,7 +40,7 @@
 		<label>Total:</label>
 		<div class="form-group">
 			<div class="col-md-12">
-				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["total"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+				<input id="factura" name="factura" type="text" value="<?php echo number_format($datosFactura["total"], 2); ?>" class="form-control" class="col-md-1" disabled="true"/>
 			</div>	
 		</div>
 		<!--idFactura-->
@@ -81,13 +81,13 @@
 						<tfoot>
    							<tr>
       							<td>Adeudo Factura:
-      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["total"]; ?>" class="form-control" disabled="true"/>
+      							<input id="total" name="total" type="text" value="<?php echo  "$".number_format($datosFactura["total"],2);?>" class="form-control" disabled="true"/>
 								</td>		
 								<td>Saldo:
-      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["saldo"]; ?>" class="form-control" disabled="true"/>
+      							<input id="total" name="total" type="text" value="<?php echo "$".number_format($datosFactura["saldo"],2); ?>" class="form-control" disabled="true"/>
 								</td>
       							<td>Importe Pagado:
-      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["importePagado"]; ?>" class="form-control" disabled="true"/>
+      							<input id="total" name="total" type="text" value="<?php echo "$".number_format($datosFactura["total"], 2); ?>" class="form-control" disabled="true"/>
 								</td>
    							 </tr>
    						</tr> 
