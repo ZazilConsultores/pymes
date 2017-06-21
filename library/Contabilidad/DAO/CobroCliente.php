@@ -27,7 +27,7 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",2)->where("estatus <> ?", "C")
 			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
 			$rowsFacturaxc = $tablaFactura->fetchAll($select)->toArray();
-			print_r($select->__toString());
+			//print_r($select->__toString());
 			return $rowsFacturaxc;
 							
 		}
@@ -83,7 +83,7 @@
 							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
 							'total'=>$datos["pago"]
 						);
-						$dbAdapter->insert("Cuentasxc",$mCuentasxc);
+						//$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 						//GuardaIva em facturaImpuesto
 						$tablaCuentasxc = $this->tablaCuentasxc;
 						$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
@@ -96,7 +96,7 @@
 							
 						);
 						print_r($mfImpuesto);
-						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+						//$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 						
 					}	
 				}	
@@ -128,18 +128,18 @@
 			}
 		}
 		
-		/*Obtiene proveedor por idFactura*/
-		public function obtenerProveedoresEmpresa($idFactura) {
+		/*Obtiene clientes por idFactura*/
+		public function obtenerClienteEmpresa($idFactura) {
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$tablaFactura = $tablaFactura->fetchRow($select);
 			
-	 		$tablaProveedores = $this->tablaProveedores;
-			$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?", $tablaFactura->idCoP);
-			$rowProveedor = $tablaProveedores->fetchRow($select);
+	 		$tablaClientes = $this->tablaClientes;
+			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?", $tablaFactura->idCoP);
+			$rowCliente = $tablaClientes->fetchRow($select);
 		
 			$tablaEmpresa = $this->tablaEmpresa;
-			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa=?",$rowProveedor->idEmpresa);
+			$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa=?",$rowCliente->idEmpresa);
 			$rowEmpresa = $tablaEmpresa->fetchRow($select);
 		
 			$tablaFiscales = $this->tablaFiscales;
@@ -171,11 +171,11 @@
 			}
 		
 	 	}
-		public function busca_PagosCXP ($idFactura){
-			$tablaCuentasxp = $this->tablaCuentasxp;
-			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",15)->where("idFactura = ?", $idFactura);
-			$rowCuentasxp = $tablaCuentasxp->fetchAll($select)->toArray();
-			return $rowCuentasxp;
+		public function busca_CobrosCXC ($idFactura){
+			$tablaCuentasxc = $this->tablaCuentasxc;
+			$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento= ?",16)->where("idFactura = ?", $idFactura);
+			$rowCuentasxc = $tablaCuentasxc->fetchAll($select)->toArray();
+			return $rowCuentasxc;
 			
 		}
 		public function actualiza_Saldo($idFactura, array $datos){

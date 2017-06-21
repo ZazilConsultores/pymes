@@ -1,23 +1,142 @@
-<?php 
+<?php
 	$formulario = $this->formulario;
-	$formularioCobro = $this->formularioCobro;
 	$datosFactura = $this->datosFactura;
+	$clientesFac = $this->clientesFac;
+	$sucursalFac = $this->sucursalFac;
 ?>
+
+<!--Datos de factura-->
 <section class="panel panel-info">
-	<div class="panel-body">
-		<br />
-		<?php echo $formulario ?>
-	</div>
-</section>
-<!--Formulario Cobro-->
-<section class="panel panel-warning">
 	<div class="panel-heading">
-		<h3 class="panel-title">Realizar Cobro Factura</h3>
+		<h3 class= "panel-title">Datos Factura</h3>
 	</div>
 	<div class="panel-body">
-		<div class="col-md-12" >
-			<?php echo $formularioCobro; ?>
+		<!--Numero de factura-->
+		<label>Factura:</label>
+		<div class="form-group">
+			<div class="col-md-12">
+				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["numeroFactura"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+			</div>	
 		</div>
+		<label>Cliente:</label>
+		<div class="form-group">
+			<div class="col-md-2">
+				<input id="numeroCliente" name="numeroCliente" type="text" value="<?php echo $datosFactura["idCoP"];  ?>" class="form-control" disabled="true" />
+			</div>
+			<div class="col-md-10">
+				<input id="cliente" name="cliente" type="text" value="<?php echo $clientesFac["razonSocial"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+			</div>	
+		</div>
+		<label>Sucursal:</label>
+		<div class="form-group">
+			<div class="col-md-2">
+				<input id="sucursal" name="sucursal" type="text" value="<?php echo $sucursalFac["idSucursal"];  ?>" class="form-control" disabled="true" />
+			</div>
+			<div class="col-md-10">
+				<input id="sucursal" name="sucursal" type="text" value="<?php echo $sucursalFac["nombreSucursal"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+			</div>	
+		</div>
+		
+		<label>Total:</label>
+		<div class="form-group">
+			<div class="col-md-12">
+				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["total"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+			</div>	
+		</div>
+		<!--idFactura-->
+		<div class="form-group">
+			<div class="col-md-12">
+				<input id="idFactura" class="hidden" name="numeroFactura" type="text" value="<?php echo $datosFactura["idFactura"]; ?>" class="form-control" disabled="true"/>
+			</div>
+		</div>
+		<br /><br />
+		<!--Ver Pagos-->
+		<div class="form-group">
+			<a id="pagos" class="btn btn-info">
+				<span class="glyphicon glyphicon-list"></span> Ver Pagos
+			</a>
+		</div>	
 	</div>
 </section>
 
+<div id="relacionCobros" class="row hidden" >
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Relación de Pagos</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id="detalleFacturaxp" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Movimiento</th>
+								<th>Pago</th>
+								<th>Importe</th>
+								<th>Divisa</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+						<tfoot>
+   							<tr>
+      							<td>Adeudo Factura:
+      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["total"]; ?>" class="form-control" disabled="true"/>
+								</td>		
+								<td>Saldo:
+      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["saldo"]; ?>" class="form-control" disabled="true"/>
+								</td>
+      							<td>Importe Pagado:
+      							<input id="total" name="total" type="text" value="<?php echo $datosFactura["importePagado"]; ?>" class="form-control" disabled="true"/>
+								</td>
+   							 </tr>
+   						</tr> 
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<br />
+<section class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">Realizar Pago Factura</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12" >
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
+<script>
+	$().ready(function(){
+		var url = window.location.origin + "/General/"
+		
+		$("#pagos").on("click" ,function (){
+			console.log("Cobro");
+			$("#relacionCobros").removeClass("hidden");
+			var idFactura =  $("#idFactura").val();
+			var urlpagos = url +'contabilidad/json/buscacobroxp/idFactura/' + idFactura;
+			console.log(urlpagos);
+			$.ajax({
+					url: urlpagos,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						var tbody = $("#relacionCobros").find('tbody');
+						tbody.empty();
+						$.each(data, function(i,item){
+							tbody.append( $('<tr>').
+							append($('<td>').append("CF")).
+							append($('<td>').append(data[i].secuencial)).
+							append($('<td>').append(data[i].total)).
+							append($('<td>').append("MN"))
+							);
+						});
+					}		
+		});	
+		});
+		
+	});
+</script>

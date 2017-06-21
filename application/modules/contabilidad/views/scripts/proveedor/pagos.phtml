@@ -1,348 +1,287 @@
-<?php 
-	$saldo;
-	$formulario = $this->formulario;
+<?php
 	$divisaDAO = new Contabilidad_DAO_Divisa;
 	$divisas = $divisaDAO->obtenerDivisas();
 	$bancosDAO = new Contabilidad_DAO_Banco;
 	$bancos = $bancosDAO->obtenerBancos();
-	$facturasxp = $this->facturasxp;
 	$conceptoPagos =array("AN"=>"ANTICIPO", "LI"=>"LIQUIDADO","PA"=>"PAGO");
 	$formasPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
+	$sucursalesDAO = new Sistema_DAO_Sucursal;
+	$empresas = $this->empresas;
+	//$sucursal = $sucursalesDAO->obtenerSucursal($idSucursal);  
+	$facturasxp = $this->facturasxp;
 ?>
-<section class="panel panel-success">
-	<div class="panel-heading">
-		<h3 class="panel-title">Ingresa datos para busqueda factura por pagar:</h3>
-	</div>
-	<div class="panel-body">
-		<?php  echo $this->formulario; ?>
-	</div>
-</section>
-
-	<section class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title">Cuentas por pagar.</h3>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h4 class="panel-title">Búsqueda de Factura por Pagar<strong></strong></h4>
+			</div>
+			<div class="panel-body">
+				<div>
+					
+				</div>
+				<hr />
+				<div>
+					<!--<div class="form-horizontal">-->
+						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+						<!-- Empresas -->
+						<div class="form-group">
+							<label for="empresa" class="col-md-2">Empresas: </label>
+							<div class="col-md-10">
+								<select name="empresa" id="idFiscales" class="form-control">
+									<option value="0">Seleccione Empresa</option>
+									<?php foreach ($empresas as $empresa) : ?>
+									<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+						</div>
+						<!-- Sucursales -->
+						<div class="form-group">
+							<label for="sucursal" class="col-md-2">Sucursal: </label>
+							<div class="col-md-10">
+								<select name="sucursal" id="idSucursal" class="form-control">
+								</select>
+							</div>
+						</div>
+						<!-- Proveedores -->
+						<div class="form-group">
+							<label for="proveedor" class="col-md-2">Proveedor: </label>
+							<div class="col-md-10">
+								<select name="proveedor" id="idProveedor" class="form-control">
+								</select>
+							</div>
+						</div>
+						<!-- Boton consulta -->
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<button id="queryFacturas" type="submit" class="btn btn-success">
+									<i class="fa fa-search"></i> Consultar Facturas
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
-		<div class="panel-body">
-			<table id="detalleCxP" class="table table-striped table-condensed">
-				<thead>
-					<th>IdSucursal</th>
-					<th>IdProveedor</th>
-					<th>Número factura</th>
-					<th>Fecha </th>
-					<th>$Total</th>
-				</thead>
-				<tbody>
-					<?php foreach($facturasxp as $facturaxp): ?>
-						<tr>
-							<td><?php echo $facturaxp->getIdSucursal(); ?></td>
-							<td><?php echo $facturaxp->getIdCoP(); ?></td>
-							<td id="idFactura" ><?php echo $facturaxp->getNumeroFactura(); ?></td>
-							<td><?php echo $facturaxp->getFechaFactura(); ?></td>
-							<td><?php echo $facturaxp->getTotal(); ?></td>
-							<td>
-								<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor", "action"=>"aplicarpago","idFactura"=>$facturaxp->getIdFactura()), null, true); ?>">
-									<span class="glyphicon glyphicon-pencil"></span>Pago
-								</a>
-							</td>
-							<!--<td><button type="button" class="btn btn-info">
-								<span class="glyphicon glyphicon-pencil"></span> Registrar un pago. 
-							</button></td>-->
-							<td><button   type="button" class="btn btn-primary btnBusqueda" id="nomina" data-toggle="modal" data-target="#msgConfirmN" >
-								<span class="glyphicon glyphicon-pencil"></span> Registara una nomina de Credito.
-							</button></td>
-						</tr>
-						<?php endforeach; ?>
-				</tbody>
-			</table>
+	</div>
+</div>
+<!-- Muesta el resultado de la busqueda -->
+<?php if(!is_null($facturasxp)){ ?>
+	<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Detalle de Facturas</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id="detalleFacturaxp" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Sucursal</th>
+								<th>Proveedor</th>
+								<th>Número Factura</th>
+								<th>Fecha</th>
+								<th>$total</th>
+								<th>Pago</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($facturasxp as $facturaxp) :?>
+								<tr>
+									<td><?php echo $facturaxp["idSucursal"]; ?></td>
+									<td><?php echo $facturaxp["idCoP"]; ?></td>
+									<td><?php echo $facturaxp["numeroFactura"]; ?></td>
+									<td><?php echo $facturaxp["fecha"]; ?></td>
+									<td><?php echo "$" .number_format($facturaxp["total"],2) ?></td>
+									<td>	
+										<a class="btn btn-success" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor","action"=>"aplicarpago","idFactura"=>$facturaxp["idFactura"]),null, true)?>">
+											<span class="glyphicon glyphicon-pencil"></span> Pago
+										</a
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
 		</div>
-	</section>
-	
-
-<section class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title">Registrar</h3>
 	</div>
-	<div class="panel-body">
-		<table id="tableDetails" class="table table-striped table-condensed">
-			<thead>
-				<th>Pago en</th>
-				<th>Pago $</th>
-				<th>Fecha pago</th>
-				<th>Concepto pago</th>
-			</thead>
-			<tbody>
-				
-			</tbody>
-		</table>
-	</div>
-</section>
-<div class="modal fade" id="msgConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
+</div>	
+<?php } ?>
+<!--Modal para realizar un  pago -->
+<div class="modal fade" id="modalPago" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role= "document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss"modal">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Cuentas por pagar.</h4>
-			</div>
+				<h4 class="modal-title">Realiza pago:</h4>
+			</div><!--heder-->
 			<div class="modal-body">
+				<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="form-group">
+						<label for="fecha" class="control-label col-md-2">Fecha de Pago: </label>
+						<div class="col-md-10">
+							<input id="fecha" name="fecha" type="text" class="form-control" />
+						</div>
+					</div>
 						
-				<tr>
-					<label id="factura">Factura</label>
-					<input type="text" id="factura" class="form-control"/>
-					<label for="fecha">Fecha</label>
-  					<input type="text" id="fechaInicial" class="form-control"/>
-  					<label for="fecha">Pago $</label>
-  					<input type="text" id="importePago" class="form-control"/>
-  					<td>Seleccione Divisa</td>
-  						<td>
-  							<select id="idDivisa" class="form-control">
-  								<?php foreach ($divisas as $divisa) : ?>
+					<div class="form-group">
+						<label for="pago" class="control-label col-md-2">Monto: </label>
+						<div class="col-md-10">
+							<input id="pago" name="pago" type="text" class="form-control" />
+						</div>
+					</div>
+					
+						<!-- Divisa -->
+						<div class="form-group">
+							<label for="divisa" class="control-label col-md-2">Divisa: </label>
+							<div class="col-md-10">
+								<select id="idDivisa" name="divisa" class="form-control">
+									<?php foreach ($divisas as $divisa) : ?>
 									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
 								<?php endforeach; ?>
-							</select>
-						</td>
-  					<td>Concepto de Pago</td>
-  						<td>
-  							<select id="conceptoPago" class="form-control">
-  								<?php foreach ($conceptoPagos as $key => $value) : ?>
-									<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					<td>Forma de Pago</td>
-  						<td>
-  							<select id="formaPago" class="form-control">
-  								<?php foreach ($formasPago as $key => $value) : ?>
-									<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-  					<td>Seleccione Banco</td>
-  						<td>
-  							<select id="idBanco" class="form-control">
-  								<?php foreach ($bancos as $banco) : ?>
-									<option value="<?php echo $banco->getIdBanco(); ?>"><?php echo $banco->getBanco(); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-  					<label for="fecha">Numero de referencia</label>
-  					<input type="text" id="numeroReferencia" class="form-control"/>
-				</tr>
+								</select>
+							</div>
+						</div>
+						<!-- Concepto -->
+						<div class="form-group">
+							<label for="concepto" class="control-label col-md-2">Concepto: </label>
+							<div class="col-md-10">
+								<select id="conceptoPago" name="concepto" class="form-control">
+									<?php foreach ($conceptoPagos as $key =>$value): ?>
+										<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+									<?php endforeach; ?>	
+								</select>
+							</div>
+						</div>
+						<!-- FormaPago -->
+						<div class="form-group">
+							<label for="formaPago" class="control-label col-md-2">Forma de Pago</label>
+							<div class="col-md-10">
+								<select id="formaPago" name="formaPago" class="form-control">
+									<?php foreach ($formasPago as $key => $value): ?>
+										<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+									<?php endforeach ?>	
+								</select>
+							</div>
+						</div>
+						<!-- Banco -->
+						<div class="form-group">
+							<label for="banco" class="control-label col-md-2">Banco: </label>
+							<div class="col-md-10">
+								<select id="idBanco" name="banco" class="form-control">
+									<?php foreach ($bancos as $banco) :?>
+										<option value="<?php echo $banco->getIdBanco(); ?>"> <?php echo $banco->getBanco(); ?></option>
+									<?php endforeach?>
+								</select>
+							</div>
+						</div>
+						<!-- Referencia -->
+						<div class="form-group">
+							<label for="referencia" class="control-label col-md-2">Referencia: </label>
+							<div class="col-md-10">
+								<input id="referencia" name="referencia" type="text" class="form-control" placeholder="(Opcional)..." />
+							</div>
+						</div>
+						<!-- BotonEnvio -->
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<button type="submit" class="btn btn-warning">
+									<i class="fa fa-save"></i> Registrar Pago
+								</button>
+							</div>
+						</div>		
+				</form>
+					
+			</div><!--body-->
+		</div><!--modal-content-->
+	</div><!--modal-dialog-->
+</div><!--modal-->
+
+<div class="row hidden" >
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Relación de Pagos</h5>
 			</div>
-			<div class="modal-footer">
-				<button id="registrarPago" type="button" class="btn btn-success" data-dismiss="modal">
-					<span class="glyphicon glyphicon-ok"></span>  Registrar.
-				</button>	
-				<button type="button" class="btn btn-danger" data-dismiss="modal">
-					<span class="glyphicon glyphicon-close"></span> Cancelar
-				</button>
+			<div class="panel-body">
+				<div>
+					<table id="detalleFacturaxp" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Movimiento</th>
+								<th>Pago</th>
+								<th>Divisa</th>
+								<th>Importe</th>
+								<th>Fecha</th>
+								<th>$total</th>
+								<th>Pago</th>
+								<th>Nomina</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
+			
 		</div>
 	</div>
 </div>
-<!--Nota de credito !-->
-<div class="modal fade" id="msgConfirmN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title">Cuentas por pagar.</h4>
-			</div>
-			<div class="modal-body">
-				<tr>
-					<label for="fecha">Fecha</label>
-  					<input type="text" id="fechaInicial" class="form-control"/>
-  					<label for="fecha">Pago $</label>
-  					<input type="text" id="importePago" class="form-control"/>
-  					<td>Seleccione Divisa</td>
-  						<td>
-  							<select id="idDivisa" class="form-control">
-  								<?php foreach ($divisas as $divisa) : ?>
-									<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-				</tr>
-			</div>
-			<div class="modal-footer">
-				<button id="registrarPago" type="button" class="btn btn-success" data-dismiss="modal">
-					<span class="glyphicon glyphicon-ok"></span>  Registrar.
-				</button>
-				<button type="button" class="btn btn-danger" data-dismiss="modal">
-					<span class="glyphicon glyphicon-close"></span> Cancelar
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
+
+
 <script>
-$(document).ready(function(){
-	console.log("ready");
-	var url = window.location.origin + "/General/";
-	
-	$("select#idEmpresas").on('change', function(){
-		var idEmpresa = $(this).val();
-		if (idEmpresa !=0){
-			var urlSucursal = url + "sistema/json/sucursales/idFiscales/" + this.value;
-			console.log(urlSucursal);
-			$.ajax({
-				url: urlSucursal,
-				dataType: "json",
-				success: function (data){
-					$("select#idSucursal").empty();
-					$.each(data, function (i,item){
-						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-					});
-				}
-			});
-		}
-	});
-	
-	$("select#idSucursal").on('click', function(){
-		var idSucursal = $(this).val();
-		console.log(idSucursal);
-		var urlBuscaxEmpresa = url + "contabilidad/json/buscafactura/idSucursal/" + this.value ;
-		console.log(urlBuscaxEmpresa);
-	});
-	
-	
-	
-	$("select#idCoP").on('change', function(){
-		console.log("Boton Presionado");
-		var idCoP = $(this).val();
-		var urlConsultaxp = url + "contabilidad/json/pagos/idCoP/" +idCoP;
-		//console.log(urlConsultaxp);
-	});	
-	
-	$("#submit").on('click', function(){
-		var idCoP = $("#idCoP").val();
-		var urlConsultaxp = url + "contabilidad/json/pagos/idCoP/" +idCoP;
-		console.log(urlConsultaxp);
-		$.ajax({
-			url: urlConsultaxp,		
-			dataType: "json",
-			success: function(data) {
-				var tbody = ("tabla#detallecxp");
-				$.each(data,function(i,item){
-					/*var anchorDetails = $('<a>').attr({'class':'btn btn-link'}).attr({'target':'_blank'}).attr({'href': url + "contabilidad/json/pagos/idCoP/"+item.idCoP});*/
-						
-						tbody.append($('<td>').append(item.idSucursal)).
-						append($('<td>').append(item.idProveedor)).
-						append($('<td>').append(item.numeroFolio))
-						//append($('<td>').append(anchorDetails))*/
+	$().ready(function(){
+		
+		var url = window.location.origin + "/General/";
+		
+		$("select#idFiscales").on('change',function(){
+			console.log($(this).val());
+			var idFiscal = $(this).val();
+			if(idFiscal != 0){
+				// Traer sucursales de la empresa seleccionada y llenar combo de sucursales
+				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+				
+				$.ajax({
+					url: urlQuerySucursales,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("#idSucursal").empty();
+						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+						$.each(data, function (i,item){
+							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						});
+					}
 				});
-			}	
+			
+				// Traer proveedores de la empresa seleccionada y llenar combo de proveedores
+				var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
+				console.log(urlQueryProveedores);
+				$.ajax({
+					url: urlQueryProveedores,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("select#idProveedor").empty();
+						$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
+						$.each(data, function (i,item){
+							$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
+						});
+					}
+				});
+			}
+		});
+		
+		$("a#pagos").on('click', function(){
+			
 		});
 	});
-	
-
-	
-	$("#registrarPago").on("click", function (){
-		var idFactura = $("#numeroFactura").val();
-		var fecha = $("#fechaInicial").val();
-		console.log(fecha);
-		
-		var urlConsultaxp = url + "contabilidad/proveedor/aplicarpago/idFactura/" + idFactura;
-		console.log(urlConsultaxp);
-		/*$.ajax({
-			url: urlConsultaxp,		
-			dataType: "json",
-			success: function(data) {
-				var tbody = ("tabla#detallecxp");
-				$.each(data,function(i,item){
-					/*var anchorDetails = $('<a>').attr({'class':'btn btn-link'}).attr({'target':'_blank'}).attr({'href': url + "contabilidad/json/pagos/idCoP/"+item.idCoP});*/
-						
-						//tbody.append($('<td>').append(item.idSucursal)).
-						//append($('<td>').append(item.idProveedor)).
-						//append($('<td>').append(item.numeroFolio))
-						//append($('<td>').append(anchorDetails))*/
-				//});*/
-			//}	*/
-		//});*/
-		
- 		//var valores = [];
- 		
- 			/*var fecha = $("input[id^='fechaInicial']").val();
- 			var importe = $("input[id^='importePago']").val();
- 			var divisa = $("select[id^='idDivisa']").val();
- 			var pago = $("select[id^='conceptoPago']").val();
- 			var fpago = $("select[id^='formaPago']").val();
- 			var banco = $("select[id^='idBanco']").val();
- 			var referencia = $("input[id^='numeroReferencia']").val();
- 			
- 				console.log("fecha:"+fecha);
- 				console.log("importe:"+importe);
- 				console.log("divisa:"+divisa);
- 				console.log("pago:"+pago);
- 				console.log("formaPago:"+fpago);
- 				console.log("banco:"+banco);
- 				console.log("referencia:"+referencia);
- 						
- 				valores.push(new Valor(fecha, importe, divisa, pago, fpago, banco, referencia)); 
- 			console.dir("Los valores son los siguientes:");
- 			console.dir(valores);
- 			/*var myString = JSON.stringify(valores);
- 			
- 			console.log(myString);
- 			if ($("input#valores").val(myString)){
- 				
- 			};*/
- 			
- 			
-	});
-	function Valor(fecha, importe, divisa, pago, fpago, banco, referencia) {
-		  this.fecha = fecha;
-		  this.importe = importe;
-		  this.divisa = divisa;
-		  this.pago = pago;
-		  this.fpago = fpago;
-		  this.banco = banco;
-		  this.referencia = referencia;
-		}
-		
-	$("#total").on("click" ,function() {
-		var saldo = 0;
-		saldo = $("#total").text();
-		console.log("click");
-		console.log(saldo);
-	});
-	
-	$("select#idProveedor").on('click', function (){
-		var idProveedor = $(this).val();
-		if(idProveedor != 0){
-		
-		}
-	});
-	
-	$("input#numeroFactura").on('change', function(){
-		$("button#btnPagosProveedor").removeAttr("disabled");
-	});
-	
-	$("button#btnPagosProveedor").on('click', function(){
-		console.log("click");
-		var idSucursal = $("select#idSucursal").val();
-		var idCoP = $("select#idCoP").val();
-		var numFac = $("input#numeroFactura").val();
-		
-		console.log(idSucursal);
-	
-		/*var url = window.location.origin +contabilidad/impuestos/enlazarproducto/idProducto/" + producto + "/idImpuesto/" + impuesto;
-	     console.log(url); sistema/json/sucursales/idFiscales/
-	    var urlCuentasxp = url + "contabilidad/json/pagos/idSucursal/"+ idSucursal;*/
-	    var urlCuentasxp = url + "contabilidad/json/pagos/idSucursal/" + idSucursal +"/idCoP/" + idCoP + "/numeroFactura/" + numFac;
-	    console.log(urlCuentasxp); 
-	});
-	
-});
-
-function soloNumero()
-	{
-		if((event.keyCode < 48) || (event.keyCode > 57))
-			event.returnValue = false;
-	}
-	
-	
 </script>
+
+

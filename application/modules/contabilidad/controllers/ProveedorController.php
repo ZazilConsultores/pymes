@@ -156,23 +156,20 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function pagosAction()
     {
-		$request = $this->getRequest();
-		$formulario = new Contabilidad_Form_PagosProveedor;
-		$formulario->getSubForm("0")->getElement("idEmpresas");
-		$formulario->getSubForm("0")->getElement("idSucursal");
-		$formulario->getSubForm("0")->getElement("idCoP");
-		$formulario->getSubForm("0")->getElement("numFactura");
-		$formulario->removeElement("fecha");
-		$formulario->removeSubForm("1");
-		$this->view->formulario = $formulario;
-	
-		if($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$pagosDAO = new Contabilidad_DAO_PagoProveedor;
-				$datos = $formulario->getValues();
-				$this->view->facturasxp = $pagosDAO->busca_Facturasxp();
-				//$this->view->facturasp = $facturasp;
-			}	
+		 $request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;	
+		if($request->isGet()){
+			$this->view->empresas = $empresas;	
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
+			$idSucursal = $this->getParam("sucursal");
+			print_r($idSucursal);
+        	$pr = $this->getParam("proveedor"); 
+        	//Enviamos la busqueda a la consulta
+        	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
+			$this->view->facturasxp = $facturaxp;
 		}
     }
 

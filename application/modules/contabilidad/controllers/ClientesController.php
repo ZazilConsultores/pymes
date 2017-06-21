@@ -3,6 +3,7 @@
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 	private $empresaDAO = null;
+	private $sucursalDAO = null;
 	private $notaSalidaDAO = null;
 	private $remisionEntradaDAO = null;
     private $facturaDAO = null;
@@ -13,6 +14,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function init()
     {
+    	$this->sucursalDAO = new Sistema_DAO_Sucursal;
     	$this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 		$this->remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
@@ -166,8 +168,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			$idSucursal = $this->getParam("sucursal");
 			$cl = $this->getParam("cliente");
-			print_r($idSucursal);
-			print_r($cl);
+			//print_r($idSucursal);
+			//print_r($cl);
 			$facturasxc = $this->cobroClienteDAO->busca_Cuentasxc($idSucursal, $cl);
 			$this->view->facturasxc = $facturasxc;
 		}
@@ -223,47 +225,25 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function aplicacobroAction()
     {
     	$request = $this->getRequest();
-    	$idFactura = $this->getParam("idFactura");
-    	$idFiscales = $this->getParam("idEmpresa");
-		print_r($idFiscales);
+		$idFactura = $this->getParam("idFactura");
 		
-		$empresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
-		$fiscal = $this->fiscalesDAO->obtenerFiscales($idFiscales);
-        
-        $cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
-        $cobroFactura = $cobroClienteDAO->obtiene_Factura($idFactura);
-		$this->view->datosFactura = $cobroClienteDAO->obtiene_Factura($idFactura);
-		
-		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		$formulario->getSubForm("0")->getElement("numeroFactura")->setLabel("Factura seleccionada:");
-		$formulario->getSubForm("0")->getElement("numeroFactura")->setValue($cobroFactura["numeroFactura"]);
-		$formulario->getSubForm("0")->getElement("idEmpresas")->setLabel("Empresa:");
-		$formulario->getSubForm("0")->getElement("idEmpresas")->setValue($cobroFactura["idSucursal"]);
-		$formulario->getSubForm("0")->getElement("idEmpresas")->setLabel("Cliente:");
-		$formulario->getSubForm("0")->getElement("idCoP")->setValue($cobroFactura["idCoP"]);
-		$formulario->getSubForm("0")->removeElement	("idTipoMovimiento");
-		$formulario->getSubForm("0")->removeElement	("idSucursal");
-		$formulario->getSubForm("0")->removeElement	("idProyecto");
-		$formulario->getSubForm("0")->removeElement	("folioFiscal");
-		$formulario->getSubForm("0")->removeElement	("fecha");
-		$formulario->getSubForm("0")->setLegend("Cuentas por cobrar");
-		
-		$formulario->removeSubForm("1");
-		$formulario->removeElement("submit");
+    	$formulario = new Contabilidad_Form_Cobrofactura;
 		$this->view->formulario = $formulario;
+		$cobrosDAO = new Contabilidad_DAO_CobroCliente;
 		
-		$formularioCobro = new Contabilidad_Form_PagosProveedor;
-		$this->view->formularioCobro = $formularioCobro;
+		$this->view->datosFactura = $cobrosDAO->obtiene_Factura($idFactura);	
+		$this->view->clientesFac = $cobrosDAO->obtenerClienteEmpresa($idFactura);
+		$this->view->sucursalFac = $cobrosDAO->obtenerSucursal($idFactura);
+		
 		if($request->isPost()){
-			if($formularioCobro->isValid($request->getPost())){
-				$datos = $formularioCobro->getValues();
-				print_r($datos);
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
 				try{
 					$this->cobroClienteDAO->aplica_Cobro($idFactura, $datos);
-					$actualizaSaldo = $this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
-					//$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+					$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
 				}catch(Exception $ex){
-				} 	
+				}
 			}
 		}
     }

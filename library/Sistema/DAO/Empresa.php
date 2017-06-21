@@ -459,6 +459,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$tablaSucursal = $this->tablaSucursal;
 		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
 		$rowsSucursales = $tablaSucursal->fetchAll($select);
+		
 		if(is_null($rowsSucursales)){
 			return null;
 		}else{
@@ -466,6 +467,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 		
 	}
+	
 	/**
 	 * Comprueba que la empresa con IdFiscales proporcionada 
 	 * sea parte de las empresas operables en el sistema.
