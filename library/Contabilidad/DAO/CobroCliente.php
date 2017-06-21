@@ -88,7 +88,7 @@
 						$tablaCuentasxc = $this->tablaCuentasxc;
 						$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
 						$rowcxc = $tablaFactura->fetchRow($select);
-						print_r($select);
+						print_r("$select");
 						$mfImpuesto = array(
 							'idTipoMovimiento'=>16,
 							'idFactura'=>$rowFactura['idFactura'],
