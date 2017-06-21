@@ -601,7 +601,7 @@
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 				$rowsCuentaxc = $tablaCtsxc->fetchAll($select);
 		
-				//print_r($select->__toString());
+				print_r($select->__toString());
 				if(!is_null($rowsCuentaxc)){
 					foreach($rowsCuentaxc as $rowcxc){
 						$idCoP = $rowcxc["idCoP"];
