@@ -224,6 +224,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
     	$idFactura = $this->getParam("idFactura");
+    	$idFiscales = $this->getParam("idEmpresa");
+		print_r($idFiscales);
+		
+		$empresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idFiscales);
+		$fiscal = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+        
         $cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
         $cobroFactura = $cobroClienteDAO->obtiene_Factura($idFactura);
 		$this->view->datosFactura = $cobroClienteDAO->obtiene_Factura($idFactura);
@@ -254,7 +260,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				print_r($datos);
 				try{
 					$this->cobroClienteDAO->aplica_Cobro($idFactura, $datos);
-					$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+					$actualizaSaldo = $this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
+					//$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
 				}catch(Exception $ex){
 				} 	
 			}

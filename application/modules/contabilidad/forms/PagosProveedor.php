@@ -47,7 +47,7 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		$bancos = $bancoDAO->obtenerBancos();
 		foreach($bancos as $banco)
 		{
-			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getCuenta());
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
 		}			
 		
 		$eNumeroReferencia = new Zend_Form_Element_Text('numeroReferencia');

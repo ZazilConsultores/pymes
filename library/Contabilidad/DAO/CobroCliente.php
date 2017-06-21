@@ -27,7 +27,7 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",2)->where("estatus <> ?", "C")
 			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
 			$rowsFacturaxc = $tablaFactura->fetchAll($select)->toArray();
-			//print_r($select->__toString());
+			print_r($select->__toString());
 			return $rowsFacturaxc;
 							
 		}
@@ -61,7 +61,7 @@
 					$rowFactura = $tablaFactura->fetchRow($select);
 					//print_r($select->__toString());
 				
-					if($datos["pago"] >= $rowFactura["total"] ){
+					if($datos["pago"] > $rowFactura["total"] ){
 						echo "El importe no puede ser mayor al total de la factura";
 					}else{
 						//Aplicamos movimiento en cuentasxp;
@@ -186,26 +186,30 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$tablaFactura = $tablaFactura->fetchRow($select);
 			
-	 		$tablaProveedores = $this->tablaProveedores;
-			$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?", $tablaFactura->idCoP);
-			$rowProveedor = $tablaProveedores->fetchRow($select);
-			//print_r($select->__toString());
-			$saldo = $rowProveedor->saldo - $datos["pago"];
-			$rowProveedor->saldo = $saldo;
-			$rowProveedor->save();
+	 		$tablaClientes = $this->tablaClientes;
+			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?", $tablaFactura->idCoP);
+			$rowCliente = $tablaClientes->fetchRow($select);
+			print_r($select->__toString());
+			print_r("El cliente es:");
+			print_r("<br />");
+			$saldo = $rowCliente->saldo - $datos["pago"];
+			$rowCliente->saldo = $saldo;
+			$rowCliente->save();
 			print_r("<br />");
 			//Actuliza saldoBando
 			$tablaBancos= $this->tablaBancos;
-			$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco =?",$datos["idBanco"]);
+			$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$datos["idBanco"]);
 			$rowBanco = $tablaBancos->fetchRow($select);
-			$sBanco = $rowBanco->saldo -  $datos["pago"];
+			print_r("$select");
+			/*$sBanco = $rowBanco->saldo -  $datos["pago"];
 			$rowBanco->saldo = $sBanco;
 			$rowBanco->fecha = $stringIni;
-			$rowBanco->save();
+			$rowBanco->save();*/
 			//Actuliza saldoFactura
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
+			print_r("$select");
 			$saldo = $rowFactura->saldo - $datos["pago"];
 			print_r($saldo);
 			
