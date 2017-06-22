@@ -191,7 +191,7 @@
 			try{
 				
 		 		$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
 				//print_r("$select"); 
 				
@@ -229,7 +229,7 @@
 							'idCoP'=>$encabezado['idCoP'],
 							'numeroFolio'=>$encabezado['numeroFactura'],
 							'idFactura'=>$idFactura,
-							'idProducto'=>$producto['producto'],
+							'idProducto'=>$producto['descripcion'],
 							'idProyecto'=>$encabezado['idProyecto'],
 							'cantidad'=>$cantidad,
 							'fecha'=>$stringFecha,
@@ -243,7 +243,7 @@
 					 	
 					 	//Buscamos descipcion del producto.
 					 	$tablaProducto = $this->tablaProducto;
-						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['producto']);
+						$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['descripcion']);
 						$rowProducto = $tablaProducto->fetchRow($select);
 						$desProducto =$rowProducto['producto']; 
 					
@@ -256,7 +256,7 @@
 							'descripcion'=>$desProducto,
 							'precioUnitario'=>$precioUnitario,
 							'importe'=>$producto['importe'],
-							'fechaCaptura'=>$stringFecha,
+							'fecha'=>$stringFecha,
 							'fechaCancela'=>null
 						);
 						//print_r($mFacturaDetalle);
@@ -408,7 +408,7 @@
 					'cantidadGanancia'=>'0',
 					'costoCliente'=>($precioUnitario * ($rowInventario->porcentajeGanancia / 100) + $precioUnitario) 
 				);
-			$dbAdapter->insert("Inventario",$mInventario);
+			//$dbAdapter->insert("Inventario",$mInventario);
 		}
 			$dbAdapter->commit();
 		}catch(exception $ex){

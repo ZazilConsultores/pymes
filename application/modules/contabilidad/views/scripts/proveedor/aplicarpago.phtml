@@ -47,7 +47,7 @@
 		<label>Total:</label>
 		<div class="form-group">
 			<div class="col-md-12">
-				<input id="factura" name="factura" type="text" value="<?php echo $datosFactura["total"];  ?>" class="form-control" class="col-md-1" disabled="true"/>
+				<input id="factura" name="factura" type="text" value="<?php "$".number_format($datosFactura["total"], 2);  ?>" class="form-control" class="col-md-1" disabled="true"/>
 			</div>	
 		</div>
 		<!--idFactura-->

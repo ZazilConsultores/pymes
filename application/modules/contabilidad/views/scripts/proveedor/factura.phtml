@@ -161,7 +161,7 @@ $(document).ready(function () {
 			filasTabla ++;
 			// generamos elementos de nueva fila
 			// cantidad
-			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
+			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'size': '1' + filasTabla});
 			// idProductocto
 			/*var selectProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 			$.each(jsonProductos,function(i,item){
@@ -186,7 +186,6 @@ $(document).ready(function () {
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
 			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'}).attr({'disabled':'true'});
-			
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
 			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
@@ -212,10 +211,10 @@ $(document).ready(function () {
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
- 			var claveProducto = row.find("select[id^='idProducto_']").val();
+ 			var claveProducto = row.find("input[id^='idProducto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
- 			var descripcion = row.find("input[id^='descripcion_']").val();
+ 			var descripcion = row.find("select[id^='descripcion_']").val();
  			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  			var importe = row.find("input[id^='costoTotal_']").val();
  			
@@ -238,6 +237,15 @@ $(document).ready(function () {
  				
  			};
  		});
+ 		 //Funcion Eliminar #btnLimpiar_2
+  $("table#productos").on("click", "button[id^='btnLimpiar_']", function(){
+  	// si tenemos mas de una fila
+  			if ($("table#productos tbody > tr").length >1)
+  			{
+  				$("table#productos  tbody > tr:last").remove();
+  			}
+  			calculateGrandTotal();
+  });	
  		//Funcion buscar descripcion del producto
  		$("table#productos").on("change", "select[id^='descripcion_']", function(){
  		var descripcion= $(this).attr("id");
