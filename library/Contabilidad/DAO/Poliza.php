@@ -629,7 +629,7 @@
 							print_r("<br />");
 							print_r("<br />");
 							print_r("<br />");
-							//print_r("$select");
+							print_r("$select");
 							$iva = $rowFacturaImp->importe; //print_r("<br />"); print_r("iva:"); print_r($iva);
 							print_r("<br />");
 							//Iniciamos polizaP
