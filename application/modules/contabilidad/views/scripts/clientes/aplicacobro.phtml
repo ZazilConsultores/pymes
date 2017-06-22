@@ -71,7 +71,7 @@
 						<thead>
 							<tr>
 								<th>Movimiento</th>
-								<th>Pago</th>
+								<th>Secuencial</th>
 								<th>Importe</th>
 								<th>Divisa</th>
 							</tr>
@@ -80,14 +80,14 @@
 						</tbody>
 						<tfoot>
    							<tr>
-      							<td>Adeudo Factura:
+      							<td>Factura:
       							<input id="total" name="total" type="text" value="<?php echo  "$".number_format($datosFactura["total"],2);?>" class="form-control" disabled="true"/>
 								</td>		
 								<td>Saldo:
-      							<input id="total" name="total" type="text" value="<?php echo "$".number_format($datosFactura["saldo"],2); ?>" class="form-control" disabled="true"/>
+      							<input id="saldo" name="saldo" type="text" value="<?php echo "$".number_format($datosFactura["saldo"],2); ?>" class="form-control" disabled="true"/>
 								</td>
       							<td>Importe Pagado:
-      							<input id="total" name="total" type="text" value="<?php echo "$".number_format($datosFactura["total"], 2); ?>" class="form-control" disabled="true"/>
+      							<input id="total" name="importe" type="text" value="<?php echo "$".number_format($datosFactura["importePagado"], 2); ?>" class="form-control" disabled="true"/>
 								</td>
    							 </tr>
    						</tr> 

@@ -623,7 +623,7 @@
 							//print_r($secuencial);
 							//Buscamos en FacturaImpuesto el iva
 							$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
-							$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowcxc->idFactura)->where("idTipoMovimiento =?",2);
+							$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowcxc->idFactura)->where("idTipoMovimiento =?",16);
 							$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
 							print_r("<br />");
 							print_r("<br />");

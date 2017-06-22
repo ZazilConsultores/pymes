@@ -1,5 +1,6 @@
 <?php
 class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFacturaCliente{
+	
 	private $tablaMovimiento;
 	private $tablaFactura;
 	private $tablaClientes;
@@ -111,7 +112,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						'idUnidad'=>$producto['unidad'],
 						'secuencial'=>$secuencial,
 						'cantidad'=>$cantidad,
-						'descripcion'=>$producto["claveProducto"],
+						'descripcion'=>$producto["descripcion"],
 						'precioUnitario'=>$precioUnitario,
 						'importe'=>$producto['importe'],
 						'fecha'=>$stringFecha,
