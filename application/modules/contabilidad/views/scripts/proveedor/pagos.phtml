@@ -96,7 +96,7 @@
 									<td><?php echo $facturaxp["fecha"]; ?></td>
 									<td><?php echo "$" .number_format($facturaxp["total"],2) ?></td>
 									<td>	
-										<a class="btn btn-success" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor","action"=>"aplicarpago","idFactura"=>$facturaxp["idFactura"]),null, true)?>">
+										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor","action"=>"aplicarpago","idFactura"=>$facturaxp["idFactura"]),null, true)?>">
 											<span class="glyphicon glyphicon-pencil"></span> Pago
 										</a
 									</td>

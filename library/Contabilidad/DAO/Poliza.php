@@ -31,6 +31,7 @@
 		}
 	
 		public function generaGruposFacturaProveedor($datos){
+			
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$dbAdapter->beginTransaction();
 						

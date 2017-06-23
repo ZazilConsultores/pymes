@@ -169,9 +169,10 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			 }else{
 				print_r("Puede crear Factura");
 				
-				if(($formaPago['pagada']) =="1"){
+				if(($formaPago['pagada']) == "1"){
 					$conceptoPago = "LI";
-					$importePagado = $formaPago['pagos'];
+					$importePagado = $importe[0]['total'];
+					print_r($importePagado);
 					$saldo = 0;
 				}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
 					$conceptoPago = "PE";
@@ -209,6 +210,15 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				}elseif($formaPago['pagada']==="1"){
 					print_r("Cantidad como pago en la factura");
 				}
+				//Guarda em facturaImpuesto
+				$mfImpuesto = array(
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idFactura'=>$idFactura,
+					'idImpuesto'=>4, //Iva
+					'importe'=>$importe[0]['iva']
+				);
+					//print_r($mfImpuesto);
+				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 				//Guarda Movimiento en Cuentasxp
 				if(($formaPago['pagada'])==="1"){
 				$mCuentasxc = array(
@@ -227,22 +237,20 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'conceptoPago'=>$conceptoPago,
 					'formaLiquidar'=>$formaPago['formaLiquidar'],
 					'subTotal'=>$importe[0]['subTotal'],
-					'total'=>$importe[0]['total']
-						
+					'total'=>$importe[0]['total']	
 				);
-				//print_r($mCuentasxc);
-				$dbAdapter->insert("Cuentasxc", $mCuentasxc);
+				
+				$dbAdapter->insert("Cuentasxc", $mCuentasxc);	
+				}
 				//Guarda em facturaImpuesto
 				$mfImpuesto = array(
-					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idTipoMovimiento'=>16,
 					'idFactura'=>$idFactura,
 					'idImpuesto'=>4, //Iva
 					'importe'=>$importe[0]['iva']
 				);
-				//print_r($mfImpuesto);
+				print_r($mfImpuesto);
 				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-			}		
-				//Obtine el ultimo id en tabla factura
 				}
 			$dbAdapter->commit();
 			}catch(exception $ex){
@@ -268,7 +276,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			//$saldo = 0;
 			$saldo = $row['saldo'] - $formaPago['pagos'];
 			print_r("<br />");
-			print_r("<br />");
+			print_r("<El saldo es: />");
 			print_r($saldo);
 			print_r("<br />");
 			$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);

@@ -61,7 +61,7 @@
 					$rowFactura = $tablaFactura->fetchRow($select);
 					//print_r($select->__toString());
 				
-					if($datos["pago"] > $rowFactura["total"] ){
+					if($datos["pago"] = $rowFactura["total"] ){
 						echo "El importe no puede ser mayor al total de la factura";
 					}else{
 						//Aplicamos movimiento en cuentasxp;

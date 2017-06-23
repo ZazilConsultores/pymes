@@ -132,7 +132,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
-				
+					$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
 					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					foreach ($productos as $producto){
