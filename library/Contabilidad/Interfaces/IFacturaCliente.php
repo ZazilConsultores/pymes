@@ -2,7 +2,7 @@
   interface Contabilidad_Interfaces_IFacturaCliente{
   	
 	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos);
-	public function actualizarSaldoBanco($formaPago);
+	public function actualizarSaldoBanco($formaPago, $importe);
 	public function actualizaSaldoCliente($encabezado, $formaPago);
 	//public function guardaDetalleFactura(array $encabezado, $producto, $importe);
 	

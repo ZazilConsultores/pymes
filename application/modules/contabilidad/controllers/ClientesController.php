@@ -125,20 +125,24 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				print_r($productos);
+				//print_r($productos);
 				$importe = json_decode($formaPago['importes'],TRUE);
+				print_r($formaPago);
+				print_r("array formaPago en cliente Factu");
 				print_r("<br />");
-				print_r($importe);
+				//print_r($formaPago);
+				
+				//print_r($importe);
 				$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
-					$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+					$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago, $importe);
 					//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
 					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					foreach ($productos as $producto){
 					//try{
 						$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
-						$inventario = $this->facturaDAO->resta($encabezado, $producto);
+						//$inventario = $this->facturaDAO->resta($encabezado, $producto);
 						//$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
 						
 					$contador++;

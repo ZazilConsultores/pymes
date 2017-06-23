@@ -269,8 +269,17 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		
 	}
 	
-	public function actualizarSaldoBanco($formaPago){
-		$tablaBanco = $this->tablaBanco;
+	public function actualizarSaldoBanco($formaPago, $importe){
+		$tablaBancos= $this->tablaBanco;
+		$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$formaPago["idBanco"]);
+			$rowBanco = $tablaBancos->fetchRow($select);
+			print_r("$select");
+			$sBanco = $rowBanco->saldo -  $importe[0]["total"];
+			$rowBanco->saldo = $sBanco;
+			//$rowBanco->fecha = $stringIni;
+			$rowBanco->save();
+			//}
+		/*$tablaBanco = $this->tablaBanco;
 			$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
 			$row = $tablaBanco->fetchRow($select);
 			//$saldo = 0;
@@ -283,7 +292,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			
 			//$tablaBanco->update(array('saldo'=> $saldo,'fecha'=>$encabezado['fecha']));
 			$tablaBanco->update(array ("saldo" => $saldo), $where);
-			//print_r("$select");
+			//print_r("$select");*/
 		
 	}
 	public function actualizaSaldoCliente($encabezado, $formaPago){
