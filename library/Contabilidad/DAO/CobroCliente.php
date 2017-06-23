@@ -61,7 +61,7 @@
 					$rowFactura = $tablaFactura->fetchRow($select);
 					//print_r($select->__toString());
 				
-					if($datos["pago"] = $rowFactura["total"] ){
+					if($datos["pago"] > $rowFactura["total"] ){
 						echo "El importe no puede ser mayor al total de la factura";
 					}else{
 						//Aplicamos movimiento en cuentasxp;
@@ -202,10 +202,10 @@
 			$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$datos["idBanco"]);
 			$rowBanco = $tablaBancos->fetchRow($select);
 			print_r("$select");
-			/*$sBanco = $rowBanco->saldo -  $datos["pago"];
+			$sBanco = $rowBanco->saldo -  $datos["pago"];
 			$rowBanco->saldo = $sBanco;
 			$rowBanco->fecha = $stringIni;
-			$rowBanco->save();*/
+			$rowBanco->save();
 			//Actuliza saldoFactura
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
