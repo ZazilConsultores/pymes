@@ -202,7 +202,7 @@
 			$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$datos["idBanco"]);
 			$rowBanco = $tablaBancos->fetchRow($select);
 			print_r("$select");
-			$sBanco = $rowBanco->saldo -  $datos["pago"];
+			$sBanco = $rowBanco->saldo + $datos["pago"];
 			$rowBanco->saldo = $sBanco;
 			$rowBanco->fecha = $stringIni;
 			$rowBanco->save();

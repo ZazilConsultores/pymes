@@ -56,7 +56,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
 		}
 		
     	$eSucursal = new Zend_Form_Element_Select('idSucursal');
