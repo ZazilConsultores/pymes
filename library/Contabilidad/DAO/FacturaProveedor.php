@@ -108,7 +108,7 @@
 					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
 					if(($formaPago['pagada'])==="1"){
 						$mCuentasxp = array(
-							'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+							'idTipoMovimiento'=>15,
 							'idSucursal'=>$encabezado['idSucursal'],
 							'idFactura'=>$idFactura,
 							'idCoP'=>$encabezado['idCoP'],

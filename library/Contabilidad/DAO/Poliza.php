@@ -169,7 +169,7 @@
 											$abono = 0;
 										}						
 										//Arma descripcion
-										if($rowGuiaContable["origen"] ='I' || $rowGuiaContable["origen"] = 'S'){
+										if($rowGuiaContable["origen"] =='I' || $rowGuiaContable["origen"] == 'S'){
 											$desPol = $rowGuiaContable->descripcion;
 											print_r("<br />");
 											//print_r($desPol);
@@ -894,7 +894,7 @@
 				$select = $tablaCtsxp->select()->from($tablaCtsxp)->where('fechaPago >= ?',$stringFechaInicio)->where('fechaPago <=?',$stringFechaFinal)->where('idTipoMovimiento=?',15)
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 				$rowsCxp= $tablaCtsxp->fetchAll($select);
-				//print_r($select->__toString());
+				print_r($select->__toString());
 				if(!is_null($rowsCxp)){
 					foreach($rowsCxp as $rowCxp){
 						$idCoP = $rowCxp["idCoP"];
@@ -1000,7 +1000,26 @@
 									}
 								}//Cierra  if arma descripcion
 								//Busca ctaProveedor y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
-										if($origen == "PRO"){
+								switch($origen){
+								case 'BAN':
+									$tablaBancos = $this->tablaBancos;
+									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+									$rowBanco = $tablaBancos->fetchRow($select);
+									$subCta = $rowBanco["cuentaContable"];
+									$posicion = 1;
+									break;
+								case 'PRO':
+									$tablaProveedores = $this->tablaProveedores;
+											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
+											$rowProveedor = $tablaProveedores->fetchRow($select);
+											$subCta = $rowProveedor["cuenta"];
+											$posicion = 1;
+									break;
+								default:
+									$subCta = "0000";
+									$posicion = 0;
+								}
+										 /*if($origen == "PRO"){
 											$tablaProveedores = $this->tablaProveedores;
 											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
 											$rowProveedor = $tablaProveedores->fetchRow($select);
@@ -1009,7 +1028,7 @@
 										}else{
 											$subCta = "0000";
 											$posicion = 0;
-										}//Cierra if origen proveedor
+										}//Cierra if origen proveedor*/
 										//Creamos switch para Armar_Cuenta
 										print_r("La posicio  es:");
 										print_r($posicion);
