@@ -99,7 +99,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         $idFiscales = $this->getParam("idFiscales");
 			
 		$sucursales = $this->empresaDAO->obtenerSucursales($idFiscales);
-		
+		//$sucursales = $this->empresaDAO->obtenerSucursalesEmpresas($idEmpresas);
 		if(!is_null($sucursales)){
 			echo Zend_Json::encode($sucursales);
 		}else{

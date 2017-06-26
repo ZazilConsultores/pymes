@@ -456,8 +456,37 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 	}
 	public function obtenerSucursales($idFiscales){
+		
+		
 		$tablaSucursal = $this->tablaSucursal;
 		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
+		$rowsSucursales = $tablaSucursal->fetchAll($select);
+		
+		if(is_null($rowsSucursales)){
+			return null;
+		}else{
+			return $rowsSucursales->toArray();
+		}
+		
+	}
+	public function obtenerSucursalesEmpresas($idEmpresas){
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresas=?",$idEmpresas);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		//print_r("$select");
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa=?",$rowEmpresas->idEmpresa);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		//print_r("$select");
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales=?",$rowEmpresa->idFiscales);
+		$rowFiscales = $tablaFiscales->fetchRow($select);
+		
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?", $rowFiscales->idFiscales);
 		$rowsSucursales = $tablaSucursal->fetchAll($select);
 		
 		if(is_null($rowsSucursales)){
