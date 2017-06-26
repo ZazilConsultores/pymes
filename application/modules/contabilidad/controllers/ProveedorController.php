@@ -165,7 +165,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			$idSucursal = $this->getParam("sucursal");
-			print_r($idSucursal);
+			//print_r($idSucursal);
         	$pr = $this->getParam("proveedor"); 
         	//Enviamos la busqueda a la consulta
         	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
@@ -183,6 +183,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$this->view->formulario = $formulario;
 		$pagosDAO = new Contabilidad_DAO_PagoProveedor;
 		//$proveedores = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
+		$datosFactura = $pagosDAO->obtiene_Factura($idFactura);
 		$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
 		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
@@ -190,11 +191,13 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
+				print_r($datos);
 				try{
 					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-					$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+					//$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+					$this->view->messageSuccess = "El pago <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 			}
 		}

@@ -38,21 +38,19 @@
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');
 			
 			try{
-				
 				$tablaCuentasxp = $this->tablaCuentasxp;
 				$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",15)->where("idFactura=?", $idFactura)
 				->order("secuencial DESC");
 				$rowCuentasxp = $tablaCuentasxp->fetchRow($select);
-				print_r($select->__toString());
+				//print_r($select->__toString());
 				
 				if(!is_null($rowCuentasxp)){
 					$secuencial= $rowCuentasxp->secuencial +1;
 				}else{
 					$secuencial = 1;	
 				}
-				
 				//Valida que el importe no sea mayor al saldo, vacio ó  igual a cero.
-				if($datos["pago"]==0  || $datos["pago"] == " "){
+				if($datos["pago"]== 0  || $datos["pago"] == " "){
 					print_r("El monto del saldo es incorrecto");
 				}else{
 					$tablaFactura = $this->tablaFactura;
@@ -81,11 +79,10 @@
 							'conceptoPago'=>$datos['conceptoPago'],
 							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
 							'total'=>$datos["pago"]
-						);
-						//print_r("Agrega movimiento a cuentasxp");   
+						); 
 						//print_r($mCuentasxp);
 						$dbAdapter->insert("Cuentasxp",$mCuentasxp);
-						//GuardaIva em facturaImpuesto
+						//GuardaIva en facturaImpuesto
 						$tablaCuentasxp = $this->tablaCuentasxp;
 						$select= $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
 						$rowcxp = $tablaFactura->fetchRow($select);
@@ -94,26 +91,18 @@
 							'idFactura'=>$rowFactura['idFactura'],
 							'idImpuesto'=>4, //Iva
 							'importe'=>$datos["pago"]- $rowcxp->subtotal
-							
 						);
-						print_r($mfImpuesto);
+						//print_r($mfImpuesto);
 						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 					}	
-				}	
+				}
+				//Actualizamos saldo
+				$this->actualiza_Saldo($idFactura, $datos);	
 			}catch(exception $ex){
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r("Excepcion Lanzada");
-			print_r("<br />");
-			print_r("================");
-			print_r("<br />");
-			print_r($ex->getMessage());
-			print_r("<br />");
-			print_r("<br />");
 			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			throw new Util_Exception_BussinessException("Error: El pago no se puede realizar");
 			}				
-		
 		}
 		
 		public function obtiene_Factura ($idFactura){
