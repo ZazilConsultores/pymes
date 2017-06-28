@@ -25,7 +25,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
-		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
+		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		
@@ -113,7 +113,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function facturaAction()
     {
-    	//$this->view->impuestos = $this->impuestosDAO->obtenerImpuestos();
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
 		if($request->isGet()){
@@ -136,7 +135,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
-					$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago, $importe);
+					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago, $importe);
 					//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
 					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
 					foreach ($productos as $producto){
