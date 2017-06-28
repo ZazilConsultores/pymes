@@ -12,8 +12,8 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
-		$this->tablaInventario = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
-		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaInventario = new Inventario_Model_DbTable_Inventaris(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Productos(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerInventario(){
@@ -65,8 +65,8 @@ public function obtenerIdProductoInventario(){
 	
 	public function editarInventario($idInventario, array $inventario)
 	{
-		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-		$bd->beginTransaction();
+		$dbAdapter = Zend_Db_Table_Abstract::getDefaultAdapter("dbmodgeneral");
+		//$dbAdapter->beginTransaction();
 
 		try{
 			
@@ -114,11 +114,11 @@ public function obtenerIdProductoInventario(){
 				//print_r($costoCliente);
 			
 			}
+			$tablaInventario->update(array('minimo'=>$minimo, 'maximo'=>$maximo, 'costoUnitario'=>$costoUnitario, 
+			'cantidadGanancia'=>$cantidadGanancia,'porcentajeGanancia'=>$porcentajeGanancia,'costoCliente'=>$costoCliente),$where);		
 		}
-		
-		$tablaInventario->update(array('minimo'=>$minimo, 'maximo'=>$maximo, 'costoUnitario'=>$costoUnitario, 
-		'cantidadGanancia'=>$cantidadGanancia,'porcentajeGanancia'=>$porcentajeGanancia,'costoCliente'=>$costoCliente),$where);		
-		$bd->commit();
+	
+		$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -130,7 +130,7 @@ public function obtenerIdProductoInventario(){
 			print_r($ex->getMessage());
 			print_r("<br />");
 			print_r("<br />");
-			$bd->rollBack();
+			$dbAdapter->rollBack();
 		
 		}
 		
