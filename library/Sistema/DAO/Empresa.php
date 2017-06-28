@@ -118,10 +118,10 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta,"saldo"=>"0"));
 					break;	
 				case 'CL':
-					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
+					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta,"saldo"=>"0"));
 					break;
 				case 'PR':
-					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta, "saldo"=>"0"));
 					break;
 			}
 			//Insertamos en domicilio
