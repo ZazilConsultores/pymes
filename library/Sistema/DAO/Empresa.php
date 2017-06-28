@@ -96,7 +96,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 					$rowFiscales = $select->query()->fetchAll();
 					//print_r(count($rowFiscales));
 					if(count($rowFiscales) > 1) {
-						//throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
 						
 					}
 				}
@@ -114,7 +114,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			switch ($tipo) {
 				case 'EM':
 					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>0));
-					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
+					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta,"saldo"=>"0"));
 					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta,"saldo"=>"0"));
 					break;	
 				case 'CL':

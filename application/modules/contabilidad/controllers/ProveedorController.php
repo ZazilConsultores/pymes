@@ -184,28 +184,44 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$pagosDAO = new Contabilidad_DAO_PagoProveedor;
 		//$proveedores = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		$datosFactura = $pagosDAO->obtiene_Factura($idFactura);
-		$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
-		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
-		$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
+		//$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
+		//$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
+		//$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
 		
-		if($request->isPost()){
+		/*if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
+				//print_r($datos);
 				try{
 					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 					//$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
 					$this->view->messageSuccess = "El pago <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
-					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+					//$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 			}
 		}
     	
-    	/*$fecha = $this->getParam($fecha);
+    	$fecha = $this->getParam($fecha);
 		print_r($fecha);
-		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);*/
+		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);
 				
+    }*/
+    if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				print_r($datos);
+				try{
+					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
+					$this->view->messageSuccess = "Empresa dada de alta con exitosamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+				}
+				
+			}
+		}
     }
 
     public function pagodosAction()

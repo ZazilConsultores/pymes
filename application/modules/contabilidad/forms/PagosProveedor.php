@@ -12,7 +12,10 @@ class Contabilidad_Form_PagosProveedor extends Zend_Form
 		
 		$ePago = new Zend_Form_Element_Text('pago');
 		$ePago->setLabel('Pago $:');
+		$ePago->setAttrib("required", "true");
+		$ePago->setAttrib("digits", "true");
 		$ePago->setAttrib("class", "form-control");
+		 
 		
 		$eDivisa = new Zend_Form_Element_Select('idDivisa');
 		$eDivisa->setLabel('Seleccione Divisa:');
