@@ -62,14 +62,20 @@
 				 	echo"La factura ya esta registrada";
 				}else{
 					//Situacion de Pago $conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
-					$conceptoPago;
-					if(($formaPago['pagada'])==="1"){
+					if(($formaPago['pagada']) == "1"){
 						$conceptoPago = "LI";
-					}elseif(($formaPago['pagada'])=== "0"){
+						$importePagado = $importe[0]['total'];
+						print_r($importePagado);
+						$saldo = 0;
+					}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
 						$conceptoPago = "PE";
-					}elseif($formaPago['pagos']===""){
+						$importePagado = 0;
+						$saldo = $importe[0]['total'];
+					}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
 						$conceptoPago = "PA";
-					}
+						$importePagado = $formaPago['pagos'];
+						$saldo = $importe[0]['total']- $formaPago['pagos'];
+					}	
 					
 					//Guarda Movimiento en tabla factura
 					$mFactura = array(
@@ -86,8 +92,8 @@
 						'subTotal'=>$importe[0]['subTotal'],
 						'total'=>$importe[0]['total'],
 						'folioFiscal'=>$encabezado['folioFiscal'],
-						'importePagado'=>$formaPago['pagos'],
-						'saldo'=>$importe[0]['total']
+						'importePagado'=>$importePagado,
+						'saldo'=>$saldo
 					);
 					print_r($mFactura);
 					$dbAdapter->insert("Factura", $mFactura);
