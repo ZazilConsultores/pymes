@@ -429,7 +429,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 
 		if(!is_null($rowInventario)){
 			//print_r("la cantidad en inventario no es menor que 0");
-			/*print_r("<br />");
+			print_r("<br />");
 			$tablaCapas = $this->tablaCapas;
 			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['claveProducto']) 
 			->order("fechaEntrada ASC");
@@ -466,13 +466,21 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		
 			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?", $rowCapas->fechaEntrada,"idProducto =?",$rowCapas->idProducto);	
 			$tablaCapas->delete($where);
-		}**/
+		}
 		
 		//===Resta cantidad en inventario
+		$tablaProducto = $this->tablaProducto;
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$rowInventario['idProducto']);
+				$rowProducto = $tablaProducto->fetchRow($select);
+				$ProductoInv = substr($rowProducto->claveProducto, 0,2);
+				//print_r($ProductoInv);
+				//Si el producto es ProductoTerminado o servicio solo se ingresa una vez en inventario	
+				//if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
 		
 			$tablaInventario = $this->tablaInventario;
 			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['claveProducto']);
 			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
+			//}
 		}
 		$dbAdapter->commit();
 		}catch(exception $ex){

@@ -340,7 +340,7 @@
 		->where("numeroFolio=?",$encabezado['numeroFactura'])
 		->where("fechaEntrada=?", $stringIni)
 		->order("secuencial DESC");
-	
+		print_r("$select");
 		$rowCapas = $tablaCapas->fetchRow($select); 
 		
 		if(!is_null($rowCapas)){
@@ -351,22 +351,20 @@
 		
 		//=================Selecciona producto y unidad=======================================
 		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['producto'])->where("idUnidad=?",$producto['unidad']);
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
-		//print_r("$select");
+		print_r("$select");
 	
 		//====================Operaciones para convertir unidad minima====================================================== 
 		if(!is_null($rowMultiplos)){	
-		 	$cantidad=0;
-			$precioUnitario=0;
+		 	$cantidad = 0;
+			$precioUnitario = 0;
 			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
 			$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
 			
 			//print_r($cantidad);
-			
-		
 			$mCapas = array(
-					'idProducto' => $producto['producto'],
+					'idProducto' => $producto['descripcion'],
 					'idDivisa'=>1,
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numeroFolio'=>$encabezado['numeroFactura'],
@@ -375,23 +373,53 @@
 					'fechaEntrada'=>$stringIni,
 					'costoUnitario'=>$precioUnitario
 			);
-			
+			print_r($mCapas);
 			$dbAdapter->insert("Capas",$mCapas);
 		}
 		
 		
 		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['producto']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 		$rowInventario = $tablaInventario->fetchRow($select);
-		
+		print_r("<br />");
+		print_r("$select");
 		if(!is_null($rowInventario)){
-			$cantidad = $rowInventario->existencia + $cantidad;
+			/*$cantidad = $rowInventario->existencia + $cantidad;
 			$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
 			print ("<br />");
 			print ($cantidad);
 			$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
 			$tablaInventario->update(array('existencia'=> $cantidad,'existenciaReal'=> $cantidad,'existenciaReal'=> $cantidad), $where);	
-			//print_r("<br />");
+			//print_r("<br />");*/
+			$tablaProducto = $this->tablaProducto;
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$rowInventario['idProducto']);
+				$rowProducto = $tablaProducto->fetchRow($select);
+				$ProductoInv = substr($rowProducto->claveProducto, 0,2);
+				print_r("$select");
+				//Si el producto es ProductoTerminado o servicio solo se ingresa una vez en inventario	
+				if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
+					$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$rowMultiplos = $tablaMultiplos->fetchRow($select); 
+		print_r("$select");
+	
+		//====================Operaciones para convertir unidad minima====================================================== 
+		if(!is_null($rowMultiplos)){	
+		 	$cantidad = 0;
+			$precioUnitario = 0;
+			$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
+			print_r("La canidad es: ");
+			print_r($cantidad);
+		}
+		$cantidadActual = $rowInventario->existencia + $cantidad;
+		print_r($cantidadActual);
+		$costoCliente = ($rowInventario->costoUnitario * ($rowInventario->porcentajeGanancia / 100) + $rowInventario->costoUnitario);
+	
+		$where = $tablaInventario->getAdapter()->quoteInto("idProducto = ?", $rowInventario->idProducto);	
+		$tablaInventario->update(array('existencia'=> $cantidadActual,'existenciaReal'=> $cantidadActual), $where);	
+			//print_r("<br />");*/
+				
+			
 		}else{		
 			$mInventario = array(
 					'idProducto'=>$producto['producto'],
@@ -409,6 +437,7 @@
 					'costoCliente'=>($precioUnitario * ($rowInventario->porcentajeGanancia / 100) + $precioUnitario) 
 				);
 			//$dbAdapter->insert("Inventario",$mInventario);
+		}
 		}
 			$dbAdapter->commit();
 		}catch(exception $ex){

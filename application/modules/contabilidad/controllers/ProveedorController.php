@@ -140,7 +140,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);	
 						 	
 					foreach ($productos as $producto){
-						//$suma = $this->facturaDAO->suma($encabezado, $producto);
+						$suma = $this->facturaDAO->suma($encabezado, $producto);
 						$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 						$contador++;
 					}
