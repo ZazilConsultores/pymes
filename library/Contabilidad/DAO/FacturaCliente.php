@@ -403,10 +403,10 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		//$tablaInventario =$this->ta
 		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 		$rowInventario = $tablaInventario->fetchRow($select);
-		$restaCantidad = $rowInventario->existencia - $cantidad;
+		$restaCantidad = $rowInventario["existencia"] - $cantidad;
 		//$restaCantidad = 0;
 		//print_r("Cantidad en inventario:");
-		//print_r("$restaCantidad");
+		print_r("$restaCantidad");
 	
 		if(!is_null($rowInventario)){
 			//print_r("la cantidad en inventario no es menor que 0");
@@ -429,7 +429,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			
 			
 		//=====================================================================Resta 
-		if(!$cant <= 0){
+		if(! $cant <= 0){
 			
 			$where = $tablaCapas->getAdapter()->quoteInto("idProducto =?",$rowCapas["idProducto"],"fechaEntrada =?",$rowCapas["fechaEntrada"] );
 			print_r("<br />");
