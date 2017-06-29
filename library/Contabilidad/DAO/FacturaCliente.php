@@ -5,6 +5,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	private $tablaFactura;
 	private $tablaClientes;
 	private $tablaCuentasxc;
+	private $tablaCardex;
 	private $tablaBanco;
 	private $tablaEmpresas;
 	private $tablaSucursal;
@@ -20,7 +21,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
 		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
-		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaCardex = new Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
 		$this->tablaEmpresas = new Sistema_Model_DbTable_Empresas(array('db'=>$dbAdapter));
 		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
@@ -125,17 +126,17 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'total'=>$importe[0]['total']	
 				);
 				
-				$dbAdapter->insert("Cuentasxc", $mCuentasxc);	
-				}
+				$dbAdapter->insert("Cuentasxc", $mCuentasxc);
 				//Guarda em facturaImpuesto
 				$mfImpuesto = array(
 					'idTipoMovimiento'=>16,
 					'idFactura'=>$idFactura,
 					'idImpuesto'=>4, //Iva
 					'importe'=>$importe[0]['iva']
-				);
+				);	
 				print_r($mfImpuesto);
 				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+				}
 				}
 			$dbAdapter->commit();
 			}catch(exception $ex){
@@ -185,7 +186,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				}
 				//====================Operaciones para convertir unidad minima======================================================
 				$tablaMultiplos = $this->tablaMultiplos;
-				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
 				
 				$cantidad=0;
@@ -206,7 +207,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'idCoP'=>$encabezado['idCoP'],
 					'numeroFolio'=>$encabezado['numeroFactura'],
 					'idFactura'=>$idFactura,//
-					'idProducto'=>$producto['descripcion'],
+					'idProducto'=>$producto['claveProducto'],
 					'idProyecto'=>$encabezado['idProyecto'],
 					'cantidad'=>$cantidad,
 					'fecha'=>$stringFecha,
@@ -218,7 +219,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$dbAdapter->insert("Movimientos",$mMovimiento);
 				//Buscamos la descripción del producto en Tabla Producto
 				$tablaProducto = $this->tablaProducto;
-				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['descripcion']);
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
 				$rowProducto = $tablaProducto->fetchRow($select);
 				$desProducto = $rowProducto['producto'];
 				//Insertar Movimiento en tabla FacturaDetalle
@@ -334,7 +335,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				'idImpuesto'=>$idImpuesto,
 				'importe'=>0,
 			);
-			$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
+			//$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
 			}else{
 				print_r("El producto no esta enlazado con impuesto");
 			}
@@ -390,7 +391,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		try{
 		//======================Resta en capas, inventario============================================================================*//
 		$tablaMultiplos = $this->tablaMultiplos;
-		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
 		$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 		
 		$cantidad = 0;
@@ -401,7 +402,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			
 		$tablaInventario = $this->tablaInventario;
 		//$tablaInventario =$this->ta
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['claveProducto']);
 		$rowInventario = $tablaInventario->fetchRow($select);
 		$restaCantidad = $rowInventario["existencia"] - $cantidad;
 		//$restaCantidad = 0;
@@ -412,7 +413,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			//print_r("la cantidad en inventario no es menor que 0");
 			print_r("<br />");
 			$tablaCapas = $this->tablaCapas;
-			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']) 
+			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['claveProducto']) 
 			->order("fechaEntrada ASC");
 			$rowCapas = $tablaCapas->fetchRow($select);
 			//print_r("<br />");
@@ -459,7 +460,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				//if($ProductoInv != 'PT' && $ProductoInv != 'SV' && $ProductoInv != 'VS'){
 		
 			$tablaInventario = $this->tablaInventario;
-			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
+			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['claveProducto']);
 			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
 			//}
 		}
@@ -489,36 +490,50 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['claveProducto'])
 		//->where("fechaEntrada )
 		->order("fechaEntrada ASC");
+		print_r("$select");
 		$rowCapas = $tablaCapas->fetchRow($select);
 		
 		//=======================================Seleccionar tabla Movimiento
 		$tablaMovimiento = $this->tablaMovimiento;
-			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
+		$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("idProducto =?", $producto['claveProducto'])
 			->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
 			->where("idCoP=?",$encabezado['idCoP'])
 			->where("idEmpresas=?",$encabezado['idEmpresas'])
-			->where("fecha=?", $stringIni)
+			->where("fecha=?",$stringIni)
 			->order("secuencial DESC");
+			print_r("$select");
 		$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 		
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
 		$rowMultiplo = $tablaMultiplos->fetchRow($select); 
-		$utilidad = ($rowMovimiento->costoUnitario - $rowCapas['costoUnitario'])* $rowMovimiento->cantidad;
-		//print_r($utilidad);
+		$utilidad =($rowMovimiento["costoUnitario"] - $rowCapas['costoUnitario']) * $rowMovimiento["cantidad"];
+		print_r($utilidad);
 		$cantidad = 0;
 		$precioUnitario = 0;
 		$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
 		$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+		//SecuencialEntrada 
+		$tablaCardex = $this->tablaCardex;
+		$select = $tablaCardex->select()->from($tablaCardex)->where("numeroFolio=?",$encabezado['numeroFactura'])
+		->where("idSucursal=?",$encabezado['idSucursal'])
+		->where("fechaEntrada=?", $stringIni)
+		->order("secuencialEntrada DESC");
+		$rowCardex = $tablaCardex->fetchRow($select); 
+		if(!is_null($rowCardex)){
+			$secuencialSalida= $rowCardex->secuencial +1;
+		}else{
+			$secuencialSalida = 1;	
+		}
 		
 		$mCardex = array(
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numerofolio'=>$encabezado['numeroFactura'],
 					'idProducto'=>$producto['claveProducto'],
 					'idDivisa'=>1,
-					'secuencialEntrada'=>1,
+					'secuencialEntrada'=>$rowCapas['secuencial'],
 					'fechaEntrada'=>$rowCapas['fechaEntrada'],
-					'secuencialSalida'=>$rowMovimiento->secuencial,
+					'secuencialSalida'=>$secuencialSalida,
 					'fechaSalida'=>$stringIni,
 					'cantidad'=>$cantidad,
 					'costo'=>$rowCapas['costoUnitario'],
@@ -527,7 +542,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					
 			);
 			//print_r($mCardex);
-			//$dbAdapter->insert("Cardex",$mCardex);
+			$dbAdapter->insert("Cardex",$mCardex);
 			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");

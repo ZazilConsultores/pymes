@@ -100,26 +100,25 @@ $(document).ready(function (){
     	//var newRow = $("<tr>");
     	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'size': '1' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 		// idProducto
-		/*var selectProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		var inputProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 		$.each(jsonProductos,function(i,item){
-			selectProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
-		});*/
-		var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-
+			inputProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+		});
+		//var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 		// idUnidad
 		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 		
 		// codigoBarras
 		var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 		// descripcion
-		/*var inputdescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'}).attr({'size': '4' + filasTabla});
-		$.each(jsonProductos,function(i,item){
-			selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
-		});*/
-		var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		var selectDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'}).attr({'size': '4' + filasTabla});
 		$.each(jsonProductos,function(i,item){
 			selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
 		});
+		/*var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonProductos,function(i,item){
+			selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+		});*/
 		// precioUnitario
 		var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 		// precioImporte
@@ -149,10 +148,10 @@ $(document).ready(function (){
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
- 			var claveProducto = row.find("input[id^='idProducto_']").val();
+ 			var claveProducto = row.find("select[id^='idProducto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
- 			var descripcion = row.find("select[id^='descripcion_']").val();
+ 			var descripcion = row.find("input[id^='descripcion_']").val();
  			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  			var importe = row.find("input[id^='costoTotal_']").val();
  			
@@ -230,7 +229,7 @@ $(document).ready(function (){
  		});
  		
 		//Funcion buscar descripcion del producto
- 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
  			console.log("Hola");
  			var descripcion= $(this).attr("id");
 			var arr = descripcion.split('_');
@@ -240,14 +239,14 @@ $(document).ready(function (){
  			
  			$.each(jsonProductos,function(i,item){
  				if(jsonProductos[i].idProducto == id){
- 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
+ 					$("input#descripcion_"+numFila).val(jsonProductos[i].producto);
  				}
  				
 			});
  			
  		});//cierra funcion buscar descripcion del producto
  		//Funcion buscar Multiplo del producto
- 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
  			console.log("Mexico");
  			var claveProd= $(this).attr("id");
 			var arr = claveProd.split('_');
