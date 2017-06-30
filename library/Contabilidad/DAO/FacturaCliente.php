@@ -442,14 +442,14 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			print_r("<br />");
 			//print_r($cant);
 			print_r("<br />");
-			$tablaCapas->update(array('cantidad'=>$cant), $where);
+			//$tablaCapas->update(array('cantidad'=>$cant), $where);
 			print_r("<br />");
 			print_r("<br />");
 			//print_r("$where");
 		}else{
 		
 			$where = $tablaCapas->getAdapter()->quoteInto("fechaEntrada=?", $rowCapas->fechaEntrada,"idProducto =?",$rowCapas->idProducto);	
-			$tablaCapas->delete($where);
+			//$tablaCapas->delete($where);
 		}
 		
 		//===Resta cantidad en inventario
@@ -532,20 +532,19 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
 		$utilidad = $costoSalida- $costo;
 		$mCardex = array(
-					'idSucursal'=>$encabezado['idSucursal'],
-					'numerofolio'=>$encabezado['numeroFactura'],
-					'idProducto'=>$producto['claveProducto'],
-					'idDivisa'=>1,
-					'secuencialEntrada'=>$rowCapas['secuencial'],
-					'fechaEntrada'=>$rowCapas['fechaEntrada'],
-					'secuencialSalida'=>$secuencialSalida,
-					'fechaSalida'=>$stringIni,
-					'cantidad'=>$cantidad,
-					'costo'=>$costo,
-					'costoSalida'=>$costoSalida,
-					'utilidad'=>$utilidad
-					
-			);
+			'idSucursal'=>$encabezado['idSucursal'],
+			'numerofolio'=>$encabezado['numeroFactura'],
+			'idProducto'=>$producto['claveProducto'],
+			'idDivisa'=>1,
+			'secuencialEntrada'=>$rowCapas['secuencial'],
+			'fechaEntrada'=>$rowCapas['fechaEntrada'],
+			'secuencialSalida'=>$secuencialSalida,
+			'fechaSalida'=>$stringIni,
+			'cantidad'=>$cantidad,
+			'costo'=>$costo,
+			'costoSalida'=>$costoSalida,
+			'utilidad'=>$utilidad
+		);
 			print_r($mCardex);
 			$dbAdapter->insert("Cardex",$mCardex);
 			$dbAdapter->commit();
@@ -577,6 +576,22 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			return $rowConsecutivo;
 		}*/
 	}
+	
+	public function creaFacturaCliente(array $encabezado, $producto, $importe){
+		//Seleccionamos el producto para su clasificacion, Ver si la validación del producto se puede hacer desde jquery
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["claveProducto"]);
+		$rowProducto = $tablaProducto->fetchRow($select);
+		
+		if(!is_null($rowProducto)){
+			
+		}
+		
+		
+		
+	}
 }
+
+	
     
 ?>
