@@ -519,9 +519,10 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		->where("idSucursal=?",$encabezado['idSucursal'])
 		->where("fechaEntrada=?", $stringIni)
 		->order("secuencialEntrada DESC");
+		print_r("$select");
 		$rowCardex = $tablaCardex->fetchRow($select); 
 		if(!is_null($rowCardex)){
-			$secuencialSalida= $rowCardex->secuencial +1;
+			$secuencialSalida= $rowCardex->secuencialSalida + 1;
 		}else{
 			$secuencialSalida = 1;	
 		}
