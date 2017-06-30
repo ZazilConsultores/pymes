@@ -222,13 +222,15 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
 				$rowProducto = $tablaProducto->fetchRow($select);
 				$desProducto = $rowProducto['producto'];
+				//print_r("La factura detalle");
+				//print_r("$select");
 				//Insertar Movimiento en tabla FacturaDetalle
 				$mFacturaDetalle = array(
 					'idFactura'=>$idFactura,
 					'idUnidad'=>$producto['unidad'],
 					'secuencial'=>$secuencial,
 					'cantidad'=>$cantidad,
-					'descripcion'=>$desProducto,
+					'descripcion'=>$producto['descripcion'],
 					'precioUnitario'=>$precioUnitario,
 					'importe'=>$producto['importe'],
 					'fecha'=>$stringFecha,
@@ -507,8 +509,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
 		$rowMultiplo = $tablaMultiplos->fetchRow($select); 
-		$utilidad =($rowMovimiento["costoUnitario"] - $rowCapas['costoUnitario']) * $rowMovimiento["cantidad"];
-		print_r($utilidad);
+		//$utilidad =($rowMovimiento["costoUnitario"] - $rowCapas['costoUnitario']) * $rowMovimiento["cantidad"];
+		//print_r($utilidad);
 		$cantidad = 0;
 		$precioUnitario = 0;
 		$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
@@ -528,6 +530,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		}
 		$costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
 		$costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
+		$utilidad = $costoSalida- $costo;
 		$mCardex = array(
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numerofolio'=>$encabezado['numeroFactura'],
@@ -540,7 +543,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'cantidad'=>$cantidad,
 					'costo'=>$costo,
 					'costoSalida'=>$costoSalida,
-					'utilidad'=>$costoSalida
+					'utilidad'=>$utilidad
 					
 			);
 			print_r($mCardex);
