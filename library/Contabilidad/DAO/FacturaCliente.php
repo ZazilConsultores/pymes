@@ -526,8 +526,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		}else{
 			$secuencialSalida = 1;	
 		}
-		$costo = $rowCardex['cantidad'] * $rowCapas['costoUnitario'];
-		$costoSalida= $rowCardex['cantidad'] * $producto['precioUnitario'];
+		$costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
+		$costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
 		$mCardex = array(
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numerofolio'=>$encabezado['numeroFactura'],
@@ -543,7 +543,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'utilidad'=>$costoSalida
 					
 			);
-			//print_r($mCardex);
+			print_r($mCardex);
 			$dbAdapter->insert("Cardex",$mCardex);
 			$dbAdapter->commit();
 		}catch(exception $ex){
