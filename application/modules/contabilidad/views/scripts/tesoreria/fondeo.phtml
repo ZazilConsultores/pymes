@@ -62,7 +62,8 @@
 				success: function(data){
 					$("select#1-idBancoE").empty();
 					$.each(data, function(i,item){	
-						$("select#1-idBancoE").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco)); 
+						$("select#1-idBancoE").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco));
+						$("select#1-idBancoS").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco)); 
 					});
 				}
 			});

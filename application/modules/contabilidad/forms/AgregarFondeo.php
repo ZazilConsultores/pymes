@@ -99,6 +99,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoEntrada = new Zend_Form_Element_Select('idBancoE');
 		$eBancoEntrada->setLabel('Seleccionar Banco Entrada');
 		$eBancoEntrada->setAttrib("class", "form-control");
+		$eBancoEntrada->setRegisterInArrayValidator(FALSE);
 		
 		/*foreach ($bancos as $fila){
 			$eBancoEntrada->addMultiOption($fila->getIdBanco(), $fila->getBanco());
@@ -107,10 +108,10 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eBancoSalida = new Zend_Form_Element_Select('idBancoS');
 		$eBancoSalida->setLabel('Seleccionar Banco Salida:');
 		$eBancoSalida->setAttrib("class", "form-control");
-		
-		foreach($bancos as $fila){
+		$eBancoSalida->setRegisterInArrayValidator(FALSE);
+		/*foreach($bancos as $fila){
 			$eBancoSalida->addMultiOption($fila->getIdBanco(), $fila->getBanco());
-		}
+		}*/
 		
 		$eImportePago = new Zend_Form_Element_Text('total');
 		$eImportePago->setLabel('Importe:');

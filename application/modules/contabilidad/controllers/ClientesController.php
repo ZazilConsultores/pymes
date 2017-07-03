@@ -143,7 +143,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 						$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 						$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
 						$inventario = $this->facturaDAO->resta($encabezado, $producto);
-						///$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
+						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
 						
 					$contador++;
 					}

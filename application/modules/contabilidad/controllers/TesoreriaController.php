@@ -35,8 +35,8 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				}catch(exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
-			//}else{
-				//print_r("formulario no valido <br />");
+			}else{
+				print_r("formulario no valido <br />");
 			}				
 		}	
     }
