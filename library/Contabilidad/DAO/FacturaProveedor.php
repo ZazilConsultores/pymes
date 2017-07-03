@@ -440,7 +440,7 @@
 					'costoUnitario'=>$precioUnitario,
 					'porcentajeGanancia'=>'0',
 					'cantidadGanancia'=>'0',
-					'costoCliente'=>($precioUnitario * ($porcentajeGanancia / 100) + $precioUnitario) 
+					'costoCliente'=> 0/*($precioUnitario * ($porcentajeGanancia / 100) + $precioUnitario) */
 				);
 			$dbAdapter->insert("Inventario",$mInventario);
 		

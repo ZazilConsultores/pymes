@@ -14,6 +14,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	private $tablaEmpresa;
 	private $tablaImpuestoProductos;
 	private $tablaConsecutivo;
+	private $tablaProductoCompuesto;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -31,6 +32,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 		$this->tablaConsecutivo = new Contabilidad_Model_DbTable_Consecutivo(array('db'=>$dbAdapter));
+		$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
+		
 			
 	}	
 	
@@ -583,8 +586,96 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["claveProducto"]);
 		$rowProducto = $tablaProducto->fetchRow($select);
 		
-		if(!is_null($rowProducto)){
-			
+		$tablaInventario = $this->tablaInventario;
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$rowProducto["idProducto"]);
+		$rowInventario = $tablaInventario->fetchRow($select);
+		
+		if(!is_null($rowInventario)){
+			$claveProducto = substr($rowProducto->claveProducto, 0,2);
+			print_r($claveProducto);
+			print_r("<br />");
+			switch($claveProducto){
+				case 'PT':
+					//Creamos o actualizamos Inventario, Cardex, Capas
+					print_r("<br />");	
+					print_r("Producto Terminado");
+					$tablaProdComp = $this->tablaProductoCompuesto;
+					$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto=?",$producto["claveProducto"]);
+					$rowsProductoComp= $tablaProdComp->fetchAll($select);
+					print_r("<br />");
+					print_r("$select");
+					print_r("<br />");
+					//Si no esta vacio, recorremos para ver si esta compuesto por más paquetes
+					if(!is_null($rowsProductoComp)){
+						foreach($rowsProductoComp as $rowProductoComp){
+							$tablaProdComp = $this->tablaProductoCompuesto;
+							$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado =?",$rowProductoComp["productoEnlazado"]);
+							$rowsProductoEnlazado= $tablaProdComp->fetchAll($select);
+							print_r("<br />");
+							print_r("$select");
+							print_r("<br />");
+							//Si no esta vacio, recorremos para ver si esta inventario
+							if(!is_null($rowsProductoEnlazado)){
+								foreach($rowsProductoEnlazado as $rowProductoEnlazado){
+									$tablaProdComp = $this->tablaProductoCompuesto;
+									$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto =?",$rowProductoEnlazado["productoEnlazado"]);
+									$rowsProductoCompuesto= $tablaProdComp->fetchAll($select);
+									print_r("<br />");
+									print_r("El producto compuesto esta compuesto por el producto");
+									print_r("$select");
+									print_r("<br />");
+									//Obtenemos los productos del productoCompuesto
+									if(!is_null($rowsProductoCompuesto)){
+										foreach($rowsProductoCompuesto as $rowProductoCompuesto){
+											$producto = $rowProductoCompuesto["productoEnlazado"];
+											print_r($producto);
+											//Buscamos el producto en inventario
+											$tablaInventario = $this->tablaInventario;
+											$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto =?",$producto);
+											$rowInventario = $tablaInventario->fetchRow($select);
+											print_r("<br />");
+											print_r("El producto en Inventario es:");
+											print_r("$select");
+											print_r("<br />");
+											//Procedemos hacer la resta del producto en inventario//checaremos la equivalencia
+											$can = $rowProductoCompuesto["cantidad"];
+											print_r("<br />");
+											print_r("La cantidad a restar es :");
+											print_r($can);
+											print_r("<br />");
+											//Restamos 
+											$cant = $rowInventario["existenciaReal"] - $can;
+											print_r("<br />");
+											print_r("Cantidad :");
+											print_r($cant);
+											print_r("<br />");
+											if($cant <> 0){
+											//Seleccionamos el tipo de Inventario(primeras entradas, primeras salidas)
+											}
+											
+										}
+									}
+								}//foreach productoEnlazado
+							}//if not null $owsProductoEnlazado
+						}//foreach $rowsProductoComp
+					}	
+				break;
+				case 'VS':
+					//No actualizamos en ninguna 
+					print_r("<br />");
+					print_r("Varios Servicio");
+				break;
+				case 'SV':
+					//No actualizamos en ninguna 
+					print_r("<br />");
+					print_r("Servicio");
+				break;
+				default:
+					print_r("<br />");
+					print_r("Producto Normal");
+					//Creamos o actualizamos Inventario, Cardex, Capas
+				
+			}
 		}
 		
 		
