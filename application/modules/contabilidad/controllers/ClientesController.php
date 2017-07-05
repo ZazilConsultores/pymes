@@ -134,16 +134,14 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				//print_r($importe);
 				$contador=0;
 				try{
-					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
-					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago, $importe);
-					//$saldoCliente = $this->facturaDAO->actualizaSaldoCliente($encabezado, $formaPago);
-					//$saldoBanco = $this->facturaDAO->actualizarSaldoBanco($formaPago);
+					////$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+					
 					foreach ($productos as $producto){
 					//try{
-						$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
-						$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
-						$inventario = $this->facturaDAO->resta($encabezado, $producto);
-						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
+						////$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
+						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
+						$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
 						
 					$contador++;
 					}

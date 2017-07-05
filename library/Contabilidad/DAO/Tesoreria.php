@@ -90,7 +90,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
 			'idCoP'=>$empresa['idEmpresas'],/**/
-			'idBanco'=>$fondeo['idBancoE'],
+			'idBanco'=>$fondeo['idBancoS'],
 			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
 			'numeroFolio'=>$empresa['numFolio'],
@@ -113,7 +113,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
 			'idCoP'=>$empresa['idEmpresas'],/**/
-			'idBanco'=>$fondeo['idBancoS'],
+			'idBanco'=>$fondeo['idBancoE'],
 			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
 			'numeroFolio'=>$empresa['numFolio'],

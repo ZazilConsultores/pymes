@@ -169,7 +169,7 @@ $(document).ready(function () {
 			});*/
 			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 			// idUnidad
-			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
+			var inputUnidad = $('<select required />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':'true'});;
 			/*$.each(jsonUnidad,function(i,item){
 				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
 			});*/
@@ -213,6 +213,9 @@ $(document).ready(function () {
  			var cantidad = row.find("input[id^='idCantidad_']").val();
  			var claveProducto = row.find("input[id^='idProducto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
+ 			if(unidad = "Null"){
+ 				console.log("El producto no tiene multiplo");
+ 			}
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
  			var descripcion = row.find("select[id^='descripcion_']").val();
  			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
@@ -237,6 +240,26 @@ $(document).ready(function () {
  				
  			};
  		});
+ 		//Valida tablaProductos
+ 		/*var form = $("#productos");
+ 		form.validate({
+			rules: {
+				idUnidad: {
+					required: true
+				}
+				
+			},
+			messages: {
+				idUnidad: {					
+					required: "Este campo no puede quedar vacío"
+				}
+			}
+		});*/
+ 		
+ 		
+ 		
+ 		
+ 		
  		 //Funcion Eliminar #btnLimpiar_2
   $("table#productos").on("click", "button[id^='btnLimpiar_']", function(){
   	// si tenemos mas de una fila
@@ -248,7 +271,7 @@ $(document).ready(function () {
   });	
  		//Funcion buscar descripcion del producto
  		$("table#productos").on("change", "select[id^='descripcion_']", function(){
- 		var descripcion= $(this).attr("id");
+ 			var descripcion= $(this).attr("id");
 			var arr = descripcion.split('_');
 			var id = $(this).val();
 			//console.log(id);
@@ -298,6 +321,8 @@ $(document).ready(function () {
 						if(data[i].idProducto == id){
 							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
 							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}else{
+							//console.log("No existe unidad");
 						}	
 						
 					});

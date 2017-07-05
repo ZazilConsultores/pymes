@@ -596,9 +596,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			print_r("<br />");
 			switch($claveProducto){
 				case 'PT':
-					//Creamos o actualizamos Inventario, Cardex, Capas
+					
 					print_r("<br />");	
-					print_r("Producto Terminado");
+					print_r("Obtine producto PT");
 					$tablaProdComp = $this->tablaProductoCompuesto;
 					$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto=?",$producto["claveProducto"]);
 					$rowsProductoComp= $tablaProdComp->fetchAll($select);
@@ -611,6 +611,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 							$tablaProdComp = $this->tablaProductoCompuesto;
 							$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado =?",$rowProductoComp["productoEnlazado"]);
 							$rowsProductoEnlazado= $tablaProdComp->fetchAll($select);
+							print_r("El producto PT esta compuesto por:");
 							print_r("<br />");
 							print_r("$select");
 							print_r("<br />");
@@ -627,65 +628,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 									//Obtenemos los productos del productoCompuesto
 									if(!is_null($rowsProductoCompuesto)){
 										foreach($rowsProductoCompuesto as $rowProductoCompuesto){
-											$producto = $rowProductoCompuesto["productoEnlazado"];
-											print_r($producto);
-											//Buscamos el producto en inventario
-											$tablaInventario = $this->tablaInventario;
-											$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto =?",$producto);
-											$rowInventario = $tablaInventario->fetchRow($select);
-											print_r("<br />");
-											print_r("El producto en Inventario es:");
-											print_r("$select");
-											print_r("<br />");
-											//Procedemos hacer la resta del producto en inventario//checaremos la equivalencia
-											$can = $rowProductoCompuesto["cantidad"];
-											print_r("<br />");
-											print_r("La cantidad a restar es :");
-											print_r($can);
-											print_r("<br />");
-											//Restamos 
-											$cant = $rowInventario["existenciaReal"] - $can;
-											print_r("<br />");
-											print_r("Cantidad :");
-											print_r($cant);
-											print_r("<br />");
-											if($cant <> 0){
-												//Seleccionamos el tipo de Inventario(primeras entradas, primeras salidas en capas)
-												$tablaCapas = $this->tablaCapas;
-												$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto =?",$rowInventario["idProducto"])->order("fechaEntrada ASC");
-												$rowCapas = $tablaCapas->fetchRow($select);
-												print_r("<br />");
-												print_r("El producto en Capas:");
-												print_r("$select");
-												print_r("<br />");
-												//Resta la cantidad en capas
-												$canCapas = $rowCapas["cantidad"] - $can;
-												print_r("<br />");
-												print_r("La cantidad en capas es:");
-												print_r($canCapas);
-												print_r("<br />");
-												//Eliminamos o restamos la capa
-												if($canCapas <=0){
-													print_r("La cantidad en capas es < a 0, entonces se elimina la capa");
-												}else{
-													$rowCapas["cantidad"]= $canCapas;
-													$rowCapas->save();
-												}
-												//Resta la cantidada en existencias
-												$tablaInventario = $this->tablaInventario;
-												$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto =?",$rowInventario["idProducto"]);
-												$rowInventario = $tablaInventario->fetchRow($select);
-												print_r("<br />");
-												print_r("El producto en Capas:");
-												print_r("$select");
-												print_r("<br />");
-												$rowInventario["existencia"]= $canCapas;
-												$rowInventario["existenciaReal"]= $canCapas;
-												$rowInventario["fecha"] = date("Y-m-d H:i:s", time());
-												$rowInventario->save();
-												
-											}
-											
+											print_r("Actualizar es:");
+											//$producto = $rowProductoCompuesto["productoEnlazado"];
+											//print_r($producto);
 										}
 									}
 								}//foreach productoEnlazado

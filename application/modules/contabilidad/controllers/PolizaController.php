@@ -17,10 +17,12 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				try{
-					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					/*$this->polizaDAO->generaGruposFacturaCliente($datos);
 					$this->polizaDAO->generacxc($datos);
 					$this->polizaDAO->generaGruposFacturaProveedor($datos);
-					$this->polizaDAO->generacxp($datos);
+					$this->polizaDAO->generacxp($datos);*/
+					$this->polizaDAO->generacxp_Fo($datos);
+					$this->polizaDAO->generacxc_Fo($datos);
 				}catch(exception $ex){
 					
 				}
