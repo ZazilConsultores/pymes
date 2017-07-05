@@ -66,7 +66,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$tablaMultiplos = $this->tablaMultiplos;
 			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 			$rowMultiplo = $tablaMultiplos->fetchRow($select);
-			print_r("$select");	 
+			//print_r("$select");	 
 			
 			if(!is_null($rowMultiplo)){
 				//====================Operaciones para convertir unidad minima====================================================== 
@@ -98,9 +98,6 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			}else{
 				echo "Multiplo Incorrecto";
 			}
-			
-			
-			
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -140,26 +137,25 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			}
 			
 			$mCuentasxp = array(
-					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-					'idSucursal'=>$encabezado['idSucursal'],
-					'idCoP'=>$encabezado['idCoP'],
-					//'idFactura'=>$encabezado['idFactura'],
-					'idBanco'=>$formaPago['idBanco'],
-					'idDivisa'=>$formaPago['idDivisa'],
-					'numeroFolio'=>$encabezado['numFolio'],
-					'numeroReferencia'=>"",
-					'secuencial'=>$secuencial,
-					'estatus'=>"A",
-					'fechaPago'=>$stringIni,
-					'fecha'=>date('Y-m-d h:i:s', time()),
-					'formaLiquidar'=>$formaPago['formaLiquidar'],
-					'conceptoPago'=>$formaPago['conceptoPago'],
-					'subTotal'=>0,
-					'total'=>$productos[0]['importe']
-				);   
-				
-				//print_r($mCuentasxp);
-				$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+				'idSucursal'=>$encabezado['idSucursal'],
+				'idCoP'=>$encabezado['idCoP'],
+				//'idFactura'=>$encabezado['idFactura'],
+				'idBanco'=>$formaPago['idBanco'],
+				'idDivisa'=>$formaPago['idDivisa'],
+				'numeroFolio'=>$encabezado['numFolio'],
+				'numeroReferencia'=>"",
+				'secuencial'=>$secuencial,
+				'estatus'=>"A",
+				'fechaPago'=>$stringIni,
+				'fecha'=>date('Y-m-d h:i:s', time()),
+				'formaLiquidar'=>$formaPago['formaLiquidar'],
+				'conceptoPago'=>$formaPago['conceptoPago'],
+				'subTotal'=>0,
+				'total'=>$productos[0]['importe']
+			);   
+			//print_r($mCuentasxp);
+			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
 			
 			//========================Realiza Movimiento en banco===================================	
 		}catch(exception $ex){

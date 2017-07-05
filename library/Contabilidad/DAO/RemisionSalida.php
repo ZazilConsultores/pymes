@@ -41,8 +41,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	public function restarProducto(array $encabezado, $producto, $formaPago){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dbAdapter->beginTransaction();	
-		//$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
-		//$bd->beginTransaction();
+		
 		
 		
 		$date = new Zend_Date();
@@ -125,10 +124,9 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 					'idCoP'=>$encabezado['idCoP'],
 					'idBanco'=>$formaPago['idBanco'],
 					'idDivisa'=>$formaPago['idDivisa'],
-					'idsImpuestos'=>0,
 					'numeroFolio'=>$encabezado['numFolio'],
 					'secuencial'=>$secuencial,
-					'fechaCaptura'=>$date->toString ('yyyy-MM-dd'),
+					'fecha'=>$date->toString ('yyyy-MM-dd'),
 					'fechaPago'=>$stringIni,
 					'estatus'=>"A",
 					'numeroReferencia'=>0,
@@ -172,7 +170,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			print_r("<br />");
 			//print_r("$select");
 			//print_r("<br />");
-			$cant =  $rowCapas->cantidad - $cantidad;
+			$cant =  $rowCapas["cantidad"] - $cantidad;
 			//print_r("Cant <br />");
 			print_r("<br />");
 			//print_r("<Cantidad en Capas />");
@@ -212,7 +210,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 					'numerofolio'=>$encabezado['numFolio'],
 					'idProducto'=>$producto['descripcion'],
 					'idDivisa'=>1,
-					'secuencialEntrada'=>$row['secuencial'],
+					'secuencialEntrada'=>1,
 					'fechaEntrada'=>$row['fechaEntrada'],
 					'secuencialSalida'=>$mMovtos['secuencial'],
 					'fechaSalida'=>$stringIni,

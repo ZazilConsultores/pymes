@@ -79,8 +79,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function remisionAction()
     {
-        // action body
-		$request = $this->getRequest();
+    	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_AgregarRemisionProveedor;
 		$this->view->formulario = $formulario;	
 		if($request->isPost()){
@@ -94,24 +93,21 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				//print_r('<br />');
 				$contador=0;
 				try{
-				$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
-				//$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
-				//$editaBanco = $this->remisionEntradaDAO->editarBanco($formaPago, $productos); 
-				foreach ($productos as $producto){
-					
-					$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
-					$contador++;
-				}
+					$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
+					//$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
+					//$editaBanco = $this->remisionEntradaDAO->editarBanco($formaPago, $productos); 
+					foreach ($productos as $producto){
+						$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
+						$contador++;
+					}
 					//$suma = $this->notaEntradaDAO->suma($encabezado, $producto);
 					$this->view->messageSuccess = "Remision: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
-					}catch(Util_Exception_BussinessException $ex){
-						$this->view->messageFail = $ex->getMessage();
-					}
-					
+				}catch(Util_Exception_BussinessException $ex){
+					$this->view->messageFail = $ex->getMessage();
 				}
-			
+					
 			}
-		
+		}
     }
 
     public function facturaAction()

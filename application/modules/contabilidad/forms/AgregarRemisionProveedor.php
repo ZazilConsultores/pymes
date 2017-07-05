@@ -20,12 +20,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
         
         $subEncabezado = new Zend_Form_SubForm;
 		$subEncabezado->setLegend("Nueva Remisión Proveedor");
-		
-		//$tipoInventario = Zend_Registry::get("tipoInventario");	
 	
-		/*$eTipoInventario = new Zend_Form_Element_hidden("tipoInventario");
-		$eTipoInventario->setValue("PEPS");*/
-		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de Folio: ');
 		$eNumeroFolio->setAttrib("class", "form-control");
@@ -155,7 +150,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		
 		foreach($bancos as $banco)
 		{
-			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getCuenta());
+			$eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
 		}
 			
 		$eSubmit = new Zend_Form_Element_Submit("submit");

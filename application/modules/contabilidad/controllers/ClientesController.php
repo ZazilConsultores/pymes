@@ -93,7 +93,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				print_r('<br />');
 				$contador=0;
 				$remisionSalidaDAO->editarBanco($formaPago, $productos);
-				/*foreach ($productos as $producto){
+				foreach ($productos as $producto){
 					try{
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
 						$contador++;
@@ -102,7 +102,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 						$this->view->messageFail = $ex->getMessage();
 					}
 					
-				}*/
+				}
 			}else{
 				print_r("formulario no valido <br />");
 			}							
