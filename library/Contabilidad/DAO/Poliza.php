@@ -1450,7 +1450,7 @@
 									$rowBanco = $tablaBancos->fetchRow($select);
 									$tipoBanco = $rowBanco["tipo"];
 									$posicion = 1;
-								default:
+									break;
 								case 'PRO':
 									$tablaProveedores = $this->tablaProveedores;
 									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
