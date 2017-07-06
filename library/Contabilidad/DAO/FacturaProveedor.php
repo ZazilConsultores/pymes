@@ -460,4 +460,84 @@
 			$dbAdapter->rollBack();
 		}
 	}
+
+	public function creaFacturaProveedor(array $encabezado, $producto, $importe){
+		//Seleccionamos el producto para su clasificacion, Ver si la validación del producto se puede hacer desde jquery
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["descripcion"]);
+		$rowProducto = $tablaProducto->fetchRow($select);
+		print_r("$select");
+		$tablaInventario = $this->tablaInventario;
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?", $rowProducto["idProducto"]);
+		$rowInventario = $tablaInventario->fetchRow($select);
+		print_r("<br />");
+		print_r("$select");
+		print_r("<br />");
+		if(!is_null($rowInventario)){
+			$claveProducto = substr($rowProducto->claveProducto, 0,2);
+			print_r($claveProducto);
+			print_r("<br />");
+			switch($claveProducto){
+				case 'PT':
+					print_r("<br />");	
+					print_r("Obtine producto PT");
+					$tablaProdComp = $this->tablaProductoCompuesto;
+					$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto=?",$producto["descripcion"]);
+					$rowsProductoComp= $tablaProdComp->fetchAll($select);
+					print_r("<br />");
+					print_r("$select");
+					print_r("<br />");
+					//Si no esta vacio, recorremos para ver si esta compuesto por más paquetes
+					if(!is_null($rowsProductoComp)){
+						foreach($rowsProductoComp as $rowProductoComp){
+							$tablaProdComp = $this->tablaProductoCompuesto;
+							$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado =?",$rowProductoComp["productoEnlazado"]);
+							$rowsProductoEnlazado= $tablaProdComp->fetchAll($select);
+							print_r("El producto PT esta compuesto por:");
+							print_r("<br />");
+							print_r("$select");
+							print_r("<br />");
+							//Si no esta vacio, recorremos para ver si esta inventario
+							if(!is_null($rowsProductoEnlazado)){
+								foreach($rowsProductoEnlazado as $rowProductoEnlazado){
+									$tablaProdComp = $this->tablaProductoCompuesto;
+									$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto =?",$rowProductoEnlazado["productoEnlazado"]);
+									$rowsProductoCompuesto= $tablaProdComp->fetchAll($select);
+									print_r("<br />");
+									print_r("El producto compuesto esta compuesto por el producto");
+									print_r("$select");
+									print_r("<br />");
+									//Obtenemos los productos del productoCompuesto
+									if(!is_null($rowsProductoCompuesto)){
+										foreach($rowsProductoCompuesto as $rowProductoCompuesto){
+											print_r("Actualizar es:");
+											//$producto = $rowProductoCompuesto["productoEnlazado"];
+											//print_r($producto);
+										}
+									}
+								}//foreach productoEnlazado
+							}//if not null $owsProductoEnlazado
+						}//foreach $rowsProductoComp
+					}	
+				break;
+				case 'VS':
+					//No actualizamos en ninguna 
+					print_r("<br />");
+					print_r("Varios Servicio");
+				break;
+				case 'SV':
+					//No actualizamos en ninguna 
+					print_r("<br />");
+					print_r("Servicio");
+				break;
+				default:
+					print_r("<br />");
+					print_r("Producto Normal");
+					//Creamos o actualizamos Inventario, Cardex, Capas
+				
+			}
+		}	
+		
+	}
+	
 	}

@@ -132,7 +132,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				print_r($importe);
 				print_r("<br />");
 				$contador=0;
-				try{
+				/*try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);	
 						 	
 					foreach ($productos as $producto){
@@ -143,7 +143,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					$this->view->messageSuccess = "Factura: <strong>" .$guardaFactura["numeroFactura"] . " </strong> guardada exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;
-				}
+				}*/
+				foreach ($productos as $producto){
+					$suma = $this->facturaDAO->creaFacturaProveedor($encabezado, $producto, $importe);
+				}	
 			}
 			
 		}
