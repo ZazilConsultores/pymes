@@ -74,21 +74,19 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$vendedoresDAO = new Sistema_DAO_Vendedores;
 		$vendedores = $vendedoresDAO->obtenerVendedores();
 		
-		$eVendedor = new Zend_Form_Element_Select('idVendedor');
+		/*$eVendedor = new Zend_Form_Element_Select('idVendedor');
 		$eVendedor->setLabel('Seleccionar Vendedor:');
 		$eVendedor->setAttrib("class", "form-control");
 		
 		foreach ($vendedores as $fila) {
 			$eVendedor->addMultiOption($fila->getIdVendedor(), $fila->getNombre());
-		}
+		}*/
 		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
 		$eFecha->setAttrib("required","Seleccionar fecha");
-	
-		
-	
+
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
@@ -154,7 +152,9 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eProducto,$eVendedor));
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProyecto,$eCliente,$eProducto));
+		$subEncabezado->setElementDecorators($decoratorsElemento);
+		$subEncabezado->setDecorators($decoratorsPresentacion);
 		$subFormaPago->addElements(array($eBanco,$eDivisa,$eConceptoPago, $eFormaPago,$eImportePago));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);

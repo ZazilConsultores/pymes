@@ -140,7 +140,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 				$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 			
 		//======================Resta en capas, inventario y crea Cardex============================================================================*//
-		$tablaMultiplos = $this->tablaMultiplos;
+		/*$tablaMultiplos = $this->tablaMultiplos;
 		$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 		$row = $tablaMultiplos->fetchRow($select); 
 		
@@ -204,7 +204,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		//->where("fechaEntrada )
 		->order("fechaEntrada ASC");
 		$row = $tablaCapas->fetchRow($select);
-		
+		print_r("$select");
 		$mCardex = array(
 					'idSucursal'=>$encabezado['idSucursal'],
 					'numerofolio'=>$encabezado['numFolio'],
@@ -227,7 +227,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			$tablaInventario = $this->tablaInventario;
 			$where = $tablaInventario->getAdapter()->quoteInto("idProducto=?", $producto['descripcion']);
 			$tablaInventario->update(array('existencia'=>$restaCantidad, 'existenciaReal'=>$restaCantidad),$where);
-		}
+		}*/
 
 			$dbAdapter->commit();
 		}catch(exception $ex){

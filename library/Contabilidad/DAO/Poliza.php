@@ -1226,8 +1226,13 @@
 									$tablaBancos = $this->tablaBancos;
 									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 									$rowBanco = $tablaBancos->fetchRow($select);
+									print_r("$select");
+									if($rowBanco["tipo"] === "CA"){
+										print_r("El banco es operacion caja");
+									}
 									$subCta = $rowBanco["cuentaContable"];
 									$posicion = 1;
+									
 									break;
 								case 'CLT':
 									$tablaClientes = $this->tablaClientes;
@@ -1443,9 +1448,9 @@
 									$tablaBancos = $this->tablaBancos;
 									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 									$rowBanco = $tablaBancos->fetchRow($select);
-									$subCta = $rowBanco["cuentaContable"];
+									$tipoBanco = $rowBanco["tipo"];
 									$posicion = 1;
-									break;
+								default:
 								case 'PRO':
 									$tablaProveedores = $this->tablaProveedores;
 									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
@@ -1457,6 +1462,40 @@
 									$subCta = "0000";
 									$posicion = 0;
 								}
+								//BANCO
+								/*if($rowBanco["tipo"] == "CA"){
+										print_r("Es operacion caja");
+										$posicion = 101;
+										print_r("<br />");
+										print_r($posicion);
+										$subCta = $rowBanco["cuentaContable"];
+									}else{
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}*/
+									//Buscamos tipo Operacion de banco
+									print_r($tipoBanco);
+									print_r($tipoBanco);
+									print_r("<br />");		
+									/*switch($tipoBanco){
+									case 'OP':
+										//$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									break;
+									case 'CA':
+									$posicion = 101;
+									//$subCta = $rowBanco["cuentaContable"];
+								default:
+									//$subCta = "0000";
+									$posicion = 0;
+								}*/
+									if($tipoBanco == "CA" ){
+											$cta = 101;
+											$subCta = $rowBanco["cuentaContable"];
+										}else{
+											$cta = $rowGuiaContable["cta"];
+											$subCta  =  $rowBanco["cuentaContable"];
+										}
 									
 										$mascara= Zend_Registry::get("mascara");
 										print_r($mascara);
@@ -1471,6 +1510,9 @@
 											if($posicion == 1){
 												$armaSub1 = $subCta;
 												print_r($armaSub1);
+											/*}elseif($nivel1 == 101){
+												$armaSub1 = $rowGuiaContable["sub1"];
+												print_r($armaSub1);*/
 											}else{
 												$armaSub1 = $rowGuiaContable["sub1"];
 												print_r($armaSub1);
@@ -1513,6 +1555,7 @@
 												print_r($armaSub5);
 											}						
 										}
+										
 										//Asignamos secuencial
 										$secuencial = 0;	
 										$tablaPoliza = $this->tablaPoliza;
@@ -1540,7 +1583,7 @@
 										'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
 										'idSucursal'=>$datos['idSucursal'],
 										'idCoP'=>$idCoP,
-										'cta'=>$rowGuiaContable["cta"],
+										'cta'=>$cta,
 										'sub1'=>$armaSub1,
 										'sub2'=>$armaSub2,
 										'sub3'=>$armaSub3,
@@ -1899,9 +1942,9 @@
 							$numMov = $rowGrupoRCXC->numeroFolio;
 							$fecha = $rowGrupoRCXC->fecha;
 							$iva = 0;
-							$subTotal = $rowGrupoRCXP->subtotal;
-							$total = $rowGrupoRCXP->total;
-							$consec = $rowGrupoRCXP->secuencial;
+							$subTotal = $rowGrupoRCXC->subtotal;
+							$total = $rowGrupoRCXC->total;
+							$consec = $rowGrupoRCXC->secuencial;
 							//Genera_Poliza_P_R. Seleccionamos en la guia contable el modulo y el tipo
 							$tablaGuiaContable = $this->tablaGuiaContable;
 							$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?", $tipo);
@@ -1910,7 +1953,7 @@
 							//Comprobamos que esta el modulo y el tipo en guia contable
 							if(!is_null($rowsGuiaContable)){
 								foreach($rowsGuiaContable as $rowGuiaContable){
-										$origen =$rowGuiaContable["origen"]; //Indica el importe corresponidente a cada registro
+										$origen = $rowGuiaContable["origen"]; //Indica el importe corresponidente a cada registro
 										switch($origen){
 											case 'S':
 												$importe = $total;
@@ -1929,10 +1972,10 @@
 											break;
 											case 'T':
 												$importe = $total;
-												if($tipo == 5 && $rowsGuiaContable->cargo == "X"){
+												if($tipo == 5 && $rowGuiaContable->cargo == "X"){
 													$origen = "PRO";
 												}else{
-													if($tipo ==2 || $tipo == 1 && $rowsGuiaContable->cargo == "X"){
+													if($tipo ==2 || $tipo == 1 && $rowGuiaContable->cargo == "X"){
 														$origen = "SIN";
 													}else{
 														printf("El origen es Ban");
@@ -1952,7 +1995,7 @@
 											print_r($tipoES);
 										}//Cierra tipoES
 										//asigna abono o cargo
-										if($rowGuiaContable["cargo"]== "X"){
+										if($rowGuiaContable["cargo"] == "X"){
 											$cargo = $importe;
 											print_r("El cargo, no esta vacio");
 											print_r($cargo);
@@ -1986,6 +2029,7 @@
 												if(!is_null($rowBanco)){
 													if($rowBanco->tipo == "CA"){
 														$desPol = "CAJA";
+													
 													}else{
 														$desPol = $rowGuiaContable->descripcion;
 													}
