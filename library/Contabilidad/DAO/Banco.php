@@ -102,8 +102,7 @@
 			$rowsBancos = $tableBanco->fetchAll($select)->toArray();
 			return $rowsBancos;
 		}
-		
-		
+
 		//return $rowsBancos;
 		
 		}

@@ -11,9 +11,9 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		);
 		
 		$decoratorsElemento = array(
-		'ViewHelper',
-		array(array('element'=>'Htmltag'),array('tag'=>'td')),
-		array('label',array('tag'=>'td')),
+			'ViewHelper',
+			array(array('element'=>'Htmltag'),array('tag'=>'td')),
+			array('label',array('tag'=>'td')),
 		array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
 		);
 		

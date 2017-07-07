@@ -20,11 +20,10 @@
 		private $tablaUnidad;
 		private $tablaImpuestoProductos;
 		private $tablaFacturaImpuesto;
+		private $tablaProductoCompuesto;
 		
 		public function __construct() {
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			
-			
 			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
 			$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
@@ -33,13 +32,13 @@
 			$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
 			$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
 			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+			$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
 			$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
 			$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
 			$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
 			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
-	
 		}
 		
 			
@@ -445,7 +444,7 @@
 			$dbAdapter->insert("Inventario",$mInventario);
 		
 		}
-			$dbAdapter->commit();
+		$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -461,33 +460,38 @@
 		}
 	}
 
-	public function creaFacturaProveedor(array $encabezado, $producto, $importe){
-		//Seleccionamos el producto para su clasificacion, Ver si la validación del producto se puede hacer desde jquery
-		$tablaProducto = $this->tablaProducto;
-		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["descripcion"]);
-		$rowProducto = $tablaProducto->fetchRow($select);
-		print_r("$select");
-		$tablaInventario = $this->tablaInventario;
-		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?", $rowProducto["idProducto"]);
-		$rowInventario = $tablaInventario->fetchRow($select);
-		print_r("<br />");
-		print_r("$select");
-		print_r("<br />");
-		if(!is_null($rowInventario)){
-			$claveProducto = substr($rowProducto->claveProducto, 0,2);
-			print_r($claveProducto);
-			print_r("<br />");
-			switch($claveProducto){
-				case 'PT':
+	public function actulizaProducto(array $encabezado, $formaPago, $producto, $importe){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();	
+		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
+		$stringIni = $fechaInicio->toString('YY-mm-dd');
+		try{
+			//Seleccionamos el producto para su clasificacion, Ver si la validación del producto se puede hacer desde jquery
+			$tablaProducto = $this->tablaProducto;
+			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["descripcion"]);
+			$rowProducto = $tablaProducto->fetchRow($select);
+			print_r("$select");
+			//Convertimos la unidad del producto
+			$tablaMultiplos = $this->tablaMultiplos;
+			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+			$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+			print_r("$select");
+			$cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
+			$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
+			if(!is_null($rowProducto && !is_null($rowMultiplo))){
+				$claveProducto = substr($rowProducto->claveProducto, 0,2);
+				print_r($claveProducto);
+				print_r("<br />");
+				switch($claveProducto){
+					case 'PT':
 					print_r("<br />");	
-					print_r("Obtine producto PT");
 					$tablaProdComp = $this->tablaProductoCompuesto;
 					$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto=?",$producto["descripcion"]);
-					$rowsProductoComp= $tablaProdComp->fetchAll($select);
+					$rowsProductoComp = $tablaProdComp->fetchAll($select);
 					print_r("<br />");
 					print_r("$select");
 					print_r("<br />");
-					//Si no esta vacio, recorremos para ver si esta compuesto por más paquetes
+					//recorremos para ver si esta compuesto por más paquetes
 					if(!is_null($rowsProductoComp)){
 						foreach($rowsProductoComp as $rowProductoComp){
 							$tablaProdComp = $this->tablaProductoCompuesto;
@@ -504,40 +508,165 @@
 									$select = $tablaProdComp->select()->from($tablaProdComp)->where("idProducto =?",$rowProductoEnlazado["productoEnlazado"]);
 									$rowsProductoCompuesto= $tablaProdComp->fetchAll($select);
 									print_r("<br />");
-									print_r("El producto compuesto esta compuesto por el producto");
 									print_r("$select");
 									print_r("<br />");
-									//Obtenemos los productos del productoCompuesto
-									if(!is_null($rowsProductoCompuesto)){
-										foreach($rowsProductoCompuesto as $rowProductoCompuesto){
-											print_r("Actualizar es:");
-											//$producto = $rowProductoCompuesto["productoEnlazado"];
-											//print_r($producto);
-										}
-									}
 								}//foreach productoEnlazado
 							}//if not null $owsProductoEnlazado
 						}//foreach $rowsProductoComp
 					}	
 				break;
 				case 'VS':
-					//No actualizamos en ninguna 
+					//No registramos  en Capas, si no existe en Inventario lo registra solo una vez, pero nunca actuliaza  
 					print_r("<br />");
-					print_r("Varios Servicio");
+					print_r("Varios Servicios");
+					$tablaInventario = $this->tablaInventario;
+					$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+					$rowInventario = $tablaInventario->fetchRow($select);
+					$costoCliente = $rowInventario["costoUnitario"] * ($rowInventario["porcentajeGanancia"] / 100) + $rowInventario["costoUnitario"];
+					print_r("<br />");
+					print_r("$select");
+					if(is_null($rowInventario)){
+						$mInventario = array(
+								'idProducto'=>$producto['descripcion'],
+								'idDivisa'=>$formaPago["idDivisa"],
+								'idSucursal'=>$encabezado['idSucursal'],
+								'existencia'=>$cantidad,
+								'apartado'=>'0',
+								'existenciaReal'=>$cantidad,
+								'maximo'=>'0',
+								'minimo'=>'0',
+								'fecha'=>$stringIni,
+								'costoUnitario'=>$precioUnitario,
+								'porcentajeGanancia'=>'0',
+								'cantidadGanancia'=>'0',
+								'costoCliente'=> $costoCliente
+							);
+							$dbAdapter->insert("Inventario",$mInventario);
+					}
 				break;
 				case 'SV':
-					//No actualizamos en ninguna 
+					//No registramos  en Capas, si no existe en Inventario lo registra, si ya existe actualiza la fecha y costos   
 					print_r("<br />");
 					print_r("Servicio");
+					print_r("<br />");
+					print_r("Varios Servicios");
+					$tablaInventario = $this->tablaInventario;
+					$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+					$rowInventario = $tablaInventario->fetchRow($select);
+					$costoCliente = $rowInventario["costoUnitario"] * ($rowInventario["porcentajeGanancia"] / 100) + $rowInventario["costoUnitario"];
+					print_r("<br />");
+					print_r("$select");
+					if(is_null($rowInventario)){
+						$mInventario = array(
+								'idProducto'=>$producto['descripcion'],
+								'idDivisa'=>$formaPago["idDivisa"],
+								'idSucursal'=>$encabezado['idSucursal'],
+								'existencia'=>$cantidad,
+								'apartado'=>'0',
+								'existenciaReal'=>$cantidad,
+								'maximo'=>'0',
+								'minimo'=>'0',
+								'fecha'=>$stringIni,
+								'costoUnitario'=>$precioUnitario,
+								'porcentajeGanancia'=>'0',
+								'cantidadGanancia'=>'0',
+								'costoCliente'=> $costoCliente
+							);
+							$dbAdapter->insert("Inventario",$mInventario);
+					}else{
+						$rowInventario->existencia = $cantidad;
+						$rowInventario->existenciaReal = $cantidad;
+						$rowInventario->fecha = date('Y-m-d h:i:s', time());
+						$rowInventario->costoUnitario = $precioUnitario;
+						$rowInventario->costoCliente = $costoCliente;
+						$rowInventario->save();
+					}
 				break;
 				default:
 					print_r("<br />");
 					print_r("Producto Normal");
-					//Creamos o actualizamos Inventario, Cardex, Capas
-				
+					//Creamos o actualizamos Capas y Inventario
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("numeroFolio=?",$encabezado['numeroFactura'])->where("fechaEntrada=?", $stringIni)->order("secuencial DESC");
+					print_r("$select");
+					$rowCapas = $tablaCapas->fetchRow($select); 
+					if(!is_null($rowCapas)){
+						$secuencial= $rowCapas->secuencial +1;
+					}else{
+						$secuencial = 1;	
+					}
+					//Convertimos la unidad del producto
+					/*$tablaMultiplos = $this->tablaMultiplos;
+					$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+					$rowMultiplo = $tablaMultiplos->fetchRow($select); 
+					print_r("$select");*/
+					if(!is_null($rowMultiplo)){	
+		 				$cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
+						$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
+						$mCapas = array(
+							'idProducto' => $producto['descripcion'],
+							'idDivisa'=>$formaPago["idDivisa"],
+							'idSucursal'=>$encabezado['idSucursal'],
+							'numeroFolio'=>$encabezado['numeroFactura'],
+							'secuencial'=>$secuencial,
+							'cantidad'=>$cantidad,
+							'fechaEntrada'=>$stringIni,
+							'costoUnitario'=>$precioUnitario
+						);
+						//print_r($mCapas);
+						$dbAdapter->insert("Capas", $mCapas);
+						//Movimiento en Inventario
+						$tablaInventario = $this->tablaInventario;
+						$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+						$rowInventario = $tablaInventario->fetchRow($select);
+						$cantidadI = $rowInventario["existencia"] + $cantidad;
+						$costoCliente = $rowInventario["costoUnitario"] * ($rowInventario["porcentajeGanancia"] / 100) + $rowInventario["costoUnitario"];
+						print_r("<br />");
+						print_r("$select");
+						if(!is_null($rowInventario)){
+							//Sumamos en existencia y existenciaReal
+							$fecha = date('Y-m-d h:i:s', time());
+							$rowInventario->existencia = $cantidadI;
+							$rowInventario->existenciaReal = $cantidadI;
+							$rowInventario->fecha = $fecha;
+							$rowInventario->costoUnitario = $precioUnitario;
+							$rowInventario->costoCliente = $costoCliente;
+							$rowInventario->save();
+						}else{
+							//Agregamos el registro
+							$mInventario = array(
+								'idProducto'=>$producto['descripcion'],
+								'idDivisa'=>$formaPago["idDivisa"],
+								'idSucursal'=>$encabezado['idSucursal'],
+								'existencia'=>$cantidadI,
+								'apartado'=>'0',
+								'existenciaReal'=>$cantidadI,
+								'maximo'=>'0',
+								'minimo'=>'0',
+								'fecha'=>$stringIni,
+								'costoUnitario'=>$precioUnitario,
+								'porcentajeGanancia'=>'0',
+								'cantidadGanancia'=>'0',
+								'costoCliente'=> $costoCliente
+							);
+							$dbAdapter->insert("Inventario",$mInventario);
+						}
+					}//Existencia de Multiplo	
 			}
-		}	
-		
+		}//if de producto y multiplo	
+		$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
+		}
 	}
-	
-	}
+}

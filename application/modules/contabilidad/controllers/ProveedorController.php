@@ -120,16 +120,16 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
-				print_r($encabezado);
+				//print_r($encabezado);
 				print_r("<br />");
 				$formaPago = $datos[1];
-				print_r($formaPago);
+				//print_r($formaPago);
 				print_r("<br />");
 				$productos = json_decode($encabezado['productos'], TRUE);
-				print_r($productos);
+				//print_r($productos);
 				print_r("<br />");
 				$importe = json_decode($formaPago['importes'], TRUE);
-				print_r($importe);
+				//print_r($importe);
 				print_r("<br />");
 				$contador=0;
 				/*try{
@@ -145,7 +145,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;
 				}*/
 				foreach ($productos as $producto){
-					$suma = $this->facturaDAO->creaFacturaProveedor($encabezado, $producto, $importe);
+					$suma = $this->facturaDAO->actulizaProducto($encabezado,$formaPago, $producto, $importe);
 				}	
 			}
 			
