@@ -116,7 +116,6 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 	public function guardaPago (array $encabezado, $formaPago,$productos){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		//$dbAdapter->beginTransaction();
-		//$fecha = date('Y-m-d h:i:s', time());
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 	
@@ -156,8 +155,6 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			);   
 			//print_r($mCuentasxp);
 			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
-			
-			//========================Realiza Movimiento en banco===================================	
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -174,21 +171,14 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 		
 	}
 	
-	public function editarBanco($formaPago ,$productos){
+	public function saldoBanco($formaPago ,$productos){
 		$tablaBanco = $this->tablaBanco;
-			//$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco =?", $formaPago['idBanco']);
-			$where = $tablaBanco->getAdapter()->quoteInto("idBanco = ?", $formaPago['idBanco']);
-			$rowBanco = $tablaBanco->fetchRow($where);
-		
-			//if(!is_null($rowBanco)){
-				print_r("La consulta no esta vacia");
-				$importePago = $rowBanco->saldo - $productos[0]['importe'];
-				print_r("<br />");
-				print_r($importePago);
-				//$tablaBanco->update(array('saldo'=> $importePago), $where);
-				$tablaBanco->update(array('saldo'=> $importePago), $where);
-			//}
-			
+		$where = $tablaBanco->getAdapter()->quoteInto("idBanco = ?", $formaPago['idBanco']);
+		$rowBanco = $tablaBanco->fetchRow($where);
+		$importePago = $rowBanco->saldo - $productos[0]['importe'];
+		print_r("<br />");
+		print_r($importePago);
+		$tablaBanco->update(array('saldo'=> $importePago), $where);	
 	}	
 	
 }

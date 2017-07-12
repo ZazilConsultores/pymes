@@ -85,7 +85,7 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 	
 	public function crearProductoTerminado(array $datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$dbAdapter->beginTransaction();
+		//$dbAdapter->beginTransaction();
 		
 		try{
 			//Realiza costoUnitatio por producto
@@ -97,7 +97,7 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 				$tablaInventario = $this->tablaInventario;
 				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto = ?",$datos[0]['productoEnlazado']);
 				$rowInventario = $tablaInventario->fetchRow($select);
-				//print_r("$select");
+				print_r("$select");
 				if(!is_null($rowInventario)){
 					//print_r("Existe producto en inventario");
 					$costoUnitario = $rowInventario->costoUnitario * $rowMultiplo->cantidad;

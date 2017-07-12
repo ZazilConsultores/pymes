@@ -7,8 +7,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     private $remisionEntradaDAO = null;
     private $facturaDAO = null;
     private $pagoProveedor = null;
-	
-	
 
     public function init()
     {
@@ -87,20 +85,16 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
-				//print_r($encabezado);
 				$formaPago =$datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				//print_r('<br />');
 				$contador=0;
 				try{
 					$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
-					//$suma = $this->notaEntradaDAO->suma($encabezado, $productos);
-					//$editaBanco = $this->remisionEntradaDAO->editarBanco($formaPago, $productos); 
+					$saldoBanco = $this->remisionEntradaDAO->saldoBanco($formaPago, $productos);
 					foreach ($productos as $producto){
 						$remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
 						$contador++;
 					}
-					//$suma = $this->notaEntradaDAO->suma($encabezado, $producto);
 					$this->view->messageSuccess = "Remision: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
@@ -146,6 +140,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				}*/
 				foreach ($productos as $producto){
 					$suma = $this->facturaDAO->actulizaProducto($encabezado,$formaPago, $producto, $importe);
+					$actualizaPT = $this->facturaDAO->actulizaCostoProducto($encabezado, $formaPago, $producto, $importe);
 				}	
 			}
 			
@@ -155,7 +150,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function pagosAction()
     {
-		 $request = $this->getRequest();
+		$request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;	
 		if($request->isGet()){
