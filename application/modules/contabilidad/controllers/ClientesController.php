@@ -56,11 +56,11 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				$contador=0;
+				$contador = 0;
 				foreach ($productos as $producto){
 					try{
 						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
-						$resta  = $this->notaSalidaDAO->resta($encabezado, $producto);
+						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
 						$creaCardex = $this->notaSalidaDAO->creaCardex($encabezado, $producto);
 						$contador++;
 					}catch(Util_Exception_BussinessException $ex){

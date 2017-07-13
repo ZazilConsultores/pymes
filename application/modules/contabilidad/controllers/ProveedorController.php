@@ -58,8 +58,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$encabezado = $datos[0];
-				//print_r($encabezado);
+				$encabezado = $datos[0];				
 				$productos = json_decode($encabezado['productos'], TRUE);
 				try{
 					$notaentrada = $this->notaEntradaDAO->agregarProducto($encabezado, $productos);
