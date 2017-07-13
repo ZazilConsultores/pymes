@@ -72,7 +72,6 @@
 						$importePagado = $formaPago['pagos'];
 						$saldo = $importe[0]['total']- $formaPago['pagos'];
 					}	
-					
 					//Guarda Movimiento en tabla factura
 					$mFactura = array(
 						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
@@ -95,8 +94,7 @@
 					$dbAdapter->insert("Factura", $mFactura);
 					//Obtine el ultimo id en tabla factura
 					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
-					print_r($idFactura);
-					//Guarda em facturaImpuesto
+					//Guarda en facturaImpuesto
 					$mfImpuesto = array(
 						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 						'idFactura'=>$idFactura,
@@ -104,7 +102,6 @@
 						'importe'=>$importe[0]['iva']
 							
 					);
-					//print_r($mfImpuesto);
 					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
 					if(($formaPago['pagada'])==="1"){
@@ -126,9 +123,16 @@
 							'subTotal'=>$importe[0]['subTotal'],
 							'total'=>$importe[0]['total']	
 						);
-						//print_r($mCuentasxp);
 						$dbAdapter->insert("Cuentasxp", $mCuentasxp);
-						//Si esta pagada, actualiza saldo en banco
+						//Guarda el impuesto de pago facturaImpuesto
+						$mfImpuesto = array(
+							'idTipoMovimiento'=>15,
+							'idFactura'=>$idFactura,
+							'idImpuesto'=>4, //Iva
+							'importe'=>$importe[0]['iva']	
+						);
+						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+						//Solo si esta pagada, actualiza saldo Banco
 						$tablaBanco = $this->tablaBanco;
 						$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
 						$rowBanco = $tablaBanco->fetchRow($select);
@@ -137,6 +141,17 @@
 						print_r("<br />");
 						$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);
 						$tablaBanco->update(array ("saldo" => $saldo), $where);	
+						
+					}else{
+						//Actualizamos el saldo del proveedor
+						$tablaProv = $this->tablaProveedor;
+						$select = $tablaProv->select()->from($tablaProv)->where("idProveedores = ?",$encabezado['idCoP']);
+						$rowProv = $tablaProv->fetchRow($select);
+						// print_r($expression);
+						if(!is_null($rowProv)){
+							$rowProv->saldo = $importe[0]['total'];
+							$rowProv->save();
+						}
 					}	
 				}		
 			$dbAdapter->commit();
