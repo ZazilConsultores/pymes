@@ -9,9 +9,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     private $facturaDAO = null;
     private $impuestosDAO = null;
     private $cobroClienteDAO = null;
-
-    
-
+	
     public function init()
     {
     	$this->sucursalDAO = new Sistema_DAO_Sucursal;
@@ -61,7 +59,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					try{
 						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
 						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
-						$creaCardex = $this->notaSalidaDAO->creaCardex($encabezado, $producto);
 						$contador++;
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
@@ -69,11 +66,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					
 				}
 			}
-					
-			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}
-
-		
     }
 
     public function remisionAction()
@@ -88,10 +81,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago =$datos[1];
-				$idBanco = $this->getParam("idBanco");
 				$productos = json_decode($encabezado['productos'], TRUE);
 				print_r('<br />');
-				$contador=0;
+				$contador = 0;
 				$remisionSalidaDAO->editarBanco($formaPago, $productos);
 				foreach ($productos as $producto){
 					try{

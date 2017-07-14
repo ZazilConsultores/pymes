@@ -128,7 +128,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					if(is_null($rowCapas)){
 						$mCapas = array(
 								'idSucursal'=>$encabezado['idSucursal'],
-								'numeroFolio'=>$formaPago["idDivisa"],
+								'numeroFolio'=>$encabezado["numFolio"],
 								'idProducto'=>$producto['descripcion'],
 								'idDivisa'=>$cantidad,
 								'secuencial'=>1,
@@ -152,7 +152,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 					if(is_null($rowInventario)){
 						$mInventario = array(
 							'idProducto'=>$producto['descripcion'],
-							'idDivisa'=>$formaPago["idDivisa"],
+							'idDivisa'=>1,
 							'idSucursal'=>$encabezado['idSucursal'],
 							'existencia'=>$cantidad,
 							'apartado'=>'0',

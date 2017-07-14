@@ -643,7 +643,7 @@
 									//Actualiza Capa
 									$tablaCapas = $this->tablaCapas;
 									//$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowProductoComp["idProducto"]);
-									$where = $tablaCapas->getAdapter()->quoteInto("idProducto = ?", $rowsProductosCompEnl["idProducto"]);
+									$where = $tablaCapas->getAdapter()->quoteInto("idProducto = ?", $rowProductoCompxEnl["idProducto"]);
 									//print_r("$select");
 									//Actuliza, costoUnitario, fecha
 									//$rowCapas->costoUnitario = $total;
