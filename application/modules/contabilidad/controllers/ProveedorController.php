@@ -63,7 +63,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				try{
 					$notaentrada = $this->notaEntradaDAO->agregarProducto($encabezado, $productos);
 					$actualizaProducto = $this->notaEntradaDAO->actulizaProducto($encabezado, $productos);
-					$this->view->messageSuccess = "Numero de Nota: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
+					$actualizaCostoProducto = $this->notaEntradaDAO->actulizaCostoProducto($encabezado, $productos);
+					$this->view->messageSuccess = "Número: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = "Error al crear el Nota Proveedor: <strong>".$ex->getMessage()."</strong>";
 				}
@@ -81,12 +82,14 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
-				$formaPago =$datos[1];
+				$formaPago = $datos[1];
+				print_r($formaPago);
 				$productos = json_decode($encabezado['productos'],TRUE);
 				$contador = 0;
 				try{
 					$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
 					$saldoBanco = $this->remisionEntradaDAO->saldoBanco($formaPago, $productos);
+					$actualizaCostoProducto = $this->remisionEntradaDAO->actulizaCostoProducto($encabezado, $productos);
 					foreach ($productos as $producto){
 						$movimiento = $this->remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
 						$actualizaProducto = $this->remisionEntradaDAO->actulizaProducto($encabezado, $formaPago, $producto);
@@ -120,16 +123,13 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					foreach ($productos as $producto){
 						$actualizaProducto = $this->facturaDAO->actulizaProducto($encabezado,$formaPago, $producto, $importe);
 						$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						$actualizaPT = $this->facturaDAO->actulizaCostoProducto($encabezado, $formaPago, $producto, $importe);
 						$contador++;
 					}
 					$this->view->messageSuccess = "Factura: <strong>" .$guardaFactura["numeroFactura"] . " </strong> guardada exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;
 				}
-				//foreach ($productos as $producto){
-					
-					$actualizaPT = $this->facturaDAO->actulizaCostoProducto($encabezado, $formaPago, $producto, $importe);
-				//}	
 			}
 			
 		}

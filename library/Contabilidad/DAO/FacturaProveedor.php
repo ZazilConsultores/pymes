@@ -564,7 +564,7 @@
 		}
 	}
 
-	public function actulizaCostoProducto(array $encabezado, $formaPago, $productos, $importe){
+	public function actulizaCostoProducto(array $encabezado, $formaPago, $producto, $importe){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();	
 		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
@@ -572,22 +572,22 @@
 		
 		try{
 			$tablaProducto = $this->tablaProducto;
-			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$productos["descripcion"]);
+			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["descripcion"]);
 			$rowProducto = $tablaProducto->fetchRow($select);
 			
 			$tablaMultiplos = $this->tablaMultiplos;
-			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$productos['descripcion'])->where("idUnidad=?",$productos['unidad']);
+			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 			$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 			
-			$cantidad = $productos['cantidad'] * $rowMultiplo["cantidad"];
-			$precioUnitario = $productos['precioUnitario'] / $rowMultiplo["cantidad"];
+			$cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
+			$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
 			
 			if(!is_null($rowProducto && !is_null($rowMultiplo))){
 				$claveProducto = substr($rowProducto->claveProducto, 0,2);
 				if($claveProducto <> 'PT' || $claveProducto <> 'VS' || $claveProducto <> 'SV' ){
 					print_r("Busca el producto en ProductoCompuesto");
 					$tablaProdComp = $this->tablaProductoCompuesto;
-					$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$productos["descripcion"]);
+					$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
 					$rowsProductosComp = $tablaProdComp->fetchAll($select);
 					print_r("<br />");
 					print_r("$select");

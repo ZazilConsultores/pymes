@@ -138,8 +138,7 @@ class Contabilidad_Form_AgregarRemisionProveedor extends Zend_Form
 		$eImportePago = new Zend_Form_Element_Text('importePago');
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
-		$eImportePago->setAttrib("disabled", "true");
-		$eImportePago->setAttrib("required", "true");
+		//$eImportePago->setAttrib("required", "true");
 		
 		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
