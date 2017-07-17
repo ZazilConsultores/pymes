@@ -16,5 +16,6 @@
 	public function creaCardex(array $encabezado, $producto);
 	
 	public function editaNumeroFactura($idSucursal);
+	public function restaProductoTerminado(array $encabezado, $formaPago, $productos);
   } 
 ?>

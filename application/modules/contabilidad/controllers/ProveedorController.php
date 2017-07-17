@@ -126,10 +126,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;
 				}
-				foreach ($productos as $producto){
+				//foreach ($productos as $producto){
 					
 					$actualizaPT = $this->facturaDAO->actulizaCostoProducto($encabezado, $formaPago, $producto, $importe);
-				}	
+				//}	
 			}
 			
 		}
