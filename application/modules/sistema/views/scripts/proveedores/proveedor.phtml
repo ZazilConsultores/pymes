@@ -30,6 +30,7 @@
 				<th>Razon Social</th>
 				<th>Tipo Proveedor</th>
 				<th>Cuenta Contable</th>
+				<th>Saldo</th>
 			</thead>
 			<tbody>
 				<?php foreach ($tiposProveedor as $tipoProveedor) : 
@@ -52,6 +53,7 @@
 					<td><?php echo $fiscales->getRazonSocial() ?></td>
 					<td><?php echo $tipoProveedor->getDescripcion() ?></td>
 					<td><?php echo $fiscalesCuentaContable["cuenta"] ?>
+					<td><?php echo $fiscalesCuentaContable["saldo"] ?>	
 				</tr>
 				<?php endforeach ?>
 			</tbody>

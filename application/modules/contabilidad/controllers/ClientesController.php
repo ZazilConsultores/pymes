@@ -122,7 +122,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				//print_r($formaPago);
 				$contador=0;
 				try{
-					////$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					
 					$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 					//foreach ($productos as $producto){

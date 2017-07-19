@@ -2,11 +2,31 @@
 
 class Contabilidad_TesoreriaController extends Zend_Controller_Action
 {
-	private $tesoreriaDAO = null;
-	
+
+    private $tesoreriaDAO = null;
+
     public function init()
     {
-        $this->tesoreriaDAO = new Contabilidad_DAO_Tesoreria; 
+        $this->tesoreriaDAO = new Contabilidad_DAO_Tesoreria;
+		$adapter = Zend_Registry::get('dbmodgeneral');
+		$this->db = $adapter;
+		// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		$select = $this->db->select()->from("Producto")->order("producto ASC");
+		$statement = $select->query();
+		$rowsProducto =  $statement->fetchAll();
+		
+		$select = $this->db->select()->from("Unidad");
+		$statement = $select->query();
+		$rowsUnidad =  $statement->fetchAll();
+	
+		$select = $this->db->select()->from("Multiplos")
+		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad");
+		$statement = $select->query();
+		$rowsMultiplos = $statement->fetchAll();
+		
+		// =================================== Codificamos los valores a formato JSON
+		$jsonProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonProductos = $jsonProductos; 
     }
 
     public function indexAction()
@@ -74,8 +94,38 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     	
     }
 
+    public function notacreditoAction()
+    {
+    	$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_NotaCredito;
+
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				$encabezado = $datos[0];
+				$productos = json_decode($encabezado['productos'],TRUE);
+				$contador = 0;
+				foreach ($productos as $producto){
+					try{
+						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
+						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
+						$contador++;
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+					}
+					
+				}
+			}
+		}
+        
+    }
+
 
 }
+
+
 
 
 

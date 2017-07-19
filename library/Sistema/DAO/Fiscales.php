@@ -56,7 +56,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		->setIntegrityCheck(false)
 		->from($tablaFiscales, array('Fiscales.idFiscales','rfc','razonSocial'))
 		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
-		->join('Proveedores', 'Empresa.idEmpresa = Proveedores.idEmpresa',array('idProveedores','idTipoProveedor','cuenta'))
+		->join('Proveedores', 'Empresa.idEmpresa = Proveedores.idEmpresa',array('idProveedores','idTipoProveedor','cuenta', 'saldo'))
 		->where("Fiscales.idFiscales = ?", $idFiscales);
 		$rowFiscales = $tablaFiscales->fetchAll($select);
 		return $tablaFiscales->fetchRow($select);

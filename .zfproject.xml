@@ -1010,6 +1010,7 @@
               <actionMethod actionName="inversiones"/>
               <actionMethod actionName="nomina"/>
               <actionMethod actionName="impuestos"/>
+              <actionMethod actionName="notacredito"/>
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
@@ -1075,6 +1076,9 @@
               <actionMethod actionName="altamodulos"/>
               <actionMethod actionName="altatipoproveedor"/>
             </controllerFile>
+            <controllerFile controllerName="Notacredito">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1106,6 +1110,7 @@
             <formFile formName="GeneraPoliza"/>
             <formFile formName="AltaDivisa"/>
             <formFile formName="GuiaContable"/>
+            <formFile formName="NotaCredito"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1390,6 +1395,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="aplicacobro"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Notacredito">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="notacredito"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2809,6 +2820,7 @@
                 <testApplicationActionMethod forActionName="inversiones"/>
                 <testApplicationActionMethod forActionName="nomina"/>
                 <testApplicationActionMethod forActionName="impuestos"/>
+                <testApplicationActionMethod forActionName="notacredito"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2873,6 +2885,9 @@
                 <testApplicationActionMethod forActionName="altmodulos"/>
                 <testApplicationActionMethod forActionName="altamodulos"/>
                 <testApplicationActionMethod forActionName="altatipoproveedor"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Notacredito">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

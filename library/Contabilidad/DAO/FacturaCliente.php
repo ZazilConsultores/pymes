@@ -596,7 +596,6 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			print_r("<br />");
 			switch($claveProducto){
 				case 'PT':
-					
 					print_r("<br />");	
 					print_r("Obtine producto PT");
 					$tablaProdComp = $this->tablaProductoCompuesto;

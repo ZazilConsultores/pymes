@@ -1,0 +1,299 @@
+<?php
+	echo $this->formulario;	
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;	
+?>
+<section class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Agregar Productos para Nota Salida.</h3>
+		</div>
+		<div class="panel-body">
+			<?php if (!is_null($messageSuccess)){?>
+			<div class="alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
+					<span arial-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageSuccess; ?>
+			</div>
+			<?php }elseif(!is_null($messageFail)){ ?>
+			<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" arial-label="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<?php echo $messageFail; ?>
+			</div>
+			<?php }?><br />
+			<button id="addRow" class="btn btn-success" >
+				<span class="glyphicon glyphicon-plus" ></span> Nuevo
+			</button>
+			<a id="generarJsonArray" class="btn btn-warning">
+				<span class="glyphicon glyphicon-cog" ></span> Cargar
+			</a>
+			<table id="productosNota" class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Cantidad</th>
+						<th>Clave Producto</th>
+						<th>Seleccione Unidad</th>
+						<th>Codigo de Barras</th>
+						<th>Descripcion</th>
+						<th>Precio Unitario</th>
+						<th>Importe</th>
+						<th>Eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>Total:</td>
+						<td><input id="total" class="form-control" disabled="true" /></td>
+					</tr>
+					
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</section>
+<script>
+	$( document ).ready(function() {
+		
+		$("select#idEmpresas").on('change', function(){
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+			
+		});
+			
+		var form = $("#nuevaNotaCliente");
+		form.validate({
+			rules: {
+				numFolio: {
+					required: true
+				},
+				fecha: {
+					required: true
+				},
+				idSucursal: {
+					required: true
+				}
+			},
+			messages: {
+				numFolio: {					
+					required: "Este campo no puede quedar vacío, Ingrese número de folio"
+				},
+				fecha: {					
+					required: "Este campo no puede quedar vacío, Seleccione fecha"
+				},
+				idSucursal: {					
+					required: "Este campo no puede quedar vacío, Seleccione Empresa"
+				}
+			}
+		});
+		
+		console.log( "ready!" );
+		var jsonProductos = <?php echo $this->jsonProductos; ?>;
+		//console.dir(jsonProductos);
+		
+		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
+		$("button#addRow").on("click",function(){
+			var filasTabla = $("table#productosNota tbody > tr").length;
+			//console.log(filasTabla);
+			// si filasTabla = 0 continuar
+			// si filasTabla <> 0 checar fila actual
+			filasTabla ++;
+			// generamos elementos de nueva fila
+			// cantidad
+			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
+			// idProducto
+			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+
+			// idUnidad
+			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
+			/*$.each(jsonUnidad,function(i,item){
+				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
+			});*/
+			// codigoBarras
+			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
+			// descripcion
+			//var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+			$.each(jsonProductos,function(i,item){
+				selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+			});	
+			// precioUnitario
+			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
+			// precioImporte
+			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'}).attr({'disabled':'true'});
+			
+			// botonLimpiar
+			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
+			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
+
+			var tbody = $("table#productosNota").find('tbody');
+			tbody.append($('<tr>').
+				append($('<td>').append(inputCantidad)).
+				append($('<td>').append(inputProducto)).
+				append($('<td>').append(inputUnidad)).
+				append($('<td>').append(inputCodigoBarras)).
+				append($('<td>').append(selectDescripcion)).
+				append($('<td>').append(inputCostoUnitario)).
+				append($('<td>').append(inputCostoTotal)).
+				append($('<td>').append(buttonLimpiar))
+				
+			);
+		});//cierra el addRow
+		
+		//Funcion Eliminar #btnLimpiar_2
+ 		$("table#productosNota").on("click", "button[id^='btnLimpiar_']", function(){
+ 			if ($("table#productosNota tbody > tr").length >1)
+  			{
+  				$("table#productosNota  tbody > tr:last").remove();
+  			}
+ 			calculaGrandTotal(); 		
+ 		});//cierra funcion eliminar
+ 		
+ 		//Funcion buscar descripcion del producto
+ 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			//console.log(id);
+			var numFila =  arr[1];
+ 			
+ 			$.each(jsonProductos,function(i,item){
+ 				if(jsonProductos[i].idProducto == id){
+ 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
+ 				}
+ 				
+			});
+ 			
+ 		});//cierra funcion buscar descripcion del producto
+ 		
+ 		//Funcion buscar Multiplo del producto
+ 		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
+ 			var claveProd= $(this).attr("id");
+			var arr = claveProd.split('_');
+			var id = $(this).val();
+			console.log(id);
+			var numFila =  arr[1];
+
+			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#idUnidad_"+numFila).empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == id){
+							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
+ 			
+ 		});//cierra funcion Multiplo del producto
+
+
+ 		//==================================================================== Calcular JsonArray
+ 		$("a#generarJsonArray").on("click",function(){
+ 			console.log("En a#generarJsonArray: ");
+ 			var tabla = $("table#productosNota > tbody  > tr");
+ 			//Array Json de productos
+ 			var productos = [];
+ 			
+ 			tabla.each(function(){
+ 				
+ 				var row = $(this);
+ 				var cantidad = row.find("input[id^='idCantidad_']").val();
+ 				var unidad = row.find("select[id^='idUnidad_']").val();
+ 				var codigoBarras = row.find("input[id^='codigoBarras_']").val();
+ 				var descripcion = row.find("select[id^='descripcion_']").val();
+ 				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
+ 				var importe = row.find("input[id^='costoTotal_']").val();
+ 				//var total = row.find("input[id^='total']").val();
+ 				
+ 				console.log("Cantidad:"+cantidad);
+ 				console.log("unidad:"+unidad);
+ 				console.log("codigoBarras:"+codigoBarras);
+ 				console.log("descripcion:"+descripcion);
+ 				console.log("precioUnitario:"+precioUnitario);
+ 				console.log("costoTotal:"+importe);
+ 				//console.log("total:"+total);
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				
+ 			
+ 			});
+ 			console.dir(productos);
+ 			var myString = JSON.stringify(productos);
+ 			
+ 			console.log(myString);
+ 			if ($("input#productos").val(myString)){
+ 				
+ 			};
+ 		});
+ 		
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+		  this.cantidad = cantidad;
+		  //this.claveProducto = claveProducto;
+		  this.unidad = unidad;
+		  this.codigoBarras = codigoBarras;
+		  this.descripcion = descripcion;
+		  this.precioUnitario = precioUnitario;
+		  this.importe = importe;
+		  //this.unidad = unidad;
+		}
+		
+		
+		 $("a#generarJsonArray").on("click",function(){
+            //if($(this).val() != ''){
+               $('input[type="submit"]').removeAttr('disabled');
+            //}
+          });
+          
+           $("table#productosNota").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
+        	calculaRow($(this).closest("tr"));
+        	calculaGrandTotal();
+    	});
+	
+	function calculaRow(row) {
+		var  precioUnitario= +row.find('input[id^="costoUnitario_"]').val();
+    	var cantidad = +row.find('input[id^="idCantidad_"]').val();
+    	row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
+	}
+	
+	function calculaGrandTotal() {	
+    	var grandTotal = 0;
+        
+    	$("table#productosNota").find('input[id^="costoTotal_"]').each(function () {
+        	grandTotal += +$(this).val(); 
+        	console.log(grandTotal);
+    	});
+    	$("input#total").val(grandTotal.toFixed(2));
+ 	 	  
+   	} 
+	});//cierra document ready
+</script>
