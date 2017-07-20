@@ -23,7 +23,7 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$subEncabezado->setLegend("Nueva Nota de Crédito");
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
-		$eNumeroFolio->setLabel('Número de Folio: ');
+		$eNumeroFolio->setLabel('Número Factura: ');
 		$eNumeroFolio->setAttrib("class", "form-control");
 		
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
@@ -55,6 +55,17 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
+		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
+        $eProyecto->setLabel("Seleccionar Proyecto:");
+		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setRegisterInArrayValidator(FALSE);
+		
+		$eFolioFiscal = new Zend_Form_Element_Text('folioFiscal');
+		$eFolioFiscal->setLabel('Folio Fiscal: ');
+		$eFolioFiscal->setAttrib("minlength", "32");
+		$eFolioFiscal->setAttrib("maxlength", "32" );
+		$eFolioFiscal->setAttrib("class", "form-control");
+		
 		$columnas = array('idEmpresa','razonSocial');
 		$tablaEmpresa = new Contabilidad_DAO_NotaSalida;
 		$rowset = $tablaEmpresa->obtenerClientes();
@@ -76,7 +87,7 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$eDivisa = New Zend_Form_Element_Hidden('idDivisa');
 		$eDivisa->setAttrib("class", "form-control");
 		$eDivisa->setValue(1);
-	
+		
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("required","true");
 		
@@ -86,7 +97,7 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eCliente,/*$eProyecto*/$eProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal,$eProyecto,$eNumeroFolio, $eFolioFiscal,$eCliente,$eFecha,$eDivisa,$eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		$this->addSubForms(array($subEncabezado));

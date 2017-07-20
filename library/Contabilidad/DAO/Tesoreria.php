@@ -237,5 +237,58 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			$dbAdapter->rollBack();
 		}
 		
+	}
+	
+	public function guardaNotaCredito(array $notaCredito){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
+		$fechaInicio = new Zend_Date($notaCredito[0]['fecha'],'YY-mm-dd');
+		$stringFecha = $fechaInicio->toString('YY-mm-dd');
+		
+		try{
+			//Preguntar si se valida que la factura no exista	
+			//Guarda Movimiento en tabla factura
+			$mFactura = array(
+				'idTipoMovimiento'=>$notaCredito[0]['idTipoMovimiento'],
+				'idSucursal'=>$notaCredito[0]['idSucursal'],
+				'idCoP'=>$notaCredito[0]['idCoP'],
+				'idDivisa'=>$notaCredito[0]['idDivisa'],
+				'numeroFactura'=>$notaCredito[0]['numFolio'],
+				'estatus'=>"A",//deberia ser cancelado
+				'conceptoPago'=>"LI",
+				'descuento'=>0,
+				'formaPago'=>"EF",
+				'fecha'=>$stringFecha,
+				'subTotal'=>0,
+				'total'=>0,
+				'saldo'=>0,
+				'folioFiscal'=>$notaCredito[0]['folioFiscal'],
+				'importePagado'=>0
+			);
+			$dbAdapter->insert("Factura", $mFactura);
+			
+			$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");	
+			$mfImpuesto = array(
+				'idTipoMovimiento'=>$notaCredito[0]['idTipoMovimiento'],
+				'idFactura'=>$idFactura,
+				'idImpuesto'=>4, //Iva
+				'importe'=>0
+			);
+			//print_r($mfImpuesto);
+			$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+			$dbAdapter->commit();
+			}catch(exception $ex){
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r("Excepcion Lanzada");
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r($ex->getMessage());
+				print_r("<br />");
+				print_r("<br />");
+				$dbAdapter->rollBack();
+			}
 	}	
 }

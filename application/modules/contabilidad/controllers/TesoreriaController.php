@@ -26,7 +26,9 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 		
 		// =================================== Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
-		$this->view->jsonProductos = $jsonProductos; 
+		$this->view->jsonProductos = $jsonProductos;
+		$jsonUnidad = Zend_Json::encode($rowsUnidad);
+		$this->view->jsonUnidad = $jsonUnidad; 
     }
 
     public function indexAction()
@@ -103,15 +105,24 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				$encabezado = $datos[0];
-				$productos = json_decode($encabezado['productos'],TRUE);
+				$notaCredito = $formulario->getValues();
+				print_r($notaCredito);
+				$productos = json_decode($notaCredito[0]['productos'],TRUE);
 				$contador = 0;
 				foreach ($productos as $producto){
 					try{
-						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
-						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
-						$contador++;
+						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito);
+						//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
+					//foreach ($productos as $producto){
+					//try{
+						////$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
+						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
+						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
+						
+					//$contador++;
+					//}
+						
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}
