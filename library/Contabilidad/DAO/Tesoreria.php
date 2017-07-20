@@ -239,7 +239,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		
 	}
 	
-	public function guardaNotaCredito(array $notaCredito){
+	public function guardaNotaCredito(array $notaCredito, $impuestos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
 		$fechaInicio = new Zend_Date($notaCredito[0]['fecha'],'YY-mm-dd');
@@ -256,14 +256,14 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'numeroFactura'=>$notaCredito[0]['numFolio'],
 				'estatus'=>"A",//deberia ser cancelado
 				'conceptoPago'=>"LI",
-				'descuento'=>0,
+				'descuento'=>$impuestos[0]['descuento'],
 				'formaPago'=>"EF",
 				'fecha'=>$stringFecha,
-				'subTotal'=>0,
-				'total'=>0,
+				'subTotal'=>$impuestos[0]['subTotal'],
+				'total'=>$impuestos[0]['total'],
 				'saldo'=>0,
 				'folioFiscal'=>$notaCredito[0]['folioFiscal'],
-				'importePagado'=>0
+				'importePagado'=>$impuestos[0]['total']
 			);
 			$dbAdapter->insert("Factura", $mFactura);
 			
@@ -272,7 +272,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'idTipoMovimiento'=>$notaCredito[0]['idTipoMovimiento'],
 				'idFactura'=>$idFactura,
 				'idImpuesto'=>4, //Iva
-				'importe'=>0
+				'importe'=>$impuestos[0]['iva']
 			);
 			//print_r($mfImpuesto);
 			$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);

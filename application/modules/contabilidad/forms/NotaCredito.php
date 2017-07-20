@@ -91,13 +91,15 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("required","true");
 		
+		$eImportes = new Zend_Form_Element_Hidden('importes');
+		$eImportes->setAttrib("required","true");
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal,$eProyecto,$eNumeroFolio, $eFolioFiscal,$eCliente,$eFecha,$eDivisa,$eProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal,$eProyecto,$eNumeroFolio, $eFolioFiscal,$eCliente,$eFecha,$eDivisa,$eProducto,$eImportes));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		$this->addSubForms(array($subEncabezado));

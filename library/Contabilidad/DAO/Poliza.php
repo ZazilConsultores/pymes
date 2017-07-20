@@ -694,15 +694,14 @@
 									case '1':
 										$desPol = "Factura " .$numMov;
 										break;
-									case '5':
+									case '9':
 										$desPol = "Factura" .$numMov ;
 										break;
 									case '3':
 										$desPol = "Pago Factura " .$numMov;
 										break;
 									default:
-										$desPol = "Banco";
-										//$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
+										$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
 									}//Cierra switch en casso de armar descripcion
 								}//Cierra  if arma descripcion
 								//Origen
