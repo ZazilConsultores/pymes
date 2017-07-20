@@ -14,7 +14,8 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	private $tablaEmpresa;
 	private $tablaCuentasxc;
 	private $tablaCuentasxp;
-	
+	private $tablaMultiplos;
+	private $tablaProducto; 
 	public function __construct(){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
@@ -24,6 +25,8 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
 		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
 	}
 	public function obtenerEmpleadosNomina(){
 		
@@ -239,7 +242,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		
 	}
 	
-	public function guardaNotaCredito(array $notaCredito, $impuestos){
+	public function guardaNotaCredito(array $notaCredito, $impuestos, $productos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
 		$fechaInicio = new Zend_Date($notaCredito[0]['fecha'],'YY-mm-dd');
@@ -257,7 +260,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'estatus'=>"A",//deberia ser cancelado
 				'conceptoPago'=>"LI",
 				'descuento'=>$impuestos[0]['descuento'],
-				'formaPago'=>"EF",
+				'formaPago'=>"DE",
 				'fecha'=>$stringFecha,
 				'subTotal'=>$impuestos[0]['subTotal'],
 				'total'=>$impuestos[0]['total'],
@@ -276,6 +279,92 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			);
 			//print_r($mfImpuesto);
 			$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+			
+			//Movimimientos
+			foreach ($productos as $producto){
+				$tablaMovimiento = $this->tablaMovimiento;	
+				$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$notaCredito[0]['numFolio'])
+				->where("idCoP=?",$notaCredito[0]['idCoP'])
+				->where("idSucursal=?",$notaCredito[0]['idSucursal'])
+				->where("fecha=?", $stringFecha)
+				->order("secuencial DESC");			
+				$rowMovimiento = $tablaMovimiento->fetchRow($select); 
+				
+				if(!is_null($rowMovimiento)){
+					$secuencial= $rowMovimiento->secuencial +1;
+				}else{
+					$secuencial = 1;	
+				}
+				//====================Operaciones para convertir unidad minima======================================================
+				$tablaMultiplos = $this->tablaMultiplos;
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
+				$rowMultiplo = $tablaMultiplos->fetchRow($select);
+				
+				$cantidad=0;
+				$precioUnitario=0;
+				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+				//Obtenemos el últiomo idFactura
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+				$rowIdFactura =$tablaFactura->fetchRow($select);
+				$idFactura = $rowIdFactura['idFactura'];
+				//print_r($idFactura); 
+				//Guarda Movimiento en tabla Movimientos
+				$mMovimiento = array(
+					'idTipoMovimiento'=>$notaCredito[0]['idTipoMovimiento'],
+					'idEmpresas'=>$notaCredito[0]['idEmpresas'],
+					'idSucursal'=>$notaCredito[0]['idSucursal'],
+					'idCoP'=>$notaCredito[0]['idCoP'],
+					'numeroFolio'=>$notaCredito[0]['numFolio'],
+					'idFactura'=>$idFactura,
+					'idProducto'=>$producto['claveProducto'],
+					'idProyecto'=>$notaCredito[0]['idProyecto'],
+					'cantidad'=>$cantidad,
+					'fecha'=>$stringFecha,
+					'secuencial'=>$secuencial,
+					'estatus'=>"A",
+					'costoUnitario'=>$precioUnitario,
+					'totalImporte'=>$producto['importe']
+				);
+				$dbAdapter->insert("Movimientos",$mMovimiento);
+				//Buscamos la descripción del producto en Tabla Producto
+				$tablaProducto = $this->tablaProducto;
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
+				$rowProducto = $tablaProducto->fetchRow($select);
+				$desProducto = $rowProducto['producto'];
+				//print_r("La factura detalle");
+				//print_r("$select");
+				//Insertar Movimiento en tabla FacturaDetalle
+				$mFacturaDetalle = array(
+					'idFactura'=>$idFactura,
+					'idUnidad'=>$producto['unidad'],
+					'secuencial'=>$secuencial,
+					'cantidad'=>$cantidad,
+					'descripcion'=>$producto['descripcion'],
+					'precioUnitario'=>$precioUnitario,
+					'importe'=>$producto['importe'],
+					'fecha'=>$stringFecha,
+					'fechaCancela'=>null
+				);
+				$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
+				//Crea Cardex
+				
+				$mCardex = array(
+					'idSucursal'=>$notaCredito[0]['idSucursal'],
+					'numerofolio'=>$notaCredito[0]['numFolio'],
+					'idProducto'=>$producto['claveProducto'],
+					'idDivisa'=>1,
+					'secuencialEntrada'=>$rowMovimiento['secuencial'],
+					'fechaEntrada'=>$rowMovimiento['fecha'],
+					'secuencialSalida'=>$secuencial,
+					'fechaSalida'=>$stringFecha,
+					'cantidad'=>$cantidad,
+					'costo'=>$producto['importe'],
+					'costoSalida'=>$producto['importe'],
+					'utilidad'=>0
+				);
+			}//foreach
 			$dbAdapter->commit();
 			}catch(exception $ex){
 				print_r("<br />");
@@ -290,5 +379,103 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				print_r("<br />");
 				$dbAdapter->rollBack();
 			}
-	}	
+	}
+	/*public function guardaDetalleFactura(array $encabezado, $producto, $importe){
+			
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
+		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$stringFecha = $fechaInicio->toString ('yyyy-MM-dd');
+			
+		try{
+			//Valida que la factura no exista
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
+			->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
+			$rowFactura = $tablaFactura->fetchRow($select);
+			print_r("$select");
+			if(!is_null($rowFactura)){
+				//Buscamos en Movimientos, para asignar secuencial
+				$tablaMovimiento = $this->tablaMovimiento;	
+				$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
+				->where("idCoP=?",$encabezado['idCoP'])
+				->where("idSucursal=?",$encabezado['idSucursal'])
+				->where("fecha=?", $stringFecha)
+				->order("secuencial DESC");			
+				$rowMovimiento = $tablaMovimiento->fetchRow($select); 
+				
+				if(!is_null($rowMovimiento)){
+					$secuencial= $rowMovimiento->secuencial +1;
+				}else{
+					$secuencial = 1;	
+				}
+				//====================Operaciones para convertir unidad minima======================================================
+				$tablaMultiplos = $this->tablaMultiplos;
+				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['claveProducto'])->where("idUnidad=?",$producto['unidad']);
+				$rowMultiplo = $tablaMultiplos->fetchRow($select);
+				
+				$cantidad=0;
+				$precioUnitario=0;
+				$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+				//Obtenemos el últiomo idFactura
+				$tablaFactura = $this->tablaFactura;
+				$select = $tablaFactura->select()->from($tablaFactura,array(new Zend_Db_Expr('max(idFactura) as idFactura')));
+				$rowIdFactura =$tablaFactura->fetchRow($select);
+				$idFactura = $rowIdFactura['idFactura'];
+				//print_r($idFactura); 
+				//Guarda Movimiento en tabla Movimientos
+				$mMovimiento = array(
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idEmpresas'=>$encabezado['idEmpresas'],
+					'idSucursal'=>$encabezado['idSucursal'],
+					'idCoP'=>$encabezado['idCoP'],
+					'numeroFolio'=>$encabezado['numeroFactura'],
+					'idFactura'=>$idFactura,//
+					'idProducto'=>$producto['claveProducto'],
+					'idProyecto'=>$encabezado['idProyecto'],
+					'cantidad'=>$cantidad,
+					'fecha'=>$stringFecha,
+					'secuencial'=>$secuencial,
+					'estatus'=>"A",
+					'costoUnitario'=>$precioUnitario,
+					'totalImporte'=>$producto['importe']
+				);
+				$dbAdapter->insert("Movimientos",$mMovimiento);
+				//Buscamos la descripción del producto en Tabla Producto
+				$tablaProducto = $this->tablaProducto;
+				$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?", $producto['claveProducto']);
+				$rowProducto = $tablaProducto->fetchRow($select);
+				$desProducto = $rowProducto['producto'];
+				//print_r("La factura detalle");
+				//print_r("$select");
+				//Insertar Movimiento en tabla FacturaDetalle
+				$mFacturaDetalle = array(
+					'idFactura'=>$idFactura,
+					'idUnidad'=>$producto['unidad'],
+					'secuencial'=>$secuencial,
+					'cantidad'=>$cantidad,
+					'descripcion'=>$producto['descripcion'],
+					'precioUnitario'=>$precioUnitario,
+					'importe'=>$producto['importe'],
+					'fecha'=>$stringFecha,
+					'fechaCancela'=>null
+				);
+				$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);	 
+			}//Factura no existe
+			$dbAdapter->commit();
+			}catch(exception $ex){
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r("Excepcion Lanzada");
+				print_r("<br />");
+				print_r("================");
+				print_r("<br />");
+				print_r($ex->getMessage());
+				print_r("<br />");
+				print_r("<br />");
+				$dbAdapter->rollBack();
+			}		
+		}	*/
 }

@@ -1068,24 +1068,7 @@
 												print_r($armaSub5);
 											}						
 										}
-										//Asignamos secuencial
-										/*$secuencial = 0;	
-										$tablaPoliza = $this->tablaPoliza;
-										$select = $tablaPoliza->select()->from($tablaPoliza)->where("idModulo=?",$modulo)
-										->where("idTipoProveedor=?",$tipo)
-										->where("idSucursal=?",$datos['idSucursal'])
-										->where("idCoP=?",$idCoP)
-										->where("numDocto=?", $numeroFolio)
-										->order("secuencial DESC");
-										$rowPoliza = $tablaPoliza->fetchRow($select); 
-										//print_r("$select");
-										if(!is_null($rowPoliza)){
-											$secuencial= $rowPoliza->secuencial +1;
-										print_r($secuencial);
-										}else{
-											$secuencial = 1;	
-										print_r($secuencial);
-										}*/
+										
 										//Agregamos en tablaPoliza.
 										$mPoliza = array(
 										'idModulo'=>$modulo,

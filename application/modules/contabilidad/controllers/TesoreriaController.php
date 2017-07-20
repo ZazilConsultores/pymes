@@ -110,9 +110,9 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				$productos = json_decode($notaCredito[0]['productos'],TRUE);
 				$impuestos = json_decode($notaCredito[0]['importes'],TRUE);
 				$contador = 0;
-				foreach ($productos as $producto){
+				
 					try{
-						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito,$impuestos);
+						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito, $impuestos, $productos);
 						//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 					//foreach ($productos as $producto){
 					//try{
@@ -127,8 +127,6 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}
-					
-				}
 			}
 		}
         
