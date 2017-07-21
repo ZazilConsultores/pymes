@@ -107,23 +107,24 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$notaCredito = $formulario->getValues();
 				print_r($notaCredito);
+				$formaPago = $notaCredito[1];
+				print_r($formaPago);
 				$productos = json_decode($notaCredito[0]['productos'],TRUE);
 				$impuestos = json_decode($notaCredito[0]['importes'],TRUE);
 				$contador = 0;
 				
 					try{
-						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito, $impuestos, $productos);
+						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito, $formaPago, $impuestos, $productos);
 						//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
-					//foreach ($productos as $producto){
-					//try{
+						foreach ($productos as $producto){
+							$restaProsducto = $this->tesoreriaDAO->restaProducto($notaCredito, $producto);
+							$contador++;
+						}
 						////$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
 						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
 						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
-						
-					//$contador++;
-					//}
-						
+						//$contador++;	
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}

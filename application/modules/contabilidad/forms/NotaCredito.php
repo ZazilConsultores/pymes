@@ -119,7 +119,7 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		
 		$ePagada = new Zend_Form_Element_Checkbox('pagada');
 		$ePagada->setLabel("Pagada en una sola exhibición:");
-		$ePagada->setChecked('1');
+		//$ePagada->setChecked('1');
 		
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('Importe Pago:');
@@ -153,15 +153,11 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$eComentario->setAttrib('cols', '3');
 		$eComentario->setAttrib('rows', '3');
 		$eComentario->setAttrib("class","form-control");
-		
-		$eImportes = new Zend_Form_Element_Hidden('importes');
-		$eImportes->setAttrib("class", "form-control");
-		$eImportes->setAttrib("required","true");
-		
+			
 		$impuestos = new Contabilidad_DAO_Impuesto;
 		$tiposImpuestos =$impuestos->obtenerImpuestos();
 		
-		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia,$eComentario, $eImportes));
+		$subFormaPago->addElements(array($eDivisa,$ePagada,$ePagos,$eFormaLiquidar,$eBanco,$eNumReferencia,$eComentario));
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 				
@@ -169,7 +165,6 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
 	
-		//Condiciones de Pago
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		$this->addElement($eSubmit);
 		
