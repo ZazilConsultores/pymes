@@ -269,8 +269,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					$conceptoPago = "PA";
 					$importePagado = $formaPago['pagos'];
 					$saldo = $importe[0]['total']- $formaPago['pagos'];
-				}
-			//Preguntar si se valida que la factura no exista	
+				}	
 			//Guarda Movimiento en tabla factura
 			$mFactura = array(
 				'idTipoMovimiento'=>$notaCredito[0]['idTipoMovimiento'],
@@ -369,22 +368,6 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'fechaCancela'=>null
 				);
 				$dbAdapter->insert("FacturaDetalle",$mFacturaDetalle);
-				//Crea Cardex
-				
-				$mCardex = array(
-					'idSucursal'=>$notaCredito[0]['idSucursal'],
-					'numerofolio'=>$notaCredito[0]['numFolio'],
-					'idProducto'=>$producto['claveProducto'],
-					'idDivisa'=>1,
-					'secuencialEntrada'=>$rowMovimiento['secuencial'],
-					'fechaEntrada'=>$rowMovimiento['fecha'],
-					'secuencialSalida'=>$secuencial,
-					'fechaSalida'=>$stringFecha,
-					'cantidad'=>$cantidad,
-					'costo'=>$producto['importe'],
-					'costoSalida'=>$producto['importe'],
-					'utilidad'=>0
-				);
 			}//foreach
 			$dbAdapter->commit();
 			}catch(exception $ex){
@@ -600,7 +583,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 						//Creamos Cardex
 						$tablaMovimiento = $this->tablaMovimiento;
 						$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$notaCredito[0]['numFolio'])
-						->where("idTipoMovimiento=?",$notaCredito[0]['idTipoMovimiento'])->where("idCoP=?",$notaCredito[0]['idCoP'])
+						->where("idTipoMovimiento = ?",$notaCredito[0]['idTipoMovimiento'])->where("idCoP=?",$notaCredito[0]['idCoP'])
 						->where("idEmpresas=?",$notaCredito[0]['idEmpresas'])->where("fecha=?", $stringIni)->order("secuencial DESC");
 						$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 						
@@ -617,19 +600,20 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 						$costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
 						$costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
 						$utilidad = $costoSalida- $costo;
+						//Crea Cardex
 						$mCardex = array(
 							'idSucursal'=>$notaCredito[0]['idSucursal'],
 							'numerofolio'=>$notaCredito[0]['numFolio'],
 							'idProducto'=>$producto['claveProducto'],
 							'idDivisa'=>1,
-							'secuencialEntrada'=>$rowCapas['secuencial'],
-							'fechaEntrada'=>$rowCapas['fechaEntrada'],
+							'secuencialEntrada'=>$rowMovimiento['secuencial'],
+							'fechaEntrada'=>$rowMovimiento['fecha'],
 							'secuencialSalida'=>$secuencialSalida,
 							'fechaSalida'=>$stringIni,
 							'cantidad'=>$cantidad,
-							'costo'=>$costo,
-							'costoSalida'=>$costoSalida,
-							'utilidad'=>$utilidad
+							'costo'=>$producto['importe'],
+							'costoSalida'=>$producto['importe'],
+							'utilidad'=>0
 						);
 						//print_r($mCardex);
 						$dbAdapter->insert("Cardex",$mCardex);
@@ -655,19 +639,20 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 						$costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
 						$costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
 						$utilidad = $costoSalida- $costo;
+						//Crea Cardex
 						$mCardex = array(
 							'idSucursal'=>$notaCredito[0]['idSucursal'],
 							'numerofolio'=>$notaCredito[0]['numFolio'],
 							'idProducto'=>$producto['claveProducto'],
 							'idDivisa'=>1,
-							'secuencialEntrada'=>$rowCapas['secuencial'],
-							'fechaEntrada'=>$rowCapas['fechaEntrada'],
+							'secuencialEntrada'=>$rowMovimiento['secuencial'],
+							'fechaEntrada'=>$rowMovimiento['fecha'],
 							'secuencialSalida'=>$secuencialSalida,
 							'fechaSalida'=>$stringIni,
 							'cantidad'=>$cantidad,
-							'costo'=>$costo,
-							'costoSalida'=>$costoSalida,
-							'utilidad'=>$utilidad
+							'costo'=>$producto['importe'],
+							'costoSalida'=>$producto['importe'],
+							'utilidad'=>0
 						);
 						//print_r($mCardex);
 						$dbAdapter->insert("Cardex",$mCardex);

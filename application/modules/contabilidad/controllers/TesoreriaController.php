@@ -108,14 +108,12 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				$notaCredito = $formulario->getValues();
 				print_r($notaCredito);
 				$formaPago = $notaCredito[1];
-				print_r($formaPago);
 				$productos = json_decode($notaCredito[0]['productos'],TRUE);
 				$impuestos = json_decode($notaCredito[0]['importes'],TRUE);
 				$contador = 0;
 				
 					try{
 						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito, $formaPago, $impuestos, $productos);
-						//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 						foreach ($productos as $producto){
 							$restaProsducto = $this->tesoreriaDAO->restaProducto($notaCredito, $producto);
 							$contador++;

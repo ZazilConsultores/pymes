@@ -809,7 +809,7 @@
 									'sub5'=>$armaSub5,
 									'fecha'=>$fecha,/**/
 									'descripcion'=>$desPol,
-									'tipoES'=>"D",
+									'tipoES'=>"E",
 									'cargo'=>$cargo,
 									'abono'=>$abono,
 									'numdocto'=>$numMov,
