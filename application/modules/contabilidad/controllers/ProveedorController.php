@@ -2,11 +2,13 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
-	private $empresaDAO = null;
+
+    private $empresaDAO = null;
     private $notaEntradaDAO = null;
     private $remisionEntradaDAO = null;
     private $facturaDAO = null;
     private $pagoProveedor = null;
+	private $anticipoDAO = null;
 
     public function init()
     {
@@ -15,6 +17,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	$this->remisionEntradaDAO =  new Contabilidad_DAO_RemisionEntrada;
     	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
 		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
+		$this->anticipoDAO = new Contabilidad_DAO_Anticipos;
+		
 		
         //==============Muestra los links del submenu=======================
 		//$this->view->links = $this->links;
@@ -240,8 +244,29 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}
     }
 
+    public function anticipoAction()
+    {
+    	$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AnticipoProveedor;
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$anticipo = $formulario->getValues();
+				try{
+					$this->anticipoDAO->guardaAnticipoProveedor($anticipo);
+					$this->view->messageSuccess = "Anticipo: <strong>".$anticipo["numeroReferencia"]."</strong> creado exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error al guardar el anticipo: <strong>".$ex->getMessage()."</strong>";
+				}
+			}
+		}
+        
+    }
 
 }
+
+
 
 
 

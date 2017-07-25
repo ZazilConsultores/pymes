@@ -985,6 +985,7 @@
               <actionMethod actionName="consecutivofactura"/>
               <actionMethod actionName="editaconsecutivo"/>
               <actionMethod actionName="aplicacobro"/>
+              <actionMethod actionName="anticipo"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1001,6 +1002,7 @@
               <actionMethod actionName="pagos"/>
               <actionMethod actionName="aplicarpago"/>
               <actionMethod actionName="pagodos"/>
+              <actionMethod actionName="anticipo"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -1111,6 +1113,8 @@
             <formFile formName="AltaDivisa"/>
             <formFile formName="GuiaContable"/>
             <formFile formName="NotaCredito"/>
+            <formFile formName="AnticipoClientes"/>
+            <formFile formName="AnticipoProveedor"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1401,6 +1405,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Tesoreria">
                 <viewScriptFile forActionName="notacredito"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="anticipo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="anticipo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2795,6 +2805,7 @@
                 <testApplicationActionMethod forActionName="consecutivofactura"/>
                 <testApplicationActionMethod forActionName="editaconsecutivo"/>
                 <testApplicationActionMethod forActionName="aplicacobro"/>
+                <testApplicationActionMethod forActionName="anticipo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2811,6 +2822,7 @@
                 <testApplicationActionMethod forActionName="pagos"/>
                 <testApplicationActionMethod forActionName="aplicarpago"/>
                 <testApplicationActionMethod forActionName="pagodos"/>
+                <testApplicationActionMethod forActionName="anticipo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>

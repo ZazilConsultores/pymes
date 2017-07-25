@@ -2,13 +2,15 @@
 
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
-	private $empresaDAO = null;
-	private $sucursalDAO = null;
-	private $notaSalidaDAO = null;
-	private $remisionEntradaDAO = null;
+
+    private $empresaDAO = null;
+    private $sucursalDAO = null;
+    private $notaSalidaDAO = null;
+    private $remisionEntradaDAO = null;
     private $facturaDAO = null;
     private $impuestosDAO = null;
     private $cobroClienteDAO = null;
+	private $anticipoDAO = null;
 	
     public function init()
     {
@@ -19,6 +21,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$this->facturaDAO = new Contabilidad_DAO_FacturaCliente;
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
 		$this->cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
+		$this->anticipoDAO = new Contabilidad_DAO_Anticipos;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
@@ -239,8 +242,29 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
     }
 
+    public function anticipoAction()
+    {
+    	$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AnticipoClientes;
+		$this->view->formulario = $formulario;
+		
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$anticipo = $formulario->getValues();
+				try{
+					$this->anticipoDAO->guardarAnticipoCliente($anticipo);
+					$this->view->messageSuccess = "Anticipo: <strong>".$anticipo["numeroReferencia"]."</strong> creado exitosamente";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error al guardar el anticipo: <strong>".$ex->getMessage()."</strong>";
+				}
+			}
+		}
+    }
+
 
 }
+
+
 
 
 
