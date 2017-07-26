@@ -766,6 +766,9 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						}//foreach $rowProductoEnl){
 					}//if(!is_null($rowsProductoEnl))
 				}//foreach $rowProductoComp)
+			}else{
+				//Es un productoCompuesto, pero no es un producto Enlazado
+				
 			}//if busca productoTerminado
 		}//if multiplo
 	}

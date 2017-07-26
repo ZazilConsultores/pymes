@@ -87,7 +87,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$productos = json_decode($encabezado['productos'], TRUE);
 				print_r('<br />');
 				$contador = 0;
-				$remisionSalidaDAO->editarBanco($formaPago, $productos);
 				foreach ($productos as $producto){
 					try{
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
@@ -98,6 +97,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					}
 					
 				}
+				$remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
 			}else{
 				print_r("formulario no valido <br />");
 			}							
