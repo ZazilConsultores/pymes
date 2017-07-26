@@ -133,7 +133,7 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
 		$eImportePago->setLabel('Importe Pago:');
 		$eImportePago->setAttrib("class", "form-control");
 		$eImportePago->setAttrib("required", "true");
-		$eImportePago->setAttrib("disabled", "true");
+		//$eImportePago->setAttrib("disabled", "true");
 		
 		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
