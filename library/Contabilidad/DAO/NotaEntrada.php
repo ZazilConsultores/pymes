@@ -165,9 +165,11 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 							'cantidadGanancia'=>'0',
 							'costoCliente'=> $costoCliente
 						);
+						print_r($mInventario);
 						$dbAdapter->insert("Inventario",$mInventario);
 					}else{
 						//Actuliza, fecha, costoUnitrio, costoCliente
+						$rowInventario->cantidad = $cantidad;
 						$rowInventario->fecha = date('Y-m-d h:i:s', time());
 						$rowInventario->costoUnitario = $precioUnitario;
 						$rowInventario->costoCliente = $costoCliente;

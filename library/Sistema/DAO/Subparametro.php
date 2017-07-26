@@ -124,7 +124,7 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 	public function obtenerSubparametroPT() //Solo subparametro 2
 	{
 		$tablaProducto = $this->tablaProducto;
-		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '5,68%')->where("idsSubparametros NOT LIKE ?", '%853%')
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '5,68%')
 		->order("producto");
 		$rowSubparametro = $tablaProducto->fetchAll($select);
 	
