@@ -80,8 +80,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_AgregarRemisionProveedor;
-		$this->view->formulario = $formulario;	
-		if($request->isPost()){
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
@@ -99,7 +100,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 						$actualizaProducto = $this->remisionEntradaDAO->actulizaProducto($encabezado, $formaPago, $producto);
 						$contador++;
 					}
-					$this->view->messageSuccess = "Remision: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
+					$this->view->messageSuccess = "Remisión: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}
@@ -174,7 +175,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
 		
-		if($request->isPost()){
+		/*if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				//print_r($datos);
@@ -204,8 +205,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				print_r($datos);
 				try{
-					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-					$this->view->messageSuccess = "Empresa dada de alta con exitosamente!!";
+					$pago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
+					$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
+					$this->view->messageSuccess = "Pago: <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}

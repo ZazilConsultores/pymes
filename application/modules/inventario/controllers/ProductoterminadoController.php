@@ -47,7 +47,8 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
 
     public function editarAction()
     {
-       
+    	//$idPC = $this->getParam("idProductoCompuesto");
+		//$productoCompuesto = $this->productoTerDAO->obtenerProductoTerminado($idPC);  
     }
 
     public function eliminarAction()

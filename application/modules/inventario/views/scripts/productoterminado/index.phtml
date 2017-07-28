@@ -1,5 +1,6 @@
 	<?php
 		$formulario = $this->formulario;
+		$productoCompuesto= $this->producto;
 		$unidadDAO = new Inventario_DAO_Unidad;
 		$pt = $this->pt;
 		$busquedaProductoTerminado = $this->busquedaProductoTerminado;
@@ -19,6 +20,7 @@
 		$subVerduras = $productoDAO->obtenerSubparametroVerduras();
 		$subDulces = $productoDAO->obtenerSubparametroDulceria();
 		$subPTS = $productoDAO->obtenerPT();
+		//$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"productoterminado", "action" => "editar")));
 	?>
 <section class="panel panel-success">
 	<div class="panel-heading">
@@ -771,11 +773,10 @@ $(document).ready(function() {
 					//data[i].presentacion
 					$.each(data, function(i,item){
 						var  baseUrl ="localhost/General";
-						var urlEdita = "<?php echo $this->baseUrl()?>"+"/public/inventario/productoterminado/editar";
-						
-						var botonActualizar = $('<button></button>').attr("href", urlEdita).attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("producto",data[i].idProductoCompuesto);
-						console.log("urlEdita");
-						console.log(urlEdita);
+						var urlPT = baseUrl + "/inventario/productoterminado/editar"
+						var botonActualizar = $('<button></button>').attr("href", urlPT).attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
+						//console.log("urlEdita");
+						//console.log(urlEdita);
 						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar");
 						var importe = data[i].cantidad * data[i].costoUnitario;
 						var costoUnitario = data[i].costoUnitario;
@@ -855,9 +856,15 @@ $(document).ready(function() {
 			});
 			
 		  });
+		   $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
+		   	
+		   });
 		  
-		  $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
-		  	$("table#detalleProductoTer  tbody > tr:last").remove();
+		  $("table#detalleProductoTer").on("click", "button[id^='editar']", function(){
+		  	console.log("EditarProducto");
+		  	
+		  	var urlPT = window.location.origin + "/General/inventario/productoterminado/editar"
+		  	console.log(urlPT);
 		  });
 		   
 		  function AddRow()

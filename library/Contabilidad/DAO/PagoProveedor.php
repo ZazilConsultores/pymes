@@ -32,8 +32,9 @@
 		}
 		
 		public function aplica_Pago ($idFactura, array $datos){
-			$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
-			$dbAdapter->beginTransaction();
+			$dbAdapter = Zend_Registry::get('dbmodgeneral');
+			//$dbAdapter->beginTransaction();
+			
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');
 			
@@ -97,7 +98,7 @@
 						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);	
 					}
 				//Actualiza saldo de Proveedor
-				$tablaFac = $this->tablaFactura;
+				/*$tablaFac = $this->tablaFactura;
 				$select = $tablaFac->select()->from($tablaFac)->where("idFactura=?", $idFactura);
 				$rowFacrura = $tablaFac->fetchRow($select);
 				print_r("<br />");
@@ -108,7 +109,7 @@
 				$rowProveedor = $tablaProv->fetchRow($select);
 				$saldoP = $rowProveedor["saldo"] - $datos["pago"]; 
 				print_r("<br />");
-				print_r($saldoP);		
+				print_r($saldoP);*/		
 				}		
 			}catch(Exception $ex){
 				$dbAdapter->rollBack();

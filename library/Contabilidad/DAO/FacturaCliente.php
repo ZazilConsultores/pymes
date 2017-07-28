@@ -51,7 +51,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
 			->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
 			$rowFactura = $tablaFactura->fetchRow($select);
-			//print_r("$select");
+			print_r("$select");
 			
 			if(! is_null($rowFactura)){
 				print_r("La Factura Ya existe");

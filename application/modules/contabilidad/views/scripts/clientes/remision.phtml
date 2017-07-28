@@ -102,7 +102,7 @@
 		});
 			
 		console.log( "ready!" );
-		var jsonProductos = <?php echo $this->jsonProductos; ?>;
+		var jsonDesProductos = <?php echo $this->jsonDesProductos; ?>;
 		
 		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
@@ -118,7 +118,7 @@
 			// idProducto
 			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 			// idUnidad
-			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
+			var inputUnidad	 = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 			/*$.each(jsonUnidad,function(i,item){
 				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
 			});*/
@@ -127,8 +127,8 @@
 			// descripcion
 			//var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
 			var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonProductos,function(i,item){
-				selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+			$.each(jsonDesProductos,function(i,item){
+				selectDescripcion.append('<option value="'+jsonDesProductos[i].idProducto+'">'+jsonDesProductos[i].producto+'</option>');
 			});	
 			// precioUnitario
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
@@ -169,9 +169,9 @@
 			//console.log(id);
 			var numFila =  arr[1];
  			
- 			$.each(jsonProductos,function(i,item){
- 				if(jsonProductos[i].idProducto == id){
- 					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
+ 			$.each(jsonDesProductos,function(i,item){
+ 				if(jsonDesProductos[i].idProducto == id){
+ 					$("input#idProducto_"+numFila).val(jsonDesProductos[i].claveProducto);
  				}
 			});
  			
@@ -179,7 +179,6 @@
  		
  		//Funcion buscar Multiplo del producto
  		$("table#remisionSalida").on("change", "select[id^='descripcion_']", function(){
- 			console.log("Mexico");
  			var claveProd= $(this).attr("id");
 			var arr = claveProd.split('_');
 			var id = $(this).val();

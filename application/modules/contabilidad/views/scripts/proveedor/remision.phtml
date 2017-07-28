@@ -1,35 +1,32 @@
 <?php
-	$formulario = $this->formulario;
+	echo $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
-<?php if(!is_null($messageSuccess)){ ?>
-	<div class="alert alert-success" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<?php echo $messageSuccess; ?>
-	</div>
-<?php }elseif(!is_null($messageFail)){ ?>
-	<div class="alert alert-danger" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<?php echo $messageFail; ?>
-	</div>
-<?php } ?>
-<?php echo $formulario ?>
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Agregar Productos para Remision Entrada.
+				Agregar Datos para Remision Salida.
 			</h3>
 		</div>
 		<div class="panel-body">
-			
-			
-			<!-- Botón para agregar filas-->
+			<?php if(!is_null($messageSuccess)){ ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+				<div class="alert alert-danger" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageFail; ?>
+				</div>
+				<?php } ?><br />
+				<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>

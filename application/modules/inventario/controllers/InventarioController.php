@@ -37,7 +37,6 @@ class Inventario_InventarioController extends Zend_Controller_Action
 		$formulario->getElement("submit")->setLabel("Actualizar Producto");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
-		
 		$this->view->inventario = $inventario;
 		$this->view->formulario = $formulario;
 		

@@ -75,6 +75,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function remisionAction()
     {
 		$request = $this->getRequest();
+		
+		$select = $this->db->select()->from("Producto")->order("producto ASC");
+		$statement = $select->query();
+		$rowsProducto =  $statement->fetchAll();
+		$jsonDesProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonDesProductos = $jsonDesProductos;
+		
 		$formulario = new Contabilidad_Form_AgregarRemisionCliente;
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
@@ -128,15 +135,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					
 					$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
-					//foreach ($productos as $producto){
+					foreach ($productos as $producto){
 					//try{
-						////$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
 						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
 						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
 						
-					//$contador++;
-					//}
+					$contador++;
+					}
 					$this->view->messageSuccess = "Se ha agregado Factura exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
@@ -220,7 +227,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$idFactura = $this->getParam("idFactura");
-		
+		$datosFactura = $this->cobroClienteDAO->obtiene_Factura($idFactura);
     	$formulario = new Contabilidad_Form_Cobrofactura;
 		$this->view->formulario = $formulario;
 		$cobrosDAO = new Contabilidad_DAO_CobroCliente;
@@ -232,11 +239,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
+				print_r($datos);
 				try{
 					$this->cobroClienteDAO->aplica_Cobro($idFactura, $datos);
 					$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
+					$this->view->messageSuccess = "Cobro: <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 			}
 		}
