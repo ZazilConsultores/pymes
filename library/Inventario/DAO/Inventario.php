@@ -65,57 +65,46 @@ public function obtenerIdProductoInventario(){
 	
 	public function editarInventario($idInventario, array $inventario)
 	{
-		$dbAdapter = Zend_Db_Table_Abstract::getDefaultAdapter("dbmodgeneral");
-		//$dbAdapter->beginTransaction();
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
+		
+		
 
 		try{
 			
 			$tablaInventario = $this->tablaInventario;
 			$select = $tablaInventario->select()->from($tablaInventario)->where("idInventario=?",$idInventario);
-			$row = $tablaInventario->fetchRow($select);
-			$where = $tablaInventario->getAdapter()->quoteInto("idInventario = ?", $idInventario);
+			$rowInventario = $tablaInventario->fetchRow($select);
 			
-		if(!is_null($row)){
+		if(!is_null($rowInventario)){
 			
-			$costoCliente = 0;
-			$porcentajeGanancia = 0;
 			$minimo = $inventario['minimo'];
 			$maximo = $inventario['maximo'];
 			$costoUnitario = $inventario['costoUnitario'];
 			$cantidadGanancia = $inventario['cantidadGanancia'];
-			print_r("<br />");print_r("<br />");
-			//print_r($cantidadGanancia);
-			$cantGanancia=$row->cantidadGanancia;
-			print_r("<br />");print_r("<br />");
-			//print_r($cantGanancia);
+			$cantGanancia = $rowInventario->cantidadGanancia;
+			$costoCliente = $inventario['costoUnitario'] + $inventario['cantidadGanancia'];
 			
-			if($cantGanancia !== $cantidadGanancia){
-				$costoCliente = $inventario['costoUnitario'] + $inventario['cantidadGanancia'];
-				//print_r("<br />");print_r("<br />");
-				//print_r($costoCliente);
-				$inventario['costoCliente']= $costoCliente;
+			$rowInventario->minimo = $minimo;
+			$rowInventario->maximo = $maximo;
+			$rowInventario->costoUnitario = $costoUnitario;
+			$rowInventario->costoCliente = $costoCliente;
+			$rowInventario->cantidadGanancia = $cantidadGanancia;
+			$rowInventario->save();
+			
+			
+			if($cantGanancia <> $inventario['cantidadGanancia']){
+				print_r("Ha cambiado");
 				$porcentajeGanancia = ((($inventario['costoCliente'] / $inventario['costoUnitario']) -1 ) * 100);
-				print_r("<br />");print_r("<br />");
-				print_r($inventario['costoCliente']);
-				print_r("<br />");print_r("<br />");
-				print_r($inventario['costoUnitario']);
-				print_r("<br />");print_r("<br />");
-				print_r($porcentajeGanancia);
-				
-				//print_r($porcentajeGanancia);
+				$rowInventario->porcentajeGanancia = $porcentajeGanancia;
+				$rowInventario->cantidadGanancia = $inventario['cantidadGanancia'];
+				$rowInventario->save();
 			}else{
-			//print_r($porcentajeGanancia);
-				$costoCliente = ($costoUnitario * $inventario['porcentajeGanancia'] / 100) + $costoUnitario + $cantidadGanancia;	
-				//print_r("<br />");print_r("<br />");
-				//print_r($costoUnitario);
-				//print_r("<br />");print_r("<br />");
-				print_r($costoCliente);
-				//print_r("<br />");print_r("<br />");
-				//print_r($costoCliente);
+				$rowInventario->cantidadGanancia = $rowInventario['costoCliente'] - $rowInventario['costoUnitario'];
+				$rowInventario->save();
 			
 			}
-			$tablaInventario->update(array('minimo'=>$minimo, 'maximo'=>$maximo, 'costoUnitario'=>$costoUnitario, 
-			'cantidadGanancia'=>$cantidadGanancia,'porcentajeGanancia'=>$porcentajeGanancia,'costoCliente'=>$costoCliente),$where);		
+			
 		}
 	
 		$dbAdapter->commit();

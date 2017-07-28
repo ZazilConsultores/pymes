@@ -57,7 +57,7 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td>Total $:</td>
+						<td>Total:</td>
 						<td><input id="total" class="form-control" disabled="true" /></td>				
 					</tr>
 				</tfoot>
@@ -277,8 +277,8 @@
         	console.log(grandTotal);
     	});
     	
-    	 $("input#total").val(grandTotal.toFixed(2));
-    	 $("input#1-importePago").val('$' + grandTotal.toFixed(2)); 
+    	 $("input#total").val('$' + grandTotal.toFixed(2));
+    	 $("input#1-importePago").val(grandTotal.toFixed(2)); 
    		}
  		
 	});//cierra document ready
