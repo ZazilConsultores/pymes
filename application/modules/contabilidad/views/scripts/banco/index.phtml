@@ -1,7 +1,8 @@
-<?php 	$bancos = $this->bancos; 
-		$formulario = $this->formulario;
-		$formulario->setAction($this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "alta"), null, true));
-		$tipoBanco = Zend_Registry::get("tipoBanco");
+<?php 	
+	$bancos = $this->bancos; 
+	$formulario = $this->formulario;
+	$formulario->setAction($this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "alta"), null, true));
+	$tipoBanco = Zend_Registry::get("tipoBanco");
 ?>
 
 <section class="row">
@@ -33,12 +34,10 @@
 				<tbody>
 					<?php foreach ($bancos as $banco) : ?>
 					<tr>
-						<td><?php echo $banco->getIdBanco() ?></td>
 						<td><?php echo $banco->getCuenta() ?></td>
 						<td><?php echo $banco->getBanco() ?></td>
 						<td><?php echo $banco->getCuentaContable() ?></td>
 						<td><?php echo $tipoBanco[$banco->getTipo()] ?></td>
-							
 						<td><?php echo $banco->getFecha() ?></td>
 						<td><?php echo $banco->getSaldo() ?></td>
 						<td>
@@ -46,7 +45,6 @@
 								<span class="glyphicon glyphicon-cog"></span> Administrar
 							</a>
 						</td>
-					
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -58,15 +56,12 @@
 <script>
 	$(document).ready(function() {
 		//===================================================================================
-	   /* $('table.table').dataTable( {
+	   $('table.table').dataTable( {
 	       "pagingType": "full_numbers",
 	        "language": {
 	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
 	        }
-	    } );*/
+	    });
 	});
 </script>
-
-
-
 

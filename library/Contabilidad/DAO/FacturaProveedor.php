@@ -136,7 +136,7 @@
 						$tablaBanco = $this->tablaBanco;
 						$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
 						$rowBanco = $tablaBanco->fetchRow($select);
-						$saldo = $rowBanco->saldo - $productos[0]['importe'];
+						$saldo = $rowBanco->saldo - $importe[0]['total'];
 						print_r($saldo);
 						print_r("<br />");
 						$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);

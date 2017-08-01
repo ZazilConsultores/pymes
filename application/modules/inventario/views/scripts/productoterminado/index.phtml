@@ -20,7 +20,6 @@
 		$subVerduras = $productoDAO->obtenerSubparametroVerduras();
 		$subDulces = $productoDAO->obtenerSubparametroDulceria();
 		$subPTS = $productoDAO->obtenerPT();
-		//$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"productoterminado", "action" => "editar")));
 	?>
 <section class="panel panel-success">
 	<div class="panel-heading">
@@ -171,7 +170,7 @@
 			</div>
 			<table id="detalleProductoTer" class="table table-striped table-condensed">
 				<thead>
-					<th>Clave </th>
+					<th id="claveProd">Clave </th>
 					<th>Producto</th>
 					<th>Presentación</th>
 					<th>Cantidad</th>
@@ -772,11 +771,10 @@ $(document).ready(function() {
 					
 					//data[i].presentacion
 					$.each(data, function(i,item){
-						var  baseUrl ="localhost/General";
+						var productoCompuesto
+						var baseUrl ="localhost/General";
 						var urlPT = baseUrl + "/inventario/productoterminado/editar"
-						var botonActualizar = $('<button></button>').attr("href", urlPT).attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
-						//console.log("urlEdita");
-						//console.log(urlEdita);
+						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
 						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar");
 						var importe = data[i].cantidad * data[i].costoUnitario;
 						var costoUnitario = data[i].costoUnitario;
@@ -861,10 +859,11 @@ $(document).ready(function() {
 		   });
 		  
 		  $("table#detalleProductoTer").on("click", "button[id^='editar']", function(){
-		  	console.log("EditarProducto");
-		  	
-		  	var urlPT = window.location.origin + "/General/inventario/productoterminado/editar"
-		  	console.log(urlPT);
+		  	var idPT = $("select#productoTerminado").val();
+		  	console.log(idPT);
+		  	var clavePE = $("table#claveProd").val();
+		  	console.log(clavePE);
+		  	//window.location = "/General/inventario/productoterminado/editar";
 		  });
 		   
 		  function AddRow()
