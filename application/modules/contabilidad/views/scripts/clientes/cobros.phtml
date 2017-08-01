@@ -73,7 +73,7 @@
 						<thead>
 							<tr>
 								<th>Sucursal</th>
-								<th>Proveedor</th>
+								<th>Cliente</th>
 								<th>Número Factura</th>
 								<th>Fecha</th>
 								<th>$total</th>
@@ -87,12 +87,16 @@
 									<td><?php echo $facturaxc["idCoP"]; ?></td>
 									<td><?php echo $facturaxc["numeroFactura"]; ?></td>
 									<td><?php echo $facturaxc["fecha"]; ?></td>
-									<td><?php echo "$" .number_format($facturaxc["total"],2) ?></td>
+									<td ><?php echo "$" .number_format($facturaxc["total"],2) ?></td>
 									<td>	
 										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"clientes","action"=>"aplicacobro","idFactura"=>$facturaxc["idFactura"]),null, true)?>">
 											<span class="glyphicon glyphicon-pencil"></span> Pago
 										</a
 									</td>
+								</tr>
+								<tr>
+									<th>Total: </th>
+									<td id="importe" ondblclick="Calcular" ></td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
@@ -160,6 +164,18 @@
 			$("#registroNomina").removeClass("hidden");
 			$("#registroPago").addClass("hidden");
 		});
+		
+		function calculaTotal() {
+			var total = 0;
+			$("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
+				console.log("HOLA");
+				console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	//$("#total").val(total.toFixed(2));
+	        		
+			  });
+		}
 		
 	});
 </script>

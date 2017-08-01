@@ -1,0 +1,57 @@
+<?php 
+	$desproducto = $this->desproducto;
+?>
+<section class="panel panel-warning">
+	<div class="panel-heading">
+		<h5>Producto Terminado: <strong><?php echo $desproducto["idProducto"] ?></strong></h5>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<!--Datos -->
+			<div class="form-group hidden">
+				<label for="datos" class="col-md-1">Datos: </label>
+				<div class="col-md-4">
+					<input id="datos" name="datos" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Clave producto -->
+			<div class="form-group">
+				<label for="clave" class="col-md-1">Clave Producto: </label>
+				<div class="col-md-4">
+					<input id="idClaveProducto" name="clave" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Nombre -->
+			<div class="form-group">
+				<label for="nombre" class="col-md-1">Nombre: </label>
+				<div class="col-md-4">
+					<input id="nombre" name="nombre" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Cantidad -->
+			<div class="form-group">
+				<label for="cantidad" class="col-md-1">Cantidad: </label>
+				<div class="col-md-4">
+					<input id="cantidad" name="cantidad" type="text" class="form-control" required="Cantidad no puede quedar vacía" />
+				</div>
+			</div>
+			<!--Multiplo -->
+			<div class="form-group">
+				<label for="multiplo" class="control-label col-md-1">Multiplo: </label>
+				<div class="col-md-4">
+					<select id="presentacion" name="multiplo" class="form-control col-md-2">
+						
+					</select>
+				</div>
+			</div
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="query" type="submit" class="btn btn-success">
+						<i class="fa fa-search"></i> Agregar
+					</button>
+				</div>
+			</div>
+		</form>	
+	</div>
+</section>

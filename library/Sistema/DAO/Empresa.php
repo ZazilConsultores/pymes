@@ -392,7 +392,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
 		$rowEmpresa = $tablaEmpresa->fetchRow($select);	
 	}
-	/*Obtiene tipoProveedor por idTipoProveedor*/
+	/*Obtiene tipoProveedor */
 	public function obtenerTipoProveedorIdTipoProveedor($idTipoProveedor){
 		$tablaTipoProveedor = $this->tablaTipoProveedor;
 		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->where("idTipoProveedor = ?",$idTipoProveedor);

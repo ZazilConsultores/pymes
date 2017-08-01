@@ -135,4 +135,37 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 			
 		}
 	}
+	
+	public function obtenerProducCom($idPC){
+		/*$tablaProdCom = $this->tablaProductoCompuesto;
+		$select = $tablaProdCom->select()
+		->setIntegrityCheck(false)
+		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto','productoEnlazado'))
+		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
+		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
+		->where("ProductoCompuesto.idProductoCompuesto = ?", $idPC);
+		//print_r($select->__toString());
+		return $tablaProdCom->fetchAll($select)->toArray();*/
+		$tablaProdComp = $this->tablaProductoCompuesto;
+		$select = $tablaProdComp->select()->from($tablaProdComp)->where('idProductoCompuesto = ?',$idPC);
+		$rowProdComp = $tablaProdComp->fetchRow($select);
+		print_r($select->__toString());
+	}
+	
+	public function obtenerIdProducto($idProdComp){
+		$tablaProdComp = $this->tablaProductoCompuesto;
+		$select = $tablaProdComp->select()->from($tablaProdComp)->where('idProductoCompuesto = ?',$idProdComp);
+		$rowProdComp = $tablaProdComp->fetchRow($select);
+		
+			/*$tablaProducto = $this->tablaProducto;
+			$select = $tablaProducto->select()->from($tablaProducto)->where('idProducto = ?',$rowProdComp->idProducto);
+			$rowProducto = $tablaProducto->fetchRow($select);*/
+		print_r($select->__toString());
+			if(is_null($rowProdComp)){
+				return null;
+			}else{
+				return $rowProdComp->toArray();
+			}
+		
+	}
 }
