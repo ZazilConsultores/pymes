@@ -26,7 +26,7 @@
                           <select id="ubicacion" class="form-control" name="ubicacion">
                               <option value="0">Seleccione ubicación...</option>
                               <?php foreach ($ubicaciones as $ubicacion) : ?>
-                              <option value="<?php echo $ubicacion["ubicacion"] ?>"><?php echo utf8_encode($ubicacion["ubicacion"]) ?></option>
+                              <option value="<?php echo $ubicacion["ubicacion"] ?>"><?php echo $ubicacion["ubicacion"] ?></option>
                               <?php endforeach ?>
                           </select>
                       </div>
@@ -38,7 +38,7 @@
                           <select id="usuario" class="form-control" name="usuario">
                               <option value="0">Usuario...</option>
                               <?php foreach ($usuarios as $usuario) : ?>
-                              <option value="<?php echo $usuario["Usuario"] ?>"><?php echo utf8_encode($usuario["Usuario"]) ?></option>
+                              <option value="<?php echo $usuario["Usuario"] ?>"><?php echo $usuario["Usuario"] ?></option>
                               <?php endforeach ?>
                           </select>
                       </div>
