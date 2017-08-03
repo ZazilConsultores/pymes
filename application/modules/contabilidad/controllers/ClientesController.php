@@ -4,21 +4,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
     private $sucursalDAO = null;
-
     private $notaSalidaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $impuestosDAO = null;
-
     private $cobroClienteDAO = null;
-
     private $anticipoDAO = null;
-
+	private $proyectoDAO= null;
+	
     public function init()
     {
     	$this->sucursalDAO = new Sistema_DAO_Sucursal;
@@ -29,6 +23,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$this->impuestosDAO = new Contabilidad_DAO_Impuesto;
 		$this->cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
 		$this->anticipoDAO = new Contabilidad_DAO_Anticipos;
+		$this->proyectoDAO = new Contabilidad_DAO_ProyectoCliente;
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
@@ -288,11 +283,11 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			$idSucursal = $this->getParam("sucursal");
-			//print_r($idSucursal);
-        	$pr = $this->getParam("proveedor"); 
-        	//Enviamos la busqueda a la consulta
-        	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
-			$this->view->facturasxp = $facturaxp;
+			print_r($idSucursal);
+        	$idProyecto = $this->getParam("idProyecto"); 
+        	print_r($idProyecto);
+        	$proyectos = $this->proyectoDAO->obtieneProyecto($idProyecto);
+			$this->view->proyectos = $proyectos;
 		}
         
     }

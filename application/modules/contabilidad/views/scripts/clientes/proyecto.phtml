@@ -1,6 +1,6 @@
 <?php
 	$empresas = $this->empresas;
-	$facturasxc = $this->facturasxc;
+	$proyectos = $this->proyectos;
 ?>
 <section>
 	<div class="row">
@@ -39,9 +39,9 @@
 						</div>
 						<!--Clientes -->
 						<div class="form-group">
-							<label for="cliente" class="col-md-2">Proyecto: </label>
+							<label for="idProyecto" class="col-md-2">Proyecto: </label>
 							<div class="col-md-10">
-								<select required name="cliente" id="idCliente" class="form-control">
+								<select required name="idProyecto" id="idProyecto" class="form-control">
 								</select>
 							</div>
 						</div>
@@ -60,6 +60,47 @@
 	</div>
 </div>
 </section>
+<!-- Muesta el resultado de la busqueda -->
+<?php if(!is_null($proyectos)){ ?>
+	<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Detalle de Facturas</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id="detalleFacturaxc" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Sucursal</th>
+								<th>Cliente</th>
+								<th>Número Factura</th>
+								<th>Fecha</th>
+								<th>$total</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+							<?php foreach ($proyectos as $proyecto) :?>
+								<tr>
+									<td><?php echo $proyecto["idSucursal"]; ?></td>
+									<td><?php echo $proyecto["idCoP"]; ?></td>
+									<td><?php echo $proyecto["numeroFactura"]; ?></td>
+									<td><?php echo $proyecto["fecha"]; ?></td>
+									<td ><?php echo "$" .number_format($proyecto["total"],2) ?></td>
+								</tr>
+								
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>	
+<?php } ?>
 <script>
 	$().ready(function(){
 		var url = window.location.origin + "/General/";
@@ -82,6 +123,23 @@
 					}
 				});
 			}
+		});
+		
+		$("select#idSucursal").on('click', function(){
+			var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
+			//console.log("$url");
+			$.ajax({
+				url: url,
+				dataType: "json",	
+				success: function(data){
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){	
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion)); 
+					});
+					
+				}
+			});
+			
 		});	
 	});
 </script>
