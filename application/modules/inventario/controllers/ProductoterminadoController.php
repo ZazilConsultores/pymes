@@ -29,36 +29,35 @@ class Inventario_ProductoterminadoController extends Zend_Controller_Action
 
     public function crearAction()
     {
-        /*$request = $this->getRequest();
-        $formulario = new Inventario_Form_CrearProductoTerminado;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				print_r($datos);
-				$envio = json_decode($datos['datos'],TRUE);
-				print_r($envio);
-			}else{
-				print_r("El formulario no valido <br />");
-			}
-		}*/
+    	
     }
 
     public function editarAction()
     {
+    	$request = $this->getRequest();
     	$idProdComp = $this->getParam("idProdComp");
-		print_r($idProdComp);
-		$productoCom = $this->productoTerDAO->obtenerProducCom($idProdComp);
 		$desproducto= $this->productoTerDAO->obtenerIdProducto($idProdComp);
+		$producto = $this->productoTerDAO->obtieneProductoTerminado($idProdComp);
+		$multiplos = $this->productoTerDAO->obtenerMultiploProdCom($idProdComp);
+		
 		$this->view->desproducto = $desproducto;
-    	//$idPC = $this->getParam("idProductoCompuesto");
-		//$productoCompuesto = $this->productoTerDAO->obtenerProductoTerminado($idPC);  
+		$this->view->producto = $producto;
+		$this->view->multiplos = $multiplos;
+		
+		if($request->isPost()){		
+			$datos = $request->getPost();
+			print_r($datos);
+			$this->productoTerDAO->editarProdCom($idProdComp, $datos);
+			$this->_helper->redirector->gotoSimple("index", "productoterminado", "inventario");
+		}
     }
 
     public function eliminarAction()
     {
-        // action body
+    	$request = $this->getRequest();
+    	$idProdComp = $this->getParam("idProdComp");
+		print_r($idProdComp);
+		$this->productoTerDAO->eliminarProdCom($idProdComp);
     }
 
 

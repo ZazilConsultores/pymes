@@ -4,14 +4,21 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $sucursalDAO = null;
+
     private $notaSalidaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $impuestosDAO = null;
+
     private $cobroClienteDAO = null;
-	private $anticipoDAO = null;
-	
+
+    private $anticipoDAO = null;
+
     public function init()
     {
     	$this->sucursalDAO = new Sistema_DAO_Sucursal;
@@ -270,8 +277,30 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
     }
 
+    public function proyectoAction()
+    {
+    	$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;	
+		if($request->isGet()){
+			$this->view->empresas = $empresas;	
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
+			$idSucursal = $this->getParam("sucursal");
+			//print_r($idSucursal);
+        	$pr = $this->getParam("proveedor"); 
+        	//Enviamos la busqueda a la consulta
+        	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
+			$this->view->facturasxp = $facturaxp;
+		}
+        
+    }
+
 
 }
+
+
 
 
 

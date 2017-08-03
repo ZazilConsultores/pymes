@@ -236,30 +236,7 @@
 					</button>
 				</div>
 			</div>
-		</form>
-			
-		<!--<table id="enviaPT" class="table table-striped table-condensed">
-			<thead >
-				<tr>
-					<th>Clave</th>
-      				<th>Nombre</th>
-				    <th>Cantidad</th>
-				    <th>Presentación</th>
-    			</tr>
-    		</thead>
-    		<tbody>
-    			<td><input id="idClaveProducto" class="form-control" size="20"></input></td>
-    			<td><input id="nombre" class="form-control" size="20"></input></td>
-				<td><input id="cantidad" class="form-control" size="20"></input></td>
-				<td><select id="presentacion" class="form-control"></select></td>
-				<td>
-					<button id="agregar"class="btn btn-success" type="submit" >
-						<span class="glyphicon glyphicon-plus-sign"></span> Agregar
-					</button>
-				</td>
-			</tbody>
-		</table>-->
-		
+		</form>	
 	</div>
 </section>
 
@@ -771,12 +748,12 @@ $(document).ready(function() {
 					
 					//data[i].presentacion
 					$.each(data, function(i,item){
-						var productoCompuesto
 						var baseUrl ="localhost/General";
 						var urlPT = baseUrl + "/inventario/productoterminado/editar"
 						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
-						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar");
+						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
 						var importe = data[i].cantidad * data[i].costoUnitario;
+						importe = parseFloat(importe.toFixed(2));
 						var costoUnitario = data[i].costoUnitario;
 						tbody.append($('<tr>').
 							append($('<td>').append(data[i].claveProducto)).attr("id","claveProd").
@@ -855,16 +832,14 @@ $(document).ready(function() {
 			
 		  });
 		   $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
+		   	var idProdComp = $(this).attr("productoCompuesto");
+		   	console.log(idProdComp);
+		  	window.location = "/General/inventario/productoterminado/eliminar/idProdComp/"+ idProdComp;
 		   	
 		   });
 		  
 		  $("table#detalleProductoTer").on("click", "button[id^='editar']", function(){
-		  	//var idPT = $("button#productoCompuesto").val();
-		  	//console.log(idPT);
-		  	/*$("editar#productoCompuesto").empty();
-		  	$idPC = $("#editar").attr("productoCompuesto");
-		  	console.log($idPC);*/
-		  	//window.location = "/General/inventario/productoterminado/editar/idProdComp/";
+		  	
 		  	var idProdComp = $(this).attr("productoCompuesto");
 		  	console.log(idProdComp);
 		  	window.location = "/General/inventario/productoterminado/editar/idProdComp/"+ idProdComp;

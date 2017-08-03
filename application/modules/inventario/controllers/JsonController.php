@@ -81,7 +81,7 @@ class Inventario_JsonController extends Zend_Controller_Action
     {
         // action body
         $idPC = $this->getParam("idPC");
-       	$productoC= $this->productoTermindoDAO->editaProductoTerminado($idPC);
+       	$productoC= $this->productoTermindoDAO->obtieneProductoTerminado($idPC);
 		
 		if(!is_null($productoC)){
 			echo Zend_Json::encode($productoC);

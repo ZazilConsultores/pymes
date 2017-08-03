@@ -16,30 +16,6 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		$this->tablaInventario = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		
 	}
-	public function obtenerProducto()
-	{
-		/*$tablaProducto = $this->tablaProducto;
-		$select = $tablaProducto->select()->setIntegrityCheck(false)
-		->from($tablaProducto, array('claveProducto','producto'))
-		->join('Inventario','Producto.idProducto = Inventario.idProducto', array())
-		->where('Inventario.idSucursal=2')
-		->order('producto ASC');
-		
-		return $tablaProducto->fetchAll($select);*/
-	}
-	
-	public function editaProductoTerminado($idPC){
-		$tablaProdCom = $this->tablaProductoCompuesto;
-		$select = $tablaProdCom->select()
-		->setIntegrityCheck(false)
-		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto','productoEnlazado'))
-		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
-		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
-		->where("ProductoCompuesto.idProductoCompuesto = ?", $idPC);
-		//print_r($select->__toString());
-		return $tablaProdCom->fetchAll($select)->toArray();
-		
-	}
 	
 	public function obtenerProductosTerminados()
 	{
@@ -60,28 +36,6 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		
 		return $modelProductos;
 	}
-	public function obtenerProductoTerminado($idProductoTerminado){
-		
-		/*$tablaProdCom = $this->tablaProductoCompuesto;
-		$select = $tablaProdCom->select()->from($tablaProdCom)->where("idProducto = ?", $idProductoTerminado);
-		$rowProductoComp = $tablaProdCom->fetchAll($select);
-		
-		if(is_null($rowProductoComp)){
-			return null;
-		}else{
-			return $rowProductoComp->toArray();
-		}*/
-		$tablaProdCom = $this->tablaProductoCompuesto;
-		$select = $tablaProdCom->select()
-		->setIntegrityCheck(false)
-		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto'))
-		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
-		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
-		->where("ProductoCompuesto.idProducto = ?", $idProductoTerminado);
-		//print_r($select->__toString());
-		return $tablaProdCom->fetchAll($select)->toArray();
-	}
-	
 	
 	public function crearProductoTerminado(array $datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -136,36 +90,84 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		}
 	}
 	
-	public function obtenerProducCom($idPC){
-		/*$tablaProdCom = $this->tablaProductoCompuesto;
-		$select = $tablaProdCom->select()
-		->setIntegrityCheck(false)
-		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto','productoEnlazado'))
-		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
-		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
-		->where("ProductoCompuesto.idProductoCompuesto = ?", $idPC);
-		//print_r($select->__toString());
-		return $tablaProdCom->fetchAll($select)->toArray();*/
-		$tablaProdComp = $this->tablaProductoCompuesto;
-		$select = $tablaProdComp->select()->from($tablaProdComp)->where('idProductoCompuesto = ?',$idPC);
-		$rowProdComp = $tablaProdComp->fetchRow($select);
-		print_r($select->__toString());
-	}
-	
 	public function obtenerIdProducto($idProdComp){
 		$tablaProdComp = $this->tablaProductoCompuesto;
 		$select = $tablaProdComp->select()->from($tablaProdComp)->where('idProductoCompuesto = ?',$idProdComp);
 		$rowProdComp = $tablaProdComp->fetchRow($select);
 		
-			/*$tablaProducto = $this->tablaProducto;
-			$select = $tablaProducto->select()->from($tablaProducto)->where('idProducto = ?',$rowProdComp->idProducto);
-			$rowProducto = $tablaProducto->fetchRow($select);*/
-		print_r($select->__toString());
-			if(is_null($rowProdComp)){
-				return null;
-			}else{
-				return $rowProdComp->toArray();
-			}
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where('idProducto = ?',$rowProdComp->idProducto);
+		$rowProducto = $tablaProducto->fetchRow($select);
+		//print_r($select->__toString());
+		if(is_null($rowProducto)){
+			return null;
+		}else{
+			return $rowProducto->toArray();
+		}
 		
+	}
+	
+	public function obtieneProductoTerminado($idPC){
+		$tablaProdCom = $this->tablaProductoCompuesto;
+		$select = $tablaProdCom->select()
+		->setIntegrityCheck(false)
+		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto','productoEnlazado','descripcion'))
+		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
+		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
+		->where("ProductoCompuesto.idProductoCompuesto = ?", $idPC);
+		//print_r($select->__toString());
+		return $tablaProdCom->fetchRow($select)->toArray();
+		
+	}
+	
+	public function obtenerMultiploProdCom($idProdComp){
+		$tablaProdComp = $this->tablaProductoCompuesto;
+		$select = $tablaProdComp->select()->from($tablaProdComp)->where('idProductoCompuesto = ?',$idProdComp);
+		$rowProdComp = $tablaProdComp->fetchRow($select);
+		//print_r($select->__toString());
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where('idProducto = ?',$rowProdComp->productoEnlazado);
+		$rowProducto = $tablaProducto->fetchRow($select);
+		//print_r($select->__toString());
+		$tablaMultiplos = $this->tablaMultiplos;
+		$select = $tablaMultiplos->select()
+		->setIntegrityCheck(false)
+		->from($tablaMultiplos)
+		->join('Unidad', 'Multiplos.idUnidad = Unidad.idUnidad')->where("Multiplos.idProducto = ?", $rowProdComp->productoEnlazado);
+		//print_r($select->__toString());
+		return $tablaMultiplos->fetchAll($select);
+	}
+	
+	public function editarProdCom($idProdComp, array $productoComp){
+		$tablaProdComp = $this->tablaProductoCompuesto;
+		$select = $tablaProdComp->select()->from($tablaProdComp)->where('idProductoCompuesto = ?',$idProdComp);
+		$rowProdComp = $tablaProdComp->fetchRow($select);
+		print_r($select->__toString());
+		
+		$rowProdComp->cantidad = $productoComp["cantidad"];
+		$rowProdComp->presentacion = $productoComp["presentacion"];
+		
+		$rowProdComp->save();
+		
+	}
+	
+	public function eliminarProdCom($idProdComp){
+		$tablaProdComp = $this->tablaProductoCompuesto;
+		$where = $tablaProdComp->getAdapter()->quoteInto("idProductoCompuesto = ?", $idProdComp);
+		print_r("$where");
+		$tablaProdComp->delete($where);
+		
+	}
+	
+	public function obtenerProductoTerminado($idProductoTerminado){
+		$tablaProdCom = $this->tablaProductoCompuesto;
+		$select = $tablaProdCom->select()
+		->setIntegrityCheck(false)
+		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto'))
+		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
+		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
+		->where("ProductoCompuesto.idProducto = ?", $idProductoTerminado);
+		//print_r($select->__toString());
+		return $tablaProdCom->fetchAll($select)->toArray();
 	}
 }
