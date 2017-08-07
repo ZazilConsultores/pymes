@@ -1116,6 +1116,7 @@
             <formFile formName="NotaCredito"/>
             <formFile formName="AnticipoClientes"/>
             <formFile formName="AnticipoProveedor"/>
+            <formFile formName="PagoImpuesto"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>

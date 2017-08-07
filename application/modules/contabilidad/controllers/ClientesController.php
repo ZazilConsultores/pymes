@@ -283,16 +283,14 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			$idSucursal = $this->getParam("sucursal");
-			print_r($idSucursal);
+			//print_r($idSucursal);
         	$idProyecto = $this->getParam("idProyecto"); 
-        	print_r($idProyecto);
+        	//print_r($idProyecto);
         	$proyectos = $this->proyectoDAO->obtieneProyecto($idProyecto);
 			$this->view->proyectos = $proyectos;
 		}
         
     }
-
-
 }
 
 

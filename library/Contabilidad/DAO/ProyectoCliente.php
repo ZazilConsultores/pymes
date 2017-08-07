@@ -55,10 +55,9 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		->setIntegrityCheck(false)
 		->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
 		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
-		->where('Movimientos.idTipoMovimiento =?', 2)->where('Movimientos.idProyecto =?', $idProyecto);
+		->where('Movimientos.idProyecto =?', $idProyecto);
 		//print_r("$select");
 		return $tablaMovimientos->fetchAll($select);
-		
 		
 	}
 	

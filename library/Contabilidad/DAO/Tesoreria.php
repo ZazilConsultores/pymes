@@ -677,4 +677,66 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			throw new Util_Exception_BussinessException("Error");
 		}
 	}
+	
+	public function guardaPagoImpuesto(array $encabezado, $info){
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
+		$dateIni = new  Zend_Date($encabezado['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');	
+		
+		
+		try{
+			
+			$mCuentasxp = array(
+			'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+			'idSucursal'=>$encabezado['idSucursal'],
+			//'idFactura'=>$datos['idTipoMovimiento'],
+			'idCoP'=>$encabezado['idEmpresas'],/**/
+			'idBanco'=>$info['idBancoS'],
+			'idDivisa'=>1,
+			'numeroFolio'=>$encabezado['numFolio'],
+			'secuencial'=>1,
+			'fecha'=>date('Y-m-d h:i:s', time()),
+			'fechaPago'=>$stringIni,
+			'estatus'=>"A",
+			'numeroReferencia'=>$encabezado['numFolio'],
+			'conceptoPago'=>$info["formaLiquidar"],
+			'formaLiquidar'=>"LI",
+			'subTotal'=>$info['total'],
+			'total'=>$info['total']
+			);
+			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+			//Guarda Movimiento en FacturaImpuesto
+			$mfImpuesto = array(
+				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+				'idFactura'=>0,
+				'idImpuesto'=>$info['idImpuesto'], //Iva
+				'importe'=>$info['total']
+			);
+			$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+			//restaBanco
+			$tablaBanco = $this->tablaBanco;
+			$where = $tablaBanco->getAdapter()->quoteInto("idBanco = ?",$info['idBancoS']);
+			$rowBanco = $tablaBanco->fetchRow($where);
+			print_r($where);
+			if(!is_null($rowBanco)){
+				$importePago = $rowBanco->saldo - $info['total'];
+				$tablaBanco->update(array('saldo'=>$importePago),$where);
+			}
+			
+			$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("==========");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("==========");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
+		}
+		
+	}
 }

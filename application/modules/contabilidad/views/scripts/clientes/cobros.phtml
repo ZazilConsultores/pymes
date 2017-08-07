@@ -76,7 +76,7 @@
 								<th>Cliente</th>
 								<th>Número Factura</th>
 								<th>Fecha</th>
-								<th>$total</th>
+								<th>Importe</th>
 								<th>Pago</th>
 							</tr>
 						</thead>
@@ -87,7 +87,7 @@
 									<td><?php echo $facturaxc["idCoP"]; ?></td>
 									<td><?php echo $facturaxc["numeroFactura"]; ?></td>
 									<td><?php echo $facturaxc["fecha"]; ?></td>
-									<td ><?php echo "$" .number_format($facturaxc["total"],2) ?></td>
+									<td id="importe"><?php echo number_format($facturaxc["total"],2) ?></td>
 									<td>	
 										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"clientes","action"=>"aplicacobro","idFactura"=>$facturaxc["idFactura"]),null, true)?>">
 											<span class="glyphicon glyphicon-pencil"></span> Pago
@@ -95,8 +95,11 @@
 									</td>
 								</tr>
 								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
 									<th>Total: </th>
-									<td id="importe" ondblclick="Calcular" ></td>
+									<td><input id="total" class="form-control" /></td>	
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
@@ -112,7 +115,7 @@
 	$().ready(function(){
 		
 		var url = window.location.origin + "/General/";
-		
+		calculaTotal();
 		$("#idFiscales").on('change',function(){
 			//console.log($(this).val());
 			var idFiscal = $(this).val();
@@ -167,14 +170,12 @@
 		
 		function calculaTotal() {
 			var total = 0;
-			$("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
-				console.log("HOLA");
-				console.log($(this).text());
-			   	total += +$(this).text(); 
-			   	console.log(total);
-			   	//$("#total").val(total.toFixed(2));
-	        		
-			  });
+			$("#importe").each(
+				function(index, value) {
+					total = total + eval($(this).text());
+				}
+			);
+  			$("#total").val(total);
 		}
 		
 	});

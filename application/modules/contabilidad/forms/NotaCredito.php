@@ -78,7 +78,6 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 			$eCliente->addMultiOption($fila->idCliente, $fila->razonSocial);
 		}
 		
-		
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
