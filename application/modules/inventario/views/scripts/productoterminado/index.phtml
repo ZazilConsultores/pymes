@@ -725,6 +725,8 @@ $(document).ready(function() {
 	 		if($("select#subAbarrotes").val() != 0){
 	 			console.log("Es abarrote");
 	 			productoEnlazado = $("select#subAbarrotes").val();
+	 		}else if($("select#subDesechable").val() != 0 ){
+	 			productoEnlazado = $("select#subDesechable").val();
 	 		}else if($("select#subBebidas").val() != 0 ){
 	 			productoEnlazado = $("select#subBebidas").val();
 	 		}else if($("select#subCarnes").val() != 0 ){
