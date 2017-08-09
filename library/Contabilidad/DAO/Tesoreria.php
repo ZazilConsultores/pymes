@@ -700,8 +700,8 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'fechaPago'=>$stringIni,
 			'estatus'=>"A",
 			'numeroReferencia'=>$encabezado['numFolio'],
-			'conceptoPago'=>$info["formaLiquidar"],
-			'formaLiquidar'=>"LI",
+			'conceptoPago'=>"LI",
+			'formaLiquidar'=>$info["formaLiquidar"],
 			'subTotal'=>$info['total'],
 			'total'=>$info['total']
 			);

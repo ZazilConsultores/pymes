@@ -10,6 +10,7 @@
 		$subBebidas = $productoDAO->obtenerSubparametroBebida();
 		$subsPT = $productoDAO->obtenerSubparametroPT();
 		$subAbarrotes = $productoDAO->obtenerSubparametroAbarrotes();
+		$subDesechables = $productoDAO->obtenerSubparametroDesechable();
 		$subCarnes = $productoDAO->obtenerSubparametroCarnes();
 		$subFrutas = $productoDAO->obtenerSubparametroFrutas();
 		$subLacteos = $productoDAO->obtenerSubparametroLacteos();
@@ -98,7 +99,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>Panederia:</td>
+						<td>Panaderia:</td>
 						<td>
 							<select id="subPanaderia"  class="form-control">
 								<option value="0">Seleccione Pan</option>
@@ -147,10 +148,22 @@
 								<?php endforeach; ?>
 							</select>
 						</td>
-						<td>Seleccionar Producto Compuesto:</td>
+						<td>Desechable:</td>
 						<td>
-							<select id="subPCS" class="form-control">
-								<option value="0">Seleccione Producto Compuesto</option>
+							<select id="subDesechable" class="form-control">
+								<option value="0">Seleccione Desechable</option>
+								<?php foreach ($subDesechables as $subDesechable) : ?>
+									<option value="<?php echo $subDesechable["idProducto"] ?>"><?php echo $subDesechable["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						
+					</tr>
+					<tr>
+						<td>Seleccionar Producto Compuesto:</td>
+						<td colspan="3">
+							<select id="subPCS" class="form-control"  >
+								<option value="0">Producto Compuesto</option>
 								<?php foreach ($subsPT as $subPT) : ?>
 									<option value="<?php echo $subPT["idProducto"] ?>"><?php echo $subPT["producto"]; ?></option>
 								<?php endforeach; ?>
@@ -626,6 +639,40 @@ $(document).ready(function() {
 				$("select#presentacion").empty();
 				$.each(data, function(i,item){
 					if(data[i].idProducto == dulce){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+		});
+	});
+	//Select Desechable y claveProducto
+	$("table#subPT").on("change","select[id^='subDesechable']", function (){
+		var desechable = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + desechable ;
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == desechable){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select subAbarrotes
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + desechable ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == desechable){
 						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
 					}	
 				});

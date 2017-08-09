@@ -87,7 +87,7 @@
 									<td><?php echo $facturaxc["idCoP"]; ?></td>
 									<td><?php echo $facturaxc["numeroFactura"]; ?></td>
 									<td><?php echo $facturaxc["fecha"]; ?></td>
-									<td id="importe"><?php echo number_format($facturaxc["total"],2) ?></td>
+									<td id="importe"><?php echo number_format($facturaxc["total"],2); ?></td>
 									<td>	
 										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"clientes","action"=>"aplicacobro","idFactura"=>$facturaxc["idFactura"]),null, true)?>">
 											<span class="glyphicon glyphicon-pencil"></span> Pago
@@ -175,7 +175,8 @@
 					total = total + eval($(this).text());
 				}
 			);
-  			$("#total").val(total);
+			console.log(total);
+  			//$("#total").val(total);
 		}
 		
 	});
