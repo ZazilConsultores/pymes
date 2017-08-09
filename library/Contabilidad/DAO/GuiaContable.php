@@ -22,12 +22,37 @@
 	
 	public function altaModulo($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$dbAdapter->insert("Modulos", array("descripcion"=>$datos["descripcion"]));
+		try{
+   			$tablaModulos =$this->tablaModulos;
+   			$select = $tablaModulos->select()->from($tablaModulos)->where("descripcion=?", $datos['descripcion']);
+			$rowModulo = $tablaModulos->fetchRow($select);
+			if(count($rowModulo) >= 1) {
+				throw new Exception("Error: Módulo <strong>".$datos["descripcion"]."</strong> ya esta dado de alta en el sistema");				
+			}else{
+				$dbAdapter->insert("Modulos", array("descripcion"=>$datos["descripcion"]));
+			}
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+			$dbAdapter->rollBack();		
+		}
 	}
 	
-	public function altaTipoProvedor(array $tipoProveedor){
-		$tablaTipoProveedor = $this->tablaTipoProveedores;
-		$tablaTipoProveedor->insert( array("clave"=>$tipoProveedor["clave"], "descripcion"=>$tipoProveedor["descripcionTipoProveedor"] ));
+	public function altaTipoProvedor($tipo){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		try{
+   			$tablaTipo = $this->tablaTipoProveedores;
+   			$select = $tablaTipo->select()->from($tablaTipo)->where("descripcion=?", $tipo['descripcion'])->orWhere("clave=?", $tipo['cta']);
+			$rowTipo = $tablaTipo->fetchRow($select);
+			//print_r("$select");
+			if(count($rowTipo) >= 1) {
+				throw new Exception("Error: Tipo <strong>".$tipo["descripcion"]."</strong> ya esta dado de alta en el sistema");				
+			}else{
+				$dbAdapter->insert("TipoProveedor", array("clave"=>$tipo["cta"],"descripcion"=>$tipo["descripcion"]));
+			}
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+			$dbAdapter->rollBack();		
+		}
 		
 	}
 	

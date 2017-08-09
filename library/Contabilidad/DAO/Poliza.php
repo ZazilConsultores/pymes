@@ -1,36 +1,37 @@
-	<?php
+<?php
+class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
+	private $tablaCuentasxp;
+	private $tablaCuentasxc;
+	private $tablaProveedores;
+	private $tablaFactura;
+	private $tablaProveedorEmpresa;
+	private $tablaGuiaContable;
+	private $tablaBancos;
+	private $tablaClientes;
+	private $tablaPoliza;
+	private $tablaFacturaImpuesto;
 	
-	class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
-			
-		private $tablaCuentasxp;
-		private $tablaCuentasxc;
-		private $tablaProveedores;
-		private $tablaFactura;
-		private $tablaProveedorEmpresa;
-		private $tablaGuiaContable;
-		private $tablaBancos;
-		private $tablaClientes;
-		private $tablaPoliza;
-		private $tablaFacturaImpuesto;
-		
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
+		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
+		$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
+		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
+		$this->tablaProveedorEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa(array('db'=>$dbAdapter));
+		$this->tablaGuiaContable = new Contabilidad_Model_DbTable_GuiaContable(array('db'=>$dbAdapter));
+		$this->tablaGuiaContable = new Contabilidad_Model_DbTable_GuiaContable(array('db'=>$dbAdapter));
+		$this->tablaBancos = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
+		$this->tablaPoliza = new Contabilidad_Model_DbTable_Poliza(array('db'=>$dbAdapter));
+		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
+	}
+
+	public function eliminarPoliza(){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->delete("Poliza");
+	}
 	
-		
-		public function __construct() {
-			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
-			$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
-			$this->tablaProveedores = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
-			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
-			$this->tablaProveedorEmpresa = new Sistema_Model_DbTable_ProveedoresEmpresa(array('db'=>$dbAdapter));
-			$this->tablaGuiaContable = new Contabilidad_Model_DbTable_GuiaContable(array('db'=>$dbAdapter));
-			$this->tablaGuiaContable = new Contabilidad_Model_DbTable_GuiaContable(array('db'=>$dbAdapter));
-			$this->tablaBancos = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
-			$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
-			$this->tablaPoliza = new Contabilidad_Model_DbTable_Poliza(array('db'=>$dbAdapter));
-			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
-		}
-	
-		public function generaGruposFacturaProveedor($datos){
+	public function generaGruposFacturaProveedor($datos){
 			
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$dbAdapter->beginTransaction();
@@ -3021,7 +3022,7 @@
 		}
 	public function genera_Anticipo_Proveedores($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		//$dbAdapter->beginTransaction();
+		$dbAdapter->beginTransaction();
 			
 		$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 		$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');

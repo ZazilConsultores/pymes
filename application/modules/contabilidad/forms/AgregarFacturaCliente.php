@@ -120,7 +120,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		
 		$ePagada = new Zend_Form_Element_Checkbox('pagada');
 		$ePagada->setLabel("Pagada en una sola exhibición:");
-		$ePagada->setChecked('1');
+		//$ePagada->setChecked('1');
 		
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('Importe Pago:');
