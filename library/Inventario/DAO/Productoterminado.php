@@ -163,8 +163,9 @@ class Inventario_DAO_Productoterminado implements Inventario_Interfaces_IProduct
 		$tablaProdCom = $this->tablaProductoCompuesto;
 		$select = $tablaProdCom->select()
 		->setIntegrityCheck(false)
-		->from($tablaProdCom, array('costoUnitario','cantidad','idProducto','idProductoCompuesto'))
+		->from($tablaProdCom, array('cantidad','idProducto','idProductoCompuesto'))
 		->join('Producto','ProductoCompuesto.productoEnlazado = Producto.idProducto',array('claveProducto','producto'))
+		->join('Inventario','ProductoCompuesto.productoEnlazado = Inventario.idProducto','costoUnitario')
 		->join('Unidad','ProductoCompuesto.presentacion = Unidad.idUnidad', array('abreviatura'))
 		->where("ProductoCompuesto.idProducto = ?", $idProductoTerminado);
 		//print_r($select->__toString());
