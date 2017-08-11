@@ -1,9 +1,8 @@
 <?php
-	$inventario= $this->inventario;
+	$inventario = $this->inventario;
 	$formulario = $this->formulario;
-	$producto = $this->producto;
 	$productosDAO = new Inventario_DAO_Producto;
-	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "admin", "idInventario"=> $inventario->getIdInventario()), null, true));
+	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "admin", "idInventario"=> $inventario->getIdInventario()), null, true));	
 ?>
 <section class="row">
 	<div class="panel panel-success">
@@ -30,9 +29,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php 
-						$producto = $productosDAO->obtenerProducto($inventario->getIdProducto());
-					?>
 					<tr>
 						<td><?php echo $inventario->getIdInventario() ?></td>
 						<td><?php echo $producto->getClaveProducto() ?></td>
@@ -47,17 +43,43 @@
 			</table>
 		</div>
 	</div>
+</section>
+
+<section class="row">
 	<div class="panel panel-warning">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				<?php 
-					$producto = $productosDAO->obtenerProducto($inventario->getIdProducto());
-				?>
-				Editar Producto en Inventario: <strong><?php echo $producto->getProducto(); ?></strong>
-				
+			Actualizando Producto
 		</div>
 		<div class="panel-body">
-			<?php echo $formulario; ?>
+			<div class="col-xs-6">
+				<?php echo $formulario; ?>
+			</div>
 		</div>
 	</div>
 </section>
+
+<script>
+	$(document).ready(function(){
+		calculaCostoCliente();
+		function calculaCostoCliente() {
+			var costoCliente = 0;
+			var porcentajeGanancia = 0;
+			$("#cantidadGanancia").on("blur",function(){
+				costoCliente  = parseFloat($("#costoUnitario").val()) + parseFloat($("#cantidadGanancia").val());
+    			console.log(costoCliente);
+    			$("input#costoCliente").val(costoCliente.toFixed(2));
+			});
+			
+			$("#cantidadGanancia").on("blur",function(){
+				console.log("El costo");
+				porcentajeGanancia = ((parseFloat($("#costoCliente").val()) / parseFloat($("#costoUnitario").val()) -1) * 100);
+    			console.log(porcentajeGanancia);
+    			$("input#porcentajeGanancia").val(porcentajeGanancia.toFixed(2));
+			});
+    	
+    	
+ 	 	  
+   	}
+		
+	});
+</script>

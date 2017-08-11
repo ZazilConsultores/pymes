@@ -28,6 +28,7 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					$this->polizaDAO->generaGruposNotaCredito($datos);
 					$this->polizaDAO->genera_Anticipo_Clientes($datos);
 					$this->polizaDAO->genera_Anticipo_Proveedores($datos);
+					$this->polizaDAO->genera_Cuentasxp_PagoImpuesto($datos);
 					$this->view->messageSuccess = "Póliza generada exitosamente!!";
 				}catch(exception $ex){
 					

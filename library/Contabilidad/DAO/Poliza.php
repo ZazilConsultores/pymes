@@ -3287,7 +3287,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 		
 	}
 	
-	public function genera_Anticipo_Proveedores($datos){
+	public function genera_Cuentasxp_PagoImpuesto($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
 			
@@ -3297,12 +3297,12 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 		$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
 		
 		try{
-			//Seleccionamos grupoCuentasxp por fecha, tipoMovto = 18 Anticipo Proveedor, idSucursal y estatus
+			//Seleccionamos grupoCuentasxp por fecha, tipoMovto = 10 Pago Impuesto, idSucursal y estatus
 			$tablaCtsxp = $this->tablaCuentasxp;
-			$select = $tablaCtsxp->select()->from($tablaCtsxp)->where('fecha >= ?',$stringFechaInicio)->where('fecha <=?',$stringFechaFinal)->where('idTipoMovimiento=?',18)
+			$select = $tablaCtsxp->select()->from($tablaCtsxp)->where('fechaPago >= ?',$stringFechaInicio)->where('fechaPago <=?',$stringFechaFinal)->where('idTipoMovimiento=?',10)
 			->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 			$rowsCxp= $tablaCtsxp->fetchAll($select);
-			print_r("Anticipo proveedor");
+			print_r("Pago Impuesto");
 			print_r($select->__toString());
 			if(!is_null($rowsCxp)){
 				foreach($rowsCxp as $rowCxp){
@@ -3314,11 +3314,11 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 					//Verificamos que el proveedor exista
 					if(!is_null($rowProveedor)){
 						//Nomina
-						$tipo = $rowProveedor->idTipoProveedor;
-						if($tipo == 5){//Asignamos el modulo dependiento de tipo Proveedor
-							$modulo = 11;
+						$tipo = 33;
+						if($tipo == 33){//Asignamos el modulo dependiento de tipo Proveedor
+							$modulo = 8;
 						}else{
-							$modulo = 11;
+							$modulo = 8;
 						}
 						//Asignamos variables
 						$banco = $rowCxp["idBanco"];
@@ -3391,7 +3391,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 								if($rowGuiaContable->origen ='I' || $rowGuiaContable->origen == "S"){
 									$desPol = $rowGuiaContable->descripcion;
 								}else{
-									if($tipo == 1 || $tipo == 2 && $rowGuiaContable->cargo == "X"){
+									if($tipo == 1 || $tipo == 33 && $rowGuiaContable->cargo == "X"){
 										$desPol = $rowGuiaContable->descripcion;
 									}else{
 										$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);

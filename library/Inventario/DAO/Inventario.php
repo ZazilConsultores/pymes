@@ -67,46 +67,26 @@ public function obtenerIdProductoInventario(){
 	{
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
-		
-		
-
 		try{
 			
 			$tablaInventario = $this->tablaInventario;
 			$select = $tablaInventario->select()->from($tablaInventario)->where("idInventario=?",$idInventario);
 			$rowInventario = $tablaInventario->fetchRow($select);
 			
-		if(!is_null($rowInventario)){
+			if(!is_null($rowInventario)){
 			
-			$minimo = $inventario['minimo'];
-			$maximo = $inventario['maximo'];
-			$costoUnitario = $inventario['costoUnitario'];
-			$cantidadGanancia = $inventario['cantidadGanancia'];
-			$cantGanancia = $rowInventario->cantidadGanancia;
-			$costoCliente = $inventario['costoUnitario'] + $inventario['cantidadGanancia'];
+				$minimo = $inventario['minimo'];
+				$maximo = $inventario['maximo'];
+				$costoUnitario = $inventario['costoUnitario'];
 			
-			$rowInventario->minimo = $minimo;
-			$rowInventario->maximo = $maximo;
-			$rowInventario->costoUnitario = $costoUnitario;
-			$rowInventario->costoCliente = $costoCliente;
-			$rowInventario->cantidadGanancia = $cantidadGanancia;
-			$rowInventario->save();
-			
-			
-			if($cantGanancia <> $inventario['cantidadGanancia']){
-				print_r("Ha cambiado");
-				$porcentajeGanancia = ((($inventario['costoCliente'] / $inventario['costoUnitario']) -1 ) * 100);
-				$rowInventario->porcentajeGanancia = $porcentajeGanancia;
+				$rowInventario->minimo = $minimo;
+				$rowInventario->maximo = $maximo;
+				$rowInventario->costoUnitario = $costoUnitario;
+				$rowInventario->costoCliente = $inventario['costoCliente'];
 				$rowInventario->cantidadGanancia = $inventario['cantidadGanancia'];
+				$rowInventario->porcentajeGanancia = $inventario['porcentajeGanancia'];
 				$rowInventario->save();
-			}else{
-				$rowInventario->cantidadGanancia = $rowInventario['costoCliente'] - $rowInventario['costoUnitario'];
-				$rowInventario->save();
-			
 			}
-			
-		}
-	
 		$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
