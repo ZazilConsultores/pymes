@@ -707,9 +707,11 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			);
 			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
 			//Guarda Movimiento en FacturaImpuesto
+			$idcxp = $dbAdapter->lastInsertId("Cuentasxp","idCuentasxp");	
 			$mfImpuesto = array(
 				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 				'idFactura'=>0,
+				'idCuentasxp'=>$idcxp,
 				'idImpuesto'=>$info['idImpuesto'], //Iva
 				'importe'=>$info['total']
 			);

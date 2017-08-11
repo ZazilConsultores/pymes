@@ -27,6 +27,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
 		$this->tablaBancos = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerClientes(){
@@ -374,7 +375,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			$rowCuentasxc = $tablaCuentasxc->fetchRow($select); 
 				
 			if(!is_null($rowCuentasxc)){
-				$secuencial= $row->secuencial +1;
+				$secuencial= $rowCuentasxc->secuencial +1;
 			}else{
 				$secuencial = 1;	
 			}

@@ -3314,13 +3314,28 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 					//Verificamos que el proveedor exista
 					if(!is_null($rowProveedor)){
 						//Nomina
+						$modulo = 8;
 						$tipo = 33;
-						if($tipo == 33){//Asignamos el modulo dependiento de tipo Proveedor
-							$modulo = 8;
-						}else{
-							$modulo = 8;
+						//Buscamos importeImpuesto
+						$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
+						$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idCuentasxp=?", $rowCxp->idCuentasxp)->where("idTipoMovimiento =?",10);
+						$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
+						//print_r("$select");
+						$importeImpuesto = $rowFacturaImp->importe; 
+						//Asignamos modulo
+						switch($rowFacturaImp->idImpuesto){
+							
+												case '1,6':
+													$desPol = "Factura " . $numMov;
+													break;
+												case 3:
+													$desPol = "Pago Factura " . $numMov;
+													break;
+												default:
+													$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
+							
 						}
-						//Asignamos variables
+						
 						$banco = $rowCxp["idBanco"];
 						$idSucursal = $rowCxp["idSucursal"];
 						$numeroFolio = $rowCxp["numeroFolio"];
