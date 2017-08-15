@@ -80,7 +80,7 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$eModulo->setLabel("Seleccionar Módulo: ");
 		
 		foreach ($modulos as $modulo) {
-			$eModulo->addMultiOption($modulo["idModulo"] , $modulo["descripcion"]);
+			$eModulo->addMultiOption($modulo->getIdModulo() , $modulo->getDescripcion());
 		}
 		
 		$tiposProvDAO = new Sistema_DAO_Empresa;

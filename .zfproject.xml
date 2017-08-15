@@ -1078,6 +1078,10 @@
               <actionMethod actionName="altmodulos"/>
               <actionMethod actionName="altamodulos"/>
               <actionMethod actionName="altatipoproveedor"/>
+              <actionMethod actionName="adminmodulos"/>
+              <actionMethod actionName="editamodulos"/>
+              <actionMethod actionName="editamodulo"/>
+              <actionMethod actionName="admintipos"/>
             </controllerFile>
             <controllerFile controllerName="Notacredito">
               <actionMethod actionName="index"/>
@@ -1416,6 +1420,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="proyecto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="adminmodulos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="editamodulos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="editamodulo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="admintipos"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2903,6 +2919,10 @@
                 <testApplicationActionMethod forActionName="altmodulos"/>
                 <testApplicationActionMethod forActionName="altamodulos"/>
                 <testApplicationActionMethod forActionName="altatipoproveedor"/>
+                <testApplicationActionMethod forActionName="adminmodulos"/>
+                <testApplicationActionMethod forActionName="editamodulos"/>
+                <testApplicationActionMethod forActionName="editamodulo"/>
+                <testApplicationActionMethod forActionName="admintipos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Notacredito">
                 <testApplicationActionMethod forActionName="index"/>

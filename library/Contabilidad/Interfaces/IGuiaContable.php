@@ -10,7 +10,7 @@ interface Contabilidad_Interfaces_IGuiaContable{
 	public function altaTipoProvedor( $datos);
 	public function obtenerModulo($idModulo);
 	public function obtenerModulos();
-	public function editarModulo();
+	public function editarModulo($idModulo, $modulo);
 	public function altaCuentaGuia(array $cta, $subparametro);
 	public function obtenerCuentasGuia();
 	public function obtieneCuentaGuia($idGuiaContable);

@@ -60,25 +60,54 @@
 		$tablaModulo = $this->tablaModulos;
 		$select = $tablaModulo->select()->from($tablaModulo)->where("idModulo = ?",$idModulo);
 		$rowModulo = $tablaModulo->fetchRow($select);
-		
-		$moduloModel = new Contabilidad_Model_Modulos($rowModulo->toArray());
+		//print("$select");
+		/*$moduloModel = new Contabilidad_Model_Modulos($rowModulo->toArray());
 		$moduloModel->setIdModulo($rowModulo->idModulo);
-		
-		return $moduloModel;
+		*/
+		return $rowModulo;
 		
 	}
+	
 	public function obtenerModulos(){
 		$tablaModulo = $this->tablaModulos;
-		$rowModulos = $tablaModulo->fetchAll();
+		$select = $tablaModulo->select()->from($tablaModulo);
+		$rowModulos = $tablaModulo->fetchAll($select);
 		
-		if(is_null($rowModulos)){
-			return null;
-		}else{
-			return $rowModulos->toArray();
+		$modelModulos = array();
+		foreach ($rowModulos as $rowModulo) {
+			$modelModulo = new  Contabilidad_Model_Modulos($rowModulo->toArray());
+			$modelModulo->setIdModulo($rowModulo->idModulo);
+			
+			$modelModulos[] = $modelModulo;
 		}
 		
+		return $modelModulos;	
 	}
-	public function editarModulo(){
+	
+	public function obtenerTipos(){
+		$tablaTipos = $this->tablaTipoProveedores;
+		$select = $tablaTipos->select()->from($tablaTipos);
+		$rowTipos = $tablaTipos->fetchAll($select);
+		
+		$modelTipos = array();
+		foreach ($rowTipos as $rowTipo) {
+			$modelTipo = new  Sistema_Model_TipoProveedor($rowTipo->toArray());
+			$modelTipo->setIdTipoProveedor($rowTipo->idTipoProveedor);
+			
+			$modelTipos[] = $modelTipo;
+		}
+		
+		return $modelTipos;	
+	}
+	
+	public function editarModulo($idModulo, $modulo){
+		$tablaModulo = $this->tablaModulos;
+		$select = $tablaModulo->select()->from($tablaModulo)->where("idModulo=?",$idModulo);
+		$rowModulo = $tablaModulo->fetchRow($select);	
+		if(!is_null($rowModulo)){
+			$rowModulo->descripcion = $modulo["descripcion"];
+			$rowModulo->save();	
+		}
 		
 	}
 	public function altaCuentaGuia(array $cta, $subparametro){

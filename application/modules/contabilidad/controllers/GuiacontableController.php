@@ -103,6 +103,7 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
 		$formulario->getSubForm("0")->removeElement("sub4");
 		$formulario->getSubForm("0")->removeElement("sub5");
 		$formulario->removeSubForm("1");
+		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
@@ -146,8 +147,61 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
         
     }
 
+    public function adminmodulosAction()
+    {
+        $guiaContableDAO = $this->guiaContable;
+		$this->view->modulos = $guiaContableDAO->obtenerModulos();  
+    }
+
+    public function editamoduloAction()
+    {
+		$idModulo = $this->getParam("idModulo");
+		$modulo = $this->guiaContable->obtenerModulo($idModulo);
+		$formulario = new Contabilidad_Form_GuiaContable;
+		$formulario->getSubForm("0")->getElement("descripcion")->setValue($modulo["descripcion"]);
+		$formulario->getSubForm("0")->setLegend("Editar  módulo");
+		$formulario->getElement("submit")->setLabel("Enviar");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario->getSubForm("0")->removeElement("cta");
+		$formulario->getSubForm("0")->removeElement("sub1");
+		$formulario->getSubForm("0")->removeElement("sub2");
+		$formulario->getSubForm("0")->removeElement("sub3");
+		$formulario->getSubForm("0")->removeElement("sub4");
+		$formulario->getSubForm("0")->removeElement("sub5");
+		$formulario->removeSubForm("1");
+		$this->view->formulario = $formulario;
+		$request = $this->getRequest();
+       	if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos= $formulario->getValues();
+				print_r($datos);
+				try{
+					$this->guiaContable->editarModulo($idModulo, $datos);
+					$this->view->messageSuccess = "Módulo se ha actualizado correctamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "No se pudo actualizar Error: <strong>".$ex->getMessage()."</strong>";
+				}
+			}
+		}
+    }
+
+    public function admintiposAction()
+    {
+    	$guiaContableDAO = $this->guiaContable;
+		$this->view->tipos = $guiaContableDAO->obtenerTipos();
+        
+    }
+
 
 }
+
+
+
+
+
+
+
+
 
 
 
