@@ -139,7 +139,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			);
 			
 			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
-			//$restaBanco = $this->restaBanco($fondeo);
+			$restaBanco = $this->restaBanco($fondeo);
 			
 			$dbAdapter->commit();
 		}catch(exception $ex){

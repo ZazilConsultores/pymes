@@ -8,7 +8,7 @@
 		</div>
 		<div class="panel-body">
 			<br />
-			<div class="form-inline">
+			<div class="form-inline" id="desechable">
 				<button id="addRow" class="btn btn-success" >
 					<span class="glyphicon glyphicon-plus" ></span> Nuevo
 				</button>
@@ -25,6 +25,8 @@
 			
 			<table id="productos" class="table table-striped table-condensed">
 				<thead>
+					<br />
+					<tr id="encabe"></tr>
 					<tr>
 						<th>Cantidad</th>
 						<th>Clave Producto</th>
@@ -36,6 +38,7 @@
 						<th>Eliminar</th>
 					</tr>
 				</thead>
+				
 				<tbody>
 				</tbody>
 				<tfoot>
@@ -163,15 +166,26 @@ $(document).ready(function (){
  			console.log("precioUnitario:"+precioUnitario);
  			console.log("costoTotal:"+importe);
  			
- 			productos.push(new Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
+ 			productos.push(new Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal,total)); 
  			});
+ 			
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
+ 			
  			
  			console.log(myString);
  			if ($("input#productos").val(myString)){
  				
  			};
+ 			//desechable
+ 			var desechables = [];
+ 			var desayuno = $("input#desayuno").val();
+ 			var comida = $("input#comida").val();
+ 			console.log("desayuno:"+desayuno);
+ 			console.log("comida:"+comida);
+ 			//desechables.push(new Desechable(desayuno, comida)); 
+ 			//console.dir(desechables);
+ 			//var myString = JSON.stringify(desechables);
  		});
 
  		//Envia los valores de Impuestos a a la vista de facturaProveedor
@@ -202,6 +216,15 @@ $(document).ready(function (){
  		console.log(myString);
  		if ($("input#1-importes").val(myString)){
  		};
+ 		
+ 		//desechables.push(new Desechable(desayuno, comida)); 
+ 			
+ 		//console.dir(desechables);
+ 		//var myString = JSON.stringify(desechables);
+ 			
+ 		//console.log(myString);
+ 		if ($("input#1-importes").val(myString)){
+ 		};
  		});
  		
  		function Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe) {
@@ -224,6 +247,11 @@ $(document).ready(function (){
 		  this.isr = isr;
 		}
 		
+		function Desechable(desayuno, comida) {
+		  this.desayuno = desayuno;
+		  this.comida = comida;
+		  
+		}
  		$("table#productos").on("change", "select[id^='Producto_']", function(){
  			//console.log("Hola");
  		});
@@ -391,7 +419,13 @@ function calculateGrandTotal() {
 					$("select#idSucursal").empty();
 					$.each(data, function(i,item){	
 						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+						if(data[i].idSucursal == 2){
+							console.log("Radio Button");
+							displayData();
+						}
 					});
+					//if(jsonProductos[i].idProducto == id){
+					
 				}
 			});
 			
@@ -407,11 +441,45 @@ function calculateGrandTotal() {
 				console.dir(data);
 				$("select#idProyecto").empty();
 				$.each(data, function(i,item){
-						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
+					$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
 				});
 			}
 		});
 	});
 	
+	//Radio button
+   	/*$("table#productosNota").find('input[id^="trastes"]').each(function () {
+   		console.log("");
+   	});*/
+   	function displayData()
+    {
+    	var name = "Desechable desayuno";
+       	var name1= "Desechable comida";
+       	var name2= "Trastes";
+      	// $("table#productos thead > #encabe").append('<input type="radio" />'+ name +'<br><br>');
+     	$("div#desechable").append('<input id = "desayuno" type="radio" name = "1" value ="1" />'+ name +'<br><br>');
+      	$("div#desechable").append('<input id = "comida" type="radio" name = "1" value="2" />'+ name1 +'<br><br>');
+      	$("div#desechable").append('<input id = "trastes" type="radio" name = "1" value="otro" />'+ name2 +'<br><br>');
+    }
+    
+   	$("div#desechable").on("click", "input[id^='desayuno']", function(){
+   		var desayuno = $(this).val();
+   		var comida = $("#comida").val();
+   		var trastes = $("#trastes").val();
+   		/*console.log(desayuno);
+   		console.log(comida);
+   		console.log(trastes);*/
+   		if(desayuno =="1"){
+   			$(this).attr('checked', true);
+   			console.log("Es desechable desyuno");
+   		}else{
+   			$("#comida").attr('checked', false);
+   		}
+   		
+   	});
+   	
+   	$("select#idEmpresas").on('change', function(){
+   		
+   	});
 	//});
 </script>

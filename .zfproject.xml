@@ -987,6 +987,7 @@
               <actionMethod actionName="aplicacobro"/>
               <actionMethod actionName="anticipo"/>
               <actionMethod actionName="proyecto"/>
+              <actionMethod actionName="desechabledesayuno"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1432,6 +1433,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Guiacontable">
                 <viewScriptFile forActionName="admintipos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="desechabledesayuno"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2828,6 +2832,7 @@
                 <testApplicationActionMethod forActionName="aplicacobro"/>
                 <testApplicationActionMethod forActionName="anticipo"/>
                 <testApplicationActionMethod forActionName="proyecto"/>
+                <testApplicationActionMethod forActionName="desechabledesayuno"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>

@@ -1058,7 +1058,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 						//Edita Capas
 						$rowCapas->cantidad = $cant;
 						$rowCapas->save();
-					}//cantidadt
+					}//cantidadt 
 					//Edita Inventatio
 						$rowInventario->existencia = $canI;
 						$rowInventario->existenciaReal = $canI;
@@ -1075,6 +1075,26 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException("Error");
 		}
+	}
+
+	public function restaDesechableDesayuno($producto){
+			
+		//$cant = $producto["cantidad"];
+		
+		$tablaInventario = $this->tablaInventario;
+		$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",137);
+		$rowInventario = $tablaInventario->fetchRow($select);
+		//$canI =  $rowInventario->existenciaReal - $cant;
+		print_r("$select");
+		/*if($rowInventario['existenciaReal'] > $canI){
+			//Actuliza en capas
+			$tablaCapas = $this->tablaCapas;
+			$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",137);
+			$rowCapa = $tablaCapas->fetchRow($select);
+			$canP =  $rowCapa->existenciaReal - $cant;
+			
+		}*/
+		
 	}
 }
     

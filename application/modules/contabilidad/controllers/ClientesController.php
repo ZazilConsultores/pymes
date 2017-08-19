@@ -4,15 +4,23 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $sucursalDAO = null;
+
     private $notaSalidaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $impuestosDAO = null;
+
     private $cobroClienteDAO = null;
+
     private $anticipoDAO = null;
-	private $proyectoDAO= null;
-	
+
+    private $proyectoDAO = null;
+
     public function init()
     {
     	$this->sucursalDAO = new Sistema_DAO_Sucursal;
@@ -27,7 +35,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
-		// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		// ====================================================>>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
@@ -35,11 +43,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
-		// =================================== Codificamos los valores a formato JSON
+		// ====================================================>>> Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonProductos = $jsonProductos;
 		$jsonUnidad = Zend_Json::encode($rowsUnidad);
 		$this->view->jsonUnidad = $jsonUnidad;
+		
     }
 
     public function indexAction()
@@ -132,12 +141,16 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				
 				$importe = json_decode($formaPago['importes'],TRUE);
 				//print_r($formaPago);
-				$contador=0;
+				if($importe[0]['desayuno']=="on"){
+					print_r("Controller desayuno");
+				}
+				/*$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 					foreach ($productos as $producto){
 					//try{
+						
 						$detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 						$actualizaProducto = $this->facturaDAO->restaProducto($encabezado, $producto);
 						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
@@ -152,9 +165,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				}/*}else{
 					print_r("formulario no valido <br />");*/
 				}
-				
-				
-				
+
 			//}
 			
 		//}
@@ -291,7 +302,31 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
         
     }
+
+    public function desechabledesayunoAction()
+    {
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
+		//if($request->isGet()){
+			//$this->view->formulario = $formulario;
+		//}elseif($request->isPost()){
+			//if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				$encabezado = $datos[0];
+				$productos = json_decode($encabezado['productos'],TRUE);
+        		foreach ($productos as $producto){
+        			$restaDesechable = $this->facturaDAO->restaDesechableDesayuno($producto);
+				}
+			//}
+        //}
+        
+    }
+
+
 }
+
+
 
 
 

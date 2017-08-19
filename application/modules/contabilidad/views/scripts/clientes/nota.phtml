@@ -44,6 +44,9 @@
 					</tr>
 				</thead>
 				<tbody>
+					<input type="radio" name="1" id="trastes" value="" /> Trastes
+					<input type="radio" name="1" id="desayuno" value="" /> Desechable Desayuno
+					<input type="radio" name="1" id="comida" value="" /> Desechable Comida
 				</tbody>
 				<tfoot>
 					<tr>
@@ -63,7 +66,7 @@
 </section>
 <script>
 	$( document ).ready(function() {
-		
+		var url = window.location.origin + "/General/";
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
@@ -295,6 +298,19 @@
     	$("input#total").val(grandTotal.toFixed(2));
  	 	  
    	} 
+   	
+   	//Radio button
+   	/*$("table#productosNota").find('input[id^="trastes"]').each(function () {
+   		console.log("");
+   	});*/
+   	$("#desayuno").click(function () {
+   		var urlClientesEmpresas = url  +"contabilidad/clientese/idFiscales/" + idFiscales;
+		console.log(idFiscales);
+   	});
+   	$("select#idEmpresas").on('change', function(){
+   		
+   	});
+   	
 	});//cierra document ready
 </script>
 

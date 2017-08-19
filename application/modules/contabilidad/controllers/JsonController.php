@@ -212,7 +212,16 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-
+	
+	public function desechabledesayunoAction()
+    {
+		//$desechableDesayuno= $this->facturaCliDAO->restaDesechableDesayuno();
+		/*if(!is_null($desechableDesayuno)){
+			echo Zend_Json::encode($desechableDesayuno);
+		}else{
+			echo Zend_Json::encode(array());
+		}*/
+    }
 
 }
 
