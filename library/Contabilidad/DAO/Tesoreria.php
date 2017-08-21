@@ -154,16 +154,35 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			print_r("<br />");
 			$dbAdapter->rollBack();
 		}
-		
 	}
 	
-	public function guardaNomina( array $empresa, $nomina){
+	public function guardaPagoNomina( array $empresa, $nomina){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dbAdapter->beginTransaction();
 	
 		$dateIni = new  Zend_Date($empresa['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		try{
+			//Guarda el Movimiento en Factura
+			$mFactura = array(
+				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
+				'idSucursal'=>$empresa['idSucursal'],
+				'idCoP'=>$empresa['idCoP'],
+				'idDivisa'=>1,
+				'numeroFactura'=>$empresa['numFolio'],
+				'estatus'=>'A',
+				'conceptoPago'=>'L',
+				'descuento'=>0,
+				'formaPago'=>'EF',
+				'fecha'=>$stringIni,
+				'subtotal'=>$nomina['sueldo'],
+				'total'=>$nomina['nominaxpagar'],
+				'folioFiscal'=>$empresa['folioFiscal'],
+				'importePagado'=>$nomina['nominaxpagar'],
+				'saldo'=>0
+			);
+			$dbAdapter->insert("Factura",$mFactura);
+			//Insertamos en la tabla Movimiento
 			$secuencial=0;	
 			$tablaMovimiento = $this->tablaMovimiento;
 			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$empresa['numFolio'])
@@ -179,59 +198,41 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			}else{
 				$secuencial = 1;	
 			}
+			//Obtine el ultimo id en tabla factura
+			$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
 			$mMovtos = array(
-					'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
-					'idEmpresas'=>$empresa['idEmpresas'],
-					'idSucursal'=>$empresa['idSucursal'],
-					'idCoP'=>$empresa['idCoP'],
-					'numeroFolio'=>$empresa['numFolio'],
-					//'idFactura'=>0,
-					'idProducto' => 199,
-					//'idProyecto'=>$encabezado['idProyecto'],
-					'cantidad'=>1,
-					'fecha'=>$stringIni,
-					'secuencial'=> $secuencial,
-					'estatus'=>"A",
-					'costoUnitario'=>$nomina['sueldo'], //el sueldo del empleado.
-					'totalImporte'=>$nomina['nominaxpagar'] //total a pagar de nomina
-				);
-			//print_r($mMovtos);
-			$dbAdapter->insert("Movimientos",$mMovtos);
-			//Guardar en factura.
-			$mFactura = array(
 				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
+				'idEmpresas'=>$empresa['idEmpresas'],
 				'idSucursal'=>$empresa['idSucursal'],
 				'idCoP'=>$empresa['idCoP'],
-				'idDivisa'=>1,
-				'numeroFactura'=>$empresa['numFolio'],
-				'estatus'=>'A',
-				'conceptoPago'=>'L',
-				'descuento'=>0,
-				'formaPago'=>'EF',
-				'fechaFactura'=>$stringIni,
-				'subtotal'=>$nomina['sueldo'],
-				'total'=>$nomina['nominaxpagar'],
-				'folioFiscal'=>0,
-				'importePago'=>$nomina['nominaxpagar']
+				'numeroFolio'=>$empresa['numFolio'],
+				'idFactura'=>$idFactura,
+				'idProducto' => 746,
+				//'idProyecto'=>$encabezado['idProyecto'],
+				'cantidad'=>1,
+				'fecha'=>$stringIni,
+				'secuencial'=> $secuencial,
+				'estatus'=>"A",
+				'costoUnitario'=>$nomina['sueldo'], //el sueldo del empleado.
+				'totalImporte'=>$nomina['nominaxpagar'] //total a pagar de nomina
 			);
-			
-			$dbAdapter->insert("Factura",$mFactura);
-			
-			/*$tablaImpuesto = $this->tablaImpuesto;
-			$select = $tablaImpuesto->select()->from($tablaImpuesto)->where("idImpuesto = ?", $nomina['36']);
-			$rowImpuesto = $tablaImpuesto->fetchRow($select);
-			print_r("$select");*/
+			//print_r($mMovtos);
+			$dbAdapter->insert("Movimientos",$mMovtos);
+			//Guardar en factura
+			if (!is_null($nomina["imss"] && !is_null($nomina["ispt"]))){
+				print_r("Contiene imss");
+			}
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura, array(new Zend_Db_Expr('max(idFactura) as idFactura')));
 			$rowIdFactura = $tablaFactura->fetchRow($select);
 			$idFactura = $rowIdFactura['idFactura'];
 			print_r($idFactura);
-			$mFacturaImpuesto = array(
+			/*$mFacturaImpuesto = array(
 				'idFactura'=>$idFactura,
 				'idImpuesto'=>36,
 				'importe'=>$nomina['36'],
 			);
-			$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
+			$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);*/
 			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
@@ -741,4 +742,5 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		}
 		
 	}
+
 }

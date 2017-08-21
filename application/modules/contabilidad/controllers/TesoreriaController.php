@@ -74,6 +74,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarNomina;
+		$this->view->formulario = $formulario;
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
@@ -81,8 +82,10 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$empresa = $datos[0];
 				$nomina = $datos[1];
-				try{
-					$this->tesoreriaDAO->guardaNomina($empresa, $nomina);
+				print_r($empresa);
+				print_r($nomina);
+				 try{
+					$this->tesoreriaDAO->guardaPagoNomina($empresa, $nomina);
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}

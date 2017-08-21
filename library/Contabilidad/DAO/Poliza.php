@@ -145,7 +145,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										}//Cierra el switch origen
 										//Asigna tipoES
 										if($rowGuiaContable["origen"] =='I'){
-											$tipoES = "I";
+											$tipoES = "D";
 											print_r("<br />");
 											print_r($tipoES);
 										}else{

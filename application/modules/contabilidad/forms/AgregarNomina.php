@@ -32,7 +32,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$tipoMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
 
 		foreach($tipoMovimientos as $tipoMovimiento){
-			if($tipoMovimiento->getIdTipoMovimiento()=="15"){
+			if($tipoMovimiento->getIdTipoMovimiento()=="20"){
 				$eTipoMovimiento->addMultiOption($tipoMovimiento->getIdTipoMovimiento(), $tipoMovimiento->getDescripcion());
 			}
 			
@@ -55,6 +55,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel('Sucursal:');
 		$eSucursal->setAttrib("class", "form-control");
+		$eSucursal->setAttrib("required","true");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
 		$tablaProveedores = new Contabilidad_DAO_Tesoreria;
@@ -77,9 +78,16 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eNumFolio->setLabel('Ingresar número de Folio');
 		$eNumFolio->setAttrib("class", "form-control");
 		$eNumFolio->setValue(0);
-		$eNumFolio->setAttrib("required", "true"); 
+		$eNumFolio->setAttrib("required", "true");
+		
+		$eFolioFiscal = new Zend_Form_Element_Text('folioFiscal');
+		$eFolioFiscal->setLabel('Ingresar Folio Fiscal:');
+		$eFolioFiscal->setAttrib("class", "form-control");
+		$eFolioFiscal->setAttrib("minlength", "32");
+		$eFolioFiscal->setAttrib("maxlength", "32" );
+		$eFolioFiscal->setAttrib("required", "true");  
 		 
-		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio));
+		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio, $eFolioFiscal));
 		$subEmpresa->setElementDecorators($decoratorsElemento);
 		$subEmpresa->setDecorators($decoratorsPresentacion);
 		
@@ -97,7 +105,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eSubsidio->setAttrib("class", "form-control");
 		$eSubsidio->setValue(0);
 		
-		$eImpuestoImss = new Zend_Form_Element_Select('idImss');
+		/*$eImpuestoImss = new Zend_Form_Element_Select('idImss');
 		//$eImpuestoImss->setLabel('IMSS:');
 		$eImpuestoImss->setAttrib("class", "form-control");
 		
@@ -109,15 +117,15 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 			if($impuesto->getIdImpuesto()=="36"){
 				$eImpuestoImss->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());
 			}
-		}
+		}*/
 		
-		$eIMSS = new Zend_Form_Element_Text('36');
+		$eIMSS = new Zend_Form_Element_Text('imss');
 		$eIMSS->setLabel('IMSS:');
 		//$eIMSS->setAttrib("id", "36");
 		$eIMSS->setAttrib("class", "form-control");
 		$eIMSS->setValue(0);
 		
-		$eImpuestoISPT = new Zend_Form_Element_Select('idISPT');
+		/*$eImpuestoISPT = new Zend_Form_Element_Select('idISPT');
 		$eImpuestoISPT->setLabel('ISPT:');
 		$eImpuestoISPT->setAttrib("class", "form-control");
 		
@@ -126,7 +134,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 				$eImpuestoISPT->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());
 			}
 			
-		}
+		}*/
 
 		$eISPT = new Zend_Form_Element_Text('ispt');
 		$eISPT->setLabel('ISPT / ISR:');
