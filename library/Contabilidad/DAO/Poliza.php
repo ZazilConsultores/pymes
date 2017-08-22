@@ -1177,7 +1177,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 								$origen = $rowGuiaContable->origen;
 								switch($origen){
 								case 'S':
-									$importe = $subTotal;
+									$importe = $subtotal;
 									$origen = "SIN"; //No se porque va
 									print_r("<br />");
 									print_r("importe subtotal:"); print_r($importe);
