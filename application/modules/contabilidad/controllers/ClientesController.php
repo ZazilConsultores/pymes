@@ -139,12 +139,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$productos = json_decode($encabezado['productos'],TRUE);
 				print_r($productos);
 				
-				$importe = json_decode($formaPago['importes'],TRUE);
+				//$importe = json_decode($formaPago['importes'],TRUE);
 				//print_r($formaPago);
-				if($importe[0]['desayuno']=="on"){
-					print_r("Controller desayuno");
-				}
-				/*$contador=0;
+				//if($importe[0]['desayuno']=="on"){
+					//print_r("Controller desayuno");
+				//}
+				$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
