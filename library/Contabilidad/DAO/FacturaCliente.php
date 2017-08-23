@@ -38,7 +38,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 			
 	}	
 	
-	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos){
+	public function guardaFactura(array $encabezado,$importe,$formaPago, $productos){
 		
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();

@@ -139,7 +139,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$productos = json_decode($encabezado['productos'],TRUE);
 				print_r($productos);
 				
-				//$importe = json_decode($formaPago['importes'],TRUE);
+				$importe = json_decode($formaPago['importes'],TRUE);
 				//print_r($formaPago);
 				//if($importe[0]['desayuno']=="on"){
 					//print_r("Controller desayuno");

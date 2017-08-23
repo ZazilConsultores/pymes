@@ -9,6 +9,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	private $tablaMovimiento;
 	private $tablaFactura;
 	private $tablaFacturaDetalle;
+	private $tablaFacturaImpuesto;
 	private $tablaImpuesto;
 	private $tablaBanco;
 	private $tablaEmpresa;
@@ -34,6 +35,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$this->tablaInventario = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 		$this->tablaCardex = new Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
+		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
 	}
 	public function obtenerEmpleadosNomina(){
 		
@@ -171,9 +173,9 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'idDivisa'=>1,
 				'numeroFactura'=>$empresa['numFolio'],
 				'estatus'=>'A',
-				'conceptoPago'=>'L',
+				'conceptoPago'=>'LI',
 				'descuento'=>0,
-				'formaPago'=>'EF',
+				'formaPago'=>$empresa['formaLiquidar'],
 				'fecha'=>$stringIni,
 				'subtotal'=>$nomina['sueldo'],
 				'total'=>$nomina['nominaxpagar'],
@@ -182,6 +184,10 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'saldo'=>0
 			);
 			$dbAdapter->insert("Factura",$mFactura);
+			//Obtine el ultimo id en tabla factura
+			$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
+			print_r("El idFactura es 1:");
+			print_r($idFactura);
 			//Insertamos en la tabla Movimiento
 			$secuencial=0;	
 			$tablaMovimiento = $this->tablaMovimiento;
@@ -198,8 +204,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			}else{
 				$secuencial = 1;	
 			}
-			//Obtine el ultimo id en tabla factura
-			$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
+		
 			$mMovtos = array(
 				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 				'idEmpresas'=>$empresa['idEmpresas'],
@@ -218,21 +223,48 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			);
 			//print_r($mMovtos);
 			$dbAdapter->insert("Movimientos",$mMovtos);
-			//Guardar en factura
-			if (!is_null($nomina["imss"] && !is_null($nomina["ispt"]))){
-				print_r("Contiene imss");
-			}
-			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura, array(new Zend_Db_Expr('max(idFactura) as idFactura')));
-			$rowIdFactura = $tablaFactura->fetchRow($select);
-			$idFactura = $rowIdFactura['idFactura'];
-			print_r($idFactura);
-			/*$mFacturaImpuesto = array(
+			//Insertamos en la tabla Cuentasxp
+			$mCuentasxp = array(
+				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
+				'idSucursal'=>$empresa['idSucursal'],
 				'idFactura'=>$idFactura,
-				'idImpuesto'=>36,
-				'importe'=>$nomina['36'],
+				'idCoP'=>$empresa['idEmpresas'],
+				'idBanco'=>$empresa['idBanco'],
+				'idDivisa'=>1,
+				'numeroFolio'=>$empresa['numFolio'],
+				'secuencial'=>$secuencial,
+				'fecha'=>date('Y-m-d h:i:s', time()),
+				'fechaPago'=>$stringIni,
+				'estatus'=>"A",
+				'numeroReferencia'=>$empresa['numeroReferencia'],
+				'conceptoPago'=>"LI",
+				'formaLiquidar'=>$empresa["formaLiquidar"],
+				'subTotal'=>$nomina['sueldo'],
+				'total'=>$nomina['nominaxpagar']
 			);
-			$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);*/
+			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+			//Guarda Impuestos
+			if (!is_null($nomina["IMSS"])){
+				$mFacturaImpuesto = array(
+					'idTipoMovimiento'=>$empresa["idTipoMovimiento"],
+					'idFactura'=>$idFactura,
+					'idImpuesto'=>5,
+					'importe'=>$nomina['IMSS'],
+				);
+				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
+	
+			}
+			if (!is_null($nomina["ISPT"])){
+				$mFacturaImpuesto = array(
+					'idTipoMovimiento'=>$empresa["idTipoMovimiento"],
+					'idFactura'=>$idFactura,
+					'idImpuesto'=>6,
+					'importe'=>$nomina['ISPT'],
+				);
+				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
+			
+			}
+			//Actulizar saldo banco
 			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");

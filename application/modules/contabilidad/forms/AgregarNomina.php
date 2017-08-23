@@ -6,7 +6,6 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 {
 
     public function init()
-
     {
     	$decoratorsPresentacion = array(
     		'FormElements',
@@ -20,9 +19,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 			array('label',array('tag'=>'td')),
 			array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
 		);
-		
-		$subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nuevo Fondeo");
+		$subEmpresa = new Zend_Form_SubForm();
 		
 		$eTipoMovimiento = new Zend_Form_Element_Select('idTipoMovimiento');
 		$eTipoMovimiento->setLabel('Tipo Movimiento:');
@@ -37,9 +34,6 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 			}
 			
 		}
-		
-		$subEmpresa = new Zend_Form_SubForm();
-		$subEmpresa->setLegend("Seleccionar Empresa");
 		
 		$tablasFiscales = new Inventario_DAO_Empresa();
 		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales();
@@ -85,9 +79,24 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eFolioFiscal->setAttrib("class", "form-control");
 		$eFolioFiscal->setAttrib("minlength", "32");
 		$eFolioFiscal->setAttrib("maxlength", "32" );
-		$eFolioFiscal->setAttrib("required", "true");  
+		$eFolioFiscal->setAttrib("required", "true");
+		
+		$formaPago = Zend_Registry::get('formaPago');
+		$eFormaLiquidar = new Zend_Form_Element_Select('formaLiquidar');
+		$eFormaLiquidar->setLabel('Forma de Pago:');
+		$eFormaLiquidar->setAttrib("class", "form-control");
+		$eFormaLiquidar->setMultiOptions($formaPago);
+		
+		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
+		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
+		$eNumReferencia->setAttrib("class", "form-control");
+		
+		$eBanco = new Zend_Form_Element_Select('idBanco');
+		$eBanco->setLabel('Seleccionar Banco');
+		$eBanco->setAttrib("class", "form-control");  
+		$eBanco->setRegisterInArrayValidator(FALSE);
 		 
-		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio, $eFolioFiscal));
+		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio,$eFolioFiscal,$eFormaLiquidar,$eBanco,$eNumReferencia));
 		$subEmpresa->setElementDecorators($decoratorsElemento);
 		$subEmpresa->setDecorators($decoratorsPresentacion);
 		
@@ -105,38 +114,13 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eSubsidio->setAttrib("class", "form-control");
 		$eSubsidio->setValue(0);
 		
-		/*$eImpuestoImss = new Zend_Form_Element_Select('idImss');
-		//$eImpuestoImss->setLabel('IMSS:');
-		$eImpuestoImss->setAttrib("class", "form-control");
-		
-		
-		$impuestoDAO = new Contabilidad_DAO_Impuesto;
-		$impuestos = $impuestoDAO->obtenerImpuestos();
-
-		foreach($impuestos as $impuesto){
-			if($impuesto->getIdImpuesto()=="36"){
-				$eImpuestoImss->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());
-			}
-		}*/
-		
-		$eIMSS = new Zend_Form_Element_Text('imss');
+		$eIMSS = new Zend_Form_Element_Text('IMSS');
 		$eIMSS->setLabel('IMSS:');
 		//$eIMSS->setAttrib("id", "36");
 		$eIMSS->setAttrib("class", "form-control");
 		$eIMSS->setValue(0);
 		
-		/*$eImpuestoISPT = new Zend_Form_Element_Select('idISPT');
-		$eImpuestoISPT->setLabel('ISPT:');
-		$eImpuestoISPT->setAttrib("class", "form-control");
-		
-		foreach($impuestos as $impuesto){
-			if($impuesto->getIdImpuesto()=="37"){
-				$eImpuestoISPT->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getAbreviatura());
-			}
-			
-		}*/
-
-		$eISPT = new Zend_Form_Element_Text('ispt');
+		$eISPT = new Zend_Form_Element_Text('ISPT');
 		$eISPT->setLabel('ISPT / ISR:');
 		$eISPT->setAttrib("class", "form-control");
 		$eISPT->setValue(0);
