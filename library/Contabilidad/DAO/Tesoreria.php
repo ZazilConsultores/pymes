@@ -180,7 +180,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'subtotal'=>$nomina['sueldo'],
 				'total'=>$nomina['nominaxpagar'],
 				'folioFiscal'=>$empresa['folioFiscal'],
-				'importePagado'=>$nomina['nominaxpagar'],
+				'importePagado'=>$nomina['subsidio'],
 				'saldo'=>0
 			);
 			$dbAdapter->insert("Factura",$mFactura);
