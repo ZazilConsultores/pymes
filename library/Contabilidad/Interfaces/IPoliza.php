@@ -6,8 +6,7 @@ interface Contabilidad_Interfaces_IPoliza {
 	public function generacxp($datos);
 	public function generacxc_Fo($datos);
 	public function generacxp_Fo($datos);
-	public function generaCompra();
-	public function generaVenta();
+	
 	public function generacxpRemisiones($datos);
 	
 	public function generaGruposFacturaProveedor($datos);

@@ -1859,8 +1859,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 				$dbAdapter->rollBack();
 			}
 		}
-		public function generaCompra(){}
-		public function generaVenta(){}
+		
 		public function generacxpRemisiones($datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$dbAdapter->beginTransaction();
@@ -1901,7 +1900,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 							$banco = $rowGrupoRCXP->idBanco;
 							$idSucursal = $rowGrupoRCXP->idSucursal;
 							$numMov = $rowGrupoRCXP->numeroFolio;
-							$fecha = $rowGrupoRCXP->fecha;
+							$fecha = $rowGrupoRCXP->fechaPago;
 							$iva = 0;
 							$subTotal = $rowGrupoRCXP->subtotal;
 							$total = $rowGrupoRCXP->total;
