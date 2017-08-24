@@ -3311,30 +3311,18 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 					$rowProveedor = $tablaProveedores->fetchRow($select);
 					print_r("$select");
 					//Verificamos que el proveedor exista
-					if(!is_null($rowProveedor)){
+					if(!is_null($rowProveedor)){	
 						//Nomina
-						$modulo = 8;
-						$tipo = 33;
+						$modulo = 8; //Impuestos
+						$tipo = 4;
 						//Buscamos importeImpuesto
 						$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
 						$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idCuentasxp=?", $rowCxp->idCuentasxp)->where("idTipoMovimiento =?",10);
 						$rowFacturaImp =$tablaFacturaImpuesto->fetchRow($select);
-						//print_r("$select");
-						$importeImpuesto = $rowFacturaImp->importe; 
-						//Asignamos modulo
-						switch($rowFacturaImp->idImpuesto){
-							
-												case '1,6':
-													$desPol = "Factura " . $numMov;
-													break;
-												case 3:
-													$desPol = "Pago Factura " . $numMov;
-													break;
-												default:
-													$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
-							
-						}
-						
+						print_r("$select");
+						$tipoImpuesto = $rowFacturaImp["idImpuesto"];
+						print_r("<br />");
+						print_r($tipoImpuesto);
 						$banco = $rowCxp["idBanco"];
 						$idSucursal = $rowCxp["idSucursal"];
 						$numeroFolio = $rowCxp["numeroFolio"];
@@ -3342,14 +3330,13 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						$subtotal = $rowCxp["subtotal"];
 						$total = $rowCxp["total"];
 						$secuencial = $rowCxp["secuencial"];
-						print_r($secuencial);
-						
+					
 						$tablaGuiaContable = $this->tablaGuiaContable;
 						$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
 						$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
 						print_r("<br />");
 						print_r("$select");
-						
+							
 						foreach($rowsGuiaContable as $rowGuiaContable){
 							$origen = $rowGuiaContable->origen;
 							switch($origen){
