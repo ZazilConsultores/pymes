@@ -1400,7 +1400,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 			try{
 				//Buscamos en grupo cuentasxp, fondeo = 3
 				$tablaCXC = $this->tablaCuentasxc;
-				$select = $tablaCXC->select()->from($tablaCXC)->where('fecha >= ?',$stringFechaInicio)->where('fecha <=?',$stringFechaFinal)->where('idTipoMovimiento=?',3)
+				$select = $tablaCXC->select()->from($tablaCXC)->where('fechaPago >= ?',$stringFechaInicio)->where('fechaPago <=?',$stringFechaFinal)->where('idTipoMovimiento=?',3)
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 				$rowsCXCF = $tablaCXC->fetchAll($select);
 				print_r($select->__toString());
@@ -1419,7 +1419,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 							$numeroFolio  = $rowCXCF->numeroFolio;
 							$subTotal = $rowCXCF->subtotal;
 							$total = $rowCXCF->total;
-							$fecha = $rowCXCF->fecha;
+							$fecha = $rowCXCF->fechaPago;
 							$banco = $rowCXCF->idBanco;
 							$consecutivo = $rowCXCF->secuencial;
 							//Buscamos en GuiaContable
