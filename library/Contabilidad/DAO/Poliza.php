@@ -3620,21 +3620,18 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 												print_r($importe);
 											break;
 											case 'I':
+												print_r("El impuesto es Origrn I");
 												$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
 												$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowFactura->idFactura)->where("idTipoMovimiento =?",20);
 												$rowsFacturaImp =$tablaFacturaImpuesto->fetchAll($select);
 												print_r("$select");
-												$Fimpuestos = $rowsFacturaImp->impuesto;
-												print_r("impuesto:"); //print_r($importe);
-												print_r("<br />");
-												print_r($Fimpuestos);
-												/*foreach($rowsFacturaImp as $rowFacturaImp){
-													if($rowFacturaImp->idImpuesto == 5){
-														$impImpuesto = $rowFacturaImp->importe;
+												foreach($rowsFacturaImp as $rowFacturaImp){
+													if($rowFacturaImp->idImpuesto == 5 ){
+														$imss = $rowFacturaImp->importe;
 													}else{
-														$impImpuesto = $rowFacturaImp->importe;
+														$isr = $rowFacturaImp->importe;
 													}
-												}//foreach rowsFacturaImpuestos*/
+												}
 												
 												$origen = "SIN";
 												print_r("importe iva:"); //print_r($importe);
@@ -3659,14 +3656,16 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 											break;
 										}//Cierra el switch origen
 										//Asigna tipoES
-										if($rowGuiaContable["origen"] =='I'){
+										if($rowGuiaContable["origen"] ==='I'  || $rowGuiaContable["descripcion"]==="ISR NOMINA"){
 											$tipoES = "D";
 											print_r("<br />");
 											print_r($tipoES);
+											$importe = $isr;
 										}else{
 											$tipoES = "D";
 											print_r("<br />");
 											print_r($tipoES);
+											$importe = $imss;
 										}//Cierra tipoES
 										//asigna abono o cargo
 										if($rowGuiaContable["cargo"]== "X"){
