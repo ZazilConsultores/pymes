@@ -65,7 +65,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	
 	public function restaBanco($fondeo){
 		$tablaBanco = $this->tablaBanco;
-		$where = $tablaBanco->getAdapter()->quoteInto("idBanco", $fondeo['idBancoS']);
+		$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $fondeo['idBancoS']);
 		$rowBanco = $tablaBanco->fetchRow($where);
 		if(!is_null($rowBanco)){
 			$importePago = $rowBanco->saldo - $fondeo['total'];
@@ -259,7 +259,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				$mFacturaImpuesto = array(
 					'idTipoMovimiento'=>$empresa["idTipoMovimiento"],
 					'idFactura'=>$idFactura,
-					'idImpuesto'=>6,
+					'idImpuesto'=>3,
 					'idCuentasxp'=>0,
 					'importe'=>$nomina['ISPT'],
 				);
