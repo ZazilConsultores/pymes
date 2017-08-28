@@ -3585,7 +3585,21 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						$rowCXP = $tablaCXP->fetchRow($select);
 						print_r("<br />");
 						print_r("$select");
-						
+						$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
+						$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowFactura->idFactura)
+						->where("idTipoMovimiento =?",20)->where("idImpuesto=?", 5);
+						$rowFacturaImp = $tablaFacturaImpuesto->fetchRow($select);
+						print_r("$select");
+						if($rowFacturaImp->idImpuesto == 5 ){
+							$imss = $rowFacturaImp->importe;
+						}
+						$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
+						$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowFactura->idFactura)
+						->where("idTipoMovimiento =?",20)->where("idImpuesto=?", 3);
+						$rowFacturaImp = $tablaFacturaImpuesto->fetchRow($select);
+						if($rowFacturaImp->idImpuesto == 3 ){
+							$isr = $rowFacturaImp->importe;
+						}
 							$exento = $rowFactura->importePagado;
 							$sueldo = $rowFactura->subtotal;
 							$nomina = $rowCXP["total"];
@@ -3620,24 +3634,11 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 												print_r($importe);
 											break;
 											case 'I':
-												print_r("El impuesto es Origrn I");
-												$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
-												$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idFactura=?", $rowFactura->idFactura)->where("idTipoMovimiento =?",20);
-												$rowsFacturaImp =$tablaFacturaImpuesto->fetchAll($select);
-												print_r("$select");
-												foreach($rowsFacturaImp as $rowFacturaImp){
-													if($rowFacturaImp->idImpuesto == 5 ){
-														$imss = $rowFacturaImp->importe;
-													}else{
-														$isr = $rowFacturaImp->importe;
-													}
+												if($rowGuiaContable["descripcion"]== "ISR NOMINA"){
+													$importe = $isr;
+												}else{
+													$importe = $imss;
 												}
-												
-												$origen = "SIN";
-												print_r("importe iva:"); //print_r($importe);
-												print_r("<br />");
-												print_r($impImpuesto);
-												//print_r("ORIGEN:"); print_r($origen);
 											break;
 											case 'T':
 												if($rowGuiaContable["cargo"]== "X"){
@@ -3660,12 +3661,12 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 											$tipoES = "D";
 											print_r("<br />");
 											print_r($tipoES);
-											$importe = $isr;
+											
 										}else{
 											$tipoES = "D";
 											print_r("<br />");
 											print_r($tipoES);
-											$importe = $imss;
+											
 										}//Cierra tipoES
 										//asigna abono o cargo
 										if($rowGuiaContable["cargo"]== "X"){

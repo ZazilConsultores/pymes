@@ -60,11 +60,7 @@
 					$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 					$rowFactura = $tablaFactura->fetchRow($select);
 					//print_r($select->__toString());
-				
-					if($datos["pago"] > $rowFactura["total"] ){
-						echo "El importe no puede ser mayor al total de la factura";
-					}else{
-						//Aplicamos movimiento en cuentasxp;
+				//Aplicamos movimiento en cuentasxp;
 						$mCuentasxc = array(
 							'idTipoMovimiento'=>16,
 							'idSucursal'=>$rowFactura['idSucursal'],
@@ -98,8 +94,7 @@
 						);
 						print_r($mfImpuesto);
 						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-						
-					}	
+				
 				}	
 			}catch(exception $ex){
 			print_r("<br />");

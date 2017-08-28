@@ -4,21 +4,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
     private $sucursalDAO = null;
-
     private $notaSalidaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $impuestosDAO = null;
-
     private $cobroClienteDAO = null;
-
     private $anticipoDAO = null;
-
     private $proyectoDAO = null;
 
     public function init()

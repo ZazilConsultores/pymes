@@ -249,6 +249,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'idTipoMovimiento'=>$empresa["idTipoMovimiento"],
 					'idFactura'=>$idFactura,
 					'idImpuesto'=>5,
+					'idCuentasxp'=>0,
 					'importe'=>$nomina['IMSS'],
 				);
 				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
@@ -259,6 +260,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'idTipoMovimiento'=>$empresa["idTipoMovimiento"],
 					'idFactura'=>$idFactura,
 					'idImpuesto'=>6,
+					'idCuentasxp'=>0,
 					'importe'=>$nomina['ISPT'],
 				);
 				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
