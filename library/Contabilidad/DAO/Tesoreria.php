@@ -212,7 +212,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'idCoP'=>$empresa['idCoP'],
 				'numeroFolio'=>$empresa['numFolio'],
 				'idFactura'=>$idFactura,
-				'idProducto' => 746,
+				'idProducto' => 766,
 				//'idProyecto'=>$encabezado['idProyecto'],
 				'cantidad'=>1,
 				'fecha'=>$stringIni,

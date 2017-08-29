@@ -11,10 +11,12 @@
 		</div>
 		<div class="panel-body">
 			<div class="col-xs-12">
+				<!--
 				<button id="queryClientesEmpresa" type="button" class="btn btn-success">
 					<i class="fa fa-search"></i> Buscar Clientes
 				</button>
 				<hr />
+				-->
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
@@ -95,7 +97,7 @@
 			$("select#selectIdClientes").append($("<option></option>").attr("value",fiscales[i].idFiscales).text(fiscales[i].razonSocial));
 		});
 		*/
-		$("button#queryClientesEmpresa").on('click',function() {
+		$("select#selectIdFiscales").on('change',function() {
 			var idFiscales = $("select#selectIdFiscales").val();
 			var urlClientesEmpresas = url  +"contabilidad/json/clientese/idFiscales/" + idFiscales;
 			console.log(idFiscales);

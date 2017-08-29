@@ -89,6 +89,7 @@
 							'idTipoMovimiento'=>16,
 							'idFactura'=>$rowFactura['idFactura'],
 							'idImpuesto'=>4, //Iva
+							'idCuentasxp'=>0,
 							'importe'=>$datos["pago"]- $rowcxc->subtotal
 							
 						);

@@ -104,6 +104,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$mfImpuesto = array(
 					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 					'idFactura'=>$idFactura,
+					'idCuentasxp'=>0,
 					'idImpuesto'=>4, //Iva
 					'importe'=>$importe[0]['iva']
 				);
@@ -135,6 +136,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$mfImpuesto = array(
 					'idTipoMovimiento'=>16,
 					'idFactura'=>$idFactura,
+					'idCuentasxp'=>0,
 					'idImpuesto'=>4, //Iva
 					'importe'=>$importe[0]['iva']
 				);	
