@@ -52,6 +52,11 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eSucursal->setAttrib("required","true");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
+		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
+        $eProyecto->setLabel("Seleccionar Proyecto:");
+		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setRegisterInArrayValidator(FALSE);
+		
 		$tablaProveedores = new Contabilidad_DAO_Tesoreria;
 		$rowset = $tablaProveedores->obtenerEmpleadosNomina();
 		
@@ -96,7 +101,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eBanco->setAttrib("class", "form-control");  
 		$eBanco->setRegisterInArrayValidator(FALSE);
 		 
-		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio,$eFolioFiscal,$eFormaLiquidar,$eBanco,$eNumReferencia));
+		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eNumFolio,$eFolioFiscal,$eFormaLiquidar,$eBanco,$eNumReferencia));
 		$subEmpresa->setElementDecorators($decoratorsElemento);
 		$subEmpresa->setDecorators($decoratorsPresentacion);
 		

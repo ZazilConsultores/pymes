@@ -213,7 +213,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'numeroFolio'=>$empresa['numFolio'],
 				'idFactura'=>$idFactura,
 				'idProducto' => 766,
-				//'idProyecto'=>$encabezado['idProyecto'],
+				'idProyecto'=>$empresa['idProyecto'],
 				'cantidad'=>1,
 				'fecha'=>$stringIni,
 				'secuencial'=> $secuencial,
@@ -266,7 +266,14 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
 			
 			}
-			//Actulizar saldo banco
+//Actulizar saldo banco
+			$tablaBanco = $this->tablaBanco;
+			$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $empresa['idBanco']);
+			$rowBanco = $tablaBanco->fetchRow($where);
+			if(!is_null($rowBanco)){
+				$importePago = $rowBanco->saldo - $nomina['nominaxpagar'];
+				$tablaBanco->update(array('saldo'=>$importePago),$where);
+			}
 			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
