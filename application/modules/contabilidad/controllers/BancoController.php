@@ -102,7 +102,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		$formulario->removeElement("cuentaContable");
 		$formulario->removeElement("saldo");
 		$formulario->getElement("submit")->setLabel("Enlazar");
-		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-success");
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){

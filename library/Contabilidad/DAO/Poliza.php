@@ -3051,6 +3051,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 							$modulo = 11;
 						}else{
 							$modulo = 11;
+							$tipo = 5;
 						}
 						//Asignamos variables
 						$banco = $rowCxp["idBanco"];

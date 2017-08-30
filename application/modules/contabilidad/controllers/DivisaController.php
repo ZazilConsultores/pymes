@@ -48,6 +48,7 @@ class Contabilidad_DivisaController extends Zend_Controller_Action
 		$formulario->getElement("descripcion")->setValue($divisa->getDescripcion());
 		$formulario->getElement("claveDivisa")->setValue($divisa->getClaveDivisa());
 		$formulario->getElement("tipoCambio")->setValue($divisa->getTipoCambio());
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		$formulario->getElement("submit")->setLabel("Actualizar");
 		$this->view->divisa = $divisa;
 		$this->view->formulario = $formulario;

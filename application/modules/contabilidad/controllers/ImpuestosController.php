@@ -83,7 +83,7 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
     public function enlazarAction()
     {
     	$request = $this->getRequest();
-		//Obtenemos el idProducto y el idImpuesto
+		
 		$idImpuesto = $this->getParam("idImpuesto");
 		$idProducto = $this->getParam("idProducto");
 		$formulario = new Contabilidad_Form_CrearImpuesto;

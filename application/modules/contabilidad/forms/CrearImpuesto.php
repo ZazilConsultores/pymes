@@ -54,7 +54,7 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		
 		$eSubmit = new Zend_Form_Element_Submit('idEnlazarImpuesto');
 		$eSubmit->setLabel("Enviar");
-		$eSubmit->setAttrib("class", "btn btn-warning");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		$this->addElement($eAbreviatura);
 		$this->addElement($eDescripcion);
