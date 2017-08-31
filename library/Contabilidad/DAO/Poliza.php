@@ -1875,7 +1875,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 				$select = $tablaCXP->select()->from($tablaCXP)->where('fechaPago >= ?',$stringFechaInicio)->where('fechaPago <=?',$stringFechaFinal)->where('idTipoMovimiento=?',12)
 				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 				$rowsGrupoRCXP= $tablaCXP->fetchAll($select);
-				//Verificamos que existe Remision
+				print_r("$select");
 				if(!is_null($rowsGrupoRCXP)){
 					foreach($rowsGrupoRCXP as $rowGrupoRCXP){
 						//Obtenemos el idProveedor y el tipo
@@ -1898,6 +1898,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 								//print_r("Gasto");
 							}
 							$banco = $rowGrupoRCXP->idBanco;
+							print_r($banco);
 							$idSucursal = $rowGrupoRCXP->idSucursal;
 							$numMov = $rowGrupoRCXP->numeroFolio;
 							$fecha = $rowGrupoRCXP->fechaPago;
@@ -1909,7 +1910,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 							$tablaGuiaContable = $this->tablaGuiaContable;
 							$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?", $tipo);
 							$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
-							//print_r("$select");
+							print_r("$select");
 							//Comprobamos que esta el modulo y el tipo en guia contable
 							if(!is_null($rowsGuiaContable)){
 								foreach($rowsGuiaContable as $rowGuiaContable){
@@ -1935,11 +1936,11 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 												if($tipo == 5 && $rowsGuiaContable->cargo == "X"){
 													$origen = "PRO";
 												}else{
-													if($tipo ==2 || $tipo == 1 && $rowsGuiaContable->cargo == "X"){
-														$origen = "SIN";
-													}else{
+													if($tipo ==2 || $tipo == 1 && $rowsGuiaContable->abono == "X"){
 														printf("El origen es Ban");
 														$origen= "BAN";
+													}else{
+														$origen = "SIN";
 													}
 												}
 											break;
@@ -2003,6 +2004,8 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 											$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 											$rowBanco = $tablaBancos->fetchRow($select);
 											$subCta = $rowBanco["cuentaContable"];
+											print_r("<br />");
+											print_r("$select");
 											$posicion = 1;
 											break;
 										case 'PRO':
