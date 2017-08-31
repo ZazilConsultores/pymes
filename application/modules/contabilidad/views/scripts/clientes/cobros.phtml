@@ -47,7 +47,7 @@
 						<!-- Boton consulta -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="submit" class="btn btn-success">
+								<button id="queryFacturas" type="button" class="btn btn-success">
 									<i class="fa fa-search"></i> Consultar Facturas
 								</button>
 							</div>
@@ -59,8 +59,8 @@
 	</div>
 </div>
 
-<!-- Muesta el resultado de la busqueda -->
-<?php if(!is_null($facturasxc)){ ?>
+<!-- Muesta el resultado de la busqueda 
+<?php if(!is_null($facturasxc)){ ?>-->
 	<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
@@ -81,7 +81,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($facturasxc as $facturaxc) :?>
+							<!--<?php foreach ($facturasxc as $facturaxc) :?>
 								<tr>
 									<td><?php echo $facturaxc["idSucursal"]; ?></td>
 									<td><?php echo $facturaxc["idCoP"]; ?></td>
@@ -94,14 +94,7 @@
 										</a
 									</td>
 								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<th>Total: </th>
-									<td><input id="total" class="form-control" /></td>	
-								</tr>
-							<?php endforeach; ?>
+							<?php endforeach; ?>-->
 						</tbody>
 					</table>
 				</div>
@@ -110,12 +103,13 @@
 		</div>
 	</div>
 </div>	
-<?php } ?>
+<!--<?php } ?>-->
 <script>
 	$().ready(function(){
-		
 		var url = window.location.origin + "/General/";
+		//AddRow();
 		calculaTotal();
+		
 		$("#idFiscales").on('change',function(){
 			//console.log($(this).val());
 			var idFiscal = $(this).val();
@@ -135,14 +129,13 @@
 					}
 				});
 				
-				// Traer Clientes de la empresa seleccionada y llenar combo de clientes
-				
 				var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
 				console.log(urlQueryClientes);
 				$.ajax({
 					url: urlQueryClientes,
 					dataType: "json",
 					success: function(data){
+						
 						console.dir(data);
 						$("select#idCliente").empty();
 						$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
@@ -154,19 +147,63 @@
 			}
 		});
 		
-		$("#queryFacturas").on('click', function(){
-			console.log("Ha dado click");
+		$("button#queryFacturas").on("click", function(){
+		 	var sucu = $("select#idSucursal").val();
+		 	var cl = $("select#idCliente").val();
+			var urlCXC = window.location.origin + "/General/contabilidad/json/buscacobro/sucu/" + sucu +"/cl/"+cl;
+			$.ajax({
+				url: urlCXC,
+				dataType: "json",
+				success: function(data){
+					console.log(urlCXC);
+					console.dir(data);
+					var tbody = $("table#detalleFacturaxc").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].idSucursal)).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFactura)).
+							append($('<td>').append(data[i].fecha)).
+							append($('<td>').append(data[i].total))
+							//append($('<td>').append(botonActualizar)).
+							//append($('<td>').append(botonEliminar))
+							);
+					});
+				}
+				
+			});
 		});
+				/*url: urlCXC,
+				dataType: "json",
+				success: function(data){
+					console.log(urlCXC);
+					console.dir(data);
+					var tbody = $("table#detalleFacturaxc").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						/*var baseUrl ="localhost/General";
+						var urlPT = baseUrl + "/inventario/productoterminado/editar"
+						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
+						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
+						var importe = data[i].cantidad * data[i].costoUnitario;
+						importe = parseFloat(importe.toFixed(2));
+						var costoUnitario = data[i].costoUnitario;*/
+						/*tbody.append($('<tr>').
+							append($('<td>').append(data[i].idSucursal)).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFactura)).
+							append($('<td>').append(data[i].fecha)).
+							append($('<td>').append(data[i].total))
+							//append($('<td>').append(botonActualizar)).
+							//append($('<td>').append(botonEliminar))
+							);
+					});
+					//AddRow();
+					//calculaTotal();
+				}
+			});*/
 		
-		$("#detalleFacturaxp").on('click', "button[tipo='pago']", function(){
-			$("#registroPago").removeClass("hidden");
-			$("#registroNomina").addClass("hidden");
-		});
-		
-		$("#detalleFacturaxp").on('click', "button[tipo='nomina']", function(){
-			$("#registroNomina").removeClass("hidden");
-			$("#registroPago").addClass("hidden");
-		});
 		
 		function calculaTotal() {
 			var total = 0;
@@ -178,6 +215,10 @@
 			console.log(total);
   			//$("#total").val(total);
 		}
+		/*function AddRow()
+		  	{
+    			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
+    		}*/
 		
 	});
 </script>

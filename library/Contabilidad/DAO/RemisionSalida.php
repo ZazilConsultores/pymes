@@ -138,7 +138,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 											print_r("<br />");
 											print_r("$select");
 											foreach($rowsCompEnlazado as $rowCompEnlazado){
-												$cantMateria = $rowCompEnlazado->cantidad * $cantidad;
+												$cantMateria = $rowCompEnlazado->cantidad * $cantidad * $rowProductoComp->cantidad;
 												print_r("La cantidad del producto del producto compuesto es:");
 												print_r($cantMateria);
 												print_r("<br />");
@@ -203,7 +203,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 																);
 																$dbAdapter->insert("Cardex",$mCardex);*/
 															}else{
-																$rowCapas->delete($select);
+																//$rowCapas->delete($select);
 															}//if canCapas
 															//Actulizamos en Inventario
 															$tablaInventario = $this->tablaInventario;
@@ -219,10 +219,14 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 										}//if $rowsProductoEnlEnl
 							//}else{
 								//foreach($rowsProductoEnl as $rowProductoEnl){
-										$cantMateria = $rowProductoEnl->cantidad * $cantidad;
+										$cantMateria = $rowProductoEnl->cantidad * $cantidad * $rowProductoComp->cantidad;
 										print_r("<br />");
+										print_r("El producto Terminado tiene");
+										print_r($rowProductoEnl->idProducto);
+										print_r("La cantidad del producsto Terminado");
+										print_r($rowProductoEnl->cantidad * $cantidad);
 										print_r("<br />");
-										print_r("Resta");
+										print_r("Resta producto dentro de otro producto");
 										print_r($cantMateria);
 										print_r("<br />");
 										//Buscamos el productoEnlazado en Inventario
@@ -290,7 +294,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 														);
 														$dbAdapter->insert("Cardex",$mCardex);*/
 													}else{
-														$rowCapas->delete($select);
+														//$rowCapas->delete($select);
 													}//if canCapas
 													//Actulizamos en Inventario
 													$tablaInventario = $this->tablaInventario;
@@ -362,7 +366,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 									);
 									$dbAdapter->insert("Cardex",$mCardex);*/
 								}else{
-									$rowCapas->delete($select);
+									//$rowCapas->delete($select);
 								}
 								//Actualiza Inventario
 								$tablaInventario = $this->tablaInventario;

@@ -176,8 +176,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$cl = $this->getParam("cliente");
 			//print_r($idSucursal);
 			//print_r($cl);
-			$facturasxc = $this->cobroClienteDAO->busca_Cuentasxc($idSucursal, $cl);
-			$this->view->facturasxc = $facturasxc;
+			//$facturasxc = $this->cobroClienteDAO->busca_Cuentasxc($idSucursal, $cl);
+			//$this->view->facturasxc = $facturasxc;
 		}
     }
 

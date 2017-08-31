@@ -177,6 +177,21 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
+	
+	public function buscacobroAction()
+    {
+        $sucu = $this->getParam("sucu");
+        $cl = $this->getParam("cl");
+        print_r($cl);
+		
+		$buscaCobro= $this->cobrosDAO->busca_Cuentasxc($sucu, $cl);
+		if(!is_null($buscaCobro)){
+			echo Zend_Json::encode($buscaCobro);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+	
 	public function buscacobroxpAction()
     {
         // action body
