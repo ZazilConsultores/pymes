@@ -1198,6 +1198,8 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									}else{
 										if($tipo == 1 || $tipo == 2 && $rowGuiaContable->cargo == "X"){
 											$origen = "SIN";
+											print_r("El origen es:");
+											print_r($origen);
 										}else{
 											$origen = "BAN";
 										}
@@ -1245,10 +1247,14 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									break;
 								case 'PRO':
 									$tablaProveedores = $this->tablaProveedores;
-											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
-											$rowProveedor = $tablaProveedores->fetchRow($select);
-											$subCta = $rowProveedor["cuenta"];
-											$posicion = 1;
+									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
+									$rowProveedor = $tablaProveedores->fetchRow($select);
+									$posicion = 1;
+									break;
+									
+								case 'SIN':
+									$subCta = $rowGuiaContable->sub1;
+									$posicion = 1;
 									break;
 								default:
 									$subCta = "0000";
@@ -1933,14 +1939,17 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 											break;
 											case 'T':
 												$importe = $total;
-												if($tipo == 5 && $rowsGuiaContable->cargo == "X"){
+												if($tipo == 5 && $rowGuiaContable->cargo == "X"){
 													$origen = "PRO";
+													print_r($origen);
 												}else{
-													if($tipo ==2 || $tipo == 1 && $rowsGuiaContable->abono == "X"){
-														printf("El origen es Ban");
-														$origen= "BAN";
+													if($tipo == 1 || $tipo == 2 && $rowGuiaContable->abono == "X"){
+														$origen = "BAN";
+														print_r("El origen es BAN");
+														print_r($origen);
 													}else{
 														$origen = "SIN";
+														print_r("El origen es SIN");
 													}
 												}
 											break;
@@ -2001,7 +2010,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										switch($origen){
 										case 'BAN':
 											$tablaBancos = $this->tablaBancos;
-											$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+											$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$banco);
 											$rowBanco = $tablaBancos->fetchRow($select);
 											$subCta = $rowBanco["cuentaContable"];
 											print_r("<br />");
@@ -2014,6 +2023,10 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 													$rowProveedor = $tablaProveedores->fetchRow($select);
 													$subCta = $rowProveedor["cuenta"];
 													$posicion = 1;
+											break;
+										case 'SIN':
+											$subCta = $rowGuiaContable["sub1"];
+											$posicion = 1;
 											break;
 										default:
 											$subCta = "0000";
