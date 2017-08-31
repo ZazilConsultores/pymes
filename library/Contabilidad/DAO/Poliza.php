@@ -1082,7 +1082,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										'sub3'=>$armaSub3,
 										'sub4'=>$armaSub4,
 										'sub5'=>$armaSub5,
-										'tipoES'=>"E",
+										'tipoES'=>"I",
 										'fecha'=>$fecha,
 										'descripcion'=>$desPol,
 										'cargo'=>$cargo,

@@ -51,7 +51,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			$tablaProducto = $this->tablaProducto;
 			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?", $producto["descripcion"]);
 			$rowProducto = $tablaProducto->fetchRow($select);
-			print_r("$select");
+			//print_r("$select");
 			//Convertimos la unidad del producto
 			$tablaMultiplos = $this->tablaMultiplos;
 			$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
