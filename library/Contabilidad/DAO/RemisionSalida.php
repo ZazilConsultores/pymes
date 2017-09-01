@@ -111,7 +111,11 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 						print_r("<br />");
 						print_r("$select");
 						print_r("<br />");
-						$cantProducto = $cantidad;
+						$cantProdComp = $cantidad * $rowProductoComp->cantidad;
+						print_r("La cantidad en producto compuesto");
+						print_r("<br />");
+						print_r($cantProdComp);
+						print_r("<br />");
 					 	if(!is_null($rowProductoEnlazado)){
 					 		//Estos productos enlazados son productos compuestos
 					 		print_r("<br />");
@@ -140,7 +144,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 											print_r("<br />");
 											print_r("$select");
 											foreach($rowsCompEnlazado as $rowCompEnlazado){
-												$cantMateria = $rowCompEnlazado->cantidad * $cantidad * $rowProductoComp->cantidad;
+												$cantMateria = $rowCompEnlazado->cantidad * $cantProdComp;
 												print_r("La cantidad del producto del producto compuesto es:");
 												
 												print_r($cantMateria);
