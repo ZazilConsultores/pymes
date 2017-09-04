@@ -1196,7 +1196,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									if($tipo == 5 && $rowGuiaContable->cargo == "X"){
 										$origen	= "PRO";
 									}else{
-										if($tipo == 1 || $tipo == 2 && $rowGuiaContable->cargo == "X"){
+										if($tipo == 1 || $tipo == 2 && $rowGuiaContable->cargo =="X"){
 											$origen = "SIN";
 											print_r("El origen es:");
 											print_r($origen);
@@ -1249,9 +1249,10 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$tablaProveedores = $this->tablaProveedores;
 									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
 									$rowProveedor = $tablaProveedores->fetchRow($select);
+									$subCta = $rowProveedor["cuenta"];
 									$posicion = 1;
 									break;
-									
+									print_r("$select");
 								case 'SIN':
 									$subCta = $rowGuiaContable->sub1;
 									$posicion = 1;

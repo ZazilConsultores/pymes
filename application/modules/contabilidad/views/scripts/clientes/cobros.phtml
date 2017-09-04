@@ -61,7 +61,7 @@
 
 <!-- Muesta el resultado de la busqueda 
 <?php if(!is_null($facturasxc)){ ?>-->
-	<div class="row">
+<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
 			<div class="panel-heading">
@@ -99,7 +99,6 @@
 					</table>
 				</div>
 			</div>
-			
 		</div>
 	</div>
 </div>	
@@ -148,9 +147,11 @@
 		});
 		
 		$("button#queryFacturas").on("click", function(){
+			
 		 	var sucu = $("select#idSucursal").val();
 		 	var cl = $("select#idCliente").val();
 			var urlCXC = window.location.origin + "/General/contabilidad/json/buscacobro/sucu/" + sucu +"/cl/"+cl;
+			console.log(urlPT);
 			$.ajax({
 				url: urlCXC,
 				dataType: "json",
@@ -161,13 +162,13 @@
 					tbody.empty();
 					$.each(data, function(i,item){
 						tbody.append($('<tr>').
-							append($('<td>').append(data[i].idSucursal)).
-							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].idSucursal))
+							/*append($('<td>').append(data[i].idCoP)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].fecha)).
 							append($('<td>').append(data[i].total))
 							//append($('<td>').append(botonActualizar)).
-							//append($('<td>').append(botonEliminar))
+							//append($('<td>').append(botonEliminar))*/
 							);
 					});
 				}
