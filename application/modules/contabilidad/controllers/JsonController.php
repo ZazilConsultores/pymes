@@ -17,7 +17,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
     public function init()
     {
-	    	 $auth = Zend_Auth::getInstance();
+	    	$auth = Zend_Auth::getInstance();
 	        $dataIdentity = $auth->getIdentity();
 	        /* Initialize action controller here */
 	        $this->bancoDAO = new Contabilidad_DAO_Banco;
@@ -182,9 +182,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     {
         $sucu = $this->getParam("sucu");
         $cl = $this->getParam("cl");
-        print_r($cl);
+        //print_r($cl);
 		
-		$buscaCobro= $this->cobrosDAO->busca_Cuentasxc($sucu, $cl);
+		$buscaCobro = $this->cobrosDAO->busca_Cuentasxc($sucu, $cl);
 		if(!is_null($buscaCobro)){
 			echo Zend_Json::encode($buscaCobro);
 		}else{
@@ -195,14 +195,14 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	public function buscacobroxpAction()
     {
         // action body
-        $idFactura = $this->getParam("idFactura");
+      /*  $idFactura = $this->getParam("idFactura");
      	$buscaCobro= $this->cobrosDAO->busca_CobrosCXC($idFactura);
 		//$buscacobro= $this->cobrosDAO busca_PagosCXP($idFactura);
 		if(!is_null($buscaCobro)){
 			echo Zend_Json::encode($buscaCobro);
 		}else{
 			echo Zend_Json::encode(array());
-		}
+		}*/
     }
 
     public function obtenerfacturaxpAction()

@@ -1148,6 +1148,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 							}
 							//Asignamos variables
 							$banco = $rowCxp["idBanco"];
+							
 							$idSucursal = $rowCxp["idSucursal"];
 							$numeroFolio = $rowCxp["numeroFolio"];
 							$fecha = $rowCxp["fechaPago"];
@@ -1252,7 +1253,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$subCta = $rowProveedor["cuenta"];
 									$posicion = 1;
 									break;
-									print_r("$select");
+									
 								case 'SIN':
 									$subCta = $rowGuiaContable->sub1;
 									$posicion = 1;
@@ -1905,6 +1906,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 								//print_r("Gasto");
 							}
 							$banco = $rowGrupoRCXP->idBanco;
+							if($banco <> 46){
 							print_r($banco);
 							$idSucursal = $rowGrupoRCXP->idSucursal;
 							$numMov = $rowGrupoRCXP->numeroFolio;
@@ -2142,7 +2144,8 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									}//cierra forach Guia Contable
 							}
 							
-						}//Cierra if proveedor	
+						}//Cierra if proveedor
+						}//if Banco sucursal Caja Cafe	
 					}
 				}else{
 					echo "Remisión no registrada";

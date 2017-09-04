@@ -1,108 +1,72 @@
 <?php
 	$empresas = $this->empresas;
-	$facturasxc = $this->facturasxc;
+	//$facturasxc = $this->facturasxc;
 ?>
-<div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-success">
-			<div class="panel-heading">
-				<h4 class="panel-title">Búsqueda de Factura por Cobrar<strong></strong></h4>
-			</div>
-			<div class="panel-body">
-				<div>
-					
-				</div>
-				<hr />
-				<div>
-					<!--<div class="form-horizontal">-->
-						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
-						<!-- Empresas -->
-						<div class="form-group">
-							<label for="empresa" class="col-md-2">Empresas: </label>
-							<div class="col-md-10">
-								<select name="empresa" id="idFiscales" class="form-control">
-									<option value="0">Seleccione Empresa</option>
-									<?php foreach ($empresas as $empresa) : ?>
-									<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
-									<?php endforeach ?>
-								</select>
-							</div>
-						</div>
-						<!-- Sucursales -->
-						<div class="form-group">
-							<label for="sucursal" class="col-md-2">Sucursal: </label>
-							<div class="col-md-10">
-								<select required name="sucursal" id="idSucursal" class="form-control" >
-								</select>
-							</div>
-						</div>
-						<!--Clientes -->
-						<div class="form-group">
-							<label for="cliente" class="col-md-2">Clientes: </label>
-							<div class="col-md-10">
-								<select required name="cliente" id="idCliente" class="form-control">
-								</select>
-							</div>
-						</div>
-						<!-- Boton consulta -->
-						<div class="form-group">
-							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="button" class="btn btn-success">
-									<i class="fa fa-search"></i> Consultar Facturas
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h4 class="panel-title">Búsqueda de Factura por Cobrar<strong></strong></h4>
 	</div>
-</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<div class="form-group">
+				<label for="empresa" class="col-md-2">Empresas: </label>
+				<div class="col-md-10">
+					<select name="empresa" id="idFiscales" class="form-control">
+						<option value="0">Seleccione Empresa</option>
+						<?php foreach ($empresas as $empresa) : ?>
+							<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="sucursal" class="col-md-2">Sucursal: </label>
+				<div class="col-md-10">
+					<select required name="sucursal" id="idSucursal" class="form-control" >
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="cliente" class="col-md-2">Clientes: </label>
+				<div class="col-md-10">
+					<select required name="cliente" id="idCliente" class="form-control">
+					</select>
+				</div>
+			</div>
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="queryFacturas" type="button" class="btn btn-success">
+						<i class="fa fa-search"></i> Consultar Facturas
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>	
+</section>
 
-<!-- Muesta el resultado de la busqueda 
-<?php if(!is_null($facturasxc)){ ?>-->
-<div class="row">
+
+	<div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h5 class="panel-title">Detalle de Facturas</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<table id="detalleFacturaxc" class="table table-striped table-condensed">
-						<thead>
-							<tr>
-								<th>Sucursal</th>
-								<th>Cliente</th>
-								<th>Número Factura</th>
-								<th>Fecha</th>
-								<th>Importe</th>
-								<th>Pago</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!--<?php foreach ($facturasxc as $facturaxc) :?>
-								<tr>
-									<td><?php echo $facturaxc["idSucursal"]; ?></td>
-									<td><?php echo $facturaxc["idCoP"]; ?></td>
-									<td><?php echo $facturaxc["numeroFactura"]; ?></td>
-									<td><?php echo $facturaxc["fecha"]; ?></td>
-									<td id="importe"><?php echo number_format($facturaxc["total"],2); ?></td>
-									<td>	
-										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"clientes","action"=>"aplicacobro","idFactura"=>$facturaxc["idFactura"]),null, true)?>">
-											<span class="glyphicon glyphicon-pencil"></span> Pago
-										</a
-									</td>
-								</tr>
-							<?php endforeach; ?>-->
-						</tbody>
-					</table>
-				</div>
-			</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Cobro Factura.</h4>
 		</div>
-	</div>
-</div>	
-<!--<?php } ?>-->
+		<table id="detalleFacturaxc" class="table table-striped table-condensed">
+			<thead>
+				<th>Sucursal </th>
+				<th>Cliente</th>
+				<th>Número Factura</th>
+				<th>Fecha</th>
+				<th>Importe</th>
+				<th>Pago</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div></div></div>
+
+
 <script>
 	$().ready(function(){
 		var url = window.location.origin + "/General/";
@@ -151,75 +115,44 @@
 		 	var sucu = $("select#idSucursal").val();
 		 	var cl = $("select#idCliente").val();
 			var urlCXC = window.location.origin + "/General/contabilidad/json/buscacobro/sucu/" + sucu +"/cl/"+cl;
-			console.log(urlPT);
+			console.log(urlCXC);
 			$.ajax({
 				url: urlCXC,
 				dataType: "json",
 				success: function(data){
-					console.log(urlCXC);
-					console.dir(data);
 					var tbody = $("table#detalleFacturaxc").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
+						var botonPago = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
 						tbody.append($('<tr>').
-							append($('<td>').append(data[i].idSucursal))
-							/*append($('<td>').append(data[i].idCoP)).	
-							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].fecha)).
-							append($('<td>').append(data[i].total))
-							//append($('<td>').append(botonActualizar)).
-							//append($('<td>').append(botonEliminar))*/
-							);
-					});
-				}
-				
-			});
-		});
-				/*url: urlCXC,
-				dataType: "json",
-				success: function(data){
-					console.log(urlCXC);
-					console.dir(data);
-					var tbody = $("table#detalleFacturaxc").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						/*var baseUrl ="localhost/General";
-						var urlPT = baseUrl + "/inventario/productoterminado/editar"
-						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
-						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
-						var importe = data[i].cantidad * data[i].costoUnitario;
-						importe = parseFloat(importe.toFixed(2));
-						var costoUnitario = data[i].costoUnitario;*/
-						/*tbody.append($('<tr>').
 							append($('<td>').append(data[i].idSucursal)).
 							append($('<td>').append(data[i].idCoP)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].fecha)).
-							append($('<td>').append(data[i].total))
-							//append($('<td>').append(botonActualizar)).
-							//append($('<td>').append(botonEliminar))
-							);
+							append($('<td>').append(data[i].total).attr("id", "importe")).
+							append($('<td>').append(botonPago)));
 					});
-					//AddRow();
-					//calculaTotal();
-				}
-			});*/
-		
-		
+					AddRow();
+					calculaTotal();
+				}		
+			});
+		});
+			
 		function calculaTotal() {
 			var total = 0;
-			$("#importe").each(
-				function(index, value) {
-					total = total + eval($(this).text());
-				}
-			);
-			console.log(total);
-  			//$("#total").val(total);
+			   $("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#total").val(total.toFixed(2));
+	        		
+			  });
+			
 		}
-		/*function AddRow()
-		  	{
-    			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
-    		}*/
+		
+		function AddRow(){
+			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
+    	}
 		
 	});
 </script>
