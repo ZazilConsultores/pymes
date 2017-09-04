@@ -1906,7 +1906,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 								//print_r("Gasto");
 							}
 							$banco = $rowGrupoRCXP->idBanco;
-							if($banco <> 46){
+							if($banco <> 46  || $idCoP <> 103){
 							print_r($banco);
 							$idSucursal = $rowGrupoRCXP->idSucursal;
 							$numMov = $rowGrupoRCXP->numeroFolio;
@@ -2145,7 +2145,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 							}
 							
 						}//Cierra if proveedor
-						}//if Banco sucursal Caja Cafe	
+						}//if Banco sucursal Caja Cafe	y proveedor central de Abastos
 					}
 				}else{
 					echo "Remisión no registrada";
