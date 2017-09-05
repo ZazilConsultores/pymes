@@ -99,6 +99,7 @@
 						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 						'idFactura'=>$idFactura,
 						'idImpuesto'=>4, //Iva
+						'idCuentasxp'=>0,
 						'importe'=>$importe[0]['iva']
 							
 					);
@@ -129,6 +130,7 @@
 							'idTipoMovimiento'=>15,
 							'idFactura'=>$idFactura,
 							'idImpuesto'=>4, //Iva
+							'idCuentasxp'=>0,
 							'importe'=>$importe[0]['iva']	
 						);
 						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
