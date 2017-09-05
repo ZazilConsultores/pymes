@@ -138,7 +138,7 @@
 			});
 		});
 			
-		function calculaTotal() {
+		function calculaTotal(){
 			var total = 0;
 			   $("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
@@ -147,12 +147,18 @@
 			   	$("#total").val(total.toFixed(2));
 	        		
 			  });
-			
 		}
-		
+	
 		function AddRow(){
 			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
     	}
+    	
+    	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){
+		   	var factura = $(this).attr("factura");
+		   	console.log(factura);
+		  	window.location = "/General/contabilidad/clientes/aplicacobro/idFactura/"+ factura;
+		   	
+		   });
 		
 	});
 </script>
