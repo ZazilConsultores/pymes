@@ -59,7 +59,7 @@
 				<th>Número Factura</th>
 				<th>Fecha</th>
 				<th>Importe</th>
-				<th>Pago</th>
+				<th>Cobro</th>
 			</thead>
 			<tbody>
 			</tbody>
@@ -123,14 +123,14 @@
 					var tbody = $("table#detalleFacturaxc").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						var botonPago = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
+						var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Cobro").attr("factura",data[i].idFactura);
 						tbody.append($('<tr>').
 							append($('<td>').append(data[i].idSucursal)).
 							append($('<td>').append(data[i].idCoP)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].fecha)).
 							append($('<td>').append(data[i].total).attr("id", "importe")).
-							append($('<td>').append(botonPago)));
+							append($('<td>').append(botonCobro)));
 					});
 					AddRow();
 					calculaTotal();
@@ -150,7 +150,7 @@
 		}
 	
 		function AddRow(){
-			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control" width=200px></input></td></tr>');
+			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	
     	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){

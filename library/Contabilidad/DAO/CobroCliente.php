@@ -27,7 +27,6 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",2)->where("estatus <> ?", "C")
 			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
 			$rowsFacturaxc = $tablaFactura->fetchAll($select)->toArray();
-			//print_r($select->__toString());
 			return $rowsFacturaxc;
 							
 		}
@@ -44,7 +43,7 @@
 				$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento= ?",16)->where("idFactura=?", $idFactura)
 				->order("secuencial DESC");
 				$rowCuentasxc = $tablaCuentasxc->fetchRow($select);
-				print_r($select->__toString());
+				//print_r($select->__toString());
 				
 				if(!is_null($rowCuentasxc)){
 					$secuencial= $rowCuentasxc->secuencial +1;
@@ -53,49 +52,48 @@
 				}
 				
 				//Valida que el importe no sea mayor al saldo, vacio ó  igual a cero.
-				if($datos["pago"]==0  || $datos["pago"] == " "){
+				if($datos["pago"]== 0  || $datos["pago"] == " "){
 					print_r("El monto del saldo es incorrecto");
 				}else{
 					$tablaFactura = $this->tablaFactura;
 					$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 					$rowFactura = $tablaFactura->fetchRow($select);
 					//print_r($select->__toString());
-				//Aplicamos movimiento en cuentasxp;
-						$mCuentasxc = array(
-							'idTipoMovimiento'=>16,
-							'idSucursal'=>$rowFactura['idSucursal'],
-							'idCoP'=>$rowFactura['idCoP'],
-							'idFactura'=>$rowFactura['idFactura'],
-							'idBanco'=>$datos['idBanco'],
-							'idDivisa'=>$datos['idDivisa'],
-							'numeroFolio'=>$rowFactura['numeroFactura'],
-							'numeroReferencia'=>$datos['numeroReferencia'],
-							'secuencial'=>$secuencial,
-							'estatus'=>"A",
-							'fechaPago'=>$stringIni,
-							'fecha'=>date('Y-m-d h:i:s', time()),
-							'formaLiquidar'=>$datos['formaPago'],
-							'conceptoPago'=>$datos['conceptoPago'],
-							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
-							'total'=>$datos["pago"]
-						);
-						$dbAdapter->insert("Cuentasxc",$mCuentasxc);
-						//GuardaIva em facturaImpuesto
-						$tablaCuentasxc = $this->tablaCuentasxc;
-						$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
-						$rowcxc = $tablaFactura->fetchRow($select);
-						print_r("$select");
-						$mfImpuesto = array(
-							'idTipoMovimiento'=>16,
-							'idFactura'=>$rowFactura['idFactura'],
-							'idImpuesto'=>4, //Iva
-							'idCuentasxp'=>0,
-							'importe'=>$datos["pago"]- $rowcxc->subtotal
-							
-						);
-						print_r($mfImpuesto);
-						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-				
+					$mCuentasxc = array(
+						'idTipoMovimiento'=>16,
+						'idSucursal'=>$rowFactura['idSucursal'],
+						'idCoP'=>$rowFactura['idCoP'],
+						'idFactura'=>$rowFactura['idFactura'],
+						'idBanco'=>$datos['idBanco'],
+						'idDivisa'=>$datos['idDivisa'],
+						'numeroFolio'=>$rowFactura['numeroFactura'],
+						'numeroReferencia'=>$datos['numeroReferencia'],
+						'secuencial'=>$secuencial,
+						'estatus'=>"A",
+						'fechaPago'=>$stringIni,
+						'fecha'=>date('Y-m-d h:i:s', time()),
+						'formaLiquidar'=>$datos['formaPago'],
+						'conceptoPago'=>$datos['conceptoPago'],
+						'subTotal'=>$datos["pago"] / ((16/100) +1) ,
+						'total'=>$datos["pago"]
+					);
+					$dbAdapter->insert("Cuentasxc",$mCuentasxc);
+					//GuardaIva em facturaImpuesto
+					$tablaCuentasxc = $this->tablaCuentasxc;
+					$select= $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idFactura=?", $idFactura)->order("secuencial DESC");;
+					$rowcxc = $tablaFactura->fetchRow($select);
+					//print_r("$select");
+					$mfImpuesto = array(
+						'idTipoMovimiento'=>16,
+						'idFactura'=>$rowFactura['idFactura'],
+						'idImpuesto'=>4, //Iva
+						'idCuentasxp'=>0,
+						'importe'=>$datos["pago"]- $rowcxc->subtotal
+					);
+					//	print_r($mfImpuesto);
+					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+					//Al registrar el cobro, afecta registro factura, saldo banco y saldo Cliente.
+					$actualizaRegistro = $this->actualiza_Saldo($idFactura, $datos);
 				}	
 			}catch(exception $ex){
 			print_r("<br />");
@@ -178,7 +176,7 @@
 		public function actualiza_Saldo($idFactura, array $datos){
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');
-			//Actuliza saldoProveedor
+			//Actuliza saldoCliente
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$tablaFactura = $tablaFactura->fetchRow($select);
@@ -186,9 +184,7 @@
 	 		$tablaClientes = $this->tablaClientes;
 			$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?", $tablaFactura->idCoP);
 			$rowCliente = $tablaClientes->fetchRow($select);
-			print_r($select->__toString());
-			print_r("El cliente es:");
-			print_r("<br />");
+			//print_r($select->__toString());
 			$saldo = $rowCliente->saldo - $datos["pago"];
 			$rowCliente->saldo = $saldo;
 			$rowCliente->save();
@@ -197,7 +193,7 @@
 			$tablaBancos= $this->tablaBancos;
 			$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$datos["idBanco"]);
 			$rowBanco = $tablaBancos->fetchRow($select);
-			print_r("$select");
+			//print_r("$select");
 			$sBanco = $rowBanco->saldo + $datos["pago"];
 			$rowBanco->saldo = $sBanco;
 			$rowBanco->fecha = $stringIni;
@@ -206,17 +202,19 @@
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
-			print_r("$select");
+			//print_r("$select");
 			$saldo = $rowFactura->saldo - $datos["pago"];
-			print_r($saldo);
+			//print_r($saldo);
 			
-			$rowFactura->saldo = $saldo;
 			//Actualiza el importe pago 	
 			$iFactura = $rowFactura->importePagado + $datos["pago"];
 			$rowFactura->importePagado = $iFactura;
-			if($saldo <= $datos["pago"]){
+			if($saldo <= 0){
 				$rowFactura->conceptoPago = "LI";
+			}else{
+				$rowFactura->conceptoPago = "PA";
 			}
+			$rowFactura->saldo = $saldo;
 			$rowFactura->save();	
 			
 		}

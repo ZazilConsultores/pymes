@@ -150,13 +150,8 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$this->view->empresas = $empresas;	
 		}if($request->isPost()){		
 			$datos = $request->getPost();
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
 			$idSucursal = $this->getParam("sucursal");
-			//print_r($idSucursal);
         	$pr = $this->getParam("proveedor"); 
-        	//Enviamos la busqueda a la consulta
-        	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
-			$this->view->facturasxp = $facturaxp;
 		}
     }
 
@@ -169,80 +164,25 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	$formulario = new Contabilidad_Form_PagosProveedor;
 		$this->view->formulario = $formulario;
 		$pagosDAO = new Contabilidad_DAO_PagoProveedor;
-		//$proveedores = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		$datosFactura = $pagosDAO->obtiene_Factura($idFactura);
 		$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
 		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
 		$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
-		
-		/*if($request->isPost()){
-			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				//print_r($datos);
-				try{
-					$datosFactura;
-					print_r($idFactura);
-					print_r($datos);
-					//print_r($datosFactura);
-					$this->pagoProveedorDAO->aplica_Pago($idFactura, $datos, $datosFactura);
-					//$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
-					//$this->view->messageSuccess = "El pago <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
-				}catch(Exception $ex){
-					//$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
-				}
-			}
-		}
-    	
-    	/*$fecha = $this->getParam($fecha);
-		print_r($fecha);
-		$cxp = $this->pagoProveedor->guardacxp($idFactura, $idBanco, $idDivisa, $fecha, $referencia, $total);
-				
-    }*/
-    if($request->isGet()){
+	
+    	if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
+				//print_r($datos);
 				try{
 					$pago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-					$actualizaSaldo = $this->pagoProveedorDAO->actualiza_Saldo($idFactura, $datos);
 					$this->view->messageSuccess = "Pago: <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 				
 			}
-		}
-    }
-
-    public function pagodosAction()
-    {
-        // action body
-        $request = $this->getRequest();
-		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;	
-		if($request->isGet()){
-			$this->view->empresas = $empresas;	
-		}if($request->isPost()){		
-			$datos = $request->getPost();
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			$idSucursal = $this->getParam("sucursal");
-			print_r($idSucursal);
-        	$pr = $this->getParam("proveedor"); 
-        	//Enviamos la busqueda a la consulta
-        	$facturaxp = $this->pagoProveedorDAO->busca_Cuentasxp($idSucursal, $pr);
-			$this->view->facturasxp = $facturaxp;
-			/*switch ($datos["tipoFormulario"]) {
-				case 'PF': // Pago Factura Proveedor
-					print_r("Es un pago Factura");
-					break;
-				
-				case 'NP': // Nomina de Credito de Proveedor
-					print_r("Es una nomina de ");
-					break;
-			}*/
-			
 		}
     }
 

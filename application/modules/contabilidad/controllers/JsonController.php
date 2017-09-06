@@ -154,7 +154,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     public function buscafacxpAction()
     {
         // action body
-        $idSucursal = $this->getParam("idSucursal");
+        $idSucursal = $this->getParam("sucu");
         $proveedor = $this->getParam("pro");
 		
 		$buscafacxp = $this->pagosDAO->busca_Cuentasxp($idSucursal, $proveedor);
@@ -182,8 +182,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     {
         $sucu = $this->getParam("sucu");
         $cl = $this->getParam("cl");
-        //print_r($cl);
-		
+        
 		$buscaCobro = $this->cobrosDAO->busca_Cuentasxc($sucu, $cl);
 		if(!is_null($buscaCobro)){
 			echo Zend_Json::encode($buscaCobro);

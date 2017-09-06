@@ -33,8 +33,6 @@
 		
 		public function aplica_Pago ($idFactura, array $datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			//$dbAdapter->beginTransaction();
-			
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');
 			
@@ -58,64 +56,47 @@
 					$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 					$rowFactura = $tablaFactura->fetchRow($select);
 					//print_r($select->__toString());
-				
-					if($datos["pago"] > $rowFactura["total"] ){
-						echo "El importe no puede ser mayor al total de la factura";
-					}else{
-						//Aplicamos movimiento en cuentasxp;
-						$mCuentasxp = array(
-							'idTipoMovimiento'=>15,
-							'idSucursal'=>$rowFactura['idSucursal'],
-							'idCoP'=>$rowFactura['idCoP'],
-							'idFactura'=>$rowFactura['idFactura'],
-							'idBanco'=>$datos['idBanco'],
-							'idDivisa'=>$datos['idDivisa'],
-							'numeroFolio'=>$rowFactura['numeroFactura'],
-							'numeroReferencia'=>$datos['numeroReferencia'],
-							'secuencial'=>$secuencial,
-							'estatus'=>"A",
-							'fechaPago'=>$stringIni,
-							'fecha'=>date('Y-m-d h:i:s', time()),
-							'formaLiquidar'=>$datos['formaPago'],
-							'conceptoPago'=>$datos['conceptoPago'],
-							'subTotal'=>$datos["pago"] / ((16/100) +1) ,
-							'total'=>$datos["pago"]
-						);
-						$dbAdapter->insert("Cuentasxp",$mCuentasxp);
-						//GuardaIva em facturaImpuesto
-						$tablaCuentasxp = $this->tablaCuentasxp;
-						$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idFactura=?", $idFactura)->order("secuencial DESC");
-						$rowcxp = $tablaFactura->fetchRow($select);
-						print_r("$select");
-						$mfImpuesto = array(
-							'idTipoMovimiento'=>15,
-							'idFactura'=>$rowFactura['idFactura'],
-							'idImpuesto'=>4, //Iva
-							'idCuentasxp'=>0,	
-							'importe'=>$datos["pago"]- $rowcxp->subtotal
-							
-						);
-						print_r($mfImpuesto);
-						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);	
-					}
-				//Actualiza saldo de Proveedor
-				/*$tablaFac = $this->tablaFactura;
-				$select = $tablaFac->select()->from($tablaFac)->where("idFactura=?", $idFactura);
-				$rowFacrura = $tablaFac->fetchRow($select);
-				print_r("<br />");
-				print_r("La factura");
-				print_r("$select");
-				$tablaProv = $this->tablaProveedores;
-				$select = $tablaProv->select()->from($tablaProv)->where("idProveedores=?", $rowFacrura["idCoP"]);
-				$rowProveedor = $tablaProv->fetchRow($select);
-				$saldoP = $rowProveedor["saldo"] - $datos["pago"]; 
-				print_r("<br />");
-				print_r($saldoP);*/		
+					//Aplicamos movimiento en cuentasxp;
+					$mCuentasxp = array(
+						'idTipoMovimiento'=>15,
+						'idSucursal'=>$rowFactura['idSucursal'],
+						'idCoP'=>$rowFactura['idCoP'],
+						'idFactura'=>$rowFactura['idFactura'],
+						'idBanco'=>$datos['idBanco'],
+						'idDivisa'=>$datos['idDivisa'],
+						'numeroFolio'=>$rowFactura['numeroFactura'],
+						'numeroReferencia'=>$datos['numeroReferencia'],
+						'secuencial'=>$secuencial,
+						'estatus'=>"A",
+						'fechaPago'=>$stringIni,
+						'fecha'=>date('Y-m-d h:i:s', time()),
+						'formaLiquidar'=>$datos['formaPago'],
+						'conceptoPago'=>$datos['conceptoPago'],
+						'subTotal'=>$datos["pago"] / ((16/100) +1) ,
+						'total'=>$datos["pago"]
+					);
+					$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+					//GuardaIva em facturaImpuesto
+					$tablaCuentasxp = $this->tablaCuentasxp;
+					$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idFactura=?", $idFactura)->order("secuencial DESC");
+					$rowcxp = $tablaFactura->fetchRow($select);
+					//print_r("$select");
+					$mfImpuesto = array(
+						'idTipoMovimiento'=>15,
+						'idFactura'=>$rowFactura['idFactura'],
+						'idImpuesto'=>4, //Iva
+						'idCuentasxp'=>0,	
+						'importe'=>$datos["pago"]- $rowcxp->subtotal
+					);
+					//print_r($mfImpuesto);
+					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+					//Al registrar el pago, afecta registro factura, saldo banco y saldo Proveedor.
+					$actualizaRegistro = $this->actualiza_Saldo($idFactura, $datos);
 				}		
 			}catch(Exception $ex){
 				$dbAdapter->rollBack();
 				print_r($ex->getMessage());
-				//throw new Util_Exception_BussinessException("Error: El pago no se puede realizar");
+				throw new Util_Exception_BussinessException("Error al registrar pago");
 			}
 							
 		}
@@ -185,11 +166,11 @@
 		public function actualiza_Saldo($idFactura, array $datos){
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');
-			//Actuliza saldoProveedor
+			
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$tablaFactura = $tablaFactura->fetchRow($select);
-			
+			//Actuliza saldoProveedor
 	 		$tablaProveedores = $this->tablaProveedores;
 			$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?", $tablaFactura->idCoP);
 			$rowProveedor = $tablaProveedores->fetchRow($select);
@@ -212,15 +193,16 @@
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 			$rowFactura = $tablaFactura->fetchRow($select);
 			$saldo = $rowFactura->saldo - $datos["pago"];
-			print_r($saldo);
-			
-			$rowFactura->saldo = $saldo;
+			//print_r($saldo);	
 			//Actualiza el importe pago 	
 			$iFactura = $rowFactura->importePagado + $datos["pago"];
 			$rowFactura->importePagado = $iFactura;
-			if($saldo <= $datos["pago"]){
+			if($saldo <= 0){
 				$rowFactura->conceptoPago = "LI";
+			}else{
+				$rowFactura->conceptoPago = "PA";
 			}
+			$rowFactura->saldo = $saldo;
 			$rowFactura->save();	
 			
 		}

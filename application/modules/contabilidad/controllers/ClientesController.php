@@ -174,10 +174,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			$idSucursal = $this->getParam("sucursal");
 			$cl = $this->getParam("cliente");
-			//print_r($idSucursal);
-			//print_r($cl);
-			//$facturasxc = $this->cobroClienteDAO->busca_Cuentasxc($idSucursal, $cl);
-			//$this->view->facturasxc = $facturasxc;
 		}
     }
 
@@ -244,10 +240,10 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
+				//print_r($datos);
 				try{
 					$this->cobroClienteDAO->aplica_Cobro($idFactura, $datos);
-					$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
+					//$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
 					$this->view->messageSuccess = "Cobro: <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
