@@ -164,7 +164,6 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
 		$stringIni = $fechaInicio->toString('YY-mm-dd');
 		try{
-			//Seleccionamos el producto para su clasificacion, Ver si la validación del producto se puede hacer desde jquery
 			$tablaProducto = $this->tablaProducto;
 			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?",$producto["descripcion"]);
 			$rowProducto = $tablaProducto->fetchRow($select);
@@ -370,16 +369,28 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 							$dbAdapter->insert("Inventario",$mInventario);
 						}
 						//Actulizamos el costo en ProductoTerminado
-							$tablaProdComp = $this->tablaProductoCompuesto;
-							$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
-							$rowsProductosComp = $tablaProdComp->fetchRow($select);
-							print_r("<br />");
-							print_r("$select");
-							print_r("<br />");
-							if(!is_null($rowsProductosComp)){
-								$rowsProductosComp["costoUnitario"] = $precioUnitario;
-								$rowsProductosComp->save();
-							}//RowProductoCompuesto	
+						$tablaProdComp = $this->tablaProductoCompuesto;
+						$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
+						$rowsProductosComp = $tablaProdComp->fetchAll($select);
+						print_r("Actualiza en Producto Terminado");
+						print_r("$select");
+						print_r("<br />");
+						if(!is_null($rowsProductosComp)){
+							foreach ($rowsProductosComp as $rowProductosComp) {
+								$rowProductosComp['costoUnitario']  = $precioUnitario;
+								$rowProductosComp->save();
+								$tablaProdEnl = $this->tablaProductoCompuesto;
+								$select = $tablaProdEnl->select()->from($tablaProdEnl)->where("idProducto=?",$rowProductosComp["idProducto"]);
+								$rowsProductosEnl = $tablaProdEnl->fetchAll($select);
+								print_r("<br />");
+								print_r("$select");
+								print_r("<br />");
+								if(!is_null($rowsProductosEnl)){
+									
+								}
+							}
+							
+						}//RowProductoCompuesto	*/
 					}//Existencia de Multiplo	
 			}	
 		$dbAdapter->commit();
@@ -432,7 +443,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 						$tablaProdComp = $this->tablaProductoCompuesto;
 						$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
 						$rowsProductosComp = $tablaProdComp->fetchAll($select);
-						print_r("<br />");
+						print_r("Primer select");
 						print_r("$select");
 						print_r("<br />");
 						if(!is_null($rowsProductosComp)){
@@ -442,6 +453,9 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 								$select = $tablaProdComp->select()->from($tablaProdComp, new Zend_Db_Expr('sum(cantidad * costoUnitario) as total'))->where("idProducto=?",$rowProductoComp["idProducto"]);
 								$rowsProductosCompxp = $tablaProdComp->fetchRow($select);
 								print_r("<br />");
+								print_r("El total del producto terminado");
+								print_r("<br />");
+								print_r("$select");
 								$total = $rowsProductosCompxp['total'] ;
 								
 								$tablaCapas = $this->tablaCapas;
