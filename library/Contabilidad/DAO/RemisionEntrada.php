@@ -432,18 +432,16 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 				$tablaMultiplos = $this->tablaMultiplos;
 				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto["descripcion"])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
-				
 				$cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
 				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
-				
+				print_r($cantidad);
+				print_r($precioUnitario);
 				if(!is_null($rowProducto && !is_null($rowMultiplo))){
 					$claveProducto = substr($rowProducto->claveProducto, 0,2);
 					if($claveProducto <> 'PT' || $claveProducto <> 'VS' || $claveProducto <> 'SV' ){
-						print_r("Busca el producto en ProductoCompuesto");
 						$tablaProdComp = $this->tablaProductoCompuesto;
 						$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
 						$rowsProductosComp = $tablaProdComp->fetchAll($select);
-						print_r("Primer select");
 						print_r("$select");
 						print_r("<br />");
 						if(!is_null($rowsProductosComp)){
@@ -498,7 +496,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 							}
 						}//if $rowsProductosComp
 					}//Producto diferente de Servicio .
-				}//rowProducto y multiplo
+				}//rowProducto y multiplo*/
 			}
 			$dbAdapter->commit();
 		}catch(exception $ex){

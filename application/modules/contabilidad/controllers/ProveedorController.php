@@ -88,18 +88,18 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
-				print_r($formaPago);
+				//print_r($formaPago);
 				$productos = json_decode($encabezado['productos'],TRUE);
 				$contador = 0;
 				try{
-					$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
-					$saldoBanco = $this->remisionEntradaDAO->saldoBanco($formaPago, $productos);
+					//$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
+					//$saldoBanco = $this->remisionEntradaDAO->saldoBanco($formaPago, $productos);
 					$actualizaCostoProducto = $this->remisionEntradaDAO->actulizaCostoProducto($encabezado, $productos);
-					foreach ($productos as $producto){
+					/*foreach ($productos as $producto){
 						$movimiento = $this->remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
 						$actualizaProducto = $this->remisionEntradaDAO->actulizaProducto($encabezado, $formaPago, $producto);
 						$contador++;
-					}
+					}*/
 					$this->view->messageSuccess = "Remisión: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
