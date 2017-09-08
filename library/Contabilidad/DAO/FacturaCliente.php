@@ -153,7 +153,15 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);
 				$tablaBanco->update(array ("saldo" => $saldo), $where);
 				}else{
-					//Actualiza saldo Banco
+					$tablaCli = $this->tablaClientes;
+					$select = $tablaCli->select()->from($tablaCli)->where("idCliente = ?",$encabezado['idCoP']);
+						$rowCli= $tablaCli->fetchRow($select);
+						// print_r($expression);
+						if(!is_null($rowCli)){
+							$saldo  = $importe[0]['total'] + $rowCli->saldo;
+							$rowCli->saldo = $saldo;
+							$rowCli->save();
+						}
 				}
 				}
 			$dbAdapter->commit();

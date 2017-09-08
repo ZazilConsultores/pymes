@@ -151,7 +151,8 @@
 						$rowProv = $tablaProv->fetchRow($select);
 						// print_r($expression);
 						if(!is_null($rowProv)){
-							$rowProv->saldo = $importe[0]['total'];
+							$saldo  = $importe[0]['total'] + $rowProv->saldo;
+							$rowProv->saldo = $saldo;
 							$rowProv->save();
 						}
 					}	

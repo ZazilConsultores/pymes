@@ -8,12 +8,14 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 	
 	private $tablaInventario;
 	private $tablaProducto;
+	private $tablaMovimientos;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaInventario = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaMovimientos = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerInventario(){
@@ -148,6 +150,22 @@ public function obtenerIdProductoInventario(){
 				print_r($costoUnitario);
 				$tablaInventario->update (array('porcentajeGanancia'=>$porcentejeGanancia,'cantidadGanancia'=>$cantidad, 'costoCliente'=>$precio),$where);
 			}*/
+		}
+	}
+
+	public function general(){
+		
+		$tablaMovimientos = $this->tablaMovimientos;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		print_r("$select");
+		
+		foreach ($rowsMovimientos as $rowMovimientos){
+			
+			$tablaProducto = $this->tablaProducto;
+			$select = $tablaProducto->select()->from($tablaProducto)->where("claveProducto not like ?",'VS%')->where("idProducto = ?",$rowMovimientos->idProducto);
+			$rowsProducto = $tablaProducto->fetchAll($select);
+			print_r("$select");
 		}
 	}
 }
