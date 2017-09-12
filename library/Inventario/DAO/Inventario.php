@@ -158,14 +158,12 @@ public function obtenerIdProductoInventario(){
 		$tablaMovimientos = $this->tablaMovimientos;
 		$select = $tablaMovimientos->select()->from($tablaMovimientos);
 		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
-		print_r("$select");
-		
-		foreach ($rowsMovimientos as $rowMovimientos){
-			
-			$tablaProducto = $this->tablaProducto;
-			$select = $tablaProducto->select()->from($tablaProducto)->where("claveProducto not like ?",'VS%')->where("idProducto = ?",$rowMovimientos->idProducto);
-			$rowsProducto = $tablaProducto->fetchAll($select);
-			print_r("$select");
-		}
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()
+			->setIntegrityCheck(false)
+			->from($tablaProducto, array('claveProducto', 'producto'))->where("claveProducto not like ?",'VS%')
+			->join('Inventario', "Producto.idProducto = Inventario.idProducto", array('existencia','fecha','costoUnitario'))->order("existencia");
+			//print_r("$select");
+			return $tablaMovimientos->fetchAll($select);			
 	}
 }
