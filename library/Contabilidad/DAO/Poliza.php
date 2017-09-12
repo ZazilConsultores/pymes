@@ -3781,36 +3781,36 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										}//Cierra  if arma descripcion*/
 										//print_r($origen);
 										//Busca ctaProveedor y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
-										if($origen == "PRO"){
-											/*$tablaProveedores = $this->tablaProveedores;
+										switch($origen){
+										case 'BAN':
+											print_r("El origen es Banco");
+									$tablaBancos = $this->tablaBancos;
+									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+									$rowBanco = $tablaBancos->fetchRow($select);
+									if($rowBanco->tipo ==="CA"){
+										print_r("es de tipoCaja");
+										$cta = 101;
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}else{
+										$cta = $rowGuiaContable["cta"];
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}
+									break;
+								case 'PRO':
+									$tablaProveedores = $this->tablaProveedores;
 											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
-											$rowProveedor = $tablaProveedores->fetchRow($select);*/
+											$rowProveedor = $tablaProveedores->fetchRow($select);
 											$cta = $rowGuiaContable["cta"];
 											$subCta = $rowGuiaContable["sub1"];
 											$posicion = 1;
-										}else{
-											if($origen == "BAN"){
-												$tablaBancos = $this->tablaBancos;
-												$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
-												$rowBanco = $tablaBancos->fetchRow($select);
-												print_r("$select");
-												if($rowBanco->tipo ==="CA"){
-													print_r("es de tipoCaja");
-													$cta = 101;
-													$subCta = $rowBanco["cuentaContable"];
-													$posicion = 1;
-												}else{
-													$cta = $rowGuiaContable["cta"];
-													$subCta = $rowBanco["cuentaContable"];
-													$posicion = 1;
-												}
-												
-											}else{
-												$cta = $rowGuiaContable["cta"];
-												$subCta = "0000";
-												$posicion = 0;
-											}
-										}//Cierra if origen proveedor
+									break;
+								default:
+									$cta = $rowGuiaContable["cta"];
+									$subCta = $rowGuiaContable["sub1"];
+									$posicion = 0;
+								}
 										//Creamos switch para Armar_Cuenta
 										print_r("La posicio  es:");
 										print_r($posicion);
