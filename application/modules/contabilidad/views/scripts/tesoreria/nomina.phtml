@@ -1,22 +1,8 @@
 <?php echo $this->formulario; ?>
 <script>
-	$(document).ready(function(){
-		$("select#idEmpresas").on('change', function(){
-			$url = "/General/sistema/json/sucursales/idFiscales/" + this.value;
-			//console.log("$url");
-			$.ajax({
-				url: $url,
-				dataType: "json",
-				success: function(data){
-					$("select#idSucursal").empty();
-					$.each(data, function(i,item){	
-						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
-					});
-					
-				}
-			});
-		});
-	});
+$(document).ready(function(){
+	
+	
 	
 	$("select#idEmpresas").on('change', function(){
 		console.log("Bancos por empresa");
@@ -35,21 +21,39 @@
 		});	
 	});
 	
-	$("select#idSucursal").on('click', function(){
-		var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
-		console.log(url);
-		$.ajax({
-			url:url,
-			dataType: "json",
-			success: function(data){
+	 $("select#idEmpresas").on('change', function(){
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
+			console.log(url);
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
+					console.dir(data);
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+					
+				}
+			});
+		});
+		
+		$("select#idSucursal").on('click', function(){
+			var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
+			console.log(url);
+			$.ajax({
+				url:url,
+				dataType: "json",
+				success: function(data){
 				console.dir(data);
 				$("select#idProyecto").empty();
-				$.each(data, function(i,item){
-					$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
+						$.each(data, function(i,item){
+							$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
+						});
+					}
 				});
-			}
 		});
-	});
+	
 		
 	$("#numFolio").on('keypress' , function(){
 		if((event.keyCode < 48 ) || (event.keyCode > 57))
@@ -75,5 +79,6 @@
 		console.log("El total:"+ total);
 		$("#1-nominaxpagar").val(total.toFixed(2));
 	}
+});
 	
 </script>

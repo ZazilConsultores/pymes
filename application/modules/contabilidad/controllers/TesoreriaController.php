@@ -82,8 +82,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$empresa = $datos[0];
 				$nomina = $datos[1];
-				print_r($empresa);
-				print_r($nomina);
+				
 				 try{
 					$this->tesoreriaDAO->guardaPagoNomina($empresa, $nomina);
 				}catch(Util_Exception_BussinessException $ex){

@@ -1265,6 +1265,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$posicion = 1;
 									break;
 								default:
+									$cta = $rowGuiaContable["cta"];
 									$subCta = "0000";
 									$posicion = 0;
 								}

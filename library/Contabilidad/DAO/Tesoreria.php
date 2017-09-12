@@ -186,8 +186,6 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			$dbAdapter->insert("Factura",$mFactura);
 			//Obtine el ultimo id en tabla factura
 			$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
-			print_r("El idFactura es 1:");
-			print_r($idFactura);
 			//Insertamos en la tabla Movimiento
 			$secuencial=0;	
 			$tablaMovimiento = $this->tablaMovimiento;
