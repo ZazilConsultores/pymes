@@ -1477,17 +1477,23 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 									$rowBanco = $tablaBancos->fetchRow($select);
 									print_r("$select");
-									if($rowBanco["tipo"] === "CA"){
-										print_r("El banco es operacion caja");
+									if($rowBanco->tipo ==="CA"){
+										print_r("es de tipoCaja");
+										$cta = 101;
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}else{
+										$cta = $rowGuiaContable["cta"];
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
 									}
-									$subCta = $rowBanco["cuentaContable"];
-									$posicion = 1;
 									
 									break;
 								case 'CLT':
 									$tablaClientes = $this->tablaClientes;
 									$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?",$idCoP);
 									$rowCliente = $tablaClientes->fetchRow($select);
+									$cta = $rowGuiaContable["cta"];
 									$subCta = $rowCliente["cuenta"];
 									print_r("la cuenta es:");
 									print_r($subCta);
@@ -1495,6 +1501,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$posicion = 1;
 									break;
 								default:
+									$cta = $rowGuiaContable["cta"];
 									$subCta = "0000";
 									$posicion = 0;
 								}
@@ -1580,8 +1587,8 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 												'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
 												'idSucursal'=>$datos['idSucursal'],
 												'idCoP'=>$idCoP,
-												'cta'=>$rowGuiaContable["cta"],
-												'sub1'=>$armaSub1,
+												'cta'=>$cta,
+												'sub1'=>$subCta,
 												'sub2'=>$armaSub2,
 												'sub3'=>$armaSub3,
 												'sub4'=>$armaSub4,
@@ -1698,17 +1705,27 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$tablaBancos = $this->tablaBancos;
 									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 									$rowBanco = $tablaBancos->fetchRow($select);
-									$tipoBanco = $rowBanco["tipo"];
-									$posicion = 1;
+									if($rowBanco->tipo ==="CA"){
+										print_r("es de tipoCaja");
+										$cta = 101;
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}else{
+										$cta = $rowGuiaContable["cta"];
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}
 									break;
 								case 'PRO':
 									$tablaProveedores = $this->tablaProveedores;
 									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
 									$rowProveedor = $tablaProveedores->fetchRow($select);
+									$cta = $rowGuiaContable["cta"];
 									$subCta = $rowProveedor["cuenta"];
 									$posicion = 1;
 									break;
 								default:
+									$cta = $rowGuiaContable["cta"];
 									$subCta = "0000";
 									$posicion = 0;
 								}
@@ -1834,7 +1851,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										'idSucursal'=>$datos['idSucursal'],
 										'idCoP'=>$idCoP,
 										'cta'=>$cta,
-										'sub1'=>$armaSub1,
+										'sub1'=>$subCta,
 										'sub2'=>$armaSub2,
 										'sub3'=>$armaSub3,
 										'sub4'=>$armaSub4,
@@ -1953,13 +1970,14 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 													$origen = "PRO";
 													print_r($origen);
 												}else{
-													if($tipo == 1 || $tipo == 2 && $rowGuiaContable->abono == "X"){
-														$origen = "BAN";
-														print_r("El origen es BAN");
-														print_r($origen);
-													}else{
+													if(($tipo == 1 || $tipo == 2) && $rowGuiaContable->cargo == "X"){
 														$origen = "SIN";
 														print_r("El origen es SIN");
+														
+														print_r($origen);
+													}else{
+														$origen = "BAN";
+														print_r("El origen es BAN");
 													}
 												}
 											break;
@@ -2019,20 +2037,21 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										//Busca ctaProveedor y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1	
 										switch($origen){
 										case 'BAN':
-											$tablaBancos = $this->tablaBancos;
-											$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$banco);
-											$rowBanco = $tablaBancos->fetchRow($select);
 											
-											if($rowBanco->tipo ==="CA"){
-												print_r("es de tipoCaja");
-												$cta = 101;
-												$subCta = $rowBanco["cuentaContable"];
-												$posicion = 1;
-											}else{
-												$cta = $rowGuiaContable["cta"];
-												$subCta = $rowBanco["cuentaContable"];
-												$posicion = 1;
-											}
+											$tablaBancos = $this->tablaBancos;
+											$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+									$rowBanco = $tablaBancos->fetchRow($select);
+									print_r("$select");
+									if($rowBanco->tipo =="CA"){
+										print_r("es de tipoCaja");
+										$cta = 101;
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}else{
+										$cta = $rowGuiaContable["cta"];
+										$subCta = $rowBanco["cuentaContable"];
+										$posicion = 1;
+									}
 											break;
 										case 'PRO':
 											$tablaProveedores = $this->tablaProveedores;
@@ -2050,7 +2069,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										default:
 											$cta = $rowGuiaContable["cta"];
 											$subCta = "0000";
-											$posicion = 0;
+											$posicion = 1;
 										}
 										print_r("La posicio  es:");
 										print_r($posicion);
@@ -2069,13 +2088,14 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										if($nivel1 == 1){
 											if($posicion == 1){
 												$armaSub1 = $subCta;
-												print_r("armaSub1");
-												print_r("<br />");
 												print_r($armaSub1);
+											/*}elseif($nivel1 == 101){
+												$armaSub1 = $rowGuiaContable["sub1"];
+												print_r($armaSub1);*/
 											}else{
 												$armaSub1 = $rowGuiaContable["sub1"];
 												print_r($armaSub1);
-											}						
+											}							
 										}
 										if($nivel2 == 2){
 											if($posicion == 2){
@@ -2141,7 +2161,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										'idSucursal'=>$datos['idSucursal'],
 										'idCoP'=>$idCoP,
 										'cta'=>$cta,
-										'sub1'=>$armaSub1,
+										'sub1'=>$subCta,
 										'sub2'=>$armaSub2,
 										'sub3'=>$armaSub3,
 										'sub4'=>$armaSub4,
@@ -2155,6 +2175,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										'numdocto'=>$numMov,
 										'secuencial'=>$secuencial
 										);
+										print_r("<br />");
 										print_r($mPoliza);
 										$dbAdapter->insert("Poliza", $mPoliza);
 										}//if de importe

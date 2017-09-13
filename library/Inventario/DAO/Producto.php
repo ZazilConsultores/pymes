@@ -100,4 +100,16 @@ class Inventario_DAO_Producto implements Inventario_Interfaces_IProducto{
 			return $rowProducto->toArray();
 		}
 	}
+	
+	public function productoxMovimiento($idSucursal){
+		$tablaMovimiento = $this->tablaMovimiento;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto = ?",$idProducto);
+		$rowProducto = $tablaProducto->fetchAll($select);
+		//print_r("$select");
+		if(is_null($rowProducto)){
+			return null;
+		}else{
+			return $rowProducto->toArray();
+		}
+	}
 }

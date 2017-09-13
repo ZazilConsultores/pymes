@@ -4,11 +4,12 @@ class Inventario_InventarioController extends Zend_Controller_Action
 {
 
     private $inventarioDAO = null;
-
+	private $empresaDAO = null;
     private $productoDAO = null;
 
     public function init()
     {
+    	$this->empresaDAO = new Sistema_DAO_Empresa;
     	$this->inventarioDAO = new Inventario_DAO_Inventario;  
 		$this->productoDAO = new Inventario_DAO_Producto;
     }
@@ -120,7 +121,9 @@ class Inventario_InventarioController extends Zend_Controller_Action
 
     public function buscaproductoAction()
     {
-        // action body
+        $request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;	
     }
 
 

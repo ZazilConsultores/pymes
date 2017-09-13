@@ -4,6 +4,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 {
 
     private $unidadDAO = null;
+	private $inventarioDAO = null;
 	private $productoDAO = null;
 	private $productoTermindoDAO = null;
 
@@ -14,6 +15,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 		$this->_helper->viewRenderer->setNoRender(true);
 		
 		$this->unidadDAO = new Inventario_DAO_Unidad;
+		$this->inventarioDAO = new Inventario_DAO_Inventario;
 		$this->productoDAO = new Inventario_DAO_Producto;
 		$this->productoTermindoDAO = new Inventario_DAO_Productoterminado;
     }
@@ -85,6 +87,17 @@ class Inventario_JsonController extends Zend_Controller_Action
 		
 		if(!is_null($productoC)){
 			echo Zend_Json::encode($productoC);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+	
+	public function productoxmovimiento()
+    {
+		 $idSucursal = $this->getParam("sucursal");
+		 $movtosProducto = $this->inventarioDAO->editaNumeroFactura($idSucursal);
+		if(!is_null($consecutivoFac)){
+			echo Zend_Json::encode($consecutivoFac);
 		}else{
 			echo Zend_Json::encode(array());
 		}
