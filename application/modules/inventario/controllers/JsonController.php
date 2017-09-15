@@ -57,6 +57,15 @@ class Inventario_JsonController extends Zend_Controller_Action
     public function productosAction()
     {
         // action body
+		$idProducto = $this->getParam("idProducto");
+		//print_r($idProducto);
+       	$productos= $this->productoDAO->getProducto($idProducto);
+
+		if(!is_null($productos)){
+			echo Zend_Json::encode($productos);
+		}else{
+			echo Zend_Json::encode(array());
+		}
     }
 
     public function productoterminadoAction()

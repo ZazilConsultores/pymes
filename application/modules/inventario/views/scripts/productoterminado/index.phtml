@@ -300,6 +300,7 @@ $(document).ready(function() {
 		console.log("hola");
 		var bebida = $(this).val();
 		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + bebida ;
+		console.log($urlProducto);
 		$.ajax({
 			url: $urlProducto,
 		   	dataType: "json",

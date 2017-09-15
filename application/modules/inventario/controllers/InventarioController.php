@@ -112,7 +112,19 @@ class Inventario_InventarioController extends Zend_Controller_Action
 				$this->inventarioDAO->editarTodo($datos);		
 			}
 		}
-	}
+    }
+
+    public function generalAction()
+    {
+    	$movimientos = $this->inventarioDAO->general();
+		$this->view->movimientos = $movimientos;
+        
+    }
+
+    public function buscaproductoAction()
+    {
+        
+    }
 
     public function buscarAction()
     {
@@ -123,10 +135,6 @@ class Inventario_InventarioController extends Zend_Controller_Action
 
 
 }
-
-
-
-
 
 
 
