@@ -112,35 +112,13 @@ class Inventario_InventarioController extends Zend_Controller_Action
 				$this->inventarioDAO->editarTodo($datos);		
 			}
 		}
-    }
+	}
 
-    public function generalAction()
-    {
-    	$movimientos = $this->inventarioDAO->general();
-		$this->view->movimientos = $movimientos;
-        
-    }
-
-    public function buscaproductoAction()
+    public function buscarAction()
     {
         $request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;	
-    }
-
-    public function buscarproductoAction()
-    {
-        // action body
-    }
-
-    public function buscaAction()
-    {
-        // action body
-    }
-
-    public function buscarAction()
-    {
-        // action body
     }
 
 
