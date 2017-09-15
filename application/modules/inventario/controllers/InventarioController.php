@@ -4,7 +4,9 @@ class Inventario_InventarioController extends Zend_Controller_Action
 {
 
     private $inventarioDAO = null;
-	private $empresaDAO = null;
+
+    private $empresaDAO = null;
+
     private $productoDAO = null;
 
     public function init()
@@ -126,8 +128,29 @@ class Inventario_InventarioController extends Zend_Controller_Action
         $this->view->empresas = $empresas;	
     }
 
+    public function buscarproductoAction()
+    {
+        // action body
+    }
+
+    public function buscaAction()
+    {
+        // action body
+    }
+
+    public function buscarAction()
+    {
+        // action body
+    }
+
 
 }
+
+
+
+
+
+
 
 
 
