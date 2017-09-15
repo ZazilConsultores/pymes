@@ -166,4 +166,38 @@ public function obtenerIdProductoInventario(){
 			//print_r("$select");
 			return $tablaMovimientos->fetchAll($select);			
 	}
+	
+	public function obtenerProductoxMovto($idSucursal){
+		$tablaMovimientos= $this->tablaMovimientos;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idSucursal IN (?)", $idSucursal);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		
+		$idProductos= array();
+		foreach ($rowsMovimientos as $rowMovimientos) {
+			$idProductos[] = $rowMovimientos->idProducto;
+		}
+		
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto IN (?)", $idProductos)->order("producto");
+		$rowProducto= $tablaProducto->fetchAll($select);
+		//print_r("$select");
+		return $rowProducto;
+	}
+	public function obtenerMovtoxproducto($idProducto){
+		$tablaMovimientos= $this->tablaMovimientos;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProducto IN (?)", $idProducto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		
+		/*$idProductos= array();
+		foreach ($rowsMovimientos as $rowMovimientos) {
+			$idProductos[] = $rowMovimientos->idProducto;
+		}
+		
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto IN (?)", $idProductos)->order("producto");
+		$rowProducto= $tablaProducto->fetchAll($select);
+		//print_r("$select");*/
+		return $rowsMovimientos;
+	}
+
 }

@@ -43,7 +43,7 @@
 						<!-- Boton consulta -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="button" class="btn btn-success">
+								<button id="queryMotos" type="button" class="btn btn-success">
 									<i class="fa fa-search"></i> Consultar Movimientos
 								</button>
 							</div>
@@ -54,6 +54,25 @@
 		</div>
 	</div>
 </div>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle producto por movimiento.</h4>
+		</div>
+		<table id="detalleProductoMovtos" class="table table-striped table-condensed">
+			<thead>
+				<th>Tipo Movimiento </th>
+				<th>fecha</th>
+				<th>CoP</th>
+				<th>Cantidad</th>
+				<th>Costo Unitario</th>
+				<th>Total</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
 <script>
 $().ready(function(){
 	var url = window.location.origin + "/General/";
@@ -79,21 +98,49 @@ $().ready(function(){
 	$("select#idSucursal").on('change',function(){
 		var idSucursal = $(this).val();
 		if(idSucursal != 0){
-			var urlQueryProducto = url + 'Inventario/json/productomovimiento/idSucursal/'+idSucursal;
+			var urlQueryMovtos = url + 'inventario/json/productoxmovimiento/idSucursal/'+idSucursal;
+			console.log(urlQueryMovtos);
 			$.ajax({
-				url: urlQuerySucursales,
+				url: urlQueryMovtos,
 				dataType: "json",
 				success: function(data){
 					console.dir(data);
-					$("#idSucursal").empty();
-					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+					$("#idProducto").empty();
+					$("#idProducto").append($("<option></option>").attr("value","0").text("Seleccione Producto..."));
 					$.each(data, function (i,item){
-						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						$("#idProducto").append($("<option></option>").attr("value",data[i].idProducto).text(data[i].producto));
 					});
 				}
 			});
 		}
 	});
+	
+	$("button#queryMotos").on("click", function(){
+		 	var idProducto = $("select#idProducto").val();
+			var urlProducto = window.location.origin + "/General/inventario/json/productoxsucursal/idProducto/" + idProducto ;
+			console.log(urlProducto);
+			$.ajax({
+				url: urlProducto,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleProductoMovtos").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						//var botonPago = $('<button></button>').attr("id","pago").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].idTipoMovimiento)).
+							append($('<td>').append(data[i].fecha)).	
+							append($('<td>').append(data[i].idCoP)).
+							append($('<td>').append(data[i].cantidad)).
+							append($('<td>').append(data[i].costoUnitario).attr("id", "importe")).
+							append($('<td>').append(data[i].totalImporte)));
+					});
+					//AddRow();
+					//calculaTotal();
+				}
+			});
+			
+		});
 	
 });
 </script>

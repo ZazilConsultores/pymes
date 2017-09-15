@@ -12,6 +12,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     private $cobroClienteDAO = null;
     private $anticipoDAO = null;
     private $proyectoDAO = null;
+	
+	
 
     public function init()
     {
@@ -24,6 +26,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$this->cobroClienteDAO = new Contabilidad_DAO_CobroCliente;
 		$this->anticipoDAO = new Contabilidad_DAO_Anticipos;
 		$this->proyectoDAO = new Contabilidad_DAO_ProyectoCliente;
+		
 		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;

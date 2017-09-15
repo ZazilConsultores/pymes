@@ -4,16 +4,13 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 {
 
     private $bancoDAO = null;
-
     private $fiscalesDAO = null;
-
     private $impuestoProductosDAO = null;
-
     private $empresaDAO = null;
-
     private $pagosDAO = null;
-	private $cobrosDAO = null;
-	private $facturaCliDAO = null;
+    private $cobrosDAO = null;
+    private $facturaCliDAO = null;
+    private $proyectoClienteDAO = null;
 
     public function init()
     {
@@ -27,6 +24,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
 			$this->empresaDAO = new Sistema_DAO_Empresa;
 			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
+			$this->proyectoClienteDAO = new Contabilidad_DAO_ProyectoCliente;
 			
 			$this->_helper->layout->disableLayout();
 			$this->_helper->viewRenderer->setNoRender(true);
@@ -177,8 +175,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	
-	public function buscacobroAction()
+
+    public function buscacobroAction()
     {
         $sucu = $this->getParam("sucu");
         $cl = $this->getParam("cl");
@@ -190,8 +188,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	
-	public function buscacobroxpAction()
+
+    public function buscacobroxpAction()
     {
         // action body
       /*  $idFactura = $this->getParam("idFactura");
@@ -226,8 +224,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	
-	public function desechabledesayunoAction()
+
+    public function desechabledesayunoAction()
     {
 		//$desechableDesayuno= $this->facturaCliDAO->restaDesechableDesayuno();
 		/*if(!is_null($desechableDesayuno)){
@@ -237,7 +235,34 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}*/
     }
 
-	
+    public function productoxmovimientoAction()
+    {
+        // action body
+    }
+
+    public function totalproyectoAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoMovto= $this->proyectoClienteDAO->obtieneProyecto($idProyecto);
+		if(!is_null($proyectoMovto)){
+			echo Zend_Json::encode($proyectoMovto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
+    public function getdescripciontipomovtoAction()
+    {
+        $idTipoMovto = $this->getParam("idTipoMovimiento");
+        $desMovto = $this->proyectoClienteDAO->obtieneDescripcionxMovto($idTipoMovto);
+		if(!is_null($desMovto)){
+			echo Zend_Json::encode($desMovto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -246,6 +271,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
 	
 	
 	
@@ -257,6 +285,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
 
 
 

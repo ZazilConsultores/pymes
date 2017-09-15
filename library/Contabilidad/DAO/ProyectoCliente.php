@@ -15,6 +15,7 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 	private $tablaImpuestoProductos;
 	private $tablaConsecutivo;
 	private $tablaProductoCompuesto;
+	private $tablaTipoMovimiento;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -34,6 +35,7 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		$this->tablaConsecutivo = new Contabilidad_Model_DbTable_Consecutivo(array('db'=>$dbAdapter));
 		$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
 		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaTipoMovimiento = new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
 		
 			
 	}	
@@ -54,8 +56,8 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		$select= $tablaMovimientos->select()
 		->setIntegrityCheck(false)
 		->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
-		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
-		->where('Movimientos.idProyecto =?', $idProyecto);
+		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
+		->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento');
 		//print_r("$select");
 		return $tablaMovimientos->fetchAll($select);
 		
@@ -1098,6 +1100,16 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException("Error");
 		}
+	}
+
+	public function obtieneDescripcionxMovto($idTipoMovimiento){
+		
+		$tablaTipoMovto = $this->tablaTipoMovimiento;
+		$select = $tablaTipoMovto->select()->from($tablaTipoMovto)->where("idTipoMovimiento = ?" ,$idTipoMovimiento); 
+		$rowTipoMovto = $tablaTipoMovto->fetchRow($select)->toArray();
+		//print_r("$select");
+		return $rowTipoMovto;
+		
 	}
 }
     

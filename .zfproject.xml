@@ -90,6 +90,16 @@
               <actionMethod actionName="editar"/>
               <actionMethod actionName="eliminar"/>
             </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="unidades"/>
+              <actionMethod actionName="multiplos"/>
+              <actionMethod actionName="productos"/>
+              <actionMethod actionName="productoterminado"/>
+              <actionMethod actionName="llenaproducto"/>
+              <actionMethod actionName="productoxmovimiento"/>
+              <actionMethod actionName="productoxsucursal"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AltaProducto"/>
@@ -191,6 +201,30 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Productoterminado">
                 <viewScriptFile forActionName="eliminar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="unidades"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="multiplos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoterminado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="llenaproducto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoxmovimiento"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoxsucursal"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1071,6 +1105,9 @@
               <actionMethod actionName="buscafacxp"/>
               <actionMethod actionName="obtenerfacturaxp"/>
               <actionMethod actionName="consecutivo"/>
+              <actionMethod actionName="productoxmovimiento"/>
+              <actionMethod actionName="totalproyecto"/>
+              <actionMethod actionName="getdescripciontipomovto"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1436,6 +1473,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="desechabledesayuno"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoxmovimiento"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="totalproyecto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="getdescripciontipomovto"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2916,6 +2962,9 @@
                 <testApplicationActionMethod forActionName="buscafacxp"/>
                 <testApplicationActionMethod forActionName="obtenerfacturaxp"/>
                 <testApplicationActionMethod forActionName="consecutivo"/>
+                <testApplicationActionMethod forActionName="productoxmovimiento"/>
+                <testApplicationActionMethod forActionName="totalproyecto"/>
+                <testApplicationActionMethod forActionName="getdescripciontipomovto"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2973,6 +3022,16 @@
                 <testApplicationActionMethod forActionName="crear"/>
                 <testApplicationActionMethod forActionName="editar"/>
                 <testApplicationActionMethod forActionName="eliminar"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Json">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="unidades"/>
+                <testApplicationActionMethod forActionName="multiplos"/>
+                <testApplicationActionMethod forActionName="productos"/>
+                <testApplicationActionMethod forActionName="productoterminado"/>
+                <testApplicationActionMethod forActionName="llenaproducto"/>
+                <testApplicationActionMethod forActionName="productoxmovimiento"/>
+                <testApplicationActionMethod forActionName="productoxsucursal"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
