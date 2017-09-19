@@ -5,9 +5,14 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 
     private $tesoreriaDAO = null;
 
+    private $empresaDAO = null;
+
     public function init()
     {
         $this->tesoreriaDAO = new Contabilidad_DAO_Tesoreria;
+		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
+		$this->empresaDAO = new Sistema_DAO_Empresa;
+		
 		$adapter = Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
 		// =================================================== >>> Obtenemos todos los productos de la tabla producto
@@ -82,7 +87,6 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				$empresa = $datos[0];
 				$nomina = $datos[1];
-				
 				 try{
 					$this->tesoreriaDAO->guardaPagoNomina($empresa, $nomina);
 				}catch(Util_Exception_BussinessException $ex){
@@ -155,8 +159,48 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
         
     }
 
+    public function pagonominaAction()
+    {
+    	$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas();
+		$this->view->empresas = $empresas;
+    }
+
+    public function aplicapagonominaAction()
+    {
+    	$request = $this->getRequest();
+		$idFactura = $this->getParam("idFactura");
+		$formulario = new Contabilidad_Form_PagosProveedor;
+		$this->view->formulario = $formulario;
+		$pagosDAO = new Contabilidad_DAO_PagoProveedor;
+		$datosFactura = $pagosDAO->obtiene_Factura($idFactura);
+		$this->view->datosFactura = $pagosDAO->obtiene_Factura($idFactura);	
+		$this->view->proveedorFac = $pagosDAO->obtenerProveedoresEmpresa($idFactura);
+		$this->view->sucursalFac = $pagosDAO->obtenerSucursal($idFactura);
+	
+    	if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				try{
+					$pago = $this->tesoreriaDAO->aplicaPagoNomina($idFactura, $datos);
+					$this->view->messageSuccess = "Pago: <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+				}
+				
+			}
+		}
+    }
+
 
 }
+
+
+
+
 
 
 

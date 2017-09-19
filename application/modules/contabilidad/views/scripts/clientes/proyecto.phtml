@@ -140,10 +140,8 @@
     	}
     	function calculaTotal(){
 			var total = 0;
-			$("table#proyectos tr").each(function(){
-			   	$(this).find(".dataCol:gt(3)");
-			   	total += +$(importe).text();
-				console.log(total);
+			 $('#proyectos .importe').each(function(){
+			   total += +$(this).text(); 
 				$("#total").val(total); 
 			 });
 		}

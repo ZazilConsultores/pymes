@@ -161,10 +161,19 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	public function guardaPagoNomina( array $empresa, $nomina){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dbAdapter->beginTransaction();
-	
 		$dateIni = new  Zend_Date($empresa['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		try{
+			if(($empresa['pagada']) == "1"){
+				$conceptoPago = "LI";
+				$importePagado = $nomina['subsidio'];
+				print_r($importePagado);
+				$saldo = 0;
+			}else{
+				$conceptoPago = "PE";
+				$importePagado = 0;
+				$saldo = $nomina['nominaxpagar'];
+			}
 			//Guarda el Movimiento en Factura
 			$mFactura = array(
 				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
@@ -173,15 +182,15 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'idDivisa'=>1,
 				'numeroFactura'=>$empresa['numFolio'],
 				'estatus'=>'A',
-				'conceptoPago'=>'LI',
+				'conceptoPago'=>$conceptoPago,
 				'descuento'=>0,
 				'formaPago'=>$empresa['formaLiquidar'],
 				'fecha'=>$stringIni,
 				'subtotal'=>$nomina['sueldo'],
 				'total'=>$nomina['nominaxpagar'],
 				'folioFiscal'=>$empresa['folioFiscal'],
-				'importePagado'=>$nomina['subsidio'],
-				'saldo'=>0
+				'importePagado'=>$importePagado,
+				'saldo'=>$saldo
 			);
 			$dbAdapter->insert("Factura",$mFactura);
 			//Obtine el ultimo id en tabla factura
@@ -222,25 +231,35 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			//print_r($mMovtos);
 			$dbAdapter->insert("Movimientos",$mMovtos);
 			//Insertamos en la tabla Cuentasxp
-			$mCuentasxp = array(
-				'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
-				'idSucursal'=>$empresa['idSucursal'],
-				'idFactura'=>$idFactura,
-				'idCoP'=>$empresa['idEmpresas'],
-				'idBanco'=>$empresa['idBanco'],
-				'idDivisa'=>1,
-				'numeroFolio'=>$empresa['numFolio'],
-				'secuencial'=>$secuencial,
-				'fecha'=>date('Y-m-d h:i:s', time()),
-				'fechaPago'=>$stringIni,
-				'estatus'=>"A",
-				'numeroReferencia'=>$empresa['numeroReferencia'],
-				'conceptoPago'=>"LI",
-				'formaLiquidar'=>$empresa["formaLiquidar"],
-				'subTotal'=>$nomina['sueldo'],
-				'total'=>$nomina['nominaxpagar']
-			);
-			$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+			if(($empresa['pagada'])==="1"){
+				$mCuentasxp = array(
+					'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
+					'idSucursal'=>$empresa['idSucursal'],
+					'idFactura'=>$idFactura,
+					'idCoP'=>$empresa['idEmpresas'],
+					'idBanco'=>$empresa['idBanco'],
+					'idDivisa'=>1,
+					'numeroFolio'=>$empresa['numFolio'],
+					'secuencial'=>$secuencial,
+					'fecha'=>date('Y-m-d h:i:s', time()),
+					'fechaPago'=>$stringIni,
+					'estatus'=>"A",
+					'numeroReferencia'=>$empresa['numeroReferencia'],
+					'conceptoPago'=>$conceptoPago,
+					'formaLiquidar'=>$empresa["formaLiquidar"],
+					'subTotal'=>$nomina['sueldo'],
+					'total'=>$nomina['nominaxpagar']
+				);
+				$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+				//Actulizar saldo banco
+				$tablaBanco = $this->tablaBanco;
+				$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $empresa['idBanco']);
+				$rowBanco = $tablaBanco->fetchRow($where);
+				if(!is_null($rowBanco)){
+					$importePago = $rowBanco->saldo - $nomina['nominaxpagar'];
+					$tablaBanco->update(array('saldo'=>$importePago),$where);
+				}
+			}
 			//Guarda Impuestos
 			if (!is_null($nomina["IMSS"])){
 				$mFacturaImpuesto = array(
@@ -262,15 +281,6 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'importe'=>$nomina['ISPT'],
 				);
 				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
-			
-			}
-//Actulizar saldo banco
-			$tablaBanco = $this->tablaBanco;
-			$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $empresa['idBanco']);
-			$rowBanco = $tablaBanco->fetchRow($where);
-			if(!is_null($rowBanco)){
-				$importePago = $rowBanco->saldo - $nomina['nominaxpagar'];
-				$tablaBanco->update(array('saldo'=>$importePago),$where);
 			}
 			$dbAdapter->commit();
 		}catch(exception $ex){
@@ -287,6 +297,70 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			$dbAdapter->rollBack();
 		}
 		
+	}
+	
+	public function aplicaPagoNomina($idFactura, array $datos){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
+		$stringIni = $dateIni->toString ('yyyy-MM-dd');
+		
+		try{
+			$tablaCuentasxp = $this->tablaCuentasxp;
+			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento= ?",20)->where("idFactura=?", $idFactura)
+			->order("secuencial DESC");
+			$rowCuentasxp = $tablaCuentasxp->fetchRow($select);
+			//print_r($select->__toString());
+			if(!is_null($rowCuentasxp)){
+				$secuencial= $rowCuentasxp->secuencial +1;
+			}else{
+				$secuencial = 1;	
+			}
+			if($datos["pago"]==0  || $datos["pago"] == " "){
+					print_r("El monto del saldo es incorrecto");
+			}else{
+				$tablaFactura = $this->tablaFactura;
+				$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
+				$rowFactura = $tablaFactura->fetchRow($select);
+				//print_r($select->__toString());
+				//Aplicamos movimiento en cuentasxp;
+				$mCuentasxp = array(
+					'idTipoMovimiento'=>20,
+					'idSucursal'=>$rowFactura['idSucursal'],
+					'idCoP'=>$rowFactura['idCoP'],
+					'idFactura'=>$rowFactura['idFactura'],
+					'idBanco'=>$datos['idBanco'],
+					'idDivisa'=>$datos['idDivisa'],
+					'numeroFolio'=>$rowFactura['numeroFactura'],
+					'numeroReferencia'=>$datos['numeroReferencia'],
+					'secuencial'=>$secuencial,
+					'estatus'=>"A",
+					'fechaPago'=>$stringIni,
+					'fecha'=>date('Y-m-d h:i:s', time()),
+					'formaLiquidar'=>$datos['formaPago'],
+					'conceptoPago'=>$datos['conceptoPago'],
+					'subTotal'=>$rowFactura['subtotal'],
+					'total'=>$datos["pago"]
+				);
+				$dbAdapter->insert("Cuentasxp",$mCuentasxp);
+				//GuardaIva em facturaImpuesto
+				$tablaCuentasxp = $this->tablaCuentasxp;
+				$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idFactura=?", $idFactura)->order("secuencial DESC");
+				$rowcxp = $tablaFactura->fetchRow($select);
+				//print_r("$select");
+				//Al registrar el pago, afecta registro factura, saldo banco y saldo Proveedor.
+				$tablaBanco = $this->tablaBanco;
+				$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $datos['idBanco']);
+				$rowBanco = $tablaBanco->fetchRow($where);
+				if(!is_null($rowBanco)){
+					$importePago = $rowBanco->saldo - $datos['pago'];
+					$tablaBanco->update(array('saldo'=>$importePago),$where);
+				}
+			}		
+		}catch(Exception $ex){
+			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			throw new Util_Exception_BussinessException("Error al registrar pago");
+		}					
 	}
 	
 	public function guardaNotaCredito(array $notaCredito, $formaPago, $impuestos, $productos){

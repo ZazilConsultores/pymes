@@ -1049,6 +1049,8 @@
               <actionMethod actionName="nomina"/>
               <actionMethod actionName="impuestos"/>
               <actionMethod actionName="notacredito"/>
+              <actionMethod actionName="pagonomina"/>
+              <actionMethod actionName="aplicapagonomina"/>
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
@@ -1108,6 +1110,8 @@
               <actionMethod actionName="productoxmovimiento"/>
               <actionMethod actionName="totalproyecto"/>
               <actionMethod actionName="getdescripciontipomovto"/>
+              <actionMethod actionName="empleado"/>
+              <actionMethod actionName="buscanominaxp"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1482,6 +1486,18 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="getdescripciontipomovto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="pagonomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="empleado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscanominaxp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="aplicapagonomina"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2906,6 +2922,8 @@
                 <testApplicationActionMethod forActionName="nomina"/>
                 <testApplicationActionMethod forActionName="impuestos"/>
                 <testApplicationActionMethod forActionName="notacredito"/>
+                <testApplicationActionMethod forActionName="pagonomina"/>
+                <testApplicationActionMethod forActionName="aplicapagonomina"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2965,6 +2983,8 @@
                 <testApplicationActionMethod forActionName="productoxmovimiento"/>
                 <testApplicationActionMethod forActionName="totalproyecto"/>
                 <testApplicationActionMethod forActionName="getdescripciontipomovto"/>
+                <testApplicationActionMethod forActionName="empleado"/>
+                <testApplicationActionMethod forActionName="buscanominaxp"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

@@ -651,5 +651,19 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		return $modelFiscal;
 	}
 	
+	public function getEmpleadoProveedorIdFiscalesEmpresa($idFiscales){
+		// Obtenemos el IdEmpresa de la empresa del idFiscales proporcionado
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select= $tablaEmpresa->select()
+		->setIntegrityCheck(false)
+		->from($tablaEmpresa, array('idEmpresa'))
+		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
+		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa')
+		->where('Proveedores.idTipoProveedor = ?', 2)
+		->order('razonSocial ASC');
+		//print_r("$select");
+		return $tablaEmpresa->fetchAll($select);
+		
+	}
 	
 }

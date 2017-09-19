@@ -88,27 +88,33 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		
 		$formaPago = Zend_Registry::get('formaPago');
 		$eFormaLiquidar = new Zend_Form_Element_Select('formaLiquidar');
-		$eFormaLiquidar->setLabel('Forma de Pago:');
+		$eFormaLiquidar->setLabel('Forma Pago:');
 		$eFormaLiquidar->setAttrib("class", "form-control");
 		$eFormaLiquidar->setMultiOptions($formaPago);
 		
 		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
+		$eNumReferencia;
 		
 		$eBanco = new Zend_Form_Element_Select('idBanco');
 		$eBanco->setLabel('Seleccionar Banco');
 		$eBanco->setAttrib("class", "form-control");  
 		$eBanco->setRegisterInArrayValidator(FALSE);
-		 
-		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eNumFolio,$eFolioFiscal,$eFormaLiquidar,$eBanco,$eNumReferencia));
+		
+		$ePagada = new Zend_Form_Element_Checkbox('pagada');
+		$ePagada->setLabel("Pago nómina:");
+		//$ePagada->setCheckedValue("1");
+		$ePagada->setChecked("checked");
+		
+		$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eNumFolio,$eFolioFiscal,$ePagada,$eFormaLiquidar,$eBanco,$eNumReferencia));
 		$subEmpresa->setElementDecorators($decoratorsElemento);
 		$subEmpresa->setDecorators($decoratorsPresentacion);
 		
 		//=================================================================>>
 		$subDatosNomina = new Zend_Form_SubForm();
 		$subDatosNomina->setLegend("Ingresar Datos:");
-		
+	
 		$eSueldo = new Zend_Form_Element_Text('sueldo');
 		$eSueldo->setLabel('Sueldos y Salarios:');
 		$eSueldo->setAttrib("class", "form-control");
@@ -147,8 +153,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		//$this->addElement($eImpuestoImss);
 		//$eImpuestoImss->setElementDecorators($decoratorsElemento);
 		//$eImpuestoImss->setDecorators($decoratorsPresentacion);
-		
-		
+	
 		$this->addSubForms(array($subEmpresa,$subDatosNomina));
 		$this->addElement($eSubmit);
        

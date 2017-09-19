@@ -1,0 +1,140 @@
+ <?php
+	$empresas = $this->empresas;
+?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h4 class="panel-title">Búsqueda de Nómina por Pagar<strong></strong></h4>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<div class="form-group">
+				<label for="empresa" class="col-md-2">Empresas: </label>
+				<div class="col-md-10">
+					<select name="empresa" id="idFiscales" class="form-control">
+						<option value="0">Seleccione Empresa</option>
+						<?php foreach ($empresas as $empresa) : ?>
+							<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="sucursal" class="col-md-2">Sucursal: </label>
+				<div class="col-md-10">
+					<select required name="sucursal" id="idSucursal" class="form-control" >
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="proveedor" class="col-md-2">Empleado: </label>
+				<div class="col-md-10">
+					<select required name="proveedor" id="idProveedor" class="form-control">
+					</select>
+				</div>
+			</div>
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="queryNominas" type="button" class="btn btn-success">
+						<i class="fa fa-search"></i> Consultar Nómina
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>	
+</section>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Nómina Por Pagar.</h4>
+		</div>
+		<table id="detalleNominaxp" class="table table-striped table-condensed">
+			<thead>
+				<th>Sucursal </th>
+				<th>Empleado</th>
+				<th>Número Folio</th>
+				<th>Fecha</th>
+				<th>Importe</th>
+				<th>Pago</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+
+<script>
+$().ready(function(){
+	var url = window.location.origin + "/General/";
+	
+	$("#idFiscales").on('change',function(){
+		var idFiscal = $(this).val();
+		if(idFiscal != 0){
+			var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+			console.log(urlQuerySucursales);
+			$.ajax({
+				url: urlQuerySucursales,
+				dataType: "json",
+				success: function(data){
+					console.dir(data);
+					$("#idSucursal").empty();
+					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+					$.each(data, function (i,item){
+						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+					});
+				}
+			});
+			
+			//Llena combo proveedores tipo nomina
+			var urlQueryProveedores = url + 'contabilidad/json/empleado/idFiscales/'+idFiscal;
+			console.log(urlQueryProveedores);
+			$.ajax({
+				url: urlQueryProveedores,
+				dataType: "json",
+				success: function(data){
+					console.dir(data);
+					$("select#idProveedor").empty();
+					$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
+					$.each(data, function (i,item){
+						$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
+					});
+				}
+			});
+		}		
+	});
+	
+	$("button#queryNominas").on("click", function(){
+		var sucu = $("select#idSucursal").val();
+		var pro = $("select#idProveedor").val();
+		var urlCXP = window.location.origin + "/General/contabilidad/json/buscanominaxp/sucu/" + sucu +"/pro/"+pro;
+			console.log(urlCXP);
+			$.ajax({
+				url: urlCXP,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleNominaxp").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						var botonPago = $('<button></button>').attr("id","pago").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].idSucursal)).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFactura)).
+							append($('<td>').append(data[i].fecha)).
+							append($('<td>').append(data[i].total).attr("id", "importe")).
+							append($('<td>').append(botonPago)));
+					});
+					//AddRow();
+					//calculaTotal();
+				}
+			});
+			
+	});
+	
+	$("table#detalleNominaxp").on("click", "button[id^='pago']", function(){
+		var factura = $(this).attr("factura");
+		 console.log(factura);
+		 window.location = "/General/contabilidad/tesoreria/aplicapagonomina/idFactura/"+ factura;
+	});	
+});
+</script>

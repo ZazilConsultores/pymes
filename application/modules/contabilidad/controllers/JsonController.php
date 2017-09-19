@@ -4,12 +4,19 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 {
 
     private $bancoDAO = null;
+
     private $fiscalesDAO = null;
+
     private $impuestoProductosDAO = null;
+
     private $empresaDAO = null;
+
     private $pagosDAO = null;
+
     private $cobrosDAO = null;
+
     private $facturaCliDAO = null;
+
     private $proyectoClienteDAO = null;
 
     public function init()
@@ -263,6 +270,30 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function empleadoAction()
+    {
+    	$idFiscales = $this->getParam("idFiscales");
+		$fiscalesProveedores = $this->fiscalesDAO->getEmpleadoProveedorIdFiscalesEmpresa($idFiscales);
+		if(!is_null($fiscalesProveedores)){
+			echo Zend_Json::encode($fiscalesProveedores);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function buscanominaxpAction()
+    {
+        $idSucursal = $this->getParam("sucu");
+        $proveedor = $this->getParam("pro");
+		
+		$buscaNomina= $this->pagosDAO->busca_Nominasxp($idSucursal, $proveedor);
+		if(!is_null($buscaNomina)){
+			echo Zend_Json::encode($buscaNomina);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -274,6 +305,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
 	
 	
 	
@@ -285,6 +318,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
 
 
 

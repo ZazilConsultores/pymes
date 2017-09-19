@@ -31,6 +31,16 @@
 							
 		}
 		
+		public function busca_Nominasxp($idSucursal,$pr){
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",20)->where("estatus <> ?", "C")
+			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pr);
+			$rowsFacturaxp = $tablaFactura->fetchAll($select)->toArray();
+			//print_r("$select");
+			return $rowsFacturaxp;
+							
+		}
+		
 		public function aplica_Pago ($idFactura, array $datos){
 			$dbAdapter = Zend_Registry::get('dbmodgeneral');
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
@@ -100,6 +110,8 @@
 			}
 							
 		}
+
+	
 		
 		public function obtiene_Factura ($idFactura){
 			$tablaFactura = $this->tablaFactura;

@@ -68,10 +68,17 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria', 'action' => 'fondeo'), null, true); ?>">Fondeo</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'nomina'), null, true); ?>">Nomina</a></li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'nomina'), null, true); ?>">Nómina</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'pagonomina'), null, true); ?>">Pago Nómina</a></li>	
+						
+					</ul>
+				</li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'notacredito'), null, true); ?>">Nota de Crédito</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'impuestos'), null, true); ?>">Pago de Impuestos</a></li>
 			</ul>
+			
 		</li>
 		<li>
 			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'index'), null, true); ?>">

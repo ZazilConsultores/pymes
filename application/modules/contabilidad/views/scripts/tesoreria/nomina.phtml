@@ -1,9 +1,19 @@
-<?php echo $this->formulario; ?>
+<?php $formulario = $this->formulario ?>
+
+<section class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Registrar Nómina.</h3>
+		</div>
+		<div class="panel-body">
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
+
 <script>
 $(document).ready(function(){
-	
-	
-	
+	$("#pagada:checked").val()=="true";
 	$("select#idEmpresas").on('change', function(){
 		console.log("Bancos por empresa");
 		$url = "/General/contabilidad/json/bancosempresa/emp/" + this.value;
@@ -21,7 +31,7 @@ $(document).ready(function(){
 		});	
 	});
 	
-	 $("select#idEmpresas").on('change', function(){
+	$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
 			$.ajax({
@@ -36,9 +46,9 @@ $(document).ready(function(){
 					
 				}
 			});
-		});
+	});
 		
-		$("select#idSucursal").on('click', function(){
+	$("select#idSucursal").on('click', function(){
 			var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
 			console.log(url);
 			$.ajax({
@@ -52,9 +62,21 @@ $(document).ready(function(){
 						});
 					}
 				});
-		});
+	});
 	
-		
+	$("#pagada").on("change", function(){
+		if($("#pagada:checked").val()=="1"){
+			$("#formaLiquidar").removeAttr("disabled");
+			$("#idBanco").removeAttr("disabled");
+			$("#numeroReferencia").removeAttr("disabled");
+			
+		}else{
+			$("#pagada:checked").val()=="0"
+			$("#formaLiquidar").attr("disabled", true);
+			$("#idBanco").attr("disabled", true);
+			$("#numeroReferencia").attr("disabled", true);
+		}
+	});
 	$("#numFolio").on('keypress' , function(){
 		if((event.keyCode < 48 ) || (event.keyCode > 57))
 		event.returnValue = false;
