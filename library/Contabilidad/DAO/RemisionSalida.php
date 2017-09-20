@@ -47,8 +47,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
 		try{
-			//Seleccionamos el producto para su clasificacion, Ver si la validación del producto se puede hacer desde jquery
-			$tablaProducto = $this->tablaProducto;
+			//Seleccionamos el producto para su clasificación
 			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?", $producto["descripcion"]);
 			$rowProducto = $tablaProducto->fetchRow($select);
 			//print_r("$select");

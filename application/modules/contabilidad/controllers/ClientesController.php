@@ -52,10 +52,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function notaAction()
     {
-    	
         $request = $this->getRequest();
+		$select= $this->db->select()->from("Producto")->order("producto ASC");
+		$statement = $select->query();
+		$rowsProducto  =$statement->fetchAll();
+		$jsonDesProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonDesProductos = $jsonDesProductos;
         $formulario = new Contabilidad_Form_NuevaNotaCliente;
-
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
@@ -81,7 +84,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function remisionAction()
     {
 		$request = $this->getRequest();
-		
 		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
