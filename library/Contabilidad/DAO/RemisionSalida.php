@@ -48,6 +48,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		
 		try{
 			//Seleccionamos el producto para su clasificación
+			$tablaProducto = $this->tablaProducto;
 			$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?", $producto["descripcion"]);
 			$rowProducto = $tablaProducto->fetchRow($select);
 			//print_r("$select");
