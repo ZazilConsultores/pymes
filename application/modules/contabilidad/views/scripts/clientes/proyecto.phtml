@@ -142,6 +142,9 @@
 			</thead>
 			<tbody>
 			</tbody>
+			<tfoot>
+				
+			</tfoot>
 		</table>
 	</div>
 </section>
@@ -189,74 +192,79 @@
 			
 		});
 		function AddRow(){
-			$('#detalleProyectoxfc tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfc"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoxfc tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfc"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfc"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotal(){
 			var total = 0;
-			var nFilas = $("#detalleProyectoxfc tr").length;
+			var nFilas = $("#detalleProyectoxfc tbody tr").length -1;
 			$("table#detalleProyectoxfc").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
 			   	$("#totalfc").val(total.toFixed(2));
+			   	$("#totalRegfc").val(nFilas);
 			 });
 				
 		}
 		function AddRowFP(){
-			$('#detalleProyectoxfp tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoxfp tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfp"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalFP(){
 			var total = 0;
-			var nFilas = $("#detalleProyectoxfp tr").length;
+			var nFilas = $("#detalleProyectoxfp tbody tr").length -1;
 			$("table#detalleProyectoxfp").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
 			   	$("#totalfp").val(total.toFixed(2));
+			   	$("#totalRegfp").val(nFilas);
 			 });
 				
 		}
 		function AddRowRE(){
-			$('#detalleRemisonC tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRE"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleRemisonC tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRE"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRE"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalRE(){
 			var total = 0;
-			var nFilas = $("#detalleRemisonC tr").length;
+			var nFilas = $("#detalleRemisonC tbody tr").length -1;
 			$("table#detalleRemisonC").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
 			   	$("#totalRE").val(total.toFixed(2));
+			   	$("#totalRegRE").val(nFilas);
 			 });
 				
 		}
 		
 		function AddRowRS(){
-			$('#detalleRemisonP tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRS"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleRemisonP tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRS"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRS"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalRS(){
 			var total = 0;
-			var nFilas = $("#detalleRemisonP tr").length;
+			var nFilas = $("#detalleRemisonP tbody tr").length -1;
 			$("table#detalleRemisonP").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
 			   	$("#totalRS").val(total.toFixed(2));
+			   	$("#totalRegRS").val(nFilas);
 			 });
 				
 		}
 		
 		function AddRowPN(){
-			$('#detalleProyectoNomina tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalPN"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoNomina tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegPN"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalPN"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalPN(){
 			var total = 0;
-			var nFilas = $("#detalleProyectoNomina tr").length;
+			var nFilas = $("#detalleProyectoNomina tbody tr").length -1;
 			$("table#detalleProyectoNomina").find("td[id^='importe']").each(function(){
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
 			   	$("#totalPN").val(total.toFixed(2));
+			   	$("#totalRegPN").val(nFilas);
 			 });
 				
 		}
@@ -293,6 +301,7 @@
 					calculaTotal();
 				}
 			});
+			
 		});
 		$("button#queryProyecto").on("click", function(){
 			var idProyecto = $("select#idProyecto").val();

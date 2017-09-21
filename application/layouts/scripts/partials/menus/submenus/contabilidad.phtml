@@ -26,7 +26,6 @@
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'anticipo'), null, true); ?>">Anticipo</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'consecutivofactura'), null, true); ?>">Editar Número Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'factura'), null, true); ?>">Factura</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'proyecto'), null, true); ?>">Facturas proyecto</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'nota'), null, true); ?>">Nota</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'remision'), null, true); ?>">Remision</a></li>
 				<li class="dropdown-submenu">
@@ -72,7 +71,6 @@
 					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'nomina'), null, true); ?>">Nómina</a>
 					<ul class="dropdown-menu">
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'pagonomina'), null, true); ?>">Pago Nómina</a></li>	
-						
 					</ul>
 				</li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'notacredito'), null, true); ?>">Nota de Crédito</a></li>
@@ -80,10 +78,13 @@
 			</ul>
 			
 		</li>
-		<li>
-			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'index'), null, true); ?>">
+		<li class="dropdown-submenu">
+			<a class="test" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'index'), null, true); ?>">
 				Proyectos
 			</a>
+			<ul class="dropdown-menu">
+				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'proyecto'), null, true); ?>">Proyecto por Movimiento</a></li>
+			</ul>
 		</li>
 		<li>
 			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'poliza', 'action' => 'index'), null, true); ?>">
