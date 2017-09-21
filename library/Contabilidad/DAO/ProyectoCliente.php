@@ -63,6 +63,15 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		
 	}
 	
+	public function obtieneProyectoRemision($idProyecto){
+		$tablaMovimientos = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		//print_r("$select");
+		$rowMovimiento = $tablaMovimientos->fetchAll($select);
+		return $tablaMovimientos->fetchAll($select);
+		
+	}
+	
 	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos){
 		
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');

@@ -15,11 +15,11 @@ class Sistema_DAO_Rol implements Sistema_Interfaces_IRol {
 	}
 	
 	public function obtenerRol($idRol) {
-		$select = $this->tablaRol->select()->from($this->tablaRol)->where("idRol = ?", $idRol);
+		/*$select = $this->tablaRol->select()->from($this->tablaRol)->where("idRol = ?", $idRol);
 		$rowRol = $this->tablaRol->fetchRow($select);
 		
 		$modelRol = new Sistema_Model_Rol($rowRol->toArray());
-		return $modelRol;
+		return $modelRol;*/
 	}
 	
 	public function obtenerRoles() {

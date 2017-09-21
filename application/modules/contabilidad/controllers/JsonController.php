@@ -294,6 +294,17 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function proyectoremisionAction()
+    {
+	    $idProyecto = $this->getParam("idProyecto");
+		$proyectoMovtoRemision= $this->proyectoClienteDAO->obtieneProyectoRemision($idProyecto);
+		if(!is_null($proyectoMovtoRemision)){
+			echo Zend_Json::encode($proyectoMovtoRemision);
+		}else{
+			echo Zend_Json::encode(array());
+		} 
+    }
+
 
 }
 
@@ -307,6 +318,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -318,6 +330,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

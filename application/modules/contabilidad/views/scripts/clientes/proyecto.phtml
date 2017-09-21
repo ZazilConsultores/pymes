@@ -60,38 +60,91 @@
 	</div>
 </div>
 </section>
-
-	<div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h5 class="panel-title">Detalle de Facturas</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<table id="proyectos" class="table table-striped table-condensed">
-						<thead>
-							<tr>
-								<th>Tipo Movimiento</th>
-								<th>CoP</th>
-								<th>Número Factura</th>
-								<th>Importe</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-						<tfoot>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							
-						</tfoot>
-					</table>
-				</div>
-			</div>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Proyecto Por Factura Cliente.</h4>
 		</div>
+		<table id="detalleProyectoxfc" class="table table-striped table-condensed">
+			<thead>
+				<th>Tipo Movimiento</th>
+				<th>CoP</th>
+				<th>Número Factura</th>
+				<th>Importe</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
-</div>	
+</section>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Proyecto Por Factura Proveedor.</h4>
+		</div>
+		<table id="detalleProyectoxfp" class="table table-striped table-condensed">
+			<thead>
+				<th>Tipo Movimiento</th>
+				<th>CoP</th>
+				<th>Número Factura</th>
+				<th>Importe</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Proyecto Por Remision Entrada.</h4>
+		</div>
+		<table id="detalleRemisonC" class="table table-striped table-condensed">
+			<thead>
+				<th>Tipo Movimiento</th>
+				<th>CoP</th>
+				<th>Número Factura</th>
+				<th>Importe</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Proyecto Por Remision Salida.</h4>
+		</div>
+		<table id="detalleRemisonP" class="table table-striped table-condensed">
+			<thead>
+				<th>Tipo Movimiento</th>
+				<th>CoP</th>
+				<th>Número Factura</th>
+				<th>Importe</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Proyecto Por Nómina.</h4>
+		</div>
+		<table id="detalleProyectoNomina" class="table table-striped table-condensed">
+			<thead>
+				<th>Tipo Movimiento</th>
+				<th>CoP</th>
+				<th>Número Factura</th>
+				<th>Importe</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
 
 <script>
 	$().ready(function(){
@@ -136,21 +189,78 @@
 			
 		});
 		function AddRow(){
-			$('#proyectos tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoxfc tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfc"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotal(){
 			var total = 0;
-			 $('#proyectos .importe').each(function(){
-			   total += +$(this).text(); 
-				$("#total").val(total); 
+			var nFilas = $("#detalleProyectoxfc tr").length;
+			$("table#detalleProyectoxfc").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#totalfc").val(total.toFixed(2));
 			 });
+				
 		}
-		/*function calculaTotal(row){
-			var importe = +row.find('input[id^="importe"]').val();
-			total += +$(importe).text();
-			console.log(total);
-			$("#total").val(total); 
-		}*/
+		function AddRowFP(){
+			$('#detalleProyectoxfp tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
+    	}
+    	function calculaTotalFP(){
+			var total = 0;
+			var nFilas = $("#detalleProyectoxfp tr").length;
+			$("table#detalleProyectoxfp").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#totalfp").val(total.toFixed(2));
+			 });
+				
+		}
+		function AddRowRE(){
+			$('#detalleRemisonC tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRE"class="form-control" style="width:120px"></input></td></tr>');
+    	}
+    	function calculaTotalRE(){
+			var total = 0;
+			var nFilas = $("#detalleRemisonC tr").length;
+			$("table#detalleRemisonC").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#totalRE").val(total.toFixed(2));
+			 });
+				
+		}
+		
+		function AddRowRS(){
+			$('#detalleRemisonP tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRS"class="form-control" style="width:120px"></input></td></tr>');
+    	}
+    	function calculaTotalRS(){
+			var total = 0;
+			var nFilas = $("#detalleRemisonP tr").length;
+			$("table#detalleRemisonP").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#totalRS").val(total.toFixed(2));
+			 });
+				
+		}
+		
+		function AddRowPN(){
+			$('#detalleProyectoNomina tbody').append('<tr><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalPN"class="form-control" style="width:120px"></input></td></tr>');
+    	}
+    	function calculaTotalPN(){
+			var total = 0;
+			var nFilas = $("#detalleProyectoNomina tr").length;
+			$("table#detalleProyectoNomina").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#totalPN").val(total.toFixed(2));
+			 });
+				
+		}
+		
 		$("button#queryProyecto").on("click", function(){
 		 	var idProyecto = $("select#idProyecto").val();
 			var urlProyecto = window.location.origin + "/General/contabilidad/json/totalproyecto/idProyecto/" + idProyecto;
@@ -159,7 +269,7 @@
 				url: urlProyecto,
 				dataType: "json",
 				success: function(data){
-					var tbody = $("table#proyectos").find('tbody');
+					var tbody = $("table#detalleProyectoxfc").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
 						
@@ -181,23 +291,28 @@
 					});
 					AddRow();
 					calculaTotal();
-					
+				}
+			});
+		});
+		$("button#queryProyecto").on("click", function(){
+			var idProyecto = $("select#idProyecto").val();
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/totalproyecto/idProyecto/" + idProyecto;
+			console.log(urlProyecto);
+			//====================================================================>>Factura Proveedor
+			$.ajax({
+				url: urlProyecto,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleProyectoxfp").find('tbody');
+					tbody.empty();
 					$.each(data, function(i,item){
 						
 						var idTipoMovimiento = data[i].idTipoMovimiento;
 						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
 						console.log(tipo);
-						var des = tipo.descripcion;
-						//console.log(des);
-						/*
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].idTipoMovimiento)).
-							append($('<td>').append(data[i].idCoP)).	
-							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].total).attr("id", "importe"))
-							);*/
-						if(idTipoMovimiento == 4){
-							console.log("El tipo es factura Cliente");
+						
+						if(idTipoMovimiento == 4 ){
+							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("FACTURA PROVEEDOR")).
 							append($('<td>').append(data[i].idCoP)).	
@@ -208,14 +323,112 @@
 							
 						}
 					});
-					AddRow();
-					//calculaTotal();
+					AddRowFP();
+					calculaTotalFP();
 				}
 			});
-			
-			
+		});
+		$("button#queryProyecto").on("click", function(){
+			var idProyecto = $("select#idProyecto").val();
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremision/idProyecto/" + idProyecto;
+			console.log(urlProyecto);
+			//====================================================================>>Remision Cliente
+			$.ajax({
+				url: urlProyecto,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleRemisonC").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						
+						var idTipoMovimiento = data[i].idTipoMovimiento;
+						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
+						console.log(tipo);
+						
+						if(idTipoMovimiento == 12 ){
+							console.log("El tipo es factura Proveedor");
+							tbody.append($('<tr>').
+							append($('<td>').append("REMISION CLIENTE")).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFolio)).
+							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
+							
+							);
+						}
+					});
+					AddRowRE();
+					calculaTotalRE();
+				}
+			});
 		});
 		
+		$("button#queryProyecto").on("click", function(){
+			var idProyecto = $("select#idProyecto").val();
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremision/idProyecto/" + idProyecto;
+			console.log(urlProyecto);
+			//====================================================================>>Remision Cliente
+			$.ajax({
+				url: urlProyecto,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleRemisonP").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						
+						var idTipoMovimiento = data[i].idTipoMovimiento;
+						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
+						console.log(tipo);
+						
+						if(idTipoMovimiento == 13 ){
+							console.log("El tipo es factura Proveedor");
+							tbody.append($('<tr>').
+							append($('<td>').append("REMISION PROVEEDOR")).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFolio)).
+							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
+							
+							);
+						}
+					});
+					AddRowRS();
+					calculaTotalRS();
+				}
+			});
+		});
+		
+		$("button#queryProyecto").on("click", function(){
+			var idProyecto = $("select#idProyecto").val();
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremision/idProyecto/" + idProyecto;
+			console.log(urlProyecto);
+			//====================================================================>>Remision Cliente
+			$.ajax({
+				url: urlProyecto,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleProyectoNomina").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						
+						var idTipoMovimiento = data[i].idTipoMovimiento;
+						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
+						console.log(tipo);
+						
+						if(idTipoMovimiento == 20 ){
+							console.log("El tipo es factura Proveedor");
+							tbody.append($('<tr>').
+							append($('<td>').append("PAGO NOMINA")).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFolio)).
+							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
+							
+							);
+						}
+					});
+					AddRowPN();
+					calculaTotalPN();
+				}
+			});
+		});
 	});//document ready
 	
 </script>

@@ -1112,6 +1112,7 @@
               <actionMethod actionName="getdescripciontipomovto"/>
               <actionMethod actionName="empleado"/>
               <actionMethod actionName="buscanominaxp"/>
+              <actionMethod actionName="proyectoremision"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1498,6 +1499,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Tesoreria">
                 <viewScriptFile forActionName="aplicapagonomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoremision"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2985,6 +2989,7 @@
                 <testApplicationActionMethod forActionName="getdescripciontipomovto"/>
                 <testApplicationActionMethod forActionName="empleado"/>
                 <testApplicationActionMethod forActionName="buscanominaxp"/>
+                <testApplicationActionMethod forActionName="proyectoremision"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
