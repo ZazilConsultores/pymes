@@ -55,7 +55,7 @@
 				<th>Número Factura</th>
 				<th>Fecha</th>
 				<th>Importe</th>
-				<th>Anticipo</th>
+				<th>Busca Factura</th>
 			</thead>
 			<tbody>
 			</tbody>
@@ -118,7 +118,7 @@
 					var tbody = $("table#detalleAnticipoCliente").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Anticipo").attr("factura",data[i].idFactura);
+						var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Factura").attr("factura",data[i].idFactura);
 						tbody.append($('<tr>').
 							append($('<td>').append(data[i].idSucursal)).
 							append($('<td>').append(data[i].idCoP)).	
