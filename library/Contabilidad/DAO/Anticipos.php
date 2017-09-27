@@ -31,10 +31,10 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 			unset($datos["idEmpresas"]);
 			$anticipo = $datos;
 			
-			$anticipo['fecha'] = $stringfecha;
+			$anticipo['fecha'] = $fecha;
 			$anticipo['numeroFolio'] = $anticipo['numeroReferencia'];
 			$anticipo['comentario'] ="-";
-			$anticipo['fechaPago'] =$fecha;
+			$anticipo['fechaPago'] =$stringfecha;
 			$anticipo['estatus'] ="A";
 			$anticipo['conceptoPago'] ="LI";
 			$anticipo['subtotal'] = 0;
