@@ -122,6 +122,18 @@
 				return $rowFactura;
 			}
 		}
+		public function obtieneFacturaParaAnticipoCliente($idSucursal,$idCoP,$total){
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?", $idSucursal)->where("idCoP=?", $idCoP)
+			->where("total=?", $total);
+			$rowFactura = $tablaFactura->fetchAll($select);
+			//print_r($select->__toString());
+			if(is_null($rowFactura)) {
+				//return null;
+			}else{
+				return $rowFactura;
+			}
+		}
 		
 		/*Obtiene clientes por idFactura*/
 		public function obtenerClienteEmpresa($idFactura) {

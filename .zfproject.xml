@@ -1023,6 +1023,7 @@
               <actionMethod actionName="proyecto"/>
               <actionMethod actionName="desechabledesayuno"/>
               <actionMethod actionName="buscaanticipoclientes"/>
+              <actionMethod actionName="enlazafactura"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1510,6 +1511,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="buscaanticipocliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="enlazafactura"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2908,6 +2912,7 @@
                 <testApplicationActionMethod forActionName="proyecto"/>
                 <testApplicationActionMethod forActionName="desechabledesayuno"/>
                 <testApplicationActionMethod forActionName="buscaanticipoclientes"/>
+                <testApplicationActionMethod forActionName="enlazafactura"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>

@@ -118,7 +118,7 @@
 					var tbody = $("table#detalleAnticipoCliente").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Factura").attr("factura",data[i].idFactura);
+						var botonCobro = $('<button></button>').attr("id","fac").attr("class","btn btn-primary").text("Factura").attr("factura",data[i].idCoP);
 						tbody.append($('<tr>').
 							append($('<td>').append(data[i].idSucursal)).
 							append($('<td>').append(data[i].idCoP)).	
@@ -148,11 +148,14 @@
 			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	
-    	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){
-		   	var factura = $(this).attr("factura");
-		   	console.log(factura);
-		  	window.location = "/General/contabilidad/clientes/aplicacobro/idFactura/"+ factura;
-		   	
+    	$("table#detalleAnticipoCliente").on("click", "button[id^='fac']", function(){
+		   var idCoP = $(this).attr("factura");
+		   	console.log(idCoP);
+		   	var idSucursal = $("select#idSucursal").val();
+		   	console.log(idSucursal);
+		   	var importe =  $("#importe").text();
+		   	console.log(importe);
+		   	window.location = "/General/contabilidad/clientes/enlazafactura/idSucursal/" + idSucursal +"/idCoP/"+idCoP + "/total/" + importe;
 		   });
 		
 	});

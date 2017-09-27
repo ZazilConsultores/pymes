@@ -334,9 +334,20 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
         
     }
+	
+    public function enlazafacturaAction()
+    {
+    	$idSucursal = $this->getParam("idSucursal");
+		$idCoP = $this->getParam("idCoP");
+		$total = $this->getParam("total");
+    	$cobrosDAO = new Contabilidad_DAO_CobroCliente;
+        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP, $total);
+    }
 
 
 }
+
+
 
 
 
