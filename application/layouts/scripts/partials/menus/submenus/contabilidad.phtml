@@ -23,7 +23,12 @@
 				Clientes
 			</a>
 			<ul class="dropdown-menu">
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'anticipo'), null, true); ?>">Anticipo</a></li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'anticipo'), null, true); ?>">Anticipo</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'buscaanticipoclientes'), null, true); ?>">Busqueda Anticipo Clientes</a></li>	
+					</ul>
+				</li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'consecutivofactura'), null, true); ?>">Editar Número Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'factura'), null, true); ?>">Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'nota'), null, true); ?>">Nota</a></li>
@@ -38,7 +43,7 @@
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => ''), null, true); ?>">Cancelar Remisiones</a></li>
 					</ul>
 				</li>
-			</ul>
+			</ul>	
 		</li>
 		<li class="dropdown-submenu">
 			<a class="test" tabindex="-1" href="#">
@@ -46,6 +51,12 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'anticipo'), null, true); ?>">Anticipo</a></li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'anticipo'), null, true); ?>">Anticipo</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'pagonomina'), null, true); ?>">Busqueda Anticipo Proveedor</a></li>	
+					</ul>
+				</li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'factura'), null, true); ?>">Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'nota'), null, true); ?>">Nota</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'remision'), null, true); ?>">Remision</a></li>

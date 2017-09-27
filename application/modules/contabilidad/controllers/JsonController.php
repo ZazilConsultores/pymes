@@ -305,6 +305,19 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		} 
     }
 
+    public function buscaanticipoclienteAction()
+    {
+    	$sucu = $this->getParam("sucu");
+        $cl = $this->getParam("cl");
+        
+		$buscaCobro = $this->cobrosDAO->busca_AnticipoCliente($sucu, $cl);
+		if(!is_null($buscaCobro)){
+			echo Zend_Json::encode($buscaCobro);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -319,6 +332,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -330,6 +344,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

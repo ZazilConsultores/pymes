@@ -173,6 +173,15 @@
 			return $rowCuentasxc;
 			
 		}
+	public function busca_AnticipoCliente($idSucursal,$cl){
+		//tipo Movimiento facturaCliente = 2
+		$tablaCuentasxc = $this->tablaCuentasxc;
+		$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento =?",19)->where("estatus <> ?", "C")
+		->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
+		$rowsCuentasxc = $tablaCuentasxc->fetchAll($select)->toArray();
+		return $rowsCuentasxc;
+							
+	}
 		public function actualiza_Saldo($idFactura, array $datos){
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 			$stringIni = $dateIni->toString ('yyyy-MM-dd');

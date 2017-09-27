@@ -1,0 +1,160 @@
+<?php
+	$empresas = $this->empresas;
+?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h4 class="panel-title">Búsqueda Anticipo Clientes<strong></strong></h4>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<div class="form-group">
+				<label for="empresa" class="col-md-2">Empresas: </label>
+				<div class="col-md-10">
+					<select name="empresa" id="idFiscales" class="form-control">
+						<option value="0">Seleccione Empresa</option>
+						<?php foreach ($empresas as $empresa) : ?>
+							<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="sucursal" class="col-md-2">Sucursal: </label>
+				<div class="col-md-10">
+					<select required name="sucursal" id="idSucursal" class="form-control" >
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="cliente" class="col-md-2">Clientes: </label>
+				<div class="col-md-10">
+					<select required name="cliente" id="idCliente" class="form-control">
+					</select>
+				</div>
+			</div>
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="queryFacturas" type="button" class="btn btn-success">
+						<i class="fa fa-search"></i> Consultar
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Anticipo Cliente.</h4>
+		</div>
+		<table id="detalleAnticipoCliente" class="table table-striped table-condensed">
+			<thead>
+				<th>Sucursal</th>
+				<th>Proveedor</th>
+				<th>Número Factura</th>
+				<th>Fecha</th>
+				<th>Importe</th>
+				<th>Cobro</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>	
+</section>
+<script>
+	$().ready(function(){
+		var url = window.location.origin + "/General/";
+		//AddRow();
+		calculaTotal();
+		
+		$("#idFiscales").on('change',function(){
+			//console.log($(this).val());
+			var idFiscal = $(this).val();
+			if(idFiscal != 0){
+				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+				console.log(urlQuerySucursales);
+				$.ajax({
+					url: urlQuerySucursales,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("#idSucursal").empty();
+						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+						$.each(data, function (i,item){
+							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						});
+					}
+				});
+				
+				var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
+				console.log(urlQueryClientes);
+				$.ajax({
+					url: urlQueryClientes,
+					dataType: "json",
+					success: function(data){
+						
+						console.dir(data);
+						$("select#idCliente").empty();
+						$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
+						$.each(data, function (i,item){
+							$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
+						});
+					}
+				});
+			}
+		});
+		
+		$("button#queryFacturas").on("click", function(){
+			
+		 	var sucu = $("select#idSucursal").val();
+		 	var cl = $("select#idCliente").val();
+			var urlCXC = window.location.origin + "/General/contabilidad/json/buscaanticipocliente/sucu/" + sucu +"/cl/"+cl;
+			console.log(urlCXC);
+			$.ajax({
+				url: urlCXC,
+				dataType: "json",
+				success: function(data){
+					var tbody = $("table#detalleAnticipoCliente").find('tbody');
+					tbody.empty();
+					$.each(data, function(i,item){
+						var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Cobro").attr("factura",data[i].idFactura);
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].idSucursal)).
+							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].numeroFactura)).
+							append($('<td>').append(data[i].fecha)).
+							append($('<td>').append(data[i].total).attr("id", "importe")).
+							append($('<td>').append(botonCobro)));
+					});
+					AddRow();
+					calculaTotal();
+				}		
+			});
+		});
+			
+		function calculaTotal(){
+			var total = 0;
+			   $("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#total").val(total.toFixed(2));
+	        		
+			  });
+		}
+	
+		function AddRow(){
+			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+    	}
+    	
+    	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){
+		   	var factura = $(this).attr("factura");
+		   	console.log(factura);
+		  	window.location = "/General/contabilidad/clientes/aplicacobro/idFactura/"+ factura;
+		   	
+		   });
+		
+	});
+</script>
+
