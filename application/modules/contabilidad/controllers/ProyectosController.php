@@ -2,8 +2,9 @@
 
 class Contabilidad_ProyectosController extends Zend_Controller_Action
 {
-	private $proyectoDAO = null;
-	private $fiscalesDAO = null;
+
+    private $proyectoDAO = null;
+    private $fiscalesDAO = null;
 
     public function init()
     {
@@ -17,7 +18,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
     }
 
     public function altaAction()
-    { 
+    {
     			
         $proyectoDAO = new Contabilidad_DAO_Proyecto;
         $request = $this->getRequest();
@@ -43,8 +44,35 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		}
     }
 
+    public function proyectoclienteAction()
+    {
+    	$fiscalesDAO  = new Sistema_DAO_Fiscales;
+		$proyectoDAO = new Contabilidad_DAO_Proyecto;
+		$request = $this->getRequest();
+		$clientes = $fiscalesDAO->getFiscalesClientes();
+		$this->view->clientes = $clientes;	
+		if($request->isGet()){
+			$this->view->clientes = $clientes;		
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+        	$idCoP = $this->getParam("CoP"); 
+        	print_r($idCoP);
+        	$proyectos = $this->proyectoDAO->obtieneProyectoCliente($idCoP);
+			$this->view->proyectos = $proyectos;
+		}
+    }
+
+    public function proyectoproveedorAction()
+    {
+        
+    }
+
 
 }
+
+
+
+
 
 
 

@@ -37,20 +37,6 @@
 
 <script>
 $(document).ready(function (){
-  var table = $('#example').DataTable({
-     
-      'columnDefs': [{
-         'targets': 0,
-         'searchable':false,
-         'orderable':false,
-         'className': 'dt-body-center',
-         'render': function (data, type, full, meta){
-             return '<input type="checkbox" name="id[]" value="' 
-                + $('<div/>').text(data).html() + '">';
-         }
-      }],
-      'order': [1, 'asc']
-   });
 
 });
 </script>

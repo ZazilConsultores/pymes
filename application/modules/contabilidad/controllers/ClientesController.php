@@ -325,8 +325,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function buscaanticipoclientesAction()
     {
     	$request = $this->getRequest();
+		$sucu = $this->getParam("idSucursal");
+        $cli = $this->getParam("idCoP");
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;	
+        $this->view->empresas = $empresas;
+        $cobrosDAO = new Contabilidad_DAO_CobroCliente;
+        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);	
 		if($request->isPost()){		
 			$datos = $request->getPost();
 			$idSucursal = $this->getParam("sucursal");
@@ -341,7 +345,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$idCoP = $this->getParam("idCoP");
 		$total = $this->getParam("total");
     	$cobrosDAO = new Contabilidad_DAO_CobroCliente;
-        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP, $total);
+        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);
     }
 
 

@@ -122,10 +122,9 @@
 				return $rowFactura;
 			}
 		}
-		public function obtieneFacturaParaAnticipoCliente($idSucursal,$idCoP,$total){
+		public function obtieneFacturaParaAnticipoCliente($idSucursal,$idCoP){
 			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?", $idSucursal)->where("idCoP=?", $idCoP)
-			->where("total=?", $total);
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?", $idSucursal)->where("idCoP=?", $idCoP);
 			$rowFactura = $tablaFactura->fetchAll($select);
 			//print_r($select->__toString());
 			if(is_null($rowFactura)) {

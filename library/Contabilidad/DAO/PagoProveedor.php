@@ -119,7 +119,7 @@
 			$rowFactura = $tablaFactura->fetchRow($select);
 			//print_r($select->__toString());
 			if(is_null($rowFactura)) {
-				//return null;
+				return null;
 			}else{
 				return $rowFactura;
 			}

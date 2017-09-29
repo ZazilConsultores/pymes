@@ -3,11 +3,13 @@
 class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		
 	private $tablaProyecto;
+	private $tablMovimiento;
 	
 	public function __construct()
 	{
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$this->tablaProyecto= new Contabilidad_Model_DbTable_Proyecto(array('db'=>$dbAdapter));
+		$this->tablaProyecto = new Contabilidad_Model_DbTable_Proyecto(array('db'=>$dbAdapter));
+		$this->tablaMovimiento= new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
 	}
 	
 	public function crearProyecto(Contabilidad_Model_Proyecto $proyecto)
@@ -56,5 +58,17 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		}else{
 			return null;
 		}
+	}
+	
+	public function obtieneProyectoCliente($idCoP){
+		/*$tablaMovimientos = $this->tablaMovimiento;
+		$select= $tablaMovimientos->select()
+		->setIntegrityCheck(false)
+		->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
+		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
+		->where('Movimientos.idCoP =?', $idCoP)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
+		print_r("$select");
+		//return $tablaMovimientos->fetchAll($select);*/
+		
 	}
 }

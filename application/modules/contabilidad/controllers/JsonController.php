@@ -318,6 +318,19 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function facturaantcliAction()
+    {
+    	$sucu = $this->getParam("idSucursal");
+        $cli = $this->getParam("idCoP");
+        
+		$buscaFacAntCli = $this->cobrosDAO->obtieneFacturaParaAnticipoCliente($sucu, $cli);
+		if(!is_null($buscaFacAntCli)){
+			echo Zend_Json::encode($buscaFacAntCli);
+		}else{
+			echo Zend_Json::encode(array());
+		}   
+    }
+
 
 }
 
@@ -333,6 +346,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -344,6 +358,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

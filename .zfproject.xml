@@ -1081,6 +1081,8 @@
             <controllerFile controllerName="Proyectos">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="proyectocliente"/>
+              <actionMethod actionName="proyectoproveedor"/>
             </controllerFile>
             <controllerFile controllerName="Impuestos">
               <actionMethod actionName="index"/>
@@ -1116,6 +1118,7 @@
               <actionMethod actionName="buscanominaxp"/>
               <actionMethod actionName="proyectoremision"/>
               <actionMethod actionName="buscaanticipocliente"/>
+              <actionMethod actionName="facturaantcli"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1514,6 +1517,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="enlazafactura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="facturaantcli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectocliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectoproveedor"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2970,6 +2982,8 @@
               <testApplicationControllerFile forControllerName="Proyectos">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="proyectocliente"/>
+                <testApplicationActionMethod forActionName="proyectoproveedor"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Impuestos">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3005,6 +3019,7 @@
                 <testApplicationActionMethod forActionName="buscanominaxp"/>
                 <testApplicationActionMethod forActionName="proyectoremision"/>
                 <testApplicationActionMethod forActionName="buscaanticipocliente"/>
+                <testApplicationActionMethod forActionName="facturaantcli"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
