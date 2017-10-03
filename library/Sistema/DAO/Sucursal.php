@@ -155,4 +155,15 @@ class Sistema_DAO_Sucursal implements Sistema_Interfaces_ISucursal {
 	public function editarEmailSucursal($idSucursal, $idEmail,array $datos){
 		$tablaSucursal = $this->tablaSucursal;
 	}
+	
+	public function allSucursales(){
+		$tablaSucursales = $this->tablaSucursal;
+		$rowSucursales = $tablaSucursales->fetchAll();
+		
+		if(is_null($rowSucursales)){
+			return null;
+		}else{
+			return $rowSucursales->toArray();
+		}
+	}
 }

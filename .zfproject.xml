@@ -1119,6 +1119,7 @@
               <actionMethod actionName="proyectoremision"/>
               <actionMethod actionName="buscaanticipocliente"/>
               <actionMethod actionName="facturaantcli"/>
+              <actionMethod actionName="proyectocliente"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1526,6 +1527,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proyectos">
                 <viewScriptFile forActionName="proyectoproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectocliente"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3020,6 +3024,7 @@
                 <testApplicationActionMethod forActionName="proyectoremision"/>
                 <testApplicationActionMethod forActionName="buscaanticipocliente"/>
                 <testApplicationActionMethod forActionName="facturaantcli"/>
+                <testApplicationActionMethod forActionName="proyectocliente"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
