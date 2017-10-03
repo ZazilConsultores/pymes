@@ -81,30 +81,15 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 			}
 		}
 		
-		
-		/*$tablaMovimiento = $this->tablaMovimiento;
-		$select  = $tablaMovimiento->select()->from($tablaMovimiento)->where("idCoP = ?", $idCoP)->where("idTipoMovimiento  IN (?)", $idsTipoMovimiento);
-		$rowsMovimientos = $tablaMovimiento->fetchAll($select);
-		print_r("$select");
-		//return $rowsMovimientos->toArray();
-		
-		/*foreach($rowsMovimientos as $rowMovimiento){
-			$tablaProyecto  = $this->tablaProyecto;
-			$select = $tablaProyecto->select()->from($tablaProyecto)->where("idProyecto  =?",$rowMovimiento->idProyecto);
-			$rowProyecto = $tablaProyecto->fetchRow($select);
-			print_r("$select");
-		}*/
-
-		
-		//return $rowsMovimientos;	
-			$tablaMovimientos = $this->tablaMovimiento;
+		$tablaMovimientos = $this->tablaMovimiento;
 			$select= $tablaMovimientos->select()
 			->setIntegrityCheck(false)
 			->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
 			->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.numeroFactura','Factura.fecha'))
 			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
+			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
 			->where('Movimientos.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-			//print_r("$select");
-			return $tablaMovimientos->fetchAll($select);
+			print_r("$select");
+			//return $tablaMovimientos->fetchAll($select);
 	}
 }

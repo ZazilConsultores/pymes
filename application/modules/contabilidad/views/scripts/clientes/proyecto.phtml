@@ -19,7 +19,7 @@
 						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 						<!-- Empresas -->
 						<div class="form-group">
-							<label for="empresa" class="col-md-2">Empresas: </label>
+							<label for="empresa" class="col-md-2 control-label">Empresas:</label>
 							<div class="col-md-10">
 								<select name="empresa" id="idFiscales" class="form-control">
 									<option value="0">Seleccione Empresa</option>
@@ -31,7 +31,7 @@
 						</div>
 						<!-- Sucursales -->
 						<div class="form-group">
-							<label for="sucursal" class="col-md-2">Sucursal: </label>
+							<label for="sucursal" class="col-md-2 control-label">Sucursal:</label>
 							<div class="col-md-10">
 								<select required name="sucursal" id="idSucursal" class="form-control" >
 								</select>
@@ -39,7 +39,7 @@
 						</div>
 						<!--Clientes -->
 						<div class="form-group">
-							<label for="idProyecto" class="col-md-2">Proyecto: </label>
+							<label for="idProyecto" class="col-md-2 control-label">Proyecto:</label>
 							<div class="col-md-10">
 								<select required name="idProyecto" id="idProyecto" class="form-control">
 								</select>
@@ -192,7 +192,7 @@
 			
 		});
 		function AddRow(){
-			$('#detalleProyectoxfc tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfc"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfc"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoxfc tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfc"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalfc"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotal(){
 			var total = 0;
@@ -201,13 +201,13 @@
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
-			   	$("#totalfc").val(total.toFixed(2));
+			   	$("#totalfc").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegfc").val(nFilas);
 			 });
 				
 		}
 		function AddRowFP(){
-			$('#detalleProyectoxfp tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfp"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoxfp tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfp"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalFP(){
 			var total = 0;
@@ -216,13 +216,13 @@
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
-			   	$("#totalfp").val(total.toFixed(2));
+			   	$("#totalfp").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegfp").val(nFilas);
 			 });
 				
 		}
 		function AddRowRE(){
-			$('#detalleRemisonC tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRE"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRE"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleRemisonC tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRE"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalRE"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalRE(){
 			var total = 0;
@@ -238,7 +238,7 @@
 		}
 		
 		function AddRowRS(){
-			$('#detalleRemisonP tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRS"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalRS"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleRemisonP tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRS"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalRS"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalRS(){
 			var total = 0;
@@ -247,14 +247,14 @@
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
-			   	$("#totalRS").val(total.toFixed(2));
+			   	$("#totalRS").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegRS").val(nFilas);
 			 });
 				
 		}
 		
 		function AddRowPN(){
-			$('#detalleProyectoNomina tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegPN"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total $:</b></td><td><input id="totalPN"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoNomina tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegPN"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalPN"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalPN(){
 			var total = 0;
@@ -263,7 +263,7 @@
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
-			   	$("#totalPN").val(total.toFixed(2));
+			   	$("#totalPN").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegPN").val(nFilas);
 			 });
 				
