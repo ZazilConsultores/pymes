@@ -192,6 +192,143 @@
 <script>
 $().ready(function(){
 	
+	function AddRowCF(){
+		$('#detalleProyectoCF tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegCF"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalCF"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalCF(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoCF tbody tr").length -1;
+		$("table#detalleProyectoCF").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalCF").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegCF").val(nFilas);
+		});
+	}
+	
+	function AddRowZA(){
+		$('#detalleProyectoZA tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegZA"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalZA"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalZA(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoZA tbody tr").length -1;
+		$("table#detalleProyectoZA").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalZA").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegZA").val(nFilas);
+		});
+	}
+	function AddRowSI(){
+		$('#detalleProyectoxSI tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegSI"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalSI"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalSI(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxSI tbody tr").length -1;
+		$("table#detalleProyectoxSI").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalSI").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegSI").val(nFilas);
+		});
+	}
+	function AddRowIK(){
+		$('#detalleProyectoxIK tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegIK"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalIK"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalIK(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxIK tbody tr").length -1;
+		$("table#detalleProyectoxIK").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalIK").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegIK").val(nFilas);
+		});
+	}
+	function AddRowMI(){
+		$('#detalleProyectoxMI tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegMI"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalMI"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalMI(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxMI tbody tr").length -1;
+		$("table#detalleProyectoxMI").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalMI").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegMI").val(nFilas);
+		});
+	}
+	function AddRowEV(){
+		$('#detalleProyectoxEV tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegEV"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalEV"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalEV(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxEV tbody tr").length -1;
+		$("table#detalleProyectoxEV").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalEV").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegEV").val(nFilas);
+		});
+	}
+	function AddRowKI(){
+		$('#detalleProyectoxKI tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegKI"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalKI"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalKI(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxKI tbody tr").length -1;
+		$("table#detalleProyectoxKI").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalKI").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegKI").val(nFilas);
+		});
+	}
+	function AddRowAR(){
+		$('#detalleProyectoxAR tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegAR"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalAR"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalAR(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxAR tbody tr").length -1;
+		$("table#detalleProyectoxAR").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalAR").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegAR").val(nFilas);
+		});
+	}
+	function AddRowGI(){
+		$('#detalleProyectoxGX tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegGX"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalGX"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    
+    function calculaTotalGI(){
+    	var total = 0;
+		var nFilas = $("#detalleProyectoxGX tbody tr").length -1;
+		$("table#detalleProyectoxGX").find("td[id^='importe']").each(function(){
+			console.log($(this).text());
+			total += +$(this).text(); 
+			console.log(total);
+			$("#totalGX").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#totalRegGX").val(nFilas);
+		});
+	}
+	
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
@@ -213,8 +350,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowCF();
+			calculaTotalCF();
 			}
 		});
 	});
@@ -242,8 +379,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowZA();
+			calculaTotalZA();
 			}
 		});
 	});
@@ -269,8 +406,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowSI();
+			calculaTotalSI();
 			}
 		});
 	});
@@ -296,8 +433,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowIK();
+			calculaTotalIK();
 			}
 		});
 	});
@@ -323,8 +460,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowMI();
+			calculaTotalMI();
 			}
 		});
 	});
@@ -350,8 +487,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowEV();
+			calculaTotalEV();
 			}
 		});
 	});
@@ -377,8 +514,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowKI();
+			calculaTotalKI();
 			}
 		});
 	});
@@ -404,8 +541,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowAR();
+			calculaTotalAR();
 			}
 		});
 	});
@@ -431,8 +568,8 @@ $().ready(function(){
 						append($('<td>').append(data[i].total).attr("id", "importe")));
 					}
 				});
-			//AddRowPN();
-			//calculaTotalPN();
+			AddRowGI();
+			calculaTotalGI();
 			}
 		});
 	});

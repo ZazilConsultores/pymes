@@ -89,7 +89,7 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
 			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
 			->where('Movimientos.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-			print_r("$select");
-			//return $tablaMovimientos->fetchAll($select);
+			//print_r("$select");
+			return $tablaMovimientos->fetchAll($select);
 	}
 }

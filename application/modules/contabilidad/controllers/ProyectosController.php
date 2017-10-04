@@ -58,7 +58,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 			print_r($datos);
         	//$idCoP = $this->getParam("CoP"); 
         	//print_r($idCoP);
-        	//$proyectos = $this->proyectoDAO->obtieneProyectoCliente($idCoP);
+        	$proyectos = $this->proyectoDAO->obtieneProyectoCliente($idCoP);
 			//$this->view->proyectos = $proyectos;
 		}
     }
