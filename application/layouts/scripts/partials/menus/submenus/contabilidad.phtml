@@ -33,6 +33,7 @@
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'factura'), null, true); ?>">Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'nota'), null, true); ?>">Nota</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'remision'), null, true); ?>">Remision</a></li>
+				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectocliente'), null, true); ?>">Movimientos</a></li>
 				<li class="dropdown-submenu">
 					<a class="test" tabindex="-1" href="#">
 						Cobros
@@ -59,6 +60,7 @@
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'factura'), null, true); ?>">Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'nota'), null, true); ?>">Nota</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'remision'), null, true); ?>">Remision</a></li>
+				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'movimientos'), null, true); ?>">Movimientos</a></li>
 				<li class="dropdown-submenu">
 					<a class="test" tabindex="-1" href="#">
 						Pagos
@@ -94,8 +96,7 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'proyecto'), null, true); ?>">Proyecto por Movimiento</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectocliente'), null, true); ?>">Proyecto por Cliente</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectoproveedor'), null, true); ?>">Proyecto por Proveedor</a></li>
+				
 			</ul>
 		</li>
 		<li>

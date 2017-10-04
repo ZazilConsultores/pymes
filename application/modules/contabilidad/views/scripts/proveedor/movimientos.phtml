@@ -1,23 +1,22 @@
 <?php 
-	$clientes  = $this->clientes;
-	//$proyectos = $this->proyectos;
+	$proveedores = $this->proveedores;
 ?>
 <div class="row">
 	<div class="col-xs-12" >
 		<div class="panel panel-success">
 			<div class="panel-heading">
-				<h5 class="panel-title">Busca Movimiento Por Cliente</h5>	
+				<h5 class="panel-title">Busca Movimiento Por Proveedor</h5>	
 			</div>
 			<div class="panel-body">
 				<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 						<!--Clientes-->
 						<div class="form-group">
-							<label for="CoP" class="col-md-2 control-label">Clientes: </label>
+							<label for="CoP" class="col-md-2 control-label">Proveedor: </label>
 							<div class="col-md-10">
 								<select name="CoP" id="CoP" class="form-control">
-									<option value="0">Seleccione Cliente...</option>
-									<?php foreach ($clientes as $cliente) : ?>
-									<option value="<?php echo $cliente["idCliente"] ?>"><?php echo $cliente["razonSocial"] ?></option>
+									<option value="0">Seleccione Proveedor...</option>
+									<?php foreach ($proveedores as $proveedor) : ?>
+									<option value="<?php echo $proveedor["idProveedores"] ?>"><?php echo $proveedor["razonSocial"] ?></option>
 									<?php endforeach ?>
 								</select>
 							</div>
@@ -331,7 +330,7 @@ $().ready(function(){
 	
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		$.ajax({
 			url: urlProyecto,
@@ -358,7 +357,7 @@ $().ready(function(){
 	
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -386,7 +385,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -413,7 +412,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -440,7 +439,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -467,7 +466,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -494,7 +493,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -521,7 +520,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
@@ -548,7 +547,7 @@ $().ready(function(){
 	});
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
-		var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectocliente/CoP/" + CoP;
+		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
 		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({

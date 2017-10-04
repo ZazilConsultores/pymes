@@ -10,8 +10,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     private $pagosDAO = null;
     private $cobrosDAO = null;
     private $facturaCliDAO = null;
+	private $facturaProDAO = null;
     private $proyectoClienteDAO = null;
-	  private $proyectoDAO = null;
+    private $proyectoDAO = null;
 
     public function init()
     {
@@ -25,6 +26,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
 			$this->empresaDAO = new Sistema_DAO_Empresa;
 			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
+			$this->facturaProDAO = new Contabilidad_DAO_FacturaProveedor;
 			$this->proyectoClienteDAO = new Contabilidad_DAO_ProyectoCliente;
 			$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
 			
@@ -337,6 +339,17 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		} 
     }
 
+    public function movimientosproveedorAction()
+    {
+        $idCoP = $this->getParam("CoP");
+		$proyectoProveedor= $this->facturaProDAO->obtieneProyectoProveedor($idCoP);
+		if(!is_null($proyectoProveedor)){
+			echo Zend_Json::encode($proyectoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		} 
+    }
+
 
 }
 
@@ -354,6 +367,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -365,6 +379,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

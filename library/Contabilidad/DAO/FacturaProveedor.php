@@ -10,6 +10,7 @@
 		private $tablaFacturaDetalle;
 		private $tablaImpuestos;
 		private $tablaMovimiento;
+		private $tablaTipoMovimiento;
 		private $tablaInventario;
 		private $tablaCapas;
 		private $tablaMultiplos;
@@ -26,6 +27,7 @@
 			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
 			$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
+			$this->tablaTipoMovimiento= new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
 			$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 			$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 			$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
@@ -659,5 +661,29 @@
 			print_r("<br />");
 			$dbAdapter->rollBack();
 		}
+	}
+	
+	public function obtieneProyectoProveedor($idCoP){
+		$tablaTipoMovimiento =  $this->tablaTipoMovimiento;
+		$select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "+");
+		$rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
+		$idsTipoMovimiento = array ();
+		foreach ($rowsTipoMovtos as $rowTipoMovimiento) {
+			if(!in_array($rowTipoMovimiento->idTipoMovimiento, $idsTipoMovimiento)){
+				$idsTipoMovimiento[] = $rowTipoMovimiento->idTipoMovimiento;
+			}
+		}
+		
+		$tablaMovimientos = $this->tablaMovimiento;
+			$select= $tablaMovimientos->select()
+			->setIntegrityCheck(false)
+			->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
+			->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.numeroFactura','Factura.fecha'))
+			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
+			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
+			->where('Movimientos.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
+			//print_r("$select");
+		return $tablaMovimientos->fetchAll($select);
+		
 	}
 }

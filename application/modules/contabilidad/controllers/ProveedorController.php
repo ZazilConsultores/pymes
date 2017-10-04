@@ -4,11 +4,16 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $notaEntradaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $pagoProveedor = null;
-	private $anticipoDAO = null;
+
+    private $anticipoDAO = null;
 
     public function init()
     {
@@ -206,7 +211,29 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         
     }
 
+    public function movimientosAction()
+    {
+        $ProvDAO  = new Contabilidad_DAO_NotaEntrada;
+		$facturaProvDAO = new Contabilidad_DAO_FacturaProveedor;
+		$request = $this->getRequest();
+		$proveedores = $ProvDAO->obtenerProveedores();
+		$this->view->proveedores = $proveedores;	
+		if($request->isGet()){
+			$this->view->proveedores = $proveedores;		
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+			print_r($datos);
+        	//$idCoP = $this->getParam("CoP"); 
+        	//print_r($idCoP);
+        	//$movimientos = $this->facturaDAO->obtieneProyectoProveedor($idCoP);
+			//$this->view->proyectos = $proyectos;*/
+		}
+    }
+
+
 }
+
+
 
 
 

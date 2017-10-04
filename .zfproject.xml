@@ -1041,6 +1041,7 @@
               <actionMethod actionName="aplicarpago"/>
               <actionMethod actionName="pagodos"/>
               <actionMethod actionName="anticipo"/>
+              <actionMethod actionName="movimientos"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -1120,6 +1121,7 @@
               <actionMethod actionName="buscaanticipocliente"/>
               <actionMethod actionName="facturaantcli"/>
               <actionMethod actionName="proyectocliente"/>
+              <actionMethod actionName="movimientosproveedor"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1530,6 +1532,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="proyectocliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="movimientos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="movimientosproveedor"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2946,6 +2954,7 @@
                 <testApplicationActionMethod forActionName="aplicarpago"/>
                 <testApplicationActionMethod forActionName="pagodos"/>
                 <testApplicationActionMethod forActionName="anticipo"/>
+                <testApplicationActionMethod forActionName="movimientos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3025,6 +3034,7 @@
                 <testApplicationActionMethod forActionName="buscaanticipocliente"/>
                 <testApplicationActionMethod forActionName="facturaantcli"/>
                 <testApplicationActionMethod forActionName="proyectocliente"/>
+                <testApplicationActionMethod forActionName="movimientosproveedor"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
