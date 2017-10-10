@@ -5,13 +5,15 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 
     private $proyectoDAO = null;
     private $fiscalesDAO = null;
-	private $notaSalidaDAO = null;
+    private $notaSalidaDAO = null;
+	private $empresaDAO = null;
 
     public function init()
     {
         $this->proyectoDAO= new Contabilidad_DAO_Proyecto;
 		$this->fiscalesDAO= new Sistema_DAO_Fiscales;
 		$this->notaSalidaDAO= new Contabilidad_DAO_NotaSalida;
+		$this->empresaDAO= new Sistema_DAO_Empresa;
     }
 
     public function indexAction()
@@ -27,6 +29,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		$idProyecto = $this->getParam("idProyecto");
 		
 		$formulario = new Contabilidad_Form_AltaProyecto;
+		$formulario->removeSubForm("0");
 		$this->view->formulario = $formulario;
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
@@ -70,8 +73,50 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
         
     }
 
+    public function proyectoxfechaAction()
+    {
+    	$request = $this->getRequest();
+		$formulario = new Contabilidad_Form_AltaProyecto;
+		$formulario->removeElement("numeroFolio");
+		$formulario->removeElement("idCliente");
+		$formulario->removeElement("descripcion");
+		$formulario->removeElement("fechaApertura");
+		$formulario->removeElement("fechaCierre");
+		$formulario->removeElement("costoInicial");
+		$formulario->removeElement("costoFinal");
+		$formulario->removeElement("ganancia");
+		$formulario->removeElement("submit");
+		$formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-info");
+		$formulario->getSubForm("0")->getElement("button")->setLabel("Actualizar Producto");
+							
+		//$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+       	$this->view->formulario = $formulario;
+		//$this->view->empresas = $empresas;	
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}if($request->isPost()){		
+			$datos = $request->getPost();
+			//print_r($datos);
+			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
+			//$idSucursal = $this->getParam("sucursal");
+			//print_r($idSucursal);
+        	$idProyecto = $this->getParam("idProyecto"); 
+        	print_r($idProyecto);
+			$fechaI = $this->getParam("fechaInicial"); 
+        	print_r($fechaI);
+        	$fechaF = $this->getParam("fechaFin"); 
+        	print_r($fechaF);
+			
+        	$proyectos = $this->proyectoDAO->obtieneProyectoxfecha($idProyecto, $fechaI, $fechaF);
+			//$this->view->proyectos = $proyectos;
+		}	
+    	
+    }
+
 
 }
+
+
 
 
 

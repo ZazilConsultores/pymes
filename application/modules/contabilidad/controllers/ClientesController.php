@@ -348,7 +348,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);
     }
 
-
 }
 
 

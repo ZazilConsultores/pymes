@@ -10,9 +10,10 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     private $pagosDAO = null;
     private $cobrosDAO = null;
     private $facturaCliDAO = null;
-	private $facturaProDAO = null;
-    private $proyectoClienteDAO = null;
+    private $facturaProDAO = null;
+    private $proyectoClienteDAO = null; 
     private $proyectoDAO = null;
+	private $notaSalidaDAO = null;
 
     public function init()
     {
@@ -29,6 +30,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			$this->facturaProDAO = new Contabilidad_DAO_FacturaProveedor;
 			$this->proyectoClienteDAO = new Contabilidad_DAO_ProyectoCliente;
 			$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
+			$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 			
 			$this->_helper->layout->disableLayout();
 			$this->_helper->viewRenderer->setNoRender(true);
@@ -350,6 +352,30 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		} 
     }
 
+    public function proyectoxfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoMovtoxFecha = $this->proyectoDAO->obtieneProyectoxfecha($idProyecto, $fechaI , $fechaF);
+		if(!is_null($proyectoMovtoxFecha)){
+			echo Zend_Json::encode($proyectoMovtoxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function getclienteAction()
+    {
+    	$idCliente = $this->getParam("cl");
+		$cliente = $this->notaSalidaDAO->obtenerCliente($idCliente);
+		if(!is_null($cliente)){
+			echo Zend_Json::encode($cliente);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -368,6 +394,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
 	
 	
 	
@@ -379,6 +407,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
 
 
 

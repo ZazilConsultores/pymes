@@ -36,6 +36,18 @@
 			->order("razonSocial ASC");
 			return $tablaEmpresa->fetchAll($select);	
 		}
+		
+		public function obtenerCliente($idCliente){
+			$tablaEmpresa = $this->tablaEmpresa;
+			$select=$tablaEmpresa->select()
+			->setIntegrityCheck(false)
+			->from($tablaEmpresa, array('idEmpresa'))
+			->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
+			->join('Clientes','Empresa.idEmpresa = Clientes.idEmpresa')
+			->order("razonSocial ASC")->where("Clientes.idCliente=?", $idCliente);
+			print_r("$select");
+			//return $tablaEmpresa->fetchRow($select);	
+		}
 	
 		
 		public function guardaMovimientos(array $encabezado, $producto){

@@ -248,12 +248,12 @@
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
-			   	$("#total").val(total.toFixed(2));
+			   	$("#total").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			 });
 		}
 	
 		function AddRow(){
-			$('#detalleFacturaxp tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleFacturaxp tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	
     	$("table#detalleFacturaxp").on("click", "button[id^='pago']", function(){

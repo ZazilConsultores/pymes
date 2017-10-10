@@ -72,6 +72,29 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eGanancia->setAttrib("class", "form-control");
 		$eGanancia->setValue("0");
 		
+		$subBusqueda = new Zend_Form_SubForm;
+		
+		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
+        $eProyecto->setLabel("Seleccionar Proyecto:");
+		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setRegisterInArrayValidator(FALSE);
+		
+		$eFechaInicio =  new Zend_Form_Element_Text('fechaInicial');
+        $eFechaInicio->setLabel('Seleccionar Fecha Inicio: ');
+		$eFechaInicio->setAttrib("class", "form-control");
+		
+		$eFechaFin =  new Zend_Form_Element_Text('fechaFinal');
+        $eFechaFin->setLabel('Seleccionar Fecha Fin:');
+		$eFechaFin->setAttrib("class", "form-control");
+		
+		$eBoton =  new Zend_Form_Element_Button('button');
+        $eBoton->setLabel('Buscar: ');
+		$eBoton->setAttrib("class", "btn btn-warning");
+		
+		
+		$subBusqueda->addElements(array($eProyecto,$eFechaInicio,$eFechaFin,$eBoton));
+		$subBusqueda->setName("busqueda");
+		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
@@ -88,6 +111,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$this->addElement($eCostoInicio);
 		$this->addElement($eCostoFinal);
 		$this->addElement($eGanancia);
+		$this->addSubForms(array($subBusqueda));
 		$this->addElement($eSubmit);
 		
     }

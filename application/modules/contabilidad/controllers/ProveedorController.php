@@ -222,11 +222,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$this->view->proveedores = $proveedores;		
 		}if($request->isPost()){		
 			$datos = $request->getPost();
-			print_r($datos);
-        	//$idCoP = $this->getParam("CoP"); 
-        	//print_r($idCoP);
-        	//$movimientos = $this->facturaDAO->obtieneProyectoProveedor($idCoP);
-			//$this->view->proyectos = $proyectos;*/
 		}
     }
 

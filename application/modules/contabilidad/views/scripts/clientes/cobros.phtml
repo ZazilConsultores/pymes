@@ -9,7 +9,7 @@
 	<div class="panel-body">
 		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 			<div class="form-group">
-				<label for="empresa" class="col-md-2">Empresas: </label>
+				<label for="empresa" class="col-md-2 control-label">Empresas: </label>
 				<div class="col-md-10">
 					<select name="empresa" id="idFiscales" class="form-control">
 						<option value="0">Seleccione Empresa</option>
@@ -20,14 +20,14 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="sucursal" class="col-md-2">Sucursal: </label>
+				<label for="sucursal" class="col-md-2 control-label">Sucursal: </label>
 				<div class="col-md-10">
 					<select required name="sucursal" id="idSucursal" class="form-control" >
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="cliente" class="col-md-2">Clientes: </label>
+				<label for="cliente" class="col-md-2 control-label">Clientes: </label>
 				<div class="col-md-10">
 					<select required name="cliente" id="idCliente" class="form-control">
 					</select>
@@ -144,13 +144,13 @@
 			   	console.log($(this).text());
 			   	total += +$(this).text(); 
 			   	console.log(total);
-			   	$("#total").val(total.toFixed(2));
+			   	$("#total").val("$" +total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 	        		
 			  });
 		}
 	
 		function AddRow(){
-			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total $:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	
     	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){

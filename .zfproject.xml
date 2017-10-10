@@ -1084,6 +1084,7 @@
               <actionMethod actionName="alta"/>
               <actionMethod actionName="proyectocliente"/>
               <actionMethod actionName="proyectoproveedor"/>
+              <actionMethod actionName="proyectoxfecha"/>
             </controllerFile>
             <controllerFile controllerName="Impuestos">
               <actionMethod actionName="index"/>
@@ -1122,6 +1123,8 @@
               <actionMethod actionName="facturaantcli"/>
               <actionMethod actionName="proyectocliente"/>
               <actionMethod actionName="movimientosproveedor"/>
+              <actionMethod actionName="proyectoxfecha"/>
+              <actionMethod actionName="getcliente"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1538,6 +1541,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="movimientosproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectoxfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoxfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="getcliente"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2997,6 +3009,7 @@
                 <testApplicationActionMethod forActionName="alta"/>
                 <testApplicationActionMethod forActionName="proyectocliente"/>
                 <testApplicationActionMethod forActionName="proyectoproveedor"/>
+                <testApplicationActionMethod forActionName="proyectoxfecha"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Impuestos">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3035,6 +3048,8 @@
                 <testApplicationActionMethod forActionName="facturaantcli"/>
                 <testApplicationActionMethod forActionName="proyectocliente"/>
                 <testApplicationActionMethod forActionName="movimientosproveedor"/>
+                <testApplicationActionMethod forActionName="proyectoxfecha"/>
+                <testApplicationActionMethod forActionName="getcliente"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
