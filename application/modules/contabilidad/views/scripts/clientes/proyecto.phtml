@@ -289,7 +289,7 @@
 							console.log("El tipo es factura Cliente");
 							tbody.append($('<tr>').
 							append($('<td>').append("FACTURA CLIENTE")).
-							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].total).attr("id", "importe"))
 							
@@ -324,7 +324,7 @@
 							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("FACTURA PROVEEDOR")).
-							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].total).attr("id", "importe"))
 							
@@ -358,7 +358,7 @@
 							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("REMISION CLIENTE")).
-							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFolio)).
 							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
 							
@@ -392,7 +392,7 @@
 							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("REMISION PROVEEDOR")).
-							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFolio)).
 							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
 							
@@ -426,7 +426,7 @@
 							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("PAGO NOMINA")).
-							append($('<td>').append(data[i].idCoP)).	
+							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFolio)).
 							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
 							

@@ -132,9 +132,12 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 				->setIntegrityCheck(false)
 				->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
 				->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.numeroFactura','Factura.fecha'))
-				->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
+				->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('idProyecto', 'descripcion'))
+				->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+				->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
 				->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
-				->order('Factura.idTipoMovimiento')->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)->order("Factura.numeroFactura ASC");
+				->order('Factura.idTipoMovimiento')->where('Movimientos.idProyecto =?', $idProyecto)->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)->order("Factura.numeroFactura ASC");
 			//print_r("$select");
 				return $tablaMovimientos->fetchAll($select);
 			}

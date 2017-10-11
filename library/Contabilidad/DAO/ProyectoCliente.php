@@ -41,29 +41,61 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 	}	
 	
 	public function obtieneProyecto($idProyecto){
-		/*$tablaMovimiento = $this->tablaMovimiento;	
-		$select = $tablaMovimiento->select()->from($tablaMovimiento, new Zend_Db_Expr('DISTINCT(idFactura) as idFactura'))->where("idTipoMovimiento=?",2)->where("idProyecto = ?",$idProyecto);
-		$rowsMovimiento = $tablaMovimiento->fetchAll($select);
-		//print_r("$select"); 
 		
-		foreach ($rowsMovimiento as $rowMovimiento) {
-			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura = ?",$rowMovimiento->idFactura);
-			$rowFactura = $tablaFactura->fetchRow($select);
-			return $rowFactura;
-		}*/
-		$tablaMovimientos = $this->tablaMovimiento;
-		$select= $tablaMovimientos->select()
-		->setIntegrityCheck(false)
-		->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
-		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
-		->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-		//print_r("$select");
-		return $tablaMovimientos->fetchAll($select);
+		$tablaMovimientos  = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		foreach ($rowsMovimientos as $rowMovimiento) {
+			if($rowMovimiento['idTipoMovimiento'] == 2 ){
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select= $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
+				->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
+				->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
+				->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
+				//print_r("$select");
+				return $tablaMovimientos->fetchAll($select);
+			}elseif($rowMovimiento['idTipoMovimiento'] == 4 || $rowMovimiento['idTipoMovimiento'] == 20){
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select= $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
+				->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
+				->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+				->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
+				//print_r("$select");
+				return $tablaMovimientos->fetchAll($select);
+			}
+		}
+		
+		
 		
 	}
 	
 	public function obtieneProyectoRemision($idProyecto){
+		$tablaMovimientos  = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		foreach ($rowsMovimientos as $rowMovimiento) {
+			if($rowMovimiento['idTipoMovimiento'] == 12 ){/*cliente*/
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select  = $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos)
+				->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
+				->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+				return $tablaMovimientos->fetchAll($select);
+			}elseif($rowMovimiento['idTipoMovimiento'] == 13){
+				
+			}
+		}
 		$tablaMovimientos = $this->tablaMovimiento;
 		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
 		//print_r("$select");
