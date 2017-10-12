@@ -121,9 +121,9 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	public function obtieneProyectoProvxfecha($idProyecto,$fechaI, $fechaF){
 		$tablaMovimientos = $this->tablaMovimiento;
 		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto)->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
-		->where("idTipoMovimiento=?",4)->orWhere("idTipoMovimiento=?",20) ;
+		->where("idTipoMovimiento=?",4);
 		$rowsMovimiento = $tablaMovimientos->fetchAll($select);
-		//print_r("$select");
+		print_r("$select");
 		foreach ($rowsMovimiento as $rowMovimiento){
 				$tablaMovimientos  = $this->tablaMovimiento;
 				$select = $tablaMovimientos->select()->setIntegrityCheck(false)
@@ -135,10 +135,69 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
 				->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo'))
 				->where('Movimientos.idProyecto =?', $idProyecto)->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
-				->where("Movimientos.idTipoMovimiento=?",4)->orWhere("Movimientos.idTipoMovimiento=?",20) 
-				->order("Factura.numeroFactura ASC");
+				->where("Movimientos.idTipoMovimiento=?",4)->order("Factura.numeroFactura ASC");
 				//print_r("$select");
 				return $tablaMovimientos->fetchAll($select);
 		}
+	}
+
+	public function obtieneProyectoRemisionClientexFecha($idProyecto,$fechaI, $fechaF){
+		$tablaMovimientos  = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		foreach ($rowsMovimientos as $rowMovimiento) {
+			if($rowMovimiento['idTipoMovimiento'] == 12 ){/*cliente*/
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select  = $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos)
+				->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
+				->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+				return $tablaMovimientos->fetchAll($select);
+			}
+		}
+	}
+	public function obtieneProyectoRemisionProveedorxFecha($idProyecto,$fechaI, $fechaF){
+		$tablaMovimientos  = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		foreach ($rowsMovimientos as $rowMovimiento) {
+			if($rowMovimiento['idTipoMovimiento'] == 12 ){/*cliente*/
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select  = $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos)
+				->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+				->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+				return $tablaMovimientos->fetchAll($select);
+			}
+		}	
+	}
+	
+	public function obtieneProyectoNominaProveedorxFecha($idProyecto,$fechaI, $fechaF){
+		$tablaMovimientos  = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		foreach ($rowsMovimientos as $rowMovimiento) {
+			if($rowMovimiento['idTipoMovimiento'] == 20 ){/*cliente*/
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select  = $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos)
+				->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+				->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+				//print_r("$select");
+				return $tablaMovimientos->fetchAll($select);
+			}
+		}	
 	}
 }

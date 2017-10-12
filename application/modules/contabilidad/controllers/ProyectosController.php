@@ -86,31 +86,11 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		$formulario->removeElement("costoFinal");
 		$formulario->removeElement("ganancia");
 		$formulario->removeElement("submit");
-		$formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-info");
-		$formulario->getSubForm("0")->getElement("button")->setLabel("Actualizar Producto");
-							
-		//$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+		$formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
        	$this->view->formulario = $formulario;
-		//$this->view->empresas = $empresas;	
 		if($request->isGet()){
 			$this->view->formulario = $formulario;
-		}if($request->isPost()){		
-			$datos = $request->getPost();
-			//print_r($datos);
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			//$idSucursal = $this->getParam("sucursal");
-			//print_r($idSucursal);
-        	$idProyecto = $this->getParam("idProyecto"); 
-        	print_r($idProyecto);
-			$fechaI = $this->getParam("fechaInicial"); 
-        	print_r($fechaI);
-        	$fechaF = $this->getParam("fechaFin"); 
-        	print_r($fechaF);
-			
-        	$proyectos = $this->proyectoDAO->obtieneProyectoxfecha($idProyecto, $fechaI, $fechaF);
-			//$this->view->proyectos = $proyectos;
-		}	
-    	
+		}
     }
 
 

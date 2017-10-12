@@ -399,6 +399,47 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function proyectoremprovxfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoRemisionEntrdaxFecha = $this->proyectoDAO->obtieneProyectoRemisionProveedorxFecha($idProyecto, $fechaI, $fechaF);
+		if(!is_null($proyectoRemisionEntrdaxFecha)){
+			echo Zend_Json::encode($proyectoRemisionEntrdaxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    	
+    }
+
+    public function proyectoremclixfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoRemisionSalidaxFecha = $this->proyectoDAO->obtieneProyectoRemisionClientexFecha($idProyecto, $fechaI, $fechaF);
+		if(!is_null($proyectoRemisionSalidaxFecha)){
+			echo Zend_Json::encode($proyectoRemisionSalidaxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectonominafechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoNominaxFecha = $this->proyectoDAO->obtieneProyectoNominaProveedorxFecha($idProyecto, $fechaI, $fechaF);
+		if(!is_null($proyectoNominaxFecha)){
+			echo Zend_Json::encode($proyectoNominaxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
 
 }
 
@@ -420,6 +461,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
 	
 	
 	
@@ -431,6 +475,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
 
 
 

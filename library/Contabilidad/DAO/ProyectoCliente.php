@@ -99,7 +99,7 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		$tablaMovimientos = $this->tablaMovimiento;
 		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
 		//print_r("$select");
-		$rowMovimiento = $tablaMovimientos->fetchAll($select);
+		//$rowMovimiento = $tablaMovimientos->fetchAll($select);
 		return $tablaMovimientos->fetchAll($select);
 		
 	}

@@ -88,11 +88,11 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eFechaFin->setAttrib("class", "form-control");
 		
 		$eBoton =  new Zend_Form_Element_Button('button');
-        $eBoton->setLabel('Buscar: ');
+        $eBoton->setLabel('Buscar Proyecto');
 		$eBoton->setAttrib("class", "btn btn-warning");
 		
 		
-		$subBusqueda->addElements(array($eProyecto,$eFechaInicio,$eFechaFin,$eBoton));
+		$subBusqueda->addElements(array($eProyecto,$eFechaInicio,$eFechaFin, $eBoton));
 		$subBusqueda->setName("busqueda");
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
