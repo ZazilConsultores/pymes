@@ -257,7 +257,7 @@
 			console.log(fechaFN);
 		 	var idProyecto = $("select#idProyecto").val();
 			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoxfecha/idProyecto/" + idProyecto + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
-			console.log(urlProyecto);
+			//console.log(urlProyecto);
 			$.ajax({
 				url: urlProyecto,
 				dataType: "json",
@@ -295,11 +295,11 @@
 			var fechaF  = $("#fechaFinal").val();
 			var fechaFN  = fechaF.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
 			var idProyecto = $("select#idProyecto").val();
-			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoxfecha/idProyecto/" + idProyecto + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
-			console.log(urlProyecto);
+			var urlProyectoFP = window.location.origin + "/General/contabilidad/json/proyectoprovxfecha/idProyecto/" + idProyecto + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
+			console.log(urlProyectoFP);
 			//====================================================================>>Factura Proveedor
 			$.ajax({
-				url: urlProyecto,
+				url: urlProyectoFP,
 				dataType: "json",
 				success: function(data){
 					console.dir(data);

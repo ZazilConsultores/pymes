@@ -1125,6 +1125,7 @@
               <actionMethod actionName="movimientosproveedor"/>
               <actionMethod actionName="proyectoxfecha"/>
               <actionMethod actionName="getcliente"/>
+              <actionMethod actionName="proyectoprovxfecha"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1550,6 +1551,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="getcliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoprovxfecha"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3050,6 +3054,7 @@
                 <testApplicationActionMethod forActionName="movimientosproveedor"/>
                 <testApplicationActionMethod forActionName="proyectoxfecha"/>
                 <testApplicationActionMethod forActionName="getcliente"/>
+                <testApplicationActionMethod forActionName="proyectoprovxfecha"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
