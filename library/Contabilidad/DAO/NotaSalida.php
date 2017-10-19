@@ -79,7 +79,7 @@
 				$tablaMultiplos = $this->tablaMultiplos;
 				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplos = $tablaMultiplos->fetchRow($select); 
-				//print_r("$select")
+				print_r("$select");
 				$cantidad = $producto['cantidad'] * $rowMultiplos->cantidad;
 				$precioUnitario = $producto['precioUnitario'] / $rowMultiplos->cantidad;
 				
@@ -348,7 +348,7 @@
 													$tablaInventario = $this->tablaInventario;
 													$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$rowProductoEnl["productoEnlazado"]);
 													$rowInventario= $tablaInventario->fetchRow($select);
-													$rowInventario->existencia = $cantInv;;
+													$rowInventario->existencia = $cantInv;
 													$rowInventario->existenciaReal = $cantInv;
 													$rowInventario->save();
 												}//Cantidad
@@ -747,4 +747,413 @@
 		public function restaPT(array $encabezado, $producto){
 		}
 		
+		public function restaDesechable($producto){
+			$can  = $producto['cantidad'];
+			//print_r($can);
+			if($producto['tipoEmpaque'] == 1){
+				//Vaso p/café
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",137);
+				$rowInvCafe  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvCafe)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvCafe["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvCafe['existencia'] - $can;
+					$rowInvCafe->existencia = $cantidad;
+					$rowInvCafe->existenciaReal = $cantidad;
+					$rowInvCafe->save();
+				}else{
+					echo "No hay existencia de vaso café en inventario";
+				}
+				//Tapa para café
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",132);
+				$rowInvTCafe  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvTCafe)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvTCafe["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvTCafe['existencia'] - $can;
+					$rowInvTCafe->existencia = $cantidad;
+					$rowInvTCafe->existenciaReal = $cantidad;
+					$rowInvTCafe->save();
+				}else{
+					echo "No hay existencia de tapa para café en inventario";
+				}
+				//Cuchillo
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",58);
+				$rowInvCuchillo  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvCuchillo)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvCuchillo["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvCuchillo['existencia'] - $can;
+					$rowInvCuchillo->existencia = $cantidad;
+					$rowInvCuchillo->existenciaReal = $cantidad;
+					$rowInvCuchillo->save();
+				}else{
+					echo "No hay existencia de cuchuillo en inventario";
+				}
+				//Tenedor
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",136);
+				$rowInvTenedor  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvTenedor)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvTenedor["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvTenedor['existencia'] - $can;
+					$rowInvTenedor->existencia = $cantidad;
+					$rowInvTenedor->existenciaReal = $cantidad;
+					$rowInvTenedor->save();
+				}else{
+					echo "No hay existencia de tenedor en inventario";
+				}
+				//Ega pac 131
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",131);
+				$rowInvTenedor  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvTenedor)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvTenedor["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can * 25;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvTenedor['existencia'] - $can * 25;
+					$rowInvTenedor->existencia = $cantidad;
+					$rowInvTenedor->existenciaReal = $cantidad;
+					$rowInvTenedor->save();
+				}else{
+					echo "No hay existencia de ega pac en inventario";
+				}
+				//Domo tres divisiones
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",61);
+				$rowInvDomo  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvDomo)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvDomo["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvDomo['existencia'] - $can;
+					$rowInvDomo->existencia = $cantidad;
+					$rowInvDomo->existenciaReal = $cantidad;
+					$rowInvDomo->save();
+				}else{
+					echo "No hay existencia de domo en inventario";
+				}
+				//Frutero
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",134);
+				$rowInvFrutero  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvFrutero)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvFrutero["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvFrutero['existencia'] - $can;
+					$rowInvFrutero->existencia = $cantidad;
+					$rowInvFrutero->existenciaReal = $cantidad;
+					$rowInvFrutero->save();
+				}else{
+					echo "No hay existencia de vaso gelatinero en inventario";
+				}
+				//Bolsa camiseta 3 kg
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",128);
+				$rowInvBolsa  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvFrutero)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvBolsa["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvBolsa['existencia'] - $can;
+					$rowInvBolsa->existencia = $cantidad;
+					$rowInvBolsa->existenciaReal = $cantidad;
+					$rowInvBolsa->save();
+				}else{
+					echo "No hay existencia de bolsa camiseta en inventario";
+				}
+			}else if($producto['tipoEmpaque'] == 2){
+				//================================================================================================>>Desechable comida
+				//Vaso rojo
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",97);
+				$rowInvVasoRojo  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvVasoRojo)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvVasoRojo["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvVasoRojo['existencia'] - $can;
+					$rowInvVasoRojo->existencia = $cantidad;
+					$rowInvVasoRojo->existenciaReal = $cantidad;
+					$rowInvVasoRojo->save();
+				}else{
+					echo "No hay existencia de vaso rojo en inventario";
+				}
+				
+				//Vaso 16 oz
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",160);
+				$rowInvVaso16  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvVaso16)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvVaso16["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvVaso16['existencia'] - $can;
+					$rowInvVaso16->existencia = $cantidad;
+					$rowInvVaso16->existenciaReal = $cantidad;
+					$rowInvVaso16->save();
+				}else{
+					echo "No hay existencia de vaso 16 oz en inventario" ;
+				}
+				//Vaso 1 lt
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",135);
+				$rowInvVasoUnicel  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvVasoUnicel)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvVasoUnicel["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvVaso16['existencia'] - $can;
+					$rowInvVasoUnicel->existencia = $cantidad;
+					$rowInvVasoUnicel->existenciaReal = $cantidad;
+					$rowInvVasoUnicel->save();
+				}else{
+					echo "No hay existencia de vaso 32 sl en inventario" ;
+				}
+				//Tapa 1LT.
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",133);
+				$rowInvTapa  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvTapa)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvTapa["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvTapa['existencia'] - $can;
+					$rowInvTapa->existencia = $cantidad;
+					$rowInvTapa->existenciaReal = $cantidad;
+					$rowInvTapa->save();
+				}else{
+					echo "No hay existencia de tapa 32 sl en inventario" ;
+				}
+				
+				//Cuchillo plastico
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",58);
+				$rowInvCuchillo  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvCuchillo)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvCuchillo["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvCuchillo['existencia'] - $can;
+					$rowInvCuchillo->existencia = $cantidad;
+					$rowInvCuchillo->existenciaReal = $cantidad;
+					$rowInvCuchillo->save();
+				}else{
+					echo "No hay existencia de cuchillo en inventario";
+				}
+				
+				//Tenedor.
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",136);
+				$rowInvTenedor  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvTenedor)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvTenedor["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvTenedor['existencia'] - $can;
+					$rowInvTenedor->existencia = $cantidad;
+					$rowInvTenedor->existenciaReal = $cantidad;
+					$rowInvTenedor->save();
+				}else{
+					echo "No hay existencia de tenedor en inventario";
+				}
+				
+				//Cuchara
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",158);
+				$rowInvCuchara  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvCuchara)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvCuchara["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvCuchara['existencia'] - $can;
+					$rowInvCuchara->existencia = $cantidad;
+					$rowInvCuchara->existenciaReal = $cantidad;
+					$rowInvCuchara->save();
+				}else{
+					echo "No hay existencia de cuchara en inventario";
+				}
+				
+				//EgaPac Pendiente
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?", 131);
+				$rowInvEgaPac  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvEgaPac)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvEgaPac["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can * 25;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvEgaPac['existencia'] - $can * 25;
+					$rowInvEgaPac->existencia = $cantidad;
+					$rowInvEgaPac->existenciaReal = $cantidad;
+					$rowInvEgaPac->save();
+				}else{
+					echo "No existe producto en existencia";
+				}
+				//Bolsa Camiseta
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",128);
+				$rowInvBolsa  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvBolsa)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvBolsa["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvBolsa['existencia'] - $can;
+					$rowInvBolsa->existencia = $cantidad;
+					$rowInvBolsa->existenciaReal = $cantidad;
+					$rowInvBolsa->save();
+				}else{
+					echo "No hay existencia de bolsa de camiseta en inventario";
+				}
+				//Aluminio
+				$tablaInventario = $this->tablaInventario;
+				$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",98);
+				$rowInvAlum  = $tablaInventario->fetchRow($select);
+				if(!is_null($rowInvAlum)){
+					$tablaCapas = $this->tablaCapas;
+					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvAlum["idProducto"]);
+					$rowCapas= $tablaCapas->fetchRow($select);
+					$canCapas = $rowCapas["cantidad"] - $can * 50;
+					if($canCapas > 0){
+						$rowCapas->cantidad = $canCapas;
+						$rowCapas->save();
+					}else{
+						//Eliminamos el registro
+					}
+					$cantidad  = $rowInvAlum['existencia'] - $can * 50;
+					$rowInvAlum->existencia = $cantidad;
+					$rowInvAlum->existenciaReal = $cantidad;
+					$rowInvAlum->save();
+				}else{
+					echo "No hay existencia de papel aluminio de camiseta en inventario";
+				}
+			}
+		}
 	}

@@ -4,21 +4,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
     private $sucursalDAO = null;
-
     private $notaSalidaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $impuestosDAO = null;
-
     private $cobroClienteDAO = null;
-
     private $anticipoDAO = null;
-
     private $proyectoDAO = null;
 
     public function init()
@@ -75,6 +67,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador = 0;
 				foreach ($productos as $producto){
 					try{
+						if($encabezado["idEmpresas"]==6){
+							$desechable  = $this->notaSalidaDAO->restaDesechable($producto);
+						}
 						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
 						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
 						$contador++;
@@ -291,13 +286,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$this->view->empresas = $empresas;	
 		}if($request->isPost()){		
 			$datos = $request->getPost();
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			$idSucursal = $this->getParam("sucursal");
-			//print_r($idSucursal);
-        	$idProyecto = $this->getParam("idProyecto"); 
-        	//print_r($idProyecto);
-        	$proyectos = $this->proyectoDAO->obtieneProyecto($idProyecto);
-			$this->view->proyectos = $proyectos;
 		}
         
     }

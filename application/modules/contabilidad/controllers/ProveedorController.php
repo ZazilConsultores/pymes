@@ -4,15 +4,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
     private $notaEntradaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $pagoProveedor = null;
-
     private $anticipoDAO = null;
 
     public function init()

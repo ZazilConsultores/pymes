@@ -123,7 +123,7 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto)->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
 		->where("idTipoMovimiento=?",4);
 		$rowsMovimiento = $tablaMovimientos->fetchAll($select);
-		print_r("$select");
+		//print_r("$select");
 		foreach ($rowsMovimiento as $rowMovimiento){
 				$tablaMovimientos  = $this->tablaMovimiento;
 				$select = $tablaMovimientos->select()->setIntegrityCheck(false)

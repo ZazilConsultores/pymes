@@ -61,11 +61,15 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 				$tablaMultiplos = $this->tablaMultiplos;
 				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
-				//print_r("$select");
+				print_r("$select");
 				if(!is_null($rowMultiplo)){
 					//====================Operaciones para convertir unidad minima====================================================== 
 					$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+					print_r("<br />");
+					print_r($cantidad);
+					$precioUnitario = $producto['precioUnitario'] / $cantidad;
+					print_r("<br />");
+					print_r($precioUnitario);
 				
 					$mMovtos = array(
 						'idProducto' => $producto['descripcion'],
@@ -83,7 +87,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 						'costoUnitario'=>$precioUnitario,
 						'totalImporte'=>$producto['importe']
 					);
-					//print_r($mMovtos);
+					print_r($mMovtos);
 					$dbAdapter->insert("Movimientos",$mMovtos);
 				}
 				

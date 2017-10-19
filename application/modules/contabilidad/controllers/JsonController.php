@@ -440,6 +440,39 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         
     }
 
+    public function proyectoporproveedorAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoMovtoProveedor= $this->proyectoClienteDAO->obtieneProyectoProveedor($idProyecto);
+		if(!is_null($proyectoMovtoProveedor)){
+			echo Zend_Json::encode($proyectoMovtoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectoporremprovAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoMovtoProveedor= $this->proyectoClienteDAO->obtieneProyectoRemisionProveedor($idProyecto);
+		if(!is_null($proyectoMovtoProveedor)){
+			echo Zend_Json::encode($proyectoMovtoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectonominaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoNomina  = $this->proyectoClienteDAO->obtieneProyectoNominaProveedor($idProyecto);
+		if(!is_null($proyectoNomina)){
+			echo Zend_Json::encode($proyectoNomina);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -464,6 +497,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
 	
 	
 	
@@ -475,6 +511,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
 
 
 

@@ -1129,6 +1129,9 @@
               <actionMethod actionName="proyectoremprovxfecha"/>
               <actionMethod actionName="proyectoremclixfecha"/>
               <actionMethod actionName="proyectonominafecha"/>
+              <actionMethod actionName="proyectoporproveedor"/>
+              <actionMethod actionName="proyectoporremprov"/>
+              <actionMethod actionName="proyectonomina"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1566,6 +1569,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="proyectonominafecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoporproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoporremprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectonomina"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3070,6 +3082,9 @@
                 <testApplicationActionMethod forActionName="proyectoremprovxfecha"/>
                 <testApplicationActionMethod forActionName="proyectoremclixfecha"/>
                 <testApplicationActionMethod forActionName="proyectonominafecha"/>
+                <testApplicationActionMethod forActionName="proyectoporproveedor"/>
+                <testApplicationActionMethod forActionName="proyectoporremprov"/>
+                <testApplicationActionMethod forActionName="proyectonomina"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

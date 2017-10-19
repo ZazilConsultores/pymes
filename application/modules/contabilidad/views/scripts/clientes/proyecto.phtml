@@ -1,13 +1,12 @@
 <?php
 	$empresas = $this->empresas;
-	$proyectos = $this->proyectos;
 ?>
 <section>
 	<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-success">
 			<div class="panel-heading">
-				<h4 class="panel-title">Busca Proyecto<strong></strong></h4>
+				<h4 class="panel-title">Detalle Proyecto Por Movimiento<strong></strong></h4>
 			</div>
 			<div class="panel-body">
 				<div>
@@ -97,7 +96,7 @@
 <section>
 	<div class="panel panel-info">
 		<div class="panel-heading">
-			<h4 class="panel-title">Detalle Proyecto Por Remision Entrada.</h4>
+			<h4 class="panel-title">Detalle Proyecto Por Remision Cliente.</h4>
 		</div>
 		<table id="detalleRemisonC" class="table table-striped table-condensed">
 			<thead>
@@ -114,7 +113,7 @@
 <section>
 	<div class="panel panel-info">
 		<div class="panel-heading">
-			<h4 class="panel-title">Detalle Proyecto Por Remision Salida.</h4>
+			<h4 class="panel-title">Detalle Proyecto Por Remision Proveedor.</h4>
 		</div>
 		<table id="detalleRemisonP" class="table table-striped table-condensed">
 			<thead>
@@ -158,12 +157,11 @@
 			var idFiscal = $(this).val();
 			if(idFiscal != 0){
 				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				console.log(urlQuerySucursales);
 				$.ajax({
 					url: urlQuerySucursales,
 					dataType: "json",
 					success: function(data){
-						console.dir(data);
+						//console.dir(data);
 						$("#idSucursal").empty();
 						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
 						$.each(data, function (i,item){
@@ -191,46 +189,47 @@
 			});
 			
 		});
+		
 		function AddRow(){
 			$('#detalleProyectoxfc tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfc"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalfc"class="form-control" style="width:120px"></input></td></tr>');
     	}
+    	
     	function calculaTotal(){
 			var total = 0;
 			var nFilas = $("#detalleProyectoxfc tbody tr").length -1;
 			$("table#detalleProyectoxfc").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
+			   	//console.log($(this).text());
 			   	total += +$(this).text(); 
-			   	console.log(total);
 			   	$("#totalfc").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegfc").val(nFilas);
 			 });
 				
 		}
+		
 		function AddRowFP(){
 			$('#detalleProyectoxfp tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfp"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
     	}
+    	
     	function calculaTotalFP(){
 			var total = 0;
 			var nFilas = $("#detalleProyectoxfp tbody tr").length -1;
 			$("table#detalleProyectoxfp").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
-			   	total += +$(this).text(); 
-			   	console.log(total);
+			   	total += +$(this).text();
 			   	$("#totalfp").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegfp").val(nFilas);
 			 });
 				
 		}
+		
 		function AddRowRE(){
 			$('#detalleRemisonC tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRE"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalRE"class="form-control" style="width:120px"></input></td></tr>');
     	}
+    	
     	function calculaTotalRE(){
 			var total = 0;
 			var nFilas = $("#detalleRemisonC tbody tr").length -1;
 			$("table#detalleRemisonC").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
 			   	total += +$(this).text(); 
-			   	console.log(total);
 			   	$("#totalRE").val(total.toFixed(2));
 			   	$("#totalRegRE").val(nFilas);
 			 });
@@ -240,13 +239,12 @@
 		function AddRowRS(){
 			$('#detalleRemisonP tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegRS"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalRS"class="form-control" style="width:120px"></input></td></tr>');
     	}
+    	
     	function calculaTotalRS(){
 			var total = 0;
 			var nFilas = $("#detalleRemisonP tbody tr").length -1;
 			$("table#detalleRemisonP").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
-			   	total += +$(this).text(); 
-			   	console.log(total);
+			   	total += +$(this).text();
 			   	$("#totalRS").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegRS").val(nFilas);
 			 });
@@ -256,23 +254,20 @@
 		function AddRowPN(){
 			$('#detalleProyectoNomina tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegPN"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalPN"class="form-control" style="width:120px"></input></td></tr>');
     	}
+    	
     	function calculaTotalPN(){
 			var total = 0;
 			var nFilas = $("#detalleProyectoNomina tbody tr").length -1;
 			$("table#detalleProyectoNomina").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
 			   	total += +$(this).text(); 
-			   	console.log(total);
 			   	$("#totalPN").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			   	$("#totalRegPN").val(nFilas);
 			 });
-				
 		}
 		
 		$("button#queryProyecto").on("click", function(){
 		 	var idProyecto = $("select#idProyecto").val();
 			var urlProyecto = window.location.origin + "/General/contabilidad/json/totalproyecto/idProyecto/" + idProyecto;
-			console.log(urlProyecto);
 			$.ajax({
 				url: urlProyecto,
 				dataType: "json",
@@ -280,21 +275,14 @@
 					var tbody = $("table#detalleProyectoxfc").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						
 						var idTipoMovimiento = data[i].idTipoMovimiento;
 						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
-						console.log(tipo);
-						
 						if(idTipoMovimiento == 2){
-							console.log("El tipo es factura Cliente");
 							tbody.append($('<tr>').
 							append($('<td>').append("FACTURA CLIENTE")).
 							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].total).attr("id", "importe"))
-							
-							);
-							
+							append($('<td>').append(data[i].total).attr("id", "importe")));
 						}
 					});
 					AddRow();
@@ -303,10 +291,10 @@
 			});
 			
 		});
+		
 		$("button#queryProyecto").on("click", function(){
 			var idProyecto = $("select#idProyecto").val();
-			var urlProyecto = window.location.origin + "/General/contabilidad/json/totalproyecto/idProyecto/" + idProyecto;
-			console.log(urlProyecto);
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoporproveedor/idProyecto/" + idProyecto;
 			//====================================================================>>Factura Proveedor
 			$.ajax({
 				url: urlProyecto,
@@ -315,21 +303,14 @@
 					var tbody = $("table#detalleProyectoxfp").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						
 						var idTipoMovimiento = data[i].idTipoMovimiento;
 						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
-						console.log(tipo);
-						
 						if(idTipoMovimiento == 4 ){
-							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("FACTURA PROVEEDOR")).
 							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].total).attr("id", "importe"))
-							
-							);
-							
+							append($('<td>').append(data[i].total).attr("id", "importe")));
 						}
 					});
 					AddRowFP();
@@ -337,10 +318,10 @@
 				}
 			});
 		});
+		
 		$("button#queryProyecto").on("click", function(){
 			var idProyecto = $("select#idProyecto").val();
 			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremision/idProyecto/" + idProyecto;
-			console.log(urlProyecto);
 			//====================================================================>>Remision Cliente
 			$.ajax({
 				url: urlProyecto,
@@ -349,19 +330,15 @@
 					var tbody = $("table#detalleRemisonC").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						
 						var idTipoMovimiento = data[i].idTipoMovimiento;
 						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
-						console.log(tipo);
-						
-						if(idTipoMovimiento == 12 ){
-							console.log("El tipo es factura Proveedor");
+						if(idTipoMovimiento == 13 ){
+							//console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("REMISION CLIENTE")).
 							append($('<td>').append(data[i].razonSocial)).	
 							append($('<td>').append(data[i].numeroFolio)).
 							append($('<td>').append(data[i].totalImporte).attr("id", "importe"))
-							
 							);
 						}
 					});
@@ -373,9 +350,8 @@
 		
 		$("button#queryProyecto").on("click", function(){
 			var idProyecto = $("select#idProyecto").val();
-			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremision/idProyecto/" + idProyecto;
-			console.log(urlProyecto);
-			//====================================================================>>Remision Cliente
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoporremprov/idProyecto/" + idProyecto;
+			//====================================================================>>Remision Proveedor
 			$.ajax({
 				url: urlProyecto,
 				dataType: "json",
@@ -383,13 +359,9 @@
 					var tbody = $("table#detalleRemisonP").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						
 						var idTipoMovimiento = data[i].idTipoMovimiento;
 						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
-						console.log(tipo);
-						
-						if(idTipoMovimiento == 13 ){
-							console.log("El tipo es factura Proveedor");
+						if(idTipoMovimiento == 12 ){
 							tbody.append($('<tr>').
 							append($('<td>').append("REMISION PROVEEDOR")).
 							append($('<td>').append(data[i].razonSocial)).	
@@ -407,8 +379,7 @@
 		
 		$("button#queryProyecto").on("click", function(){
 			var idProyecto = $("select#idProyecto").val();
-			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremision/idProyecto/" + idProyecto;
-			console.log(urlProyecto);
+			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectonomina/idProyecto/" + idProyecto;
 			//====================================================================>>Remision Cliente
 			$.ajax({
 				url: urlProyecto,
@@ -417,13 +388,9 @@
 					var tbody = $("table#detalleProyectoNomina").find('tbody');
 					tbody.empty();
 					$.each(data, function(i,item){
-						
 						var idTipoMovimiento = data[i].idTipoMovimiento;
 						var tipo  =  window.location.origin + "/General/contabilidad/json/getdescripciontipomovto/idTipoMovimiento/" + idTipoMovimiento;
-						console.log(tipo);
-						
 						if(idTipoMovimiento == 20 ){
-							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("PAGO NOMINA")).
 							append($('<td>').append(data[i].razonSocial)).	

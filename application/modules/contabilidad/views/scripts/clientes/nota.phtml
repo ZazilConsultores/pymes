@@ -1,13 +1,38 @@
 <?php
-	echo $this->formulario;	
+	$formulario  = $this->formulario;	
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;	
 ?>
+<section class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Nueva Nota Cliente.</h3>
+		</div>
+		<div class="panel-body">
+				<?php if(!is_null($messageSuccess)){ ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+				<div class="alert alert-danger" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageFail; ?>
+				</div>
+				<?php } ?><br />
+				<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
 
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">Agregar Productos para Nota Salida.</h3>
+			<h3 class="panel-title">Agregar Productos.</h3>
 		</div>
 		<div class="panel-body">
 			<?php if (!is_null($messageSuccess)){?>
@@ -15,7 +40,6 @@
 				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
 					<span arial-hidden="true">&times;</span>
 				</button>
-				
 				<?php echo $messageSuccess; ?>
 			</div>
 			<?php }elseif(!is_null($messageFail)){ ?>
@@ -25,7 +49,7 @@
 				</button>
 				<?php echo $messageFail; ?>
 			</div>
-			<?php }?><br />
+			<?php }?>
 			<div>
 				<tr>
 					<button id="addRow" class="btn btn-success" >
@@ -50,16 +74,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<div id="empaque" align="right" >
-					<label class="radio-inline" > 
-       				 	<input type="radio"  name="1"><strong>Traste</strong> 
-      				</label> 
-      				<label class="radio-inline"> 
-        				<input type="radio"  name="1"><strong>Desechable Desayuno</strong>
-      				</label> 
-      				<label class="radio-inline"> 
-        				<input type="radio"  name="1"><strong>Desechable Comida</strong>
-     				 </label>
+					<div id="empaque" align="right" class="hidden">
+						<label class="radio-inline">
+							<input type="radio" id="desayuno" name="1" value="desayuno"><strong>Desechable Desayuno</strong>
+      					</label> 
+      					<label class="radio-inline">
+      						 <input type="radio" id="comida" name="1" value="comida"><strong>Desechable Comida</strong>
+     				 	</label>
+     				 	<label class="radio-inline">
+							<input type="radio" id="traste" name="1" value="traste" checked="true"><strong>Traste</strong>
+      					</label> 
      				 </div>
 				</tbody>
 				<tfoot>
@@ -72,42 +96,17 @@
 						<td>Total:</td>
 						<td><input id="total" class="form-control" disabled="true" /></td>
 					</tr>
-					
 				</tfoot>
 			</table>
 		</div>
 	</div>
 </section>
+
 <script>
-	$( document ).ready(function() {
+	$(document).ready(function() {
 		var url = window.location.origin + "/General/";
-		$("select#idEmpresas").on('change', function(){
-			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
-			//console.log("$url");
-			$.ajax({
-				url: url,
-				dataType: "json",
-				success: function(data){
-					$("select#idSucursal").empty();
-					$.each(data, function(i,item){	
-						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
-					});
-					
-				}
-			});
-			//valida radio button para empaque en caso de ser cafe
-			if(this.value == 6){
-				//console.log("Empaque");
-				
-			}
-		});
-		
-		$("table#productosNota").on("click", "div[id^='empaque']", function(){
-			//$("div#empaque").removeAttr('disabled');
-			console.log("Empaque");
-		});
-		
 		var form = $("#nuevaNotaCliente");
+		
 		form.validate({
 			rules: {
 				numFolio: {
@@ -133,10 +132,31 @@
 			}
 		});
 		
+		$("select#idEmpresas").on('change', function(){
+			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+				}
+			});
+			
+			//Muestra radio button en caso de que sea Empresa Café del Centro
+			if(this.value == 6){
+				console.log("El empaque");
+				$("div#empaque").removeClass("hidden");
+			}else{
+				$("div#empaque").addClass("hidden");
+			}
+		});
+		
 		console.log( "ready!" );
 		var jsonDesProductos = <?php echo $this->jsonDesProductos; ?>;
 		//console.dir(jsonProductos);
-		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#productosNota tbody > tr").length;
@@ -148,8 +168,7 @@
 			// cantidad
 			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'value':0});
 			// idProducto
-			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-
+			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'})
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
 			/*$.each(jsonUnidad,function(i,item){
@@ -167,7 +186,6 @@
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
 			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'}).attr({'disabled':'true'});
-			
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
 			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
@@ -200,45 +218,35 @@
  			var descripcion= $(this).attr("id");
 			var arr = descripcion.split('_');
 			var id = $(this).val();
-			//console.log(id);
 			var numFila =  arr[1];
  			
  			$.each(jsonDesProductos,function(i,item){
  				if(jsonDesProductos[i].idProducto == id){
  					$("input#idProducto_"+numFila).val(jsonDesProductos[i].claveProducto);
  				}
- 				
 			});
  			
  		});//cierra funcion buscar descripcion del producto
  		
- 		//Funcion buscar Multiplo del producto
+ 		//Busca multiplo por producto
  		$("table#productosNota").on("change", "select[id^='descripcion_']", function(){
  			var claveProd= $(this).attr("id");
 			var arr = claveProd.split('_');
 			var id = $(this).val();
-			console.log(id);
 			var numFila =  arr[1];
 
 			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
-			console.log($url);
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					console.log($url);
-					console.dir(data);
 					$("select#idUnidad_"+numFila).empty();
 					$.each(data, function(i,item){
 						if(data[i].idProducto == id){
-							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
 							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
-						}	
-						
+						}
 					});
-					
 				}
-				
 			});
  			
  		});//cierra funcion Multiplo del producto
@@ -246,13 +254,11 @@
 
  		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
- 			console.log("En a#generarJsonArray: ");
  			var tabla = $("table#productosNota > tbody  > tr");
- 			//Array Json de productos
+ 			var tipoEmpaque;
  			var productos = [];
- 			
+ 			var empaque = [];
  			tabla.each(function(){
- 				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
@@ -260,80 +266,72 @@
  				var descripcion = row.find("select[id^='descripcion_']").val();
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  				var importe = row.find("input[id^='costoTotal_']").val();
- 				//var total = row.find("input[id^='total']").val();
  				
- 				console.log("Cantidad:"+cantidad);
+ 				/*console.log("Cantidad:"+cantidad);
  				console.log("unidad:"+unidad);
  				console.log("codigoBarras:"+codigoBarras);
  				console.log("descripcion:"+descripcion);
  				console.log("precioUnitario:"+precioUnitario);
- 				console.log("costoTotal:"+importe);
- 				//console.log("total:"+total);
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				console.log("costoTotal:"+importe);*/
  				
- 			
+ 				if ($("#desayuno:checked").val()=="desayuno"){
+ 					tipoEmpaque  = 1;
+   				}else if($("#comida:checked").val()=="comida"){
+   					tipoEmpaque  = 2;
+   				}else{
+   					tipoEmpaque  = 0;
+   				}
+   				
+   				empaque.push(new Emp(tipoEmpaque));
+   				console.dir(empaque);
+   				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,tipoEmpaque)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
- 			
  			console.log(myString);
  			if ($("input#productos").val(myString)){
- 				
  			};
+ 			
  		});
  		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Emp(tipoEmpaque) {
+		  this.tipoEmpaque = tipoEmpaque;
+		}
+		
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe, tipoEmpaque) {
 		  this.cantidad = cantidad;
-		  //this.claveProducto = claveProducto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
 		  this.precioUnitario = precioUnitario;
 		  this.importe = importe;
-		  //this.unidad = unidad;
+		  this.tipoEmpaque = tipoEmpaque;
+		  
 		}
 		
-		
-		 $("a#generarJsonArray").on("click",function(){
-            //if($(this).val() != ''){
-               $('input[type="submit"]').removeAttr('disabled');
-            //}
-          });
+		$("a#generarJsonArray").on("click",function(){
+			$('input[type="submit"]').removeAttr('disabled');
+        });
           
-           $("table#productosNota").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
+        $("table#productosNota").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         	calculaRow($(this).closest("tr"));
         	calculaGrandTotal();
     	});
 	
-	function calculaRow(row) {
-		var  precioUnitario= +row.find('input[id^="costoUnitario_"]').val();
-    	var cantidad = +row.find('input[id^="idCantidad_"]').val();
-    	row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
-	}
+		function calculaRow(row){
+			var  precioUnitario= +row.find('input[id^="costoUnitario_"]').val();
+    		var cantidad = +row.find('input[id^="idCantidad_"]').val();
+    		row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
+		}
 	
-	function calculaGrandTotal() {	
-    	var grandTotal = 0;
-        
-    	$("table#productosNota").find('input[id^="costoTotal_"]').each(function () {
-        	grandTotal += +$(this).val(); 
-        	console.log(grandTotal);
-    	});
-    	$("input#total").val(grandTotal.toFixed(2));
- 	 	  
-   	} 
-   	
-   	//Radio button
-   	/*$("table#productosNota").find('input[id^="trastes"]').each(function () {
-   		console.log("");
-   	});*/
-   	$("#desayuno").click(function () {
-   		var urlClientesEmpresas = url  +"contabilidad/clientese/idFiscales/" + idFiscales;
-		console.log(idFiscales);
-   	});
-   	$("select#idEmpresas").on('change', function(){
-   		
-   	});
-   	
-	});//cierra document ready
+		function calculaGrandTotal() {
+			var grandTotal = 0;
+        	$("table#productosNota").find('input[id^="costoTotal_"]').each(function () {
+        		grandTotal += +$(this).val(); 
+    		});
+    		$("input#total").val(grandTotal.toFixed(2));
+   		}
+   		 
+	});//cierra docum.ent ready
 </script>
 
