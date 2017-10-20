@@ -1,17 +1,15 @@
 <?php
-	echo $this->formulario;
+	$formulario = $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				Agregar Datos para Remision Salida.
-			</h3>
+			<h3 class="panel-title">Nueva Remisión Cliente.</h3>
 		</div>
 		<div class="panel-body">
-			<?php if(!is_null($messageSuccess)){ ?>
+				<?php if(!is_null($messageSuccess)){ ?>
 					<div class="alert alert-success" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						  <span aria-hidden="true">&times;</span>
@@ -26,7 +24,19 @@
 					<?php echo $messageFail; ?>
 				</div>
 				<?php } ?><br />
-				<!-- Botón para agregar filas-->
+				<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
+
+<section class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Agregar Productos.
+			</h3>
+		</div>
+		<div class="panel-body">
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -48,7 +58,17 @@
 				
 				</thead>
 				<tbody>
-					
+					<div id="empaque" align="right" class="hidden">
+						<label class="radio-inline">
+							<input type="radio" id="desayuno" name="1" value="desayuno"><strong>Desechable Desayuno</strong>
+      					</label> 
+      					<label class="radio-inline">
+      						 <input type="radio" id="comida" name="1" value="comida"><strong>Desechable Comida</strong>
+     				 	</label>
+     				 	<label class="radio-inline">
+							<input type="radio" id="traste" name="1" value="traste" checked="true"><strong>Traste</strong>
+      					</label> 
+     				</div
 				</tbody>
 				<tfoot>
 					<tr>
@@ -66,8 +86,10 @@
 		</div>
 	</div>
 </section>
+
 <script>
 	$(document).ready(function(){
+		console.log( "ready!" );
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			$.ajax({
@@ -81,6 +103,13 @@
 					
 				}
 			});
+			//Muestra radio button en caso de que sea Empresa Café del Centro
+			if(this.value == 6){
+				console.log("El empaque");
+				$("div#empaque").removeClass("hidden");
+			}else{
+				$("div#empaque").addClass("hidden");
+			}
 			
 		});
 		
@@ -100,11 +129,8 @@
 			});
 			
 		});
-			
-		console.log( "ready!" );
+		
 		var jsonDesProductos = <?php echo $this->jsonDesProductos; ?>;
-		
-		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#remisionSalida tbody > tr").length;
@@ -147,8 +173,7 @@
 				append($('<td>').append(selectDescripcion)).
 				append($('<td>').append(inputCostoUnitario)).
 				append($('<td>').append(inputCostoTotal)).
-				append($('<td>').append(buttonLimpiar))
-				
+				append($('<td>').append(buttonLimpiar))		
 			);
 		});//cierra el addRow
 		
@@ -199,24 +224,20 @@
 							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
 							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
 						}	
-						
 					});
-					
 				}
-				
 			});
- 			
  		});//cierra funcion Multiplo del producto
 
 		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
  			console.log("En a#generarJsonArray: ");
  			var tabla = $("table#remisionSalida > tbody  > tr");
+ 			var tipoEmpaque;
  			//Array Json de productos
  			var productos = [];
- 			
+ 			var empaque = [];
  			tabla.each(function(){
- 				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
@@ -233,7 +254,19 @@
  				console.log("precioUnitario:"+precioUnitario);
  				console.log("costoTotal:"+importe);
  				//console.log("total:"+total);
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				if ($("#desayuno:checked").val()=="desayuno"){
+ 					tipoEmpaque  = 1;
+ 					console.log("es desayuno");
+   				}else if($("#comida:checked").val()=="comida"){
+   					tipoEmpaque  = 2;
+   					console.log("es comida");
+   				}else{
+   					tipoEmpaque  = 0;
+   				}
+   				
+   				empaque.push(new Emp(tipoEmpaque));
+   				console.dir(empaque);
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe, tipoEmpaque)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -244,13 +277,17 @@
  			};
  		});
  		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Emp(tipoEmpaque) {
+		  this.tipoEmpaque = tipoEmpaque;
+		}
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,tipoEmpaque) {
 		  this.cantidad = cantidad;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
 		  this.precioUnitario = precioUnitario;
-		  this.importe = importe;		
+		  this.importe = importe;
+		  this.tipoEmpaque = tipoEmpaque;		
 		}
 		
 		$("a#generarJsonArray").on("click",function(){

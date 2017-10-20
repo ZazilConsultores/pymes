@@ -57,9 +57,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$jsonDesProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonDesProductos = $jsonDesProductos;
         $formulario = new Contabilidad_Form_NuevaNotaCliente;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
@@ -73,10 +72,10 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
 						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
 						$contador++;
+						$this->view->messageSuccess = "Nota Cliente Generada Exitosamente";
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}
-					
 				}
 			}
 		}
