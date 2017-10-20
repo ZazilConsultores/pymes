@@ -89,11 +89,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$rowsProducto =  $statement->fetchAll();
 		$jsonDesProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonDesProductos = $jsonDesProductos;
-		
 		$formulario = new Contabilidad_Form_AgregarRemisionCliente;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
 				$datos = $formulario->getValues();
@@ -104,6 +102,9 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador = 0;
 				foreach ($productos as $producto){
 					try{
+						if($encabezado["idEmpresas"]==6){
+							$desechable  = $this->notaSalidaDAO->restaDesechable($producto);
+						}
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
 						$contador++;
 						$this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
