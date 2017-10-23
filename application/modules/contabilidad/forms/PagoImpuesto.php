@@ -57,6 +57,17 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
 		
+		$tablasFiscales = new Sistema_DAO_Fiscales();
+		$rowsEmpleado = $tablasFiscales->getEmpleadoProveedor();
+		
+		$eProveedor =  new Zend_Form_Element_Select('idCoP');
+        $eProveedor->setLabel('Seleccionar Empleado: ');
+		$eProveedor->setAttrib("class", "form-control");
+		
+		foreach ($rowsEmpleado as $rowEmpleado) {
+			$eProveedor->addMultiOption($rowEmpleado->idProveedores, $rowEmpleado->razonSocial);
+		}
+		
 		$subDatos = new Zend_Form_SubForm;
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
@@ -78,7 +89,10 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eTipoImpuesto->setAttrib("class", "form-control");
 		
 		foreach ($impuestos as $impuesto) {
-			$eTipoImpuesto->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getDescripcion());
+			if ($impuesto->getIdImpuesto() == "10" or $impuesto->getIdImpuesto() == "8" or $impuesto->getIdImpuesto() == "5") {
+				$eTipoImpuesto->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getDescripcion());
+			}
+			
 		}
 		
 		$formaPago = Zend_Registry::get('formaPago');
@@ -102,7 +116,7 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumeroFolio, $eFecha));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProveedor,$eProyecto,$eNumeroFolio, $eFecha));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		

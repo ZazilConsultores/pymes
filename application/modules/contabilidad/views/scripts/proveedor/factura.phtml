@@ -329,6 +329,10 @@ $(document).ready(function () {
 			});
  			
  		});//cierra funcion Multiplo del producto
+ 		
+ 		$("input#ieps").on("click",function(){
+ 			
+ 		});//cierra funcion Multiplo del producto
 
  	
  		//Envia los valores de Impuestos a a la vista de facturaProveedor
@@ -448,10 +452,12 @@ function calculateGrandTotal() {
       
    	ieps = $('input#ieps').val();
    	if (ieps != 0){
-   		iepsIva = $("#subTotal").val() - ieps;
+   		/*iepsIva = $("#subTotal").val() - ieps;
    		ivaIeps = iepsIva * 0.16
-   		$("input#iva").val(ivaIeps);
-   
+   		$("input#iva").val(ivaIeps);*/
+   		console.log("Holla");
+   		iepsT = parseInt( $("#subTotal").val()) +  parseInt($('input#ieps').val());
+   		console.log(iepsT);
    	}
     
     //$("input#1-pagos").val(total.toFixed(2));
@@ -468,7 +474,7 @@ function calculateGrandTotal() {
    	total = (totalDescuento * totalIva);
    	console.log("Iva con descuento :" + totalIva);
    	$("input#iva").val(totalIva.toFixed(2)); 
-   	total = totalDescuento + totalIva;
+   	total = totalDescuento + totalIva ;
    	$("input#total").val(total.toFixed(2)); 
    }
    	

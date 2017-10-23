@@ -86,7 +86,12 @@
 					</ul>
 				</li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'notacredito'), null, true); ?>">Nota de Crédito</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'impuestos'), null, true); ?>">Pago de Impuestos</a></li>
+				<li class="dropdown-submenu">
+					<a tabindex="-1" href="<?php echo $this->url(array('module'=>'contabilidad','controller'=>'tesoreria','action'=>'impuestos'), null, true); ?>">Pago de Impuestos</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'impuestoempleado'), null, true); ?>">Pago Impuesto Empleado</a></li>
+					</ul>
+				</li>
 			</ul>
 			
 		</li>

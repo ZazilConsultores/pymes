@@ -1054,6 +1054,7 @@
               <actionMethod actionName="notacredito"/>
               <actionMethod actionName="pagonomina"/>
               <actionMethod actionName="aplicapagonomina"/>
+              <actionMethod actionName="impuestoempleado"/>
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
@@ -1578,6 +1579,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="proyectonomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="impuestoempleado"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3007,6 +3011,7 @@
                 <testApplicationActionMethod forActionName="notacredito"/>
                 <testApplicationActionMethod forActionName="pagonomina"/>
                 <testApplicationActionMethod forActionName="aplicapagonomina"/>
+                <testApplicationActionMethod forActionName="impuestoempleado"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>

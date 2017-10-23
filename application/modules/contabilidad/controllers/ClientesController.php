@@ -125,22 +125,14 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     {
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				print_r($productos);
-				
 				$importe = json_decode($formaPago['importes'],TRUE);
-				//print_r($formaPago);
-				//if($importe[0]['desayuno']=="on"){
-					//print_r("Controller desayuno");
-				//}
 				$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
@@ -159,8 +151,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 					$this->view->messageSuccess = "Se ha agregado Factura exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
-				}/*}else{
-					print_r("formulario no valido <br />");*/
+				}
 				}
 
 			//}

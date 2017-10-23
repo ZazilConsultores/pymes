@@ -270,7 +270,7 @@
 						$select = $tablaProductoImp->select()->from($tablaProductoImp)->where("idProducto=?",$producto['producto']);
 						$rowProdImp = $tablaProductoImp->fetchRow($select);
 						//print_r("$select");
-						if(!is_null($rowProdImp)){
+						//if(!is_null($rowProdImp)){
 							switch($rowProdImp["idProducto"]){
 											case '29':
 												$importe = $importe[0]['ieps'];
@@ -304,7 +304,7 @@
 								    //print_r(//print_r($mfImpuesto);
 									$dbAdapter->insert("ImpuestoProducto", $mfImpuesto);*/
 								}
-						}
+						//}
 						
 						}else{
 					print_r("<br />");
