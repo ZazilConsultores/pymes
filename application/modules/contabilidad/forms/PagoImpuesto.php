@@ -89,7 +89,7 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eTipoImpuesto->setAttrib("class", "form-control");
 		
 		foreach ($impuestos as $impuesto) {
-			if ($impuesto->getIdImpuesto() == "10" or $impuesto->getIdImpuesto() == "8" or $impuesto->getIdImpuesto() == "5") {
+			if ($impuesto->getIdImpuesto() == "9" or $impuesto->getIdImpuesto() == "8" or $impuesto->getIdImpuesto() == "5") {
 				$eTipoImpuesto->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getDescripcion());
 			}
 			
