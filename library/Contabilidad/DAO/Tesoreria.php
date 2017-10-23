@@ -799,6 +799,23 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');	
 		
 		try{
+			$mMovtos = array(
+				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+				'idEmpresas' => $encabezado['idEmpresas'],
+				'idSucursal'=>$encabezado['idSucursal'],
+				'idCoP'=>$encabezado['idEmpresas'],
+				'numeroFolio'=>$encabezado['numFolio'],
+				'idProducto'=>229, //Varios servicios otros
+				'idProyecto'=>$encabezado['idProyecto'],
+				'cantidad'=>1,
+				'fecha'=>$stringIni,
+				'estatus'=>"A",
+				'secuencial'=> 1,
+				'costoUnitario'=>$info['total'],
+				'totalImporte'=>$info['total']
+				);
+				print_r($mMovtos);
+				$dbAdapter->insert("Movimientos",$mMovtos);
 			
 			$mCuentasxp = array(
 			'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],

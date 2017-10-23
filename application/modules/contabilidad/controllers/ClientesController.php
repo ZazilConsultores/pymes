@@ -98,7 +98,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$encabezado = $datos[0];
 				$formaPago =$datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
-				print_r('<br />');
 				$contador = 0;
 				foreach ($productos as $producto){
 					try{

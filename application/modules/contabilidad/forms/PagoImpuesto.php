@@ -52,6 +52,11 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eSucursal->setAttrib("required","true");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
+		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
+        $eProyecto->setLabel("Seleccionar Proyecto:");
+		$eProyecto->setAttrib("class", "form-control");
+		$eProyecto->setRegisterInArrayValidator(FALSE);
+		
 		$subDatos = new Zend_Form_SubForm;
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
@@ -97,7 +102,7 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal,$eNumeroFolio, $eFecha));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumeroFolio, $eFecha));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		

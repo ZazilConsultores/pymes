@@ -70,6 +70,23 @@
 			});
 			
 		});
+		
+		$("select#idSucursal").on('click', function(){
+			var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
+			console.log(url);
+			$.ajax({
+				url:url,
+				dataType: "json",
+				success: function(data){
+					console.dir(data);
+					$("select#idProyecto").empty();
+					$.each(data, function(i,item){
+						$("select#idProyecto").append($("<option></option>").attr("value",data[i].idProyecto).text(data[i].descripcion));
+					});
+				}
+			});
+		});
+		
 		var form = $("#nuevaNotaProveedor");
 		form.validate({
 			rules: {
