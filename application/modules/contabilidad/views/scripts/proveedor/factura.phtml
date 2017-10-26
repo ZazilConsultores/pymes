@@ -1,5 +1,5 @@
 <?php 
-	$formulario= $this->formulario;
+	$formulario  = $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 	$facturasProveedorDAO = new Contabilidad_DAO_FacturaProveedor;
@@ -7,29 +7,29 @@
 	$impuestos = $impuestoDAO->obtenerImpuestos();
 	 
 ?>
-<section class="panel panel-success">
-	<div class="panel-heading">
-		<h3 class="panel-title">
-			Alta de Factura
-		</h3>
-	</div>
-	<div class="panel-body">
-		<?php if(!is_null($messageSuccess)){ ?>
-			<div class="alert alert-success" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageSuccess; ?>
-			</div>
-			<?php }elseif(!is_null($messageFail)){ ?>
-			<div class="alert alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageFail; ?>
-			</div>
-			<?php } ?>
-		<?php echo $formulario; ?>
+<section class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Nueva Nota Cliente.</h3>
+		</div>
+		<div class="panel-body">
+				<?php if(!is_null($messageSuccess)){ ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+				<div class="alert alert-danger" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageFail; ?>
+				</div>
+				<?php } ?><br />
+				<?php echo $formulario; ?>
+		</div>
 	</div>
 </section>
 
@@ -274,7 +274,7 @@ $(document).ready(function () {
 			//console.log(id);
 			var numFila =  arr[1];
  			
- 			$.each(jsonProductos,function(i,item){
+ 			$.each(jsonProductos, function(i,item){
  				if(jsonProductos[i].idProducto == id){
  					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
  				}
@@ -297,7 +297,7 @@ $(document).ready(function () {
 			
  		});//cierra funcion buscar descripcion del producto
  		//Funcion buscar Multiplo del producto
- 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 		$("table#productos").on("change", "select[id^='_']", function(){
  			console.log("Hola");
  			var descripcion= $(this).attr("id");
 			var arr = descripcion.split('_');
@@ -330,11 +330,6 @@ $(document).ready(function () {
  			
  		});//cierra funcion Multiplo del producto
  		
- 		$("input#ieps").on("click",function(){
- 			
- 		});//cierra funcion Multiplo del producto
-
- 	
  		//Envia los valores de Impuestos a a la vista de facturaProveedor
    		$("a#generarJsonArray").on("click",function(){
     	//var tabla = $("table#productos > tfoot  > tr");
@@ -456,8 +451,8 @@ function calculateGrandTotal() {
    		ivaIeps = iepsIva * 0.16
    		$("input#iva").val(ivaIeps);*/
    		console.log("Holla");
-   		iepsT = parseInt( $("#subTotal").val()) +  parseInt($('input#ieps').val());
-   		console.log(iepsT);
+   		//iepsT = parseInt( $("#subTotal").val()) +  parseInt($('input#ieps').val());
+   		//console.log(iepsT);
    	}
     
     //$("input#1-pagos").val(total.toFixed(2));
@@ -545,35 +540,82 @@ function calculateGrandTotal() {
 			}
 			
 		});
-$("table#productos").on("change", "select[id^='idProducto_']", function(){
-	/*calculateGrandTotal();
-	var producto = $(this).attr("id");
-	var arr = producto.split('_');
-	var claveProducto = $(this).val();		 	
-    console.log(claveProducto);
-    	 //La ruta donde comparamos visualizamos los productos
-    	 var url = window.location.origin + "/General/";
-    	 var urlImpuestoProducto = url + "contabilidad/json/impuestoproducto/idProducto/"+claveProducto;
-    	 console.log(urlImpuestoProducto);
-    	$.ajax({
-					url:urlImpuestoProducto,
-					dataType: "json",
-					success: function(data){
-						var ieps = data['importe'];
-						//var idImpuesto = data['idImpuesto'];
-						//console.log(ieps);
-						//console.log(idImpuesto);
-						if (urlImpuestoProducto != '[]'){
-							var impIEPS = parseFloat($('input[id^="idCantidad_"]').val() * ieps);
-							console.log("Ieps: "+impIEPS);
-							$('input#ieps').val(impIEPS.toFixed(2));
-						}else{
-							$('input#ieps').val(0);
-						}
-					}
-				});*/
+$("table#productos").on("change", "select[id^='descripcion_']", function(){
+	var descripcion= $(this).attr("id");
+	var arr = descripcion.split('_');
+	var id = $(this).val();
+	//console.log(id);
+	var numFila =  arr[1];
+	var $url = window.location.origin + "/General/contabilidad/json/productoimpuesto/idProducto/"+id;
+	console.log($url);
+	var costo = $( "input[id^='costoTotal_']" ).val();
+	console.log(costo);
+	/*$.ajax({
+		url: $url,
+		dataType: "json",
+		success: function(data){
+			console.log($url);
+			console.log("=======Los Datos");
+			console.dir(data);
+			$.each(data, function(i,item){
+				if(data[i].idProducto == id){
+					ieps  = data[i].importe * costo;
+					var costo = $( "input[id^='costoTotal_']" ).val();
+					$('input#ieps').val(data[i].idProducto);
+				}else{
+					console.log("No contiene impuesto");
+				}	
+						
+					});
+					
+				}
 				
-			
+			});*/
+		var tabla = $("table#productos > tbody  > tr");
+ 		
+ 		tabla.each(function(){
+ 			var totalIeps;
+ 			var row = $(this);
+ 			var cantidad = row.find("input[id^='idCantidad_']").val();
+ 			var claveProducto = row.find("input[id^='idProducto_']").val();
+ 			var descripcion = row.find("select[id^='descripcion_']").val();
+ 			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
+ 			var importe = row.find("input[id^='costoTotal_']").val();
+ 			
+ 			console.log("Cantidad:"+cantidad);
+ 			console.log("Producto:"+claveProducto);
+ 			console.log("descripcion:"+descripcion);
+ 			console.log("precioUnitario:"+precioUnitario);
+ 			console.log("costoTotal:"+importe);
+ 		
+ 			
+ 			$.ajax({
+			url: $url,
+		dataType: "json",
+		success: function(data){
+			console.log($url);
+			console.log("=======Los Datos");
+			console.dir(data);
+			$.each(data, function(i,item){
+				if(data[i].idProducto == id){
+					$("table#productos").find('input[id^="costoTotal_"]').each(function () {
+					totalIeps += parseFloat(+$(this).val());
+					console.log(totalIeps);
+					//$('input#ieps').val(totalIeps);
+					});
+				}else{
+					console.log("No contiene impuesto");
+				}	
+						
+					});
+					
+				}
+				
+			});
+ 				
+
+ 		});
+       		
 });
 function descuento() {
 

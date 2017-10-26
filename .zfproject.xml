@@ -12,6 +12,7 @@
           <actionMethod actionName="login"/>
           <actionMethod actionName="normalize"/>
           <actionMethod actionName="logout"/>
+          <actionMethod actionName="productoimpuesto"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
       </controllersDirectory>
@@ -1133,6 +1134,7 @@
               <actionMethod actionName="proyectoporproveedor"/>
               <actionMethod actionName="proyectoporremprov"/>
               <actionMethod actionName="proyectonomina"/>
+              <actionMethod actionName="productoimpuesto"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1582,6 +1584,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Tesoreria">
                 <viewScriptFile forActionName="impuestoempleado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoimpuesto"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2446,6 +2451,9 @@
           <viewControllerScriptsDirectory forControllerName="Consulta">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="productoimpuesto"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -2485,6 +2493,7 @@
             <testApplicationActionMethod forActionName="login"/>
             <testApplicationActionMethod forActionName="normalize"/>
             <testApplicationActionMethod forActionName="logout"/>
+            <testApplicationActionMethod forActionName="productoimpuesto"/>
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Resultados">
             <testApplicationActionMethod forActionName="index"/>
@@ -3090,6 +3099,7 @@
                 <testApplicationActionMethod forActionName="proyectoporproveedor"/>
                 <testApplicationActionMethod forActionName="proyectoporremprov"/>
                 <testApplicationActionMethod forActionName="proyectonomina"/>
+                <testApplicationActionMethod forActionName="productoimpuesto"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

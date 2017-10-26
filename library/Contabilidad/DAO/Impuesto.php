@@ -133,13 +133,13 @@
 		public function obtenerImpuestoProducto($idProducto){
 			$tablaImpuestoProductos = $this->tablaImpuestoProductos;
 			$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where("idProducto = ?", $idProducto);
-			$rowImpuestoProductos = $tablaImpuestoProductos->fetchRow($select);
+			//$rowImpuestoProductos = $tablaImpuestoProductos->fetchAll($select);
 			
-			if (is_null($rowImpuestoProductos)) {
-				return null;
-			}else{
-				return $rowImpuestoProductos->toArray();
-			}
+			//if (is_null($rowImpuestoProductos)) {
+				//return null;
+			//}else{
+				return $rowImpuestoProductos = $tablaImpuestoProductos->fetchAll($select);
+			//}
 		}
    }
 ?>

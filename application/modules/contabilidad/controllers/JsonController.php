@@ -473,6 +473,18 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function productoimpuestoAction()
+    {
+    	$idProducto= $this->getParam("idProducto");
+		$productoImp  = $this->impuestoProductosDAO->obtenerImpuestoProducto($idProducto);
+		if(!is_null($productoImp)){
+			echo Zend_Json::encode($productoImp);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+       
+    }
+
 
 }
 
@@ -500,6 +512,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -511,6 +524,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

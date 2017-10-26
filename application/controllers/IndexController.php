@@ -4,6 +4,7 @@ class IndexController extends Zend_Controller_Action
 {
 
     private $usuarioDAO = null;
+
     private $rolDAO = null;
 
     public function init()
@@ -80,9 +81,9 @@ class IndexController extends Zend_Controller_Action
 		}
 		$this->redirect("/");
     }
-
-
 }
+
+
 
 
 

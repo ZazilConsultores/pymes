@@ -104,6 +104,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
         $formulario = new Contabilidad_Form_PagoImpuesto;
         $this->view->formulario = $formulario;
 		$formulario->getSubForm("0")->removeElement("idCoP");
+		$formulario->getSubForm("1")->removeElement("idImpuestoE");
         if($request->isGet()){
         	$this->view->formulario = $formulario;
         }elseif($request->isPost()){
@@ -201,6 +202,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
         $request = $this->getRequest();
         $formulario = new Contabilidad_Form_PagoImpuesto;
         $this->view->formulario = $formulario;
+		$formulario->getSubForm("1")->removeElement("idImpuesto");
         if($request->isGet()){
         	$this->view->formulario = $formulario;
         }elseif($request->isPost()){
@@ -212,7 +214,7 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
 				print_r("<br />");
 				print_r($info);
 				try{
-					$this->tesoreriaDAO->guardaPagoImpuesto($encabezado, $info);
+					$this->tesoreriaDAO->guardaPagoImpuestoEmpleado($encabezado, $info);
 					$this->view->messageSuccess = "Se ha generado Pago de Impuesto: <strong>".$encabezado["numFolio"]."</strong> exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();

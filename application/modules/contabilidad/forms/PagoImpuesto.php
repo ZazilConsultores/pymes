@@ -89,8 +89,16 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$eTipoImpuesto->setAttrib("class", "form-control");
 		
 		foreach ($impuestos as $impuesto) {
+			$eTipoImpuesto->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getDescripcion());	
+		}
+		
+		$eTipoImpuestoE = new Zend_Form_Element_Select('idImpuestoE');
+		$eTipoImpuestoE->setLabel('Impuesto: ');
+		$eTipoImpuestoE->setAttrib("class", "form-control");
+		
+		foreach ($impuestos as $impuesto) {
 			if ($impuesto->getIdImpuesto() == "9" or $impuesto->getIdImpuesto() == "8" or $impuesto->getIdImpuesto() == "5") {
-				$eTipoImpuesto->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getDescripcion());
+				$eTipoImpuestoE->addMultiOption($impuesto->getIdImpuesto(), $impuesto->getDescripcion());
 			}
 			
 		}
@@ -120,7 +128,7 @@ class Contabilidad_Form_PagoImpuesto extends Zend_Form
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
-		$subDatos->addElements(array($eTipoImpuesto,$eFormaProducto,$eBancoSalida, $eImporte));
+		$subDatos->addElements(array($eTipoImpuesto,$eTipoImpuestoE,$eFormaProducto,$eBancoSalida, $eImporte));
 		$subDatos->setElementDecorators($decoratorsElemento);
 		$subDatos->setDecorators($decoratorsPresentacion);
 		

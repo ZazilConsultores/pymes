@@ -113,16 +113,15 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaProveedor;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
 				$importe = json_decode($formaPago['importes'], TRUE);
-				$contador=0;
+				$contador = 0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					foreach ($productos as $producto){
