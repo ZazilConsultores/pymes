@@ -2514,124 +2514,72 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 	public function genera_Anticipo_Clientes($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
-			
-			$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
-			$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
-			$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
-			$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
-			
-			try{
-				//Seleccionamos grupoCuentasxc por fecha,tipoMovto = 19 Anticipo Cliente
-				$tablaCtsxc = $this->tablaCuentasxc;
-				$select = $tablaCtsxc->select()->from($tablaCtsxc)->where('fecha >= ?',$stringFechaInicio)->where('fecha <=?',$stringFechaFinal)->where('idTipoMovimiento=?',19)
-				->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
-				$rowsCuentaxc = $tablaCtsxc->fetchAll($select);
-				print_r($select->__toString());
-				if(!is_null($rowsCuentaxc)){
-					foreach($rowsCuentaxc as $rowcxc){
-						$idCoP = $rowcxc["idCoP"];
-						$tablaClientes = $this->tablaClientes;
-						$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente = ?", $idCoP);
-						$rowCliente = $tablaClientes->fetchRow($select);
-						//Verificamos que el cliente exista
-						if(!is_null($rowCliente)){
-							$tipo = 5;
-							$modulo = 10;
-							//Asignamos variables
-							$banco = $rowcxc["idBanco"];
-							$idSucursal = $rowcxc["idSucursal"];
-							$numeroFolio = $rowcxc["numeroFolio"];
-							$fecha = $rowcxc["fechaPago"];
-							$subtotal = $rowcxc["subtotal"];
-							$total = $rowcxc["total"];
-							$secuencial = $rowcxc["secuencial"];
-							//print_r($secuencial);
-							//Iniciamos polizaP
-							$tablaGuiaContable = $this->tablaGuiaContable;
-							$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
-							$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
-							print_r("<br />");
-							print_r("$select");
-							foreach($rowsGuiaContable as $rowGuiaContable){
-								$origen = $rowGuiaContable->origen;
-								//print_r($origen);
-								print_r("<br />");
-								switch($origen){
+		$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
+		$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
+		$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
+		$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
+		try{
+			//Seleccionamos grupoCuentasxc por fecha,tipoMovto = 19 Anticipo Cliente
+			$tablaCtsxc = $this->tablaCuentasxc;
+			$select = $tablaCtsxc->select()->from($tablaCtsxc)->where('fecha >= ?',$stringFechaInicio)->where('fecha <=?',$stringFechaFinal)->where('idTipoMovimiento=?',19)
+			->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
+			$rowsCuentaxc = $tablaCtsxc->fetchAll($select);
+			//print_r($select->__toString());
+			if(!is_null($rowsCuentaxc)){
+				foreach($rowsCuentaxc as $rowcxc){
+					$idCoP = $rowcxc["idCoP"];
+					$tablaClientes = $this->tablaClientes;
+					$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente = ?", $idCoP);
+					$rowCliente = $tablaClientes->fetchRow($select);
+					if(!is_null($rowCliente)){
+						$tipo = 5;
+						$modulo = 10;
+						$banco = $rowcxc["idBanco"];
+						$idSucursal = $rowcxc["idSucursal"];
+						$numeroFolio = $rowcxc["numeroFolio"];
+						$fecha = $rowcxc["fechaPago"];
+						$subtotal = $rowcxc["subtotal"];
+						$total = $rowcxc["total"];
+						$secuencial = $rowcxc["secuencial"];
+						$tablaGuiaContable = $this->tablaGuiaContable;
+						$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
+						$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
+						foreach($rowsGuiaContable as $rowGuiaContable){
+							$origen = $rowGuiaContable->origen;
+							switch($origen){
 								case 'S':
 									$importe = $subTotal;
 									$origen = "SIN"; //No se porque va
-									//print_r("<br />");
-									//print_r("importe subtotal:"); print_r($importe);
-									break;
+									
+								break;
 								case 'I':
 									$importe = $iva;
 									$origen = "SIN";
 									$descripcionPol = $rowGuiaContable->descripcion;
-									//print_r("<br />");
-									//print_r("importe iva:"); print_r($importe);
-									//print_r("<br />");
-									//print_r("ORIGEN:"); print_r($origen);
-									break;
+									
+								break;
 								case 'T':
 									$importe = $total;
 									if($tipo == 5 && $rowGuiaContable->abono == "X" && $modulo = 10 ){
 										$origen	= "CLT";
-										print_r("origen es:");
-										print_r($origen);
 									}else{
 										if($tipo == 5  &&  $rowGuiaContable->cargo == "X" ){
 											$origen = "BAN";
 										}
-									}
-									//print_r("<br />");
-									print_r("el origen es:"); 
-									print_r("<br />");
-									//print_r("<origen></origen>:"); print_r($origen);
-									print_r($origen);		
+									}	
 								break;
 								}
-								//asigna abono o cargo
+								
 								if($rowGuiaContable["cargo"]== "X"){
 									$cargo = $importe;
-									//print_r("El cargo, no esta vacio");
-									//print_r($cargo);
 								}else{
 									$cargo = 0;
 								}
 								if($rowGuiaContable["abono"]== "X"){
 									$abono = $importe;
-									//print_r("El abono, no esta vacio");
-									//print_r($abono);
 								}else{
 									$abono = 0;
 								}
-								//Arma descripcion
-								/*if($rowGuiaContable->origen =='I' || $rowGuiaContable->origen == "S"){
-									$desPol = $rowGuiaContable->descripcion;
-								}else{
-									switch($modulo){	
-										case '1':
-											$desPol = "Factura " .$numeroFolio;
-										break;
-										case '5':
-											$desPol = "Factura" .$numeroFolio ;
-											
-										break;
-										/*case '10':
-											$desPol = "Anticipo" .$numeroFolio;
-											print_r("<br />");
-											print_r("<br />");
-											print_r("<br />");
-											print_r("<br />");
-											print_r("<br />");
-											print_r("modulo 3");
-										
-										break;
-										default:
-											$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
-									}//Cierra switch en casso de armar descripcion
-								}//Cierra  if arma descripcion*/
-								//Arma Descripcion
 								if($rowGuiaContable->origen ='I' || $rowGuiaContable->origen == "S"){
 									$desPol = $rowGuiaContable->descripcion;
 								}else{
@@ -2641,43 +2589,36 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
 									}
 								}
-							
 								//Busca ctaCliente y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
 								switch($origen){
-								case 'BAN':
-									$tablaBancos = $this->tablaBancos;
-									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
-									$rowBanco = $tablaBancos->fetchRow($select);
-									if($rowBanco->tipo ==="CA"){
-										print_r("es de tipoCaja");
-										$cta = 101;
-										$subCta = $rowBanco["cuentaContable"];
-										$posicion = 1;
-									}else{
+									case 'BAN':
+										$tablaBancos = $this->tablaBancos;
+										$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
+										$rowBanco = $tablaBancos->fetchRow($select);
+										if($rowBanco->tipo ==="CA"){
+											$cta = 101;
+											$subCta = $rowBanco["cuentaContable"];
+											$posicion = 1;
+										}else{
+											$cta = $rowGuiaContable["cta"];
+											$subCta = $rowBanco["cuentaContable"];
+											$posicion = 1;
+										}
+									break;
+									case 'CLT':
+										$tablaClientes = $this->tablaClientes;
+										$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?",$idCoP);
+										$rowCliente = $tablaClientes->fetchRow($select);
 										$cta = $rowGuiaContable["cta"];
-										$subCta = $rowBanco["cuentaContable"];
+										$subCta = $rowCliente["cuenta"];
 										$posicion = 1;
-									}
 									break;
-								case 'CLT':
-									$tablaClientes = $this->tablaClientes;
-									$select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?",$idCoP);
-									$rowCliente = $tablaClientes->fetchRow($select);
-									$cta = $rowGuiaContable["cta"];
-									$subCta = $rowCliente["cuenta"];
-									print_r("la cuenta es:");
-									print_r($subCta);
-									print_r("la cuenta es:");
-									$posicion = 1;
-									break;
-								default:
-									$cta = $rowGuiaContable["cta"];
-									$subCta = "0000";
-									$posicion = 0;
+									default:
+										$cta = $rowGuiaContable["cta"];
+										$subCta = "0000";
+										$posicion = 0;
 								}
-								
 								$mascara= Zend_Registry::get("mascara");
-								//print_r($mascara);
 								if(!is_null($mascara)){
 									$nivel1 = 1;
 									$nivel2 = 2;
@@ -2686,121 +2627,101 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 									$nivel5 = 5;
 								}
 								if($nivel1 == 1){
-									print_r($posicion);
 									if($posicion == 1){
 										$armaSub1 = $subCta;
-										print_r("arma");
-										print_r($armaSub1);
 									}else{
 										$armaSub1 = $rowGuiaContable["sub1"];
-										print_r($armaSub1);
+										
 									}						
 								}
-										if($nivel2 == 2){
-											if($posicion == 2){
-												$armaSub2 = $subCta;
-												print_r($armaSub2);
-											}else{
-												$armaSub2 = $rowGuiaContable["sub2"];
-												print_r($armaSub2);
-											}						
-										}
-										if($nivel3 == 3){
-											if($posicion == 3){
-												$armaSub3 = $subCta;
-												print_r($armaSub3);
-											}else{
-												$armaSub3 = $rowGuiaContable["sub3"];
-												print_r($armaSub3);
-											}						
-										}
-										if($nivel4 == 4){
-											if($posicion == 4){
-												$armaSub4 = $subCta;
-												print_r($armaSub4);
-											}else{
-												$armaSub4 = $rowGuiaContable["sub4"];
-												print_r($armaSub4);
-											}						
-										}
-										if($nivel5 == 5){
-											if($posicion == 5){
-												$armaSub5 = $subCta;
-												print_r($armaSub5);
-											}else{
-												$armaSub5 = $rowGuiaContable["sub5"];
-												print_r($armaSub5);
-											}						
-										}
-										
-										//Agregamos en tablaPoliza.
-										$mPoliza = array(
-										'idModulo'=>$modulo,
-										'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
-										'idSucursal'=>$datos['idSucursal'],
-										'idCoP'=>$idCoP,
-										'cta'=>$cta,
-										'sub1'=>$armaSub1,
-										'sub2'=>$armaSub2,
-										'sub3'=>$armaSub3,
-										'sub4'=>$armaSub4,
-										'sub5'=>$armaSub5,
-										'tipoES'=>"I",
-										'fecha'=>$fecha,
-										'descripcion'=>$desPol,
-										'cargo'=>$cargo,
-										'abono'=>$abono,
-										'numdocto'=>$numeroFolio,
-										'secuencial'=>1
-										);
-										print_r($mPoliza);
-										$dbAdapter->insert("Poliza", $mPoliza);
+								if($nivel2 == 2){
+									if($posicion == 2){
+										$armaSub2 = $subCta;
+									}else{
+										$armaSub2 = $rowGuiaContable["sub2"];
+									}						
+								}
+								if($nivel3 == 3){
+									if($posicion == 3){
+										$armaSub3 = $subCta;
+									}else{
+										$armaSub3 = $rowGuiaContable["sub3"];
+									}						
+								}
+								if($nivel4 == 4){
+									if($posicion == 4){
+										$armaSub4 = $subCta;
+									}else{
+										$armaSub4 = $rowGuiaContable["sub4"];
+									}						
+								}
+								if($nivel5 == 5){
+									if($posicion == 5){
+										$armaSub5 = $subCta;
+									}else{
+										$armaSub5 = $rowGuiaContable["sub5"];
+									}						
+								}
+								$mPoliza = array(
+									'idModulo'=>$modulo,
+									'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
+									'idSucursal'=>$datos['idSucursal'],
+									'idCoP'=>$idCoP,
+									'cta'=>$cta,
+									'sub1'=>$armaSub1,
+									'sub2'=>$armaSub2,
+									'sub3'=>$armaSub3,
+									'sub4'=>$armaSub4,
+									'sub5'=>$armaSub5,
+									'tipoES'=>"I",
+									'fecha'=>$fecha,
+									'descripcion'=>$desPol,
+									'cargo'=>$cargo,
+									'abono'=>$abono,
+									'numdocto'=>$numeroFolio,
+									'secuencial'=>1);
+								$dbAdapter->insert("Poliza", $mPoliza);
 							}//cierra forach
 						}//if cliente
 					}//foreach grupo cuentasxc
 				}
-				
 			$dbAdapter->commit();
-			}catch(exception $ex){
-				print_r("<br />");
-				print_r("================");
-				print_r("<br />");
-				print_r("Excepcion Lanzada");
-				print_r("<br />");
-				print_r("================");
-				print_r("<br />");
-				print_r($ex->getMessage());
-				print_r("<br />");
-				print_r("<br />");
-				$dbAdapter->rollBack();
-			}
-			
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
 		}
+	}
+	
 	public function genera_Anticipo_Proveedores($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
-			
 		$fechaInicio = new Zend_Date($datos['fechaInicial'],'YY-MM-dd');
 		$fechaFin= new Zend_Date($datos['fechaFinal'], 'YY-MM-dd');
 		$stringFechaInicio = $fechaInicio->toString('yyyy-MM-dd');
 		$stringFechaFinal = $fechaFin->toString('yyyy-MM-dd');
-		
 		try{
 			//Seleccionamos grupoCuentasxp por fecha, tipoMovto = 18 Anticipo Proveedor, idSucursal y estatus
 			$tablaCtsxp = $this->tablaCuentasxp;
 			$select = $tablaCtsxp->select()->from($tablaCtsxp)->where('fecha >= ?',$stringFechaInicio)->where('fecha <=?',$stringFechaFinal)->where('idTipoMovimiento=?',18)
 			->where('idSucursal = ?', $datos['idSucursal'])->where('estatus=?', "A");
 			$rowsCxp= $tablaCtsxp->fetchAll($select);
-			print_r("Anticipo proveedor");
-			print_r($select->__toString());
+			//print_r("Anticipo proveedor"); print_r($select->__toString());
 			if(!is_null($rowsCxp)){
 				foreach($rowsCxp as $rowCxp){
 					$idCoP = $rowCxp["idCoP"];
 					$tablaProveedores = $this->tablaProveedores;
 					$select = $tablaProveedores->select()->from($tablaProveedores, array('idProveedores','idTipoProveedor'))->where("idProveedores = ?", $idCoP);
 					$rowProveedor = $tablaProveedores->fetchRow($select);
-					print_r("$select");
-					//Verificamos que el proveedor exista
+					//print_r("$select"); //Verificamos que el proveedor exista
 					if(!is_null($rowProveedor)){
 						//Nomina
 						$tipo = $rowProveedor->idTipoProveedor;
@@ -2818,32 +2739,22 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						$subtotal = $rowCxp["subtotal"];
 						$total = $rowCxp["total"];
 						$secuencial = $rowCxp["secuencial"];
-						print_r($secuencial);
-						
 						$tablaGuiaContable = $this->tablaGuiaContable;
 						$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
 						$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
-						print_r("<br />");
-						print_r("$select");
-						
+						//print_r("<br />"); print_r("$select");
 						foreach($rowsGuiaContable as $rowGuiaContable){
 							$origen = $rowGuiaContable->origen;
 							switch($origen){
 								case 'S':
 									$importe = $subTotal;
 									$origen = "SIN"; //No se porque va
-									print_r("<br />");
-									print_r("importe subtotal:"); print_r($importe);
-									break;
+								break;
 								case 'I':
 									$importe = $iva;
 									$origen = "SIN";
 									$descripcionPol = $rowGuiaContable->descripcion;
-									print_r("<br />");
-									print_r("importe iva:"); print_r($importe);
-									print_r("<br />");
-									print_r("ORIGEN:"); print_r($origen);
-									break;
+								break;
 								case 'T':
 									$importe = $total;
 									if($tipo == 5 && $rowGuiaContable->cargo == "X"){
@@ -2855,46 +2766,36 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 											$origen = "BAN";
 										}
 									}
-									print_r("<br />");
-									print_r("importe total:"); print_r($importe);
-									print_r("<br />");
-									print_r("ORIGEN:"); print_r($origen);	
-								break;
-								}
-//asigna abono o cargo
-										if($rowGuiaContable["cargo"]== "X"){
-											$cargo = $importe;
-											print_r("El cargo, no esta vacio");
-											print_r($cargo);
-										}else{
-											$cargo = 0;
-										}
 										
-										if($rowGuiaContable["abono"]== "X"){
-											$abono = $importe;
-											print_r("El abono, no esta vacio");
-											print_r($abono);
-										}else{
-											$abono = 0;
-										}
-								//Arma descripcion
-								if($rowGuiaContable->origen ='I' || $rowGuiaContable->origen == "S"){
+								break;
+							}
+							if($rowGuiaContable["cargo"]== "X"){
+								$cargo = $importe;
+							}else{
+								$cargo = 0;
+							}
+							if($rowGuiaContable["abono"]== "X"){
+								$abono = $importe;
+							}else{
+								$abono = 0;
+							}
+							//Arma descripcion
+							if($rowGuiaContable->origen ='I' || $rowGuiaContable->origen == "S"){
+								$desPol = $rowGuiaContable->descripcion;
+							}else{
+								if($tipo == 1 || $tipo == 2 && $rowGuiaContable->cargo == "X"){
 									$desPol = $rowGuiaContable->descripcion;
 								}else{
-									if($tipo == 1 || $tipo == 2 && $rowGuiaContable->cargo == "X"){
-										$desPol = $rowGuiaContable->descripcion;
-									}else{
-										$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
-									}
-								}//Cierra  if arma descripcion
-								//Busca ctaProveedor y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
-								switch($origen){
+									$delPol = $armaConsulta = $this->armaDescripcion($banco, $rowGuiaContable->descripcion);
+								}
+							}//Cierra  if arma descripcion
+							//Busca ctaProveedor y valor de subcuenta que nos va permitir saber el nivel. El proveedor  el nivel es 1
+							switch($origen){
 								case 'BAN':
 									$tablaBancos = $this->tablaBancos;
 									$select = $tablaBancos->select()->from($tablaBancos)->where("idBanco=?",$banco);
 									$rowBanco = $tablaBancos->fetchRow($select);
 									if($rowBanco->tipo ==="CA"){
-										print_r("es de tipoCaja");
 										$cta = 101;
 										$subCta = $rowBanco["cuentaContable"];
 										$posicion = 1;
@@ -2903,137 +2804,93 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										$subCta = $rowBanco["cuentaContable"];
 										$posicion = 1;
 									}
-									break;
+								break;
 								case 'PRO':
 									$tablaProveedores = $this->tablaProveedores;
-											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
-											$rowProveedor = $tablaProveedores->fetchRow($select);
-											$cta = $rowGuiaContable["cta"];
-											$subCta = $rowProveedor["cuenta"];
-											$posicion = 1;
-									break;
+									$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
+									$rowProveedor = $tablaProveedores->fetchRow($select);
+									$cta = $rowGuiaContable["cta"];
+									$subCta = $rowProveedor["cuenta"];
+									$posicion = 1;
+								break;
 								default:
 									$cta = $rowGuiaContable["cta"];
 									$subCta = "0000";
 									$posicion = 0;
 								}
-										 /*if($origen == "PRO"){
-											$tablaProveedores = $this->tablaProveedores;
-											$select = $tablaProveedores->select()->from($tablaProveedores)->where("idProveedores=?",$idCoP);
-											$rowProveedor = $tablaProveedores->fetchRow($select);
-											$subCta = $rowProveedor["cuenta"];
-											$posicion = 1;
-										}else{
-											$subCta = "0000";
-											$posicion = 0;
-										}//Cierra if origen proveedor*/
-										//Creamos switch para Armar_Cuenta
-										print_r("La posicio  es:");
-										print_r($posicion);
-										//Probamos el nivel
-										/*$tipoEmpresa = Zend_Registry::get("tipoEmpresa"); */
-										$mascara= Zend_Registry::get("mascara");
-										print_r($mascara);
-										if(!is_null($mascara)){
-											$nivel1 = 1;
-											$nivel2 = 2;
-											$nivel3 = 3;
-											$nivel4 = 4;
-											$nivel5 = 5;
-										}
-										if($nivel1 == 1){
-											if($posicion == 1){
-												$armaSub1 = $subCta;
-												print_r($armaSub1);
-											}else{
-												$armaSub1 = $rowGuiaContable["sub1"];
-												print_r($armaSub1);
-											}						
-										}
-										if($nivel2 == 2){
-											if($posicion == 2){
-												$armaSub2 = $subCta;
-												print_r($armaSub2);
-											}else{
-												$armaSub2 = $rowGuiaContable["sub2"];
-												print_r($armaSub2);
-											}						
-										}
-										if($nivel3 == 3){
-											if($posicion == 3){
-												$armaSub3 = $subCta;
-												print_r($armaSub3);
-											}else{
-												$armaSub3 = $rowGuiaContable["sub3"];
-												print_r($armaSub3);
-											}						
-										}
-										if($nivel4 == 4){
-											if($posicion == 4){
-												$armaSub4 = $subCta;
-												print_r($armaSub4);
-											}else{
-												$armaSub4 = $rowGuiaContable["sub4"];
-												print_r($armaSub4);
-											}						
-										}
-										if($nivel5 == 5){
-											if($posicion == 5){
-												$armaSub5 = $subCta;
-												print_r($armaSub5);
-											}else{
-												$armaSub5 = $rowGuiaContable["sub5"];
-												print_r($armaSub5);
-											}						
-										}
-										//Asignamos secuencial
-										$secuencial = 0;	
-										$tablaPoliza = $this->tablaPoliza;
-										$select = $tablaPoliza->select()->from($tablaPoliza)->where("idModulo=?",$modulo)
-										->where("idTipoProveedor=?",$tipo)
-										->where("idSucursal=?",$datos['idSucursal'])
-										->where("idCoP=?",$idCoP)
-										->where("numDocto=?", $numeroFolio)
-										->order("secuencial DESC");
-										$rowPoliza = $tablaPoliza->fetchRow($select); 
-										print_r("$select");
-										if(!is_null($rowPoliza)){
-											$secuencial= $rowPoliza->secuencial +1;
-										//print_r($secuencial);
-										}else{
-											$secuencial = 1;	
-										//print_r($secuencial);
-										}
-										//Agregamos en tablaPoliza.
-										$mPoliza = array(
-										'idModulo'=>$modulo,
-										'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
-										'idSucursal'=>$datos['idSucursal'],
-										'idCoP'=>$idCoP,
-										'cta'=>$cta,
-										'sub1'=>$armaSub1,
-										'sub2'=>$armaSub2,
-										'sub3'=>$armaSub3,
-										'sub4'=>$armaSub4,
-										'sub5'=>$armaSub5,
-										'tipoES'=>"E",
-										'fecha'=>$fecha,/**/
-										'descripcion'=>$desPol,
-										'cargo'=>$cargo,
-										'abono'=>$abono,
-										'numdocto'=>$numeroFolio,
-										'secuencial'=>$secuencial
-										);
-										print_r($mPoliza);
-										$dbAdapter->insert("Poliza", $mPoliza);
+								$mascara= Zend_Registry::get("mascara");
+								if(!is_null($mascara)){
+									$nivel1 = 1;
+									$nivel2 = 2;
+									$nivel3 = 3;
+									$nivel4 = 4;
+									$nivel5 = 5;
+								}
+								if($nivel1 == 1){
+									if($posicion == 1){
+										$armaSub1 = $subCta;
+									}else{
+										$armaSub1 = $rowGuiaContable["sub1"];
+									}						
+								}
+								if($nivel2 == 2){
+									if($posicion == 2){
+										$armaSub2 = $subCta;
+									}else{
+										$armaSub2 = $rowGuiaContable["sub2"];
+									}						
+								}
+								if($nivel3 == 3){
+									if($posicion == 3){
+										$armaSub3 = $subCta;
+									}else{
+										$armaSub3 = $rowGuiaContable["sub3"];
+									}						
+								}
+								if($nivel4 == 4){
+									if($posicion == 4){
+										$armaSub4 = $subCta;
+									}else{
+										$armaSub4 = $rowGuiaContable["sub4"];
+									}						
+								}
+								if($nivel5 == 5){
+									if($posicion == 5){
+										$armaSub5 = $subCta;
+									}else{
+										$armaSub5 = $rowGuiaContable["sub5"];
+									}						
+								}
+								$secuencial = 0;	
+								$tablaPoliza = $this->tablaPoliza;
+								$select = $tablaPoliza->select()->from($tablaPoliza)->where("idModulo=?",$modulo)->where("idTipoProveedor=?",$tipo)
+								->where("idSucursal=?",$datos['idSucursal'])->where("idCoP=?",$idCoP)->where("numDocto=?", $numeroFolio)->order("secuencial DESC");
+								$rowPoliza = $tablaPoliza->fetchRow($select); 
+								if(!is_null($rowPoliza)){
+									$secuencial= $rowPoliza->secuencial +1;
+								}else{
+									$secuencial = 1;	
+								}
+								$mPoliza = array(
+									'idModulo'=>$modulo,
+									'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
+									'idSucursal'=>$datos['idSucursal'],
+									'idCoP'=>$idCoP,
+									'cta'=>$cta,
+									'sub1'=>$armaSub1,
+									'sub2'=>$armaSub2,
+									'sub3'=>$armaSub3,
+									'sub4'=>$armaSub4,
+									'sub5'=>$armaSub5,
+									'tipoES'=>"E",
+									'fecha'=>$fecha,
+									'descripcion'=>$desPol,
+									'cargo'=>$cargo,
+									'abono'=>$abono,
+									'numdocto'=>$numeroFolio,
+									'secuencial'=>$secuencial);
+								$dbAdapter->insert("Poliza", $mPoliza);
 							}//cierra forach
-							
-							
-							/*Buscamos si es empresaProveedor, si el proveedor no esta en empresaProveedor no se realiza la poliza
-							$tablaProveedoresEmpresa = $this->tablaProveedorEmpresa;
-							$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa, 'idEmpresas')->where("idProveedores =?", $idCoP);
-							$rowProveedoresEmpresa = $tablaProveedoresEmpresa->fetchRow($select);
-							print_r($select->__toString());*/
 						}
 					}//Cierra foreach que recorre grupo cuentasxp
 				}//Cierra if busca grupoCuentasxp	
