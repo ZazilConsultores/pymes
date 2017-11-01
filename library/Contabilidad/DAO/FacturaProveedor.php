@@ -627,7 +627,8 @@
 		$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("idSucursal=?",$idSucursal)
 		->where("estatus =?","A")->where("conceptoPago =?","PE");
 		$rowsNumFac = $tablaFactura->fetchAll($select);
-		return $rowsNumFac;
+		print_r("$select");
+		//return $rowsNumFac;
 	}
 	
 	//Busca factura proveedor por idSucursal y numero factura

@@ -336,16 +336,26 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function cancelarAction()
     {
-    	$request = $this->getRequest();
+    	/*$request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;	
 		if($request->isPost()){		
+		}*/
+		$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;
+		if($request->isPost()){					
+			$datos = $request->getPost();
+			//$datos = json_decode($datos['datos'], TRUE);
+			$idFactura = $datos["fac"];
+			//print_r($idFactura);
+			$this->facturaDAO->cancelaFactura($idFactura);
 		}
     }
 
     public function cancelarcliAction()
     {
-        $request = $this->getRequest();
+       /* $request = $this->getRequest();
 		$idFac = $this->getParam("idFactura");
         $facturaDAO = new Contabilidad_DAO_FacturaCliente;
        
@@ -353,7 +363,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			print_r($datos);
 			$cancelaFac = $facturaDAO->cancelaFactura($idFactura);
-		}
+		}*/
     }
 
 

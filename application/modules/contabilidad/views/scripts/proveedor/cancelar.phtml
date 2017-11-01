@@ -45,7 +45,7 @@
 <!--Formulario Datos-->
 <section class="panel panel-warning">
 	<div class="panel-heading">
-		<h5>Cancelar Factura Proveedor.</h5>
+		<h4 class="panel-title">Cancelar Factura Proveedor.<strong></strong></h4>
 	</div>
 	<div class="panel-body">
 		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
@@ -115,7 +115,7 @@
 		$("select#idSucursal").on('change', function(){
 			var idSucursal = $(this).val();
 			var urlQueryNumFacClientes = url + 'contabilidad/json/numfacprov/idSuc/'+idSucursal;
-			//console.log(urlQueryNumFacClientes);
+			console.log(urlQueryNumFacClientes);
 			$.ajax({
 				url: urlQueryNumFacClientes,
 				dataType: "json",
