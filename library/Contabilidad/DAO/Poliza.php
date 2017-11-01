@@ -1730,52 +1730,52 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 										if($posicion == 4){
 											$armaSub4 = $subCta;
 										}else{
-												$armaSub4 = $rowGuiaContable["sub4"];
+											$armaSub4 = $rowGuiaContable["sub4"];
 											}						
 										}
-										if($nivel5 == 5){
-											if($posicion == 5){
-												$armaSub5 = $subCta;
-											}else{
-												$armaSub5 = $rowGuiaContable["sub5"];
-											}						
+									if($nivel5 == 5){
+										if($posicion == 5){
+											$armaSub5 = $subCta;
+										}else{
+											$armaSub5 = $rowGuiaContable["sub5"];
+										}						
+									}
+									//Asignamos secuencial
+									if($importe != 0){
+										$secuencial = 0;	
+										$tablaPoliza = $this->tablaPoliza;
+										$select = $tablaPoliza->select()->from($tablaPoliza)->where("idModulo=?",$modulo)
+										->where("idTipoProveedor=?",$tipo)->where("idSucursal=?",$datos['idSucursal'])->where("idCoP=?",$idCoP)
+										->where("numDocto=?", $numMov)->order("secuencial DESC");
+										$rowPoliza = $tablaPoliza->fetchRow($select); 
+										if(!is_null($rowPoliza)){
+											$secuencial= $rowPoliza->secuencial +1;
+										}else{
+											$secuencial = 1;	
 										}
-										//Asignamos secuencial
-										if($importe != 0){
-											$secuencial = 0;	
-											$tablaPoliza = $this->tablaPoliza;
-											$select = $tablaPoliza->select()->from($tablaPoliza)->where("idModulo=?",$modulo)
-											->where("idTipoProveedor=?",$tipo)->where("idSucursal=?",$datos['idSucursal'])->where("idCoP=?",$idCoP)
-											->where("numDocto=?", $numMov)->order("secuencial DESC");
-											$rowPoliza = $tablaPoliza->fetchRow($select); 
-											if(!is_null($rowPoliza)){
-												$secuencial= $rowPoliza->secuencial +1;
-											}else{
-												$secuencial = 1;	
-											}
-											//Agregamos en tablaPoliza.
-											$mPoliza = array(
-												'idModulo'=>$modulo,
-												'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
-												'idSucursal'=>$datos['idSucursal'],
-												'idCoP'=>$idCoP,
-												'cta'=>$cta,
-												'sub1'=>$subCta,
-												'sub2'=>$armaSub2,
-												'sub3'=>$armaSub3,
-												'sub4'=>$armaSub4,
-												'sub5'=>$armaSub5,
-												'tipoES'=>$tipoES,
-												'fecha'=>$fecha,/**/
-												'descripcion'=>$desPol,
-												'tipoES'=>"E",
-												'cargo'=>$cargo,
-												'abono'=>$abono,
-												'numdocto'=>$numMov,
-												'secuencial'=>$secuencial
-											);
-										$dbAdapter->insert("Poliza", $mPoliza);
-										}//if de importe
+										//Agregamos en tablaPoliza.
+										$mPoliza = array(
+											'idModulo'=>$modulo,
+											'idTipoProveedor'=>$rowGuiaContable["idTipoProveedor"],
+											'idSucursal'=>$datos['idSucursal'],
+											'idCoP'=>$idCoP,
+											'cta'=>$cta,
+											'sub1'=>$subCta,
+											'sub2'=>$armaSub2,
+											'sub3'=>$armaSub3,
+											'sub4'=>$armaSub4,
+											'sub5'=>$armaSub5,
+											'tipoES'=>$tipoES,
+											'fecha'=>$fecha,
+											'descripcion'=>$desPol,
+											'tipoES'=>"E",
+											'cargo'=>$cargo,
+											'abono'=>$abono,
+											'numdocto'=>$numMov,
+											'secuencial'=>$secuencial
+										);
+									$dbAdapter->insert("Poliza", $mPoliza);
+									}//if de importe
 								}//cierra forach Guia Contable
 							}
 						}//Cierra if proveedor
