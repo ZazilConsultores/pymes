@@ -264,12 +264,9 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$rowsEmpresa = $tablaEmpresa->fetchAll($select)->toArray();
 		
 		$tablaFiscales = $this->tablaFiscales;
-		$select = $tablaFiscales->select()->from($tablaFiscales)->where('idFiscales IN (?)', array_values($rowsEmpresa));
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where('idFiscales IN (?)', array_values($rowsEmpresa))->order(array('razonSocial ASC'));
 		$fiscales = $tablaFiscales->fetchAll($select)->toArray();
-		//print_r("$select");
 		return $fiscales;
-		
-		
 	}
 	
 	public function obtenerEmpresasClientes(){

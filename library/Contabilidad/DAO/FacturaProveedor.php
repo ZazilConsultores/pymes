@@ -620,4 +620,35 @@
 		return $tablaMovimientos->fetchAll($select);
 		
 	}
+
+	//Busca factura por sucursal 	
+	public function buscaFacturaProveedor($idSucursal){
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("idSucursal=?",$idSucursal)
+		->where("estatus =?","A")->where("conceptoPago =?","PE");
+		$rowsNumFac = $tablaFactura->fetchAll($select);
+		return $rowsNumFac;
+	}
+	
+	//Busca factura proveedor por idSucursal y numero factura
+	public function busca_FacProv($idSucursal,$num){
+		$tablaFactura = $this->tablaFactura;
+		$select= $tablaFactura->select()->setIntegrityCheck(false)->from($tablaFactura)
+		->join('Proveedores','Factura.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+		->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Factura.idTipoMovimiento = ?',4)
+		->where("estatus <> ?", "C")->where("conceptoPago =?","PE")->where("idSucursal =?", $idSucursal)->where("numeroFactura = ?" ,$num);
+		//print_r("$select");
+		return $tablaFactura->fetchAll($select);				
+	}
+	
+	public function cancelaFactura($idFactura){
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?",$idFactura);
+		$rowNumFac = $tablaFactura->fetchRow($select);
+		//print_r("$select");
+		if(!is_null($rowNumFac)){
+			$rowNumFac->estatus = "C";
+			$rowNumFac->save();
+		}
+	}
 }

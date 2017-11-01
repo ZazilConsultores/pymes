@@ -1025,6 +1025,8 @@
               <actionMethod actionName="desechabledesayuno"/>
               <actionMethod actionName="buscaanticipoclientes"/>
               <actionMethod actionName="enlazafactura"/>
+              <actionMethod actionName="cancelar"/>
+              <actionMethod actionName="cancelarcli"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1043,6 +1045,7 @@
               <actionMethod actionName="pagodos"/>
               <actionMethod actionName="anticipo"/>
               <actionMethod actionName="movimientos"/>
+              <actionMethod actionName="cancelar"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -1135,6 +1138,11 @@
               <actionMethod actionName="proyectoporremprov"/>
               <actionMethod actionName="proyectonomina"/>
               <actionMethod actionName="productoimpuesto"/>
+              <actionMethod actionName="numerofactura"/>
+              <actionMethod actionName="cancelafaccli"/>
+              <actionMethod actionName="aplicacanfaccli"/>
+              <actionMethod actionName="numfacprov"/>
+              <actionMethod actionName="facprovxsucynum"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1587,6 +1595,30 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="productoimpuesto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cancelar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="cancelar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="numerofactura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="cancelafaccli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cancelarcli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="aplicacanfaccli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="numfacprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="facprovxsucynum"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2990,6 +3022,8 @@
                 <testApplicationActionMethod forActionName="desechabledesayuno"/>
                 <testApplicationActionMethod forActionName="buscaanticipoclientes"/>
                 <testApplicationActionMethod forActionName="enlazafactura"/>
+                <testApplicationActionMethod forActionName="cancelar"/>
+                <testApplicationActionMethod forActionName="cancelarcli"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3008,6 +3042,7 @@
                 <testApplicationActionMethod forActionName="pagodos"/>
                 <testApplicationActionMethod forActionName="anticipo"/>
                 <testApplicationActionMethod forActionName="movimientos"/>
+                <testApplicationActionMethod forActionName="cancelar"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3100,6 +3135,11 @@
                 <testApplicationActionMethod forActionName="proyectoporremprov"/>
                 <testApplicationActionMethod forActionName="proyectonomina"/>
                 <testApplicationActionMethod forActionName="productoimpuesto"/>
+                <testApplicationActionMethod forActionName="numerofactura"/>
+                <testApplicationActionMethod forActionName="cancelafaccli"/>
+                <testApplicationActionMethod forActionName="aplicacanfaccli"/>
+                <testApplicationActionMethod forActionName="numfacprov"/>
+                <testApplicationActionMethod forActionName="facprovxsucynum"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

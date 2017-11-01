@@ -1106,6 +1106,27 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 		}*/
 		
 	}
+	
+	public function buscaNumeroFactura($idSucursal){
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",2)->where("idSucursal=?",$idSucursal)
+		->where("estatus =?","A")->where("conceptoPago =?","PE");
+		$rowsNumFac = $tablaFactura->fetchAll($select);
+		
+		return $rowsNumFac;
+		
+	}
+	
+	public function cancelaFactura($idFactura){
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?",$idFactura);
+		$rowNumFac = $tablaFactura->fetchRow($select);
+		print_r("$select");
+		if(!is_null($rowNumFac)){
+			$rowNumFac->estatus = "C";
+			$rowNumFac->save();
+		}
+	}
 }
     
 ?>

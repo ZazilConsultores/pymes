@@ -4,10 +4,15 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $notaEntradaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $pagoProveedor = null;
+
     private $anticipoDAO = null;
 
     public function init()
@@ -219,8 +224,25 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		}
     }
 
+    public function cancelarAction()
+    {
+    	$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;
+		if($request->isPost()){					
+			$datos = $request->getPost();
+			//$datos = json_decode($datos['datos'], TRUE);
+			$idFactura = $datos["fac"];
+			//print_r($idFactura);
+			$this->facturaDAO->cancelaFactura($idFactura);
+		}
+        
+    }
+
 
 }
+
+
 
 
 

@@ -31,6 +31,19 @@
 							
 		}
 		
+		public function busca_FacCli($idSucursal,$num){
+			
+			$tablaFactura = $this->tablaFactura;
+			$select= $tablaFactura->select()
+			->setIntegrityCheck(false)
+			->from($tablaFactura)
+			->join('Clientes','Factura.idCoP = Clientes.idCliente', array('idEmpresa'))
+			->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+			->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Factura.idTipoMovimiento = ?',2)
+			->where("estatus <> ?", "C")->where("conceptoPago =?","PE")->where("idSucursal =?", $idSucursal)->where("numeroFactura = ?" ,$num);
+			return $tablaFactura->fetchAll($select);				
+		}
+		
 		public function aplica_Cobro ($idFactura, array $datos){
 			$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 			//$dbAdapter->beginTransaction();

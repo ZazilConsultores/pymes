@@ -1,5 +1,5 @@
 <?php
-class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_INotaCredito{
+class Contabilidad_DAO_NotaCredito implements Contabilidad_Interfaces_INotaCredito{
 	
 	private $tablaMovimiento;
 	private $tablaFactura;
@@ -769,6 +769,19 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_INotaCr
 			}//if busca productoTerminado
 		}//if multiplo
 	}
+	
+	public function editaNumeroFactura($idSucursal){
+		
+		$tablaFactura = $this->tablaFactura;
+		$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",2)->where("idSucursal=?",$idSucursal);
+		$rowsNumFac = $tablaFactura->fetchAll($select);
+		if(is_null($rowsNumFac)) {
+			return null;
+		}else{
+			return $rowsNumFac;
+		}
+	}
+	
 }
 
 	

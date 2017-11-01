@@ -4,13 +4,21 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $sucursalDAO = null;
+
     private $notaSalidaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $impuestosDAO = null;
+
     private $cobroClienteDAO = null;
+
     private $anticipoDAO = null;
+
     private $proyectoDAO = null;
 
     public function init()
@@ -316,7 +324,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
         
     }
-	
+
     public function enlazafacturaAction()
     {
     	$idSucursal = $this->getParam("idSucursal");
@@ -326,7 +334,34 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);
     }
 
+    public function cancelarAction()
+    {
+    	$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;	
+		if($request->isPost()){		
+		}
+    }
+
+    public function cancelarcliAction()
+    {
+        $request = $this->getRequest();
+		$idFac = $this->getParam("idFactura");
+        $facturaDAO = new Contabilidad_DAO_FacturaCliente;
+       
+		if($request->isPost()){		
+			$datos = $request->getPost();
+			print_r($datos);
+			$cancelaFac = $facturaDAO->cancelaFactura($idFactura);
+		}
+    }
+
+
 }
+
+
+
+
 
 
 

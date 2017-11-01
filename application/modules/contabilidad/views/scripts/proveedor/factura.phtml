@@ -540,7 +540,7 @@ function calculateGrandTotal() {
 			}
 			
 		});
-$("table#productos").on("click", "select[id^='descripcion_']", function(){
+$("table#productos").on("change", "select[id^='descripcion_']", function(){
 	
 	var descripcion= $(this).attr("id");
 	var arr = descripcion.split('_');
@@ -548,39 +548,50 @@ $("table#productos").on("click", "select[id^='descripcion_']", function(){
 	var numFila =  arr[1];
 	var $url = window.location.origin + "/General/contabilidad/json/productoimpuesto/idProducto/"+id;
 	console.log($url);
-	if ('null' != val)
 	
-	/*$.ajax({
-		url: $url,
-		dataType: "json",
-		success: function(data){
-			console.log($url);
-			console.log("=======Los Datos");
-			console.dir(data);
-			$.each(data, function(i,item){
-				if(data[i].idProducto == id){
-					ieps  = data[i].importe * costo;
-					var costo = $( "input[id^='costoTotal_']" ).val();
-					$('input#ieps').val(data[i].idProducto);
-				}else{
-					console.log("No contiene impuesto");
-				}	
-						
-					});
+	$("table#productos").on("change", "input[id^='costoUnitario_']", function(){
+		//$("table#productos").on("change", "input[id^='costoUnitario_']", function(){
+		var tabla = $("table#productos > tbody  > tr");
+ 		tabla.each(function(){
+ 			var ieps = 0; 
+ 			var row = $(this);
+			var cantidad = row.find("input[id^='idCantidad_']").val(); 		
+			var importe = row.find("input[id^='costoTotal_']").val();
+ 			$.ajax({
+ 				url: $url,
+				dataType: "json",
+				success: function(data){
+				console.log($url);
+				console.log("=======Los Datos");
+				console.dir(data);
+				$.each(data, function(i,item){
+					if(data[i].idProducto == id){
+						$("table#productos").find('input[id^="costoTotal_"]').each(function () {
+						//ieps += +parseFloat(data[i].importe * importe * cantidad);
+						ieps += +$(this).val() * data[i].importe ;
+						console.log(ieps);
+						$('input#ieps').val(ieps);
+						});
+						//grandTotal += +ieps.val();
+						//console.log(grandTotal);
+						/*$("table#productos").find('input[id^="costoTotal_"]').each(function () {
+       						
+       						 grandTotal += parseFloat(+$(this).val());
+       						
+     					});*/
+						// $('input#ieps').val(grandTotal);
+					}else{
+						console.log("No contiene impuesto");
+					}	
+				});
 					
 				}
 				
-			});*/
-		var tabla = $("table#productos > tbody  > tr");
- 		tabla.each(function(){
- 			var totalIeps;
- 			var row = $(this);
+			});
  			
- 			var importe = row.find("input[id^='costoTotal_']").val();
- 			console.log("costoTotal:"+importe);
  		});
- 		
-       		
+		//});
+	});   		
 });
 function descuento() {
 

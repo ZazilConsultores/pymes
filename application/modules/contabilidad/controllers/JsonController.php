@@ -485,6 +485,65 @@ class Contabilidad_JsonController extends Zend_Controller_Action
        
     }
 
+    public function numerofacturaAction()
+    {
+    	$idSucursal = $this->getParam("idSuc");
+		$buscaFac  = $this->facturaCliDAO->buscaNumeroFactura($idSucursal);
+		if(!is_null($buscaFac)){
+			echo Zend_Json::encode($buscaFac);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
+    public function cancelafaccliAction()
+    {
+    	$idSucursal = $this->getParam("sucu");
+        $num = $this->getParam("num");
+		$buscaFacCli = $this->cobrosDAO->busca_FacCli($idSucursal, $num);
+		if(!is_null($buscaFacCli)){
+			echo Zend_Json::encode($buscaFacCli);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+       
+    }
+
+    public function aplicacanfaccliAction()
+    {
+        $idFactura = $this->getParam("idFactura");
+		$aplicaCanFacCli = $this->facturaCliDAO->cancelaFactura($idFactura);
+		if(!is_null($aplicaCanFacCli)){
+			echo Zend_Json::encode($aplicaCanFacCli);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function numfacprovAction()
+    {
+    	$idSucursal = $this->getParam("idSuc");
+		$facProv = $this->facturaProDAO->buscaFacturaProveedor($idSucursal);
+		if(!is_null($facProv)){
+			echo Zend_Json::encode($facProv);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function facprovxsucynumAction()
+    {
+    	$idSucursal = $this->getParam("sucu");
+        $num = $this->getParam("num");
+		$buscaFacProv = $this->facturaProDAO->busca_FacProv($idSucursal, $num);
+		if(!is_null($buscaFacProv)){
+			echo Zend_Json::encode($buscaFacProv);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
 
 }
 
@@ -513,6 +572,11 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
+
+
 	
 	
 	
@@ -524,6 +588,11 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
+
+
 
 
 

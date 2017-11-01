@@ -40,8 +40,17 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'cobros'), null, true); ?>">Cobro de Factura</a></li>	
-						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => ''), null, true); ?>">Cancelar Pagos</a></li>
-						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => ''), null, true); ?>">Cancelar Remisiones</a></li>
+						
+					</ul>
+				</li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="#">
+						Cancelación
+					</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'cancelar'), null, true); ?>">Cancelar Factura</a></li>	
+						<!--<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => ''), null, true); ?>">Cancelar Pagos</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => ''), null, true); ?>">Cancelar Remisiones</a></li>-->
 					</ul>
 				</li>
 			</ul>	
@@ -67,8 +76,16 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'pagos'), null, true); ?>">Pago de Factura</a></li>	
-						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Cancelar Pagos</a></li>
-						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Cancelar Remisiones</a></li>
+					</ul>
+				</li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="#">
+						Cancelación
+					</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'cancelar'), null, true); ?>">Cancelar de Factura</a></li>	
+						<!--<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Cancelar Pagos</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => ''), null, true); ?>">Cancelar Remisiones</a></li>-->
 					</ul>
 				</li>
 			</ul>

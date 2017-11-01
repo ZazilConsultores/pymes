@@ -18,12 +18,12 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 				$datos = $formulario->getValues();
 				try{
 					//$this->polizaDAO->eliminarPoliza();
-					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					/*$this->polizaDAO->generaGruposFacturaCliente($datos);
 					$this->polizaDAO->generaGruposFacturaProveedor($datos);
 					$this->polizaDAO->generacxc($datos);
 					$this->polizaDAO->generacxp($datos);
 					$this->polizaDAO->generacxp_Fo($datos);
-					$this->polizaDAO->generacxc_Fo($datos);
+					$this->polizaDAO->generacxc_Fo($datos);*/
 					$this->polizaDAO->generacxpRemisiones($datos);
 					$this->polizaDAO->genera_Cuentasxp_PagoImpuesto($datos);
 					$this->polizaDAO->genera_ProvisionNomina($datos);
