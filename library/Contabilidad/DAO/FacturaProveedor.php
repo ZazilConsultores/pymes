@@ -105,7 +105,7 @@
 					
 					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
 					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
-					$tablaProductoImp = $this->tablaImpuestoProductos;
+					/*$tablaProductoImp = $this->tablaImpuestoProductos;
 					$select = $tablaProductoImp->select()->from($tablaProductoImp)->where("idProducto=?",$productos[0]['descripcion']);
 					$rowProdImp = $tablaProductoImp->fetchRow($select);
 					print_r("$select");
@@ -119,7 +119,7 @@
 							//print_r(//print_r($mfImpuesto);
 							$dbAdapter->insert("facturaimpuesto", $mfImpuesto);
 							
-					}
+					}*/
 					if(($formaPago['pagada'])==="1"){
 						$mCuentasxp = array(
 							'idTipoMovimiento'=>15,
