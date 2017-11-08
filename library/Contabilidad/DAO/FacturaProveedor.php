@@ -1,201 +1,203 @@
-	<?php
-	/**
-	 * @author Areli Morales Palma
-	 * @copyright 2016, Zazil Consultores S.A. de C.V.
-	 * @version 1.0.0
-	 */
-	class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFacturaProveedor{
+<?php
+/**
+ * @author Areli Morales Palma
+ * @copyright 2016, Zazil Consultores S.A. de C.V.
+ * @version 1.0.0
+ */
+class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFacturaProveedor{
+	private $tablaFactura;
+	private $tablaFacturaDetalle;
+	private $tablaImpuestos;
+	private $tablaMovimiento;
+	private $tablaTipoMovimiento;
+	private $tablaInventario;
+	private $tablaCapas;
+	private $tablaMultiplos;
+	private $tablaEmpresa;
+	private $tablaBanco;
+	private $tablaProveedor;
+	private $tablaUnidad;
+	private $tablaImpuestoProductos;
+	private $tablaFacturaImpuesto;
+	private $tablaProductoCompuesto;
 		
-		private $tablaFactura;
-		private $tablaFacturaDetalle;
-		private $tablaImpuestos;
-		private $tablaMovimiento;
-		private $tablaTipoMovimiento;
-		private $tablaInventario;
-		private $tablaCapas;
-		private $tablaMultiplos;
-		private $tablaEmpresa;
-		private $tablaBanco;
-		private $tablaProveedor;
-		private $tablaUnidad;
-		private $tablaImpuestoProductos;
-		private $tablaFacturaImpuesto;
-		private $tablaProductoCompuesto;
+	public function __construct() {
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
+		$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
+		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
+		$this->tablaTipoMovimiento= new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
+		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
+		$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
+		$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
+		$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
+		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
+		$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
+		$this->tablaImpuestos = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
+		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
+		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
+	}
+	
+	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos)
+	{
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		$dbAdapter->beginTransaction();
+		$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
+		$stringFecha = $fechaInicio->toString('YY-mm-dd');
 		
-		public function __construct() {
-			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
-			$this->tablaFacturaDetalle = new Contabilidad_Model_DbTable_FacturaDetalle(array('db'=>$dbAdapter));
-			$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
-			$this->tablaTipoMovimiento= new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
-			$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
-			$this->tablaInventario = new Contabilidad_Model_DbTable_Inventario(array('db'=>$dbAdapter));
-			$this->tablaMultiplos = new Inventario_Model_DbTable_Multiplos(array('db'=>$dbAdapter));
-			$this->tablaEmpresa = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
-			$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
-			$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
-			$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
-			$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
-			$this->tablaUnidad = new Inventario_Model_DbTable_Unidad(array('db'=>$dbAdapter));
-			$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
-			$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
-		}
-		
-			
-		public function guardaFactura(array $encabezado, $importe, $formaPago, $productos)
-		{
-			$dbAdapter = Zend_Registry::get('dbmodgeneral');
-			$dbAdapter->beginTransaction();
-			$fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
-			$stringFecha = $fechaInicio->toString('YY-mm-dd');
-			print_r($productos);
-			try{
-		 		//Valida que la factura no exista
-				$tablaFactura = $this->tablaFactura;
-				$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
-				->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
-				$rowFactura = $tablaFactura->fetchRow($select);
+		try{
+			//Valida que la factura no exista
+			$tablaFactura = $this->tablaFactura;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
+			->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
+			$rowFactura = $tablaFactura->fetchRow($select);
+			//print_r("$select");
+			if(!is_null($rowFactura)){
+				echo"La factura ya esta registrada";
+			}else{
+				//Situacion de Pago $conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
+				if(($formaPago['pagada']) == "1"){
+					$conceptoPago = "LI";
+					$importePagado = $importe[0]['total'];
+					$saldo = 0;
+				}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
+					$conceptoPago = "PE";
+					$importePagado = 0;
+					$saldo = $importe[0]['total'];
+				}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
+					$conceptoPago = "PA";
+					$importePagado = $formaPago['pagos'];
+					$saldo = $importe[0]['total']- $formaPago['pagos'];
+				}	
+				//Guarda Movimiento en tabla factura
+				$mFactura = array(
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idSucursal'=>$encabezado['idSucursal'],
+					'idCoP'=>$encabezado['idCoP'],
+					'idDivisa'=>$formaPago['idDivisa'],
+					'numeroFactura'=>$encabezado['numeroFactura'],
+					'estatus'=>"A",
+					'conceptoPago'=>$conceptoPago,
+					'descuento'=>$importe[0]['descuento'],
+					'formaPago'=>$formaPago['formaLiquidar'],
+					'fecha'=>$stringFecha,
+					'subTotal'=>$importe[0]['subTotal'],
+					'total'=>$importe[0]['total'],
+					'folioFiscal'=>$encabezado['folioFiscal'],
+					'importePagado'=>$importePagado,
+					'saldo'=>$saldo
+				);
+				$dbAdapter->insert("Factura", $mFactura);
+				//Obtine el ultimo id en tabla factura y Guarda los impuestos
+				$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
+				//Guarda en facturaImpuesto
+				$tablaImpuesto = $this->tablaImpuestos;
+				$select = $tablaImpuesto->select()->from($tablaImpuesto)->where("abreviatura = ?",'IVA');
+				$rowImpFactura = $tablaImpuesto->fetchRow($select);
 				//print_r("$select");
-				if(!is_null($rowFactura)){
-				 	echo"La factura ya esta registrada";
-				}else{
-					//Situacion de Pago $conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
-					if(($formaPago['pagada']) == "1"){
-						$conceptoPago = "LI";
-						$importePagado = $importe[0]['total'];
-						$saldo = 0;
-					}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
-						$conceptoPago = "PE";
-						$importePagado = 0;
-						$saldo = $importe[0]['total'];
-					}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
-						$conceptoPago = "PA";
-						$importePagado = $formaPago['pagos'];
-						$saldo = $importe[0]['total']- $formaPago['pagos'];
-					}	
-					//Guarda Movimiento en tabla factura
-					$mFactura = array(
-						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+				$mfImpuesto = array(
+					'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+					'idFactura'=>$idFactura,
+					'idImpuesto'=>$rowImpFactura['idImpuesto'],
+					'idCuentasxp'=>0,
+					'importe'=>$importe[0]['iva']	
+				);
+				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+				//Guarda Impuesto
+				$tablaImpuesto = $this->tablaImpuestos;
+				$select = $tablaImpuesto->select()->from($tablaImpuesto);
+				$rowsImpuesto = $tablaImpuesto->fetchAll();
+				foreach($rowsImpuesto as $rowImpuesto){
+					$abreviatura  = $rowImpuesto["abreviatura"];
+					switch ($abreviatura ) {
+						case 'IEPS':
+							if($importe[0]["ieps"]!== 0){
+								$dbAdapter->insert("FacturaImpuesto", array("idTipoMovimiento"=>$encabezado['idTipoMovimiento'],"idFactura"=>$idFactura,"idCuentasxp"=>0,"idImpuesto"=>$rowImpuesto["idImpuesto"],"importe"=>$importe[0]["ieps"]));
+							}
+							break;	
+						case 'ISH':
+							if($importe[0]["ish"]!=0){
+								$dbAdapter->insert("FacturaImpuesto", array("idTipoMovimiento"=>$encabezado['idTipoMovimiento'],"idFactura"=>$idFactura,"idCuentasxp"=>0,"idImpuesto"=>$rowImpuesto["idImpuesto"],"importe"=>$importe[0]["ish"]));	
+							}
+							break;
+						case 'ISR':
+							if($importe[0]["isr"]!=0){
+								$dbAdapter->insert("FacturaImpuesto", array("idTipoMovimiento"=>$encabezado['idTipoMovimiento'],"idFactura"=>$idFactura,"idCuentasxp"=>0,"idImpuesto"=>$rowImpuesto["idImpuesto"],"importe"=>$importe[0]["isr"]));
+							}
+							break;
+					} 
+				}
+				//Cierra guarda impuesto
+				//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
+				if(($formaPago['pagada'])==="1"){
+					$mCuentasxp = array(
+						'idTipoMovimiento'=>15,
 						'idSucursal'=>$encabezado['idSucursal'],
-						'idCoP'=>$encabezado['idCoP'],
-						'idDivisa'=>$formaPago['idDivisa'],
-						'numeroFactura'=>$encabezado['numeroFactura'],
-						'estatus'=>"A",
-						'conceptoPago'=>$conceptoPago,
-						'descuento'=>$importe[0]['descuento'],
-						'formaPago'=>$formaPago['formaLiquidar'],
-						'fecha'=>$stringFecha,
-						'subTotal'=>$importe[0]['subTotal'],
-						'total'=>$importe[0]['total'],
-						'folioFiscal'=>$encabezado['folioFiscal'],
-						'importePagado'=>$importePagado,
-						'saldo'=>$saldo
-					);
-					$dbAdapter->insert("Factura", $mFactura);
-					//Obtine el ultimo id en tabla factura y Guarda los impuestos
-					$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
-					//Guarda en facturaImpuesto
-					$mfImpuesto = array(
-						'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 						'idFactura'=>$idFactura,
-						'idImpuesto'=>4, //Iva
+						'idCoP'=>$encabezado['idCoP'],
+						'idBanco'=>$formaPago['idBanco'],
+						'idDivisa'=>$formaPago['idDivisa'],
+						'numeroFolio'=>$encabezado['numeroFactura'],
+						'secuencial'=>1,
+						'fecha'=>date("Y-m-d H:i:s", time()),
+						'fechaPago'=>$stringFecha,
+						'estatus'=>"A",
+						'numeroReferencia'=>$formaPago['numeroReferencia'],
+						'conceptoPago'=>$conceptoPago,
+						'formaLiquidar'=>$formaPago['formaLiquidar'],
+						'subTotal'=>$importe[0]['subTotal'],
+						'total'=>$importe[0]['total']	
+					);
+					$dbAdapter->insert("Cuentasxp", $mCuentasxp);
+					//Guarda el impuesto de pago facturaImpuesto
+					$mfImpuesto = array(
+						'idTipoMovimiento'=>15,
+						'idFactura'=>$idFactura,
+						'idImpuesto'=>$rowImpFactura['idImpuesto'], //Iva
 						'idCuentasxp'=>0,
 						'importe'=>$importe[0]['iva']	
 					);
-					
 					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-					//Guarda Movimiento en Cuentasxp si forma de pago es igual a liquidado
-					/*$tablaProductoImp = $this->tablaImpuestoProductos;
-					$select = $tablaProductoImp->select()->from($tablaProductoImp)->where("idProducto=?",$productos[0]['descripcion']);
-					$rowProdImp = $tablaProductoImp->fetchRow($select);
-					print_r("$select");
-					if(!is_null($rowProdImp)){
-						$mfImpuesto = array(
-							'idTipoMovimiento'=>4,
-							'idFactura'=>$idFactura,//iva
-							'idCuentasxp'=>0,
-							'idImpuesto'=>$rowProdImp["idImpuesto"],
-							'importe'=>$importe[0]["ieps"]);
-							//print_r(//print_r($mfImpuesto);
-							$dbAdapter->insert("facturaimpuesto", $mfImpuesto);
-							
-					}*/
-					if(($formaPago['pagada'])==="1"){
-						$mCuentasxp = array(
-							'idTipoMovimiento'=>15,
-							'idSucursal'=>$encabezado['idSucursal'],
-							'idFactura'=>$idFactura,
-							'idCoP'=>$encabezado['idCoP'],
-							'idBanco'=>$formaPago['idBanco'],
-							'idDivisa'=>$formaPago['idDivisa'],
-							'numeroFolio'=>$encabezado['numeroFactura'],
-							'secuencial'=>1,
-							'fecha'=>date("Y-m-d H:i:s", time()),
-							'fechaPago'=>$stringFecha,//Revisar fecha en pagos factura proveedor
-							'estatus'=>"A",
-							'numeroReferencia'=>$formaPago['numeroReferencia'],
-							'conceptoPago'=>$conceptoPago,
-							'formaLiquidar'=>$formaPago['formaLiquidar'],
-							'subTotal'=>$importe[0]['subTotal'],
-							'total'=>$importe[0]['total']	
-						);
-						$dbAdapter->insert("Cuentasxp", $mCuentasxp);
-						//Guarda el impuesto de pago facturaImpuesto
-						$mfImpuesto = array(
-							'idTipoMovimiento'=>15,
-							'idFactura'=>$idFactura,
-							'idImpuesto'=>4, //Iva
-							'idCuentasxp'=>0,
-							'importe'=>$importe[0]['iva']	
-						);
-						$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-						//Solo si esta pagada, actualiza saldo Banco
-						$tablaBanco = $this->tablaBanco;
-						$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
-						$rowBanco = $tablaBanco->fetchRow($select);
-						$saldo = $rowBanco->saldo - $importe[0]['total'];
-						//print_r($saldo); print_r("<br />");
-						$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);
-						$tablaBanco->update(array ("saldo" => $saldo), $where);	
-						
-					}else{
-						//Actualizamos el saldo del proveedor
-						$tablaProv = $this->tablaProveedor;
-						$select = $tablaProv->select()->from($tablaProv)->where("idProveedores = ?",$encabezado['idCoP']);
-						$rowProv = $tablaProv->fetchRow($select);
-						// print_r($expression);
-						if(!is_null($rowProv)){
-							$saldo  = $importe[0]['total'] + $rowProv->saldo;
-							$rowProv->saldo = $saldo;
-							$rowProv->save();
-						}
-					}	
-				}		
-			$dbAdapter->commit();
-			}catch(exception $ex){
-				print_r("<br />");
-				print_r("================");
-				print_r("<br />");
-				print_r("Excepcion Lanzada");
-				print_r("<br />");
-				print_r("================");
-				print_r("<br />");
-				print_r($ex->getMessage());
-				print_r("<br />");
-				print_r("<br />");
-				$dbAdapter->rollBack();
-			}
-		}	
-		public function actualizaSaldoProveedor($encabezado, $formaPago){
-			$tablaProveedor = $this->tablaProveedor;
-			$select = $tablaProveedor->select()->from($tablaProveedor)->where("idProveedores =? ",$encabezado['idCoP']);
-			$row = $tablaProveedor->fetchRow($select);
-			$saldoProveedor = $row['saldo'] - $formaPago['pagos'];
-			$where = $tablaProveedor->getAdapter()->quoteInto("idProveedores = ?", $encabezado['idCoP']);
-			$tablaProveedor->update(array("saldo" =>$saldoProveedor), $where);
-				
+					//Solo si esta pagada, actualiza saldo Banco
+					$tablaBanco = $this->tablaBanco;
+					$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
+					$rowBanco = $tablaBanco->fetchRow($select);
+					$saldo = $rowBanco->saldo - $importe[0]['total'];
+					//print_r($saldo); print_r("<br />");
+					$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);
+					$tablaBanco->update(array ("saldo" => $saldo), $where);	
+				}else{
+					//Actualizamos el saldo del proveedor
+					$tablaProv = $this->tablaProveedor;
+					$select = $tablaProv->select()->from($tablaProv)->where("idProveedores = ?",$encabezado['idCoP']);
+					$rowProv = $tablaProv->fetchRow($select);
+					// print_r($expression);
+					if(!is_null($rowProv)){
+						$saldo  = $importe[0]['total'] + $rowProv->saldo;
+						$rowProv->saldo = $saldo;
+						$rowProv->save();
+					}
+				}	
+			}		
+		$dbAdapter->commit();
+		}catch(exception $ex){
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r("Excepcion Lanzada");
+			print_r("<br />");
+			print_r("================");
+			print_r("<br />");
+			print_r($ex->getMessage());
+			print_r("<br />");
+			print_r("<br />");
+			$dbAdapter->rollBack();
 		}
-		
+	}	
+	
 	public function guardaDetalleFactura(array $encabezado, $producto, $importe){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
@@ -214,13 +216,9 @@
 					$cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
 					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
 					$tablaFactura = $this->tablaFactura;
-					//Asigna secuencial
 					$tablaMovimiento = $this->tablaMovimiento;
-					$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])
-					->where("idCoP=?",$encabezado['idCoP'])
-					->where("idSucursal=?",$encabezado['idSucursal'])
-					->where("fecha=?", $stringFecha)
-					->order("secuencial DESC");
+					$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numeroFactura'])->where("idCoP=?",$encabezado['idCoP'])
+					->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringFecha)->order("secuencial DESC");
 					$rowMovimiento = $tablaMovimiento->fetchRow($select); 
 					if(!is_null($rowMovimiento)){
 						$secuencial= $rowMovimiento->secuencial +1;
@@ -248,7 +246,6 @@
 						'costoUnitario'=>$precioUnitario,
 						'totalImporte'=>$producto['importe']
 					);
-					//print_r($mMovimiento);
 					$dbAdapter->insert("Movimientos",$mMovimiento);
 					//Buscamos descipcion del producto.
 					$tablaProducto = $this->tablaProducto;

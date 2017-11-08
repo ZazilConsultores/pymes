@@ -108,23 +108,18 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
-	
+		
 		try{
 			$secuencial=0;	
 			$tablaCuentasxp = $this->tablaCuentasxp;
 			$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("numeroFolio=?",$encabezado['numFolio'])
-			->where("idCoP=?",$encabezado['idCoP'])
-			->where("idSucursal=?",$encabezado['idSucursal'])
-			->where("fechaPago=?", $stringIni)
-			->order("secuencial DESC");
+			->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal'])->where("fechaPago=?", $stringIni)->order("secuencial DESC");
 			$rowCuentasxp = $tablaCuentasxp->fetchRow($select); 
-			
 			if(!is_null($rowCuentasxp)){
 				$secuencial= $rowCuentasxp->secuencial +1;
 			}else{
 				$secuencial = 1;	
 			}
-			
 			$mCuentasxp = array(
 				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 				'idSucursal'=>$encabezado['idSucursal'],
@@ -155,9 +150,9 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			print_r($ex->getMessage());
 			print_r("<br />");
 			$dbAdapter->rollBack();
-		}
-		
+		}	
 	}
+
 	public function actulizaProducto(array $encabezado, $formaPago, $producto){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();	
@@ -173,20 +168,16 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 			$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 			$cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
 			$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
-		
-			print_r("<br />");
 			if(!is_null($rowProducto && !is_null($rowMultiplo))){
 				$claveProducto = substr($rowProducto->claveProducto, 0,2);
-				print_r($claveProducto);
-				print_r("<br />");
+				//print_r($claveProducto);print_r("<br />");
 				switch($claveProducto){
 					case 'PT':
-					print_r("<br />");
-					$tablaCapas = $this->tablaCapas;
-					$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']);
-					$rowCapas = $tablaCapas->fetchRow($select);
-					if(is_null($rowCapas)){
-						$mCapas = array(
+						$tablaCapas = $this->tablaCapas;
+						$select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion']);
+						$rowCapas = $tablaCapas->fetchRow($select);
+						if(is_null($rowCapas)){
+							$mCapas = array(
 								'idSucursal'=>$encabezado['idSucursal'],
 								'numeroFolio'=>$formaPago["idDivisa"],
 								'idProducto'=>$producto['descripcion'],
@@ -195,59 +186,21 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 								'cantidad'=>$cantidad,
 								'fechaEntrada'=>$stringIni,
 								'costoUnitario'=>$precioUnitario
-						);
+							);
 						$dbAdapter->insert("Capas",$mCapas);
-					}else{
-						//Actuliza, costoUnitario, fecha
-						$rowCapas->costoUnitario = $precioUnitario;
-						$rowCapas->fechaEntrada = date('Y-m-d h:i:s', time());
-						$rowCapas->save();
-					}
-					$tablaInventario = $this->tablaInventario;
-					$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
-					$rowInventario = $tablaInventario->fetchRow($select);
-					$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
-					print_r("<br />");
-					print_r($costoCliente);
-					if(is_null($rowInventario)){
-						$mInventario = array(
-							'idProducto'=>$producto['descripcion'],
-							'idDivisa'=>$formaPago["idDivisa"],
-							'idSucursal'=>$encabezado['idSucursal'],
-							'existencia'=>$cantidad,
-							'apartado'=>'0',
-							'existenciaReal'=>$cantidad,
-							'maximo'=>'0',
-							'minimo'=>'0',
-							'fecha'=>$stringIni,
-							'costoUnitario'=>$precioUnitario,
-							'porcentajeGanancia'=>'0',
-							'cantidadGanancia'=>'0',
-							'costoCliente'=> $costoCliente
-						);
-						$dbAdapter->insert("Inventario",$mInventario);
-					}else{
-						//Actuliza, fecha, costoUnitrio, costoCliente
-						$rowInventario->fecha = date('Y-m-d h:i:s', time());
-						$rowInventario->costoUnitario = $precioUnitario;
-						$rowInventario->costoCliente = $costoCliente;
-						$rowInventario->save();
-					}
-						
-							
-				break;
-				case 'VS':
-					//No registramos  en Capas, si no existe en Inventario lo registra solo una vez, pero nunca actuliaza  
-					print_r("<br />");
-					print_r("Varios Servicios");
-					$tablaInventario = $this->tablaInventario;
-					$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
-					$rowInventario = $tablaInventario->fetchRow($select);
-					$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
-					print_r("<br />");
-					print_r("$select");
-					if(is_null($rowInventario)){
-						$mInventario = array(
+						}else{
+							//Actuliza, costoUnitario, fecha
+							$rowCapas->costoUnitario = $precioUnitario;
+							$rowCapas->fechaEntrada = date('Y-m-d h:i:s', time());
+							$rowCapas->save();
+						}
+						$tablaInventario = $this->tablaInventario;
+						$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+						$rowInventario = $tablaInventario->fetchRow($select);
+						$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
+						//print_r("<br />");print_r($costoCliente);
+						if(is_null($rowInventario)){
+							$mInventario = array(
 								'idProducto'=>$producto['descripcion'],
 								'idDivisa'=>$formaPago["idDivisa"],
 								'idSucursal'=>$encabezado['idSucursal'],
@@ -263,22 +216,23 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 								'costoCliente'=> $costoCliente
 							);
 							$dbAdapter->insert("Inventario",$mInventario);
-					}
-				break;
-				case 'SV':
-					//No registramos  en Capas, si no existe en Inventario lo registra, si ya existe actualiza la fecha y costos   
-					print_r("<br />");
-					print_r("Servicio");
-					print_r("<br />");
-					print_r("Varios Servicios");
-					$tablaInventario = $this->tablaInventario;
-					$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
-					$rowInventario = $tablaInventario->fetchRow($select);
-					$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
-					print_r("<br />");
-					print_r("$select");
-					if(is_null($rowInventario)){
-						$mInventario = array(
+						}else{
+							//Actuliza, fecha, costoUnitrio, costoCliente
+							$rowInventario->fecha = date('Y-m-d h:i:s', time());
+							$rowInventario->costoUnitario = $precioUnitario;
+							$rowInventario->costoCliente = $costoCliente;
+							$rowInventario->save();
+						}		
+					break;
+					case 'VS':
+						//No registramos  en Capas, si no existe en Inventario lo registra solo una vez, pero nunca actuliaza  
+						$tablaInventario = $this->tablaInventario;
+						$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+						$rowInventario = $tablaInventario->fetchRow($select);
+						$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
+						print_r("<br />");print_r("$select");
+						if(is_null($rowInventario)){
+							$mInventario = array(
 								'idProducto'=>$producto['descripcion'],
 								'idDivisa'=>$formaPago["idDivisa"],
 								'idSucursal'=>$encabezado['idSucursal'],
@@ -294,31 +248,52 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 								'costoCliente'=> $costoCliente
 							);
 							$dbAdapter->insert("Inventario",$mInventario);
-					}else{
-						$rowInventario->existencia = $cantidad;
-						$rowInventario->existenciaReal = $cantidad;
-						$rowInventario->fecha = date('Y-m-d h:i:s', time());
-						$rowInventario->costoUnitario = $precioUnitario;
-						$rowInventario->costoCliente = $costoCliente;
-						$rowInventario->save();
-					}
-				break;
-				default:
-					print_r("<br />");
-					print_r("Producto Normal");
-					//Creamos o actualizamos Capas y Inventario
-					$tablaCapas = $this->tablaCapas;
-					$select = $tablaCapas->select()->from($tablaCapas)->where("numeroFolio=?",$encabezado['numFolio'])->where("fechaEntrada=?", $stringIni)->order("secuencial DESC");
-					print_r("$select");
-					$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
-					$rowCapas = $tablaCapas->fetchRow($select); 
-					if(!is_null($rowCapas)){
-						$secuencial= $rowCapas->secuencial +1;
-					}else{
-						$secuencial = 1;	
-					}
-					
-					$mCapas = array(
+						}
+					break;
+					case 'SV':
+						//No registramos  en Capas, si no existe en Inventario lo registra, si ya existe actualiza la fecha y costos   
+						$tablaInventario = $this->tablaInventario;
+						$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
+						$rowInventario = $tablaInventario->fetchRow($select);
+						$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
+						if(is_null($rowInventario)){
+							$mInventario = array(
+								'idProducto'=>$producto['descripcion'],
+								'idDivisa'=>$formaPago["idDivisa"],
+								'idSucursal'=>$encabezado['idSucursal'],
+								'existencia'=>$cantidad,
+								'apartado'=>'0',
+								'existenciaReal'=>$cantidad,
+								'maximo'=>'0',
+								'minimo'=>'0',
+								'fecha'=>$stringIni,
+								'costoUnitario'=>$precioUnitario,
+								'porcentajeGanancia'=>'0',
+								'cantidadGanancia'=>'0',
+								'costoCliente'=> $costoCliente
+							);
+							$dbAdapter->insert("Inventario",$mInventario);
+						}else{
+							$rowInventario->existencia = $cantidad;
+							$rowInventario->existenciaReal = $cantidad;
+							$rowInventario->fecha = date('Y-m-d h:i:s', time());
+							$rowInventario->costoUnitario = $precioUnitario;
+							$rowInventario->costoCliente = $costoCliente;
+							$rowInventario->save();
+						}
+					break;
+					default:
+						//Creamos o actualizamos Capas y Inventario
+						$tablaCapas = $this->tablaCapas;
+						$select = $tablaCapas->select()->from($tablaCapas)->where("numeroFolio=?",$encabezado['numFolio'])->where("fechaEntrada=?", $stringIni)->order("secuencial DESC");
+						$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
+						$rowCapas = $tablaCapas->fetchRow($select); 
+						if(!is_null($rowCapas)){
+							$secuencial= $rowCapas->secuencial +1;
+						}else{
+							$secuencial = 1;	
+						}
+						$mCapas = array(
 							'idProducto' => $producto['descripcion'],
 							'idDivisa'=>$formaPago["idDivisa"],
 							'idSucursal'=>$encabezado['idSucursal'],
@@ -328,18 +303,14 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 							'fechaEntrada'=>$stringIni,
 							'costoUnitario'=>$precioUnitario
 						);
-		 			
-						
-						//print_r($mCapas);
-						$dbAdapter->insert("Capas", $mCapas);
+		 				$dbAdapter->insert("Capas", $mCapas);
 						//Movimiento en Inventario
 						$tablaInventario = $this->tablaInventario;
 						$select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$producto['descripcion']);
 						$rowInventario = $tablaInventario->fetchRow($select);
 						$cantidadI = $rowInventario["existencia"] + $cantidad;
 						$costoCliente = $precioUnitario * ($rowInventario["porcentajeGanancia"] / 100) + $precioUnitario;
-						print_r("<br />");
-						print_r("$select");
+						//print_r("<br />");print_r("$select");
 						if(!is_null($rowInventario)){
 							//Sumamos en existencia y existenciaReal
 							$fecha = date('Y-m-d h:i:s', time());
@@ -372,9 +343,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 						$tablaProdComp = $this->tablaProductoCompuesto;
 						$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
 						$rowsProductosComp = $tablaProdComp->fetchAll($select);
-						print_r("Actualiza en Producto Terminado");
-						print_r("$select");
-						print_r("<br />");
+						//print_r("Actualiza en Producto Terminado");print_r("$select");print_r("<br />");
 						if(!is_null($rowsProductosComp)){
 							foreach ($rowsProductosComp as $rowProductosComp) {
 								$rowProductosComp['costoUnitario']  = $precioUnitario;
@@ -382,18 +351,12 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 								$tablaProdEnl = $this->tablaProductoCompuesto;
 								$select = $tablaProdEnl->select()->from($tablaProdEnl)->where("idProducto=?",$rowProductosComp["idProducto"]);
 								$rowsProductosEnl = $tablaProdEnl->fetchAll($select);
-								print_r("<br />");
-								print_r("$select");
-								print_r("<br />");
-								if(!is_null($rowsProductosEnl)){
-									
-								}
+								//print_r("<br />");print_r("$select");print_r("<br />");
 							}
-							
-						}//RowProductoCompuesto	*/
-					}//Existencia de Multiplo	
+						}
+					}//sw	
 			}	
-		$dbAdapter->commit();
+			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
 			print_r("================");
@@ -434,26 +397,21 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 				$rowMultiplo = $tablaMultiplos->fetchRow($select); 
 				$cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
 				$precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
-				print_r($cantidad);
-				print_r($precioUnitario);
+				//print_r($cantidad); print_r($precioUnitario);
 				if(!is_null($rowProducto && !is_null($rowMultiplo))){
 					$claveProducto = substr($rowProducto->claveProducto, 0,2);
 					if($claveProducto <> 'PT' || $claveProducto <> 'VS' || $claveProducto <> 'SV' ){
 						$tablaProdComp = $this->tablaProductoCompuesto;
 						$select = $tablaProdComp->select()->from($tablaProdComp)->where("productoEnlazado=?",$producto["descripcion"]);
 						$rowsProductosComp = $tablaProdComp->fetchAll($select);
-						print_r("$select");
-						print_r("<br />");
+						//print_r("$select");print_r("<br />");
 						if(!is_null($rowsProductosComp)){
 							foreach($rowsProductosComp as $rowProductoComp){
 								//Actualizamos costo en Capas y Inventario.
 								$tablaProdComp = $this->tablaProductoCompuesto;
 								$select = $tablaProdComp->select()->from($tablaProdComp, new Zend_Db_Expr('sum(cantidad * costoUnitario) as total'))->where("idProducto=?",$rowProductoComp["idProducto"]);
 								$rowsProductosCompxp = $tablaProdComp->fetchRow($select);
-								print_r("<br />");
-								print_r("El total del producto terminado");
-								print_r("<br />");
-								print_r("$select");
+								//print_r("<br />");print_r("El total del producto terminado");print_r("<br />");print_r("$select");
 								$total = $rowsProductosCompxp['total'] ;
 								
 								$tablaCapas = $this->tablaCapas;
@@ -468,9 +426,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 								$tablaProdComEnl = $this->tablaProductoCompuesto;
 								$select = $tablaProdComEnl->select()->from($tablaProdComEnl)->where("productoEnlazado=?",$rowProductoComp["idProducto"]);
 								$rowsProductosCompxEnl = $tablaProdComEnl->fetchAll($select);
-								print_r("<br />");
-								print_r("$select");
-								print_r("<br />");
+								//print_r("<br />");print_r("$select");print_r("<br />");
 								if(!is_null($rowsProductosCompxEnl)){
 									foreach($rowsProductosCompxEnl as $rowProductoCompxEnl){
 										//Actulizamos el nuevo costo
@@ -480,7 +436,7 @@ class Contabilidad_DAO_RemisionEntrada implements Contabilidad_Interfaces_IRemis
 										$tablaProdComp = $this->tablaProductoCompuesto;
 										$select = $tablaProdComp->select()->from( $tablaProdComp,new Zend_Db_Expr('sum(cantidad * costoUnitario) as total'))->where("idProducto=?",$rowProductoCompxEnl["idProducto"]);
 										$rowsProductosCompEnl = $tablaProdComp->fetchRow($select);
-										print_r("$select");
+										//print_r("$select");
 										$totalEnl = $rowsProductosCompEnl['total'] ;
 										//Actualiza Capa
 										$tablaCapas = $this->tablaCapas;

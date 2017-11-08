@@ -4,15 +4,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
     private $notaEntradaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $pagoProveedor = null;
-
     private $anticipoDAO = null;
 
     public function init()
@@ -73,7 +68,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 					$notaentrada = $this->notaEntradaDAO->agregarProducto($encabezado, $productos);
 					$actualizaProducto = $this->notaEntradaDAO->actulizaProducto($encabezado, $productos);
 					$actualizaCostoProducto = $this->notaEntradaDAO->actulizaCostoProducto($encabezado, $productos);
-					$this->view->messageSuccess = "Número: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
+					$this->view->messageSuccess = "Nota: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = "Error al crear el Nota Proveedor: <strong>".$ex->getMessage()."</strong>";
 				}
@@ -85,26 +80,24 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_AgregarRemisionProveedor;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;	
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$remisionEntradaDAO = new Contabilidad_DAO_RemisionEntrada;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
-				//print_r($formaPago);
 				$productos = json_decode($encabezado['productos'],TRUE);
 				$contador = 0;
 				try{
-					$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
-					$saldoBanco = $this->remisionEntradaDAO->saldoBanco($formaPago, $productos);
-					$actualizaCostoProducto = $this->remisionEntradaDAO->actulizaCostoProducto($encabezado, $productos);
 					foreach ($productos as $producto){
 						$movimiento = $this->remisionEntradaDAO->agregarProducto($encabezado, $producto, $formaPago);
 						$actualizaProducto = $this->remisionEntradaDAO->actulizaProducto($encabezado, $formaPago, $producto);
 						$contador++;
 					}
+					$guardaPago = $this->remisionEntradaDAO->guardaPago($encabezado, $formaPago,$productos);
+					$saldoBanco = $this->remisionEntradaDAO->saldoBanco($formaPago, $productos);
+					$actualizaCostoProducto = $this->remisionEntradaDAO->actulizaCostoProducto($encabezado, $productos);
 					$this->view->messageSuccess = "Remisión: <strong>" .$encabezado["numFolio"] . " </strong> guardada exitosamente!!";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
@@ -126,15 +119,16 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
 				$importe = json_decode($formaPago['importes'], TRUE);
+				print_r($importe);
 				$contador = 0;
 				try{
-					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					foreach ($productos as $producto){
-						$actualizaProducto = $this->facturaDAO->actulizaProducto($encabezado,$formaPago, $producto, $importe);
 						$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						$actualizaProducto = $this->facturaDAO->actulizaProducto($encabezado,$formaPago, $producto, $importe);
 						$actualizaPT = $this->facturaDAO->actulizaCostoProducto($encabezado, $formaPago, $producto, $importe);
 						$contador++;
 					}
+					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					$this->view->messageSuccess = "Factura: <strong>" .$guardaFactura["numeroFactura"] . " </strong> guardada exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;
@@ -234,6 +228,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			//$datos = json_decode($datos['datos'], TRUE);
 			$idFactura = $datos["fac"];
 			//print_r($idFactura);
+			$this->facturaDAO->cancelaFactura($idFactura);
 			$this->facturaDAO->cancelaFactura($idFactura);
 		}
         

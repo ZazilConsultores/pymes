@@ -26,6 +26,7 @@
 				<th>Producto</th>
 				<th>Importe</th>
 				<th>Porcentaje</th>
+				<th>Eliminar</th>
 			</thead>
 			<tbody>
 			</tbody>
@@ -33,7 +34,8 @@
 	</div>
 </section>
 <script>
-$(function(){
+$(document).ready(function(){
+	
 	$('#impuestos').validate({
 		rules:{
 			importe:{
@@ -56,11 +58,10 @@ $(function(){
 			}
 		}
 	});
-});
-
-	$().ready(function(){
-		
+	
+	$("select#idImpuesto").on('change', function(){	
 		var idImpuesto = $("select#idImpuesto").val();
+		console.log(idImpuesto);
 		var url = window.location.origin + "/General/contabilidad/json/impuestos/idImpuesto/"+idImpuesto;
 		console.log(url);
 		$.ajax({
@@ -69,20 +70,34 @@ $(function(){
 			success: function(data){
 				console.log(url);
 				console.dir(data);
-				
 				var tbody = $("table#impuestosProductos").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					tbody.append($('<tr>').
-					append($('<td>').append(data[i].descripcion)).
-					append($('<td>').append(data[i].producto)).
-					append($('<td>').append(data[i].importe)).
-					append($('<td>').append(data[i].porcentaje))
-					);
+					if(data[i].idImpuesto == idImpuesto){
+						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("idImp",data[i].idImpuestoProducto);
+						tbody.append($('<tr>').
+						append($('<td>').append(data[i].descripcion)).
+						append($('<td>').append(data[i].producto)).
+						append($('<td>').append(data[i].importe)).
+						append($('<td>').append(data[i].porcentaje)).
+						append($('<td>').append(botonEliminar)));
+					}
 				});
 			}
 		});
+	});
+	
+	$("table#impuestosProductos").on("click", "button[id^='eliminar']", function(){
+		var prodImp = $(this).attr("idImp");
+		console.log(prodImp);
+		var urlImpProd = window.location.origin + "/General/contabilidad/json/eliminaprodimp/idImp/" + prodImp;
+		//	console.log(urlImpProd);
+		$.ajax({
+			url: urlImpProd,
+		});
 		
+		$("table#impuestosProductos  tbody > tr:last").remove();
 		
 	});
+});
 </script>

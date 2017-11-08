@@ -1143,6 +1143,7 @@
               <actionMethod actionName="aplicacanfaccli"/>
               <actionMethod actionName="numfacprov"/>
               <actionMethod actionName="facprovxsucynum"/>
+              <actionMethod actionName="eliminaprodimp"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1619,6 +1620,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="facprovxsucynum"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="eliminaprodimp"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3140,6 +3144,7 @@
                 <testApplicationActionMethod forActionName="aplicacanfaccli"/>
                 <testApplicationActionMethod forActionName="numfacprov"/>
                 <testApplicationActionMethod forActionName="facprovxsucynum"/>
+                <testApplicationActionMethod forActionName="eliminaprodimp"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
