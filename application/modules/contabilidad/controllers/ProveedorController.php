@@ -229,7 +229,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$idFactura = $datos["fac"];
 			//print_r($idFactura);
 			$this->facturaDAO->cancelaFactura($idFactura);
-			$this->facturaDAO->cancelaFactura($idFactura);
 		}
         
     }
