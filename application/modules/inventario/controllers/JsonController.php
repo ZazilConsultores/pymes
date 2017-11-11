@@ -116,8 +116,22 @@ class Inventario_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function eliminarproductoenlazadoAction()
+    {
+        $idProdComp = $this->getParam("productoCompuesto");
+        //$obtenerProducto = $this->inventarioDAO->obtenerMovtoxproducto($idProducto);
+        $eliminarProdComp  = $this->productoTermindoDAO->eliminarProdCom($idProdComp);
+        if(!is_null($eliminarProdComp)){
+            echo Zend_Json::encode($eliminarProdComp);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
+
+
 
 
 

@@ -66,13 +66,13 @@ $(document).ready(function(){
 	
 	$("#pagada").on("change", function(){
 		if($("#pagada:checked").val()=="1"){
-			$("#formaLiquidar").removeAttr("disabled");
+			//$("#formaLiquidar").removeAttr("disabled");
 			$("#idBanco").removeAttr("disabled");
 			$("#numeroReferencia").removeAttr("disabled");
 			
 		}else{
 			$("#pagada:checked").val()=="0"
-			$("#formaLiquidar").attr("disabled", true);
+			//$("#formaLiquidar").attr("disabled", true);
 			$("#idBanco").attr("disabled", true);
 			$("#numeroReferencia").attr("disabled", true);
 		}

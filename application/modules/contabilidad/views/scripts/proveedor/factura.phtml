@@ -117,7 +117,7 @@
 			
 			<table id="impuestos">
 				<thead>
-						<td align="center" ><strong></strong></td>
+						<td  align="center" ><strong></strong></td>
 					</thead>
 					<tbody>
 						<tr>
@@ -344,6 +344,8 @@ $(document).ready(function () {
     	var total;
     	var totalIva;
     	var descuento;
+    	var ieps;
+    	var totalIEPS;
     	var totalDescuento;	    
     	$("table#productos").find('input[id^="costoTotal_"]').each(function () {
         	grandTotal += +$(this).val();  
@@ -377,6 +379,17 @@ $(document).ready(function () {
 	   		total = totalDescuento + totalIva ;
 	   		$("input#total").val(total.toFixed(2)); 
 	   	}
+	   	/*IEPS*/
+   		ieps = $("#ieps").val();
+   		console.log(ieps);
+   		if (ieps !=0){
+   	   		console.log("contiene IEPS");
+   	   		console.log(grandTotal);
+   	   		totalIEPS = ieps + grandTotal + $("input#iva").val();
+   	   		console.log(totalIEPS);
+		}else{
+			console.log("NO CONTIENE IEPS");
+   	   	}
    	}
    
   	//Habilita IvaPorcentaje
@@ -386,6 +399,9 @@ $(document).ready(function () {
     });
   	//Edita IvaPorcentaje       
     $("#ivaPorcentaje").on("click",function(){
+    	calculateGrandTotal();
+    });
+    $("#ieps").on('change',function(){
     	calculateGrandTotal();
     });
   	//Calcula por si hay descuento       
@@ -461,7 +477,7 @@ $(document).ready(function () {
 								$("table#productos").find('input[id^="costoTotal_"]').each(function () {
 									//ieps += +parseFloat(data[i].importe * importe * cantidad);
 									ieps += +$(this).val() * data[i].importe ;
-									console.log(ieps);
+									//console.log(ieps);
 									$('input#ieps').val(ieps);
 								});
 							}else{

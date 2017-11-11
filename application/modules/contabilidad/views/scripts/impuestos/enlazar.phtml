@@ -95,8 +95,8 @@ $(document).ready(function(){
 		$.ajax({
 			url: urlImpProd,
 		});
-		
-		$("table#impuestosProductos  tbody > tr:last").remove();
+
+		$(this).closest('tr').remove();
 		
 	});
 });

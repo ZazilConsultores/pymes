@@ -143,30 +143,23 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$importe = json_decode($formaPago['importes'],TRUE);
 				$contador=0;
 				try{
+				   
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 					foreach ($productos as $producto){
-					//try{
-						
-						$detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
-						$actualizaProducto = $this->facturaDAO->restaProducto($encabezado, $producto);
-						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
-						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
-						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
-						
-					$contador++;
+					    if($encabezado["idEmpresas"]==6  ){
+					        $desechable  = $this->facturaDAO->restaDesechable($producto);
+					    }
+					    $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						$restaProducto  = $this->facturaDAO->restarProducto($encabezado, $producto);
+					   $contador++;
 					}
 					$this->view->messageSuccess = "Se ha agregado Factura exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}
-				}
-
-			//}
-			
-		//}
-   }
-
+			}
+        }
     }
 
     public function cobrosAction()

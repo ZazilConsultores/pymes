@@ -177,10 +177,10 @@
 
 <!--Tabla detalle ProductoTerminado-->
 <section>
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h4 class="panel-title">Detalle Producto Terminado.</h4>
-			</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Producto Terminado.</h4>
+		</div>
 			<table id="detalleProductoTer" class="table table-striped table-condensed">
 				<thead>
 					<th>Clave </th>
@@ -193,10 +193,13 @@
 					<th>Eliminar</th>
 				</thead>
 				<tbody>
+				<tr></tr>
 				</tbody>
+				<tfoot>
+				</tfoot>
 			</table>
-		</div>
-	</section>
+	</div>
+</section>
 <!--Tabla eniva datos ProductoTerminado-->
 <section class="panel panel-warning">
 	<div class="panel-heading">
@@ -240,7 +243,7 @@
 						
 					</select>
 				</div>
-			</div
+			</div>
 			<!-- Boton consulta -->
 			<div class="form-group">
 				<div class="col-md-offset-2 col-md-10">
@@ -816,8 +819,8 @@ $(document).ready(function() {
 							append($('<td>').append(botonEliminar)));
 							//tbody.append($('<tr>').append());
 					});
-					AddRow();
-					calculaTotal();
+					var tfoot = $("table#detalleProductoTer").find('tfoot');
+					tfoot.empty();
 				}
 			});
 			//Click en el importe de tabla detalleProductoComuesto
@@ -882,10 +885,14 @@ $(document).ready(function() {
 			
 		  });
 		   $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
-		   	var idProdComp = $(this).attr("productoCompuesto");
-		   	console.log(idProdComp);
-		  	window.location = "/General/inventario/productoterminado/eliminar/idProdComp/"+ idProdComp;
-		   	
+			   var prodComp = $(this).attr("productoCompuesto");
+			   console.log(prodComp);
+			   var urlProdComp = window.location.origin + "/General/inventario/json/eliminarproductoenlazado/productoCompuesto/" + prodComp;
+				//	console.log(urlImpProd);
+				$.ajax({
+					url: urlProdComp,
+				});
+				$("table#detalleProductoTer  tbody > tr:last").remove();
 		   });
 		  
 		  $("table#detalleProductoTer").on("click", "button[id^='editar']", function(){
@@ -897,7 +904,7 @@ $(document).ready(function() {
 		   
 		  function AddRow()
 		  	{
-    			 $('#detalleProductoTer tbody').append('<tr><td></td><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
+    			 //$('#detalleProductoTer tfoot').append('<tr><td></td><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
     		}
 		   	
 });
