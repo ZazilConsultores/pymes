@@ -73,19 +73,22 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						$tipo = $rowProveedor->idTipoProveedor;
 						//Buscamos si es empresaProveedor
 						$tablaProveedoresEmpresa = $this->tablaProveedorEmpresa;
-						$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa)->where("idProveedores =?", $idCoP);
+						$select = $tablaProveedoresEmpresa->select()->from($tablaProveedoresEmpresa)->where("idEmpresas =?", 9);
 						$rowProveedoresEmpresa = $tablaProveedoresEmpresa->fetchRow($select); 
-						//print_r("$select");
+						print_r("$select");
 						if(!is_null($rowProveedoresEmpresa)){
 							$idsProveedor = explode(",", $rowProveedoresEmpresa->idProveedores);
-							//print_r($idsProveedor); //Verificamos que el proveedor, sea un proveedor de la empresa selecciona //if(!is_null($rowProveedoresEmpresa)){
+							print_r($idsProveedor); //Verificamos que el proveedor, sea un proveedor de la empresa selecciona //if(!is_null($rowProveedoresEmpresa)){
 							$empresaProveedor = $rowProveedoresEmpresa["idEmpresas"];
 							//print_r("El tipo es:"); //print_r($tipo); //Verificamos que el tipo sea= 5 (bueno) y que sea un proveedor empresa de lo contrario  no se relizara poliza.
 							if($tipo == 5  || $empresaProveedor == $datos["idEmpresas"]){
 								$idFactura = $rowFacturaP["idFactura"];
 								$modulo = 1; //Asignamos 1=>"Compra"
 								$numMov = $rowFacturaP["numeroFactura"];
-								$subTotal = $rowFacturaP["subtotal"];
+								$subTotal = $rowFacturaP["subtotal"] - $rowFacturaP["descuento"];
+								print_r("<br />");
+								print_r($subTotal);
+								print_r("<br />");
 								$total = $rowFacturaP["total"];
 								$fecha = $rowFacturaP["fecha"];
 								//Buscamos en FacturaImpuesto el iva
@@ -924,12 +927,19 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						}else{
 							$modulo = 4;
 						}
+						$tablaFactura = $this->tablaFactura;
+						$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $rowCxp->idFactura)->where("idTipoMovimiento =?",4);
+						$rowFactura =$tablaFactura->fetchRow($select);
 						//Asignamos variables
 						$banco = $rowCxp["idBanco"];
 						$idSucursal = $rowCxp["idSucursal"];
 						$numeroFolio = $rowCxp["numeroFolio"];
 						$fecha = $rowCxp["fechaPago"];
-						$subtotal = $rowCxp["subtotal"];
+						$subtotal = $rowCxp["subtotal"] - $rowFactura["descuento"];
+						print_r("<br />");
+						print_r($subtotal);
+						print_r("<br />");
+						/*$subtotal = $rowCxp["subtotal"];*/
 						$total = $rowCxp["total"];
 						$secuencial = $rowCxp["secuencial"];
 						//Buscamos en FacturaImpuesto el iva
@@ -942,7 +952,7 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						$tablaGuiaContable = $this->tablaGuiaContable;
 						$select = $tablaGuiaContable->select()->from($tablaGuiaContable)->where("idModulo = ? ",$modulo)->where("idTipoProveedor=?",$tipo);
 						$rowsGuiaContable = $tablaGuiaContable->fetchAll($select);
-						//print_r("<br />"); print_r("$select");
+						print_r("<br />"); print_r("$select");
 						foreach($rowsGuiaContable as $rowGuiaContable){
 							$origen = $rowGuiaContable->origen;
 							switch($origen){
@@ -2429,9 +2439,9 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 						$tablaFacturaImpuesto = $this->tablaFacturaImpuesto;
 						$select = $tablaFacturaImpuesto->select()->from($tablaFacturaImpuesto)->where("idCuentasxp=?", $rowCxp->idCuentasxp)->where("idTipoMovimiento =?",10);
 						$rowFacturaImp = $tablaFacturaImpuesto->fetchRow($select);
-						//print_r("<br />"); print_r("$select");
+						print_r("<br />"); print_r("$select");
 						$tipoImpuesto = $rowFacturaImp["idImpuesto"];
-						//print_r("<br />"); print_r($tipoImpuesto);
+						print_r("<br />"); print_r($tipoImpuesto);
 						$tablaImpuesto = $this->tablaImpuesto;
 						$select = $tablaImpuesto->select()->from($tablaImpuesto)->where("idImpuesto=?", $rowFacturaImp->idImpuesto);
 						$rowImp =$tablaImpuesto->fetchRow($select);

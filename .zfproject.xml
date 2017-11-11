@@ -100,6 +100,7 @@
               <actionMethod actionName="llenaproducto"/>
               <actionMethod actionName="productoxmovimiento"/>
               <actionMethod actionName="productoxsucursal"/>
+              <actionMethod actionName="eliminarproductoenlazado"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -226,6 +227,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="productoxsucursal"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="eliminarproductoenlazado"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3212,6 +3216,7 @@
                 <testApplicationActionMethod forActionName="llenaproducto"/>
                 <testApplicationActionMethod forActionName="productoxmovimiento"/>
                 <testApplicationActionMethod forActionName="productoxsucursal"/>
+                <testApplicationActionMethod forActionName="eliminarproductoenlazado"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

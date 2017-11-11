@@ -189,7 +189,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'subtotal'=>$nomina['sueldo'],
 				'total'=>$nomina['nominaxpagar'],
 				'folioFiscal'=>$empresa['folioFiscal'],
-				'importePagado'=>$importePagado,
+				'importePagado'=>$nomina['subsidio'],
 				'saldo'=>$saldo
 			);
 			$dbAdapter->insert("Factura",$mFactura);
@@ -348,6 +348,21 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				$rowcxp = $tablaFactura->fetchRow($select);
 				//print_r("$select");
 				//Al registrar el pago, afecta registro factura, saldo banco y saldo Proveedor.
+				$tablaFactura = $this->tablaFactura;
+				$where = $tablaFactura->getAdapter()->quoteInto("idFactura=?", $rowcxp['idFactura']);
+				$rowFactura = $tablaFactura->fetchRow($where);
+				if(!is_null($rowFactura)){
+				    $saldo = $rowFactura->saldo - $datos["pago"];
+				    //print_r($saldo);
+				    if($saldo <= 0){
+				        $rowFactura->conceptoPago = "LI";
+				    }else{
+				        $rowFactura->conceptoPago = "PA";
+				    }
+				    $rowFactura->saldo = $saldo;
+				    $rowFactura->save();
+				}
+				
 				$tablaBanco = $this->tablaBanco;
 				$where = $tablaBanco->getAdapter()->quoteInto("idBanco=?", $datos['idBanco']);
 				$rowBanco = $tablaBanco->fetchRow($where);

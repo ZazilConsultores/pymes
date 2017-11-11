@@ -214,6 +214,7 @@
 			}else{
 				$rowFactura->conceptoPago = "PA";
 			}
+			$rowFactura->formaPago = $datos["formaPago"];
 			$rowFactura->saldo = $saldo;
 			$rowFactura->save();	
 			
