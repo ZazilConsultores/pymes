@@ -20,6 +20,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	private $tablaInventario;
 	private $tablaCapas;  
 	private $tablaCardex;
+	private $tablaProveedor;
 		 
 	public function __construct(){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -36,6 +37,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$this->tablaCapas = new Contabilidad_Model_DbTable_Capas(array('db'=>$dbAdapter));
 		$this->tablaCardex = new Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
 		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
+		$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
 	}
 	public function obtenerEmpleadosNomina(){
 		
@@ -167,7 +169,6 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			if(($empresa['pagada']) == "1"){
 				$conceptoPago = "LI";
 				$importePagado = $nomina['subsidio'];
-				print_r($importePagado);
 				$saldo = 0;
 			}else{
 				$conceptoPago = "PE";
@@ -196,16 +197,11 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			//Obtine el ultimo id en tabla factura
 			$idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
 			//Insertamos en la tabla Movimiento
-			$secuencial=0;	
+			$secuencial = 0;	
 			$tablaMovimiento = $this->tablaMovimiento;
-			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$empresa['numFolio'])
-			->where("idTipoMovimiento =?", $empresa['idTipoMovimiento'])
-			->where("idCoP=?",$empresa['idCoP'])
-			->where("idSucursal=?",$empresa['idSucursal'])
-			->where("fecha=?", $stringIni)
-			->order("secuencial DESC");
+			$select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$empresa['numFolio'])->where("idTipoMovimiento =?", $empresa['idTipoMovimiento'])
+			->where("idCoP=?",$empresa['idCoP'])->where("idSucursal=?",$empresa['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
 			$rowMovimiento = $tablaMovimiento->fetchRow($select); 
-		
 			if(!is_null($rowMovimiento)){
 				$secuencial= $rowMovimiento->secuencial +1;
 			}else{
@@ -219,7 +215,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'idCoP'=>$empresa['idCoP'],
 				'numeroFolio'=>$empresa['numFolio'],
 				'idFactura'=>$idFactura,
-				'idProducto' => 766,
+				'idProducto' => 766, // Varios servicios nomina
 				'idProyecto'=>$empresa['idProyecto'],
 				'cantidad'=>1,
 				'fecha'=>$stringIni,
@@ -231,7 +227,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			//print_r($mMovtos);
 			$dbAdapter->insert("Movimientos",$mMovtos);
 			//Insertamos en la tabla Cuentasxp
-			if(($empresa['pagada'])==="1"){
+			if(($empresa['pagada'])=="1"){
 				$mCuentasxp = array(
 					'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 					'idSucursal'=>$empresa['idSucursal'],
@@ -259,6 +255,16 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					$importePago = $rowBanco->saldo - $nomina['nominaxpagar'];
 					$tablaBanco->update(array('saldo'=>$importePago),$where);
 				}
+			}else{
+			    //Actualizamos el saldo del proveedor
+			    $tablaProv = $this->tablaProveedor;
+			    $select = $tablaProv->select()->from($tablaProv)->where("idProveedores = ?",$empresa['idCoP']);
+			    $rowProv = $tablaProv->fetchRow($select);
+			    if(!is_null($rowProv)){
+			        $saldo  = $nomina['nominaxpagar'] + $rowProv->saldo;
+			        $rowProv->saldo = $saldo;
+			        $rowProv->save();
+			    }
 			}
 			//Guarda Impuestos
 			if (!is_null($nomina["IMSS"])){
@@ -270,7 +276,6 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'importe'=>$nomina['IMSS'],
 				);
 				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
-	
 			}
 			if (!is_null($nomina["ISPT"])){
 				$mFacturaImpuesto = array(
@@ -311,7 +316,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			$rowCuentasxp = $tablaCuentasxp->fetchRow($select);
 			//print_r($select->__toString());
 			if(!is_null($rowCuentasxp)){
-				$secuencial= $rowCuentasxp->secuencial +1;
+				$secuencial = $rowCuentasxp->secuencial +1;
 			}else{
 				$secuencial = 1;	
 			}
@@ -321,8 +326,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				$tablaFactura = $this->tablaFactura;
 				$select= $tablaFactura->select()->from($tablaFactura)->where("idFactura=?", $idFactura);
 				$rowFactura = $tablaFactura->fetchRow($select);
-				//print_r($select->__toString());
-				//Aplicamos movimiento en cuentasxp;
+				//print_r($select->__toString());//Aplicamos movimiento en cuentasxp;
 				$mCuentasxp = array(
 					'idTipoMovimiento'=>20,
 					'idSucursal'=>$rowFactura['idSucursal'],
@@ -341,13 +345,13 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'subTotal'=>$rowFactura['subtotal'],
 					'total'=>$datos["pago"]
 				);
+				//print_r($mCuentasxp);
 				$dbAdapter->insert("Cuentasxp",$mCuentasxp);
 				//GuardaIva em facturaImpuesto
 				$tablaCuentasxp = $this->tablaCuentasxp;
 				$select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idFactura=?", $idFactura)->order("secuencial DESC");
 				$rowcxp = $tablaFactura->fetchRow($select);
-				//print_r("$select");
-				//Al registrar el pago, afecta registro factura, saldo banco y saldo Proveedor.
+				//print_r("$select"); //Al registrar el pago, afecta registro factura, saldo banco y saldo Proveedor.
 				$tablaFactura = $this->tablaFactura;
 				$where = $tablaFactura->getAdapter()->quoteInto("idFactura=?", $rowcxp['idFactura']);
 				$rowFactura = $tablaFactura->fetchRow($where);
@@ -369,6 +373,16 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				if(!is_null($rowBanco)){
 					$importePago = $rowBanco->saldo - $datos['pago'];
 					$tablaBanco->update(array('saldo'=>$importePago),$where);
+				}
+				//Actualizamos el saldo del proveedor
+				$tablaProv = $this->tablaProveedor;
+				$select = $tablaProv->select()->from($tablaProv)->where("idProveedores = ?",$rowFactura['idCoP']);
+				$rowProv = $tablaProv->fetchRow($select);
+				//print_r("$select");
+				if(!is_null($rowProv)){
+				    $saldo  = $datos['pago'] - $rowProv->saldo;
+				    $rowProv->saldo = $saldo;
+				    $rowProv->save();
 				}
 			}		
 		}catch(Exception $ex){

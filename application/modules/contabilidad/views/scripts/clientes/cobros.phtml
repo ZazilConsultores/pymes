@@ -68,98 +68,87 @@
 
 
 <script>
-	$().ready(function(){
-		var url = window.location.origin + "/General/";
-		//AddRow();
-		calculaTotal();
+$().ready(function(){
+	var url = window.location.origin + "/General/";
+	calculaTotal();
 		
-		$("#idFiscales").on('change',function(){
-			//console.log($(this).val());
-			var idFiscal = $(this).val();
-			if(idFiscal != 0){
-				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				console.log(urlQuerySucursales);
-				$.ajax({
-					url: urlQuerySucursales,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("#idSucursal").empty();
-						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
-						$.each(data, function (i,item){
-							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-						});
-					}
-				});
-				
-				var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
-				console.log(urlQueryClientes);
-				$.ajax({
-					url: urlQueryClientes,
-					dataType: "json",
-					success: function(data){
-						
-						console.dir(data);
-						$("select#idCliente").empty();
-						$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
-						$.each(data, function (i,item){
-							$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
-						});
-					}
-				});
-			}
-		});
-		
-		$("button#queryFacturas").on("click", function(){
-			
-		 	var sucu = $("select#idSucursal").val();
-		 	var cl = $("select#idCliente").val();
-			var urlCXC = window.location.origin + "/General/contabilidad/json/buscacobro/sucu/" + sucu +"/cl/"+cl;
-			console.log(urlCXC);
+	$("#idFiscales").on('change',function(){
+		//console.log($(this).val());
+		var idFiscal = $(this).val();
+		if(idFiscal != 0){
+			var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
 			$.ajax({
-				url: urlCXC,
+				url: urlQuerySucursales,
 				dataType: "json",
 				success: function(data){
-					var tbody = $("table#detalleFacturaxc").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Cobro").attr("factura",data[i].idFactura);
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].idSucursal)).
-							append($('<td>').append(data[i].idCoP)).	
-							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].fecha)).
-							append($('<td>').append(data[i].total).attr("id", "importe")).
-							append($('<td>').append(botonCobro)));
+					//console.dir(data);
+					$("#idSucursal").empty();
+					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+					$.each(data, function (i,item){
+						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
 					});
-					AddRow();
-					calculaTotal();
-				}		
+				}
 			});
-		});
-			
-		function calculaTotal(){
-			var total = 0;
-			   $("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
-			   	total += +$(this).text(); 
-			   	console.log(total);
-			   	$("#total").val("$" +total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-	        		
-			  });
+				
+			var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
+			//console.log(urlQueryClientes);
+			$.ajax({
+				url: urlQueryClientes,
+				dataType: "json",
+				success: function(data){
+					$("select#idCliente").empty();
+					$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
+					$.each(data, function (i,item){
+						$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
+					});
+				}
+			});
 		}
-	
-		function AddRow(){
-			$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
-    	}
-    	
-    	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){
-		   	var factura = $(this).attr("factura");
-		   	console.log(factura);
-		  	window.location = "/General/contabilidad/clientes/aplicacobro/idFactura/"+ factura;
-		   	
-		   });
-		
 	});
+		
+	$("button#queryFacturas").on("click", function(){
+		var sucu = $("select#idSucursal").val();
+		var cl = $("select#idCliente").val();
+		var urlCXC = window.location.origin + "/General/contabilidad/json/buscacobro/sucu/" + sucu +"/cl/"+cl;
+		$.ajax({
+			url: urlCXC,
+			dataType: "json",
+			success: function(data){
+			var tbody = $("table#detalleFacturaxc").find('tbody');
+    			tbody.empty();
+    			$.each(data, function(i,item){
+    				var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Cobro").attr("factura",data[i].idFactura);
+    				tbody.append($('<tr>').
+    				append($('<td>').append(data[i].idSucursal)).
+    				append($('<td>').append(data[i].idCoP)).	
+    				append($('<td>').append(data[i].numeroFactura)).
+    				append($('<td>').append(data[i].fecha)).
+    				append($('<td>').append(data[i].total).attr("id", "importe")).
+    				append($('<td>').append(botonCobro)));
+    			});
+    			AddRow();
+    			calculaTotal();
+			}		
+		});
+	});
+			
+	function calculaTotal(){
+		var total = 0;
+		$("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
+			total += +$(this).text(); 
+			$("#total").val("$" +total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		});
+	}
+	
+	function AddRow(){
+		$('#detalleFacturaxc tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+    }
+
+	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){
+		var factura = $(this).attr("factura");
+		window.location = "/General/contabilidad/clientes/aplicacobro/idFactura/"+ factura;
+	});
+		
+});
 </script>
 

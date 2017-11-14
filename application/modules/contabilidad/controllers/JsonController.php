@@ -4,25 +4,15 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 {
 
     private $bancoDAO = null;
-
     private $fiscalesDAO = null;
-
     private $impuestoProductosDAO = null;
-
     private $empresaDAO = null;
-
     private $pagosDAO = null;
-
     private $cobrosDAO = null;
-
     private $facturaCliDAO = null;
-
     private $facturaProDAO = null;
-
     private $proyectoClienteDAO = null;
-
     private $proyectoDAO = null;
-
     private $notaSalidaDAO = null;
 
     public function init()

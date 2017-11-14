@@ -238,10 +238,11 @@ $(document).ready(function () {
  	 $("table#productos").on("click", "button[id^='btnLimpiar_']", function(){
  	 	if ($("table#productos tbody > tr").length >1)
  	 	{
-  			$("table#productos  tbody > tr:last").remove();
+ 	 	 	$("table#productos  tbody > tr:last").remove();
   		}
   		calculateGrandTotal();
- 	 });	
+ 	 });
+ 	 	
  	//Funcion buscar descripcion del producto
  	$("table#productos").on("change", "select[id^='descripcion_']", function(){
  		var descripcion= $(this).attr("id");
@@ -288,15 +289,7 @@ $(document).ready(function () {
  		var ieps = $("input#ieps").val();
  		var ish = $("input#ish").val();
  		var isr = $("input#isr").val();
- 		
- 		console.log("subTotal:"+subTotal);
- 		console.log("descuento:"+descuento);
- 		console.log("iva:"+iva);
- 		console.log("total:"+total);
- 		console.log("ieps:"+ieps);
- 		console.log("ish:"+ish);
- 		console.log("isr:"+isr);
- 			
+
  		impuestos.push(new Impuesto(subTotal, descuento, iva, total, ieps, ish,isr)); 
  			
  		//console.dir(impuestos);
@@ -351,7 +344,7 @@ $(document).ready(function () {
         	grandTotal += +$(this).val();  
    	 	});
     
-    	$("#grandtotal").text(grandTotal.toFixed(2));
+    	//$("#grandtotal").text(grandTotal.toFixed(2));
     	$("#subTotal").val(grandTotal.toFixed(2));
     
    		//Calcula iva
@@ -383,12 +376,9 @@ $(document).ready(function () {
    		ieps = $("#ieps").val();
    		console.log(ieps);
    		if (ieps !=0){
-   	   		console.log("contiene IEPS");
-   	   		console.log(grandTotal);
-   	   		totalIEPS = ieps + grandTotal + $("input#iva").val();
-   	   		console.log(totalIEPS);
-		}else{
-			console.log("NO CONTIENE IEPS");
+   	   		totalIEPS = parseFloat($("#subTotal").val()) + parseFloat($("input#iva").val()) + parseFloat( $("#ieps").val());
+			console.log(totalIEPS);
+			$("input#total").val(totalIEPS.toFixed(2)); 
    	   	}
    	}
    
@@ -455,9 +445,8 @@ $(document).ready(function () {
 		var id = $(this).val();
 		var numFila =  arr[1];
 		var $url = window.location.origin + "/General/contabilidad/json/productoimpuesto/idProducto/"+id;
-		console.log($url);
 		$("table#productos").on("change", "input[id^='costoUnitario_']", function(){
-			console.log("El producto contiene impuesto");
+			//console.log("El producto contiene impuesto");
 			//$("table#productos").on("change", "input[id^='costoUnitario_']", function(){
 			var tabla = $("table#productos > tbody  > tr");
  			tabla.each(function(){
@@ -469,9 +458,6 @@ $(document).ready(function () {
  					url: $url,
 					dataType: "json",
 					success: function(data){
-						console.log($url);
-						console.log("=======Los Datos");
-						console.dir(data);
 						$.each(data, function(i,item){
 							if(data[i].idProducto == id){
 								$("table#productos").find('input[id^="costoTotal_"]').each(function () {
@@ -488,6 +474,7 @@ $(document).ready(function () {
 				});
  			});
 		});
+		calculateGrandTotal();
 	});   		
 });
  

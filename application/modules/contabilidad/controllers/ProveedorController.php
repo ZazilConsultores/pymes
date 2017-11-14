@@ -18,9 +18,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
 		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
 		$this->anticipoDAO = new Contabilidad_DAO_Anticipos;
-		
-		
-        //==============Muestra los links del submenu=======================
+		//==============Muestra los links del submenu=======================
 		//$this->view->links = $this->links;
 		$adapter = Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
@@ -119,7 +117,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
 				$importe = json_decode($formaPago['importes'], TRUE);
-				print_r($importe);
 				$contador = 0;
 				try{
 					foreach ($productos as $producto){
@@ -155,11 +152,9 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 
     public function aplicarpagoAction()
     {
-    	
-    	$request = $this->getRequest();
+        $request = $this->getRequest();
 		$idFactura = $this->getParam("idFactura");
-		
-    	$formulario = new Contabilidad_Form_PagosProveedor;
+		$formulario = new Contabilidad_Form_PagosProveedor;
 		$this->view->formulario = $formulario;
 		$pagosDAO = new Contabilidad_DAO_PagoProveedor;
 		$datosFactura = $pagosDAO->obtiene_Factura($idFactura);
@@ -179,7 +174,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
-				
 			}
 		}
     }
@@ -189,7 +183,6 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_AnticipoProveedor;
 		$this->view->formulario = $formulario;
-		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$anticipo = $formulario->getValues();
@@ -225,15 +218,10 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         $this->view->empresas = $empresas;
 		if($request->isPost()){					
 			$datos = $request->getPost();
-			//$datos = json_decode($datos['datos'], TRUE);
 			$idFactura = $datos["fac"];
-			//print_r($idFactura);
 			$this->facturaDAO->cancelaFactura($idFactura);
-		}
-        
+		}    
     }
-
-
 }
 
 

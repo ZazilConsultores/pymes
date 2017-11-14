@@ -90,68 +90,67 @@
 </section>
 
 <script>
-	$(document).ready(function() {
-		var url = window.location.origin + "/General/";
-		
-		$("#idFiscales").on('change',function(){
-			var idFiscal = $(this).val();
-			if(idFiscal != 0){
-				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				$.ajax({
-					url: urlQuerySucursales,
-					dataType: "json",
-					success: function(data){
-						//console.dir(data);
-						$("#idSucursal").empty();
-						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
-						$.each(data, function (i,item){
-							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-						});
-					}
-				});
-			}
-		});
-		
-		$("select#idSucursal").on('change', function(){
-			var idSucursal = $(this).val();
-			var urlQueryNumFacClientes = url + 'contabilidad/json/numfacprov/idSuc/'+idSucursal;
-			console.log(urlQueryNumFacClientes);
+$(document).ready(function(){
+	var url = window.location.origin + "/General/";
+
+	$("#idFiscales").on('change',function(){
+		var idFiscal = $(this).val();
+		if(idFiscal != 0){
+			var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
 			$.ajax({
-				url: urlQueryNumFacClientes,
+				url: urlQuerySucursales,
 				dataType: "json",
 				success: function(data){
 					//console.dir(data);
-					$("select#numerof").empty();
-					$("select#numerof").append($("<option></option>").attr("value","0").text("Seleccione Número Factura..."));
+					$("#idSucursal").empty();
+					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
 					$.each(data, function (i,item){
-						$("select#numerof").append($("<option></option>").attr("value",data[i].numeroFactura).text(data[i].numeroFactura));
+						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
 					});
 				}
 			});
-		});
-		
-		$("#queryFacturas").on('click', function(){
-			var sucu = $("#idSucursal").val();
-			var num = $("#numerof").val();
-			var $urlFac = window.location.origin + "/General/contabilidad/json/facprovxsucynum/sucu/" + sucu + "/num/" + num;
-			//console.log($urlFac);
-			$.ajax({
-				url: $urlFac,
-		   		dataType: "json",
-				success: function(data){
-					$("#fac").empty();
-					$("#proveedor").empty();
-					$("#fecha").empty();
-					$("input#total").empty();
-					$.each(data, function(i,item){
-						$("#fac").attr("value",data[i].idFactura);
-						$("#proveedor").attr("value",data[i].razonSocial);
-						$("#fecha").attr("value",data[i].fecha);
-						$("#total").attr("value",data[i].total);
-					});			
-				}
-			});
-		});
-		
+		}
 	});
+		
+	$("select#idSucursal").on('change', function(){
+		var idSucursal = $(this).val();
+		var urlQueryNumFacClientes = url + 'contabilidad/json/numfacprov/idSuc/'+idSucursal;
+		//console.log(urlQueryNumFacClientes);
+		$.ajax({
+			url: urlQueryNumFacClientes,
+			dataType: "json",
+			success: function(data){
+				//console.dir(data);
+				$("select#numerof").empty();
+				$("select#numerof").append($("<option></option>").attr("value","0").text("Seleccione Número Factura..."));
+				$.each(data, function (i,item){
+					$("select#numerof").append($("<option></option>").attr("value",data[i].numeroFactura).text(data[i].numeroFactura));
+				});
+			}
+		});
+	});
+		
+	$("#queryFacturas").on('click', function(){
+		var sucu = $("#idSucursal").val();
+		var num = $("#numerof").val();
+		var $urlFac = window.location.origin + "/General/contabilidad/json/facprovxsucynum/sucu/" + sucu + "/num/" + num;
+		//console.log($urlFac);
+		$.ajax({
+			url: $urlFac,
+		   	dataType: "json",
+			success: function(data){
+				$("#fac").empty();
+				$("#proveedor").empty();
+				$("#fecha").empty();
+				$("input#total").empty();
+				$.each(data, function(i,item){
+					$("#fac").attr("value",data[i].idFactura);
+					$("#proveedor").attr("value",data[i].razonSocial);
+					$("#fecha").attr("value",data[i].fecha);
+					$("#total").attr("value",data[i].total);
+				});			
+			}
+		});
+	});
+});
 </script>

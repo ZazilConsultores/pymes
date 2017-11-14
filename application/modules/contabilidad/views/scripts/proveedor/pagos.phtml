@@ -165,104 +165,91 @@
 								</button>
 							</div>
 						</div>		
-				</form>
-					
+				</form>	
 			</div><!--body-->
 		</div><!--modal-content-->
 	</div><!--modal-dialog-->
 </div><!--modal-->
 <script>
-	$().ready(function(){
-		
-		var url = window.location.origin + "/General/";
-		
-		$("select#idFiscales").on('change',function(){
-			console.log($(this).val());
-			var idFiscal = $(this).val();
-			if(idFiscal != 0){
-				//llena combo de sucursales
-				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				
-				$.ajax({
-					url: urlQuerySucursales,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("#idSucursal").empty();
-						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
-						$.each(data, function (i,item){
-							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-						});
-					}
-				});
-			
-				// Llena combo proveedores
-				var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
-				console.log(urlQueryProveedores);
-				$.ajax({
-					url: urlQueryProveedores,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("select#idProveedor").empty();
-						$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
-						$.each(data, function (i,item){
-							$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
-						});
-					}
-				});
-			}
-		});
-		
-		$("button#queryFacturas").on("click", function(){
-			var sucu = $("select#idSucursal").val();
-		 	var pro = $("select#idProveedor").val();
-			var urlCXP = window.location.origin + "/General/contabilidad/json/buscafacxp/sucu/" + sucu +"/pro/"+pro;
-			console.log(urlCXP);
+$().ready(function(){
+	var url = window.location.origin + "/General/";
+
+	$("select#idFiscales").on('change',function(){
+		var idFiscal = $(this).val();
+		if(idFiscal != 0){
+			//llena combo de sucursales
+			var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
 			$.ajax({
-				url: urlCXP,
+				url: urlQuerySucursales,
 				dataType: "json",
 				success: function(data){
-					var tbody = $("table#detalleFacturaxp").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						var botonPago = $('<button></button>').attr("id","pago").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
-						tbody.append($('<tr>').
-							append($('<td>').append(data[i].idSucursal)).
-							append($('<td>').append(data[i].idCoP)).	
-							append($('<td>').append(data[i].numeroFactura)).
-							append($('<td>').append(data[i].fecha)).
-							append($('<td>').append(data[i].total).attr("id", "importe")).
-							append($('<td>').append(botonPago)));
+					$("#idSucursal").empty();
+					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+					$.each(data, function (i,item){
+						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
 					});
-					AddRow();
-					calculaTotal();
 				}
 			});
 			
-		});
-		
-		function calculaTotal(){
-			var total = 0;
-			$("table#detalleFacturaxp").find("td[id^='importe']").each(function(){
-			   	console.log($(this).text());
-			   	total += +$(this).text(); 
-			   	console.log(total);
-			   	$("#total").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-			 });
+			// Llena combo proveedores
+			var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
+			$.ajax({
+				url: urlQueryProveedores,
+				dataType: "json",
+				success: function(data){
+					$("select#idProveedor").empty();
+					$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
+					$.each(data, function (i,item){
+						$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
+					});
+				}
+			});
 		}
-	
-		function AddRow(){
-			$('#detalleFacturaxp tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
-    	}
-    	
-    	$("table#detalleFacturaxp").on("click", "button[id^='pago']", function(){
-		   	var factura = $(this).attr("factura");
-		   	console.log(factura);
-		  	window.location = "/General/contabilidad/proveedor/aplicarpago/idFactura/"+ factura;
-		   	
+	});
+		
+	$("button#queryFacturas").on("click", function(){
+		var sucu = $("select#idSucursal").val();
+		var pro = $("select#idProveedor").val();
+		var urlCXP = window.location.origin + "/General/contabilidad/json/buscafacxp/sucu/" + sucu +"/pro/"+pro;
+		$.ajax({
+			url: urlCXP,
+			dataType: "json",
+			success: function(data){
+			var tbody = $("table#detalleFacturaxp").find('tbody');
+			tbody.empty();
+			$.each(data, function(i,item){
+				var botonPago = $('<button></button>').attr("id","pago").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
+				tbody.append($('<tr>').
+					append($('<td>').append(data[i].idSucursal)).
+					append($('<td>').append(data[i].idCoP)).	
+					append($('<td>').append(data[i].numeroFactura)).
+					append($('<td>').append(data[i].fecha)).
+					append($('<td>').append(data[i].total).attr("id", "importe")).
+					append($('<td>').append(botonPago)));
+				});
+				AddRow();
+				calculaTotal();
+			}
 		});
 	});
+
+	function calculaTotal(){
+		var total = 0;
+		$("table#detalleFacturaxp").find("td[id^='importe']").each(function(){
+			total += +$(this).text(); 
+			$("#total").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		});
+	}
+	
+	function AddRow(){
+		$('#detalleFacturaxp tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    	
+    $("table#detalleFacturaxp").on("click", "button[id^='pago']", function(){
+		var factura = $(this).attr("factura");
+		window.location = "/General/contabilidad/proveedor/aplicarpago/idFactura/"+ factura;
+	});
+});
 </script>
 
 

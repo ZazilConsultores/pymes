@@ -199,9 +199,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoCF tbody tr").length -1;
 		$("table#detalleProyectoCF").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalCF").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegCF").val(nFilas);
 		});
@@ -215,9 +213,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoZA tbody tr").length -1;
 		$("table#detalleProyectoZA").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalZA").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegZA").val(nFilas);
 		});
@@ -230,9 +226,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxSI tbody tr").length -1;
 		$("table#detalleProyectoxSI").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalSI").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegSI").val(nFilas);
 		});
@@ -245,9 +239,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxIK tbody tr").length -1;
 		$("table#detalleProyectoxIK").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalIK").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegIK").val(nFilas);
 		});
@@ -260,9 +252,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxMI tbody tr").length -1;
 		$("table#detalleProyectoxMI").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalMI").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegMI").val(nFilas);
 		});
@@ -275,9 +265,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxEV tbody tr").length -1;
 		$("table#detalleProyectoxEV").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalEV").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegEV").val(nFilas);
 		});
@@ -290,9 +278,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxKI tbody tr").length -1;
 		$("table#detalleProyectoxKI").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalKI").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegKI").val(nFilas);
 		});
@@ -305,9 +291,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxAR tbody tr").length -1;
 		$("table#detalleProyectoxAR").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalAR").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegAR").val(nFilas);
 		});
@@ -320,9 +304,7 @@ $().ready(function(){
     	var total = 0;
 		var nFilas = $("#detalleProyectoxGX tbody tr").length -1;
 		$("table#detalleProyectoxGX").find("td[id^='importe']").each(function(){
-			console.log($(this).text());
 			total += +$(this).text(); 
-			console.log(total);
 			$("#totalGX").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 			$("#totalRegGX").val(nFilas);
 		});
@@ -331,7 +313,7 @@ $().ready(function(){
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
+		//console.log(urlProyecto);
 		$.ajax({
 			url: urlProyecto,
 			dataType: "json",
@@ -358,7 +340,7 @@ $().ready(function(){
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
+		//console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -368,9 +350,7 @@ $().ready(function(){
 				tbody.empty();
 				$.each(data, function(i,item){
 					var sucu = data[i].idSucursal;
-					
 					if(sucu == 3 ){
-						console.log("El tipo es factura Proveedor");
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
 						append($('<td>').append(data[i].descripcion)).	
@@ -383,10 +363,10 @@ $().ready(function(){
 			}
 		});
 	});
+	
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -396,7 +376,6 @@ $().ready(function(){
 				tbody.empty();
 				$.each(data, function(i,item){
 					var sucu = data[i].idSucursal;
-					
 					if(sucu == 4 ){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
@@ -410,10 +389,10 @@ $().ready(function(){
 			}
 		});
 	});
+
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -423,7 +402,6 @@ $().ready(function(){
 				tbody.empty();
 				$.each(data, function(i,item){
 					var sucu = data[i].idSucursal;
-					
 					if(sucu == 5 ){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
@@ -440,7 +418,6 @@ $().ready(function(){
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -450,7 +427,6 @@ $().ready(function(){
 				tbody.empty();
 				$.each(data, function(i,item){
 					var sucu = data[i].idSucursal;
-					
 					if(sucu == 6){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
@@ -467,7 +443,7 @@ $().ready(function(){
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
+		//console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -476,8 +452,7 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxEV").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
-					
+					var sucu = data[i].idSucursal;		
 					if(sucu == 7){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
@@ -494,7 +469,7 @@ $().ready(function(){
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
+		//console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -503,8 +478,7 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxKI").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
-					
+					var sucu = data[i].idSucursal;		
 					if(sucu == 8){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
@@ -518,10 +492,10 @@ $().ready(function(){
 			}
 		});
 	});
+	
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -530,8 +504,7 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxAR").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
-					
+					var sucu = data[i].idSucursal;			
 					if(sucu == 9){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).
@@ -545,10 +518,10 @@ $().ready(function(){
 			}
 		});
 	});
+	
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
-		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,
@@ -557,8 +530,7 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxGX").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
-					
+					var sucu = data[i].idSucursal;			
 					if(sucu == 10){
 						tbody.append($('<tr>').
 						append($('<td>').append(data[i].descripcionTipo)).

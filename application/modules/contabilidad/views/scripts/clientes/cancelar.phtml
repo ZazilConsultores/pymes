@@ -115,7 +115,7 @@
 		$("select#idSucursal").on('change', function(){
 			var idSucursal = $(this).val();
 			var urlQueryNumFacClientes = url + 'contabilidad/json/numerofactura/idSuc/'+idSucursal;
-			console.log(urlQueryNumFacClientes);
+			//console.log(urlQueryNumFacClientes);
 			$.ajax({
 				url: urlQueryNumFacClientes,
 				dataType: "json",

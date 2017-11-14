@@ -272,10 +272,8 @@ $(document).ready(function (){
  		
  			if ($("#desayuno:checked").val()=="desayuno"){
  	 			tipoEmpaque  = 1;
-				console.log("es desayuno");
 			}else if($("#comida:checked").val()=="comida"){
 				tipoEmpaque  = 2;
-				console.log("es comida");
 			}else{
 				tipoEmpaque  = 0;
 			}
@@ -288,9 +286,9 @@ $(document).ready(function (){
         	} 
 
  	 	});
- 		console.dir(productos);
+ 		//console.dir(productos);
 		var myString = JSON.stringify(productos);
-		console.log(myString);
+		//console.log(myString);
 		if ($("input#productos").val(myString)){
 		}
 	});
@@ -316,9 +314,9 @@ $(document).ready(function (){
  			
  		impuestos.push(new Impuesto(subTotal, descuento, iva, total)); 
 
- 		console.dir(impuestos);
+ 		//console.dir(impuestos);
  		var myString = JSON.stringify(impuestos);
- 		console.log(myString);
+ 		//console.log(myString);
  		if ($("input#1-importes").val(myString)){
  		};
  		
@@ -409,16 +407,15 @@ $(document).ready(function (){
 
 	$("#1-pagada").on("change", function(){
 		var total = $("#total").val();
-		console.log(total);
 		if ($("#1-pagada:checked").val()==1){
-			console.log("input desahabilitado");
+			//console.log("input desahabilitado");
 			$("#1-pagos").attr('disabled', 'disabled');
 			$("#1-pagos").val(total); 
 			//calculateGrandTotal();
 		}else{
 			$("#1-pagos").removeAttr("disabled");
 			$("#1-pagos").val(0);
-			console.log("input habilitado");
+			//console.log("input habilitado");
 		}
 	});
 });

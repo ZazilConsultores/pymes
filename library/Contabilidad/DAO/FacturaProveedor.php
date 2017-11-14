@@ -624,8 +624,8 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento=?",4)->where("idSucursal=?",$idSucursal)
 		->where("estatus =?","A")->where("conceptoPago =?","PE");
 		$rowsNumFac = $tablaFactura->fetchAll($select);
-		print_r("$select");
-		//return $rowsNumFac;
+		//print_r("$select");
+		return $rowsNumFac;
 	}
 	
 	//Busca factura proveedor por idSucursal y numero factura

@@ -4,21 +4,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
     private $sucursalDAO = null;
-
     private $notaSalidaDAO = null;
-
     private $remisionEntradaDAO = null;
-
     private $facturaDAO = null;
-
     private $impuestosDAO = null;
-
     private $cobroClienteDAO = null;
-
     private $anticipoDAO = null;
-
     private $proyectoDAO = null;
 
     public function init()
@@ -107,25 +99,21 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$formaPago =$datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
 				$contador = 0;
-				foreach ($productos as $producto){
-					try{
+				try{
+				    foreach ($productos as $producto){
 						if($encabezado["idEmpresas"]==6){
-							$desechable  = $this->notaSalidaDAO->restaDesechable($producto);
+						  $desechable  = $this->notaSalidaDAO->restaDesechable($producto);
 						}
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
 						$contador++;
 						$this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
-					}catch(Util_Exception_BussinessException $ex){
-						$this->view->messageFail = $ex->getMessage();
 					}
-					
-				}
-				$remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
-			}else{
-				print_r("formulario no valido <br />");
-			}							
-			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
-    }
+					$remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
+				}catch(Util_Exception_BussinessException $ex){
+				    $this->view->messageFail = $ex->getMessage();
+				}							
+			}//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+        }
     	
     }
 
@@ -143,11 +131,10 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$importe = json_decode($formaPago['importes'],TRUE);
 				$contador=0;
 				try{
-				   
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 					foreach ($productos as $producto){
-					    if($encabezado["idEmpresas"]==6  ){
+					    if($encabezado["idEmpresas"]==6 ){
 					        $desechable  = $this->facturaDAO->restaDesechable($producto);
 					    }
 					    $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
@@ -174,52 +161,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
     }
 
-    public function consecutivofacturaAction()
-    {
-        $request = $this->getRequest();
-		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;
-		$idFiscales = $this->getParam("empresa");
-		print_r($idFiscales);
-		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
-		/*$sucursal = $this->getParam("sucursal");
-		print_r($sucursal);*/
-		
-        /*$this->view->sucursal = $sucursal;*/
-		
-		
-		 
-		/*$obtenerFactura = $this->facturaDAO->editaNumeroFactura($idSucursal);
-		$this->view->obtenerFactura = $obtenerFactura;
-		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		$formulario->getSubForm("0")->removeElement("idEmpresas");
-		$formulario->getSubForm("0")->removeElement("idSucursal");
-		$formulario->getSubForm("0")->removeElement("idProyecto");
-		$formulario->getSubForm("0")->removeElement("folioFiscal");
-		$formulario->getSubForm("0")->removeElement("idCoP");
-		$formulario->getSubForm("0")->removeElement("fecha");
-		$formulario->getSubForm("0")->getElement("numeroFactura")->setValue($obtenerFactura["numeroFactura"]);
-		
-		$formulario->removeSubForm("1");
-		$formulario -> getElement("submit")->setAttrib("class", "btn btn-warning");
-		$formulario -> getElement("submit")->setLabel("Actualizar Consecutivo");
-		$this -> view -> formulario = $formulario;			
-		/*if($request->isGet()){
-			$this->view->empresas = $empresas;	
-		}if($request->isPost()){		
-			$datos = $request->getPost();
-			
-					
-		}*/
-    }
-
-    public function editaconsecutivoAction()
-    {
-        // action body
-        $idFiscales = $this->getParam("empresa");
-		print_r($idFiscales);
-		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
-    }
 
     public function aplicacobroAction()
     {
@@ -281,25 +222,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         
     }
 
-    public function desechabledesayunoAction()
-    {
-    	$request = $this->getRequest();
-		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		//if($request->isGet()){
-			//$this->view->formulario = $formulario;
-		//}elseif($request->isPost()){
-			//if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				//print_r($datos);
-				$encabezado = $datos[0];
-				$productos = json_decode($encabezado['productos'],TRUE);
-        		foreach ($productos as $producto){
-        			$restaDesechable = $this->facturaDAO->restaDesechableDesayuno($producto);
-				}
-			//}
-        //}
-        
-    }
+   
 
     public function buscaanticipoclientesAction()
     {
@@ -329,37 +252,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function cancelarAction()
     {
-    	/*$request = $this->getRequest();
-		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;	
-		if($request->isPost()){		
-		}*/
 		$request = $this->getRequest();
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;
 		if($request->isPost()){					
 			$datos = $request->getPost();
-			//$datos = json_decode($datos['datos'], TRUE);
 			$idFactura = $datos["fac"];
-			//print_r($idFactura);
 			$this->facturaDAO->cancelaFactura($idFactura);
 		}
     }
-
-    public function cancelarcliAction()
-    {
-       /* $request = $this->getRequest();
-		$idFac = $this->getParam("idFactura");
-        $facturaDAO = new Contabilidad_DAO_FacturaCliente;
-       
-		if($request->isPost()){		
-			$datos = $request->getPost();
-			print_r($datos);
-			$cancelaFac = $facturaDAO->cancelaFactura($idFactura);
-		}*/
-    }
-
-
 }
 
 

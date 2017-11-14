@@ -126,33 +126,29 @@
 	</div>
 </section>
 <script>
-	$().ready(function(){
-		var url = window.location.origin + "/General/"
-		
-		$("#pagos").on("click" ,function (){
-			console.log("Cobro");
-			$("#relacionCobros").removeClass("hidden");
-			var idFactura =  $("#idFactura").val();
-			var urlpagos = url +'contabilidad/json/buscacobroxp/idFactura/' + idFactura;
-			console.log(urlpagos);
-			$.ajax({
-					url: urlpagos,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						var tbody = $("#relacionCobros").find('tbody');
-						tbody.empty();
-						$.each(data, function(i,item){
-							tbody.append( $('<tr>').
-							append($('<td>').append("CF")).
-							append($('<td>').append(data[i].secuencial)).
-							append($('<td>').append(data[i].total)).
-							append($('<td>').append("MN"))
-							);
-						});
-					}		
+$().ready(function(){
+	var url = window.location.origin + "/General/"
+
+	$("#pagos").on("click" ,function (){
+		$("#relacionCobros").removeClass("hidden");
+		var idFactura =  $("#idFactura").val();
+		var urlpagos = url +'contabilidad/json/buscacobroxp/idFactura/' + idFactura;
+		$.ajax({
+			url: urlpagos,
+			dataType: "json",
+			success: function(data){
+				var tbody = $("#relacionCobros").find('tbody');
+				tbody.empty();
+				$.each(data, function(i,item){
+					tbody.append( $('<tr>').
+					append($('<td>').append("CF")).
+					append($('<td>').append(data[i].secuencial)).
+					append($('<td>').append(data[i].total)).
+					append($('<td>').append("MN")));
+				});
+			}		
 		});	
-		});
-		
 	});
+		
+});
 </script>
