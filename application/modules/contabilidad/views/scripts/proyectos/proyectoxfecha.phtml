@@ -295,7 +295,7 @@
 			var fechaFN  = fechaF.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
 		 	var idProyecto = $("select#idProyecto").val();
 			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoremclixfecha/idProyecto/" + idProyecto + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
-			//console.log(urlProyecto);
+			console.log(urlProyecto);
 			//====================================================================>>Remision Cliente
 			$.ajax({
 				url: urlProyecto,

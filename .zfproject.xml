@@ -16,7 +16,9 @@
         </controllerFile>
         <controllerFile controllerName="Error"/>
       </controllersDirectory>
-      <formsDirectory/>
+      <formsDirectory>
+        <formFile formName="AgregarRemisioClienteCafeteria"/>
+      </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
           <layoutScriptFile layoutName="layout"/>
@@ -1031,6 +1033,7 @@
               <actionMethod actionName="enlazafactura"/>
               <actionMethod actionName="cancelar"/>
               <actionMethod actionName="cancelarcli"/>
+              <actionMethod actionName="remisioncafe"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1164,6 +1167,9 @@
             <controllerFile controllerName="Notacredito">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Remisioncafe">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="AgregarFacturaProveedor"/>
@@ -1199,6 +1205,8 @@
             <formFile formName="AnticipoClientes"/>
             <formFile formName="AnticipoProveedor"/>
             <formFile formName="PagoImpuesto"/>
+            <formFile formName="AgregarRemisioClienteCafeteria"/>
+            <formFile formName="AgregarRemisionClienteCafeteria"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -1627,6 +1635,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="eliminaprodimp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Remisioncafe">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="remisioncafe"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3032,6 +3046,7 @@
                 <testApplicationActionMethod forActionName="enlazafactura"/>
                 <testApplicationActionMethod forActionName="cancelar"/>
                 <testApplicationActionMethod forActionName="cancelarcli"/>
+                <testApplicationActionMethod forActionName="remisioncafe"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3163,6 +3178,9 @@
                 <testApplicationActionMethod forActionName="admintipos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Notacredito">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Remisioncafe">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>

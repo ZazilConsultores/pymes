@@ -119,13 +119,13 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 				$importe = json_decode($formaPago['importes'], TRUE);
 				$contador = 0;
 				try{
+				    $guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					foreach ($productos as $producto){
 						$guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
 						$actualizaProducto = $this->facturaDAO->actulizaProducto($encabezado,$formaPago, $producto, $importe);
 						$actualizaPT = $this->facturaDAO->actulizaCostoProducto($encabezado, $formaPago, $producto, $importe);
 						$contador++;
 					}
-					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					$this->view->messageSuccess = "Factura: <strong>" .$guardaFactura["numeroFactura"] . " </strong> guardada exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: La factura no se ha ejecutado correctamente: <strong>". $ex->getMessage()."</strong>";;

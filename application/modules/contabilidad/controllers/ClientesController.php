@@ -4,13 +4,21 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $sucursalDAO = null;
+
     private $notaSalidaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $impuestosDAO = null;
+
     private $cobroClienteDAO = null;
+
     private $anticipoDAO = null;
+
     private $proyectoDAO = null;
 
     public function init()
@@ -161,7 +169,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		}
     }
 
-
     public function aplicacobroAction()
     {
     	$request = $this->getRequest();
@@ -222,8 +229,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         
     }
 
-   
-
     public function buscaanticipoclientesAction()
     {
     	$request = $this->getRequest();
@@ -261,14 +266,45 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$this->facturaDAO->cancelaFactura($idFactura);
 		}
     }
+
+    public function remisioncafeAction()
+    {
+        $request = $this->getRequest();
+        $select = $this->db->select()->from("Producto")->order("producto ASC");
+        $statement = $select->query();
+        $rowsProducto =  $statement->fetchAll();
+        $jsonDesProductos = Zend_Json::encode($rowsProducto);
+        $this->view->jsonDesProductos = $jsonDesProductos;
+        //$formulario = new Contabilidad_Form_AgregarRemisionClienteCafeteria;
+        $formulario = new Contabilidad_Form_AgregarRemisionClienteCafeteria;
+        $this->view->formulario = $formulario;
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
+                $datos = $formulario->getValues();
+                $encabezado = $datos[0];
+                $formaPago =$datos[1];
+                $productos = json_decode($encabezado['productos'], TRUE);
+                $contador = 0;
+                try{
+                    foreach ($productos as $producto){
+                        if($encabezado["idEmpresas"]==6){
+                            $desechable  = $this->notaSalidaDAO->restaDesechable($producto);
+                        }
+                        $remisionSalidaDAO->restaProductoCafeteria($encabezado, $producto, $formaPago);
+                        $contador++;
+                        $this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
+                    }
+                    $remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
+                }catch(Util_Exception_BussinessException $ex){
+                    $this->view->messageFail = $ex->getMessage();
+                }
+            }//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+        }
+        
+    }
+
 }
-
-
-
-
-
-
-
 
 
 

@@ -142,23 +142,24 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	}
 
 	public function obtieneProyectoRemisionClientexFecha($idProyecto,$fechaI, $fechaF){
-		$tablaMovimientos  = $this->tablaMovimiento;
-		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
-		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
-		foreach ($rowsMovimientos as $rowMovimiento) {
-			if($rowMovimiento['idTipoMovimiento'] == 12 ){/*cliente*/
-				$tablaMovimientos = $this->tablaMovimiento;
-				$select  = $tablaMovimientos->select()
-				->setIntegrityCheck(false)
-				->from($tablaMovimientos)
-				->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
-				->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
-				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
-				->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
-				->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
-				return $tablaMovimientos->fetchAll($select);
-			}
-		}
+	    $tablaMovimientos  = $this->tablaMovimiento;
+	    $select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+	    $rowsMovimientos = $tablaMovimientos->fetchAll($select);
+	    foreach ($rowsMovimientos as $rowMovimiento) {
+	        if($rowMovimiento['idTipoMovimiento'] == 13 ){/*cliente*/
+	            $tablaMovimientos = $this->tablaMovimiento;
+	            $select  = $tablaMovimientos->select()
+	            ->setIntegrityCheck(false)
+	            ->from($tablaMovimientos)
+	            ->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
+	            ->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+	            ->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+	            ->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
+	            ->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+	            //print_r("$select");
+	            return $tablaMovimientos->fetchAll($select);
+	        }
+	    }	
 	}
 	public function obtieneProyectoRemisionProveedorxFecha($idProyecto,$fechaI, $fechaF){
 		$tablaMovimientos  = $this->tablaMovimiento;
