@@ -284,18 +284,16 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $datos = $formulario->getValues();
                 $encabezado = $datos[0];
                 $formaPago =$datos[1];
+                print_r($formaPago);
                 $productos = json_decode($encabezado['productos'], TRUE);
                 $contador = 0;
                 try{
-                    foreach ($productos as $producto){
                         if($encabezado["idEmpresas"]==6){
-                            $desechable  = $this->notaSalidaDAO->restaDesechable($producto);
+                            //$desechable  = $this->notaSalidaDAO->restaDesechable($producto);
                         }
-                        $remisionSalidaDAO->restaProductoCafeteria($encabezado, $producto, $formaPago);
+                        $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
                         $contador++;
                         $this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
-                    }
-                    $remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
                 }catch(Util_Exception_BussinessException $ex){
                     $this->view->messageFail = $ex->getMessage();
                 }

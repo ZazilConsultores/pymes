@@ -386,65 +386,94 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		}
 	}
 	
-	public function restaProductoCafeteria(array $encabezado, $producto, $formaPago){
+	public function restaProductoCafeteria(array $encabezado, $productos, $formaPago){
 	    $dbAdapter =  Zend_Registry::get('dbmodgeneral');
-	       //$dbAdapter->beginTransaction();
+	    $dbAdapter->beginTransaction();
 	    $dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 	    $stringIni = $dateIni->toString ('yyyy-MM-dd');
+	    try {
+	        if(($formaPago['pagada']) == "1"){
+	           $conceptoPago = "LI";
+	           $importePagado = $formaPago['importePago'];
+	           $saldo = 0;
+	           $estatus = 'A';
+	           print_r($estatus);
+	       }else{
+	            $conceptoPago = "PE";
+	           $importePagado = 0;
+	           $saldo = $formaPago['importePago'];
+	           $estatus = 'P';
+	           print_r($estatus);
+	       }
+	       foreach ($productos as $producto) {
+	        $tablaMovimiento = $this->tablaMovimiento;
+	        $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])->where("idCoP=?",$encabezado['idCoP'])
+	        ->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
+	       $rowMovimiento = $tablaMovimiento->fetchRow($select);
+	       
+	       $tablaMultiplos = $this->tablaMultiplos;
+	       $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+	       $rowMultiplo = $tablaMultiplos->fetchRow($select);
 	    
-	    $tablaMovimiento = $this->tablaMovimiento;
-	    $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])->where("idCoP=?",$encabezado['idCoP'])
-	    ->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
-	    $rowMovimiento = $tablaMovimiento->fetchRow($select);
-	    $tablaMultiplos = $this->tablaMultiplos;
-	    $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-	    $rowMultiplo = $tablaMultiplos->fetchRow($select);
+	       $cantidad=0;
+	       $precioUnitario=0;
+	       $cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+	       $precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
 	    
-	    $cantidad=0;
-	    $precioUnitario=0;
-	    $cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-	    $precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
-	    
-	    if(!is_null($rowMovimiento)){
-	        $secuencial= $rowMovimiento->secuencial +1;
-	    }else{
-	        $secuencial = 1;
-	    }
-	    if(($formaPago['pagada']) == "1"){
-	        $conceptoPago = "LI";
-	        $importePagado = $formaPago['importePago'];
-	        $saldo = 0;
-	        $estatus = "A";
-	        print_r($estatus);
-	    }elseif(($formaPago['pagada'])== "0" AND $formaPago['importePago'] =="0"){
-	        $conceptoPago = "PE";
-	        $importePagado = 0;
-	        $saldo = $importe[0]['total'];
-	        $estatus = "P";
-	        print_r($estatus);
-	    }elseif($formaPago['pagos'] <> 0 AND $formaPago['importePago'] <> $importe[0]['total']){
-	        $conceptoPago = "PA";
-	        $importePagado = $formaPago['pagos'];
-	        $saldo = $importe[0]['total']- $formaPago['pagos'];
-	        $estatus = "P";
-	        print_r($estatus);
-	    }
-	    $mMovtos = array(
-	        'idProducto' => $producto['descripcion'],
-	        'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-	        'idEmpresas'=>$encabezado['idEmpresas'],
-	        'idSucursal'=>$encabezado['idSucursal'],
-	        'idCoP'=>$encabezado['idCoP'],
-	        'idProyecto'=>$encabezado['idProyecto'],
-	        'numeroFolio'=>$encabezado['numFolio'],
-	        'cantidad'=>$cantidad,
-	        'fecha'=>$stringIni,
-	        'estatus'=>$estatus,
-	        'secuencial'=> $secuencial,
-	        'costoUnitario'=>$precioUnitario,
-	        'totalImporte'=>$producto['importe']);
-	    print_r($mMovtos);
-	    //$dbAdapter->insert("Movimientos",$mMovtos);
-	    
+	       if(!is_null($rowMovimiento)){
+	           $secuencial= $rowMovimiento->secuencial +1;
+	       }else{
+	           $secuencial = 1;
+	       }
+	       $mMovtos = array(
+	           'idProducto' => $producto['descripcion'],
+	           'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	           'idEmpresas'=>$encabezado['idEmpresas'],
+	           'idSucursal'=>$encabezado['idSucursal'],
+	           'idCoP'=>$encabezado['idCoP'],
+	           'idProyecto'=>$encabezado['idProyecto'],
+	           'numeroFolio'=>$encabezado['numFolio'],
+	           'cantidad'=>$cantidad,
+	           'fecha'=>$stringIni,
+	           'estatus'=>$estatus,
+	           'secuencial'=> $secuencial,
+	           'costoUnitario'=>$precioUnitario,
+	           'totalImporte'=>$producto['importe']);
+	       $dbAdapter->insert("Movimientos",$mMovtos);
+	       }
+	       if(($formaPago['pagada'])=="1"){
+	           $mCuentasxc = array(
+	               'idTipoMovimiento'=>13,
+	               'idSucursal'=>$encabezado['idSucursal'],
+	               //'idFactura'=>$idFactura,
+	               'idCoP'=>$encabezado['idCoP'],
+	               'idBanco'=>$formaPago['idBanco'],
+	               'idDivisa'=>$formaPago['idDivisa'],
+	               'numeroFolio'=>$encabezado['numFolio'],
+	               'secuencial'=>1,
+	               'fecha'=>date("Y-m-d H:i:s", time()),
+	               'fechaPago'=>$stringIni,
+	               'estatus'=>"A",
+	               'numeroReferencia'=>$formaPago['numeroReferencia'],
+	               'conceptoPago'=>$conceptoPago,
+	               'formaLiquidar'=>$formaPago['formaLiquidar'],
+	               'subTotal'=>0,
+	               'total'=>$formaPago['importePago']
+	           );
+	           $dbAdapter->insert("Cuentasxc", $mCuentasxc);
+	       }
+        }catch(exception $ex){
+	       print_r("<br />");
+	       print_r("================");
+	       print_r("<br />");
+	       print_r("Excepcion Lanzada");
+	       print_r("<br />");
+	       print_r("================");
+	       print_r("<br />");
+	       print_r($ex->getMessage());
+	       print_r("<br />");
+	       print_r("<br />");
+	       $dbAdapter->rollBack();
+        }
 	}
 }

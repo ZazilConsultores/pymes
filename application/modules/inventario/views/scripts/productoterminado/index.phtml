@@ -782,8 +782,8 @@ $(document).ready(function() {
 					var baseUrl ="localhost/General";
 					var urlPT = baseUrl + "/inventario/productoterminado/editar"
 					var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
-					//var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
-					var botonEliminar = $('<button></button>').attr("id","eliminar_" + cont).attr("class","btn btn-danger").text("Eliminar").attr("fila",fila);
+					var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
+					//var botonEliminar = $('<button></button>').attr("id","eliminar_" + cont).attr("class","btn btn-danger").text("Eliminar").attr("fila",fila);
 					var importe = data[i].cantidad * data[i].costoUnitario;
 					importe = parseFloat(importe.toFixed(2));
 					var costoUnitario = data[i].costoUnitario;
@@ -861,8 +861,8 @@ $(document).ready(function() {
 		/*idFilaSelect = idFila;
 		console.log(idFilaSelect);
 		console.log("Elimina Boton");
-		//$("#eliminar").remove();
-		/*var prodComp = $(this).attr("productoCompuesto");
+		//$("#eliminar").remove();*/
+		var prodComp = $(this).attr("productoCompuesto");
 		var total = 0;
 		var urlProdComp = window.location.origin + "/General/inventario/json/eliminarproductoenlazado/productoCompuesto/" + prodComp;
 		console.log(urlProdComp);
@@ -870,7 +870,7 @@ $(document).ready(function() {
 			url: urlProdComp,
 		});
 
-		//$("table#detalleProductoTer  tbody > tr").remove();
+		/*$("table#detalleProductoTer  tbody > tr").remove();
 		$("table#detalleProductoTer  tbody > tr").not(':first').remove();
 		$("table#detalleProductoTer").find("td[id^='importe']").each(function(){
 			total += +$(this).text(); 
@@ -881,14 +881,15 @@ $(document).ready(function() {
 		var idFila = $(this).attr("fila");
 		console.log(idFila);*/
 		//eliminar(idFilaSelect);
-		var fil = $(this).attr("id");
+		/*var fil = $(this).attr("id");
 		var arr = fil.split('_');
 		console.log(fil);
 		var numFila =  arr[1];
 		//$("#eliminar_"+numFila).removeClass('select');
 		$(".select").remove(numFila);
-		
+		*/
 		//var numFila =  arr[1];
+		
 	});
 	function eliminar(idFila){
 		
@@ -896,6 +897,12 @@ $(document).ready(function() {
 		//console.log(idFila);
 		
 	}
+	$("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
+			if ($("table#detalleProductoTer tbody > tr").length >1)
+			{
+				$("table#detalleProductoTer  tbody > tr:last").remove();
+			}	
+		});
 		  
 	$("table#detalleProductoTer").on("click", "button[id^='editar']", function(){
 		var idProdComp = $(this).attr("productoCompuesto");
