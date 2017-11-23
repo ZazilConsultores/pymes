@@ -405,11 +405,11 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           $estatus = 'P';
 	           print_r($estatus);
 	       }
-	       foreach ($productos as $producto) {
-	        $tablaMovimiento = $this->tablaMovimiento;
-	        $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])->where("idCoP=?",$encabezado['idCoP'])
-	        ->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
-	       $rowMovimiento = $tablaMovimiento->fetchRow($select);
+	       foreach ($productos as $producto){
+	           $tablaMovimiento = $this->tablaMovimiento;
+	           $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])->where("idCoP=?",$encabezado['idCoP'])
+	           ->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
+	           $rowMovimiento = $tablaMovimiento->fetchRow($select);
 	       
 	       $tablaMultiplos = $this->tablaMultiplos;
 	       $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
