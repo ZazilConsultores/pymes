@@ -1034,6 +1034,8 @@
               <actionMethod actionName="cancelar"/>
               <actionMethod actionName="cancelarcli"/>
               <actionMethod actionName="remisioncafe"/>
+              <actionMethod actionName="cobroremiclicafe"/>
+              <actionMethod actionName="aplicacobroremiclicafe"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -1097,6 +1099,7 @@
               <actionMethod actionName="proyectocliente"/>
               <actionMethod actionName="proyectoproveedor"/>
               <actionMethod actionName="proyectoxfecha"/>
+              <actionMethod actionName="proyectocafexfecha"/>
             </controllerFile>
             <controllerFile controllerName="Impuestos">
               <actionMethod actionName="index"/>
@@ -1151,6 +1154,9 @@
               <actionMethod actionName="numfacprov"/>
               <actionMethod actionName="facprovxsucynum"/>
               <actionMethod actionName="eliminaprodimp"/>
+              <actionMethod actionName="remisioncafel"/>
+              <actionMethod actionName="remisioncafep"/>
+              <actionMethod actionName="buscacobroremclicafe"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -1641,6 +1647,24 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="remisioncafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectocafexfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="remisioncafel"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="remisioncafep"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cobroremiclicafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscacobroremclicafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="aplicacobroremiclicafe"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -3047,6 +3071,8 @@
                 <testApplicationActionMethod forActionName="cancelar"/>
                 <testApplicationActionMethod forActionName="cancelarcli"/>
                 <testApplicationActionMethod forActionName="remisioncafe"/>
+                <testApplicationActionMethod forActionName="cobroremiclicafe"/>
+                <testApplicationActionMethod forActionName="aplicacobroremiclicafe"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3110,6 +3136,7 @@
                 <testApplicationActionMethod forActionName="proyectocliente"/>
                 <testApplicationActionMethod forActionName="proyectoproveedor"/>
                 <testApplicationActionMethod forActionName="proyectoxfecha"/>
+                <testApplicationActionMethod forActionName="proyectocafexfecha"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Impuestos">
                 <testApplicationActionMethod forActionName="index"/>
@@ -3164,6 +3191,9 @@
                 <testApplicationActionMethod forActionName="numfacprov"/>
                 <testApplicationActionMethod forActionName="facprovxsucynum"/>
                 <testApplicationActionMethod forActionName="eliminaprodimp"/>
+                <testApplicationActionMethod forActionName="remisioncafel"/>
+                <testApplicationActionMethod forActionName="remisioncafep"/>
+                <testApplicationActionMethod forActionName="buscacobroremclicafe"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>

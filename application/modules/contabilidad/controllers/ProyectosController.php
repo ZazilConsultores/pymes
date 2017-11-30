@@ -4,9 +4,12 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 {
 
     private $proyectoDAO = null;
+
     private $fiscalesDAO = null;
+
     private $notaSalidaDAO = null;
-	private $empresaDAO = null;
+
+    private $empresaDAO = null;
 
     public function init()
     {
@@ -93,8 +96,30 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		}
     }
 
+    public function proyectocafexfechaAction()
+    {
+        $request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AltaProyecto;
+        $formulario->removeElement("numeroFolio");
+        $formulario->removeElement("idCliente");
+        $formulario->removeElement("descripcion");
+        $formulario->removeElement("fechaApertura");
+        $formulario->removeElement("fechaCierre");
+        $formulario->removeElement("costoInicial");
+        $formulario->removeElement("costoFinal");
+        $formulario->removeElement("ganancia");
+        $formulario->removeElement("submit");
+        $formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
+        $this->view->formulario = $formulario;
+        if($request->isGet()){
+            $this->view->formulario = $formulario;
+        }
+    }
+
 
 }
+
+
 
 
 

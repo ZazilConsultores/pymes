@@ -109,9 +109,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador = 0;
 				try{
 				    foreach ($productos as $producto){
-						if($encabezado["idEmpresas"]==6){
-						  $desechable  = $this->notaSalidaDAO->restaDesechable($producto);
-						}
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
 						$contador++;
 						$this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
@@ -275,7 +272,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $rowsProducto =  $statement->fetchAll();
         $jsonDesProductos = Zend_Json::encode($rowsProducto);
         $this->view->jsonDesProductos = $jsonDesProductos;
-        //$formulario = new Contabilidad_Form_AgregarRemisionClienteCafeteria;
         $formulario = new Contabilidad_Form_AgregarRemisionClienteCafeteria;
         $this->view->formulario = $formulario;
         if($request->isPost()){
@@ -284,25 +280,67 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $datos = $formulario->getValues();
                 $encabezado = $datos[0];
                 $formaPago =$datos[1];
-                print_r($formaPago);
                 $productos = json_decode($encabezado['productos'], TRUE);
                 $contador = 0;
                 try{
-                        if($encabezado["idEmpresas"]==6){
-                            //$desechable  = $this->notaSalidaDAO->restaDesechable($producto);
-                        }
-                        $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
-                        $contador++;
-                        $this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
+                    $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
+                    $contador++;
+                    $this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
                 }catch(Util_Exception_BussinessException $ex){
                     $this->view->messageFail = $ex->getMessage();
                 }
             }//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
         }
-        
     }
 
+    public function cobroremiclicafeAction()
+    {
+        $request = $this->getRequest();
+        $empresas = $this->empresaDAO->obtenerFiscalesEmpresas();
+        $this->view->empresas = $empresas;
+        if($request->isPost()){
+            $datos = $request->getPost();
+            $idSucursal = $this->getParam("sucursal");
+            $cl = $this->getParam("cliente");
+        }
+    }
+
+    public function aplicacobroremiclicafeAction()
+    {
+        $request = $this->getRequest();
+        $idMovimiento = $this->getParam("idMovimiento");
+        $datosMovto = $this->cobroClienteDAO->obtieneMovimiento($idMovimiento);
+        $formulario = new Contabilidad_Form_Cobrofactura;
+        $this->view->formulario = $formulario;
+        $cobrosDAO = new Contabilidad_DAO_CobroCliente;
+      
+        $this->view->datosMovimiento = $cobrosDAO->obtieneMovimiento($idMovimiento);
+       // $this->view->clientesFac = $cobrosDAO->obtenerClienteEmpresa($idFactura);
+        //$this->view->sucursalFac = $cobrosDAO->obtenerSucursal($idFactura);
+        
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $datos = $formulario->getValues();
+                //print_r($datos);
+                try{
+                    $this->cobroClienteDAO->aplica_CobroRemisionCafe($idMovimiento, $datos);
+                    //$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
+                    $this->view->messageSuccess = "Cobro: <strong>".$datosMovto["numeroFolio"]."</strong> se ha efectuado exitosamente!!";
+                }catch(Exception $ex){
+                    $this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+                }
+            }
+        }
+    }
+
+
 }
+
+
+
+
+
+
 
 
 

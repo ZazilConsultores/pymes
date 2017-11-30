@@ -58,17 +58,6 @@
 				
 				</thead>
 				<tbody>
-					<div id="empaque" align="right" class="hidden">
-						<label class="radio-inline">
-							<input type="radio" id="desayuno" name="1" value="desayuno"><strong>Desechable Desayuno</strong>
-      					</label> 
-      					<label class="radio-inline">
-      						 <input type="radio" id="comida" name="1" value="comida"><strong>Desechable Comida</strong>
-     				 	</label>
-     				 	<label class="radio-inline">
-							<input type="radio" id="traste" name="1" value="traste" checked="true"><strong>Traste</strong>
-      					</label> 
-     				</div>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -102,14 +91,7 @@
 					});
 					
 				}
-			});
-			//Muestra radio button en caso de que sea Empresa Café del Centro
-			if(this.value == 6){
-				$("div#empaque").removeClass("hidden");
-			}else{
-				$("div#empaque").addClass("hidden");
-			}
-			
+			});	
 		});
 		
 		$("select#idSucursal").on('click', function(){
@@ -228,10 +210,10 @@
 		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
  			var tabla = $("table#remisionSalida > tbody  > tr");
- 			var tipoEmpaque;
+ 			
  			//Array Json de productos
  			var productos = [];
- 			var empaque = [];
+ 			
  			tabla.each(function(){
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
@@ -241,17 +223,7 @@
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  				var importe = row.find("input[id^='costoTotal_']").val();
  				
- 				if ($("#desayuno:checked").val()=="desayuno"){
- 					tipoEmpaque  = 1;
-   				}else if($("#comida:checked").val()=="comida"){
-   					tipoEmpaque  = 2;
-   				}else{
-   					tipoEmpaque  = 0;
-   				}
-   				
-   				empaque.push(new Emp(tipoEmpaque));
-   				
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe, tipoEmpaque));
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe));
  				if(cantidad.length < 1 || unidad == null|| descripcion.length < 1 || precioUnitario.length < 1 || importe.length < 1 ) {  
         			$('input[type="submit"]').attr('disabled', 'disabled');
         		}else{ 
@@ -263,18 +235,14 @@
  			if ($("input#productos").val(myString)){	
  			};
  		});
- 		
- 		function Emp(tipoEmpaque) {
-		  this.tipoEmpaque = tipoEmpaque;
-		}
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,tipoEmpaque) {
+ 	
+ 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
 		  this.precioUnitario = precioUnitario;
-		  this.importe = importe;
-		  this.tipoEmpaque = tipoEmpaque;		
+		  this.importe = importe;	
 		}
 	
         $("table#remisionSalida").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {

@@ -88,7 +88,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eFechaFin->setAttrib("class", "form-control");
 		
 		$eBoton =  new Zend_Form_Element_Button('button');
-        $eBoton->setLabel('Buscar Proyecto');
+        $eBoton->setLabel('Buscar');
 		$eBoton->setAttrib("class", "btn btn-warning");
 		
 		

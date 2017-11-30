@@ -4,15 +4,25 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 {
 
     private $bancoDAO = null;
+
     private $fiscalesDAO = null;
+
     private $impuestoProductosDAO = null;
+
     private $empresaDAO = null;
+
     private $pagosDAO = null;
+
     private $cobrosDAO = null;
+
     private $facturaCliDAO = null;
+
     private $facturaProDAO = null;
+
     private $proyectoClienteDAO = null;
+
     private $proyectoDAO = null;
+
     private $notaSalidaDAO = null;
 
     public function init()
@@ -545,6 +555,45 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function remisioncafelAction()
+    {
+        $idProyecto = $this->getParam("idProyecto");
+        $fechaI = $this->getParam("fechaI");
+        $fechaF = $this->getParam("fechaF");
+        $proyectoRemSalCafeLiq = $this->proyectoDAO->obtieneProyectoRemisionClienteCafeLxFecha($idProyecto, $fechaI, $fechaF);
+        if(!is_null($proyectoRemSalCafeLiq)){
+            echo Zend_Json::encode($proyectoRemSalCafeLiq);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function remisioncafepAction()
+    {
+        $idProyecto = $this->getParam("idProyecto");
+        $fechaI = $this->getParam("fechaI");
+        $fechaF = $this->getParam("fechaF");
+        $proyectoRemSalCafePen = $this->proyectoDAO->obtieneProyectoRemisionClienteCafePxFecha($idProyecto, $fechaI, $fechaF);
+        if(!is_null($proyectoRemSalCafePen)){
+            echo Zend_Json::encode($proyectoRemSalCafePen);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function buscacobroremclicafeAction()
+    {
+        $sucu = $this->getParam("sucu");
+        $cl = $this->getParam("cl");
+        
+        $buscaCobroRemCliCafe = $this->cobrosDAO->busca_RemisionClienteCafe($sucu, $cl);
+        if(!is_null($buscaCobroRemCliCafe)){
+            echo Zend_Json::encode($buscaCobroRemCliCafe);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
 
@@ -579,6 +628,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
 	
 	
 	
@@ -590,6 +642,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
 
 
 
