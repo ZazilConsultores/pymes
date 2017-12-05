@@ -24,7 +24,7 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					$this->polizaDAO->generacxp($datos);
 					$this->polizaDAO->generacxp_Fo($datos);
 					$this->polizaDAO->generacxc_Fo($datos);
-					$this->polizaDAO->generacxpRemisiones($datos);*/
+					$this->polizaDAO->generacxpRemisiones($datos);
 					$this->polizaDAO->genera_Cuentasxp_PagoImpuesto($datos);
 					$this->polizaDAO->genera_ProvisionNomina($datos);
 					$this->polizaDAO->generaGruposNotaCredito($datos);
