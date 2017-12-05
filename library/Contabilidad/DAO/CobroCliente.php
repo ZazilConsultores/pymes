@@ -35,12 +35,23 @@
 		
 		public function busca_RemisionClienteCafe($idSucursal,$cl){
 		    //tipo Movimiento facturaCliente = 2
-		    $tablaMovtos = $this->tablaMovimientos;
-		    $select = $tablaMovtos->select()->from($tablaMovtos)->where("idTipoMovimiento =?",13)->where("estatus <> ?", "A")
+		    /*$tablaMovtos = $this->tablaMovimientos;
+		    $select = $tablaMovtos->select()->from($tablaMovtos,new Zend_Db_Expr('SUM(Movimientos.totalImporte)as totalImporte'))->where("idTipoMovimiento =?",13)->where("estatus <> ?", "A")
 		    ->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
-		    $rowsMovimientos = $tablaMovtos->fetchAll($select)->toArray();
-		    return $rowsMovimientos;
+		    $rowsMovtos = $tablaMovtos->fetchAll($select)->toArray();
+		   // print_r("$select");
+		    //return $tablaMovtos;*/
 		    
+		    $tablaMovimientos  = $this->tablaMovimientos;
+		    $select = $tablaMovimientos->select()->setIntegrityCheck(false)
+		    ->from($tablaMovimientos, array('idMovimiento','idSucursal','idCoP', 'numeroFolio','fecha',new Zend_Db_Expr('SUM(totalImporte)as totalImporte')))
+		    ->join('Clientes','Movimientos.idCoP = Clientes.idCliente')
+		    ->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+		    ->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+		    ->where("idTipoMovimiento =?",13)->where("estatus <> ?", "A")
+		    ->where("Movimientos.idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl)
+		    ->group('numeroFolio')->group('fecha');
+		   return $tablaMovimientos->fetchAll($select); 
 		}
 		
 		public function busca_FacCli($idSucursal,$num){
@@ -147,7 +158,13 @@
 		        $tablaMovtos = $this->tablaMovimientos;
 		        $select = $tablaMovtos->select()->from($tablaMovtos)->where("idMovimiento= ?",$idMovimiento);
 		        $rowMovimiento = $tablaMovtos->fetchRow($select);
-		        print_r($select->__toString());
+		        
+		        $tablaMovitos = $this->tablaMovimientos;
+		        $select = $tablaMovtos->select()->from($tablaMovtos)->where("idSucursal= ?",$rowMovimiento['idSucursal'])->where("idCoP =?",$rowMovimiento['idCoP'])
+		        ->where("numeroFolio= ?",$rowMovimiento['numeroFolio'])->where("fecha = ?",$rowMovimiento['fecha'])->where("estatus<>?","A");
+		        $rowsMovto = $tablaMovtos->fetchAll($select);
+		        print_r($rowsMovto);  
+		        
 		        
 		        $tablaCuentasxc = $this->tablaCuentasxc;
 		        $select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento= ?",13)->where("idSucursal= ?",$rowMovimiento["idSucursal"])

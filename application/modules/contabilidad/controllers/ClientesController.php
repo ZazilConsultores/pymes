@@ -313,15 +313,11 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $formulario = new Contabilidad_Form_Cobrofactura;
         $this->view->formulario = $formulario;
         $cobrosDAO = new Contabilidad_DAO_CobroCliente;
-      
-        $this->view->datosMovimiento = $cobrosDAO->obtieneMovimiento($idMovimiento);
-       // $this->view->clientesFac = $cobrosDAO->obtenerClienteEmpresa($idFactura);
-        //$this->view->sucursalFac = $cobrosDAO->obtenerSucursal($idFactura);
         
         if($request->isPost()){
             if($formulario->isValid($request->getPost())){
                 $datos = $formulario->getValues();
-                //print_r($datos);
+                print_r($datos);
                 try{
                     $this->cobroClienteDAO->aplica_CobroRemisionCafe($idMovimiento, $datos);
                     //$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);

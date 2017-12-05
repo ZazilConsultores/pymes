@@ -45,6 +45,7 @@
 </section>
 
 
+
 	<div class="row">
 	<div class="col-md-12">
 	<div class="panel panel-info">
@@ -57,8 +58,6 @@
 				<th>Cliente</th>
 				<th>Número Factura</th>
 				<th>Fecha</th>
-				<th>Cantidad</th>
-				<th>Costo Unitario</th>
 				<th>Importe</th>
 				<th>Cobro</th>
 			</thead>
@@ -66,8 +65,91 @@
 			</tbody>
 		</table>
 	</div></div></div>
-
-
+<div class="">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" arial-label="Close">
+			<span aria-hidden= "true">&times;</span>
+		</button>
+		<h4 class="modal-title">Realiza pago  factura.</h4>
+	</div>
+	<!-- Creamos el cuerpo del Modal-->
+	<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+    	<!-- Fecha -->
+    	<div class="form-group">
+    	<label for="fecha" class="control-label col-md-2">Fecha de Pago: </label>
+        	<div class="col-md-10">
+        		<input id="fecha" name="fecha" type="text" class="form-control" />
+        	</div>
+    	</div>
+		<!-- Pago -->
+		<div class="form-group">
+		<label for="pago" class="control-label col-md-2">Monto: </label>
+			<div class="col-md-10">
+				<input id="pago" name="pago" type="text" class="form-control" />
+			</div>
+		</div>
+		<!-- Divisa -->
+		<div class="form-group">
+    		<label for="divisa" class="control-label col-md-2">Divisa: </label>
+    		<div class="col-md-10">
+        		<select id="idDivisa" name="divisa" class="form-control">
+        		<?php foreach ($divisas as $divisa) : ?>
+        			<option value="<?php echo $divisa->getIdDivisa(); ?>"><?php echo $divisa->getDescripcion(); ?></option>
+        		<?php endforeach; ?>
+    			</select>
+    		</div>
+		</div>
+		<!-- Concepto -->
+			<div class="form-group">
+			<label for="concepto" class="control-label col-md-2">Concepto: </label>
+			<div class="col-md-10">
+				<select id="conceptoPago" name="concepto" class="form-control">
+					<?php foreach ($conceptoPagos as $key =>$value): ?>
+						<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+					<?php endforeach; ?>	
+				</select>
+				</div>
+						</div>
+						<!-- FormaPago -->
+						<div class="form-group">
+							<label for="formaPago" class="control-label col-md-2">Forma de Pago</label>
+							<div class="col-md-10">
+								<select id="formaPago" name="formaPago" class="form-control">
+									<?php foreach ($formasPago as $key => $value): ?>
+										<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+									<?php endforeach ?>	
+								</select>
+							</div>
+						</div>
+						<!-- Banco -->
+						<div class="form-group">
+							<label for="banco" class="control-label col-md-2">Banco: </label>
+							<div class="col-md-10">
+								<select id="idBanco" name="banco" class="form-control">
+									<?php foreach ($bancos as $banco) :?>
+										<option value="<?php echo $banco->getIdBanco(); ?>"> <?php echo $banco->getBanco(); ?></option>
+									<?php endforeach?>
+								</select>
+							</div>
+						</div>
+						<!-- Referencia -->
+						<div class="form-group">
+							<label for="referencia" class="control-label col-md-2">Referencia: </label>
+							<div class="col-md-10">
+								<input id="referencia" name="referencia" type="text" class="form-control" placeholder="(Opcional)..." />
+							</div>
+						</div>
+			</form>
+			
+			<form class="modal-foote">
+				<button id="registrarPago" type="button" class="btn btn-success" data-dismiss="modal">
+					<span class="glyphicon glyphicon-ok"></span>  Registrar.
+				</button>	
+				<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<span class="glyphicon glyphicon-close"></span> Cancelar
+				</button>
+			</form>
+		</div>
 <script>
 $().ready(function(){
 	var url = window.location.origin + "/General/";
@@ -108,10 +190,13 @@ $().ready(function(){
 	});
 		
 	$("button#queryFacturas").on("click", function(){
+		cont = 0;
+		
 		var sucu = $("select#idSucursal").val();
 		console.log(sucu);
 		var cl = $("select#idCliente").val();
 		var urlCXC = window.location.origin + "/General/contabilidad/json/buscacobroremclicafe/sucu/" + sucu +"/cl/"+cl;
+		console.log(urlCXC);
 		$.ajax({
 			url: urlCXC,
 			dataType: "json",
@@ -119,14 +204,13 @@ $().ready(function(){
 			var tbody = $("table#detalleFacturaxc").find('tbody');
     			tbody.empty();
     			$.each(data, function(i,item){
+    				cont ++;
     				var botonCobro = $('<button></button>').attr("id","editar").attr("class","btn btn-primary").text("Cobro").attr("Movto",data[i].idMovimiento);
-    				tbody.append($('<tr>').
+    				tbody.append($('<tr>').attr({'id':'numFila' + cont}).
     				append($('<td>').append(data[i].idSucursal)).
     				append($('<td>').append(data[i].idCoP)).	
     				append($('<td>').append(data[i].numeroFolio)).
     				append($('<td>').append(data[i].fecha)).
-    				append($('<td>').append(data[i].cantidad)).
-    				append($('<td>').append(data[i].costoUnitario)).
     				append($('<td>').append(data[i].totalImporte).attr("id", "importe")).
     				append($('<td>').append(botonCobro)));
     			});
@@ -145,12 +229,13 @@ $().ready(function(){
 	}
 	
 	function AddRow(){
-		$('#detalleFacturaxc tbody').append('<tr><td></td><td></td<td></td><td></td><td></td>><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+		$('#detalleFacturaxc tbody').append('<tr><td></td><td></td>><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
     }
 
 	$("table#detalleFacturaxc").on("click", "button[id^='editar']", function(){
 		var movto = $(this).attr("movto");
-		window.location = "/General/contabilidad/clientes/aplicacobroremiclicafe/idMovimiento/"+ movto;
+		//console.log(movto);
+		//window.location = "/General/contabilidad/clientes/aplicacobroremiclicafe/idMovimiento/"+ movto;
 	});
 		
 });

@@ -2521,6 +2521,11 @@ class Contabilidad_DAO_Poliza implements Contabilidad_Interfaces_IPoliza {
 								break;
 								case 'SIN':
 									switch($tipoImpuesto){
+									    case '4':
+									        $cta = $rowGuiaContable["cta"];
+									        $subCta = 1000;
+									        $posicion = 1;
+									        break;
 										case '5':
 											$cta = $rowGuiaContable["cta"];
 											$subCta = 5000;
