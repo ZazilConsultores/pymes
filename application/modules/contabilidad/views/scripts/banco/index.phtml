@@ -23,12 +23,12 @@
 				<thead>
 					<tr>
 						<th>Numero Banco</th>
-						<th>Cuenta</th>
 						<th>Banco</th>
 						<th>CuentaContable</th>
 						<th>Tipo</th>
 						<th>Fecha</th>
 						<th>Saldo</th>
+						<th>Administrar</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,7 +39,7 @@
 						<td><?php echo $banco->getCuentaContable() ?></td>
 						<td><?php echo $tipoBanco[$banco->getTipo()] ?></td>
 						<td><?php echo $banco->getFecha() ?></td>
-						<td><?php echo $banco->getSaldo() ?></td>
+						<td><?php echo "$".number_format($banco->getSaldo(),2);  ?></td>
 						<td>
 							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"banco", "action" => "edita", "idBanco" => $banco->getIdBanco()), null, true); ?>">
 								<span class="glyphicon glyphicon-cog"></span> Administrar

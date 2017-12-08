@@ -6,7 +6,7 @@
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">Nueva Remisión Cliente.</h3>
+			<h3 class="panel-title">Nueva Remisión Cafeteria Cliente.</h3>
 		</div>
 		<div class="panel-body">
 				<?php if(!is_null($messageSuccess)){ ?>
@@ -136,10 +136,7 @@
 			});
 			
 		});
-		function seleccionada(idFila){
-			console.log(idFila);
-			filaSeleccionada=idFila;
-		}
+		
 		var jsonDesProductos = <?php echo $this->jsonDesProductos; ?>;
 		var cont=0;
 		var filaSeleccionada;
@@ -197,49 +194,6 @@
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			agregar();
-			
-			/*var filasTabla = $("table#remisionSalida tbody > tr").length;
-			//console.log(filasTabla);
-			// si filasTabla = 0 continuar
-			// si filasTabla <> 0 checar fila actual
-			filasTabla ++;
-			// generamos elementos de nueva fila
-			// cantidad
-			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
-			// idProducto
-			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-			// idUnidad
-			var inputUnidad	 = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			/*$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});*/
-			// codigoBarras
-			/*var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
-			// descripcion
-			//var inputDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-			var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonDesProductos,function(i,item){
-				selectDescripcion.append('<option value="'+jsonDesProductos[i].idProducto+'">'+jsonDesProductos[i].producto+'</option>');
-			});	
-			// precioUnitario
-			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
-			// precioImporte
-			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'});	
-			// botonLimpiar
-			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
-			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
-			
-			var tbody = $("table#remisionSalida").find('tbody');
-			tbody.append($('<tr>').attr({'class':'fila'}).attr({'id':'nFila'}).
-				append($('<td>').append(inputCantidad)).
-				append($('<td>').append(inputProducto)).
-				append($('<td>').append(inputUnidad)).
-				append($('<td>').append(inputCodigoBarras)).
-				append($('<td>').append(selectDescripcion)).
-				append($('<td>').append(inputCostoUnitario)).
-				append($('<td>').append(inputCostoTotal)).
-				append($('<td>').append(buttonLimpiar))		
-			);*/
 		});//cierra el addRow
 		
 		//Funcion Eliminar #btnLimpiar_2
@@ -353,43 +307,21 @@
     		row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
 		}
 		
-		function calculaGrandTotal() {	
-    	var grandTotal = 0;
-    	$("table#remisionSalida").find('input[id^="costoTotal_"]').each(function () {
-        	grandTotal += +$(this).val(); 
-    	});
-    	
-    	 $("input#total").val('$' + grandTotal.toFixed(2));
-    	 $("input#1-importePago").val(grandTotal.toFixed(2)); 
+		function calculaGrandTotal(){
+			var grandTotal = 0;
+    		$("table#remisionSalida").find('input[id^="costoTotal_"]').each(function () {
+        		grandTotal += +$(this).val(); 
+    		});
+    		$("input#total").val('$' + grandTotal.toFixed(2));
+    	 	$("input#1-importePago").val(grandTotal.toFixed(2)); 
    		}
 
-		$("#1-pagada").on("change", function(){
-			var total = $("#total").val();
+		$("#1-pagada").on("click", function(){
 			if ($("#1-pagada:checked").val()==1){
-				console.log("input desahabilitado");
-				$("#1-pagos").attr('disabled', 'disabled');
-				$("#1-pagos").val(total);
-				console.log($("#1-pagada").val()); 
-				//calculateGrandTotal();
+				calculaGrandTotal();
 			}else{
-				$("#1-pagos").removeAttr("disabled");
-				$("#1-pagos").val(0);
-				console.log($("#1-pagada").val());
+				$("#1-importePago").val(0);	
 			}
-		});
-		
-		var idFila;
-		//Funcion Eliminar Fila
-		function eliminar(idFila){
-			idFila = cont
-			$('#numFila'+ idFila).remove();
-		}
-
-		
-		//Funcion Eliminar Fila
- 		$("table#remisionSalida").on("click", "button[id^='btnLimpiar_']", function(){
- 			 
- 		});
- 		
+		}); 		
 	});//cierra document ready
 </script>

@@ -163,9 +163,14 @@
 		        $select = $tablaMovtos->select()->from($tablaMovtos)->where("idSucursal= ?",$rowMovimiento['idSucursal'])->where("idCoP =?",$rowMovimiento['idCoP'])
 		        ->where("numeroFolio= ?",$rowMovimiento['numeroFolio'])->where("fecha = ?",$rowMovimiento['fecha'])->where("estatus<>?","A");
 		        $rowsMovto = $tablaMovtos->fetchAll($select);
-		        print_r($rowsMovto);  
-		        
-		        
+		        print_r("$select");
+		        if(!is_null($rowsMovto)){
+		            foreach ($rowsMovto as $rowMov){
+		               $rowMov["estatus"] = "A";
+		               $rowMov->save();  
+		            }
+		        }
+		       
 		        $tablaCuentasxc = $this->tablaCuentasxc;
 		        $select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento= ?",13)->where("idSucursal= ?",$rowMovimiento["idSucursal"])
 		        ->where("idCoP= ?",$rowMovimiento["idCoP"])->where("numeroFolio= ?",$rowMovimiento["numeroFolio"])->order("secuencial DESC");
@@ -200,9 +205,25 @@
 		                'total'=>$datos["pago"]
 		            );
 		            $dbAdapter->insert("Cuentasxc",$mCuentasxc);
-
 		            //Al registrar el cobro, afecta registro factura, saldo banco y saldo Cliente.
-		           $actualizaRegistro = $this->actualiza_Movimiento($idMovimiento, $datos);
+		            //actualiza saldo de Cliente
+		            $tablaClientes = $this->tablaClientes;
+		            $select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?", $rowMovimiento->idCoP);
+		            $rowCliente = $tablaClientes->fetchRow($select);
+		            //print_r($select->__toString());
+		            $saldo = $rowCliente->saldo - $datos["pago"];
+		            $rowCliente->saldo = $saldo;
+		            $rowCliente->save();
+		            print_r("<br />");
+		            //Actuliza saldoBando
+		            $tablaBancos= $this->tablaBancos;
+		            $select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$datos["idBanco"]);
+		            $rowBanco = $tablaBancos->fetchRow($select);
+		            //print_r("$select");
+		            $sBanco = $rowBanco->saldo + $datos["pago"];
+		            $rowBanco->saldo = $sBanco;
+		            $rowBanco->fecha = $stringIni;
+		            $rowBanco->save();
 		        }
 		    }catch(exception $ex){
 		        print_r("<br />");
@@ -246,14 +267,21 @@
 		
 		public function obtieneFacturaParaAnticipoCliente($idSucursal,$idCoP){
 			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?", $idSucursal)->where("idCoP=?", $idCoP);
-			$rowFactura = $tablaFactura->fetchAll($select);
-			//print_r($select->__toString());
-			if(is_null($rowFactura)) {
-				//return null;
+			$select = $tablaFactura->select()->from($tablaFactura)->where("idSucursal=?", $idSucursal)->where("idCoP=?", $idCoP)->where("conceptoPago=?","PE");
+			$rowsFactura = $tablaFactura->fetchAll($select);
+			/*foreach ($rowsFactura as $rowFac){
+			    $tablaCuentasxc = $this->tablaCuentasxc;
+			    $select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento=?", 19)->where("idCoP=?",$rowFac["idCoP"])->where("idSucursal=?", $rowFac["idSucursal"]);
+			    $rowCuentasxc= $tablaCuentasxc->fetchAll($select);
+			    return $rowCuentasxc;
+			}*/
+			if(is_null($rowsFactura)) {
+			    return null;
 			}else{
-				return $rowFactura;
+			    return $rowsFactura;
 			}
+			
+			
 		}
 		
 		/*Obtiene clientes por idFactura*/
@@ -312,8 +340,17 @@
 		$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento =?",19)->where("estatus <> ?", "C")
 		->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
 		$rowsCuentasxc = $tablaCuentasxc->fetchAll($select)->toArray();
-		return $rowsCuentasxc;
-							
+		if(!is_null($rowsCuentasxc)){
+		    foreach ($rowsCuentasxc as $rowCuentaxc){
+		        $tablaFac = $this->tablaFactura;
+		        $select = $tablaFac->select()->from($tablaFac)->where("idTipoMovimiento =?",2)->where("estatus <> ?", "C")->where("idSucursal =?", $rowCuentaxc["idSucursal"])->where("idCoP = ?" ,$rowCuentaxc["idCoP"])
+		        ->where("numeroFactura =?",$rowCuentaxc["numeroFolio"])->where("conceptoPago <>?","LI");
+		        $rowFac = $tablaFac->fetchRow($select);
+		        if(is_null($rowFac)){
+		            return $rowsCuentasxc;
+		        }
+		    }
+		}					
 	}
 		public function actualiza_Saldo($idFactura, array $datos){
 			$dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
@@ -364,37 +401,7 @@
 		public function actualiza_Movimiento($idMovimiento, array $datos){
 		    $dateIni = new Zend_Date($datos['fecha'],'YY-MM-dd');
 		    $stringIni = $dateIni->toString ('yyyy-MM-dd');
-		    //Actuliza saldoCliente
-		    $tablaMovto = $this->tablaMovimientos;
-		    $select = $tablaMovto->select()->from($tablaMovto)->where("idMovimiento=?", $idMovimiento);
-		    $rowMovto = $tablaMovto->fetchRow($select);
-		    
-		    $tablaClientes = $this->tablaClientes;
-		    $select = $tablaClientes->select()->from($tablaClientes)->where("idCliente=?", $rowMovto->idCoP);
-		    $rowCliente = $tablaClientes->fetchRow($select);
-		    //print_r($select->__toString());
-		    $saldo = $rowCliente->saldo - $datos["pago"];
-		    $rowCliente->saldo = $saldo;
-		    $rowCliente->save();
-		    print_r("<br />");
-		    //Actuliza saldoBando
-		    $tablaBancos= $this->tablaBancos;
-		    $select = $tablaBancos->select()->from($tablaBancos)->where("idBanco = ?",$datos["idBanco"]);
-		    $rowBanco = $tablaBancos->fetchRow($select);
-		    //print_r("$select");
-		    $sBanco = $rowBanco->saldo + $datos["pago"];
-		    $rowBanco->saldo = $sBanco;
-		    $rowBanco->fecha = $stringIni;
-		    $rowBanco->save();
-		    //Actuliza estatus en Movimiento
-		    $saldo = $rowMovto->totalImporte - $datos["pago"];
-		    //print_r($saldo);
-		    if($saldo <= 0){
-		        $rowMovto->estatus = "A";
-		    }else{
-		        $rowMovto->estatus = "P";
-		    }
-		    $rowMovto->save();    
+		     
 		}
     }
 ?>

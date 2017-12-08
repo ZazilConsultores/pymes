@@ -4,13 +4,19 @@ class Sistema_JsonController extends Zend_Controller_Action
 {
 
     private $municipioDAO = null;
-	private $estadoDAO = null;
-	private $sucursalDAO = null;
-	private $proyectoDAO = null;
-	private $multiplos = null;
-	private $bancosEmpresa = null;
-	private $empresaDAO = null;
-	
+
+    private $estadoDAO = null;
+
+    private $sucursalDAO = null;
+
+    private $proyectoDAO = null;
+
+    private $multiplos = null;
+
+    private $bancosEmpresa = null;
+
+    private $empresaDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -62,7 +68,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($sdomicilio);
 		
     }
-	
+
     public function stelefonosAction()
     {
         // action body
@@ -78,8 +84,8 @@ class Sistema_JsonController extends Zend_Controller_Action
 		$semails = $this->sucursalDAO->obtenerEmailsSucursal($idSucursal);
 		echo Zend_Json::encode($semails);
     }
-	
-	public function sucursalesAction()
+
+    public function sucursalesAction()
     {
         // action body
         $idEmpresas = $this->getParam("idFiscales");
@@ -87,8 +93,8 @@ class Sistema_JsonController extends Zend_Controller_Action
 		$sucursales = $this->empresaDAO->obtenerSucursalesEmpresas($idEmpresas);
 		echo Zend_Json::encode($sucursales);
     }
-    
-	public function proyectosAction()
+
+    public function proyectosAction()
     {
         // action body
        	$idSucursal = $this->getParam("idSucursal");
@@ -96,8 +102,8 @@ class Sistema_JsonController extends Zend_Controller_Action
 		echo Zend_Json::encode($proyectos);
 
     }
-	
-	public function multiplosAction()
+
+    public function multiplosAction()
     {
         $idProducto = $this->getParam("idProducto");
 		$select = $this->db->select()->from("Multiplos","idMultiplos")
@@ -107,6 +113,24 @@ class Sistema_JsonController extends Zend_Controller_Action
 		echo  Zend_Json::encode($rowsMultiplo);
 		
     }
-   
+
+    public function saldoempresasAction()
+    {
+        $idBanco = $this->getParam("ban");
+        $fechaI = $this->getParam("fechaI");
+        $fechaF = $this->getParam("fechaF");
+        $saldoM  = $this->empresaDAO->saldoEmpresas($idBanco, $fechaI, $fechaF);
+       
+        if(!is_null($proyectoRemSalCafePen)){
+            echo Zend_Json::encode($proyectoRemSalCafePen);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+        
+    }
+
+
 }
+
+
 

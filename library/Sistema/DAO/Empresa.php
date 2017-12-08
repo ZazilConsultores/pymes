@@ -24,6 +24,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	private $tablaEmailFiscales;
 	
 	private $tablaSucursal;
+	private $tablaCuentasxc;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -39,6 +40,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		
 		$this->tablaTipoProveedor = new Sistema_Model_DbTable_TipoProveedor(array('db'=>$dbAdapter));
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
+		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
 		
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
 		
@@ -600,6 +602,14 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	
 	public function eliminarTelefonoSucursal($idSucursal, $idTelefono){}
 	public function eliminarEmailSucursal($idSucursal, $idEmail){}
+	
+	public function saldoEmpresas($idBanco, $fechaI, $fechaF){
+	    $tablaCuentasxc = $this->tablaCuentasxc;
+	    $select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento IN ?",'2','13',16,19);
+	    $rowsCuentasxc = $tablaCuentasxc->fetchAll($select);
+	    print_r("$select"); 
+	    
+	}
 	
 	
 }

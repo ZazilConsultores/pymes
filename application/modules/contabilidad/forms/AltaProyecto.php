@@ -79,6 +79,11 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
 		
+		$eBancos =  new Zend_Form_Element_Select('idBanco');
+		$eBancos->setLabel("Seleccionar Banco:");
+		$eBancos->setAttrib("class", "form-control");
+		$eBancos->setRegisterInArrayValidator(FALSE);
+		
 		$eFechaInicio =  new Zend_Form_Element_Text('fechaInicial');
         $eFechaInicio->setLabel('Seleccionar Fecha Inicio: ');
 		$eFechaInicio->setAttrib("class", "form-control");
@@ -92,7 +97,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eBoton->setAttrib("class", "btn btn-warning");
 		
 		
-		$subBusqueda->addElements(array($eProyecto,$eFechaInicio,$eFechaFin, $eBoton));
+		$subBusqueda->addElements(array($eProyecto,$eBancos,$eFechaInicio,$eFechaFin, $eBoton));
 		$subBusqueda->setName("busqueda");
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');

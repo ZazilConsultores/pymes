@@ -711,6 +711,17 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           );
 	           //print_r($mCuentasxc);
 	           $dbAdapter->insert("cuentasxc", $mCuentasxc);
+	       }else{
+	           $tablaCli = $this->tablaClientes;
+	           $select = $tablaCli->select()->from($tablaCli)->where("idCliente = ?",$encabezado['idCoP']);
+	           $rowCli= $tablaCli->fetchRow($select);
+	           // print_r($expression);
+	           if(!is_null($rowCli)){
+	               $saldo  = $formaPago['importePago'] + $rowCli->saldo;
+	               $rowCli->saldo = $saldo;
+	               $rowCli->save();
+	           }
+	           
 	       }
         }catch(exception $ex){
 	       print_r("<br />");

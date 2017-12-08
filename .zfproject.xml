@@ -1728,6 +1728,7 @@
               <actionMethod actionName="stelefonos"/>
               <actionMethod actionName="semails"/>
               <actionMethod actionName="sdomicilio"/>
+              <actionMethod actionName="saldoempresas"/>
             </controllerFile>
             <controllerFile controllerName="Parametro">
               <actionMethod actionName="index"/>
@@ -1757,6 +1758,7 @@
               <actionMethod actionName="admin"/>
               <actionMethod actionName="edita"/>
               <actionMethod actionName="empresa"/>
+              <actionMethod actionName="saldoempresas"/>
             </controllerFile>
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
@@ -2138,6 +2140,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Vendedores">
                 <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresas">
+                <viewScriptFile forActionName="saldoempresas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="saldoempresas"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2956,6 +2964,7 @@
                 <testApplicationActionMethod forActionName="stelefonos"/>
                 <testApplicationActionMethod forActionName="semails"/>
                 <testApplicationActionMethod forActionName="sdomicilio"/>
+                <testApplicationActionMethod forActionName="saldoempresas"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Parametro">
                 <testApplicationActionMethod forActionName="index"/>
@@ -2985,6 +2994,7 @@
                 <testApplicationActionMethod forActionName="admin"/>
                 <testApplicationActionMethod forActionName="edita"/>
                 <testApplicationActionMethod forActionName="empresa"/>
+                <testApplicationActionMethod forActionName="saldoempresas"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>

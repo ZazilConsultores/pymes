@@ -230,11 +230,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$sucu = $this->getParam("idSucursal");
+		print_r($sucu);
         $cli = $this->getParam("idCoP");
 		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
         $this->view->empresas = $empresas;
         $cobrosDAO = new Contabilidad_DAO_CobroCliente;
-        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);	
+        //$this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);	
 		if($request->isPost()){		
 			$datos = $request->getPost();
 			$idSucursal = $this->getParam("sucursal");
@@ -285,7 +286,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 try{
                     $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
                     $contador++;
-                    $this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
+                    $this->view->messageSuccess ="Remision de Salida realizada exitosamente!!" ;
                 }catch(Util_Exception_BussinessException $ex){
                     $this->view->messageFail = $ex->getMessage();
                 }
@@ -298,10 +299,22 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $empresas = $this->empresaDAO->obtenerFiscalesEmpresas();
         $this->view->empresas = $empresas;
+        $formulario = new Contabilidad_Form_Cobrofactura;
+        $this->view->formulario = $formulario;
         if($request->isPost()){
             $datos = $request->getPost();
             $idSucursal = $this->getParam("sucursal");
             $cl = $this->getParam("cliente");
+            if($formulario->isValid($request->getPost())){
+                $datos = $formulario->getValues();
+                print_r($datos);
+                try{
+                    $this->cobroClienteDAO->aplica_CobroRemisionCafe($idMovimiento, $datos);
+                    $this->view->messageSuccess = "Cobro: <strong>".$datosMovto["numeroFolio"]."</strong> se ha efectuado exitosamente!!";
+                }catch(Exception $ex){
+                    $this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+                }
+            }
         }
     }
 
@@ -320,7 +333,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 print_r($datos);
                 try{
                     $this->cobroClienteDAO->aplica_CobroRemisionCafe($idMovimiento, $datos);
-                    //$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
                     $this->view->messageSuccess = "Cobro: <strong>".$datosMovto["numeroFolio"]."</strong> se ha efectuado exitosamente!!";
                 }catch(Exception $ex){
                     $this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";

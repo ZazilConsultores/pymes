@@ -153,14 +153,17 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 					);
 					$dbAdapter->insert("Cuentasxp", $mCuentasxp);
 					//Guarda el impuesto de pago facturaImpuesto
-					$mfImpuesto = array(
-						'idTipoMovimiento'=>15,
-						'idFactura'=>$idFactura,
-						'idImpuesto'=>$rowImpFactura['idImpuesto'], //Iva
-						'idCuentasxp'=>0,
-						'importe'=>$importe[0]['iva']	
-					);
-					$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+					if($importe[0]['iva']!==0){
+					    $mfImpuesto = array(
+					        'idTipoMovimiento'=>15,
+					        'idFactura'=>$idFactura,
+					        'idImpuesto'=>$rowImpFactura['idImpuesto'], //Iva
+					        'idCuentasxp'=>0,
+					        'importe'=>$importe[0]['iva']
+					    );
+					    $dbAdapter->insert("FacturaImpuesto", $mfImpuesto);    
+					}
+					
 					//Solo si esta pagada, actualiza saldo Banco
 					$tablaBanco = $this->tablaBanco;
 					$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
