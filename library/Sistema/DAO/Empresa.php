@@ -41,6 +41,10 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		$this->tablaSucursal = new Sistema_Model_DbTable_Sucursal(array('db'=>$dbAdapter));
 		
 		$this->tablaTelefono = new Sistema_Model_DbTable_Telefono(array('db'=>$dbAdapter));
+		
+		$this->tablaFiscales = new Sistema_Model_DbTable_Fiscales(array('db'=>$dbAdapter));
+		
+		$this->tablaDomicilio = new Sistema_Model_DbTable_Domicilio(array('db'=>$dbAdapter));
 	}
 	
 	/**
@@ -88,7 +92,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				}
 			}elseif($tipo == "PR"){
 				if($fiscal["rfc"] != "XBXX010101000") {
-					$select = $bd->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
+					$select = $dbAdapter->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 					$rowFiscales = $select->query()->fetchAll();
 					//print_r(count($rowFiscales));
 					if(count($rowFiscales) > 1) {
@@ -98,7 +102,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				}
 			}
 			
-			//	No genero error por lo que procedemos a insertar en la tabla
+			//No genero error por lo que procedemos a insertar en la tabla
 			$dbAdapter->insert("Fiscales", $fiscal);
 			// Obtenemos el id autoincrementable de la tabla Fiscales
 			$idFiscales = $dbAdapter->lastInsertId("Fiscales","idFiscales");
@@ -109,32 +113,32 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//Insertamos en empresa, cliente o proveedor
 			switch ($tipo) {
 				case 'EM':
-					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa));
-					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta));
-					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
+					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>0));
+					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta,"saldo"=>"0"));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta,"saldo"=>"0"));
 					break;	
 				case 'CL':
-					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta));
+					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa,"cuenta"=>$cuenta,"saldo"=>"0"));
 					break;
 				case 'PR':
-					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor));
+					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta, "saldo"=>"0"));
 					break;
 			}
 			//Insertamos en domicilio
 			unset($datos[1]["idEstado"]);
 			$dbAdapter->insert("Domicilio", $datos[1]);
-			$idDomicilio = $bd->lastInsertId("Domicilio","idDomicilio");
+			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
 			$dbAdapter->insert("FiscalesDomicilios", array("idFiscales"=>$idFiscales,"idDomicilio"=>$idDomicilio,"fecha" => $fecha,"esSucursal"=>"N"));
 			
 			//Insertamos en telefono
 			$dbAdapter->insert("Telefono", $datos[2]);
 			$idTelefono = $dbAdapter->lastInsertId("Telefono", "idTelefono");
-			$dbAdapter->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono));
+			$dbAdapter->insert("FiscalesTelefonos", array("idFiscales"=>$idFiscales,"idTelefono"=>$idTelefono, "fecha"=>date("Y-m-d h:i:s",time()) ));
 			
 			//Insertamos en email
 			$dbAdapter->insert("Email", $datos[3]);
 			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
-			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail));
+			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail, "fecha"=>date("Y-m-d h:i:s",time())));
 			
 			$dbAdapter->commit();
 			
@@ -190,10 +194,44 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}catch(Exception $ex){
 			print_r("Excepcion Lanzada: <strong>" . $ex->getMessage()."</strong>");
 		}
-		
-		
 	}
 	
+	/**
+	 * Obtenemos el idEmpresas de la T.Empresas correspondiente al idEmpresa de la T.Empresa proporcionado
+	 */
+	public function getEmpresasByIdEmpresa($idEmpresa) {
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$idEmpresa);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select)->toArray();
+		
+		return $rowEmpresas;
+	}
+	
+	/**
+	 * Obtenemos el idClientes de la T.Clientes correspondiente al idEmpresa de la T.Empresa proporcionado
+	 */
+	public function getClienteByIdEmpresa($idEmpresa) {
+		$tablaClientes = $this->tablaClientes;
+		$select = $tablaClientes->select()->from($tablaClientes)->where("idEmpresa=?",$idEmpresa);
+		$rowCliente = $tablaClientes->fetchRow($select)->toArray();
+		
+		return $rowCliente;
+	}
+	
+	/**
+	 * Obtenemos el idProveedores de la T.Proveedores correspondiente al idEmpresa de la T.Empresa proporcionado
+	 */
+	public function getProveedorByIdEmpresa($idEmpresa) {
+		$tablaProveedores= $this->tablaProveedores;
+		$select = $tablaProveedores->select()->from($tablaProveedores)->where("idEmpresa=?",$idEmpresa);
+		$rowProveedor = $tablaProveedores->fetchRow($select)->toArray();
+		
+		return $rowProveedor;
+	}
+	
+	/**
+	 * Obtenemos solo los Id's Fiscales de las Empresas operables.
+	 */
 	public function obtenerIdFiscalesEmpresas(){
 		//Obtenemos todas las empresas
 		$tablaEmpresas = $this->tablaEmpresas;
@@ -211,6 +249,27 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}
 		
 		return $idFiscales;
+	}
+	
+	/**
+	 * Obtenemos los registros de la T.Fiscales correspondientes a las empresas operables
+	 */
+	public function obtenerFiscalesEmpresas() {
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas,array('idEmpresa'));
+		$rowsEmpresas = $tablaEmpresas->fetchAll($select)->toArray();
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa, array('idFiscales'))->where("idEmpresa IN (?)", array_values($rowsEmpresas));
+		$rowsEmpresa = $tablaEmpresa->fetchAll($select)->toArray();
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where('idFiscales IN (?)', array_values($rowsEmpresa));
+		$fiscales = $tablaFiscales->fetchAll($select)->toArray();
+		//print_r("$select");
+		return $fiscales;
+		
+		
 	}
 	
 	public function obtenerEmpresasClientes(){
@@ -328,62 +387,61 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		
 	}
 	
+	public function obtenerTipoProv($idFiscales){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);	
+	}
+	/*Obtiene tipoProveedor */
+	public function obtenerTipoProveedorIdTipoProveedor($idTipoProveedor){
+		$tablaTipoProveedor = $this->tablaTipoProveedor;
+		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->where("idTipoProveedor = ?",$idTipoProveedor);
+		$rowTipoProveedor = $tablaTipoProveedor->fetchRow($select);
+		
+		$tipoProveedorModel = new Sistema_Model_TipoProveedor($rowTipoProveedor->toArray());
+		$tipoProveedorModel->setIdTipoProveedor($rowTipoProveedor->idTipoProveedor);
+		
+		return $tipoProveedorModel;
+	}
 	/**
 	 * Agrega una nueva sucursal al domicilio fiscal.
 	 */
-	public function agregarSucursal($idFiscales, array $datos, $tipoSucursal)
+	public function agregarSucursal($idFiscales ,array $datos)
 	{
-		$dbAdapter = Zend_Db_Table_Abstract::getDefaultAdapter();
-		$fecha = date('Y-m-d h:i:s', time());	
+		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
+		$dbAdapter->beginTransaction();
 		
 		try{
-			$dbAdapter->beginTransaction();
+			
 			$datosSucursal = $datos[0];
 			$datosDomicilio = $datos[1];
 			$datosTelefonos = $datos[2];
 			$datosEmails = $datos[3];
-			
-			// ===========================================  Insertar Domicilio
-			unset($datosDomicilio["idEstado"]); // Este campo no esta en la tabla domicilio
-			$dbAdapter->insert("Domicilio",$datosDomicilio);
+			//========================================================= Insertar en Domicilio
+			unset($datosDomicilio["idEstado"]);
+			$dbAdapter->insert("Domicilio", $datosDomicilio);
 			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
-			
-			// ===========================================  Insertar Telefono
-			$dbAdapter->insert("Telefono",$datosTelefonos);
+			//========================================================= Insertar en Telefono
+			$dbAdapter->insert("Telefono", $datosTelefonos);
 			$idTelefono = $dbAdapter->lastInsertId("Telefono","idTelefono");
-			
-			// ===========================================  Insertar Email
-			$dbAdapter->insert("Email",$datosEmails);
+			//========================================================= Insertar en Email
+			$dbAdapter->insert("Email", $datosEmails);
 			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
-			
-			// ===========================================  Insertar Sucursal
+			//========================================================= Insertar en Sucursal
 			$datosSucursal["idFiscales"] = $idFiscales;
 			$datosSucursal["idDomicilio"] = $idDomicilio;
-			$datosSucursal["idsTelefonos"] = $idTelefono.",";
+			$datosSucursal["idsTelefonos"] = $idTelefono. ",";
 			$datosSucursal["idsEmails"] = $idEmail.",";
+			$dbAdapter->insert("Sucursal", $datosSucursal);
 			
-			$dbAdapter->insert("Sucursal",$datosSucursal);
-			
-			$dbAdapter->commit();
-		}catch(Exception $ex){
-			$dbAdapter->rollBack();
-			throw new Util_Exception_BussinessException($ex->getMessage(), 1);
-		}
-	}
-	
-	/**
-	 * Sucursales de la empresa
-	 */
-	public function obtenerSucursales($idFiscales){
-		$tablaSucursal = $this->tablaSucursal;
-		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idSucursal=?",$idFiscales);
-		$rowsSucursales = $tablaSucursal->fetchAll($select);
 		
-		if(is_null($rowsSucursales)){
-			return null;
-		}else{
-			return $rowsSucursales->toArray();
+		$dbAdapter->commit();
+		}catch(exception $ex){
+			$dbAdapter->rollBack();
+			print_r($ex->getMessage());
+			//throw new Util_Exception_BussinessException("Error");	
 		}
+		
 	}
 	
 	public function obtenerSucursal($idSucursal){
@@ -397,6 +455,48 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			return $rowSucursal->toArray();
 		}
 	}
+	public function obtenerSucursales($idFiscales){
+		
+		
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?",$idFiscales);
+		$rowsSucursales = $tablaSucursal->fetchAll($select);
+		
+		if(is_null($rowsSucursales)){
+			return null;
+		}else{
+			return $rowsSucursales->toArray();
+		}
+		
+	}
+	public function obtenerSucursalesEmpresas($idEmpresas){
+		
+		$tablaEmpresas = $this->tablaEmpresas;
+		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresas=?",$idEmpresas);
+		$rowEmpresas = $tablaEmpresas->fetchRow($select);
+		//print_r("$select");
+		
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idEmpresa=?",$rowEmpresas->idEmpresa);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		//print_r("$select");
+		
+		$tablaFiscales = $this->tablaFiscales;
+		$select = $tablaFiscales->select()->from($tablaFiscales)->where("idFiscales=?",$rowEmpresa->idFiscales);
+		$rowFiscales = $tablaFiscales->fetchRow($select);
+		
+		$tablaSucursal = $this->tablaSucursal;
+		$select = $tablaSucursal->select()->from($tablaSucursal)->where("idFiscales=?", $rowFiscales->idFiscales);
+		$rowsSucursales = $tablaSucursal->fetchAll($select);
+		
+		if(is_null($rowsSucursales)){
+			return null;
+		}else{
+			return $rowsSucursales->toArray();
+		}
+		
+	}
+	
 	/**
 	 * Comprueba que la empresa con IdFiscales proporcionada 
 	 * sea parte de las empresas operables en el sistema.

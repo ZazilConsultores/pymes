@@ -1,0 +1,69 @@
+<?php
+	$desproducto = $this->desproducto; 
+	$producto = $this->producto;
+	$multiplos = $this->multiplos;
+	
+?>
+<section class="panel panel-warning">
+	<div class="panel-heading">
+		<h5>Producto Terminado: <strong><?php echo $desproducto["producto"] ?></strong></h5>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<!--Datos -->
+			<div class="form-group hidden">
+				<label for="datos" class="col-md-1">Datos: </label>
+				<div class="col-md-4">
+					<input id="datos" name="datos" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Clave producto -->
+			<div class="form-group">
+				<label for="clave" class="col-md-1">Clave Producto: </label>
+				<div class="col-md-4">
+					<input id="idClaveProducto" name="clave" type="text" value="<?php echo $producto["claveProducto"]; ?>" class="form-control" />
+				</div>
+			</div>
+			<!--Nombre -->
+			<div class="form-group">
+				<label for="nombre" class="col-md-1">Nombre: </label>
+				<div class="col-md-4">
+					<input id="nombre" name="nombre" type="text" value="<?php echo $producto["descripcion"]; ?>" class="form-control" />
+				</div>
+			</div>
+			<!--Cantidad -->
+			<div class="form-group">
+				<label for="cantidad" class="col-md-1">Cantidad: </label>
+				<div class="col-md-4">
+					<input id="cantidad" name="cantidad" type="text" class="form-control" value="<?php echo $producto["cantidad"]; ?>" required="Cantidad no puede quedar vacía" />
+				</div>
+			</div>
+			<!--Multiplo -->
+			<div class="form-group">
+				<label for="multiplo" class="control-label col-md-1">Multiplo: </label>
+				<div class="col-md-4">
+					<select id="presentacion" name="presentacion" class="form-control col-md-2">
+						<?php foreach ($multiplos as $multiplo) : ?>
+							 <option  value="<?php echo $multiplo["idUnidad"] ?>"><?php echo $multiplo["unidad"]; ?></option></strong>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			</div
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="query" type="submit" class="btn btn-warning">
+						<i class="fa fa-search"></i> Actualizar
+					</button>
+				</div>
+			</div>
+		</form>	
+	</div>
+</section>
+<script>
+	$(document).ready(function() {
+	
+	});
+</script>
+
+

@@ -9,7 +9,30 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 	}
     public function indexAction()
     {
-        // action body
+        $request = $this->getRequest();
+		$formulario = new Contabilidad_Form_GeneraPoliza;
+		$this->view->$formulario = $formulario;   
+		if($request->isGet()){$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				try{
+					$this->polizaDAO->generaGruposFacturaCliente($datos);
+					$this->polizaDAO->generacxc($datos);
+					$this->polizaDAO->generaGruposFacturaProveedor($datos);
+					$this->polizaDAO->generacxp($datos);
+					$this->polizaDAO->generacxp_Fo($datos);
+					$this->polizaDAO->generacxc_Fo($datos);
+					$this->polizaDAO->generacxpRemisiones($datos);
+					$this->polizaDAO->generaGruposNotaCredito($datos);
+					$this->polizaDAO->genera_Anticipo_Clientes($datos);
+					$this->polizaDAO->genera_Anticipo_Proveedores($datos);
+					$this->view->messageSuccess = "Póliza generada exitosamente!!";
+				}catch(exception $ex){
+					
+				}
+			}
+		}
     }
 
     public function generarAction()
@@ -34,13 +57,21 @@ class Contabilidad_PolizaController extends Zend_Controller_Action
 					//$this->polizaDAO->generaGruposFacturaCliente($datos);
 					//$this->polizaDAO->busca_Tipo('31', 'P');
 					//es la buebaprint_r($this->polizaDAO->generaGruposFacturaProveedor($datos));
-					//La siguiente buena $this->polizaDAO->generaGruposFacturaCliente($datos);
+					
 					//La siguiente FONDEO $this->polizaDAO->generacxp_Fo($datos);
-					$this->polizaDAO->generaGruposFacturaProveedor($datos);
+					//$this->polizaDAO->generaGruposFacturaProveedor($datos);
+					/*$this->polizaDAO->generaGruposFacturaCliente($datos);
+					//$this->polizaDAO->generacxp($datos);
+					$this->polizaDAO->generacxc($datos);
+					/*$this->polizaDAO->generaGruposFacturaProveedor($datos);*/
+					//$this->polizaDAO->generacxpRemisiones($datos);
+					//$this->polizaDAO->generacxp_Fo($datos);
+					//$this->polizaDAO->generacxc_Fo($datos);
+					/*$this->polizaDAO->crear_Texto();
 					//$buscaTipoProv = $this->polizaDAO->Busca_Tipo($Persona, $Empresa);
 					//$this->polizaDAO->busca_SubCuenta($persona, $origen);
 					//$this->polizaDAO->genera_Poliza_F();
-					$this->polizaDAO->crear_Texto();
+					*/
 				}catch(exception $ex){
 					
 				}

@@ -55,9 +55,9 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
     	$eEmpresa =  new Zend_Form_Element_Select('idEmpresas');
         $eEmpresa->setLabel('Seleccionar Empresa: ');
 		$eEmpresa->setAttrib("class", "form-control");
-
+		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
@@ -81,7 +81,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
         $eProyecto->setLabel('Seleccionar Proyecto:');
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);		
-		$eProyecto->setAttrib("required", "true");
+		//$eProyecto->setAttrib("required", "true");
 
 		$tablaEmpresa = new Contabilidad_DAO_NotaEntrada;
 		$rowset = $tablaEmpresa->obtenerProveedores();
@@ -96,11 +96,11 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eProducto->setAttrib("required","true");
 		
 		/*idProducto*/
-		$eidProducto = new Zend_Form_Element_Hidden('idProducto');
+		/*$eidProducto = new Zend_Form_Element_Hidden('idProducto');
 		$eidProducto->setAttrib("class", "form-control");
-		$eidProducto->setAttrib("required","true");
+		$eidProducto->setAttrib("required","true");*/
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,$eidProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,/*$eidProducto*/));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		//========================================================================================================================>>
@@ -149,9 +149,9 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eNumReferencia = new Zend_Form_Element_Text('numeroReferencia');
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
-		$eNumReferencia->setAttrib("required", "true");
+		//$eNumReferencia->setAttrib("required", "true");
 
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 
 		$eBanco = new Zend_Form_Element_Select('idBanco');
@@ -167,7 +167,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$subFormaPago->setElementDecorators($decoratorsElemento);
 		$subFormaPago->setDecorators($decoratorsPresentacion);
 	
-		$eSubmit =  new Zend_Form_Element_Submit("submit");
+		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class","btn btn-success");
 		

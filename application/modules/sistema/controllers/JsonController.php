@@ -9,6 +9,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 	private $proyectoDAO = null;
 	private $multiplos = null;
 	private $bancosEmpresa = null;
+	private $empresaDAO = null;
 	
     public function init()
     {
@@ -18,6 +19,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 		//$this->_helper->contextSwitch()->setAutoJsonSerialization(false);
 		
         $this->municipioDAO = new Inventario_DAO_Municipio;
+		$this->empresaDAO = new Sistema_DAO_Empresa;
 		$this->estadoDAO = new Sistema_DAO_Estado;
 		$this->sucursalDAO = new Sistema_DAO_Sucursal;
 		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
@@ -80,8 +82,9 @@ class Sistema_JsonController extends Zend_Controller_Action
 	public function sucursalesAction()
     {
         // action body
-        $idFiscales = $this->getParam("idFiscales");
-		$sucursales = $this->sucursalDAO->obtenerSucursales($idFiscales);
+        $idEmpresas = $this->getParam("idFiscales");
+		//$sucursales = $this->sucursalDAO->obtenerSucursales($idFiscales);
+		$sucursales = $this->empresaDAO->obtenerSucursalesEmpresas($idEmpresas);
 		echo Zend_Json::encode($sucursales);
     }
     

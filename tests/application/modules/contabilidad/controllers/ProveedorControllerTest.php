@@ -179,8 +179,46 @@ class Contabilidad_ProveedorControllerTest extends Zend_Test_PHPUnit_ControllerT
             );
     }
 
+    public function testPagodosAction()
+    {
+        $params = array('action' => 'pagodos', 'controller' => 'Proveedor', 'module' => 'contabilidad');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
+    public function testAnticipoAction()
+    {
+        $params = array('action' => 'anticipo', 'controller' => 'Proveedor', 'module' => 'contabilidad');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
+
 
 }
+
+
+
+
 
 
 

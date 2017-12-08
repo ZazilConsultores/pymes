@@ -28,11 +28,12 @@ class Sistema_FiscalesController extends Zend_Controller_Action
         $request = $this->getRequest();
 		$idFiscales = $this->getParam("idFiscales");
 		$fiscales = $this->fiscalesDAO->obtenerFiscales($idFiscales);
+		
 		$formulario = new Sistema_Form_AltaFiscales;
 		$formulario->getElement("rfc")->setValue($fiscales->getRfc());
 		$formulario->getElement("razonSocial")->setValue($fiscales->getRazonSocial());
 		$formulario->getElement("rfc")->setValue($fiscales->getRfc());
-		$formulario->getElement("submit")->setLabel("Actualizar Fiscales");
+		$formulario->getElement("submit")->setLabel("Actualizar	Fiscales");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
 		$this->view->formulario = $formulario;
@@ -40,7 +41,6 @@ class Sistema_FiscalesController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				
 				try{
 					$this->fiscalesDAO->actualizarFiscales($idFiscales, $datos);
 					$this->view->messageSuccess = "Los datos fiscales se han actualizado correctamente!!";

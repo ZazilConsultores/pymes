@@ -56,13 +56,14 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
     	$eSucursal = new Zend_Form_Element_Select('idSucursal');
 		$eSucursal->setLabel("Sucursal: ");
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
+		$eSucursal->setAttrib("required", "true");
 		
 		$eProyecto =  new Zend_Form_Element_Select('idProyecto');
         $eProyecto->setLabel("Seleccionar Proyecto:");
@@ -77,7 +78,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eCliente->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eCliente->addMultiOption($fila->idEmpresa, $fila->razonSocial);
+			$eCliente->addMultiOption($fila->idCliente, $fila->razonSocial);
 		}
 		
 		$vendedorDAO = new Sistema_DAO_Vendedores;
@@ -99,7 +100,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente,$eVendedor,$eFecha, $eProducto));
+		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente/*$eVendedor*/,$eFecha, $eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
@@ -124,7 +125,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('Importe Pago:');
 		$ePagos->setAttrib("class", "form-control");
-		$ePagos->setAttrib("disabled"," true");
+		$ePagos->setValue(0);
 		
 		$formaPago = Zend_Registry::get('formaPago');
 		$eFormaLiquidar = new Zend_Form_Element_Select('formaLiquidar');
@@ -136,7 +137,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eNumReferencia->setLabel('Ingresar Número de Referencia:');
 		$eNumReferencia->setAttrib("class", "form-control");
 		
-		$bancoDAO = new Inventario_DAO_Banco;
+		$bancoDAO = new Contabilidad_DAO_Banco;
 		$bancos = $bancoDAO->obtenerBancos();
 		
 		$eBanco = new Zend_Form_Element_Select('idBanco');

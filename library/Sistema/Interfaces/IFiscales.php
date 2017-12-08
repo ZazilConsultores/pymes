@@ -5,6 +5,7 @@
 interface Sistema_Interfaces_IFiscales {
 	
 	public function obtenerFiscales($idFiscales);
+	public function obtenerFiscalesCuentaContable($idFiscales);
 	public function obtenerFiscalesEmpresas();
 	public function obtenerFiscalesClientes();
 	public function obtenerFiscalesProveedores();

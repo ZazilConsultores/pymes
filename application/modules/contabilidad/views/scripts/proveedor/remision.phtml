@@ -7,27 +7,26 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				Agregar Productos para Remision Entrada.
+				Agregar Datos para Remisión Entrada.
 			</h3>
 		</div>
 		<div class="panel-body">
-			<?php if (!is_null($messageSuccess)){?>
-			<div class="alert-success" role="alert">
-				<button type="button" class="close" data-dismiss="alert" arial-label="Close">
-					<span arial-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageSuccess; ?>
-			</div>
-			<?php }elseif(!is_null($messageFail)){ ?>
-			<div class="alert alert-danger" role="alert">
-				<button type="button" class="close" data-dismiss="alert" arial-label="close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<?php echo $messageFail; ?>
-			</div>
-			<?php }?><br />
-			
-			<!-- Botón para agregar filas-->
+			<?php if(!is_null($messageSuccess)){ ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $messageSuccess; ?>
+					</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+				<div class="alert alert-danger" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageFail; ?>
+				</div>
+				<?php } ?><br />
+				<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -150,8 +149,6 @@
 	
 		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
-		var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#productos tbody > tr").length;
@@ -167,9 +164,7 @@
 
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-			$.each(jsonUnidad,function(i,item){
-				inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-			});
+	
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -224,6 +219,38 @@
 		});
  			
  		});//cierra funcion buscar descripcion del producto
+ 		
+ 		//Funcion buscar Multiplo del producto
+ 		$("table#productos").on("change", "select[id^='descripcion_']", function(){
+ 			console.log("Hola");
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			console.log(id);
+			var numFila =  arr[1];
+
+			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#idUnidad_"+numFila).empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == id){
+							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
+ 			
+ 		});//cierra funcion  Multiplo del producto
 
  		//Funcion totalImporte para remision
  		$("table#productos").on("blur","input[id^='total']",function() {

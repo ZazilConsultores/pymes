@@ -3,7 +3,7 @@
 	$formulario = $this->formulario;
 	$producto = $this->producto;
 	$productosDAO = new Inventario_DAO_Producto;
-	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "edita", "idInventario"=> $inventario->getIdInventario()), null, true));
+	$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"inventario", "action" => "admin", "idInventario"=> $inventario->getIdInventario()), null, true));
 ?>
 <section class="row">
 	<div class="panel panel-success">

@@ -1,11 +1,10 @@
 <?php
     interface Contabilidad_Interfaces_IPagoProveedor{
-    	public function obtieneFacturaProveedor($idSucursal, $idCoP, $numeroFactura);
-		public function obtenerFactura();
-		
-		public function busca_facturap($idCoP);
-		public function busca_Cuentasxp($idSucursal, $idCoP,$numeroFolio);
-		
-		public function guardacxp ($idFactura, $idBanco, $idDivisa, $fecha,$referencia, $total);
+
+		public function busca_Cuentasxp($idSucursal,$pr);
+		public function aplica_Pago( $idFactura, array $datos);
+		public function obtiene_Factura ($idFactura);
+		public function actualiza_Saldo($idFactura, array $datos);
+		public function obtenerSucursal($idFactura);
     }
 ?>

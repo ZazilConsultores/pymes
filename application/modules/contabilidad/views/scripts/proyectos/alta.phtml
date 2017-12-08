@@ -34,18 +34,23 @@
 
 $(document).ready(function(){
 	$("select#idEmpresas").on('change', function(){
-		$url = "/General/sistema/json/sucursales/idFiscales/" + this.value;
-		$.ajax({
-			url: $url,
-			dataType: "json",
-			success: function(data){
-				$("select#idSucursal").empty();
-				$.each(data, function(i,item){
-					$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
-				});
-			}
-		});	
-	});	
+		//var idFiscales = $(this).val();
+		var url = window.location.origin + "/General/contabilidad/json/sucursalese/idFiscales/" + this.value;
+			console.log(url);
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: function(data){
+					//console.dir(data);
+					$("select#idSucursal").empty();
+					$.each(data, function(i,item){	
+						$("select#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal)); 
+					});
+				}
+			});
+			
+		});
+	
 	
 	$("input#costoInicial").on('change', function(){
 		var ganancia = $("input#costoFinal").val() - $("input#costoInicial").val();	

@@ -1,0 +1,194 @@
+<?php
+	$empresas = $this->empresas;
+	$facturaDAO = new Contabilidad_DAO_FacturaCliente;
+	$formulario = $this->formulario;
+	$sucursal = $this->sucursal;
+?>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h4 class="panel-title">Consecutivos.<strong></strong></h4>
+			</div>
+			<div class="panel-body">
+				<div>
+					<!--<div class="form-horizontal">-->
+						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+						<!-- Empresas -->
+						<div class="form-group">
+							<label for="empresa" class="col-md-2">Empresas: </label>
+							<div class="col-md-10">
+								<select name="empresa" id="idFiscales" class="form-control">
+									<option value="0">Seleccione Empresa</option>
+									<?php foreach ($empresas as $empresa) : ?>
+									<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+						</div>
+						<!-- Sucursales -->
+						<div class="form-group">
+							<label for="sucursal" class="col-md-2">Sucursal: </label>
+							<div class="col-md-10">
+								<select required name="sucursal" id="idSucursal" class="form-control" >
+								</select>
+							</div>
+						</div>
+						<!-- Boton consulta -->
+						<td>
+							<a class="btn btn-warning" type="submit" >
+								<span class="glyphicon glyphicon-equalizer"></span> Multiplos
+							</a>
+						</td>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Muesta el resultado de la busqueda -->
+<div class="row " >
+	<div class="col-md-12">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h5 class="panel-title">Actualiza Consecutivo.</h5>
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+					<div class="form-group">
+						<label for="tipoMovimiento" class="control-label col-md-2">Tipo Movimiento: </label>
+						<div class="col-md-10">
+							<input id="tipoMovimiento" name="tipoMovimiento" type="text" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="numero" class="control-label col-md-2">Consecutivo: </label>
+						<div class="col-md-10">
+							<input id="numero" name="numero" type="text" class="form-control" />
+						</div>
+					</div>
+					<!-- BotonEnvio -->
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<button type="submit" class="btn btn-warning">
+								<i class="fa fa-save"></i> Actulizar Consecutivo.
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--
+<?php if(!is_null($obtenerFactura)){ ?>
+	<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Detalle Número Factura.</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id ="detalle"  class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Movimiento</th>
+								<th>Número Factura</th>
+								<th>Editar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Factura Cliente</td>
+								<td><?php echo $obtenerFactura["numero"]; ?></td>
+								<td>
+									<a class="btn btn-info" id="consecutivo" type="submit" >
+										<span class="glyphicon glyphicon-pencil"></span> Edita Consecutivo.
+									</a>
+								</td>
+							</tr>	
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>	
+<?php } ?>
+-->
+<!-- Muesta el resultado de la busqueda -->
+<div id="actulizaConsecutivo" class="row hidden " >
+	<div class="col-md-12">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h5 class="panel-title">Edita Consecutivo.</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+						
+						<div class="form-group">
+							<label for="movimiento" class="control-label col-md-2">Movimiento: </label>
+							<div class="col-md-10">
+								<input  name="movimiento" value="<?php echo $obtenerFactura["idTipoMovimiento"]; ?>" type="text" class="form-control" />
+							</div>
+						</div>
+						<!-- numeroFactura -->
+						<div class="form-group">
+							<label for="numeroFactura" class="control-label col-md-2">Consecutivo: </label>
+							<div class="col-md-10">
+								<input  name="numeroFactura" type="text" class="form-control" value="<?php echo $obtenerFactura["numero"]; ?>" />
+							</div>
+						</div>
+						<!-- BotonEnvio -->
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<button type="submit" class="btn btn-warning">
+									<i class="fa fa-save"></i> Actualizar Consecutivo.
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>	
+
+<script>
+	$(document).ready(function(){
+		
+		console.log("ready");
+		var url = window.location.origin + "/General/";
+		//Sucursal
+		$("select#idFiscales").on('change',function(){
+			console.log($(this).val());
+			var idFiscal = $(this).val();
+			if(idFiscal != 0){
+				// Traer sucursales de la empresa seleccionada y llenar combo de sucursales
+				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+				console.log(urlQuerySucursales);
+				$.ajax({
+					url: urlQuerySucursales,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("#idSucursal").empty();
+						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+						$.each(data, function (i,item){
+							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						});
+					}		
+				});
+			}
+			
+		});
+		
+	});
+</script>

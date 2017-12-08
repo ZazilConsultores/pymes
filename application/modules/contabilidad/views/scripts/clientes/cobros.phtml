@@ -1,0 +1,182 @@
+<?php
+	$empresas = $this->empresas;
+	$facturasxc = $this->facturasxc;
+?>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h4 class="panel-title">Búsqueda de Factura por Cobrar<strong></strong></h4>
+			</div>
+			<div class="panel-body">
+				<div>
+					
+				</div>
+				<hr />
+				<div>
+					<!--<div class="form-horizontal">-->
+						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+						<!-- Empresas -->
+						<div class="form-group">
+							<label for="empresa" class="col-md-2">Empresas: </label>
+							<div class="col-md-10">
+								<select name="empresa" id="idFiscales" class="form-control">
+									<option value="0">Seleccione Empresa</option>
+									<?php foreach ($empresas as $empresa) : ?>
+									<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+						</div>
+						<!-- Sucursales -->
+						<div class="form-group">
+							<label for="sucursal" class="col-md-2">Sucursal: </label>
+							<div class="col-md-10">
+								<select required name="sucursal" id="idSucursal" class="form-control" >
+								</select>
+							</div>
+						</div>
+						<!--Clientes -->
+						<div class="form-group">
+							<label for="cliente" class="col-md-2">Clientes: </label>
+							<div class="col-md-10">
+								<select required name="cliente" id="idCliente" class="form-control">
+								</select>
+							</div>
+						</div>
+						<!-- Boton consulta -->
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-10">
+								<button id="queryFacturas" type="submit" class="btn btn-success">
+									<i class="fa fa-search"></i> Consultar Facturas
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Muesta el resultado de la busqueda -->
+<?php if(!is_null($facturasxc)){ ?>
+	<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h5 class="panel-title">Detalle de Facturas</h5>
+			</div>
+			<div class="panel-body">
+				<div>
+					<table id="detalleFacturaxc" class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>Sucursal</th>
+								<th>Cliente</th>
+								<th>Número Factura</th>
+								<th>Fecha</th>
+								<th>$total</th>
+								<th>Pago</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($facturasxc as $facturaxc) :?>
+								<tr>
+									<td><?php echo $facturaxc["idSucursal"]; ?></td>
+									<td><?php echo $facturaxc["idCoP"]; ?></td>
+									<td><?php echo $facturaxc["numeroFactura"]; ?></td>
+									<td><?php echo $facturaxc["fecha"]; ?></td>
+									<td ><?php echo "$" .number_format($facturaxc["total"],2) ?></td>
+									<td>	
+										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"clientes","action"=>"aplicacobro","idFactura"=>$facturaxc["idFactura"]),null, true)?>">
+											<span class="glyphicon glyphicon-pencil"></span> Pago
+										</a
+									</td>
+								</tr>
+								<tr>
+									<th>Total: </th>
+									<td id="importe" ondblclick="Calcular" ></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>	
+<?php } ?>
+<script>
+	$().ready(function(){
+		
+		var url = window.location.origin + "/General/";
+		
+		$("#idFiscales").on('change',function(){
+			//console.log($(this).val());
+			var idFiscal = $(this).val();
+			if(idFiscal != 0){
+				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+				console.log(urlQuerySucursales);
+				$.ajax({
+					url: urlQuerySucursales,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("#idSucursal").empty();
+						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+						$.each(data, function (i,item){
+							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						});
+					}
+				});
+				
+				// Traer Clientes de la empresa seleccionada y llenar combo de clientes
+				
+				var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
+				console.log(urlQueryClientes);
+				$.ajax({
+					url: urlQueryClientes,
+					dataType: "json",
+					success: function(data){
+						console.dir(data);
+						$("select#idCliente").empty();
+						$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
+						$.each(data, function (i,item){
+							$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
+						});
+					}
+				});
+			}
+		});
+		
+		$("#queryFacturas").on('click', function(){
+			console.log("Ha dado click");
+		});
+		
+		$("#detalleFacturaxp").on('click', "button[tipo='pago']", function(){
+			$("#registroPago").removeClass("hidden");
+			$("#registroNomina").addClass("hidden");
+		});
+		
+		$("#detalleFacturaxp").on('click', "button[tipo='nomina']", function(){
+			$("#registroNomina").removeClass("hidden");
+			$("#registroPago").addClass("hidden");
+		});
+		
+		function calculaTotal() {
+			var total = 0;
+			$("table#detalleFacturaxc").find("td[id^='importe']").each(function(){
+				console.log("HOLA");
+				console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	//$("#total").val(total.toFixed(2));
+	        		
+			  });
+		}
+		
+	});
+</script>
+

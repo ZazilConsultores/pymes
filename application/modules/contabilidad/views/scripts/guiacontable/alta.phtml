@@ -1,0 +1,23 @@
+<?php 	
+	$formulario = $this->formulario;	
+?>
+<?php echo $formulario; ?>
+<script>
+	$().ready(function(){
+		$("#1-cargo").on ("change", function(){
+			if ($("#1-cargo:checked").val()=="X"){
+				$("#1-abono").attr("disabled", true);
+			}else{
+				$("#1-abono").removeAttr("disabled");
+			}
+		});
+		
+		$("#1-abono").on ("click", function(){
+			if ($("#1-abono:checked").val()=="X"){
+				$("#1-cargo").attr("disabled", true);
+			}else{
+				$("#1-cargo").removeAttr("disabled");
+			}
+		});
+	});
+</script>

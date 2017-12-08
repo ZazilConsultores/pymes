@@ -22,8 +22,9 @@ class Inventario_InventarioController extends Zend_Controller_Action
 
     public function adminAction()
     {
+    	$request = $this->getRequest();
         $idInventario = $this -> getParam("idInventario");
-	
+		
 		$inventario = $this->inventarioDAO->obtenerProductoInventario($idInventario);
 		$formulario = new Inventario_Form_AdminInventario;
 		
@@ -36,23 +37,37 @@ class Inventario_InventarioController extends Zend_Controller_Action
 		$formulario->getElement("submit")->setLabel("Actualizar Producto");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
+		$this->view->inventario = $inventario;
+		$this->view->formulario = $formulario;
 		
-		$this -> view -> inventario = $inventario;
-		$this -> view -> formulario = $formulario;
+		$editaInventario = $this->getRequest()->getPost();
+		//unset($inventario["submit"]);
+		
+		//print_r($inventario);	
+		$this->inventarioDAO->editarInventario($idInventario, $editaInventario);
     }
 
     public function editaAction()
     {
-        // action body
-        $idInventario = $this->getParam("idInventario");
-		
+    	$request = $this->getRequest();
+    	$idInventario = $this->getParam("idInventario");
+		//$inventario = $this->inventarioDAO->obtenerProductoInventario($idInventario);
+		/*if($request->isPost()){
+			if($inventario = $this->getRequest()->getPost()){
+				$this->inventarioDAO->editarInventario($idInventario, $inventario);
+			}
+		}*/
+		//$this->_helper->redirector->gotoSimple("admin", "inventario", "inventario");
+		//$inventario = $this->getRequest()->getPost();
+		//unset($inventario["submit"]);
 		$inventario = $this->getRequest()->getPost();
 		unset($inventario["submit"]);
 		
 		//print_r($inventario);	
 		$this->inventarioDAO->editarInventario($idInventario, $inventario);
 		
-		//$this->_helper->redirector->gotoSimple("admin", "inventario", "inventario", array("idInventario"=>$idInventario));
+		//$this->_helper->redirector->gotoSimple("admin", "inventario", "inventario",$idInventario);
+		
     }
 
     public function editartodoAction()

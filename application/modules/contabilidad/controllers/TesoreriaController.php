@@ -2,11 +2,33 @@
 
 class Contabilidad_TesoreriaController extends Zend_Controller_Action
 {
-	private $tesoreriaDAO = null;
-	
+
+    private $tesoreriaDAO = null;
+
     public function init()
     {
-        $this->tesoreriaDAO = new Contabilidad_DAO_Tesoreria; 
+        $this->tesoreriaDAO = new Contabilidad_DAO_Tesoreria;
+		$adapter = Zend_Registry::get('dbmodgeneral');
+		$this->db = $adapter;
+		// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		$select = $this->db->select()->from("Producto")->order("producto ASC");
+		$statement = $select->query();
+		$rowsProducto =  $statement->fetchAll();
+		
+		$select = $this->db->select()->from("Unidad");
+		$statement = $select->query();
+		$rowsUnidad =  $statement->fetchAll();
+	
+		$select = $this->db->select()->from("Multiplos")
+		->join("Unidad", "Unidad.idUnidad = Multiplos.idUnidad");
+		$statement = $select->query();
+		$rowsMultiplos = $statement->fetchAll();
+		
+		// =================================== Codificamos los valores a formato JSON
+		$jsonProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonProductos = $jsonProductos;
+		$jsonUnidad = Zend_Json::encode($rowsUnidad);
+		$this->view->jsonUnidad = $jsonUnidad; 
     }
 
     public function indexAction()
@@ -18,29 +40,27 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFondeo;
+		$formulario->getElement("submit")->setLabel("Agregar Fondeo");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-success");
 		$this->view->$formulario = $formulario;
-		if ($request->isGet()){
+		if($request->isGet()){
 			$this->view->formulario = $formulario;
 		}elseif($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$empresa = $datos[0];
 				$fondeo = $datos[1];
-				print_r($fondeo);
-		
+				//print_r($fondeo);
 				try{
 					$this->tesoreriaDAO->guardaFondeo($empresa, $fondeo);
-					//print_r("$fondeoDAO");
+					$this->view->messageSuccess = "Se ha generado fondeo: <strong>".$empresa["numFolio"]."</strong> exitosamente";
 				}catch(exception $ex){
-					$this->view->messageFail= "Error";
+					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
 				}
-			//}
 			}else{
 				print_r("formulario no valido <br />");
 			}				
-			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
 		}	
-		
     }
 
     public function inversionesAction()
@@ -76,8 +96,45 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     	
     }
 
+    public function notacreditoAction()
+    {
+    	$request = $this->getRequest();
+        $formulario = new Contabilidad_Form_NotaCredito;
+
+		if($request->isGet()){
+			$this->view->formulario = $formulario;
+		}elseif($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$notaCredito = $formulario->getValues();
+				print_r($notaCredito);
+				$formaPago = $notaCredito[1];
+				$productos = json_decode($notaCredito[0]['productos'],TRUE);
+				$impuestos = json_decode($notaCredito[0]['importes'],TRUE);
+				$contador = 0;
+				
+					try{
+						$guardaFactura = $this->tesoreriaDAO->guardaNotaCredito($notaCredito, $formaPago, $impuestos, $productos);
+						foreach ($productos as $producto){
+							$restaProsducto = $this->tesoreriaDAO->restaProducto($notaCredito, $producto);
+							$contador++;
+						}
+						////$detalle =$this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
+						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
+						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
+						//$contador++;	
+					}catch(Util_Exception_BussinessException $ex){
+						$this->view->messageFail = $ex->getMessage();
+					}
+			}
+		}
+        
+    }
+
 
 }
+
+
 
 
 

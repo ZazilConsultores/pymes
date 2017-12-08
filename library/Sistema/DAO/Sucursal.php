@@ -67,13 +67,13 @@ class Sistema_DAO_Sucursal implements Sistema_Interfaces_ISucursal {
 		}else{
 			return null;
 		}
-		print_r("$select");
+		//print_r("$select");
 	}	
 	
-	public function agregarSucursal($idFiscales, array $datos){
-		$tablaSucursal = $this->tablaSucursal;
+	//public function agregarSucursal($idFiscales, array $datos){
+		//$tablaSucursal = $this->tablaSucursal;
 		//Obt
-	}
+	//}
 	
 	/**
 	 * Obtenemos el Objeto model domicilio.

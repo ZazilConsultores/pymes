@@ -7,7 +7,6 @@
 class Sistema_Form_AltaEmpresa extends Zend_Form
 {
     public function init()
-
     {
         /* Form Elements & Other Definitions Here ... */
         $decoratorsCategoria = array(
@@ -53,7 +52,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eRFC->setAttrib("maxlength", "13");
 		
 		$eCuenta = new Zend_Form_Element_Text("cuenta");
-		$eCuenta->setAttrib("class", "hidden");
+		$eCuenta->setAttrib("class", "form-control");
 		$eCuenta->setLabel("Cuenta: ");
 		$eCuenta->setAttrib("maxlength", "15");
 		$eCuenta->setAttrib("required", "required");

@@ -24,14 +24,14 @@ class Contabilidad_Model_Proyecto
         $this->idSucursal = $idSucursal;
     }
 	
-	private $idFiscales;
+	private $idCliente;
 
-    public function getIdFiscales() {
-        return $this->idFiscales;
+    public function getIidCliente() {
+        return $this->idCliente;
     }
     
-    public function setIdFiscales($idFiscales) {
-        $this->idFiscales = $idFiscales;
+    public function setidCliente($ididCliente) {
+        $this->idCliente = $ididCliente;
     }
 
     private $numeroFolio;
@@ -109,7 +109,7 @@ class Contabilidad_Model_Proyecto
 	{
 		if(array_key_exists("idProyecto", $datos)) $this->idProyecto = $datos["idProyecto"];
 		if(array_key_exists("idSucursal", $datos)) $this->idSucursal = $datos["idSucursal"];
-		if(array_key_exists("idFiscales", $datos)) $this->idFiscales = $datos["idFiscales"];
+		if(array_key_exists("idCliente", $datos)) $this->idCliente = $datos["idCliente"];
 		$this->numeroFolio = $datos["numeroFolio"];
 		$this->descripcion = $datos["descripcion"];
 		$this->fechaApertura = $datos["fechaApertura"];
@@ -125,7 +125,7 @@ class Contabilidad_Model_Proyecto
 		
 		$datos["idProyecto"] = $this->idProyecto;
 		$datos["idSucursal"] = $this->idSucursal;
-		$datos["idFiscales"] = $this->idFiscales;
+		$datos["idCliente"] = $this->idCliente;
 		$datos["numeroFolio"] = $this->numeroFolio;
 		$datos["descripcion"] = $this->descripcion;
 		$datos["fechaApertura"] = $this->fechaApertura;

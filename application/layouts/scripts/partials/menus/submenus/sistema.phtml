@@ -13,22 +13,28 @@
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'estados', 'action' => 'index'), null, true); ?>">Estados & Municipios</a></li>
 			</ul>
 		</li>
-		<li class="dropdown-submenu">
-			<a class="test" tabindex="-1" href="#">
-				Inventario
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'parametro', 'action' => 'index'), null, true); ?>">
+				Parametros & Subparametros
 			</a>
-			<ul class="dropdown-menu">
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'parametro', 'action' => 'index'), null, true); ?>">Parametros & Subparametros</a></li>
-			</ul>
 		</li>
 		<li class="dropdown-submenu">
 			<a class="test" tabindex="-1" href="#">
-				Contabilidad
+				Fiscales
 			</a>
 			<ul class="dropdown-menu">
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'empresa', 'action' => 'empresas'), null, true); ?>">Empresas</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'empresa', 'action' => 'clientes'), null, true); ?>">Clientes</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'empresa', 'action' => 'proveedores'), null, true); ?>">Proveedores</a></li>
+				<li class="dropdown-submenu">
+				<a class="test" tabindex="-1" href="#">
+					Empresas
+				</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'empresa', 'action' => 'empresas'), null, true); ?>">Empresas & Sucursales</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'empresas', 'action' => 'clientes'), null, true); ?>">Enlaza Cliente</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'empresas', 'action' => 'proveedores'), null, true); ?>">Enlaza Proveedor</a></li>
+					</ul>
+				</li>
 			</ul>
 		</li>
 		<li>
@@ -36,6 +42,11 @@
 				Vendedores
 			</a>
 			
+		</li>
+		<li>
+			<a href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'guiacontable', 'action' => 'index'), null, true); ?>">
+				Guia Contable
+			</a>
 		</li>
 	</ul>
 </li>

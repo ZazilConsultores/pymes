@@ -1,103 +1,854 @@
-<?php
-	//echo $this->formulario;
-	$productos =$this->productos;
-	$busquedaProductoTerminado = $this->busquedaProductoTerminado;
-?>
-<!--despliega los productos correspondientes a la cafeteria-->
-<section class="row">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title">
-				Productos.
-			</h3>
-		</div>
-		<div class="panel-body">
-			<table class="table table-striped table-condensed">
-				<thead>
+	<?php
+		$formulario = $this->formulario;
+		$productoCompuesto= $this->producto;
+		$unidadDAO = new Inventario_DAO_Unidad;
+		$pt = $this->pt;
+		$busquedaProductoTerminado = $this->busquedaProductoTerminado;
+		$productoDAO = new Sistema_DAO_Subparametro;
+		$productosDAO = new Inventario_DAO_Producto;
+		$productosB = $productosDAO->obtenerProductos();
+		$subBebidas = $productoDAO->obtenerSubparametroBebida();
+		$subsPT = $productoDAO->obtenerSubparametroPT();
+		$subAbarrotes = $productoDAO->obtenerSubparametroAbarrotes();
+		$subCarnes = $productoDAO->obtenerSubparametroCarnes();
+		$subFrutas = $productoDAO->obtenerSubparametroFrutas();
+		$subLacteos = $productoDAO->obtenerSubparametroLacteos();
+		$subLicores = $productoDAO->obtenerSubparametroLicores();
+		$subPanaderia = $productoDAO->obtenerSubparametroPanaderia();
+		$subPescados = $productoDAO->obtenerSubparametroPescadosyMa();
+		$subSemillas = $productoDAO->obtenerSubparametroSemillas();
+		$subVerduras = $productoDAO->obtenerSubparametroVerduras();
+		$subDulces = $productoDAO->obtenerSubparametroDulceria();
+		$subPTS = $productoDAO->obtenerPT();
+	?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h4 align="Center"> Crear Producto Terminado</h4>
+	</div>
+	<div class="panel-body">
+			<table id="subPT" class="table table-striped table-condensed">
+				<tbody>
+					<th style="font-size: 16px;">Producto Terminado:</th>
+					<td colspan="3">
+						<select id="productoTerminado" class="form-control">
+							<option value="0">Seleccione Producto</option>
+							<?php foreach ($subPTS as $subPT) : ?>
+							 <option  value="<?php echo $subPT["idProducto"] ?>"><?php echo $subPT["producto"]; ?></option></strong>
+							<?php endforeach; ?>
+						</select>
+					</td>
 					<tr>
-						<th>Clave Producto</th>
-						<th>Descripción</th>
+						<td>Bebidas:</td>
+						<td>
+							<select id="subBebidas"  class="form-control">
+								<option value="0">Seleccione Bebida</option>
+								<?php foreach ($subBebidas as $subBebida) : ?>
+									<option value="<?php echo $subBebida["idProducto"] ?>"><?php echo $subBebida["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>Abarrotes:</td>
+						<td>
+							<select id="subAbarrotes" class="form-control">
+								<option value="0">Seleccione Abarrote</option>
+								<?php foreach ($subAbarrotes as $subAbarrote) : ?>
+									<option value="<?php echo $subAbarrote["idProducto"] ?>"><?php echo $subAbarrote["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
 					</tr>
+					<tr>
+						<td>Carnes:</td>
+						<td>
+							<select id="subCarnes" class="form-control">
+								<option value="0">Seleccione Carne</option>
+								<?php foreach ($subCarnes as $subCarne) : ?>
+									<option value="<?php echo $subCarne["idProducto"] ?>"><?php echo $subCarne["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>Frutas: </td>
+						<td>
+							<select id="subFrutas"  class="form-control">
+								<option value="0">Seleccione Fruta</option>
+								<?php foreach ($subFrutas as $subFruta) : ?>
+									<option value="<?php echo $subFruta["idProducto"] ?>"><?php echo $subFruta["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Lacteos:</td>
+						<td>
+							<select id="subLacteos"  class="form-control">
+								<option value="0">Seleccione Lacteo</option>
+								<?php foreach ($subLacteos as $subLacteo) : ?>
+									<option value="<?php echo $subLacteo["idProducto"] ?>"><?php echo $subLacteo["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>Licores:</td>
+						<td>
+							<select id= "subLicores" class="form-control">
+								<option value="0">Seleccione Licor</option>
+								<?php foreach ($subLicores as $subLicor) : ?>
+									<option value="<?php echo $subLicor["idProducto"] ?>"><?php echo $subLicor["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Panederia:</td>
+						<td>
+							<select id="subPanaderia"  class="form-control">
+								<option value="0">Seleccione Pan</option>
+								<?php foreach ($subPanaderia as $subPan) : ?>
+									<option value="<?php echo $subPan["idProducto"] ?>"><?php echo $subPan["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>Pescados y Mariscos:</td>
+						<td>
+							<select id="subPescadosyMar" class="form-control">
+								<option value="0">Seleccione Pescados y Mariscos</option>
+								<?php foreach ($subPescados as $subPescado) : ?>
+									<option value="<?php echo $subPescado["idProducto"] ?>"><?php echo $subPescado["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Semillas:</td>
+						<td>
+							<select id="subSemillas" class="form-control">
+								<option value="0">Seleccione Semilla</option>
+								<?php foreach ($subSemillas as $subSemilla) : ?>
+									<option value="<?php echo $subSemilla["idProducto"] ?>"><?php echo $subSemilla["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>Verduras:</td>
+						<td>
+							<select id="subVerduras" class="form-control">
+								<option value="0">Seleccione Verdura</option>
+								<?php foreach ($subVerduras as $subVerdura) : ?>
+									<option value="<?php echo $subVerdura["idProducto"] ?>"><?php echo $subVerdura["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Dulces:</td>
+						<td>
+							<select id="subDulces" class="form-control">
+								<option value="0">Seleccione Dulce</option>
+								<?php foreach ($subDulces as $subDulce) : ?>
+									<option value="<?php echo $subDulce["idProducto"] ?>"><?php echo $subDulce["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+						<td>Seleccionar Producto Compuesto:</td>
+						<td>
+							<select id="subPCS" class="form-control">
+								<option value="0">Seleccione Producto Compuesto</option>
+								<?php foreach ($subsPT as $subPT) : ?>
+									<option value="<?php echo $subPT["idProducto"] ?>"><?php echo $subPT["producto"]; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	</div>
+</section>
+
+<!--Tabla detalle ProductoTerminado-->
+<section>
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h4 class="panel-title">Detalle Producto Terminado.</h4>
+			</div>
+			<table id="detalleProductoTer" class="table table-striped table-condensed">
+				<thead>
+					<th>Clave </th>
+					<th>Producto</th>
+					<th>Presentación</th>
+					<th>Cantidad</th>
+					<th>Precio unitario</th>
+					<th>Importe</th>
+					<th>Editar</th>
+					<th>Eliminar</th>
 				</thead>
 				<tbody>
-					<?php foreach ($productos as $producto) : ?>
-					<tr>
-						
-						<td><?php echo $producto->claveProducto ?></td>
-						<td><?php echo $producto->producto ?></td>
-					</tr>
-					<?php endforeach; ?>
 				</tbody>
 			</table>
 		</div>
-	</div>
-</section>
-
-<section class="panel panel-success">
+	</section>
+<!--Tabla eniva datos ProductoTerminado-->
+<section class="panel panel-warning">
 	<div class="panel-heading">
-		<h3 class="panel-title">Crear Producto Terminado</h3>
+		<h5>Producto Enlazado.</h5>
 	</div>
 	<div class="panel-body">
-		<table class="table table-striped table-condensed">
-			<thead>
-				
-			</thead>
-			<tbody>
-				<th>Nombre Producto:
-				<td>
-					<select id="idNombreProducto" class="form-control">
-							<?php foreach ($busquedaProductoTerminado as $productoTerminado) : ?>
-							<option value="<?php echo $productoTerminado->getIdProducto() ?>"><?php echo $productoTerminado->getProducto(); ?></option>
-							<?php endforeach; ?>
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<!--Datos -->
+			<div class="form-group hidden">
+				<label for="datos" class="col-md-1">Datos: </label>
+				<div class="col-md-4">
+					<input id="datos" name="datos" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Clave producto -->
+			<div class="form-group">
+				<label for="clave" class="col-md-1">Clave Producto: </label>
+				<div class="col-md-4">
+					<input id="idClaveProducto" name="clave" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Nombre -->
+			<div class="form-group">
+				<label for="nombre" class="col-md-1">Nombre: </label>
+				<div class="col-md-4">
+					<input id="nombre" name="nombre" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Cantidad -->
+			<div class="form-group">
+				<label for="cantidad" class="col-md-1">Cantidad: </label>
+				<div class="col-md-4">
+					<input id="cantidad" name="cantidad" type="text" class="form-control" required="Cantidad no puede quedar vacía" />
+				</div>
+			</div>
+			<!--Multiplo -->
+			<div class="form-group">
+				<label for="multiplo" class="control-label col-md-1">Multiplo: </label>
+				<div class="col-md-4">
+					<select id="presentacion" name="multiplo" class="form-control col-md-2">
+						
 					</select>
-				</td>
-				<td>
-						<button id="btnQueryEncuesta" class="btn btn-info" >
-							<span class="glyphicon glyphicon-search"></span> Buscar Producto Terminado
-						</button>
-					</td>
-				</th>
-
-				
-				<tr>
-					<td>Clave Producto</td>
-					<td>Nombre</td>
-					<td>Cantidad</td>
-					<td>Presentacion</td>
-				</tr>
-				<tr>
-					<td><input id="idClaveProducto" class="form-control"></input></td>
-					<td><input id="nombre" class="form-control"></input></td>
-					<td><input id="cantidad" class="form-control"></input></td>
-					<td><input id="presentacion" class="form-control"></input></td>
-					<td>
-						<button id="agregar" class="btn btn-success" >
-							<span class="glyphicon glyphicon-plus-sign"></span> Agregar
-						</button>
-						<button id="agregar" class="btn btn-warning" >
-							<span class="glyphicon glyphicon-pencil"></span> Editar
-						</button>
-					</td>
-				</tr>
-				
-				<tr>
-					<td></td>
-					
-				</tr>
-			</tbody>
-		</table>
+				</div>
+			</div
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="query" type="submit" class="btn btn-success">
+						<i class="fa fa-search"></i> Agregar
+					</button>
+				</div>
+			</div>
+		</form>	
 	</div>
-	<div></div>
 </section>
 
 <script>
-	$(document).ready(function() {
-		//===================================================================================
-	    $('table.table').dataTable( {
-	       "pagingType": "full_numbers",
-	        "language": {
-	        	"url": "//cdn.datatables.net/plug-ins/1.10.10/i18n/Spanish.json"
-	        }
-	    } );
+$(document).ready(function() {
+	//Select abarrotes y claveProducto
+	$("table#subPT").on("change","select[id^='subAbarrotes']", function (){
+		var abarrote = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + abarrote ;
+		//console.log($urlProducto);
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+			//console.log($urlProducto);
+			//console.dir(data);
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == abarrote){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});			
+			}
+		});//Termina busca producto
+		   		
+		//Busca producto desde el select subAbarrotes
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + abarrote ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+			$("select#presentacion").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == abarrote){
+					$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+				}	
+							
+			});
+			}
+		});
 	});
+		   	
+	//Select bebidas y claveProducto
+	$("table#subPT").on("change","select[id^='subBebidas']", function (){
+		console.log("hola");
+		var bebida = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + bebida ;
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+				$("input#idClaveProducto").empty();
+				$("input#nombre").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == bebida){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+				});
+			}
+		 });
+		   		
+		 //Busca producto desde el select subAbarrotes
+		 var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + bebida ;
+		 $.ajax({
+		 	url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == bebida){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+		});
+	});
+	
+	//Select Carnes y claveProducto
+	$("table#subPT").on("change","select[id^='subCarnes']", function (){
+		var carne = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + carne ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == carne){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Carnes
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + carne ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == carne){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	
+	//Select Frutas y claveProducto
+	$("table#subPT").on("change","select[id^='subFrutas']", function (){
+		var fruta = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + fruta ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == fruta){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Carnes
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + fruta ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == fruta){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	//Select Lacteos y claveProducto
+	$("table#subPT").on("change","select[id^='subLacteos']", function (){
+		var lacteo = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + lacteo ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == lacteo){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Lacteos
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + lacteo ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == lacteo){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	//Select Licores y claveProducto
+	$("table#subPT").on("change","select[id^='subLaicores']", function (){
+		var Licor = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + licor ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == licor){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Licores
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + licor ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == licor){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	//Select Panaderia y claveProducto
+	$("table#subPT").on("change","select[id^='subPanaderia']", function (){
+		var panaderia = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + panaderia ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == panaderia){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Panaderia
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + panaderia ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == panaderia){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	//Select Pescados y Mariscos y claveProducto
+	$("table#subPT").on("change","select[id^='subPescadosyMar']", function (){
+		var pescasdos = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + pescasdos ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == pescasdos){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Pescados y Mariscos
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + pescasdos ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == pescasdos){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	//Select Semillas y claveProducto
+	$("table#subPT").on("change","select[id^='subSemillas']", function (){
+		var semilla = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + semilla ;
+		$.ajax({
+			url: $urlProducto,
+			dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == semilla){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Semillas
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + semilla ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == semilla){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+					
+		});
+	});
+	//Select verdura y claveProducto
+	$("table#subPT").on("change","select[id^='subVerduras']", function (){
+		var verdura = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + verdura ;
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == verdura){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select subAbarrotes
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + verdura ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == verdura){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+		});
+	});
+	//Select dulces y claveProducto
+	$("table#subPT").on("change","select[id^='subDulces']", function (){
+		var dulce = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + dulce ;
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == dulce){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select subAbarrotes
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + dulce ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == dulce){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+		});
+	});
+	//Producto Compuesto
+	//Select dulces y claveProducto
+	$("table#subPT").on("change","select[id^='subPCS']", function (){
+		var ProdComp = $(this).val();
+		var $urlProducto = window.location.origin + "/General/inventario/json/productos/idProducto/" + ProdComp ;
+		$.ajax({
+			url: $urlProducto,
+		   	dataType: "json",
+			success: function(data){
+			$("input#idClaveProducto").empty();
+			$("input#nombre").empty();
+			$.each(data, function(i,item){
+				if(data[i].idProducto == ProdComp){
+					$("#idClaveProducto").attr("value",data[i].claveProducto);
+					$("#nombre").attr("value",data[i].producto);
+				}	
+			});
+			}
+		});
+		//Busca producto desde el select Producto Compuesto
+		var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + ProdComp ;
+		console.log($url);
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#presentacion").empty();
+				$.each(data, function(i,item){
+					if(data[i].idProducto == ProdComp){
+						$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+					}	
+				});
+			}
+		});
+	});
+		   	
+	 	   
+	 	   //Genera array para enviar datos al controller
+	 	   $("#query").on("click",function(){
+	 	   	var datos = [];
+	 	   	var productoEnlazado ;
+	 		var idProducto = $("select#productoTerminado").val();
+	
+	 		if($("select#subAbarrotes").val() != 0){
+	 			console.log("Es abarrote");
+	 			productoEnlazado = $("select#subAbarrotes").val();
+	 		}else if($("select#subBebidas").val() != 0 ){
+	 			productoEnlazado = $("select#subBebidas").val();
+	 		}else if($("select#subCarnes").val() != 0 ){
+	 			productoEnlazado = $("select#subCarnes").val();
+	 		}else if($("select#subFrutas").val() != 0 ){
+	 			productoEnlazado = $("select#subFrutas").val();
+	 		}else if($("select#subLacteos").val() != 0 ){
+	 			productoEnlazado = $("select#subLacteos").val();
+	 		}else if($("select#subLicores").val() != 0 ){
+	 			productoEnlazado = $("select#subLicores").val();
+	 		}else if($("select#subPanaderia").val() != 0 ){
+	 			productoEnlazado = $("select#subPanaderia").val();
+	 		}else if($("select#subPescadosyMar").val() != 0 ){
+	 			productoEnlazado = $("select#subPescadosyMar").val();
+	 		}else if($("select#subSemillas").val() != 0 ){
+	 			productoEnlazado = $("select#subSemillas").val();
+	 		}else if($("select#subVerduras").val() != 0 ){
+	 			productoEnlazado = $("select#subVerduras").val();
+	 		}else if($("select#subDulces").val() != 0 ){
+	 			productoEnlazado = $("select#subDulces").val();
+	 		}else{
+	 			productoEnlazado = $("select#subPCS").val();
+	 		}
+	 		
+	 		var cantidad = $("input#cantidad").val();
+	 		var descripcion = $("input#nombre").val();
+	 		var presentacion = $("select#presentacion").val();
+	 	
+	 		console.log("producto:"+idProducto);
+	 		console.log("productoEnl:"+productoEnlazado);
+	 		console.log("cantidad:"+cantidad);
+	 		console.log("presentacion:"+presentacion);
+	 		
+	 		datos.push(new Dato(idProducto, productoEnlazado, cantidad,descripcion, presentacion));
+	 		console.dir(datos);
+	 		
+	 		var myString = JSON.stringify(datos);
+	 		console.log(myString);
+	 		if ($("input#datos").val(myString)){}
+	 			
+	 	   });
+	 	   	   
+	 	   var myString = JSON.stringify(datos);
+	 	   if ($("input#datos").val(myString)){};
+	 	  
+	 	  function Dato(idProducto, productoEnlazado, cantidad, descripcion, presentacion) {
+			  this.idProducto = idProducto;
+			  this.productoEnlazado = productoEnlazado;
+			  this.cantidad = cantidad;
+			  this.descripcion = descripcion;
+			  this.presentacion = presentacion;
+		  }
+		 
+		  //Llena tabla del producto terminado correspondiente
+		  $("table#subPT").on("change","select[id^='productoTerminado']", function (){
+		  	var idPt = $("select#productoTerminado").val();
+			var urlPT = window.location.origin + "/General/inventario/json/productoterminado/productoTerminado/"+idPt;
+			console.log("El producto terminado es:");
+			console.log(urlPT);
+			$.ajax({
+				url: urlPT,
+				dataType: "json",
+				success: function(data){
+					console.log(urlPT);
+					console.dir(data);
+					var tbody = $("table#detalleProductoTer").find('tbody');
+					tbody.empty();
+					
+					//data[i].presentacion
+					$.each(data, function(i,item){
+						var baseUrl ="localhost/General";
+						var urlPT = baseUrl + "/inventario/productoterminado/editar"
+						var botonActualizar = $('<button></button>').attr("id","editar").attr("class","btn btn-warning").text("Editar").attr("productoCompuesto",data[i].idProductoCompuesto);
+						var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
+						var importe = data[i].cantidad * data[i].costoUnitario;
+						importe = parseFloat(importe.toFixed(2));
+						var costoUnitario = data[i].costoUnitario;
+						tbody.append($('<tr>').
+							append($('<td>').append(data[i].claveProducto)).attr("id","claveProd").
+							append($('<td>').append(data[i].producto)).	
+							append($('<td>').append(data[i].abreviatura)).
+							append($('<td>').append(data[i].cantidad)).
+							append($('<td>').append(data[i].costoUnitario)).
+							append($('<td>').append(importe).attr("id", "importe")).
+							append($('<td>').append(botonActualizar)).
+							append($('<td>').append(botonEliminar)));
+							//tbody.append($('<tr>').append());
+					});
+					AddRow();
+					calculaTotal();
+				}
+			});
+			//Click en el importe de tabla detalleProductoComuesto
+			  //$("table#detalleProductoTer").on("click","td[id^='importe']", function (){
+			  function calculaTotal() {	
+			   var total = 0;
+			   $("table#detalleProductoTer").find("td[id^='importe']").each(function(){
+			   	console.log($(this).text());
+			   	total += +$(this).text(); 
+			   	console.log(total);
+			   	$("#total").val(total.toFixed(2));
+	        		
+			  });
+			}
+		  });
+		  
+		   //Llena tabla del producto terminado correspondiente
+		  $("table#detalleProductoTer").on("click","button[id^='editar']", function (){
+		  	var producto= $(this).attr("producto");
+		  	console.log(producto);
+			//Seleccionar el idProductoTerminado
+			var urlPT = window.location.origin + "/General/inventario/json/llenaproducto/idPC/"+ producto;
+			console.log(urlPT);
+			
+			$.ajax({
+				url: urlPT,
+				dataType: "json",
+				success: function(data){
+					console.log(producto);
+					$.each(data, function(i,item){
+						if(data[i].idProductoCompuesto == producto){
+							$("#idClaveProducto").attr("value",data[i].claveProducto);
+							$("#nombre").attr("value",data[i].producto);
+							$("#cantidad").attr("value",data[i].cantidad);
+							
+							//Busca Multiplos
+							var idProducto = data[i].productoEnlazado
+							console.log("El producto Enlazado es:");
+							console.log(idProducto);
+							var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + idProducto ;
+							console.log($url);
+							//Ajax multiplos
+							$.ajax({
+								url: $url,
+								dataType: "json",
+								success: function(data){
+									console.log($url);
+									console.dir(data);
+									$("select#presentacion").empty();
+									$.each(data, function(i,item){
+										if(data[i].idProducto == idProducto){
+											$("select#presentacion").append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+										}	
+						
+									});
+								}
+							});
+						}	
+					});
+				}
+			});
+			
+		  });
+		   $("table#detalleProductoTer").on("click", "button[id^='eliminar']", function(){
+		   	var idProdComp = $(this).attr("productoCompuesto");
+		   	console.log(idProdComp);
+		  	window.location = "/General/inventario/productoterminado/eliminar/idProdComp/"+ idProdComp;
+		   	
+		   });
+		  
+		  $("table#detalleProductoTer").on("click", "button[id^='editar']", function(){
+		  	
+		  	var idProdComp = $(this).attr("productoCompuesto");
+		  	console.log(idProdComp);
+		  	window.location = "/General/inventario/productoterminado/editar/idProdComp/"+ idProdComp;
+		  });
+		   
+		  function AddRow()
+		  	{
+    			 $('#detalleProductoTer tbody').append('<tr><td></td><td></td><td></td><td></td><td><b>Total $:</b></td><td><input id="total"class="form-control"></input></td></tr>');
+    		}
+		   	
+});
 </script>

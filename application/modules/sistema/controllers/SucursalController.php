@@ -19,7 +19,7 @@ class Sistema_SucursalController extends Zend_Controller_Action
 	
 	public function altaAction()
     {
-        // action body
+    	
         $request = $this->getRequest();
         $idFiscales = $this->getParam("idFiscales");
 		$tipoSucursal = $this->getParam("tipoSucursal");
@@ -59,8 +59,10 @@ class Sistema_SucursalController extends Zend_Controller_Action
 				//$this->empresaDAO->agregarSucursal($idFiscales, $datos, $tipoSucursal);
 			}
 		} 
-    }
-	
+        
+	}
+    
+    
 	public function edomicilioAction()
     {
         // action body

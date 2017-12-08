@@ -63,7 +63,7 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td><strong>Subtotal generado despues del descuento:</strong></td>
+						<td><strong>Subtotal descuento:</strong></td>
 						<td><input id="descuentoGenerado" class="form-control" value="0" /></td>
 					</tr>
 					<tr>
@@ -93,26 +93,32 @@
 $(document).ready(function (){
 	console.log( "ready!" );
 	var jsonProductos = <?php echo $this->jsonProductos; ?>;
-	var jsonUnidad = <?php echo $this->jsonUnidad; ?>;
-		
-    var filasTabla = 1;
+	
     $("#addRow").on("click", function () {
-    	var newRow = $("<tr>");
-    	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
+    	var filasTabla = $("table#productos tbody > tr").length;
+    	filasTabla ++;
+    	//var newRow = $("<tr>");
+    	var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'size': '1' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 		// idProducto
-		var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		var inputProducto = $('<select />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonProductos,function(i,item){
+			inputProducto.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].claveProducto+'</option>');
+		});
+		//var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
 		// idUnidad
 		var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-		$.each(jsonUnidad,function(i,item){
-			inputUnidad.append('<option value="'+jsonUnidad[i].idUnidad+'">'+jsonUnidad[i].unidad+'</option>');
-		});
+		
 		// codigoBarras
 		var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 		// descripcion
-		var selectdescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		var selectDescripcion = $('<input />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'}).attr({'size': '4' + filasTabla});
 		$.each(jsonProductos,function(i,item){
-			selectdescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+			selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
 		});
+		/*var selectDescripcion = $('<select />').attr({'id': 'descripcion_' + filasTabla}).attr({'class':'form-control'});
+		$.each(jsonProductos,function(i,item){
+			selectDescripcion.append('<option value="'+jsonProductos[i].idProducto+'">'+jsonProductos[i].producto+'</option>');
+		});*/
 		// precioUnitario
 		var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 		// precioImporte
@@ -126,7 +132,7 @@ $(document).ready(function (){
 			append($('<td>').append(inputProducto)).
 			append($('<td>').append(inputUnidad)).
 			append($('<td>').append(inputCodigoBarras)).
-			append($('<td>').append(selectdescripcion)).
+			append($('<td>').append(selectDescripcion)).
 			append($('<td>').append(inputCostoUnitario)).
 			append($('<td>').append(inputCostoTotal)).
 			append($('<td>').append(buttonLimpiar))
@@ -142,20 +148,22 @@ $(document).ready(function (){
  		tabla.each(function(){
  			var row = $(this);
  			var cantidad = row.find("input[id^='idCantidad_']").val();
+ 			var claveProducto = row.find("select[id^='idProducto_']").val();
  			var unidad = row.find("select[id^='idUnidad_']").val();
  			var codigoBarras = row.find("input[id^='codigoBarras_']").val();
- 			var descripcion = row.find("select[id^='descripcion_']").val();
+ 			var descripcion = row.find("input[id^='descripcion_']").val();
  			var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  			var importe = row.find("input[id^='costoTotal_']").val();
  			
  			console.log("Cantidad:"+cantidad);
+ 			console.log("Producto:"+claveProducto);
  			console.log("unidad:"+unidad);
  			console.log("codigoBarras:"+codigoBarras);
  			console.log("descripcion:"+descripcion);
  			console.log("precioUnitario:"+precioUnitario);
  			console.log("costoTotal:"+importe);
  			
- 			productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
+ 			productos.push(new Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe,descuento,subTotal, total)); 
  			});
  			console.dir(productos);
  			var myString = JSON.stringify(productos);
@@ -196,8 +204,9 @@ $(document).ready(function (){
  		};
  		});
  		
- 		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
+ 		function Producto(cantidad, claveProducto, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
+		  this.claveProducto = claveProducto;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
@@ -214,6 +223,59 @@ $(document).ready(function (){
 		  this.ish = ish;
 		  this.isr = isr;
 		}
+		
+ 		$("table#productos").on("change", "select[id^='Producto_']", function(){
+ 			//console.log("Hola");
+ 		});
+ 		
+		//Funcion buscar descripcion del producto
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
+ 			console.log("Hola");
+ 			var descripcion= $(this).attr("id");
+			var arr = descripcion.split('_');
+			var id = $(this).val();
+			//console.log(id);
+			var numFila =  arr[1];
+ 			
+ 			$.each(jsonProductos,function(i,item){
+ 				if(jsonProductos[i].idProducto == id){
+ 					$("input#descripcion_"+numFila).val(jsonProductos[i].producto);
+ 				}
+ 				
+			});
+ 			
+ 		});//cierra funcion buscar descripcion del producto
+ 		//Funcion buscar Multiplo del producto
+ 		$("table#productos").on("change", "select[id^='idProducto_']", function(){
+ 			console.log("Mexico");
+ 			var claveProd= $(this).attr("id");
+			var arr = claveProd.split('_');
+			var id = $(this).val();
+			console.log(id);
+			var numFila =  arr[1];
+
+			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#idUnidad_"+numFila).empty();
+					$.each(data, function(i,item){
+						if(data[i].idProducto == id){
+							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
+							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
+						}	
+						
+					});
+					
+				}
+				
+			});
+ 			
+ 		});//cierra funcion Multiplo del producto
 
     
    $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
@@ -254,7 +316,7 @@ function calculateGrandTotal() {
     //Total y pagos
     total = grandTotal + totalIva;
     $("input#total").val(total.toFixed(2));
-    $("input#1-pagos").val(total.toFixed(2));
+    //$("input#1-pagos").val(total.toFixed(2));
     
    descuento = $("#descuento").val();
    if (descuento !=0){
@@ -269,7 +331,7 @@ function calculateGrandTotal() {
    	$("input#iva").val(totalIva.toFixed(2)); 
    	total = totalDescuento + totalIva;
    	$("input#total").val(total.toFixed(2));
-   	$("input#1-pagos").val(total.toFixed(2));  
+   	//$("input#1-pagos").val(total.toFixed(2));  
    	}			  
    }
   
@@ -304,11 +366,13 @@ function calculateGrandTotal() {
           	calculateGrandTotal();
           });
           $("#1-pagada").on("change", function(){
-			console.log("haciendo click");
+			var total = $("#total").val();
+			console.log(total);
 			if ($("#1-pagada:checked").val()==1){
 				console.log("input desahabilitado");
 				$("#1-pagos").attr('disabled', 'disabled');
-				calculateGrandTotal();
+				$("#1-pagos").val(total); 
+				//calculateGrandTotal();
 			}else{
 				$("#1-pagos").removeAttr("disabled");
 				$("#1-pagos").val(0);
@@ -348,20 +412,6 @@ function calculateGrandTotal() {
 			}
 		});
 	});
-	$("select#idSucursal").on('click', function(){
-		var url = window.location.origin + "/General/";
-		var urlSucursal = url + "contabilidad/json/sucursal/idSucursal/" + this.value;
-		console.log(urlSucursal);
-		$.ajax({
-			url: urlSucursal,
-			dataType: "json",
-			success: function(data){
-				console.log("EL consecutivo de la factura es:");
-				var consecutivo = data['consecutivo'];
-				console.log(consecutivo);
-				var consecutivoi = parseInt(consecutivo) + 1 ;
-				$("input#numeroFactura").val(consecutivoi);
-			}
-		});
-	});
+	
+	//});
 </script>

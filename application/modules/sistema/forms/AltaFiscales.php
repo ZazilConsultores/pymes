@@ -24,7 +24,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 			//array('Description', array('tag' => 'td', 'class' => 'label')), 
 			array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
 		);
-        
+        $empresaDAO = new Sistema_DAO_Empresa;
         $eRFC = new Zend_Form_Element_Text('rfc');
 		$eRFC->setLabel('RFC:');
 		$eRFC->setAttrib("class", "form-control");
@@ -32,6 +32,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRazonSocial = new Zend_Form_Element_Text('razonSocial');
 		$eRazonSocial->setLabel('Razon Social:');
 		$eRazonSocial->setAttrib("class", "form-control");
+		
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar Fiscales');

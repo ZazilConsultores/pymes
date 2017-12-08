@@ -1,196 +1,240 @@
 <?php
-
+	
 class Contabilidad_JsonController extends Zend_Controller_Action
 {
-	
-	private $empresaDAO;
-	private $fiscalesDAO;
-	private $productosDAO;
-	private $impuestoProductosDAO;
-	private $facturaClienteDAO;
-	private $pagoProveedorDAO;
 
+    private $bancoDAO = null;
+
+    private $fiscalesDAO = null;
+
+    private $impuestoProductosDAO = null;
+
+    private $empresaDAO = null;
+
+    private $pagosDAO = null;
+	private $cobrosDAO = null;
+	private $facturaCliDAO = null;
 
     public function init()
     {
-        /* Initialize action controller here */
-        $this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(true);
+	    	 $auth = Zend_Auth::getInstance();
+	        $dataIdentity = $auth->getIdentity();
+	        /* Initialize action controller here */
+	        $this->bancoDAO = new Contabilidad_DAO_Banco;
+			$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
+			$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+			$this->pagosDAO = new Contabilidad_DAO_PagoProveedor;
+			$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
+			$this->empresaDAO = new Sistema_DAO_Empresa;
+			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
+			
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender(true);
+    }
+
+    public function indexAction()
+    {
+	        // action body
+    }
+
+    public function bancosempresaAction()
+    {
+	    	$idEmpresa = $this->getParam("emp");
+			//print_r($idEmpresa);
+			
+			$bancosEmpresa = $this->bancoDAO->obtenerBancosEmpresa($idEmpresa);
+			
+			if(!is_null($bancosEmpresa)){
+				echo Zend_Json::encode($bancosEmpresa);
+			}else{
+				echo Zend_Json::encode(array());
+			}
+    }
+
+    public function impuestosAction()
+    {
+	        // action body
+	        $idImpuesto = $this->getParam("idImpuesto");
+			
+			$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProductos($idImpuesto);
+			
+			if(!is_null($impuestoProducto)){
+				echo Zend_Json::encode($impuestoProducto);
+			}else{
+				echo Zend_Json::encode(array());
+			}
+    }
+
+    public function clienteseAction()
+    {
+	        // action body
+	        $idFiscales = $this->getParam("idFiscales");
+			
+			$fiscalesClientes = $this->fiscalesDAO->getFiscalesClientesByIdFiscalesEmpresa($idFiscales);
+			if(!is_null($fiscalesClientes)){
+				echo Zend_Json::encode($fiscalesClientes);
+			}else{
+				echo Zend_Json::encode(array());
+			}
+			
+    }
+
+    public function proveedoreseAction()
+    {
+	        // action body
+	        $idFiscales = $this->getParam("idFiscales");
+			
+			$fiscalesProveedores = $this->fiscalesDAO->getFiscalesProveedoresByIdFiscalesEmpresa($idFiscales);
+			if(!is_null($fiscalesProveedores)){
+				echo Zend_Json::encode($fiscalesProveedores);
+			}else{
+				echo Zend_Json::encode(array());
+			}
+    }
+
+    public function sucursaleseAction()
+    {
+        // action body
         
-        $this->empresaDAO = new Sistema_DAO_Empresa;
-		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
-		$this->facturaDAO = new Contabilidad_DAO_FacturaProveedor;
-		$this->productosDAO = new Inventario_DAO_Producto;
-		$this->vendedorDAO = new Sistema_DAO_Vendedores;
-		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
-		$this->facturaClienteDAO = new Contabilidad_DAO_FacturaCliente;
-		$this->pagoProveedorDAO = new Contabilidad_DAO_PagoProveedor;
-		
-		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
-		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$this->tablaClientesEmpresa = new Sistema_Model_DbTable_ClientesEmpresa(array('db'=>$dbAdapter));;
-		
-
+        $idFiscales = $this->getParam("idFiscales");
+			
+		$sucursales = $this->empresaDAO->obtenerSucursales($idFiscales);
+		//$sucursales = $this->empresaDAO->obtenerSucursalesEmpresas($idEmpresas);
+		if(!is_null($sucursales)){
+			echo Zend_Json::encode($sucursales);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
     }
 
-    public function indexAction(){
-    	
+    public function sucursalAction()
+    {
+	        // action body
+	        $idSucursal = $this->getParam("idSucursal");
+			
+			$sucursal = $this->empresaDAO->obtenerSucursal($idSucursal);
+			if(!is_null($sucursal)){
+				echo Zend_Json::encode($sucursal);
+			}else{
+				echo Zend_Json::encode(array());
+			}	
     }
-	
-	public function clienteseAction() {
-		$idFiscales = $this->getParam("idFiscales");
-		
-		$fiscalesClientes = $this->fiscalesDAO->getFiscalesClientesByIdFiscalesEmpresa($idFiscales);
-		if(!is_null($fiscalesClientes)){
-			echo Zend_Json::encode($fiscalesClientes);
-		}else{
-			echo Zend_Json::encode(array());
-		}
-		
-	}
-	
-	public function proveedoreseAction() {
-		$idFiscales = $this->getParam("idFiscales");
-		
-		$fiscalesProveedores = $this->fiscalesDAO->getFiscalesProveedoresByIdFiscalesEmpresa($idFiscales);
-		if(!is_null($fiscalesProveedores)){
-			echo Zend_Json::encode($fiscalesProveedores);
-		}else{
-			echo Zend_Json::encode(array());
-		}
-	}
-	
-	public function asocclienteAction() {
-		//Si llegamos aqui es por que en verdad se hace la asociacion
-		$idFiscalesEmpresa = $this->getParam("idFiscalesEmpresa");
-		$idFiscalesCliente = $this->getParam("idFiscalesCliente");
-		
-		//print_r($idFiscalesCliente . "<br />");
-		//print_r($idFiscalesEmpresa . "<br />");
-		
-		$fiscalesDAO = $this->fiscalesDAO;
-		$empresaDAO = $this->empresaDAO;
-		
-		$empresaEmpresa = $empresaDAO->obtenerEmpresaPorIdFiscales($idFiscalesEmpresa);
-		$empresaCliente = $empresaDAO->obtenerEmpresaPorIdFiscales($idFiscalesCliente);
-		
-		//print_r($empresaEmpresa);
-		//print_r("<br />");
-		//print_r($empresaCliente);
-		
-		$empresa = $fiscalesDAO->getEmpresaByIdFiscales($idFiscalesEmpresa);
-		$cliente = $fiscalesDAO->getClienteByIdFiscales($idFiscalesCliente);
-		
-		$tablaClientesEmpresa = $this->tablaClientesEmpresa;
-		print_r("<br />");
-		print_r($fiscalesDAO->getEmpresaByIdFiscales($idFiscalesEmpresa));
-		print_r("<br />");
-		print_r($fiscalesDAO->getClienteByIdFiscales($idFiscalesCliente));
-	}
 
-	
+    public function asociaceAction()
+    {
+        // action body
+        $idEmpresa = $this->getParam("em");
+        $idCliente = $this->getParam("cl");
+		// Obtenemos los registros de Empresa correspondientes
+		$empresaEmpresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idEmpresa);
+		$empresaCliente = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idCliente);
+		// Obtenemos los registros de T.Empresas y la T.Clientes
+		$empresa = $this->empresaDAO->getEmpresasByIdEmpresa($empresaEmpresa["idEmpresa"]);
+		$cliente = $this->empresaDAO->getClienteByIdEmpresa($empresaCliente["idEmpresa"]);
+		
+		$this->fiscalesDAO->asociateClienteEmpresa($empresa['idEmpresas'], $cliente['idCliente']);
+		
+		echo Zend_Json::encode("Cliente asociado a Empresa!!!");
+        
+    }
 
-	public function bancosempresaAction() {
-		$idBanco = $this->getParam("idBanco");
-		$bancosEmpresa = $this->bancosEmpresaDAO->obtenerBancosEmpresa($idBanco);
+    public function asociapeAction()
+    {
+        $idEmpresa = $this->getParam("em");
+		$idProveedor = $this->getParam("pr");
+		//Obtenemos los registros de empresa correspondiente
+		$empresaEmpresa = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idEmpresa);
+		$empresaProveedor  = $this->empresaDAO->obtenerEmpresaPorIdFiscales($idProveedor);
+		$empresa = $this->empresaDAO->getEmpresasByIdEmpresa($empresaEmpresa["idEmpresa"]);
+		$proveedor = $this->empresaDAO->getProveedorByIdEmpresa($empresaProveedor["idEmpresa"]);
+		$this->fiscalesDAO->asociateProveedorEmpresa($empresa['idEmpresas'], $proveedor['idProveedores']);
+    }
+
+    public function buscafacxpAction()
+    {
+        // action body
+        $idSucursal = $this->getParam("idSucursal");
+        $proveedor = $this->getParam("pro");
 		
-	}
-	
-	//Revisar si aun se utiliza la funcion productosimpuestos
-	public function productosimpuestosAction(){
-		$idProducto = $this->getParam($idProducto);
-		$factura = $this->facturaDAO->buscarProducto($idProducto);
-		//echo Zend_Json::encode($factura);
-	}
-	
-	public function productosAction() {
-		$idProducto = $this->getParam("idProducto");
-		
-		$productos = $this->productosDAO->obtenerProducto($idProducto);
-		if(!is_null($productos)){
-			echo Zend_Json::encode($productos);
+		$buscafacxp = $this->pagosDAO->busca_Cuentasxp($idSucursal, $proveedor);
+		if(!is_null($buscafacxp)){
+			echo Zend_Json::encode($buscafacxp);
 		}else{
 			echo Zend_Json::encode(array());
 		}
-		
-	}
-	
-	public function vendedorAction() {
-		$idVendedor = $this->getParam("idVendedor");
-		
-		$vendedor = $this->vendedorDAO->obtenerVendedor($idVendedor);
-		if(!is_null($vendedor)){
-			echo Zend_Json::encode($vendedor);
+    }
+
+    public function buscapagoxpAction()
+    {
+        // action body
+        $idFactura = $this->getParam("idFactura");
+     
+		$buscapago= $this->pagosDAO->busca_PagosCXP($idFactura);
+		if(!is_null($buscapago)){
+			echo Zend_Json::encode($buscapago);
 		}else{
 			echo Zend_Json::encode(array());
 		}
-		
-	}
-	
-	
-	public function impuestosAction() {
-		$idImpuesto = $this->getParam("idImpuesto");
-		
-		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProductos($idImpuesto);
-		
-		if(!is_null($impuestoProducto)){
-			echo Zend_Json::encode($impuestoProducto);
+    }
+	public function buscacobroxpAction()
+    {
+        // action body
+        $idFactura = $this->getParam("idFactura");
+     	$buscaCobro= $this->cobrosDAO->busca_CobrosCXC($idFactura);
+		//$buscacobro= $this->cobrosDAO busca_PagosCXP($idFactura);
+		if(!is_null($buscaCobro)){
+			echo Zend_Json::encode($buscaCobro);
 		}else{
 			echo Zend_Json::encode(array());
-		}	
-		
-	}
-	
-	//Obtener ImpuestoProducto
-	public function impuestoproductoAction() {
-		//$idImpuesto = $this->getParam("idImpuesto");
-		$idProducto = $this->getParam("idProducto");
-		
-		$impuestoProducto = $this->impuestoProductosDAO->obtenerImpuestoProducto($idProducto);
-		
-		if(!is_null($impuestoProducto)){
-			echo Zend_Json::encode($impuestoProducto);
+		}
+    }
+
+    public function obtenerfacturaxpAction()
+    {
+        // action body
+        $idFactura = $this->getParam("idFactura");
+		$obtenerFac= $this->pagosDAO->obtiene_Factura($idFactura);
+		if(!is_null($obtenerFac)){
+			echo Zend_Json::encode($obtenerFac);
 		}else{
 			echo Zend_Json::encode(array());
-		}		
-	}
-	
-	//Obtenemos las Empresas para ediatar el consecutivo
-	public function sucursalAction() {
-		$idSucursal = $this->getParam("idSucursal");
-		
-		$sucursal = $this->empresaDAO->obtenerSucursal($idSucursal);
-		if(!is_null($sucursal)){
-			echo Zend_Json::encode($sucursal);
+		}
+    }
+
+    public function consecutivoAction()
+    {
+	    $idSucursal = $this->getParam("sucursal");
+		$consecutivoFac= $this->facturaCliDAO->editaNumeroFactura($idSucursal);
+		if(!is_null($consecutivoFac)){
+			echo Zend_Json::encode($consecutivoFac);
 		}else{
 			echo Zend_Json::encode(array());
-		}	
-	}
-	
-	public function facturaAction() {
-		//$idImpuesto = $this->getParam("idImpuesto");
-		$idSucursal = $this->getParam("idSucursal");
-		
-		//$pagoProveedor = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
-		$pagoProveedor = $this->pagoProveedorDAO->obtieneFacturaProveedor($idSucursal);
-		if(!is_null($pagoProveedor)){
-			echo Zend_Json::encode($pagoProveedor);
-		}else{
-			echo Zend_Json::encode(array());
-		}		
-	}
-	
-	//Buscamos en cuentasxp para facturas proveedor por idSucursal
-	public function pagosAction(){
-		$idSucursal = $this->getParam("idSucursal");
-		$idCoP = $this->getParam("idCoP");
-		$numeroFactura = $this->getParam("numeroFactura");
-		
-		$cuentasxp = $this->pagoProveedorDAO->busca_Cuentasxp($idCoP);
-		if(!is_null($cuentasxp)){
-			echo Zend_Json::encode($cuentasxp);	
-		}else{
-			echo Zend_Json::encode(array());
-		}		
-	}
+		}
+    }
+
+
 }
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+

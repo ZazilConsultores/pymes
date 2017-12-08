@@ -11,9 +11,9 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		);
 		
 		$decoratorsElemento = array(
-		'ViewHelper',
-		array(array('element'=>'Htmltag'),array('tag'=>'td')),
-		array('label',array('tag'=>'td')),
+			'ViewHelper',
+			array(array('element'=>'Htmltag'),array('tag'=>'td')),
+			array('label',array('tag'=>'td')),
 		array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
 		);
 		
@@ -55,7 +55,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
 		$eSucursal =  new Zend_Form_Element_Select('idSucursal');
@@ -97,13 +97,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
-		$eSubmit->setAttrib("	", "true");
-		
-		/*$eSubmit1 = new Zend_Form_Element_Button("submit1");
-		$eSubmit1->setLabel("Enviar");
-		$eSubmit1->setAttrib("class", "btn btn-success");
-		$eSubmit1->setAttrib("disabled", "true");*/
-		
+		$eSubmit->setAttrib("disabled", "true");
 		
 		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eProveedor,$eDivisa,$eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);

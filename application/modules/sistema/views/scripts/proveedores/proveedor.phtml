@@ -1,13 +1,16 @@
 <?php 
 	$fiscalesDAO = $this->fiscalesDAO;
 	$fiscales = $this->fiscales;
-	
+	$fiscalesCuentaContable = $this->fiscalesCuentaContable;
+	//$empresaDAO = new Sistema_DAO_Empresa;
+	$tiposProveedor = $fiscalesDAO->obtenerFiscalesTipoProveedor($fiscales->getIdFiscales());	
 	$domiciliosFiscales = $fiscalesDAO->obtenerDomiciliosPorIdFiscal($fiscales->getIdFiscales());
 	$fiscalesTelefonos = $fiscalesDAO->obtenerTelefonosFiscales($fiscales->getIdFiscales());
 	$fiscalesEmails = $fiscalesDAO->obtenerEmailsFiscales($fiscales->getIdFiscales());
 	
 	$estadoDAO = new Sistema_DAO_Estado;
 	$municipioDAO = new Sistema_DAO_Municipio;
+	$tipoDAO = new Sistema_DAO_Empresa;
 ?>
 <section class="panel panel-success">
 	<div class="panel-heading">
@@ -25,11 +28,15 @@
 				<th>Sucursales</th>
 				<th>R.F.C.</th>
 				<th>Razon Social</th>
+				<th>Tipo Proveedor</th>
+				<th>Cuenta Contable</th>
+				<th>Saldo</th>
 			</thead>
 			<tbody>
+				<?php foreach ($tiposProveedor as $tipoProveedor) : ?>
 				<tr>
 					<td>
-						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"fiscales","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
+						<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"sistema","controller"=>"proveedores","action"=>"edita","idFiscales"=>$fiscales->getIdFiscales()),null,TRUE); ?>">
 							<span class="glyphicon glyphicon-cog"></span> Configurar
 						</a>
 					</td>
@@ -38,9 +45,14 @@
 							<span class="glyphicon glyphicon-home"></span> Sucursales
 						</a>
 					</td>
+					
 					<td><?php echo $fiscales->getRfc() ?></td>
 					<td><?php echo $fiscales->getRazonSocial() ?></td>
+					<td><?php echo $tipoProveedor->getDescripcion() ?></td>
+					<td><?php echo $fiscalesCuentaContable["cuenta"] ?>
+					<td><?php echo $fiscalesCuentaContable["saldo"] ?>	
 				</tr>
+				<?php endforeach ?>
 			</tbody>
 		</table>
 	</div>
