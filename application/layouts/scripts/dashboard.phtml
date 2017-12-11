@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>General Application</title>
+        <meta name="author" content="Hector Rodriguez">
+        <meta name="description" content="">
+        <?php $public = $this->baseUrl()."/public"; ?>
+
+        <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+        <link rel="shortcut icon" href="<?php echo $public; ?>/images/favicon.ico">
+        <link rel="apple-touch-icon" href="<?php echo $public; ?>/images/Logo.png">
+        
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/graficas.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/jquery-ui.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/jquery-ui.structure.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/jquery-ui.theme.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="<?php echo $public; ?>/css/responsive.bootstrap.min.css" />
+    </head>
+
+    <body>
+        <!-- Menu principal -->
+        <?php echo $this->partial("partials/menus/principal.phtml"); ?>
+        <br /><br />
+        <div class="container">
+            <?php echo $this->layout()->content; ?>
+        </div>
+    </body>
+    
+    <script src="<?php echo $public; ?>/js/jquery-1.11.2.js"></script>
+    <script src="<?php echo $public; ?>/js/jquery.validate.js"></script>
+    <script src="<?php echo $public; ?>/js/additional-methods.js"></script>
+    <script src="<?php echo $public; ?>/js/jquery-ui.min.js"></script>
+    <script src="<?php echo $public; ?>/js/datepicker-es.js"></script>
+    <script src="<?php echo $public; ?>/js/bootstrap.min.js"></script>
+    <script src="<?php echo $public; ?>/js/jquery.dataTables.min.js"></script>
+    <script src="<?php echo $public; ?>/js/dataTables.bootstrap.min.js"></script>
+    <script src="<?php echo $public; ?>/js/dataTables.responsive.min.js"></script>
+    <script src="<?php echo $public; ?>/js/responsive.bootstrap.min.js"></script>
+    <script src="<?php echo $public; ?>/js/generartabla.js"></script>
+    <script src="<?php echo $public; ?>/js/Chart.js"></script>
+</html>

@@ -1,6 +1,4 @@
 <?php
-	//$currentModule = Zend_Registry::get("currentModule");
-	//$currentUser = Zend_Registry::get("currentUser");
 	$rolDAO = new Sistema_DAO_Rol;
 	$auth = Zend_Auth::getInstance();
 	$identity = null;
@@ -24,13 +22,13 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index'), null, true); ?>" >
-						Applicacion General 
+						Zazil Pymes 
 					</a>
 				</div>
 				
 				<div class="collapse navbar-collapse" id="navbar1">
 					<ul class="nav navbar-nav">
-						<li class="active">
+						<li>
 							<a class="navbar-brand" href="<?php echo $this->url(array("module"=>"default","controller"=>"usuario","action"=>"perfil","usr"=> (is_null($identity)) ? "default" : $identity->idUsuario ),null,true) ?>">
 								<!--<span class="glyphicon glyphicon-cog"></span> <?php echo $rol = (is_null($modelRol)) ? "default" : $modelRol->getRol(); ?> - <span class="glyphicon glyphicon-user"></span> <?php echo $user = (is_null($identity)) ? "default" : $identity->usuario; ?>-->
 							</a>
@@ -46,26 +44,14 @@
 						<!-- Menú de operaciones de inventario -->
 						<?php echo $this->partial('partials/menus/submenus/inventario.phtml'); ?>
 						<!-- Menú de operaciones de soporte -->
-						<?php echo $this->partial('partials/menus/submenus/soporte.phtml'); ?>
+						<?php //echo $this->partial('partials/menus/submenus/soporte.phtml'); ?>
 						<!-- Menú de operaciones de encuesta -->
-						<?php echo $this->partial('partials/menus/submenus/encuesta.phtml'); ?>
+						<?php //echo $this->partial('partials/menus/submenus/encuesta.phtml'); ?>
 						<!-- Menú de operaciones de biblioteca -->
-						<?php echo $this->partial('partials/menus/submenus/biblioteca.phtml'); ?>
-
+						<?php //echo $this->partial('partials/menus/submenus/biblioteca.phtml'); ?>
 					</ul>
 				</div>
 			</div>
 		</nav>
-</header>
+    </header>
 </div>
-<script type="text/javascript">
-	$().ready(function() {
-		var viewOperacionE = "<?php echo $configEncuesta['viewOperacion'] ?>";
-		var viewConsultaE = "<?php echo $configEncuesta['viewConsulta'] ?>";
-		var cssViewOperacionE = viewOperacionE == "S" ? "" : "hidden";
-		var cssViewConsultaE = viewConsultaE == "S" ? "" : "hidden";
-		$("a[tipoVista='operacion']").addClass(cssViewOperacionE);
-		$("a[tipoVista='consulta']").addClass(cssViewConsultaE);
-		
-	});
-</script>
