@@ -41,7 +41,7 @@ class Sistema_Form_AltaVendedor extends Zend_Form
 		$eClaveVendedor->setAttrib("required", "true");
 		
        	$eNombre = new Zend_Form_Element_Text("nombre");
-		$eNombre->setLabel("Nombre: ");
+		$eNombre->setLabel("Nombre Completo: ");
 		$eNombre->setAttrib("class", "form-control");
 		$eNombre->setAttrib("required", "true");
 		//$eNombre->__toString("toLowerCase()");

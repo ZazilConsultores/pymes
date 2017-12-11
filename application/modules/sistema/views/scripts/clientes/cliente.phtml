@@ -29,6 +29,7 @@
 				<th>R.F.C.</th>
 				<th>Razon Social</th>
 				<th>Cuenta Contable</th>
+				<th>Saldo</th>
 			</thead>
 			<tbody>
 				<tr>
@@ -45,6 +46,7 @@
 					<td><?php echo $fiscales->getRfc() ?></td>
 					<td><?php echo $fiscales->getRazonSocial() ?></td>
 					<td><?php echo $fiscalesCuentaContable["cuenta"] ?></td>
+					<td><?php echo $fiscalesCuentaContable["saldo"] ?>	
 				</tr>
 			</tbody>
 		</table>
@@ -83,8 +85,8 @@
 						<td><?php echo $domicilioFiscal->getCalle(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroInterior(); ?></td>
 						<td><?php echo $domicilioFiscal->getNumeroExterior(); ?></td>
-						<td><?php echo $domicilioFiscal->getColonia(); ?></td>
 						<td><?php echo $domicilioFiscal->getCodigoPostal(); ?></td>
+						<td><?php echo $domicilioFiscal->getColonia(); ?></td>
 						<td><?php echo $municipio->getMunicipio(); ?></td>
 						<td><?php echo $estado->getEstado(); ?></td>
 					</tr>

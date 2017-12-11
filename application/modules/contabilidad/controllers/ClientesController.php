@@ -4,15 +4,23 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
+
     private $sucursalDAO = null;
+
     private $notaSalidaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $impuestosDAO = null;
+
     private $cobroClienteDAO = null;
+
     private $anticipoDAO = null;
-	private $proyectoDAO= null;
-	
+
+    private $proyectoDAO = null;
+
     public function init()
     {
     	$this->sucursalDAO = new Sistema_DAO_Sucursal;
@@ -25,9 +33,10 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$this->anticipoDAO = new Contabilidad_DAO_Anticipos;
 		$this->proyectoDAO = new Contabilidad_DAO_ProyectoCliente;
 		
+		
 		$adapter =Zend_Registry::get('dbmodgeneral');
 		$this->db = $adapter;
-		// =================================================== >>> Obtenemos todos los productos de la tabla producto
+		// ====================================================>>> Obtenemos todos los productos de la tabla producto
 		$select = $this->db->select()->from("Producto")->order("claveProducto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
@@ -35,11 +44,12 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		$select = $this->db->select()->from("Unidad");
 		$statement = $select->query();
 		$rowsUnidad =  $statement->fetchAll();
-		// =================================== Codificamos los valores a formato JSON
+		// ====================================================>>> Codificamos los valores a formato JSON
 		$jsonProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonProductos = $jsonProductos;
 		$jsonUnidad = Zend_Json::encode($rowsUnidad);
 		$this->view->jsonUnidad = $jsonUnidad;
+		
     }
 
     public function indexAction()
@@ -48,13 +58,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
     public function notaAction()
     {
-    	
         $request = $this->getRequest();
+		$select= $this->db->select()->from("Producto")->order("producto ASC");
+		$statement = $select->query();
+		$rowsProducto  =$statement->fetchAll();
+		$jsonDesProductos = Zend_Json::encode($rowsProducto);
+		$this->view->jsonDesProductos = $jsonDesProductos;
         $formulario = new Contabilidad_Form_NuevaNotaCliente;
-
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
@@ -62,13 +74,16 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 				$contador = 0;
 				foreach ($productos as $producto){
 					try{
+						if($encabezado["idEmpresas"]==6){
+							$desechable  = $this->notaSalidaDAO->restaDesechable($producto);
+						}
 						$guardaMovimiento = $this->notaSalidaDAO->guardaMovimientos($encabezado, $producto);
 						$resta  = $this->notaSalidaDAO->restaProducto($encabezado, $producto);
 						$contador++;
+						$this->view->messageSuccess = "Nota Cliente Generada Exitosamente";
 					}catch(Util_Exception_BussinessException $ex){
 						$this->view->messageFail = $ex->getMessage();
 					}
-					
 				}
 			}
 		}
@@ -77,41 +92,33 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function remisionAction()
     {
 		$request = $this->getRequest();
-		
 		$select = $this->db->select()->from("Producto")->order("producto ASC");
 		$statement = $select->query();
 		$rowsProducto =  $statement->fetchAll();
 		$jsonDesProductos = Zend_Json::encode($rowsProducto);
 		$this->view->jsonDesProductos = $jsonDesProductos;
-		
 		$formulario = new Contabilidad_Form_AgregarRemisionCliente;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
 				$datos = $formulario->getValues();
 				$encabezado = $datos[0];
 				$formaPago =$datos[1];
 				$productos = json_decode($encabezado['productos'], TRUE);
-				print_r('<br />');
 				$contador = 0;
-				foreach ($productos as $producto){
-					try{
+				try{
+				    foreach ($productos as $producto){
 						$remisionSalidaDAO->restarProducto($encabezado, $producto, $formaPago);
 						$contador++;
 						$this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
-					}catch(Util_Exception_BussinessException $ex){
-						$this->view->messageFail = $ex->getMessage();
 					}
-					
-				}
-				$remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
-			}else{
-				print_r("formulario no valido <br />");
-			}							
-			//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
-    }
+					$remisionSalidaDAO->generaCXC($encabezado, $formaPago, $productos);
+				}catch(Util_Exception_BussinessException $ex){
+				    $this->view->messageFail = $ex->getMessage();
+				}							
+			}//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+        }
     	
     }
 
@@ -119,47 +126,32 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     {
 		$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		$this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				//print_r($datos);
 				$encabezado = $datos[0];
 				$formaPago = $datos[1];
 				$productos = json_decode($encabezado['productos'],TRUE);
-				print_r($productos);
-				
 				$importe = json_decode($formaPago['importes'],TRUE);
-				//print_r($formaPago);
 				$contador=0;
 				try{
 					$guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
 					//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
 					foreach ($productos as $producto){
-					//try{
-						$detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
-						$actualizaProducto = $this->facturaDAO->restaProducto($encabezado, $producto);
-						////$cardex = $this->facturaDAO->creaCardex($encabezado, $producto);
-						////$inventario = $this->facturaDAO->resta($encabezado, $producto);
-						//$restaProducto = $this->facturaDAO->creaFacturaCliente($encabezado, $producto, $importe);
-						
-					$contador++;
+					    if($encabezado["idEmpresas"]==6 ){
+					        $desechable  = $this->facturaDAO->restaDesechable($producto);
+					    }
+					    $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+						$restaProducto  = $this->facturaDAO->restarProducto($encabezado, $producto);
+					   $contador++;
 					}
 					$this->view->messageSuccess = "Se ha agregado Factura exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
-				}/*}else{
-					print_r("formulario no valido <br />");*/
 				}
-				
-				
-				
-			//}
-			
-		//}
-   }
-
+			}
+        }
     }
 
     public function cobrosAction()
@@ -171,58 +163,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$datos = $request->getPost();
 			$idSucursal = $this->getParam("sucursal");
 			$cl = $this->getParam("cliente");
-			//print_r($idSucursal);
-			//print_r($cl);
-			$facturasxc = $this->cobroClienteDAO->busca_Cuentasxc($idSucursal, $cl);
-			$this->view->facturasxc = $facturasxc;
 		}
-    }
-
-    public function consecutivofacturaAction()
-    {
-        $request = $this->getRequest();
-		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
-        $this->view->empresas = $empresas;
-		$idFiscales = $this->getParam("empresa");
-		print_r($idFiscales);
-		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
-		/*$sucursal = $this->getParam("sucursal");
-		print_r($sucursal);*/
-		
-        /*$this->view->sucursal = $sucursal;*/
-		
-		
-		 
-		/*$obtenerFactura = $this->facturaDAO->editaNumeroFactura($idSucursal);
-		$this->view->obtenerFactura = $obtenerFactura;
-		$formulario = new Contabilidad_Form_AgregarFacturaCliente;
-		$formulario->getSubForm("0")->removeElement("idEmpresas");
-		$formulario->getSubForm("0")->removeElement("idSucursal");
-		$formulario->getSubForm("0")->removeElement("idProyecto");
-		$formulario->getSubForm("0")->removeElement("folioFiscal");
-		$formulario->getSubForm("0")->removeElement("idCoP");
-		$formulario->getSubForm("0")->removeElement("fecha");
-		$formulario->getSubForm("0")->getElement("numeroFactura")->setValue($obtenerFactura["numeroFactura"]);
-		
-		$formulario->removeSubForm("1");
-		$formulario -> getElement("submit")->setAttrib("class", "btn btn-warning");
-		$formulario -> getElement("submit")->setLabel("Actualizar Consecutivo");
-		$this -> view -> formulario = $formulario;			
-		/*if($request->isGet()){
-			$this->view->empresas = $empresas;	
-		}if($request->isPost()){		
-			$datos = $request->getPost();
-			
-					
-		}*/
-    }
-
-    public function editaconsecutivoAction()
-    {
-        // action body
-        $idFiscales = $this->getParam("empresa");
-		print_r($idFiscales);
-		//$sucursal = $this->sucursalesDAO->obtenerSucursales($idFiscales); 
     }
 
     public function aplicacobroAction()
@@ -241,10 +182,10 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				print_r($datos);
+				//print_r($datos);
 				try{
 					$this->cobroClienteDAO->aplica_Cobro($idFactura, $datos);
-					$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
+					//$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
 					$this->view->messageSuccess = "Cobro: <strong>".$datosFactura["numeroFactura"]."</strong> se ha efectuado exitosamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
@@ -281,19 +222,124 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 			$this->view->empresas = $empresas;	
 		}if($request->isPost()){		
 			$datos = $request->getPost();
-			//$pagoPago = $this->pagoProveedorDAO->aplica_Pago($idFactura, $datos);
-			$idSucursal = $this->getParam("sucursal");
-			print_r($idSucursal);
-        	$idProyecto = $this->getParam("idProyecto"); 
-        	print_r($idProyecto);
-        	$proyectos = $this->proyectoDAO->obtieneProyecto($idProyecto);
-			$this->view->proyectos = $proyectos;
 		}
         
     }
 
+    public function buscaanticipoclientesAction()
+    {
+    	$request = $this->getRequest();
+		$sucu = $this->getParam("idSucursal");
+        $cli = $this->getParam("idCoP");
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;
+        $cobrosDAO = new Contabilidad_DAO_CobroCliente;
+        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);	
+		if($request->isPost()){		
+			$datos = $request->getPost();
+			$idSucursal = $this->getParam("sucursal");
+			$cl = $this->getParam("cliente");
+		}
+        
+    }
+
+    public function enlazafacturaAction()
+    {
+    	$idSucursal = $this->getParam("idSucursal");
+		$idCoP = $this->getParam("idCoP");
+		$total = $this->getParam("total");
+    	$cobrosDAO = new Contabilidad_DAO_CobroCliente;
+        $this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);
+    }
+
+    public function cancelarAction()
+    {
+		$request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;
+		if($request->isPost()){					
+			$datos = $request->getPost();
+			$idFactura = $datos["fac"];
+			$this->facturaDAO->cancelaFactura($idFactura);
+		}
+    }
+
+    public function remisioncafeAction()
+    {
+        $request = $this->getRequest();
+        $select = $this->db->select()->from("Producto")->order("producto ASC");
+        $statement = $select->query();
+        $rowsProducto =  $statement->fetchAll();
+        $jsonDesProductos = Zend_Json::encode($rowsProducto);
+        $this->view->jsonDesProductos = $jsonDesProductos;
+        $formulario = new Contabilidad_Form_AgregarRemisionClienteCafeteria;
+        $this->view->formulario = $formulario;
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $remisionSalidaDAO = new Contabilidad_DAO_RemisionSalida;
+                $datos = $formulario->getValues();
+                $encabezado = $datos[0];
+                $formaPago =$datos[1];
+                $productos = json_decode($encabezado['productos'], TRUE);
+                $contador = 0;
+                try{
+                    $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
+                    $contador++;
+                    $this->view->messageSuccess ="Remision de Salida realizada efectivamente" ;
+                }catch(Util_Exception_BussinessException $ex){
+                    $this->view->messageFail = $ex->getMessage();
+                }
+            }//$this->_helper->redirector->gotoSimple("nueva", "notaproveedor", "contabilidad");
+        }
+    }
+
+    public function cobroremiclicafeAction()
+    {
+        $request = $this->getRequest();
+        $empresas = $this->empresaDAO->obtenerFiscalesEmpresas();
+        $this->view->empresas = $empresas;
+        if($request->isPost()){
+            $datos = $request->getPost();
+            $idSucursal = $this->getParam("sucursal");
+            $cl = $this->getParam("cliente");
+        }
+    }
+
+    public function aplicacobroremiclicafeAction()
+    {
+        $request = $this->getRequest();
+        $idMovimiento = $this->getParam("idMovimiento");
+        $datosMovto = $this->cobroClienteDAO->obtieneMovimiento($idMovimiento);
+        $formulario = new Contabilidad_Form_Cobrofactura;
+        $this->view->formulario = $formulario;
+        $cobrosDAO = new Contabilidad_DAO_CobroCliente;
+        
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $datos = $formulario->getValues();
+                print_r($datos);
+                try{
+                    $this->cobroClienteDAO->aplica_CobroRemisionCafe($idMovimiento, $datos);
+                    //$this->cobroClienteDAO->actualiza_Saldo($idFactura, $datos);
+                    $this->view->messageSuccess = "Cobro: <strong>".$datosMovto["numeroFolio"]."</strong> se ha efectuado exitosamente!!";
+                }catch(Exception $ex){
+                    $this->view->messageFail = "Error: <strong>".$ex->getMessage()."</strong>";
+                }
+            }
+        }
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
 
 
 

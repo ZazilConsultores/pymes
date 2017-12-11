@@ -175,9 +175,7 @@ class Inventario_DAO_Empresa implements Inventario_Interfaces_IEmpresa {
 		
 		$select = $tablaFiscales->select()->from($tablaFiscales)->where("hash = ?", $hashFiscal);
 		$rowFiscal = $tablaFiscales->fetchRow($select);
-		
-		
-		
+	
 		switch ($tipo) {
 			case 'EM':
 				

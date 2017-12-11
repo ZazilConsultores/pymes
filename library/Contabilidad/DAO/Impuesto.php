@@ -64,12 +64,12 @@
 		}	
    	}
 	
-	public function editarImpuesto($idImpuesto,array $datos)
+	public function editarImpuesto($idImpuesto, array $impuesto)
 	{
 		$tablaImpuesto = $this->tablaImpuesto;
 		$where = $tablaImpuesto->getAdapter()->quoteInto("idImpuesto = ?", $idImpuesto);
-		$tablaImpuesto->update($datos, $where);
-		
+		$tablaImpuesto->update($impuesto, $where);
+		print_r("$tablaImpuesto");
 	}
 	
 	public function obtenerImpuestoProductos($idImpuesto) {
@@ -90,7 +90,7 @@
 			$tablaImpuestoProductos =$this->tablaImpuestoProductos;
 			$select = $tablaImpuestoProductos->select()
 			->setIntegrityCheck(false)
-			->from($tablaImpuestoProductos, array('idProducto','importe','porcentaje'))
+			->from($tablaImpuestoProductos, array('idProducto','idImpuestoProducto','idImpuesto','importe','porcentaje'))
 			->join('Producto', 'ImpuestoProductos.idProducto = Producto.idProducto', array('producto'))
 			->join('Impuesto', 'ImpuestoProductos.idImpuesto = Impuesto.idImpuesto', array('descripcion'));
 			return $tablaImpuestoProductos->fetchAll($select);
@@ -133,13 +133,20 @@
 		public function obtenerImpuestoProducto($idProducto){
 			$tablaImpuestoProductos = $this->tablaImpuestoProductos;
 			$select = $tablaImpuestoProductos->select()->from($tablaImpuestoProductos)->where("idProducto = ?", $idProducto);
-			$rowImpuestoProductos = $tablaImpuestoProductos->fetchRow($select);
+			//$rowImpuestoProductos = $tablaImpuestoProductos->fetchAll($select);
 			
-			if (is_null($rowImpuestoProductos)) {
-				return null;
-			}else{
-				return $rowImpuestoProductos->toArray();
-			}
+			//if (is_null($rowImpuestoProductos)) {
+				//return null;
+			//}else{
+				return $rowImpuestoProductos = $tablaImpuestoProductos->fetchAll($select);
+			//}
 		}
-   }
+	
+	public function eliminarImpuestoProducto($idImpuestoProducto){
+		$tablaImpuestoProductos = $this->tablaImpuestoProductos;
+		$where = $tablaImpuestoProductos->getAdapter()->quoteInto("idImpuestoProducto = ?", $idImpuestoProducto);
+		//print_r("$where");
+		$tablaImpuestoProductos->delete($where);
+	}
+}
 ?>

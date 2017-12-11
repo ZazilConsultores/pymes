@@ -7,8 +7,7 @@
 	$formasPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
 	$sucursalesDAO = new Sistema_DAO_Sucursal;
 	$empresas = $this->empresas;
-	//$sucursal = $sucursalesDAO->obtenerSucursal($idSucursal);  
-	$facturasxp = $this->facturasxp;
+	//$sucursal = $sucursalesDAO->obtenerSucursal($idSucursal);
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -17,10 +16,6 @@
 				<h4 class="panel-title">Búsqueda de Factura por Pagar<strong></strong></h4>
 			</div>
 			<div class="panel-body">
-				<div>
-					
-				</div>
-				<hr />
 				<div>
 					<!--<div class="form-horizontal">-->
 						<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
@@ -55,7 +50,7 @@
 						<!-- Boton consulta -->
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button id="queryFacturas" type="submit" class="btn btn-success">
+								<button id="queryFacturas" type="button" class="btn btn-success">
 									<i class="fa fa-search"></i> Consultar Facturas
 								</button>
 							</div>
@@ -66,51 +61,25 @@
 		</div>
 	</div>
 </div>
-<!-- Muesta el resultado de la busqueda -->
-<?php if(!is_null($facturasxp)){ ?>
-	<div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h5 class="panel-title">Detalle de Facturas</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<table id="detalleFacturaxp" class="table table-striped table-condensed">
-						<thead>
-							<tr>
-								<th>Sucursal</th>
-								<th>Proveedor</th>
-								<th>Número Factura</th>
-								<th>Fecha</th>
-								<th>$total</th>
-								<th>Pago</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($facturasxp as $facturaxp) :?>
-								<tr>
-									<td><?php echo $facturaxp["idSucursal"]; ?></td>
-									<td><?php echo $facturaxp["idCoP"]; ?></td>
-									<td><?php echo $facturaxp["numeroFactura"]; ?></td>
-									<td><?php echo $facturaxp["fecha"]; ?></td>
-									<td><?php echo "$" .number_format($facturaxp["total"],2) ?></td>
-									<td>	
-										<a class="btn btn-primary" type="submit" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"proveedor","action"=>"aplicarpago","idFactura"=>$facturaxp["idFactura"]),null, true)?>">
-											<span class="glyphicon glyphicon-pencil"></span> Pago
-										</a
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			
+<section>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4 class="panel-title">Detalle Pago Factura.</h4>
 		</div>
+		<table id="detalleFacturaxp" class="table table-striped table-condensed">
+			<thead>
+				<th>Sucursal </th>
+				<th>Proveedor</th>
+				<th>Número Factura</th>
+				<th>Fecha</th>
+				<th>Importe</th>
+				<th>Pago</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
-</div>	
-<?php } ?>
+</section>
 <!--Modal para realizar un  pago -->
 <div class="modal fade" id="modalPago" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role= "document">
@@ -196,92 +165,91 @@
 								</button>
 							</div>
 						</div>		
-				</form>
-					
+				</form>	
 			</div><!--body-->
 		</div><!--modal-content-->
 	</div><!--modal-dialog-->
 </div><!--modal-->
-
-<div class="row hidden" >
-	<div class="col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h5 class="panel-title">Relación de Pagos</h5>
-			</div>
-			<div class="panel-body">
-				<div>
-					<table id="detalleFacturaxp" class="table table-striped table-condensed">
-						<thead>
-							<tr>
-								<th>Movimiento</th>
-								<th>Pago</th>
-								<th>Divisa</th>
-								<th>Importe</th>
-								<th>Fecha</th>
-								<th>$total</th>
-								<th>Pago</th>
-								<th>Nomina</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			
-		</div>
-	</div>
-</div>
-
-
 <script>
-	$().ready(function(){
-		
-		var url = window.location.origin + "/General/";
-		
-		$("select#idFiscales").on('change',function(){
-			console.log($(this).val());
-			var idFiscal = $(this).val();
-			if(idFiscal != 0){
-				// Traer sucursales de la empresa seleccionada y llenar combo de sucursales
-				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				
-				$.ajax({
-					url: urlQuerySucursales,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("#idSucursal").empty();
-						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
-						$.each(data, function (i,item){
-							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-						});
-					}
-				});
+$().ready(function(){
+	var url = window.location.origin + "/General/";
+
+	$("select#idFiscales").on('change',function(){
+		var idFiscal = $(this).val();
+		if(idFiscal != 0){
+			//llena combo de sucursales
+			var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+			$.ajax({
+				url: urlQuerySucursales,
+				dataType: "json",
+				success: function(data){
+					$("#idSucursal").empty();
+					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+					$.each(data, function (i,item){
+						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+					});
+				}
+			});
 			
-				// Traer proveedores de la empresa seleccionada y llenar combo de proveedores
-				var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
-				console.log(urlQueryProveedores);
-				$.ajax({
-					url: urlQueryProveedores,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("select#idProveedor").empty();
-						$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
-						$.each(data, function (i,item){
-							$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
-						});
-					}
+			// Llena combo proveedores
+			var urlQueryProveedores = url + 'contabilidad/json/proveedorese/idFiscales/'+idFiscal;
+			$.ajax({
+				url: urlQueryProveedores,
+				dataType: "json",
+				success: function(data){
+					$("select#idProveedor").empty();
+					$("select#idProveedor").append($("<option></option>").attr("value","0").text("Seleccione Proveedor..."));
+					$.each(data, function (i,item){
+						$("select#idProveedor").append($("<option></option>").attr("value",data[i].idProveedores).text(data[i].razonSocial));
+					});
+				}
+			});
+		}
+	});
+		
+	$("button#queryFacturas").on("click", function(){
+		var sucu = $("select#idSucursal").val();
+		var pro = $("select#idProveedor").val();
+		var urlCXP = window.location.origin + "/General/contabilidad/json/buscafacxp/sucu/" + sucu +"/pro/"+pro;
+		$.ajax({
+			url: urlCXP,
+			dataType: "json",
+			success: function(data){
+			var tbody = $("table#detalleFacturaxp").find('tbody');
+			tbody.empty();
+			$.each(data, function(i,item){
+				var botonPago = $('<button></button>').attr("id","pago").attr("class","btn btn-primary").text("Pago").attr("factura",data[i].idFactura);
+				tbody.append($('<tr>').
+					append($('<td>').append(data[i].idSucursal)).
+					append($('<td>').append(data[i].idCoP)).	
+					append($('<td>').append(data[i].numeroFactura)).
+					append($('<td>').append(data[i].fecha)).
+					append($('<td>').append(data[i].total).attr("id", "importe")).
+					append($('<td>').append(botonPago)));
 				});
+				AddRow();
+				calculaTotal();
 			}
 		});
-		
-		$("a#pagos").on('click', function(){
-			
-		});
 	});
+
+	function calculaTotal(){
+		var total = 0;
+		$("table#detalleFacturaxp").find("td[id^='importe']").each(function(){
+			total += +$(this).text(); 
+			$("#total").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		});
+	}
+	
+	function AddRow(){
+		$('#detalleFacturaxp tbody').append('<tr><td></td><td></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="total"class="form-control" style="width:120px"></input></td></tr>');
+    }
+    	
+    $("table#detalleFacturaxp").on("click", "button[id^='pago']", function(){
+		var factura = $(this).attr("factura");
+		window.location = "/General/contabilidad/proveedor/aplicarpago/idFactura/"+ factura;
+	});
+});
 </script>
 
 

@@ -15,6 +15,7 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 	private $tablaImpuestoProductos;
 	private $tablaConsecutivo;
 	private $tablaProductoCompuesto;
+	private $tablaTipoMovimiento;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -34,33 +35,85 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		$this->tablaConsecutivo = new Contabilidad_Model_DbTable_Consecutivo(array('db'=>$dbAdapter));
 		$this->tablaProductoCompuesto = new Inventario_Model_DbTable_ProductoCompuesto(array('db'=>$dbAdapter));
 		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
+		$this->tablaTipoMovimiento = new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
 		
 			
 	}	
 	
 	public function obtieneProyecto($idProyecto){
-		/*$tablaMovimiento = $this->tablaMovimiento;	
-		$select = $tablaMovimiento->select()->from($tablaMovimiento, new Zend_Db_Expr('DISTINCT(idFactura) as idFactura'))->where("idTipoMovimiento=?",2)->where("idProyecto = ?",$idProyecto);
-		$rowsMovimiento = $tablaMovimiento->fetchAll($select);
-		//print_r("$select"); 
-		
-		foreach ($rowsMovimiento as $rowMovimiento) {
-			$tablaFactura = $this->tablaFactura;
-			$select = $tablaFactura->select()->from($tablaFactura)->where("idFactura = ?",$rowMovimiento->idFactura);
-			$rowFactura = $tablaFactura->fetchRow($select);
-			return $rowFactura;
-		}*/
 		$tablaMovimientos = $this->tablaMovimiento;
 		$select= $tablaMovimientos->select()
 		->setIntegrityCheck(false)
 		->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
-		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
-		->where('Movimientos.idTipoMovimiento =?', 2)->where('Movimientos.idProyecto =?', $idProyecto);
+		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
+		->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
+		->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Movimientos.idTipoMovimiento = ?',2)
+		->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
+		//print_r("$select");
+		return $tablaMovimientos->fetchAll($select);
+	}
+
+	public function obtieneProyectoProveedor($idProyecto){
+		
+		$tablaMovimientos = $this->tablaMovimiento;
+		$select= $tablaMovimientos->select()
+		->setIntegrityCheck(false)
+		->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
+		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
+		->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+		->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
+		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Movimientos.idTipoMovimiento = ?',4)
+		->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
 		//print_r("$select");
 		return $tablaMovimientos->fetchAll($select);
 		
-		
 	}
+	
+	public function obtieneProyectoRemision($idProyecto){
+		$tablaMovimientos = $this->tablaMovimiento;
+		$select  = $tablaMovimientos->select()
+		->setIntegrityCheck(false)
+		->from($tablaMovimientos)
+		->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
+		->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
+		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+		->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+		return $tablaMovimientos->fetchAll($select);
+	}
+	
+	public function obtieneProyectoRemisionProveedor($idProyecto){
+		$tablaMovimientos = $this->tablaMovimiento;
+		$select  = $tablaMovimientos->select()
+		->setIntegrityCheck(false)
+		->from($tablaMovimientos)
+		->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+		->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
+		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+		->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+		return $tablaMovimientos->fetchAll($select);
+	}
+	
+	public function obtieneProyectoNominaProveedor($idProyecto){
+		$tablaMovimientos  = $this->tablaMovimiento;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProyecto=?",$idProyecto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		foreach ($rowsMovimientos as $rowMovimiento) {
+			if($rowMovimiento['idTipoMovimiento'] == 20 ){
+				$tablaMovimientos = $this->tablaMovimiento;
+				$select  = $tablaMovimientos->select()
+				->setIntegrityCheck(false)
+				->from($tablaMovimientos)
+				->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
+				->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
+				->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+				->where('Movimientos.idProyecto =?', $idProyecto)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+				//print_r("$select");
+				return $tablaMovimientos->fetchAll($select);
+			}
+		}	
+	}
+	
 	
 	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos){
 		
@@ -1099,6 +1152,16 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 			print_r($ex->getMessage());
 			throw new Util_Exception_BussinessException("Error");
 		}
+	}
+
+	public function obtieneDescripcionxMovto($idTipoMovimiento){
+		
+		$tablaTipoMovto = $this->tablaTipoMovimiento;
+		$select = $tablaTipoMovto->select()->from($tablaTipoMovto)->where("idTipoMovimiento = ?" ,$idTipoMovimiento); 
+		$rowTipoMovto = $tablaTipoMovto->fetchRow($select)->toArray();
+		//print_r("$select");
+		return $rowTipoMovto;
+		
 	}
 }
     

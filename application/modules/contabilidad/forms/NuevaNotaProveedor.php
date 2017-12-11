@@ -21,7 +21,7 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$this->setAttrib("name", "nuevaNotaProveedor");
 		
         $subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nueva Nota Proveedor");
+		//$subEncabezado->setLegend("Nueva Nota Proveedor");
 
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de Folio: ');
@@ -38,9 +38,9 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		{
 			if ($fila->getIdTipoMovimiento()==7){
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(),$fila->getDescripcion());		
-		
 			}
-		}	
+		}
+			
 		$eFecha = new Zend_Form_Element_Text('fecha');
 		$eFecha->setLabel('Seleccionar Fecha:');
 		$eFecha->setAttrib("class", "form-control");
@@ -88,11 +88,6 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
-			
-		/*$eProyecto = new Zend_Form_Element_Select('idProyecto');
-        $eProyecto->setLabel('Seleccionar Proyecto:');
-		$eProyecto->setAttrib("class", "form-control");
-		$eProyecto->setRegisterInArrayValidator(FALSE);*/
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
@@ -105,7 +100,6 @@ class Contabilidad_Form_NuevaNotaProveedor extends Zend_Form
      	$this->addSubForms(array($subEncabezado)); 
 		//$this->addElement($eProyecto);
 		$this->addElement($eSubmit);
-		//$this->addElement($eSubmit1);
 		
 	}
 }

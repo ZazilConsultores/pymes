@@ -91,65 +91,117 @@ class Contabilidad_GuiacontableController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_GuiaContable;
+        $this->view->formulario = $formulario;
 		$formulario->getSubForm("0")->getElement("descripcion");
+		$formulario->getSubForm("0")->setLegend("Registrar nuevo módulo");
+		$formulario->getElement("submit")->setLabel("Enviar");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-success");
 		$formulario->getSubForm("0")->removeElement("cta");
 		$formulario->getSubForm("0")->removeElement("sub1");
 		$formulario->getSubForm("0")->removeElement("sub2");
 		$formulario->getSubForm("0")->removeElement("sub3");
 		$formulario->getSubForm("0")->removeElement("sub4");
 		$formulario->getSubForm("0")->removeElement("sub5");
-		
 		$formulario->removeSubForm("1");
 		
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				
 				$datos = $formulario->getValues();
 				$descripcion = $datos[0];
 				try{
 					$this->guiaContable->altaModulo($descripcion);
+					$this->view->messageSuccess = "El módulo creado correctamente!!";
 				}catch(Exception $ex){
+					$this->view->messageFail = "No se pudo actualizar los datos. Error: <strong>".$ex->getMessage()."</strong>";
 				}
-				
 			}
 		}
-        
     }
 
     public function altatipoproveedorAction()
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_GuiaContable;
+		$this->view->formulario = $formulario;
 		$formulario->removeSubForm("1");
+		$formulario->getSubForm("0")->setLegend("Registrar nuevo tipo");
 		$formulario->getSubForm("0")->getElement("descripcion");
-		$formulario->getSubForm("0")->removeElement("cta");
+		$formulario->getElement("submit")->setLabel("Enviar");
+		$formulario->getSubForm("0")->getElement("cta")->setLabel("Clave:")->setAttrib("maxlength", "2")->setAttrib("minlength", "2");
 		$formulario->getSubForm("0")->removeElement("sub1");
 		$formulario->getSubForm("0")->removeElement("sub2");
 		$formulario->getSubForm("0")->removeElement("sub3");
 		$formulario->getSubForm("0")->removeElement("sub4");
 		$formulario->getSubForm("0")->removeElement("sub5");
-	
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$tipoProveedor = $datos[1];
-				print_r($tipoProveedor);
+				$tipo = $datos[0];
 				try{
-					$this->guiaContable->altaTipoProvedor($tipoProveedor);
+					$this->guiaContable->altaTipoProvedor($tipo);
 				}catch(Exception $ex){
-				}
+				}	
 				
 			}
 		}
         
     }
 
+    public function adminmodulosAction()
+    {
+        $guiaContableDAO = $this->guiaContable;
+		$this->view->modulos = $guiaContableDAO->obtenerModulos();  
+    }
+
+    public function editamoduloAction()
+    {
+		$idModulo = $this->getParam("idModulo");
+		$modulo = $this->guiaContable->obtenerModulo($idModulo);
+		$formulario = new Contabilidad_Form_GuiaContable;
+		$formulario->getSubForm("0")->getElement("descripcion")->setValue($modulo["descripcion"]);
+		$formulario->getSubForm("0")->setLegend("Editar  módulo");
+		$formulario->getElement("submit")->setLabel("Enviar");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario->getSubForm("0")->removeElement("cta");
+		$formulario->getSubForm("0")->removeElement("sub1");
+		$formulario->getSubForm("0")->removeElement("sub2");
+		$formulario->getSubForm("0")->removeElement("sub3");
+		$formulario->getSubForm("0")->removeElement("sub4");
+		$formulario->getSubForm("0")->removeElement("sub5");
+		$formulario->removeSubForm("1");
+		$this->view->formulario = $formulario;
+		$request = $this->getRequest();
+       	if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos= $formulario->getValues();
+				print_r($datos);
+				try{
+					$this->guiaContable->editarModulo($idModulo, $datos);
+					$this->view->messageSuccess = "Módulo se ha actualizado correctamente!!";
+				}catch(Exception $ex){
+					$this->view->messageFail = "No se pudo actualizar Error: <strong>".$ex->getMessage()."</strong>";
+				}
+			}
+		}
+    }
+
+    public function admintiposAction()
+    {
+    	$guiaContableDAO = $this->guiaContable;
+		$this->view->tipos = $guiaContableDAO->obtenerTipos();
+        
+    }
+
 
 }
+
+
+
+
+
+
+
+
 
 
 

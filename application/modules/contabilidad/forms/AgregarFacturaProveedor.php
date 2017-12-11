@@ -11,7 +11,6 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		);
 
 		$decoratorsElemento =array(
-			/*Decoradores*/
 			'ViewHelper',
 			array(array('element'=>'HtmlTag'), array('tag'=>'td')),
 			array('label', array('tag'=>'td')),
@@ -21,8 +20,7 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 
 		$this->setAttrib("id", "agregarFacturaProveedor");
 		$subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nueva Factura Proveedor");
-		
+		//$subEncabezado->setLegend("Nueva Factura Proveedor");
 		$tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
 
@@ -33,7 +31,6 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		foreach ($tipoMovimientoDAO->obtenerTiposMovimientos() as $fila) {
 			if ($fila->getIdTipoMovimiento() == "4") {
 				$eTipoMovto->addMultiOption($fila->getIdTipoMovimiento(), $fila->getDescripcion());
-
 			}
 		}
 
@@ -94,11 +91,6 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eProducto = new Zend_Form_Element_Hidden('productos');
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
-		
-		/*idProducto*/
-		/*$eidProducto = new Zend_Form_Element_Hidden('idProducto');
-		$eidProducto->setAttrib("class", "form-control");
-		$eidProducto->setAttrib("required","true");*/
 		
 		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,/*$eidProducto*/));
 		$subEncabezado->setElementDecorators($decoratorsElemento);

@@ -123,7 +123,7 @@ class Contabilidad_Form_AgregarFondeo extends Zend_Form
 		$eSubmit->setLabel('Agregar');
 		$eSubmit->setAttrib("class", "btn btn-warning");
 		
-		$subEncabezado->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eFecha,$eNumFolio));
+		$subEncabezado->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eNumFolio,$eFecha));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		

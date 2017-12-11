@@ -1,17 +1,15 @@
 <?php
-	echo $this->formulario;
+	$formulario = $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				Agregar Datos para Remision Salida.
-			</h3>
+			<h3 class="panel-title">Nueva Remisión Cliente.</h3>
 		</div>
 		<div class="panel-body">
-			<?php if(!is_null($messageSuccess)){ ?>
+				<?php if(!is_null($messageSuccess)){ ?>
 					<div class="alert alert-success" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						  <span aria-hidden="true">&times;</span>
@@ -26,7 +24,19 @@
 					<?php echo $messageFail; ?>
 				</div>
 				<?php } ?><br />
-				<!-- Botón para agregar filas-->
+				<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
+
+<section class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Agregar Productos.
+			</h3>
+		</div>
+		<div class="panel-body">
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -48,7 +58,6 @@
 				
 				</thead>
 				<tbody>
-					
 				</tbody>
 				<tfoot>
 					<tr>
@@ -66,8 +75,10 @@
 		</div>
 	</div>
 </section>
+
 <script>
 	$(document).ready(function(){
+		console.log( "ready!" );
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			$.ajax({
@@ -80,8 +91,7 @@
 					});
 					
 				}
-			});
-			
+			});	
 		});
 		
 		$("select#idSucursal").on('click', function(){
@@ -100,11 +110,8 @@
 			});
 			
 		});
-			
-		console.log( "ready!" );
+		
 		var jsonDesProductos = <?php echo $this->jsonDesProductos; ?>;
-		
-		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			var filasTabla = $("table#remisionSalida tbody > tr").length;
@@ -147,8 +154,7 @@
 				append($('<td>').append(selectDescripcion)).
 				append($('<td>').append(inputCostoUnitario)).
 				append($('<td>').append(inputCostoTotal)).
-				append($('<td>').append(buttonLimpiar))
-				
+				append($('<td>').append(buttonLimpiar))		
 			);
 		});//cierra el addRow
 		
@@ -182,41 +188,33 @@
  			var claveProd= $(this).attr("id");
 			var arr = claveProd.split('_');
 			var id = $(this).val();
-			console.log(id);
 			var numFila =  arr[1];
 
 			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
-			console.log($url);
+			//console.log($url);
 			$.ajax({
 				url: $url,
 				dataType: "json",
-				success: function(data){
-					console.log($url);
-					console.dir(data);
+				success: function(data){	
 					$("select#idUnidad_"+numFila).empty();
 					$.each(data, function(i,item){
 						if(data[i].idProducto == id){
 							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
 							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
 						}	
-						
 					});
-					
 				}
-				
 			});
- 			
  		});//cierra funcion Multiplo del producto
 
 		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
- 			console.log("En a#generarJsonArray: ");
  			var tabla = $("table#remisionSalida > tbody  > tr");
+ 			
  			//Array Json de productos
  			var productos = [];
  			
  			tabla.each(function(){
- 				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
@@ -224,39 +222,29 @@
  				var descripcion = row.find("select[id^='descripcion_']").val();
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  				var importe = row.find("input[id^='costoTotal_']").val();
- 				//var total = row.find("input[id^='total']").val();
  				
- 				console.log("Cantidad:"+cantidad);
- 				console.log("unidad:"+unidad);
- 				console.log("codigoBarras:"+codigoBarras);
- 				console.log("descripcion:"+descripcion);
- 				console.log("precioUnitario:"+precioUnitario);
- 				console.log("costoTotal:"+importe);
- 				//console.log("total:"+total);
- 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
+ 				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe));
+ 				if(cantidad.length < 1 || unidad == null|| descripcion.length < 1 || precioUnitario.length < 1 || importe.length < 1 ) {  
+        			$('input[type="submit"]').attr('disabled', 'disabled');
+        		}else{ 
+        			$('input[type="submit"]').removeAttr('disabled');
+        		} 
  			});
- 			console.dir(productos);
+ 			//console.dir(productos);
  			var myString = JSON.stringify(productos);
- 			
- 			console.log(myString);
- 			if ($("input#productos").val(myString)){
- 				
+ 			if ($("input#productos").val(myString)){	
  			};
  		});
- 		
+ 	
  		function Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe) {
 		  this.cantidad = cantidad;
 		  this.unidad = unidad;
 		  this.codigoBarras = codigoBarras;
 		  this.descripcion = descripcion;
 		  this.precioUnitario = precioUnitario;
-		  this.importe = importe;		
+		  this.importe = importe;	
 		}
-		
-		$("a#generarJsonArray").on("click",function(){
-			 $('input[type="submit"]').removeAttr('disabled');
-        });
-        
+	
         $("table#remisionSalida").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         	calculaRow($(this).closest("tr"));
         	calculaGrandTotal();
@@ -273,7 +261,6 @@
     	var grandTotal = 0;
     	$("table#remisionSalida").find('input[id^="costoTotal_"]').each(function () {
         	grandTotal += +$(this).val(); 
-        	console.log(grandTotal);
     	});
     	
     	 $("input#total").val('$' + grandTotal.toFixed(2));

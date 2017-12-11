@@ -8,12 +8,14 @@ class Inventario_DAO_Inventario implements Inventario_Interfaces_IInventario {
 	
 	private $tablaInventario;
 	private $tablaProducto;
+	private $tablaMovimientos;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaInventario = new Inventario_Model_DbTable_Inventario(array('db'=>$dbAdapter));
 		$this->tablaProducto = new Inventario_Model_DbTable_Producto(array('db'=>$dbAdapter));
+		$this->tablaMovimientos = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerInventario(){
@@ -67,46 +69,26 @@ public function obtenerIdProductoInventario(){
 	{
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$dbAdapter->beginTransaction();
-		
-		
-
 		try{
 			
 			$tablaInventario = $this->tablaInventario;
 			$select = $tablaInventario->select()->from($tablaInventario)->where("idInventario=?",$idInventario);
 			$rowInventario = $tablaInventario->fetchRow($select);
 			
-		if(!is_null($rowInventario)){
+			if(!is_null($rowInventario)){
 			
-			$minimo = $inventario['minimo'];
-			$maximo = $inventario['maximo'];
-			$costoUnitario = $inventario['costoUnitario'];
-			$cantidadGanancia = $inventario['cantidadGanancia'];
-			$cantGanancia = $rowInventario->cantidadGanancia;
-			$costoCliente = $inventario['costoUnitario'] + $inventario['cantidadGanancia'];
+				$minimo = $inventario['minimo'];
+				$maximo = $inventario['maximo'];
+				$costoUnitario = $inventario['costoUnitario'];
 			
-			$rowInventario->minimo = $minimo;
-			$rowInventario->maximo = $maximo;
-			$rowInventario->costoUnitario = $costoUnitario;
-			$rowInventario->costoCliente = $costoCliente;
-			$rowInventario->cantidadGanancia = $cantidadGanancia;
-			$rowInventario->save();
-			
-			
-			if($cantGanancia <> $inventario['cantidadGanancia']){
-				print_r("Ha cambiado");
-				$porcentajeGanancia = ((($inventario['costoCliente'] / $inventario['costoUnitario']) -1 ) * 100);
-				$rowInventario->porcentajeGanancia = $porcentajeGanancia;
+				$rowInventario->minimo = $minimo;
+				$rowInventario->maximo = $maximo;
+				$rowInventario->costoUnitario = $costoUnitario;
+				$rowInventario->costoCliente = $inventario['costoCliente'];
 				$rowInventario->cantidadGanancia = $inventario['cantidadGanancia'];
+				$rowInventario->porcentajeGanancia = $inventario['porcentajeGanancia'];
 				$rowInventario->save();
-			}else{
-				$rowInventario->cantidadGanancia = $rowInventario['costoCliente'] - $rowInventario['costoUnitario'];
-				$rowInventario->save();
-			
 			}
-			
-		}
-	
 		$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
@@ -170,4 +152,52 @@ public function obtenerIdProductoInventario(){
 			}*/
 		}
 	}
+
+	public function general(){
+		
+		$tablaMovimientos = $this->tablaMovimientos;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()
+			->setIntegrityCheck(false)
+			->from($tablaProducto, array('claveProducto', 'producto'))->where("claveProducto not like ?",'VS%')
+			->join('Inventario', "Producto.idProducto = Inventario.idProducto", array('existencia','fecha','costoUnitario'))->order("existencia");
+			//print_r("$select");
+			return $tablaMovimientos->fetchAll($select);			
+	}
+	
+	public function obtenerProductoxMovto($idSucursal){
+		$tablaMovimientos= $this->tablaMovimientos;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idSucursal IN (?)", $idSucursal);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		
+		$idProductos= array();
+		foreach ($rowsMovimientos as $rowMovimientos) {
+			$idProductos[] = $rowMovimientos->idProducto;
+		}
+		
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto IN (?)", $idProductos)->order("producto");
+		$rowProducto= $tablaProducto->fetchAll($select);
+		//print_r("$select");
+		return $rowProducto;
+	}
+	public function obtenerMovtoxproducto($idProducto){
+		$tablaMovimientos= $this->tablaMovimientos;
+		$select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idProducto IN (?)", $idProducto);
+		$rowsMovimientos = $tablaMovimientos->fetchAll($select);
+		
+		/*$idProductos= array();
+		foreach ($rowsMovimientos as $rowMovimientos) {
+			$idProductos[] = $rowMovimientos->idProducto;
+		}
+		
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idProducto IN (?)", $idProductos)->order("producto");
+		$rowProducto= $tablaProducto->fetchAll($select);
+		//print_r("$select");*/
+		return $rowsMovimientos;
+	}
+
 }

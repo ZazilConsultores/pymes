@@ -12,12 +12,22 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     private $empresaDAO = null;
 
     private $pagosDAO = null;
-	private $cobrosDAO = null;
-	private $facturaCliDAO = null;
+
+    private $cobrosDAO = null;
+
+    private $facturaCliDAO = null;
+
+    private $facturaProDAO = null;
+
+    private $proyectoClienteDAO = null;
+
+    private $proyectoDAO = null;
+
+    private $notaSalidaDAO = null;
 
     public function init()
     {
-	    	 $auth = Zend_Auth::getInstance();
+	    	$auth = Zend_Auth::getInstance();
 	        $dataIdentity = $auth->getIdentity();
 	        /* Initialize action controller here */
 	        $this->bancoDAO = new Contabilidad_DAO_Banco;
@@ -27,6 +37,10 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
 			$this->empresaDAO = new Sistema_DAO_Empresa;
 			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
+			$this->facturaProDAO = new Contabilidad_DAO_FacturaProveedor;
+			$this->proyectoClienteDAO = new Contabilidad_DAO_ProyectoCliente;
+			$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
+			$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
 			
 			$this->_helper->layout->disableLayout();
 			$this->_helper->viewRenderer->setNoRender(true);
@@ -154,7 +168,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
     public function buscafacxpAction()
     {
         // action body
-        $idSucursal = $this->getParam("idSucursal");
+        $idSucursal = $this->getParam("sucu");
         $proveedor = $this->getParam("pro");
 		
 		$buscafacxp = $this->pagosDAO->busca_Cuentasxp($idSucursal, $proveedor);
@@ -177,17 +191,31 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	public function buscacobroxpAction()
+
+    public function buscacobroAction()
+    {
+        $sucu = $this->getParam("sucu");
+        $cl = $this->getParam("cl");
+        
+		$buscaCobro = $this->cobrosDAO->busca_Cuentasxc($sucu, $cl);
+		if(!is_null($buscaCobro)){
+			echo Zend_Json::encode($buscaCobro);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function buscacobroxpAction()
     {
         // action body
-        $idFactura = $this->getParam("idFactura");
+      /*  $idFactura = $this->getParam("idFactura");
      	$buscaCobro= $this->cobrosDAO->busca_CobrosCXC($idFactura);
 		//$buscacobro= $this->cobrosDAO busca_PagosCXP($idFactura);
 		if(!is_null($buscaCobro)){
 			echo Zend_Json::encode($buscaCobro);
 		}else{
 			echo Zend_Json::encode(array());
-		}
+		}*/
     }
 
     public function obtenerfacturaxpAction()
@@ -213,6 +241,359 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function desechabledesayunoAction()
+    {
+		//$desechableDesayuno= $this->facturaCliDAO->restaDesechableDesayuno();
+		/*if(!is_null($desechableDesayuno)){
+			echo Zend_Json::encode($desechableDesayuno);
+		}else{
+			echo Zend_Json::encode(array());
+		}*/
+    }
+
+    public function productoxmovimientoAction()
+    {
+        // action body
+    }
+
+    public function totalproyectoAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoMovto= $this->proyectoClienteDAO->obtieneProyecto($idProyecto);
+		if(!is_null($proyectoMovto)){
+			echo Zend_Json::encode($proyectoMovto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
+    public function getdescripciontipomovtoAction()
+    {
+        $idTipoMovto = $this->getParam("idTipoMovimiento");
+        $desMovto = $this->proyectoClienteDAO->obtieneDescripcionxMovto($idTipoMovto);
+		if(!is_null($desMovto)){
+			echo Zend_Json::encode($desMovto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function empleadoAction()
+    {
+    	$idFiscales = $this->getParam("idFiscales");
+		$fiscalesProveedores = $this->fiscalesDAO->getEmpleadoProveedorIdFiscalesEmpresa($idFiscales);
+		if(!is_null($fiscalesProveedores)){
+			echo Zend_Json::encode($fiscalesProveedores);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function buscanominaxpAction()
+    {
+        $idSucursal = $this->getParam("sucu");
+        $proveedor = $this->getParam("pro");
+		
+		$buscaNomina= $this->pagosDAO->busca_Nominasxp($idSucursal, $proveedor);
+		if(!is_null($buscaNomina)){
+			echo Zend_Json::encode($buscaNomina);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectoremisionAction()
+    {
+	    $idProyecto = $this->getParam("idProyecto");
+		$proyectoMovtoRemision= $this->proyectoClienteDAO->obtieneProyectoRemision($idProyecto);
+		if(!is_null($proyectoMovtoRemision)){
+			echo Zend_Json::encode($proyectoMovtoRemision);
+		}else{
+			echo Zend_Json::encode(array());
+		} 
+    }
+
+    public function buscaanticipoclienteAction()
+    {
+    	$sucu = $this->getParam("sucu");
+        $cl = $this->getParam("cl");
+        
+		$buscaCobro = $this->cobrosDAO->busca_AnticipoCliente($sucu, $cl);
+		if(!is_null($buscaCobro)){
+			echo Zend_Json::encode($buscaCobro);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function facturaantcliAction()
+    {
+    	$sucu = $this->getParam("idSucursal");
+        $cli = $this->getParam("idCoP");
+        
+		$buscaFacAntCli = $this->cobrosDAO->obtieneFacturaParaAnticipoCliente($sucu, $cli);
+		if(!is_null($buscaFacAntCli)){
+			echo Zend_Json::encode($buscaFacAntCli);
+		}else{
+			echo Zend_Json::encode(array());
+		}   
+    }
+
+    public function proyectoclienteAction()
+    {
+        $CoP = $this->getParam("CoP");
+		$proyectoCliente= $this->proyectoDAO->obtieneProyectoCliente($CoP);
+		if(!is_null($proyectoCliente)){
+			echo Zend_Json::encode($proyectoCliente);
+		}else{
+			echo Zend_Json::encode(array());
+		} 
+    }
+
+    public function movimientosproveedorAction()
+    {
+        $idCoP = $this->getParam("CoP");
+		$proyectoProveedor= $this->facturaProDAO->obtieneProyectoProveedor($idCoP);
+		if(!is_null($proyectoProveedor)){
+			echo Zend_Json::encode($proyectoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		} 
+    }
+
+    public function proyectoxfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoMovtoxFecha = $this->proyectoDAO->obtieneProyectoxfecha($idProyecto, $fechaI , $fechaF);
+		if(!is_null($proyectoMovtoxFecha)){
+			echo Zend_Json::encode($proyectoMovtoxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function getclienteAction()
+    {
+    	$idCliente = $this->getParam("cl");
+		$cliente = $this->notaSalidaDAO->obtenerCliente($idCliente);
+		if(!is_null($cliente)){
+			echo Zend_Json::encode($cliente);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectoprovxfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoMovtoxFecha = $this->proyectoDAO->obtieneProyectoProvxfecha($idProyecto, $fechaI , $fechaF);
+		if(!is_null($proyectoMovtoxFecha)){
+			echo Zend_Json::encode($proyectoMovtoxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectoremprovxfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoRemisionEntrdaxFecha = $this->proyectoDAO->obtieneProyectoRemisionProveedorxFecha($idProyecto, $fechaI, $fechaF);
+		if(!is_null($proyectoRemisionEntrdaxFecha)){
+			echo Zend_Json::encode($proyectoRemisionEntrdaxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    	
+    }
+
+    public function proyectoremclixfechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoRemisionSalidaxFecha = $this->proyectoDAO->obtieneProyectoRemisionClientexFecha($idProyecto, $fechaI, $fechaF);
+		if(!is_null($proyectoRemisionSalidaxFecha)){
+			echo Zend_Json::encode($proyectoRemisionSalidaxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectonominafechaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto"); 
+		$fechaI = $this->getParam("fechaI"); 
+        $fechaF = $this->getParam("fechaF"); 
+		$proyectoNominaxFecha = $this->proyectoDAO->obtieneProyectoNominaProveedorxFecha($idProyecto, $fechaI, $fechaF);
+		if(!is_null($proyectoNominaxFecha)){
+			echo Zend_Json::encode($proyectoNominaxFecha);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
+    public function proyectoporproveedorAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoMovtoProveedor= $this->proyectoClienteDAO->obtieneProyectoProveedor($idProyecto);
+		if(!is_null($proyectoMovtoProveedor)){
+			echo Zend_Json::encode($proyectoMovtoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectoporremprovAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoMovtoProveedor= $this->proyectoClienteDAO->obtieneProyectoRemisionProveedor($idProyecto);
+		if(!is_null($proyectoMovtoProveedor)){
+			echo Zend_Json::encode($proyectoMovtoProveedor);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function proyectonominaAction()
+    {
+    	$idProyecto = $this->getParam("idProyecto");
+		$proyectoNomina  = $this->proyectoClienteDAO->obtieneProyectoNominaProveedor($idProyecto);
+		if(!is_null($proyectoNomina)){
+			echo Zend_Json::encode($proyectoNomina);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function productoimpuestoAction()
+    {
+    	$idProducto= $this->getParam("idProducto");
+		$productoImp  = $this->impuestoProductosDAO->obtenerImpuestoProducto($idProducto);
+		if(!is_null($productoImp)){
+			echo Zend_Json::encode($productoImp);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+       
+    }
+
+    public function numerofacturaAction()
+    {
+    	$idSucursal = $this->getParam("idSuc");
+		$buscaFac  = $this->facturaCliDAO->buscaNumeroFactura($idSucursal);
+		if(!is_null($buscaFac)){
+			echo Zend_Json::encode($buscaFac);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+        
+    }
+
+    public function cancelafaccliAction()
+    {
+    	$idSucursal = $this->getParam("sucu");
+        $num = $this->getParam("num");
+		$buscaFacCli = $this->cobrosDAO->busca_FacCli($idSucursal, $num);
+		if(!is_null($buscaFacCli)){
+			echo Zend_Json::encode($buscaFacCli);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+       
+    }
+
+    public function aplicacanfaccliAction()
+    {
+        $idFactura = $this->getParam("idFactura");
+		$aplicaCanFacCli = $this->facturaCliDAO->cancelaFactura($idFactura);
+		if(!is_null($aplicaCanFacCli)){
+			echo Zend_Json::encode($aplicaCanFacCli);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function numfacprovAction()
+    {
+    	$idSucursal = $this->getParam("idSuc");
+		$facProv = $this->facturaProDAO->buscaFacturaProveedor($idSucursal);
+		if(!is_null($facProv)){
+			echo Zend_Json::encode($facProv);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function facprovxsucynumAction()
+    {
+    	$idSucursal = $this->getParam("sucu");
+        $num = $this->getParam("num");
+		$buscaFacProv = $this->facturaProDAO->busca_FacProv($idSucursal, $num);
+		if(!is_null($buscaFacProv)){
+			echo Zend_Json::encode($buscaFacProv);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function eliminaprodimpAction()
+    {
+        $idImpuestoProducto = $this->getParam("idImp");
+		$buscaImpProd = $this->impuestoProductosDAO->eliminarImpuestoProducto($idImpuestoProducto);
+		if(!is_null($buscaImpProd)){
+			echo Zend_Json::encode($buscaImpProd);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function remisioncafelAction()
+    {
+        $idProyecto = $this->getParam("idProyecto");
+        $fechaI = $this->getParam("fechaI");
+        $fechaF = $this->getParam("fechaF");
+        $proyectoRemSalCafeLiq = $this->proyectoDAO->obtieneProyectoRemisionClienteCafeLxFecha($idProyecto, $fechaI, $fechaF);
+        if(!is_null($proyectoRemSalCafeLiq)){
+            echo Zend_Json::encode($proyectoRemSalCafeLiq);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function remisioncafepAction()
+    {
+        $idProyecto = $this->getParam("idProyecto");
+        $fechaI = $this->getParam("fechaI");
+        $fechaF = $this->getParam("fechaF");
+        $proyectoRemSalCafePen = $this->proyectoDAO->obtieneProyectoRemisionClienteCafePxFecha($idProyecto, $fechaI, $fechaF);
+        if(!is_null($proyectoRemSalCafePen)){
+            echo Zend_Json::encode($proyectoRemSalCafePen);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function buscacobroremclicafeAction()
+    {
+        $sucu = $this->getParam("sucu");
+        $cl = $this->getParam("cl");
+        
+        $buscaCobroRemCliCafe = $this->cobrosDAO->busca_RemisionClienteCafe($sucu, $cl);
+        if(!is_null($buscaCobroRemCliCafe)){
+            echo Zend_Json::encode($buscaCobroRemCliCafe);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
 
@@ -221,6 +602,35 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
@@ -232,6 +642,35 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

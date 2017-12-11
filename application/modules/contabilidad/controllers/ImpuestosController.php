@@ -2,24 +2,19 @@
 
 class Contabilidad_ImpuestosController extends Zend_Controller_Action
 {
-
-    private $impuestoDAO = null;
+	private $impuestoDAO = null;
     private $productoDAO = null;
 
     public function init()
     {
-        /* Initialize action controller here */
-        $this->impuestoDAO = new Contabilidad_DAO_Impuesto;
+    	$this->impuestoDAO = new Contabilidad_DAO_Impuesto;
 		$this->productoDAO = new Inventario_DAO_Producto;
     }
 
     public function indexAction()
     {
-    	//$idImpuestpo =$this->getParam('idImpuesto');
-    	//$formulario =  new Contabilidad_Form_CrearImpuesto;
     	$impuestoDAO = $this->impuestoDAO;
 		$this->view->impuestos  = $this->impuestoDAO->obtenerImpuestos();
-		
     }
 
     public function altaAction()
@@ -64,15 +59,17 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 		$formulario->getElement("descripcion")->setValue($impuesto->getDescripcion());
 		$formulario->getElement("estatus")->setValue($impuesto->getEstatus());
 		$formulario->getElement("idEnlazarImpuesto")->setLabel("Actualizar");
-
+		$formulario->getElement("idEnlazarImpuesto")->setAttrib("class", "btn btn-warning");
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost()))
 			{
 				$datos = $formulario->getValues();
+				$datos["fechaPublicacion"] = date ("Y-m-d H:i:s",time());
+				print_r($datos);
 				$impuesto = new Contabilidad_Model_Impuesto($datos);
+				//$arrImp = $impuesto->toArray();
 				try{
-					$this->impuestoDAO->editarImpuesto($idImpuesto, $datos);
-					
+					$this->impuestoDAO->editarImpuesto($idImpuesto, $impuesto);
 				}catch(exception $ex){
 					
 				}
@@ -83,7 +80,7 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
     public function enlazarAction()
     {
     	$request = $this->getRequest();
-		//Obtenemos el idProducto y el idImpuesto
+		
 		$idImpuesto = $this->getParam("idImpuesto");
 		$idProducto = $this->getParam("idProducto");
 		$formulario = new Contabilidad_Form_CrearImpuesto;

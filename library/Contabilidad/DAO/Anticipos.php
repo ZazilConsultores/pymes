@@ -24,17 +24,17 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 		$dbAdapter->beginTransaction();
 			
 		$fechaA =  new Zend_Date($datos['fecha'],'YY-MM-dd');
-		$stringfecha = $fechaA->toString('yyyy-MM-dd');
+		$stringfecha = $fechaA->toString('yyyy-MM-dd', time());
 		$fecha = date('Y-m-d h:i:s', time());
 			
 		try{
 			unset($datos["idEmpresas"]);
 			$anticipo = $datos;
 			
-			$anticipo['fecha'] = $stringfecha;
+			$anticipo['fecha'] = $fecha;
 			$anticipo['numeroFolio'] = $anticipo['numeroReferencia'];
 			$anticipo['comentario'] ="-";
-			$anticipo['fechaPago'] =$fecha;
+			$anticipo['fechaPago'] =$stringfecha;
 			$anticipo['estatus'] ="A";
 			$anticipo['conceptoPago'] ="LI";
 			$anticipo['subtotal'] = 0;
@@ -47,8 +47,7 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 				$secuencial = 1;	
 			}
 			$anticipo['secuencial'] = $secuencial;
-			print_r("<br />");
-			print_r($datos);
+			//print_r($datos);
 			$dbAdapter->insert("Cuentasxc", $anticipo);		
 			
 			//Actuliza saldo en Bancos
@@ -57,7 +56,7 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 			$rowBanco = $tablaBanco->fetchRow($select);
 			
 			$saldo = $rowBanco["saldo"] + $anticipo['total'];
-			print($saldo);
+			//print($saldo);
 			$rowBanco->saldo = $saldo;
 			$rowBanco->save();
 			$dbAdapter->commit();
@@ -65,7 +64,6 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 			print_r("<br />");
 			print_r("==========");
 			print_r("Excepcion Lanzada");
-			print_r("<br />");
 			print_r("==========");
 			print_r("<br />");
 			print_r($ex->getMessage());
@@ -104,17 +102,16 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 				$secuencial = 1;	
 			}
 			$anticipo['secuencial'] = $secuencial;
-			print_r("<br />");
-			print_r($datos);
+			
+			//print_r($datos);
 			$dbAdapter->insert("Cuentasxp", $anticipo);		
 			
 			//Actuliza saldo en Bancos
 			$tablaBanco = $this->tablaBanco;
 			$select = $tablaBanco->select()->from($tablaBanco)->where("idBanco=?",$anticipo['idBanco']);
 			$rowBanco = $tablaBanco->fetchRow($select);
-			
 			$saldo = $rowBanco["saldo"] - $anticipo['total'];
-			print($saldo);
+			//print($saldo);
 			$rowBanco->saldo = $saldo;
 			$rowBanco->save();
 			$dbAdapter->commit();

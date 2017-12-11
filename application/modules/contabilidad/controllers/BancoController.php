@@ -79,7 +79,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 				$datos=$formulario->getValues();
 				try{
 					$this->bancoDAO->editarBanco($idBanco, $datos);
-					$this->view->messageSuccess = "Banco se han actualizado correctamente!!";
+					$this->view->messageSuccess = "Banco se ha actualizado correctamente!!";
 				}catch(Exception $ex){
 					$this->view->messageFail = "No se pudo actualizar Error: <strong>".$ex->getMessage()."</strong>";
 				}
@@ -102,7 +102,7 @@ class Contabilidad_BancoController extends Zend_Controller_Action
 		$formulario->removeElement("cuentaContable");
 		$formulario->removeElement("saldo");
 		$formulario->getElement("submit")->setLabel("Enlazar");
-		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
+		$formulario->getElement("submit")->setAttrib("class", "btn btn-success");
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){

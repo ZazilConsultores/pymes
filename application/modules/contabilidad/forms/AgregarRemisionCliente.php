@@ -19,7 +19,6 @@ class Contabilidad_Form_AgregarRemisionCliente extends Zend_Form
     	$this->setAttrib("id", "nuevaRemisionCliente");
         
         $subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nueva Remisión Cliente");
 	
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de  Folio:');

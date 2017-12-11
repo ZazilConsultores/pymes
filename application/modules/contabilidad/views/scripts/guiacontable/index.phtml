@@ -14,19 +14,20 @@
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"guiacontable","action"=>"alta")) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Nueva Cuenta Contable
 			</a>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"guiacontable","action"=>"adminmodulos")) ?>">
+				<span class="glyphicon glyphicon-th-list"></span> Módulo
+			</a>
+			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"guiacontable","action"=>"admintipos")) ?>">
+				<span class="glyphicon glyphicon-th-list" ></span> Tipo
+			</a>
 			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
 						<th>Modulo</th>
 						<th>Tipo Proveedor</th>
-						<th>cta</th>
-						<th>sub1</th>
-						<th>sub2</th>
-						<th>sub3</th>
-						<th>Origen</th>
+						<th>Cuenta</th>
 						<th>Descripción</th>
-						<th>Cargo</th>
-						<th>Abono</th>
+						<th>Configurar</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,16 +36,10 @@
 						$modulo = $moduloDAO->obtenerModulo($guiaCon->getIdModulo());
 					?>	
 					<tr>
-						<td><?php echo $modulo->getDescripcion(); ?></td>
+						<td><?php echo $modulo["descripcion"]; ?></td>
 						<td><?php echo $tipo->getDescripcion(); ?></td>
 						<td><?php echo $guiaCon->getCta(); ?></td>
-						<td><?php echo $guiaCon->getSub1(); ?></td>
-						<td><?php echo $guiaCon->getSub2(); ?></td>
-						<td><?php echo $guiaCon->getSub3(); ?></td>
-						<td><?php echo $guiaCon->getOrigen(); ?></td>
 						<td><?php echo $guiaCon->getDescripcion(); ?></td>
-						<td><?php echo $guiaCon->getCargo(); ?></td>
-						<td><?php echo $guiaCon->getAbono(); ?></td>
 						<td>
 							<a class="btn btn-warning" href="<?php echo $this->url(array("module"=>"contabilidad", "controller"=>"guiacontable", "action" => "editar","idGuiaContable"=>$guiaCon->getIdGuiaContable()), null, true); ?>">
 								<span class="glyphicon glyphicon-cog"></span> Configurar

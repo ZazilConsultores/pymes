@@ -20,7 +20,7 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 			
         $this->setAttrib("id", "nuevaNotaCliente");
         $subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nueva Nota Cliente");
+		//$subEncabezado->setLegend("Nueva Nota Cliente");
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número de Folio: ');
@@ -85,20 +85,14 @@ class Contabilidad_Form_NuevaNotaCliente extends Zend_Form
 			$eDivisa->addMultiOption($tipoDivisa->getIdDivisa(), $tipoDivisa->getDivisa());		
 		}*/
 		$eProducto = new Zend_Form_Element_Hidden('productos');
-		//$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
-		
-		/*$eProyecto = new Zend_Form_Element_Select('idProyecto');
-        $eProyecto->setLabel('Seleccionar Proyecto:');
-		$eProyecto->setAttrib("class", "form-control");
-		$eProyecto->setRegisterInArrayValidator(FALSE);*/
 		
 		$eSubmit = new Zend_Form_Element_Submit("submit");
 		$eSubmit->setLabel("Enviar");
 		$eSubmit->setAttrib("class", "btn btn-success");
 		$eSubmit->setAttrib("disabled","true");
 		
-		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eDivisa,$eCliente,/*$eProyecto*/$eProducto));
+		$subEncabezado->addElements(array($eNumeroFolio, $eTipoMovto,$eFecha,$eEmpresa,$eSucursal,$eCliente,$eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		$this->addSubForms(array($subEncabezado));

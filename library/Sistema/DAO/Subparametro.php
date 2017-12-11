@@ -144,6 +144,17 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		
 	}
 	
+	public function obtenerSubparametroDesechable() //Solo subparametro 3
+	{
+		$tablaProducto = $this->tablaProducto;
+		$select = $tablaProducto->select()->from($tablaProducto)->where("idsSubparametros LIKE ?", '3,58%')->order("producto");
+		$rowSubparametro = $tablaProducto->fetchAll($select);
+	
+		//print_r($select->__toString());
+		return $rowSubparametro;
+		
+	}
+	
 	public function obtenerSubparametroCarnes() //Solo subparametro 2
 	{
 		$tablaProducto = $this->tablaProducto;

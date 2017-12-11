@@ -77,7 +77,7 @@ class Contabilidad_Form_AltaBanco extends Zend_Form
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');
-		$eSubmit->setAttrib("class", "btn btn-warning");
+		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		$this->addElement($eEmpresa);
 		$this->addElement($eSucursal);

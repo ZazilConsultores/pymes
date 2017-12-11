@@ -96,7 +96,7 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		->setIntegrityCheck(false)
 		->from($tablaFiscales, array('Fiscales.idFiscales','rfc','razonSocial'))
 		->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales', ('Empresa.idEmpresa'))
-		->join('Clientes', 'Empresa.idEmpresa = Clientes.idEmpresa',array('idCliente','cuenta'))
+		->join('Clientes', 'Empresa.idEmpresa = Clientes.idEmpresa',array('idCliente','cuenta','saldo'))
 		->where("Fiscales.idFiscales = ?", $idFiscales);
 		 return $tablaFiscales->fetchRow($select);
 	}
@@ -651,5 +651,31 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 		return $modelFiscal;
 	}
 	
+	public function getEmpleadoProveedorIdFiscalesEmpresa($idFiscales){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select= $tablaEmpresa->select()
+		->setIntegrityCheck(false)
+		->from($tablaEmpresa, array('idEmpresa'))
+		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
+		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa')
+		->where('Proveedores.idTipoProveedor = ?', 2)
+		->order('razonSocial ASC');
+		//print_r("$select");
+		return $tablaEmpresa->fetchAll($select);
+		
+	}
+	
+	public function getEmpleadoProveedor(){
+		$tablaEmpresa = $this->tablaEmpresa;
+		$select= $tablaEmpresa->select()
+		->setIntegrityCheck(false)
+		->from($tablaEmpresa, array('idEmpresa'))
+		->join('Fiscales', 'Empresa.idFiscales = Fiscales.idFiscales', array('razonSocial'))
+		->join('Proveedores','Empresa.idEmpresa = Proveedores.idEmpresa')
+		->where('Proveedores.idTipoProveedor = ?', 2)
+		->order('razonSocial ASC');
+		//print_r("$select");
+		return $tablaEmpresa->fetchAll($select);
+	}
 	
 }

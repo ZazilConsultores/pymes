@@ -1,0 +1,159 @@
+<?php
+	$empresas = $this->empresas; 
+?>
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h4 class="panel-title">Busca Factura Cliente a Cancelar<strong></strong></h4>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<div class="form-group">
+				<label for="empresa" class="col-md-2 control-label">Empresas: </label>
+				<div class="col-md-10">
+					<select name="empresa" id="idFiscales" class="form-control">
+						<option value="0">Seleccione Empresa</option>
+						<?php foreach ($empresas as $empresa) : ?>
+							<option value="<?php echo $empresa["idFiscales"] ?>"><?php echo $empresa["razonSocial"] ?></option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="sucursal" class="col-md-2 control-label">Sucursal: </label>
+				<div class="col-md-10">
+					<select required name="sucursal" id="idSucursal" class="form-control" >
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="num" class="col-md-2 control-label">Número Factura: </label>
+				<div class="col-md-10">
+					<select required name="num" id="numerof" class="form-control">
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button id="queryFacturas" type="button" class="btn btn-success">
+						<i class="fa fa-search"></i> Consultar Facturas
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>	
+</section>
+<!--Formulario Datos-->
+<section class="panel panel-warning">
+	<div class="panel-heading">
+			<h4 class="panel-title">Cancelar Factura Cliente<strong></strong></h4>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
+			<!--Datos -->
+			<div class="form-group hidden">
+				<label for="fac" class="col-md-1">Datos: </label>
+				<div class="col-md-4">
+					<input id="fac" name="fac" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Cliente -->
+			<div class="form-group">
+				<label for="cliente" class="col-md-3 control-label">Cliente: </label>
+				<div class="col-md-9">
+					<input id="cliente" name="cliente" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Fecha-->
+			<div class="form-group">
+				<label for="fecha" class="col-md-3 control-label">Fecha: </label>
+				<div class="col-md-9">
+					<input id="fecha" name="fecha" type="text" class="form-control" />
+				</div>
+			</div>
+			<!--Total-->
+			<div class="form-group">
+				<label for="total" class="col-md-3 control-label">Total: </label>
+				<div class="col-md-9">
+					<input id="total" name="total" type="text" class="form-control" />
+				</div>
+			</div>
+			<!-- Boton consulta -->
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-9">
+					<button id="query" type="submit" class="btn btn-warning">
+						<i class="fa fa-search"></i> Cancelar
+					</button>
+				</div>
+			</div>
+		</form>	
+	</div>
+</section>
+
+<script>
+	$(document).ready(function() {
+		var url = window.location.origin + "/General/";
+		
+		$("#idFiscales").on('change',function(){
+			var idFiscal = $(this).val();
+			if(idFiscal != 0){
+				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
+				$.ajax({
+					url: urlQuerySucursales,
+					dataType: "json",
+					success: function(data){
+						//console.dir(data);
+						$("#idSucursal").empty();
+						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+						$.each(data, function (i,item){
+							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+						});
+					}
+				});
+			}
+		});
+		
+		$("select#idSucursal").on('change', function(){
+			var idSucursal = $(this).val();
+			var urlQueryNumFacClientes = url + 'contabilidad/json/numerofactura/idSuc/'+idSucursal;
+			//console.log(urlQueryNumFacClientes);
+			$.ajax({
+				url: urlQueryNumFacClientes,
+				dataType: "json",
+				success: function(data){
+					//console.dir(data);
+					$("select#numerof").empty();
+					$("select#numerof").append($("<option></option>").attr("value","0").text("Seleccione Número Factura..."));
+					$.each(data, function (i,item){
+						$("select#numerof").append($("<option></option>").attr("value",data[i].numeroFactura).text(data[i].numeroFactura));
+					});
+				}
+			});
+		});
+		
+		$("#queryFacturas").on('click', function(){
+			var sucu = $("#idSucursal").val();
+			var num = $("#numerof").val();
+			var $urlFac = window.location.origin + "/General/contabilidad/json/cancelafaccli/sucu/" + sucu + "/num/" + num;
+			//console.log($urlFac);
+			$.ajax({
+				url: $urlFac,
+		   		dataType: "json",
+				success: function(data){
+					$("#fac").empty();
+					$("#proveedor").empty();
+					$("#fecha").empty();
+					$("input#total").empty();
+					$.each(data, function(i,item){
+						$("#fac").attr("value",data[i].idFactura);
+						$("#cliente").attr("value",data[i].razonSocial);
+						$("#fecha").attr("value",data[i].fecha);
+						$("#total").attr("value",data[i].total);
+					});			
+				}
+			});
+		});
+		
+	});
+</script>
+
+

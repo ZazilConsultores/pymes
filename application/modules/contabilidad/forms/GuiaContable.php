@@ -36,7 +36,7 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$eDescripcion = new Zend_Form_Element_Text("descripcion");
 		$eDescripcion->setAttrib("class", "form-control");
 		$eDescripcion->setLabel("Descripción: ");
-		$eCuenta->setAttrib("required", "required");
+		$eDescripcion->setAttrib("required", "true");
 		
 		$eSub1 = new Zend_Form_Element_Text("sub1");
 		$eSub1->setAttrib("class", "form-control");
@@ -80,7 +80,7 @@ class Contabilidad_Form_GuiaContable extends Zend_Form
 		$eModulo->setLabel("Seleccionar Módulo: ");
 		
 		foreach ($modulos as $modulo) {
-			$eModulo->addMultiOption($modulo["idModulo"] , $modulo["descripcion"]);
+			$eModulo->addMultiOption($modulo->getIdModulo() , $modulo->getDescripcion());
 		}
 		
 		$tiposProvDAO = new Sistema_DAO_Empresa;

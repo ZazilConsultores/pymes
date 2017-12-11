@@ -5,10 +5,13 @@ class Inventario_InventarioController extends Zend_Controller_Action
 
     private $inventarioDAO = null;
 
+    private $empresaDAO = null;
+
     private $productoDAO = null;
 
     public function init()
     {
+    	$this->empresaDAO = new Sistema_DAO_Empresa;
     	$this->inventarioDAO = new Inventario_DAO_Inventario;  
 		$this->productoDAO = new Inventario_DAO_Producto;
     }
@@ -23,11 +26,9 @@ class Inventario_InventarioController extends Zend_Controller_Action
     public function adminAction()
     {
     	$request = $this->getRequest();
-        $idInventario = $this -> getParam("idInventario");
-		
+        $idInventario = $this->getParam("idInventario");
 		$inventario = $this->inventarioDAO->obtenerProductoInventario($idInventario);
 		$formulario = new Inventario_Form_AdminInventario;
-		
 		$formulario->getElement("minimo")->setValue($inventario->getMinimo());
 		$formulario->getElement("maximo")->setValue($inventario->getMaximo());
 		$formulario->getElement("costoUnitario")->setValue($inventario->getCostoUnitario());
@@ -40,11 +41,18 @@ class Inventario_InventarioController extends Zend_Controller_Action
 		$this->view->inventario = $inventario;
 		$this->view->formulario = $formulario;
 		
-		$editaInventario = $this->getRequest()->getPost();
-		//unset($inventario["submit"]);
-		
-		//print_r($inventario);	
-		$this->inventarioDAO->editarInventario($idInventario, $editaInventario);
+		if($request->isPost()){
+			if($formulario->isValid($request->getPost())){
+				$datos = $formulario->getValues();
+				//print_r($datos);
+				
+				try{
+					$this->inventarioDAO->editarInventario($idInventario, $datos);
+				}catch(Exception $ex){
+				}
+				
+			}
+		}
     }
 
     public function editaAction()
@@ -104,8 +112,35 @@ class Inventario_InventarioController extends Zend_Controller_Action
 				$this->inventarioDAO->editarTodo($datos);		
 			}
 		}
-	}
+    }
+
+    public function generalAction()
+    {
+    	$movimientos = $this->inventarioDAO->general();
+		$this->view->movimientos = $movimientos;
+        
+    }
+
+    public function buscaproductoAction()
+    {
+        
+    }
+
+    public function buscarAction()
+    {
+        $request = $this->getRequest();
+		$empresas = $this->empresaDAO->obtenerFiscalesEmpresas(); 
+        $this->view->empresas = $empresas;	
+    }
+
+
 }
+
+
+
+
+
+
 
 
 

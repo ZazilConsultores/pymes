@@ -4,8 +4,12 @@ class Inventario_JsonController extends Zend_Controller_Action
 {
 
     private $unidadDAO = null;
-	private $productoDAO = null;
-	private $productoTermindoDAO = null;
+
+    private $productoDAO = null;
+
+    private $productoTermindoDAO = null;
+
+    private $inventarioDAO = null;
 
     public function init()
     {
@@ -16,6 +20,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 		$this->unidadDAO = new Inventario_DAO_Unidad;
 		$this->productoDAO = new Inventario_DAO_Producto;
 		$this->productoTermindoDAO = new Inventario_DAO_Productoterminado;
+		$this->inventarioDAO = new Inventario_DAO_Inventario;
     }
 
     public function indexAction()
@@ -25,8 +30,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 
     public function unidadesAction()
     {
-        // action body
-        $idUnidad = $this->getParam("idUnidad");
+    	$idUnidad = $this->getParam("idUnidad");
        	$unidades = $this->unidadDAO->obtenerUnidad($idUnidad);
 		
 		$arrayUnidades = array();
@@ -36,11 +40,10 @@ class Inventario_JsonController extends Zend_Controller_Action
 		}
 		echo Zend_Json::encode($arrayUnidades);
     }
-	
-	public function multiplosAction()
+
+    public function multiplosAction()
     {
-        // action body
-        $idProducto = $this->getParam("idProducto");
+    	$idProducto = $this->getParam("idProducto");
 		//print_r($idProducto);
        	$multiplos = $this->unidadDAO->obtenerMultiplos($idProducto);
 
@@ -50,11 +53,11 @@ class Inventario_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	
-	public function productosAction()
+
+    public function productosAction()
     {
         // action body
-        $idProducto = $this->getParam("idProducto");
+		$idProducto = $this->getParam("idProducto");
 		//print_r($idProducto);
        	$productos= $this->productoDAO->getProducto($idProducto);
 
@@ -64,11 +67,10 @@ class Inventario_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-    
-	public function productoterminadoAction()
+
+    public function productoterminadoAction()
     {
-        // action body
-        $idProductoTerminado = $this->getParam("productoTerminado");
+    	$idProductoTerminado = $this->getParam("productoTerminado");
        	$productoTer= $this->productoTermindoDAO->obtenerProductoTerminado($idProductoTerminado);
 		
 		if(!is_null($productoTer)){
@@ -77,9 +79,9 @@ class Inventario_JsonController extends Zend_Controller_Action
 			echo Zend_Json::encode(array());
 		}
     }
-	public function llenaproductoAction()
+
+    public function llenaproductoAction()
     {
-        // action body
         $idPC = $this->getParam("idPC");
        	$productoC= $this->productoTermindoDAO->obtieneProductoTerminado($idPC);
 		
@@ -90,8 +92,58 @@ class Inventario_JsonController extends Zend_Controller_Action
 		}
     }
 
+    public function productoxmovimientoAction()
+    {
+    	$idSucursal = $this->getParam("idSucursal");
+       	$productoMovto= $this->inventarioDAO->obtenerProductoxMovto($idSucursal);
+		
+		if(!is_null($productoMovto)){
+			echo Zend_Json::encode($productoMovto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function productoxsucursalAction()
+    {
+    	$idProducto = $this->getParam("idProducto");
+       	$obtenerProducto= $this->inventarioDAO->obtenerMovtoxproducto($idProducto);
+		
+		if(!is_null($obtenerProducto)){
+			echo Zend_Json::encode($obtenerProducto);
+		}else{
+			echo Zend_Json::encode(array());
+		}
+    }
+
+    public function eliminarproductoenlazadoAction()
+    {
+        $idProdComp = $this->getParam("productoCompuesto");
+        //$obtenerProducto = $this->inventarioDAO->obtenerMovtoxproducto($idProducto);
+        $eliminarProdComp  = $this->productoTermindoDAO->eliminarProdCom($idProdComp);
+        if(!is_null($eliminarProdComp)){
+            echo Zend_Json::encode($eliminarProdComp);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

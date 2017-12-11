@@ -22,12 +22,37 @@
 	
 	public function altaModulo($datos){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
-		$dbAdapter->insert("Modulos", array("descripcion"=>$datos["descripcion"]));
+		try{
+   			$tablaModulos =$this->tablaModulos;
+   			$select = $tablaModulos->select()->from($tablaModulos)->where("descripcion=?", $datos['descripcion']);
+			$rowModulo = $tablaModulos->fetchRow($select);
+			if(count($rowModulo) >= 1) {
+				throw new Exception("Error: Módulo <strong>".$datos["descripcion"]."</strong> ya esta dado de alta en el sistema");				
+			}else{
+				$dbAdapter->insert("Modulos", array("descripcion"=>$datos["descripcion"]));
+			}
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+			$dbAdapter->rollBack();		
+		}
 	}
 	
-	public function altaTipoProvedor(array $tipoProveedor){
-		$tablaTipoProveedor = $this->tablaTipoProveedores;
-		$tablaTipoProveedor->insert( array("clave"=>$tipoProveedor["clave"], "descripcion"=>$tipoProveedor["descripcionTipoProveedor"] ));
+	public function altaTipoProvedor($tipo){
+		$dbAdapter = Zend_Registry::get('dbmodgeneral');
+		try{
+   			$tablaTipo = $this->tablaTipoProveedores;
+   			$select = $tablaTipo->select()->from($tablaTipo)->where("descripcion=?", $tipo['descripcion'])->orWhere("clave=?", $tipo['cta']);
+			$rowTipo = $tablaTipo->fetchRow($select);
+			//print_r("$select");
+			if(count($rowTipo) >= 1) {
+				throw new Exception("Error: Tipo <strong>".$tipo["descripcion"]."</strong> ya esta dado de alta en el sistema");				
+			}else{
+				$dbAdapter->insert("TipoProveedor", array("clave"=>$tipo["cta"],"descripcion"=>$tipo["descripcion"]));
+			}
+		}catch(Exception $ex){
+			print_r($ex->getMessage());
+			$dbAdapter->rollBack();		
+		}
 		
 	}
 	
@@ -35,25 +60,54 @@
 		$tablaModulo = $this->tablaModulos;
 		$select = $tablaModulo->select()->from($tablaModulo)->where("idModulo = ?",$idModulo);
 		$rowModulo = $tablaModulo->fetchRow($select);
-		
-		$moduloModel = new Contabilidad_Model_Modulos($rowModulo->toArray());
+		//print("$select");
+		/*$moduloModel = new Contabilidad_Model_Modulos($rowModulo->toArray());
 		$moduloModel->setIdModulo($rowModulo->idModulo);
-		
-		return $moduloModel;
+		*/
+		return $rowModulo;
 		
 	}
+	
 	public function obtenerModulos(){
 		$tablaModulo = $this->tablaModulos;
-		$rowModulos = $tablaModulo->fetchAll();
+		$select = $tablaModulo->select()->from($tablaModulo);
+		$rowModulos = $tablaModulo->fetchAll($select);
 		
-		if(is_null($rowModulos)){
-			return null;
-		}else{
-			return $rowModulos->toArray();
+		$modelModulos = array();
+		foreach ($rowModulos as $rowModulo) {
+			$modelModulo = new  Contabilidad_Model_Modulos($rowModulo->toArray());
+			$modelModulo->setIdModulo($rowModulo->idModulo);
+			
+			$modelModulos[] = $modelModulo;
 		}
 		
+		return $modelModulos;	
 	}
-	public function editarModulo(){
+	
+	public function obtenerTipos(){
+		$tablaTipos = $this->tablaTipoProveedores;
+		$select = $tablaTipos->select()->from($tablaTipos);
+		$rowTipos = $tablaTipos->fetchAll($select);
+		
+		$modelTipos = array();
+		foreach ($rowTipos as $rowTipo) {
+			$modelTipo = new  Sistema_Model_TipoProveedor($rowTipo->toArray());
+			$modelTipo->setIdTipoProveedor($rowTipo->idTipoProveedor);
+			
+			$modelTipos[] = $modelTipo;
+		}
+		
+		return $modelTipos;	
+	}
+	
+	public function editarModulo($idModulo, $modulo){
+		$tablaModulo = $this->tablaModulos;
+		$select = $tablaModulo->select()->from($tablaModulo)->where("idModulo=?",$idModulo);
+		$rowModulo = $tablaModulo->fetchRow($select);	
+		if(!is_null($rowModulo)){
+			$rowModulo->descripcion = $modulo["descripcion"];
+			$rowModulo->save();	
+		}
 		
 	}
 	public function altaCuentaGuia(array $cta, $subparametro){

@@ -12,6 +12,7 @@
           <actionMethod actionName="login"/>
           <actionMethod actionName="normalize"/>
           <actionMethod actionName="logout"/>
+          <actionMethod actionName="productoimpuesto"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Usuario">
@@ -19,7 +20,9 @@
           <actionMethod actionName="perfil"/>
         </controllerFile>
       </controllersDirectory>
-      <formsDirectory/>
+      <formsDirectory>
+        <formFile formName="AgregarRemisioClienteCafeteria"/>
+      </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
           <layoutScriptFile layoutName="layout"/>
@@ -93,6 +96,17 @@
               <actionMethod actionName="crear"/>
               <actionMethod actionName="editar"/>
               <actionMethod actionName="eliminar"/>
+            </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="unidades"/>
+              <actionMethod actionName="multiplos"/>
+              <actionMethod actionName="productos"/>
+              <actionMethod actionName="productoterminado"/>
+              <actionMethod actionName="llenaproducto"/>
+              <actionMethod actionName="productoxmovimiento"/>
+              <actionMethod actionName="productoxsucursal"/>
+              <actionMethod actionName="eliminarproductoenlazado"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -196,6 +210,796 @@
               <viewControllerScriptsDirectory forControllerName="Productoterminado">
                 <viewScriptFile forActionName="eliminar"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="unidades"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="multiplos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoterminado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="llenaproducto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoxmovimiento"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoxsucursal"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="eliminarproductoenlazado"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="encuesta">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="Index">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="secciones"/>
+              <actionMethod actionName="tipos"/>
+              <actionMethod actionName="altae"/>
+              <actionMethod actionName="altas"/>
+              <actionMethod actionName="encuesta"/>
+              <actionMethod actionName="resultado"/>
+              <actionMethod actionName="resumen"/>
+              <actionMethod actionName="rpreferencia"/>
+              <actionMethod actionName="reporte"/>
+              <actionMethod actionName="reportepa"/>
+              <actionMethod actionName="reporteg"/>
+            </controllerFile>
+            <controllerFile controllerName="Html">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="encuestadet"/>
+              <actionMethod actionName="secciones"/>
+              <actionMethod actionName="seccionesdet"/>
+              <actionMethod actionName="grupos"/>
+              <actionMethod actionName="grupodet"/>
+              <actionMethod actionName="secciondet"/>
+              <actionMethod actionName="preguntas"/>
+              <actionMethod actionName="preguntadet"/>
+              <actionMethod actionName="registro"/>
+              <actionMethod actionName="grupo"/>
+            </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="grados"/>
+              <actionMethod actionName="grupos"/>
+              <actionMethod actionName="encrealizadas"/>
+              <actionMethod actionName="reposdocente"/>
+            </controllerFile>
+            <controllerFile controllerName="Seccion">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+            </controllerFile>
+            <controllerFile controllerName="Grupo">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="opciones"/>
+            </controllerFile>
+            <controllerFile controllerName="Pregunta">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="opciones"/>
+              <actionMethod actionName="grafica"/>
+            </controllerFile>
+            <controllerFile controllerName="Respuesta">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+            </controllerFile>
+            <controllerFile controllerName="Opcion">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="avalor"/>
+            </controllerFile>
+            <controllerFile controllerName="Categoria">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="opciones"/>
+            </controllerFile>
+            <controllerFile controllerName="Generador">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Registro">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+            </controllerFile>
+            <controllerFile controllerName="Resultado">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="grafica"/>
+            </controllerFile>
+            <controllerFile controllerName="Nivel">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+            </controllerFile>
+            <controllerFile controllerName="Grado">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="baja"/>
+              <actionMethod actionName="materias"/>
+              <actionMethod actionName="grados"/>
+            </controllerFile>
+            <controllerFile controllerName="Ciclo">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="ciclos"/>
+            </controllerFile>
+            <controllerFile controllerName="GrupoE">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Grupos">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="consulta"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="opciones"/>
+              <actionMethod actionName="asociarp"/>
+              <actionMethod actionName="aencuesta"/>
+              <actionMethod actionName="encuestas"/>
+              <actionMethod actionName="resultado"/>
+            </controllerFile>
+            <controllerFile controllerName="Materia">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="edita"/>
+              <actionMethod actionName="consulta"/>
+            </controllerFile>
+            <controllerFile controllerName="Profesor">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="encuestas"/>
+            </controllerFile>
+            <controllerFile controllerName="Normalize">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="preferenciap"/>
+              <actionMethod actionName="nmaxvalgrupo"/>
+              <actionMethod actionName="nminvalgrupo"/>
+            </controllerFile>
+            <controllerFile controllerName="Plan">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="edita"/>
+            </controllerFile>
+            <controllerFile controllerName="Evaluacion">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="grupo"/>
+              <actionMethod actionName="capas"/>
+              <actionMethod actionName="acapa"/>
+            </controllerFile>
+            <controllerFile controllerName="Util">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="repvertical"/>
+            </controllerFile>
+            <controllerFile controllerName="P1a">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="a"/>
+              <actionMethod actionName="b"/>
+            </controllerFile>
+            <controllerFile controllerName="Consulta">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Dashboard">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="User">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="login"/>
+              <actionMethod actionName="profile"/>
+              <actionMethod actionName="logout"/>
+            </controllerFile>
+            <controllerFile controllerName="Organizacion">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Home">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="login"/>
+              <actionMethod actionName="require"/>
+              <actionMethod actionName="join"/>
+              <actionMethod actionName="results"/>
+              <actionMethod actionName="logout"/>
+            </controllerFile>
+            <controllerFile controllerName="Error">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="noauth"/>
+            </controllerFile>
+            <controllerFile controllerName="Encuestas">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="admin"/>
+              <actionMethod actionName="editar"/>
+              <actionMethod actionName="config"/>
+              <actionMethod actionName="secciones"/>
+            </controllerFile>
+            <controllerFile controllerName="Docente">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="alta"/>
+              <actionMethod actionName="evaluaciones"/>
+            </controllerFile>
+            <controllerFile controllerName="Reporte">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="abiertas"/>
+              <actionMethod actionName="grupal"/>
+              <actionMethod actionName="general"/>
+              <actionMethod actionName="consulta"/>
+              <actionMethod actionName="descarga"/>
+            </controllerFile>
+          </controllersDirectory>
+          <formsDirectory>
+            <formFile formName="AltaEncuesta"/>
+            <formFile formName="AltaSeccion"/>
+            <formFile formName="AltaGrupo"/>
+            <formFile formName="AltaPregunta"/>
+            <formFile formName="AltaCategoria"/>
+            <formFile formName="AltaOpcion"/>
+            <formFile formName="AltaSeleccion"/>
+            <formFile formName="AltaRegistro"/>
+            <formFile formName="AltaEncuestaEvaluativa"/>
+            <formFile formName="AltaNivel"/>
+            <formFile formName="AltaGrado"/>
+            <formFile formName="AltaCiclo"/>
+            <formFile formName="ConsultaGrupos"/>
+            <formFile formName="AltaGrupoE"/>
+            <formFile formName="ConsultaMateria"/>
+            <formFile formName="AltaMateria"/>
+            <formFile formName="MateriasProfesor"/>
+            <formFile formName="AsociarEncuesta"/>
+            <formFile formName="AltaValor"/>
+            <formFile formName="AltaPlan"/>
+            <formFile formName="AltaEvaluacion"/>
+            <formFile formName="AltaCapa"/>
+            <formFile formName="Login"/>
+            <formFile formName="Join"/>
+            <formFile formName="ConsultaReportes"/>
+          </formsDirectory>
+          <layoutsDirectory enabled="false">
+            <layoutScriptsDirectory enabled="false"/>
+          </layoutsDirectory>
+          <modelsDirectory>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Encuesta"/>
+              <dbTableFile dbTableName="Seccion"/>
+              <dbTableFile dbTableName="Grupo"/>
+              <dbTableFile dbTableName="Registro"/>
+              <dbTableFile dbTableName="Pregunta"/>
+              <dbTableFile dbTableName="Respuesta"/>
+              <dbTableFile dbTableName="Categoria"/>
+              <dbTableFile dbTableName="Opcion"/>
+              <dbTableFile dbTableName="PreferenciaSimple"/>
+              <dbTableFile dbTableName="MateriaE"/>
+              <dbTableFile dbTableName="GrupoE"/>
+              <dbTableFile dbTableName="ProfesorE"/>
+              <dbTableFile dbTableName="NivelE"/>
+              <dbTableFile dbTableName="GradoE"/>
+              <dbTableFile dbTableName="CicloE"/>
+              <dbTableFile dbTableName="ProfesoresGrupo"/>
+              <dbTableFile dbTableName="EncuestaGrupo"/>
+              <dbTableFile dbTableName="ERealizadas"/>
+              <dbTableFile dbTableName="ValoresOpcion"/>
+              <dbTableFile dbTableName="PlanE"/>
+              <dbTableFile dbTableName="AsignacionGrupo"/>
+              <dbTableFile dbTableName="Reporte"/>
+              <dbTableFile dbTableName="ECapas"/>
+              <dbTableFile dbTableName="EncuestasOrganizacion"/>
+              <dbTableFile dbTableName="NivelesEducativosOrganizacion"/>
+              <dbTableFile dbTableName="RegistroOrganizacion"/>
+              <dbTableFile dbTableName="PlanesOrganizacion"/>
+              <dbTableFile dbTableName="CategoriasRespOrganizacion"/>
+              <dbTableFile dbTableName="Organizacion"/>
+              <dbTableFile dbTableName="Rol"/>
+              <dbTableFile dbTableName="Usuario"/>
+              <dbTableFile dbTableName="Subscripcion"/>
+              <dbTableFile dbTableName="ReportesEncuesta"/>
+            </dbTableDirectory>
+            <modelFile modelName="Encuesta"/>
+            <modelFile modelName="Seccion"/>
+            <modelFile modelName="Grupo"/>
+            <modelFile modelName="Registro"/>
+            <modelFile modelName="Pregunta"/>
+            <modelFile modelName="Respuesta"/>
+            <modelFile modelName="Categoria"/>
+            <modelFile modelName="Opcion"/>
+            <modelFile modelName="PreferenciaSimple"/>
+            <modelFile modelName="Nivel"/>
+            <modelFile modelName="Grado"/>
+            <modelFile modelName="Ciclo"/>
+            <modelFile modelName="Grupoe"/>
+            <modelFile modelName="Materia"/>
+            <modelFile modelName="Profesor"/>
+          </modelsDirectory>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Seccion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Respuesta">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Seccion">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Seccion">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Seccion">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Seccion">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Respuesta">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Respuesta">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Respuesta">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Respuesta">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="encuestadet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="secciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="seccionesdet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="grupos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="grupodet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="secciondet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="preguntas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="preguntadet"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Generador">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Generador">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupo">
+                <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="secciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categoria">
+                <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Registro">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Registro">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Resultado">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Resultado">
+                <viewScriptFile forActionName="grafica"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="registro"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="tipos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="altae"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="altas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="grupo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Nivel">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Nivel">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Nivel">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Nivel">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Ciclo">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Ciclo">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Ciclo">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Ciclo">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="GrupoE">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="opciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Profesor">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="grados"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grado">
+                <viewScriptFile forActionName="materias"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Materia">
+                <viewScriptFile forActionName="consulta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="asociarp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="grupos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="aencuesta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="encuestas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="encuesta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="resultado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Grupos">
+                <viewScriptFile forActionName="resultado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pregunta">
+                <viewScriptFile forActionName="grafica"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opcion">
+                <viewScriptFile forActionName="avalor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="resumen"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Normalize">
+                <viewScriptFile forActionName="preferenciap"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Plan">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="rpreferencia"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reporte"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Profesor">
+                <viewScriptFile forActionName="encuestas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reportepa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="reporteg"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="grupo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="capas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Evaluacion">
+                <viewScriptFile forActionName="acapa"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Util">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Util">
+                <viewScriptFile forActionName="repvertical"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Consulta">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="encrealizadas"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Dashboard">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Organizacion">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="login"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="require"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="join"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="login"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Error">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Error">
+                <viewScriptFile forActionName="noauth"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="profile"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="config"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="logout"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
+                <viewScriptFile forActionName="results"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Encuestas">
+                <viewScriptFile forActionName="secciones"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Unidad">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Unidad">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Multiplos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Multiplos">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Multiplos">
+                <viewScriptFile forActionName="baja"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Multiplos">
+                <viewScriptFile forActionName="alta"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Multiplos">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="JsonController">
+                <viewScriptFile forActionName="unidades"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="admin"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="edita"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="editartodo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="crear"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="eliminar"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -228,6 +1032,14 @@
               <actionMethod actionName="aplicacobro"/>
               <actionMethod actionName="anticipo"/>
               <actionMethod actionName="proyecto"/>
+              <actionMethod actionName="desechabledesayuno"/>
+              <actionMethod actionName="buscaanticipoclientes"/>
+              <actionMethod actionName="enlazafactura"/>
+              <actionMethod actionName="cancelar"/>
+              <actionMethod actionName="cancelarcli"/>
+              <actionMethod actionName="remisioncafe"/>
+              <actionMethod actionName="cobroremiclicafe"/>
+              <actionMethod actionName="aplicacobroremiclicafe"/>
             </controllerFile>
             <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
@@ -245,6 +1057,8 @@
               <actionMethod actionName="aplicarpago"/>
               <actionMethod actionName="pagodos"/>
               <actionMethod actionName="anticipo"/>
+              <actionMethod actionName="movimientos"/>
+              <actionMethod actionName="cancelar"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreia">
               <actionMethod actionName="index"/>
@@ -255,6 +1069,9 @@
               <actionMethod actionName="nomina"/>
               <actionMethod actionName="impuestos"/>
               <actionMethod actionName="notacredito"/>
+              <actionMethod actionName="pagonomina"/>
+              <actionMethod actionName="aplicapagonomina"/>
+              <actionMethod actionName="impuestoempleado"/>
             </controllerFile>
             <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
@@ -283,6 +1100,10 @@
             <controllerFile controllerName="Proyectos">
               <actionMethod actionName="index"/>
               <actionMethod actionName="alta"/>
+              <actionMethod actionName="proyectocliente"/>
+              <actionMethod actionName="proyectoproveedor"/>
+              <actionMethod actionName="proyectoxfecha"/>
+              <actionMethod actionName="proyectocafexfecha"/>
             </controllerFile>
             <controllerFile controllerName="Impuestos">
               <actionMethod actionName="index"/>
@@ -311,6 +1132,35 @@
               <actionMethod actionName="buscafacxp"/>
               <actionMethod actionName="obtenerfacturaxp"/>
               <actionMethod actionName="consecutivo"/>
+              <actionMethod actionName="productoxmovimiento"/>
+              <actionMethod actionName="totalproyecto"/>
+              <actionMethod actionName="getdescripciontipomovto"/>
+              <actionMethod actionName="empleado"/>
+              <actionMethod actionName="buscanominaxp"/>
+              <actionMethod actionName="proyectoremision"/>
+              <actionMethod actionName="buscaanticipocliente"/>
+              <actionMethod actionName="facturaantcli"/>
+              <actionMethod actionName="proyectocliente"/>
+              <actionMethod actionName="movimientosproveedor"/>
+              <actionMethod actionName="proyectoxfecha"/>
+              <actionMethod actionName="getcliente"/>
+              <actionMethod actionName="proyectoprovxfecha"/>
+              <actionMethod actionName="proyectoremprovxfecha"/>
+              <actionMethod actionName="proyectoremclixfecha"/>
+              <actionMethod actionName="proyectonominafecha"/>
+              <actionMethod actionName="proyectoporproveedor"/>
+              <actionMethod actionName="proyectoporremprov"/>
+              <actionMethod actionName="proyectonomina"/>
+              <actionMethod actionName="productoimpuesto"/>
+              <actionMethod actionName="numerofactura"/>
+              <actionMethod actionName="cancelafaccli"/>
+              <actionMethod actionName="aplicacanfaccli"/>
+              <actionMethod actionName="numfacprov"/>
+              <actionMethod actionName="facprovxsucynum"/>
+              <actionMethod actionName="eliminaprodimp"/>
+              <actionMethod actionName="remisioncafel"/>
+              <actionMethod actionName="remisioncafep"/>
+              <actionMethod actionName="buscacobroremclicafe"/>
             </controllerFile>
             <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
@@ -319,8 +1169,15 @@
               <actionMethod actionName="altmodulos"/>
               <actionMethod actionName="altamodulos"/>
               <actionMethod actionName="altatipoproveedor"/>
+              <actionMethod actionName="adminmodulos"/>
+              <actionMethod actionName="editamodulos"/>
+              <actionMethod actionName="editamodulo"/>
+              <actionMethod actionName="admintipos"/>
             </controllerFile>
             <controllerFile controllerName="Notacredito">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Remisioncafe">
               <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
@@ -357,6 +1214,9 @@
             <formFile formName="NotaCredito"/>
             <formFile formName="AnticipoClientes"/>
             <formFile formName="AnticipoProveedor"/>
+            <formFile formName="PagoImpuesto"/>
+            <formFile formName="AgregarRemisioClienteCafeteria"/>
+            <formFile formName="AgregarRemisionClienteCafeteria"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -656,6 +1516,159 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="proyecto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="adminmodulos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="editamodulos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="editamodulo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="admintipos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="desechabledesayuno"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoxmovimiento"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="totalproyecto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="getdescripciontipomovto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="pagonomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="empleado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscanominaxp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="aplicapagonomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoremision"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="buscaanticipoclientes"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscaanticipocliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="enlazafactura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="facturaantcli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectocliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectoproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectocliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="movimientos"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="movimientosproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectoxfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoxfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="getcliente"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoprovxfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoremprovxfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoremclixfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectonominafecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoporproveedor"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoporremprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectonomina"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+                <viewScriptFile forActionName="impuestoempleado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="productoimpuesto"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cancelar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="cancelar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="numerofactura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="cancelafaccli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cancelarcli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="aplicacanfaccli"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="numfacprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="facprovxsucynum"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="eliminaprodimp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Remisioncafe">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="remisioncafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectocafexfecha"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="remisioncafel"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="remisioncafep"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="cobroremiclicafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscacobroremclicafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="aplicacobroremiclicafe"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1174,6 +2187,8 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Usuario">
             <viewScriptFile forActionName="perfil"/>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="productoimpuesto"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
@@ -1214,6 +2229,7 @@
             <testApplicationActionMethod forActionName="login"/>
             <testApplicationActionMethod forActionName="normalize"/>
             <testApplicationActionMethod forActionName="logout"/>
+            <testApplicationActionMethod forActionName="productoimpuesto"/>
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Usuario">
             <testApplicationActionMethod forActionName="index"/>
@@ -1388,6 +2404,14 @@
                 <testApplicationActionMethod forActionName="aplicacobro"/>
                 <testApplicationActionMethod forActionName="anticipo"/>
                 <testApplicationActionMethod forActionName="proyecto"/>
+                <testApplicationActionMethod forActionName="desechabledesayuno"/>
+                <testApplicationActionMethod forActionName="buscaanticipoclientes"/>
+                <testApplicationActionMethod forActionName="enlazafactura"/>
+                <testApplicationActionMethod forActionName="cancelar"/>
+                <testApplicationActionMethod forActionName="cancelarcli"/>
+                <testApplicationActionMethod forActionName="remisioncafe"/>
+                <testApplicationActionMethod forActionName="cobroremiclicafe"/>
+                <testApplicationActionMethod forActionName="aplicacobroremiclicafe"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedores">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1405,6 +2429,8 @@
                 <testApplicationActionMethod forActionName="aplicarpago"/>
                 <testApplicationActionMethod forActionName="pagodos"/>
                 <testApplicationActionMethod forActionName="anticipo"/>
+                <testApplicationActionMethod forActionName="movimientos"/>
+                <testApplicationActionMethod forActionName="cancelar"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreia">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1415,6 +2441,9 @@
                 <testApplicationActionMethod forActionName="nomina"/>
                 <testApplicationActionMethod forActionName="impuestos"/>
                 <testApplicationActionMethod forActionName="notacredito"/>
+                <testApplicationActionMethod forActionName="pagonomina"/>
+                <testApplicationActionMethod forActionName="aplicapagonomina"/>
+                <testApplicationActionMethod forActionName="impuestoempleado"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1443,6 +2472,10 @@
               <testApplicationControllerFile forControllerName="Proyectos">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="alta"/>
+                <testApplicationActionMethod forActionName="proyectocliente"/>
+                <testApplicationActionMethod forActionName="proyectoproveedor"/>
+                <testApplicationActionMethod forActionName="proyectoxfecha"/>
+                <testApplicationActionMethod forActionName="proyectocafexfecha"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Impuestos">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1471,6 +2504,35 @@
                 <testApplicationActionMethod forActionName="buscafacxp"/>
                 <testApplicationActionMethod forActionName="obtenerfacturaxp"/>
                 <testApplicationActionMethod forActionName="consecutivo"/>
+                <testApplicationActionMethod forActionName="productoxmovimiento"/>
+                <testApplicationActionMethod forActionName="totalproyecto"/>
+                <testApplicationActionMethod forActionName="getdescripciontipomovto"/>
+                <testApplicationActionMethod forActionName="empleado"/>
+                <testApplicationActionMethod forActionName="buscanominaxp"/>
+                <testApplicationActionMethod forActionName="proyectoremision"/>
+                <testApplicationActionMethod forActionName="buscaanticipocliente"/>
+                <testApplicationActionMethod forActionName="facturaantcli"/>
+                <testApplicationActionMethod forActionName="proyectocliente"/>
+                <testApplicationActionMethod forActionName="movimientosproveedor"/>
+                <testApplicationActionMethod forActionName="proyectoxfecha"/>
+                <testApplicationActionMethod forActionName="getcliente"/>
+                <testApplicationActionMethod forActionName="proyectoprovxfecha"/>
+                <testApplicationActionMethod forActionName="proyectoremprovxfecha"/>
+                <testApplicationActionMethod forActionName="proyectoremclixfecha"/>
+                <testApplicationActionMethod forActionName="proyectonominafecha"/>
+                <testApplicationActionMethod forActionName="proyectoporproveedor"/>
+                <testApplicationActionMethod forActionName="proyectoporremprov"/>
+                <testApplicationActionMethod forActionName="proyectonomina"/>
+                <testApplicationActionMethod forActionName="productoimpuesto"/>
+                <testApplicationActionMethod forActionName="numerofactura"/>
+                <testApplicationActionMethod forActionName="cancelafaccli"/>
+                <testApplicationActionMethod forActionName="aplicacanfaccli"/>
+                <testApplicationActionMethod forActionName="numfacprov"/>
+                <testApplicationActionMethod forActionName="facprovxsucynum"/>
+                <testApplicationActionMethod forActionName="eliminaprodimp"/>
+                <testApplicationActionMethod forActionName="remisioncafel"/>
+                <testApplicationActionMethod forActionName="remisioncafep"/>
+                <testApplicationActionMethod forActionName="buscacobroremclicafe"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
@@ -1479,8 +2541,15 @@
                 <testApplicationActionMethod forActionName="altmodulos"/>
                 <testApplicationActionMethod forActionName="altamodulos"/>
                 <testApplicationActionMethod forActionName="altatipoproveedor"/>
+                <testApplicationActionMethod forActionName="adminmodulos"/>
+                <testApplicationActionMethod forActionName="editamodulos"/>
+                <testApplicationActionMethod forActionName="editamodulo"/>
+                <testApplicationActionMethod forActionName="admintipos"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Notacredito">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Remisioncafe">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
@@ -1524,6 +2593,17 @@
                 <testApplicationActionMethod forActionName="crear"/>
                 <testApplicationActionMethod forActionName="editar"/>
                 <testApplicationActionMethod forActionName="eliminar"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Json">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="unidades"/>
+                <testApplicationActionMethod forActionName="multiplos"/>
+                <testApplicationActionMethod forActionName="productos"/>
+                <testApplicationActionMethod forActionName="productoterminado"/>
+                <testApplicationActionMethod forActionName="llenaproducto"/>
+                <testApplicationActionMethod forActionName="productoxmovimiento"/>
+                <testApplicationActionMethod forActionName="productoxsucursal"/>
+                <testApplicationActionMethod forActionName="eliminarproductoenlazado"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

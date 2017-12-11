@@ -23,7 +23,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		
     	$this->setAttrib("id", "agregarFacturaCliente");
 		$subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend('Nueva Factura Cliente');
+		//$subEncabezado->setLegend('Nueva Factura Cliente');
 		
 		$tipoMovimiento = new Contabilidad_DAO_TipoMovimiento;
 		$tiposMovimientos =$tipoMovimiento->obtenerTiposMovimientos();
@@ -120,8 +120,7 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		
 		$ePagada = new Zend_Form_Element_Checkbox('pagada');
 		$ePagada->setLabel("Pagada en una sola exhibición:");
-		$ePagada->setChecked('1');
-		
+	
 		$ePagos = new Zend_Form_Element_Text('pagos');
 		$ePagos->setLabel('Importe Pago:');
 		$ePagos->setAttrib("class", "form-control");
@@ -168,9 +167,9 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 				
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar');
-		$eSubmit->setAttrib("class", "btn btn-warning");
-	
-		//Condiciones de Pago
+		$eSubmit->setAttrib("class", "btn btn-success");
+		$eSubmit->setAttrib("disabled","true");
+		
 		$this->addSubForms(array($subEncabezado,$subFormaPago));
 		$this->addElement($eSubmit);
 	

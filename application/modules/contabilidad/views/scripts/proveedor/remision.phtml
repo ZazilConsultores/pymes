@@ -1,23 +1,21 @@
 <?php
-	echo $this->formulario;
+	$formulario = $this->formulario;
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
 <section class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title">
-				Agregar Datos para Remisión Entrada.
-			</h3>
+			<h3 class="panel-title">Nueva Remisión Proveedor.</h3>
 		</div>
 		<div class="panel-body">
 			<?php if(!is_null($messageSuccess)){ ?>
-					<div class="alert alert-success" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  <span aria-hidden="true">&times;</span>
-						</button>
-						<?php echo $messageSuccess; ?>
-					</div>
+				<div class="alert alert-success" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageSuccess; ?>
+				</div>
 				<?php }elseif(!is_null($messageFail)){ ?>
 				<div class="alert alert-danger" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -25,8 +23,20 @@
 					</button>
 					<?php echo $messageFail; ?>
 				</div>
-				<?php } ?><br />
-				<!-- Botón para agregar filas-->
+			<?php } ?>
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
+<section class="row">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				Agregar Productos para Remisión Entrada.
+			</h3>
+		</div>
+		<div class="panel-body">
+			<!-- Botón para agregar filas-->
 			<button id="addRow" class="btn btn-success" >
 				<span class="glyphicon glyphicon-plus" ></span> Nuevo
 			</button>
@@ -45,10 +55,8 @@
 						<th>Importe</th>
 						<th>Eliminar</th>
 					</tr>
-				
 				</thead>
 				<tbody>
-					
 				</tbody>
 				<tfoot>
 					<tr>
@@ -62,12 +70,12 @@
 					</tr>
 				</tfoot>
 			</table>
-			<br />
 		</div>
 	</div>
 </section>
 <script>
 	$(document).ready(function(){
+		console.log( "ready!" );
 		$("select#idEmpresas").on('change', function(){
 			var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			//console.log("$url");
@@ -101,53 +109,6 @@
 			
 		});
 		
-		/*var form = $("#nuevaRemisionProveedor");
-		form.validate({
-			rules: {
-				numFolio: {
-					required: true
-				},
-
-				fecha: {
-					required: true
-				},
-				
-				idSucursal: {
-					required: true
-				},
-					
-				idProyecto: {
-					required: true
-				}
-			},
-			messages: {
-				numFolio: {					
-					required: "Este campo no puede quedar vacío, Ingrese número de folio"
-				},
-				fecha: {					
-					required: "Este campo no puede quedar vacío, Seleccione fecha"
-				},
-				idSucursal: {					
-					required: "Este campo no puede quedar vacío, Seleccione Empresa"
-				},
-				
-				idProyecto: {					
-					required: "Este campo no puede quedar vacío, Seleccione Sucursal"
-				}
-			}
-		});*/
-		
-		/*$("#submit").click(function(){
-			console.log("" + form.valid());
-		});*/
-		
-	});
-</script>
-<script>
-	$( document ).ready(function() {
-		
-	
-		console.log( "ready!" );
 		var jsonProductos = <?php echo $this->jsonProductos; ?>;
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
@@ -161,10 +122,8 @@
 			var inputCantidad = $('<input />').attr({'id': 'idCantidad_' + filasTabla}).attr({'class':'form-control'}).attr({'required':"La cantidad no puede quedar vacia"});
 			// idProducto
 			var inputProducto = $('<input />').attr({'id': 'idProducto_' + filasTabla}).attr({'class':'form-control'});
-
 			// idUnidad
 			var inputUnidad = $('<select />').attr({'id': 'idUnidad_' + filasTabla}).attr({'class':'form-control'});
-	
 			// codigoBarras
 			var inputCodigoBarras = $('<input />').attr({'id': 'codigoBarras_' + filasTabla}).attr({'class':'form-control'});
 			// descripcion
@@ -177,7 +136,6 @@
 			var inputCostoUnitario = $('<input />').attr({'id': 'costoUnitario_' + filasTabla}).attr({'class':'form-control'});
 			// precioImporte
 			var inputCostoTotal = $('<input />').attr({'id': 'costoTotal_' + filasTabla}).attr({'class':'form-control'}).attr({'name':'costoTotal_'}).attr({'disabled':'true'});
-			
 			// botonLimpiar
 			var buttonLimpiar = $('<button />').attr({'id': 'btnLimpiar_' + filasTabla}).attr({'class':'btn btn-danger'});
 			buttonLimpiar.html('<span class="glyphicon glyphicon-remove-circle"></span> Eliminar Producto')
@@ -216,63 +174,47 @@
  				if(jsonProductos[i].idProducto == id){
  					$("input#idProducto_"+numFila).val(jsonProductos[i].claveProducto);
  				}	
-		});
- 			
+			});	
  		});//cierra funcion buscar descripcion del producto
  		
  		//Funcion buscar Multiplo del producto
  		$("table#productos").on("change", "select[id^='descripcion_']", function(){
- 			console.log("Hola");
  			var descripcion= $(this).attr("id");
 			var arr = descripcion.split('_');
 			var id = $(this).val();
-			console.log(id);
 			var numFila =  arr[1];
 
 			var $url = window.location.origin + "/General/inventario/json/multiplos/idProducto/" + id ;
-			console.log($url);
+			//console.log($url);
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					console.log($url);
-					console.dir(data);
+					//console.log($url);
+					//console.dir(data);
 					$("select#idUnidad_"+numFila).empty();
 					$.each(data, function(i,item){
 						if(data[i].idProducto == id){
-							//$("select#idUnidad_"+numFila).filter(jsonMultiplos[i].idUnidad);
 							$("select#idUnidad_"+numFila).append($("<option></option>").attr("value",data[i].idUnidad).text(data[i].unidad));
 						}	
-						
-					});
-					
+					});	
 				}
-				
 			});
- 			
  		});//cierra funcion  Multiplo del producto
 
  		//Funcion totalImporte para remision
  		$("table#productos").on("blur","input[id^='total']",function() {
  			var importe = $(this).val();
- 			console.log(importe);
  			$("input#1-importePago").val(importe);
 		});
 		
-		$("input#1-importePago").on('click', function(){
- 			console.log("importe");
- 			
-		});
-
  		//==================================================================== Calcular JsonArray
  		$("a#generarJsonArray").on("click",function(){
- 			console.log("En a#generarJsonArray: ");
  			var tabla = $("table#productos > tbody  > tr");
  			//Array Json de productos
  			var productos = [];
  			
  			tabla.each(function(){
- 				
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
  				var unidad = row.find("select[id^='idUnidad_']").val();
@@ -280,25 +222,19 @@
  				var descripcion = row.find("select[id^='descripcion_']").val();
  				var precioUnitario = row.find("input[id^='costoUnitario_']").val();
  				var importe = row.find("input[id^='costoTotal_']").val();
- 				//var total = row.find("input[id^='total']").val();
  				
- 				console.log("Cantidad:"+cantidad);
- 				console.log("unidad:"+unidad);
- 				console.log("codigoBarras:"+codigoBarras);
- 				console.log("descripcion:"+descripcion);
- 				console.log("precioUnitario:"+precioUnitario);
- 				console.log("costoTotal:"+importe);
- 				//console.log("total:"+total);
  				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe)); 
  				
- 			
+ 				if(cantidad.length < 1 || unidad == null|| descripcion.length < 1 || precioUnitario.length < 1 || importe.length < 1 ) {  
+        			$('input[type="submit"]').attr('disabled', 'disabled');
+        		}else{ 
+        			$('input[type="submit"]').removeAttr('disabled');
+        		}
  			});
- 			console.dir(productos);
+ 			//console.dir(productos);
  			var myString = JSON.stringify(productos);
- 			
- 			console.log(myString);
+ 			//console.log(myString);
  			if ($("input#productos").val(myString)){
- 				
  			};
  		});
  		
@@ -312,11 +248,7 @@
 		  this.importe = importe;
 		  //this.unidad = unidad;
 		}
-		 $("a#generarJsonArray").on("click",function(){
-               $('input[type="submit"]').removeAttr('disabled');
-            
-          });
-          
+		
         $("table#productos").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
         	calculaRow($(this).closest("tr"));
         	calculaGrandTotal();
@@ -329,15 +261,14 @@
     		row.find('input[id^="costoTotal_"]').val((cantidad * precioUnitario).toFixed(2));
 		}
 		
-		function calculaGrandTotal() {	
-    	var grandTotal = 0;
-    	$("table#productos").find('input[id^="costoTotal_"]').each(function () {
-        	grandTotal += +$(this).val(); 
-        	console.log(grandTotal);
-    	});
+		function calculaGrandTotal() {
+			var grandTotal = 0;
+    		$("table#productos").find('input[id^="costoTotal_"]').each(function () {
+        		grandTotal += +$(this).val(); 
+    		});
     	
-    	 $("input#total").val(grandTotal.toFixed(2));
-    	 $("input#1-importePago").val(grandTotal.toFixed(2));  
+    	 	$("input#total").val(grandTotal.toFixed(2));
+    	 	$("input#1-importePago").val(grandTotal.toFixed(2));  
    		}
 	});//cierra document ready
 </script>
