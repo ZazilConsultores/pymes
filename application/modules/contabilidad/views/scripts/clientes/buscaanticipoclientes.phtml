@@ -148,14 +148,14 @@
 				<h4 class="modal-title">Confirmar Asociación.</h4>
 			</div>
 			<div class="modal-body">
-				¿Esta seguro de asociar la Factura: <strong><span id="cliente"></span></strong> a la empresa: <strong><span id="empresa"></span></strong> ? 
+				¿Esta seguro de asociar la Factura: <strong><span id="numfac"></span></strong>? 
 			</div>
 			<div class="modal-footer">
-				<button id="asociarClienteEmpresa" type="button" class="btn btn-success" data-dismiss="modal">
+				<button id="asociarFac" type="button" class="btn btn-success" data-dismiss="modal">
 					<span class="glyphicon glyphicon-random"></span> Asociar
 				</button>
 				<button type="button" class="btn btn-danger" data-dismiss="modal">
-					<span class="glyphicon glyphicon-search"></span>Consultar
+					<span class="glyphicon glyphicon-search"></span>Cancelar
 				</button>
 			</div>
 		</div>
@@ -239,7 +239,7 @@
 						tbody.append($('<tr>').
 							append($('<td>').append(data[i].idSucursal)).
 							append($('<td>').append(data[i].idCoP)).	
-							append($('<td>').append(data[i].numeroFactura)).
+							append($('<td>').append(data[i].numeroFactura).attr("id", "numeroFactura")).
 							append($('<td>').append(data[i].fecha)).
 							append($('<td>').append(data[i].total).attr("id", "importe")).
 							append($('<td>').append(botonEnl)));
@@ -249,10 +249,18 @@
 		});
 
 		$("table#detalleFactura").on("click", "button[id^='enlazar']", function(){
+			var numFac = $("table#detalleAnticipoCliente  > #numeroFactura ").attr("numeroFactura");
+			console.log(numFac);
+			/*$("span#numFac").text($("table#detalleFactura #numeroFactura").text());
 			var fac = $(this).attr("factura");
 			console.log(fac);
-			$("#msgConfirm").modal(); 
+			$("#msgConfirm").modal();*/ 
+		});
+
+		$("#asociarFac").on("click",  function(){
+			
 		});	
+	
 
 });
 </script>
