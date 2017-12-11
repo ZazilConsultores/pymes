@@ -343,32 +343,3 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> branch 'master' of git@192.168.0.5:/repos/2016/php/General.git
