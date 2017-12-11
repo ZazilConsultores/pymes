@@ -90,6 +90,27 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 		$this->view->empresa = $empresa;
     }
 
+    public function saldoempresasAction()
+    {
+        $request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AltaProyecto;
+        $formulario->removeElement("numeroFolio");
+        $formulario->removeElement("idCliente");
+        $formulario->getSubForm("0")->removeElement("idProyecto");
+        $formulario->removeElement("descripcion");
+        $formulario->removeElement("fechaApertura");
+        $formulario->removeElement("fechaCierre");
+        $formulario->removeElement("costoInicial");
+        $formulario->removeElement("costoFinal");
+        $formulario->removeElement("ganancia");
+        $formulario->removeElement("submit");
+        $formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
+        $this->view->formulario = $formulario;
+        if($request->isGet()){
+            $this->view->formulario = $formulario;
+        }
+    }
+
 
 }
 

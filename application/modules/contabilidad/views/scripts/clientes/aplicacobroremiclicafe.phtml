@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 	$formulario = $this->formulario;
 	$datosMovimiento = $this->datosMovimiento;
@@ -38,3 +39,46 @@ $().ready(function(){
 		
 });
 </script>
+=======
+<?php
+	$formulario = $this->formulario;
+	$datosMovimiento = $this->datosMovimiento;
+	$clientesFac = $this->clientesFac;
+	$sucursalFac = $this->sucursalFac;
+	$messageFail = $this->messageFail;
+	$messageSuccess = $this->messageSuccess;
+?>
+
+<section class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">Realizar Cobro Remision Cafeteria Cliente</h3>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12" >
+			<?php if(!is_null($messageSuccess)){ ?>
+				<div class="alert alert-success" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageSuccess; ?>
+				</div>
+				<?php }elseif(!is_null($messageFail)){ ?>
+				<div class="alert alert-danger" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+					<?php echo $messageFail; ?>
+				</div>
+				<?php } ?><br />
+			<?php echo $formulario; ?>
+		</div>
+	</div>
+</section>
+<script>
+$().ready(function(){
+	
+	
+		
+});
+</script>
+>>>>>>> branch 'master' of git@192.168.0.5:/repos/2016/php/General.git
