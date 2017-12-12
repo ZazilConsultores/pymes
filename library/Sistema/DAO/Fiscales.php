@@ -472,13 +472,13 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 			->join('Empresa', 'Fiscales.idFiscales = Empresa.idFiscales')
 			->join('Clientes','Empresa.idEmpresa = Clientes.idEmpresa')
 			->order('razonSocial ASC')->where("Fiscales.idFiscales IN (?)", $idsFiscales);
-			//print_r("$select");
+			print_r("$select");
 			//return $tablaEmpresa->fetchAll($select);*/
 			$rowsFiscales = $tablaFiscales->fetchAll($select);
 			if (is_null($rowsFiscales)) {
-				return NULL;
+				//return NULL;
 			}else{
-				return $rowsFiscales->toArray();
+				//return $rowsFiscales->toArray();
 			}
 		}else{
 			return NULL;
