@@ -711,7 +711,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	               'total'=>$formaPago['importePago']
 	           );
 	           //print_r($mCuentasxc);
-	           $dbAdapter->insert("cuentasxc", $mCuentasxc);
+	           $dbAdapter->insert("Cuentasxc", $mCuentasxc);
 	       }
         }catch(exception $ex){
 	       print_r("<br />");
