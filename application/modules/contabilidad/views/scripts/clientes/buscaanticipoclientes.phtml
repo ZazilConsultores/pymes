@@ -9,7 +9,7 @@
 	<div class="panel-body">
 		<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
 			<div class="form-group">
-				<label for="empresa" class="col-md-2">Empresas: </label>
+				<label for="empresa" class="col-md-2 control-label">Empresas: </label>
 				<div class="col-md-10">
 					<select name="empresa" id="idFiscales" class="form-control">
 						<option value="0">Seleccione Empresa</option>
@@ -20,14 +20,14 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="sucursal" class="col-md-2">Sucursal: </label>
+				<label for="sucursal" class="col-md-2 control-label">Sucursal: </label>
 				<div class="col-md-10">
 					<select required name="sucursal" id="idSucursal" class="form-control" >
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="cliente" class="col-md-2">Clientes: </label>
+				<label for="cliente" class="col-md-2 control-label">Clientes: </label>
 				<div class="col-md-10">
 					<select required name="cliente" id="idCliente" class="form-control">
 					</select>
@@ -36,7 +36,7 @@
 			<!-- Boton consulta -->
 			<div class="form-group">
 				<div class="col-md-offset-2 col-md-10">
-					<button id="queryFacturas" type="button" class="btn btn-success">
+					<button id="queryCXC" type="button" class="btn btn-success">
 						 <span class="glyphicon glyphicon-search"></span> Consultar
 					</button>
 				</div>
@@ -44,6 +44,7 @@
 		</form>
 	</div>
 </section>
+
 <section>
 	<div class="panel panel-info">
 		<div class="panel-heading">
@@ -52,88 +53,67 @@
 		<table id="detalleAnticipoCliente" class="table table-striped table-condensed">
 			<thead>
 				<th>Sucursal</th>
-				<th>Cliente</th>
 				<th>Número Folio</th>
 				<th>Fecha Pago</th>
 				<th>Importe</th>
-				<th>Busca Factura</th>
+				<th>Crea Factura</th>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 	</div>	
 </section>
-<section id="factura" class="hidden">
-	<div class="panel panel-info">
-		<div class="panel-heading">
-			<h4 class="panel-title">Detalle Factura Cliente.</h4>
-		</div>
-		<table id="detalleFactura"class="table table-striped table-condensed">
-			<thead>
-				<th>Sucursal</th>
-				<th>Cliente</th>
-				<th>Número Factura</th>
-				<th>Fecha</th>
-				<th>Importe</th>
-				<th>Enlazar Factura</th>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-	</div>
-</section>
 
 <script>
-	$().ready(function(){
-		var url = window.location.origin + "/General/";
-		
-		$("#idFiscales").on('change',function(){
-			var idFiscal = $(this).val();
-			if(idFiscal != 0){
-				var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
-				$.ajax({
-					url: urlQuerySucursales,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("#idSucursal").empty();
-						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
-						$.each(data, function (i,item){
-							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-						});
-					}
-				});
-				
-				var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
-				$.ajax({
-					url: urlQueryClientes,
-					dataType: "json",
-					success: function(data){
-						$("select#idCliente").empty();
-						$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
-						$.each(data, function (i,item){
-							$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
-						});
-					}
-				});
-			}
-		});
-		
-		$("button#queryFacturas").on("click", function(){
-		 	var sucu = $("select#idSucursal").val();
-		 	var cl = $("select#idCliente").val();
-			var urlCXC = url + "contabilidad/json/buscaanticipocliente/sucu/" + sucu +"/cl/"+cl;
+$().ready(function(){
+	var url = window.location.origin + "/General/";
+
+	$("#idFiscales").on('change',function(){
+		var idFiscal = $(this).val();
+		if(idFiscal != 0){
+			var urlQuerySucursales = url + 'contabilidad/json/sucursalese/idFiscales/'+idFiscal;
 			$.ajax({
-				url: urlCXC,
+				url: urlQuerySucursales,
 				dataType: "json",
 				success: function(data){
-					var tbody = $("table#detalleAnticipoCliente").find('tbody');
-					tbody.empty();
+					$("#idSucursal").empty();
+					$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+					$.each(data, function (i,item){
+						$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+					});
+				}
+			});
+
+			var urlQueryClientes = url + 'contabilidad/json/clientese/idFiscales/'+idFiscal;
+			$.ajax({
+				url: urlQueryClientes,
+				dataType: "json",
+				success: function(data){
+					$("select#idCliente").empty();
+					$("select#idCliente").append($("<option></option>").attr("value","0").text("Seleccione Cliente..."));
+					$.each(data, function (i,item){
+						$("select#idCliente").append($("<option></option>").attr("value",data[i].idCliente).text(data[i].razonSocial));
+					});
+				}
+			});
+		}
+	});
+		
+	$("button#queryCXC").on("click", function(){
+		var sucu = $("select#idSucursal").val();
+		var cl = $("select#idCliente").val();
+		var urlCXC = url + "contabilidad/json/buscaanticipocliente/sucu/" + sucu +"/cl/"+cl;
+		console.log(urlCXC);
+		$.ajax({
+			url: urlCXC,
+			dataType: "json",
+			success: function(data){
+			var tbody = $("table#detalleAnticipoCliente").find('tbody');
+			tbody.empty();
 					$.each(data, function(i,item){
 						var botonCobro = $('<button></button>').attr("id","fac").attr("class","btn btn-primary").text("Factura").attr("factura",data[i].idCoP);
 						tbody.append($('<tr>').
 							append($('<td>').append(data[i].idSucursal)).
-							append($('<td>').append(data[i].idCoP)).	
 							append($('<td>').append(data[i].numeroFolio)).
 							append($('<td>').append(data[i].fechaPago)).
 							append($('<td>').append(data[i].total).attr("id", "importe")).
@@ -142,7 +122,7 @@
 				}		
 			});
 		});
-		
+		/*
 		$("table#detalleAnticipoCliente").on("click", "button[id^='fac']", function(){
 			$("section#factura").removeClass("hidden");
 			var idCoP = $(this).attr("factura");
@@ -166,7 +146,11 @@
 					});
 				}		
 			});
-		});	
+		});	*/
 
+		$("table#detalleAnticipoCliente").on("click", "button[id^='fac']", function(){ 
+		 console.log("Realizar Factura");
+		 window.location = "/General/contabilidad/clientes/enlazafactura";
+		});
 });
 </script>

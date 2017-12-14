@@ -309,9 +309,10 @@
 	public function busca_AnticipoCliente($idSucursal,$cl){
 		//tipo Movimiento facturaCliente = 2
 		$tablaCuentasxc = $this->tablaCuentasxc;
-		$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento =?",19)->where("estatus <> ?", "C")
+		$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento =?",19)->where("estatus <> ?", "C")->where("idFactura IS NULL")
 		->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
 		$rowsCuentasxc = $tablaCuentasxc->fetchAll($select)->toArray();
+		//print_r("$select");
 		return $rowsCuentasxc;
 							
 	}
