@@ -295,6 +295,7 @@
 		$("button#queryProyecto").on("click", function(){
 			var idProyecto = $("select#idProyecto").val();
 			var urlProyecto = window.location.origin + "/General/contabilidad/json/proyectoporproveedor/idProyecto/" + idProyecto;
+			console.log(urlProyecto);
 			//====================================================================>>Factura Proveedor
 			$.ajax({
 				url: urlProyecto,

@@ -189,7 +189,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_AnticipoClientes;
 		$this->view->formulario = $formulario;
-		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$anticipo = $formulario->getValues();
@@ -257,13 +256,13 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $contador=0;
                 try{
                    $guardaFactura = $this->facturaDAO->guardaCobroFactura($encabezado, $importe, $productos);
-                    /*//$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
+                   
                     foreach ($productos as $producto){
                         $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
                         $restaProducto  = $this->facturaDAO->restarProducto($encabezado, $producto);
                         $contador++;
                     }
-                    $this->view->messageSuccess = "Se ha agregado Factura exitosamente";*/
+                    $this->view->messageSuccess = "Se ha agregado Factura exitosamente";
                 }catch(Util_Exception_BussinessException $ex){
                     $this->view->messageFail = $ex->getMessage();
                 }

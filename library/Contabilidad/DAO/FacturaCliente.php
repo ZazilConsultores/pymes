@@ -103,19 +103,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				    'importe'=>$importe[0]['iva']
 				);
 				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-				//Actulializa idFactura en cxc
-				$tablaCuentasxc = $this->tablaCuentasxc;
-				$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento = ?",19)->where("numeroFolio=?",$encabezado['numeroFactura'])
-				->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
-				$rowCxc = $tablaCuentasxc->fetchRow($select);
-				if(!is_null($rowCxc)){
-				   
-				    $rowCxc->idFactura = $idFactura;
-				    $rowCxc->save();
-				}
-				//$rowFactura = $tablaFactura->fetchRow($select);
 				if(($formaPago['pagada'])==="1"){
-					/*$mCuentasxc = array(
+					$mCuentasxc = array(
 					    'idTipoMovimiento'=>16,
 					    'idSucursal'=>$encabezado['idSucursal'],
 					    'idFactura'=>$idFactura,
@@ -133,7 +122,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					    'subTotal'=>$importe[0]['subTotal'],
 					    'total'=>$importe[0]['total']
 					);
-				    $dbAdapter->insert("Cuentasxc", $mCuentasxc);*/
+				    $dbAdapter->insert("Cuentasxc", $mCuentasxc);
 				    //Guarda em facturaImpuesto
 				    $mfImpuesto = array(
 					   'idTipoMovimiento'=>16,
@@ -1083,12 +1072,13 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	    $dbAdapter->beginTransaction();
 	    $fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
 	    $stringFecha = $fechaInicio->toString('YY-mm-dd');
-	    
+	    print_r("===");
+	    print_r($importe);
 	    try{
 	        //Valida que la factura no exista
 	        $tablaFactura = $this->tablaFactura;
 	        $select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
-	        ->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal'])->where("total=?",$formaPago);
+	        ->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
 	        $rowFactura = $tablaFactura->fetchRow($select);
 	        //print_r("$select");
 	        if(!is_null($rowFactura)){
@@ -1097,100 +1087,47 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	            //Seleccionamos la cuentaxc
 	            $tablaCXC = $this->tablaCuentasxc;
 	            $select = $tablaCXC->select()->from($tablaCXC)->where("idTipoMovimiento = ?",19)->where("idSucursal=?",$encabezado['idSucursal'])->where("estatus=?",'A')
-	            ->where("idCoP=?",$encabezado['idCoP']);
-	            $rowFactura = $tablaFactura->fetchRow($select);
+	            ->where("idFactura is null")->where("idCoP=?",$encabezado['idCoP'])->where("total=?",$importe[0]['total']);
+	            $rowCXC = $tablaCXC->fetchRow($select);
 	            print_r("$select");
-	            //Guarda Movimiento en tabla factura
-	            $mFactura = array(
-	                'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-	                'idSucursal'=>$encabezado['idSucursal'],
-	                'idCoP'=>$encabezado['idCoP'],
-	                'idDivisa'=>1,
-	                'numeroFactura'=>$encabezado['numeroFactura'],
-	                'estatus'=>"A",
-	                'conceptoPago'=>"LI",
-	                'descuento'=>$importe[0]['descuento'],
-	                'formaPago'=>$formaPago['formaLiquidar'],
-	                'fecha'=>$stringFecha,
-	                'subTotal'=>$importe[0]['subTotal'],
-	                'total'=>$importe[0]['total'],
-	                'saldo'=>$saldo,
-	                'folioFiscal'=>$encabezado['folioFiscal'],
-	                'importePagado'=>$importePagado
-	            );
-	            $dbAdapter->insert("Factura", $mFactura);
-	            //Obtine el ultimo id en tabla factura
-	            $idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
-	            //Guarda en facturaImpuesto
-	            $tablaImpuesto = $this->tablaImpuestos;
-	            $select = $tablaImpuesto->select()->from($tablaImpuesto)->where("abreviatura = ?",'IVA');
-	            $rowImpFactura = $tablaImpuesto->fetchRow($select);
-	            //print_r("$select");
-	            $mfImpuesto = array(
-	                'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-	                'idFactura'=>$idFactura,
-	                'idImpuesto'=>$rowImpFactura['idImpuesto'],
-	                'idCuentasxp'=>0,
-	                'importe'=>$importe[0]['iva']
-	            );
-	            $dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-	            //Actulializa idFactura en cxc
-	            $tablaCuentasxc = $this->tablaCuentasxc;
-	            $select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("idTipoMovimiento = ?",19)->where("numeroFolio=?",$encabezado['numeroFactura'])
-	            ->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
-	            $rowCxc = $tablaCuentasxc->fetchRow($select);
-	            if(!is_null($rowCxc)){
-	                
-	                $rowCxc->idFactura = $idFactura;
-	                $rowCxc->save();
-	            }
-	            //$rowFactura = $tablaFactura->fetchRow($select);
-	            if(($formaPago['pagada'])==="1"){
-	                /*$mCuentasxc = array(
-	                 'idTipoMovimiento'=>16,
-	                 'idSucursal'=>$encabezado['idSucursal'],
-	                 'idFactura'=>$idFactura,
-	                 'idCoP'=>$encabezado['idCoP'],
-	                 'idBanco'=>$formaPago['idBanco'],
-	                 'idDivisa'=>$formaPago['divisa'],
-	                 'numeroFolio'=>$encabezado['numeroFactura'],
-	                 'secuencial'=>1,
-	                 'fecha'=>date("Y-m-d H:i:s", time()),
-	                 'fechaPago'=>$stringFecha,
-	                 'estatus'=>"A",
-	                 'numeroReferencia'=>$formaPago['numeroReferencia'],
-	                 'conceptoPago'=>$conceptoPago,
-	                 'formaLiquidar'=>$formaPago['formaLiquidar'],
-	                 'subTotal'=>$importe[0]['subTotal'],
-	                 'total'=>$importe[0]['total']
-	                 );
-	                 $dbAdapter->insert("Cuentasxc", $mCuentasxc);*/
-	                //Guarda em facturaImpuesto
+	            if(!is_null($rowCXC)){
+	                //Guarda Movimiento en tabla factura
+	                $mFactura = array(
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	                    'idSucursal'=>$encabezado['idSucursal'],
+	                    'idCoP'=>$encabezado['idCoP'],
+	                    'idDivisa'=>1,
+	                    'numeroFactura'=>$encabezado['numeroFactura'],
+	                    'estatus'=>"A",
+	                    'conceptoPago'=>"LI",
+	                    'descuento'=>$importe[0]['descuento'],
+	                    'formaPago'=>$rowCXC['formaLiquidar'],
+	                    'fecha'=>$stringFecha,
+	                    'subTotal'=>$importe[0]['subTotal'],
+	                    'total'=>$importe[0]['total'],
+	                    'saldo'=>'0',
+	                    'folioFiscal'=>$encabezado['folioFiscal'],
+	                    'importePagado'=>$importe[0]['total']
+	                );
+	                $dbAdapter->insert("Factura", $mFactura);
+	                //Obtine el ultimo id en tabla factura
+	                $idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
+	                //Guarda en facturaImpuesto
+	                $tablaImpuesto = $this->tablaImpuestos;
+	                $select = $tablaImpuesto->select()->from($tablaImpuesto)->where("abreviatura = ?",'IVA');
+	                $rowImpFactura = $tablaImpuesto->fetchRow($select);
+	                //print_r("$select");
 	                $mfImpuesto = array(
-	                    'idTipoMovimiento'=>16,
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 	                    'idFactura'=>$idFactura,
+	                    'idImpuesto'=>$rowImpFactura['idImpuesto'],
 	                    'idCuentasxp'=>0,
-	                    'idImpuesto'=>$rowImpFactura['idImpuesto'], //Iva
 	                    'importe'=>$importe[0]['iva']
 	                );
 	                $dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-	                //Solo si esta pagada, actualiza saldo Banco
-	                $tablaBanco = $this->tablaBanco;
-	                $select = $tablaBanco->select()->from($tablaBanco)->where("idBanco = ?",$formaPago['idBanco']);
-	                $rowBanco = $tablaBanco->fetchRow($select);
-	                $saldo = $rowBanco->saldo + $importe[0]['total'];
-	                $where = $tablaBanco->getAdapter()->quoteInto("idBanco=?",$formaPago['idBanco']);
-	                $tablaBanco->update(array ("saldo" => $saldo), $where);
-	            }else{
-	                $tablaCli = $this->tablaClientes;
-	                $select = $tablaCli->select()->from($tablaCli)->where("idCliente = ?",$encabezado['idCoP']);
-	                $rowCli= $tablaCli->fetchRow($select);
-	                // print_r($expression);
-	                if(!is_null($rowCli)){
-	                    $saldo  = $importe[0]['total'] + $rowCli->saldo;
-	                    $rowCli->saldo = $saldo;
-	                    $rowCli->save();
-	                }
+	                //Actualiza idFactura en CXC
+	                $rowCXC->idFactura = $idFactura;
+	                $rowCXC->save();
 	            }
 	        }
 	        $dbAdapter->commit();

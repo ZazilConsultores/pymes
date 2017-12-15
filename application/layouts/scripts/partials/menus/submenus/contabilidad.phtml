@@ -24,8 +24,9 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li class="dropdown-submenu">
-					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'anticipo'), null, true); ?>">Anticipo</a>
+					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'index'), null, true); ?>">Anticipo</a>
 					<ul class="dropdown-menu">
+					<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'anticipo'), null, true); ?>">Nuevo Anticipo Clientes</a></li>
 						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'buscaanticipoclientes'), null, true); ?>">Busqueda Anticipo Clientes</a></li>	
 					</ul>
 				</li>
