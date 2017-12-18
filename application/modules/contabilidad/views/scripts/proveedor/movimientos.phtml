@@ -393,6 +393,7 @@ $().ready(function(){
 	$("button#queryProyecto").on("click", function(){
 		var CoP = $("select#CoP").val();
 		var urlProyecto = window.location.origin + "/General/contabilidad/json/movimientosproveedor/CoP/" + CoP;
+		console.log(urlProyecto);
 		//====================================================================>>Remision Cliente
 		$.ajax({
 			url: urlProyecto,

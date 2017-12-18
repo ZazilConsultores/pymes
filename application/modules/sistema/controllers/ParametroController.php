@@ -25,24 +25,21 @@ class Sistema_ParametroController extends Zend_Controller_Action
 
     public function altaAction()
     {
-        // action body
         $request = $this->getRequest();
 		$formulario = new Sistema_Form_AltaParametro;
 		$this->view->formulario = $formulario;
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
-				$parametro = new Sistema_Model_Parametro($datos[0]);
-				//$parametro->setHash($parametro->getHash());
-				
+			    $parametro= $formulario->getValues();
+			    //print_r($parametro);
 				try{
-					$this->parametroDAO->crearParametro($parametro);
-					$mensaje = "Parametro <strong>" . $parametro->getParametro() . "</strong> creado exitosamente";
+				    $this->parametroDAO->crearParametro($parametro);
+					$mensaje = "Parametro <strong>" . $parametro[0]["parametro"]. "</strong> creado exitosamente";
 					$this->view->messageSuccess = $mensaje;
 				}catch(Util_Exception_BussinessException $ex){
 					$this->view->messageFail = $ex->getMessage();
 				}
-				$this->_helper->redirector->gotoSimple("index", "parametro", "sistema", array("idParametro"=>$idParametro));
+				
 			}
 		}
     }

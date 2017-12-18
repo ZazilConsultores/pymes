@@ -85,9 +85,10 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				if($fiscal["rfc"] != "XAXX010101000") {
 					$select = $dbAdapter->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 					$rowFiscales = $select->query()->fetchAll();
-					//print_r(count($rowFiscales));
-					if(count($rowFiscales) > 1) {
-						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+					print_r(count($rowFiscales));
+					if(!is_null($rowFiscales)) {
+					    //$error = 'Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado';
+					    throw new Exception('Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado');
 						
 					}
 				}
@@ -96,8 +97,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 					$select = $dbAdapter->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
 					$rowFiscales = $select->query()->fetchAll();
 					//print_r(count($rowFiscales));
-					if(count($rowFiscales) > 1) {
-						throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+					if(!is_null($rowFiscales)) {
+					    throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
 						
 					}
 				}
@@ -146,7 +147,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}catch(Exception $ex){
 			$dbAdapter->rollBack();
 			print_r($ex->getMessage());
-			throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
+			throw new Exception("Error: Empresa ya registrada en el sistema");
 			
 		}
 	}

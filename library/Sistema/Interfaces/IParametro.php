@@ -9,6 +9,6 @@ interface Sistema_Interfaces_IParametro {
 	public function obtenerParametro($idParametro);
 	public function obtenerSubparametros($idParametro);
 	
-	public function crearParametro(Sistema_Model_Parametro $parametro);
+	public function crearParametro(array $parametro);
 	public function editarParametro($idParametro, array $parametro);
 }
