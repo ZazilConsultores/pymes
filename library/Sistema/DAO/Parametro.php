@@ -47,11 +47,19 @@ class Sistema_DAO_Parametro implements Sistema_Interfaces_IParametro {
 		return $modelSubparametros;
 	}
 	
-	public function crearParametro(Sistema_Model_Parametro $parametro){
-		$parametro->setHash($parametro->getHash());
-		$parametro->setFecha(date("Y-m-d H:i:s", time()));
+	public function crearParametro(array $parametro){
+	   
+	    $tablaParametro = $this->tablaParametro;
+	    $select = $tablaParametro->select()->from($tablaParametro)->where("parametro = ?", $parametro[0]["parametro"]);
+	    $rowParametro = $tablaParametro->fetchRow($select);
+	    if(is_null($rowParametro)){
+	        $parametro->setFecha(date("Y-m-d H:i:s", time()));
+	        $this->tablaParametro->insert($parametro->toArray());
+	    }else{
+	        echo "El parametro"." " .$parametro[0]["parametro"] . " " ."ya existe!";
+	    }
 		
-		$this->tablaParametro->insert($parametro->toArray());
+		
 	}
 	
 	public function editarParametro($idParametro, array $parametro){

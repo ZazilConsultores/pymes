@@ -103,7 +103,6 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				    'importe'=>$importe[0]['iva']
 				);
 				$dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
-				//Guarda Movimiento en Cuentasxp
 				if(($formaPago['pagada'])==="1"){
 					$mCuentasxc = array(
 					    'idTipoMovimiento'=>16,
@@ -1065,6 +1064,85 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	        }else{
 	            echo "No hay existencia de papel aluminio de camiseta en inventario";
 	        }
+	    }
+	}
+	
+    public function guardaCobroFactura(array $encabezado,$importe, $productos){
+        $dbAdapter = Zend_Registry::get('dbmodgeneral');
+	    $dbAdapter->beginTransaction();
+	    $fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
+	    $stringFecha = $fechaInicio->toString('YY-mm-dd');
+	    print_r("===");
+	    print_r($importe);
+	    try{
+	        //Valida que la factura no exista
+	        $tablaFactura = $this->tablaFactura;
+	        $select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
+	        ->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
+	        $rowFactura = $tablaFactura->fetchRow($select);
+	        //print_r("$select");
+	        if(!is_null($rowFactura)){
+	            print_r("La Factura Ya existe");
+	        }else{
+	            //Seleccionamos la cuentaxc
+	            $tablaCXC = $this->tablaCuentasxc;
+	            $select = $tablaCXC->select()->from($tablaCXC)->where("idTipoMovimiento = ?",19)->where("idSucursal=?",$encabezado['idSucursal'])->where("estatus=?",'A')
+	            ->where("idFactura is null")->where("idCoP=?",$encabezado['idCoP'])->where("total=?",$importe[0]['total']);
+	            $rowCXC = $tablaCXC->fetchRow($select);
+	            print_r("$select");
+	            if(!is_null($rowCXC)){
+	                //Guarda Movimiento en tabla factura
+	                $mFactura = array(
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	                    'idSucursal'=>$encabezado['idSucursal'],
+	                    'idCoP'=>$encabezado['idCoP'],
+	                    'idDivisa'=>1,
+	                    'numeroFactura'=>$encabezado['numeroFactura'],
+	                    'estatus'=>"A",
+	                    'conceptoPago'=>"LI",
+	                    'descuento'=>$importe[0]['descuento'],
+	                    'formaPago'=>$rowCXC['formaLiquidar'],
+	                    'fecha'=>$stringFecha,
+	                    'subTotal'=>$importe[0]['subTotal'],
+	                    'total'=>$importe[0]['total'],
+	                    'saldo'=>'0',
+	                    'folioFiscal'=>$encabezado['folioFiscal'],
+	                    'importePagado'=>$importe[0]['total']
+	                );
+	                $dbAdapter->insert("Factura", $mFactura);
+	                //Obtine el ultimo id en tabla factura
+	                $idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
+	                //Guarda en facturaImpuesto
+	                $tablaImpuesto = $this->tablaImpuestos;
+	                $select = $tablaImpuesto->select()->from($tablaImpuesto)->where("abreviatura = ?",'IVA');
+	                $rowImpFactura = $tablaImpuesto->fetchRow($select);
+	                //print_r("$select");
+	                $mfImpuesto = array(
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	                    'idFactura'=>$idFactura,
+	                    'idImpuesto'=>$rowImpFactura['idImpuesto'],
+	                    'idCuentasxp'=>0,
+	                    'importe'=>$importe[0]['iva']
+	                );
+	                $dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+	                //Actualiza idFactura en CXC
+	                $rowCXC->idFactura = $idFactura;
+	                $rowCXC->save();
+	            }
+	        }
+	        $dbAdapter->commit();
+	    }catch(exception $ex){
+	        print_r("<br />");
+	        print_r("================");
+	        print_r("<br />");
+	        print_r("Excepcion Lanzada");
+	        print_r("<br />");
+	        print_r("================");
+	        print_r("<br />");
+	        print_r($ex->getMessage());
+	        print_r("<br />");
+	        print_r("<br />");
+	        $dbAdapter->rollBack();
 	    }
 	}
 }

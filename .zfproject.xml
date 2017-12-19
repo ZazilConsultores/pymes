@@ -2218,7 +2218,7 @@
       <htaccessFile filesystemName=".htaccess"/>
     </publicDirectory>
     <projectProvidersDirectory enabled="false"/>
-    <temporaryDirectory enabled="false"/>
+    <temporaryDirectory enabled="false"></temporaryDirectory>
     <testsDirectory>
       <testPHPUnitConfigFile filesystemName="phpunit.xml"/>
       <testPHPUnitBootstrapFile filesystemName="bootstrap.php"/>

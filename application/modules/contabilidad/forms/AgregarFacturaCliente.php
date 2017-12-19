@@ -100,7 +100,11 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente/*$eVendedor*/,$eFecha, $eProducto));
+		$eImp = new Zend_Form_Element_Hidden('importe');
+		$eImp->setAttrib("class", "form-control");
+		$eImp->setAttrib("required","true");
+		
+		$subEncabezado->addElements(array($eImp,$eTipoMovto,$eEmpresa,$eSucursal, $eProyecto,$eNumFactura,$eFolioFiscal,$eCliente/*$eVendedor*/,$eFecha, $eProducto));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		
@@ -157,6 +161,8 @@ class Contabilidad_Form_AgregarFacturaCliente extends Zend_Form
 		$eImportes = new Zend_Form_Element_Hidden('importes');
 		$eImportes->setAttrib("class", "form-control");
 		$eImportes->setAttrib("required","true");
+		
+		
 		
 		$impuestos = new Contabilidad_DAO_Impuesto;
 		$tiposImpuestos =$impuestos->obtenerImpuestos();

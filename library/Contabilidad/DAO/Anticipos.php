@@ -48,7 +48,7 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 			}
 			$anticipo['secuencial'] = $secuencial;
 			//print_r($datos);
-			$dbAdapter->insert("Cuentasxc", $anticipo);		
+			$dbAdapter->insert("Cuentasxc",$anticipo);		
 			
 			//Actuliza saldo en Bancos
 			$tablaBanco = $this->tablaBanco;

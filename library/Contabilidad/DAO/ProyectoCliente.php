@@ -48,7 +48,7 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
 		->join('Clientes','Movimientos.idCoP = Clientes.idCliente', array('idEmpresa'))
 		->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
-		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Movimientos.idTipoMovimiento = ?',2)
+		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Movimientos.idTipoMovimiento = ?',2)->where('Factura.estatus <> ?','C' )
 		->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
 		//print_r("$select");
 		return $tablaMovimientos->fetchAll($select);
@@ -63,7 +63,7 @@ class Contabilidad_DAO_ProyectoCliente implements Contabilidad_Interfaces_IProye
 		->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.idCoP','Factura.numeroFactura','Factura.fecha'))
 		->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores', array('idEmpresa'))
 		->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa')
-		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Movimientos.idTipoMovimiento = ?',4)
+		->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))->where('Movimientos.idTipoMovimiento = ?',4)->where('Factura.estatus <> ?','C' )
 		->where('Movimientos.idProyecto =?', $idProyecto)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
 		//print_r("$select");
 		return $tablaMovimientos->fetchAll($select);

@@ -7,7 +7,7 @@ class Sistema_Form_AltaSubparametro extends Zend_Form
     {
         /* Form Elements & Other Definitions Here ... */
         $subWrapper = new Zend_Form_SubForm;
-		$subWrapper->setLegend("Alta de Subparametro");
+		//$subWrapper->setLegend("Alta de Subparametro");
 		
         $eSubparametro = new Zend_Form_Element_Text("subparametro");
 		$eSubparametro->setLabel("Subparametro: ");
