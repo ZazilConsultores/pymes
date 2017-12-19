@@ -83,14 +83,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			print_r("<br />");
 			if($tipo == "CL"){
 				if($fiscal["rfc"] != "XAXX010101000") {
-					$select = $dbAdapter->select()->from("Fiscales")->where("rfc=?",$fiscal["rfc"]);
-					$rowFiscales = $select->query()->fetchAll($select);
-					print_r(($rowFiscales));
-					if(!is_null($rowFiscales)){
-					    
-					    //$error = 'Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado';
+				    $tablaFiscales = $this->tablaFiscales;
+				    $select = $tablaFiscales->select()->from($tablaFiscales)->where("rfc=?",$fiscal["rfc"]);
+				    $rowFiscales = $tablaFiscales->fetchAll($select);
+					if(!is_null($rowFiscales)) {
 					    throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
-						
 					}
 				}
 			}elseif($tipo == "PR"){
@@ -99,8 +96,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				    $rowFiscales = $select->query()->fetchAll();
 				    //print_r(count($rowFiscales));
 				    if(count($rowFiscales) > 1) {
-				        throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
-				        
+				        echo("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
 				    }
 				}
 			}
@@ -146,15 +142,12 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$dbAdapter->commit();
 			
 		}catch(Exception $ex){
-			$dbAdapter->rollBack();
-			print_r($ex->getMessage());
-			throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
-			
+		    $dbAdapter->rollBack();
+		    print_r($ex->getMessage());
+		    throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
+		    //throw new Exception("Error: Empresa ya registrada en el sistema");
 		}
 	}
-	
-	
-
 	/**
 	 * 
 	 */
