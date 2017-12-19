@@ -22,10 +22,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$autoloader->registerNamespace('My_');
 		$autoloader->registerNamespace('Modules_');
 		
-		$autoloader->registerNamespace('Biblioteca_');
-        $autoloader->registerNamespace('Soporte_');
 		$autoloader->registerNamespace('Contabilidad_');
-        $autoloader->registerNamespace('Encuesta_');
         $autoloader->registerNamespace('Inventario_');
 		$autoloader->registerNamespace('Sistema_');
         $autoloader->registerNamespace('Pymes_');
@@ -40,12 +37,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$resource = $this->getPluginResource('multidb');
 
 		Zend_Registry::set('multidb', $resource);
+		Zend_Registry::set('zgeneral', $resource->getDb('zgeneral'));
 		Zend_Registry::set('dbgenerale', $resource->getDb('dbgenerale'));
 		Zend_Registry::set('dbmodgeneral', $resource->getDb('dbmodgeneral'));
+		
+		
 		//Zend_Registry::set('dbmodencuesta', $resource->getDb('dbmodencuesta'));
-        Zend_Registry::set('dbbaseencuesta', $resource->getDb('dbbaseencuesta')); //dbgenerale
-        Zend_Registry::set('dbbasebiblio', $resource->getDb('dbbasebiblio')); //dbgenerale
-        Zend_Registry::set('dbbasesoporte', $resource->getDb('dbbasesoporte')); //dbgenerale
+        //Zend_Registry::set('dbbaseencuesta', $resource->getDb('dbbaseencuesta')); //dbgenerale
+        //Zend_Registry::set('dbbasebiblio', $resource->getDb('dbbasebiblio')); //dbgenerale
+        //Zend_Registry::set('dbbasesoporte', $resource->getDb('dbbasesoporte')); //dbgenerale
 	}
 	
 	/**
@@ -56,7 +56,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$front = Zend_Controller_Front::getInstance();
 		// Instanciamos el Plugin de Layouts
 
-		$moduleNames = array('biblioteca','encuesta','inventario','contabilidad','sistema', 'pymes','soporte');
+		$moduleNames = array('inventario','contabilidad','sistema', 'pymes');
 
 	
 		$front->registerPlugin(new App_Plugins_Layout($moduleNames));
@@ -70,15 +70,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	/**
      * Aqui se inicializa una session por default, posteriormente validaremos al usuario
      */
+	/*
     protected function _initSession(){
         Zend_Session::start();
     }
+	*/
 	
 	protected function _initView() {
 		$view = new Zend_View();
 
 		$view->doctype('HTML5');
-		$view->headTitle('General Application')->setSeparator(' :: ');
+		$view->headTitle('Administración de PyMEs')->setSeparator(' :: ');
 
 		return $view;
 	}
