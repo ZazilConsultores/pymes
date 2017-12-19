@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<projectProfile type="default" version="1.12.16">
+<projectProfile type="default" version="1.12.20">
   <projectDirectory>
     <projectProfileFile filesystemName=".zfproject.xml"/>
     <applicationDirectory classNamePrefix="Application_">
@@ -9,1666 +9,163 @@
       <controllersDirectory>
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
-          <actionMethod actionName="login"/>
-          <actionMethod actionName="normalize"/>
-          <actionMethod actionName="logout"/>
-          <actionMethod actionName="productoimpuesto"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
-        <controllerFile controllerName="Usuario">
-          <actionMethod actionName="index"/>
-          <actionMethod actionName="perfil"/>
-        </controllerFile>
       </controllersDirectory>
-      <formsDirectory>
-        <formFile formName="AgregarRemisioClienteCafeteria"/>
-      </formsDirectory>
-      <layoutsDirectory>
-        <layoutScriptsDirectory>
-          <layoutScriptFile layoutName="layout"/>
-        </layoutScriptsDirectory>
-      </layoutsDirectory>
-      <modelsDirectory>
-        <dbTableDirectory>
-          <dbTableFile dbTableName="Banco"/>
-          <dbTableFile dbTableName="BancosEmpresa"/>
-          <dbTableFile dbTableName="Factura"/>
-          <dbTableFile dbTableName="FacturaDetalle"/>
-          <dbTableFile dbTableName="TipoProveedor"/>
-          <dbTableFile dbTableName="Multiplos"/>
-          <dbTableFile dbTableName="Producto"/>
-          <dbTableFile dbTableName="Divisa"/>
-          <dbTableFile dbTableName="Impuesto"/>
-          <dbTableFile dbTableName="ProductoImpuesto"/>
-          <dbTableFile dbTableName="Vendedor"/>
-          <dbTableFile dbTableName="Bancosempresa"/>
-          <dbTableFile dbTableName="Equipo"/>
-        </dbTableDirectory>
-        <modelFile modelName="Banco"/>
-        <modelFile modelName="Divisa"/>
-        <modelFile modelName="Factura"/>
-        <modelFile modelName="FacturaDetalle"/>
-        <modelFile modelName="Impuesto"/>
-        <modelFile modelName="Multiplos"/>
-        <modelFile modelName="Producto"/>
-        <modelFile modelName="TipoProveedor"/>
-        <modelFile modelName="Vendedor"/>
-        <modelFile modelName="Inventario"/>
-        <modelFile modelName="Bancosempresa"/>
-        <modelFile modelName="ProductoCompuesto"/>
-      </modelsDirectory>
+      <formsDirectory enabled="false"/>
+      <layoutsDirectory enabled="false"/>
+      <modelsDirectory/>
       <modulesDirectory>
-        <moduleDirectory moduleName="inventario">
-          <configsDirectory enabled="false"/>
-          <controllersDirectory>
-            <controllerFile controllerName="Producto">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Inventario">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="editartodo"/>
-            </controllerFile>
-            <controllerFile controllerName="Unidad">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Multiplos">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="JsonController">
-              <actionMethod actionName="unidades"/>
-            </controllerFile>
-            <controllerFile controllerName="Productoterminado">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="crear"/>
-              <actionMethod actionName="editar"/>
-              <actionMethod actionName="eliminar"/>
-            </controllerFile>
-            <controllerFile controllerName="Json">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="unidades"/>
-              <actionMethod actionName="multiplos"/>
-              <actionMethod actionName="productos"/>
-              <actionMethod actionName="productoterminado"/>
-              <actionMethod actionName="llenaproducto"/>
-              <actionMethod actionName="productoxmovimiento"/>
-              <actionMethod actionName="productoxsucursal"/>
-              <actionMethod actionName="eliminarproductoenlazado"/>
-            </controllerFile>
-          </controllersDirectory>
-          <formsDirectory>
-            <formFile formName="AltaProducto"/>
-            <formFile formName="AltaUnidad"/>
-            <formFile formName="AltaMultiplos"/>
-            <formFile formName="AdminInventario"/>
-            <formFile formName="EditarTodoInventario"/>
-            <formFile formName="ProductoTerminado"/>
-            <formFile formName="CrearProductoTerminado"/>
-          </formsDirectory>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory>
-            <dbTableDirectory>
-              <dbTableFile dbTableName="Inventario"/>
-              <dbTableFile dbTableName="Producto"/>
-              <dbTableFile dbTableName="Unidad"/>
-              <dbTableFile dbTableName="Multiplos"/>
-              <dbTableFile dbTableName="ProductoCompuesto"/>
-            </dbTableDirectory>
-            <modelFile modelName="Inventario"/>
-            <modelFile modelName="Producto"/>
-            <modelFile modelName="Unidad"/>
-            <modelFile modelName="Multiplos"/>
-            <modelFile modelName="ProductoCompuesto"/>
-          </modelsDirectory>
-          <servicesDirectory enabled="false"/>
-          <viewsDirectory>
-            <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Producto">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Producto">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Producto">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Producto">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Producto">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="JsonController">
-                <viewScriptFile forActionName="unidades"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="editartodo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="crear"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="editar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="eliminar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="unidades"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="multiplos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="productos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="productoterminado"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="llenaproducto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="productoxmovimiento"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="productoxsucursal"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="eliminarproductoenlazado"/>
-              </viewControllerScriptsDirectory>
-            </viewScriptsDirectory>
-            <viewHelpersDirectory/>
-            <viewFiltersDirectory/>
-          </viewsDirectory>
-        </moduleDirectory>
-        <moduleDirectory moduleName="encuesta">
-          <configsDirectory enabled="false"/>
-          <controllersDirectory>
-            <controllerFile controllerName="Index">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="secciones"/>
-              <actionMethod actionName="tipos"/>
-              <actionMethod actionName="altae"/>
-              <actionMethod actionName="altas"/>
-              <actionMethod actionName="encuesta"/>
-              <actionMethod actionName="resultado"/>
-              <actionMethod actionName="resumen"/>
-              <actionMethod actionName="rpreferencia"/>
-              <actionMethod actionName="reporte"/>
-              <actionMethod actionName="reportepa"/>
-              <actionMethod actionName="reporteg"/>
-            </controllerFile>
-            <controllerFile controllerName="Html">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="encuestadet"/>
-              <actionMethod actionName="secciones"/>
-              <actionMethod actionName="seccionesdet"/>
-              <actionMethod actionName="grupos"/>
-              <actionMethod actionName="grupodet"/>
-              <actionMethod actionName="secciondet"/>
-              <actionMethod actionName="preguntas"/>
-              <actionMethod actionName="preguntadet"/>
-              <actionMethod actionName="registro"/>
-              <actionMethod actionName="grupo"/>
-            </controllerFile>
-            <controllerFile controllerName="Json">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="grados"/>
-              <actionMethod actionName="grupos"/>
-              <actionMethod actionName="encrealizadas"/>
-              <actionMethod actionName="reposdocente"/>
-            </controllerFile>
-            <controllerFile controllerName="Seccion">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-            </controllerFile>
-            <controllerFile controllerName="Grupo">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="opciones"/>
-            </controllerFile>
-            <controllerFile controllerName="Pregunta">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="opciones"/>
-              <actionMethod actionName="grafica"/>
-            </controllerFile>
-            <controllerFile controllerName="Respuesta">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-            </controllerFile>
-            <controllerFile controllerName="Opcion">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="avalor"/>
-            </controllerFile>
-            <controllerFile controllerName="Categoria">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="opciones"/>
-            </controllerFile>
-            <controllerFile controllerName="Generador">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-            </controllerFile>
-            <controllerFile controllerName="Registro">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-            </controllerFile>
-            <controllerFile controllerName="Resultado">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="grafica"/>
-            </controllerFile>
-            <controllerFile controllerName="Nivel">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Grado">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="materias"/>
-              <actionMethod actionName="grados"/>
-            </controllerFile>
-            <controllerFile controllerName="Ciclo">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="ciclos"/>
-            </controllerFile>
-            <controllerFile controllerName="GrupoE">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Grupos">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="consulta"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="opciones"/>
-              <actionMethod actionName="asociarp"/>
-              <actionMethod actionName="aencuesta"/>
-              <actionMethod actionName="encuestas"/>
-              <actionMethod actionName="resultado"/>
-            </controllerFile>
-            <controllerFile controllerName="Materia">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="consulta"/>
-            </controllerFile>
-            <controllerFile controllerName="Profesor">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="encuestas"/>
-            </controllerFile>
-            <controllerFile controllerName="Normalize">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="preferenciap"/>
-              <actionMethod actionName="nmaxvalgrupo"/>
-              <actionMethod actionName="nminvalgrupo"/>
-            </controllerFile>
-            <controllerFile controllerName="Plan">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Evaluacion">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="grupo"/>
-              <actionMethod actionName="capas"/>
-              <actionMethod actionName="acapa"/>
-            </controllerFile>
-            <controllerFile controllerName="Util">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="repvertical"/>
-            </controllerFile>
-            <controllerFile controllerName="P1a">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="a"/>
-              <actionMethod actionName="b"/>
-            </controllerFile>
-            <controllerFile controllerName="Consulta">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Dashboard">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="User">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="login"/>
-              <actionMethod actionName="profile"/>
-              <actionMethod actionName="logout"/>
-            </controllerFile>
-            <controllerFile controllerName="Organizacion">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Home">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="login"/>
-              <actionMethod actionName="require"/>
-              <actionMethod actionName="join"/>
-              <actionMethod actionName="results"/>
-              <actionMethod actionName="logout"/>
-            </controllerFile>
-            <controllerFile controllerName="Error">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="noauth"/>
-            </controllerFile>
-            <controllerFile controllerName="Encuestas">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="editar"/>
-              <actionMethod actionName="config"/>
-              <actionMethod actionName="secciones"/>
-            </controllerFile>
-            <controllerFile controllerName="Docente">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="evaluaciones"/>
-            </controllerFile>
-            <controllerFile controllerName="Reporte">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="abiertas"/>
-              <actionMethod actionName="grupal"/>
-              <actionMethod actionName="general"/>
-              <actionMethod actionName="consulta"/>
-              <actionMethod actionName="descarga"/>
-            </controllerFile>
-          </controllersDirectory>
-          <formsDirectory>
-            <formFile formName="AltaEncuesta"/>
-            <formFile formName="AltaSeccion"/>
-            <formFile formName="AltaGrupo"/>
-            <formFile formName="AltaPregunta"/>
-            <formFile formName="AltaCategoria"/>
-            <formFile formName="AltaOpcion"/>
-            <formFile formName="AltaSeleccion"/>
-            <formFile formName="AltaRegistro"/>
-            <formFile formName="AltaEncuestaEvaluativa"/>
-            <formFile formName="AltaNivel"/>
-            <formFile formName="AltaGrado"/>
-            <formFile formName="AltaCiclo"/>
-            <formFile formName="ConsultaGrupos"/>
-            <formFile formName="AltaGrupoE"/>
-            <formFile formName="ConsultaMateria"/>
-            <formFile formName="AltaMateria"/>
-            <formFile formName="MateriasProfesor"/>
-            <formFile formName="AsociarEncuesta"/>
-            <formFile formName="AltaValor"/>
-            <formFile formName="AltaPlan"/>
-            <formFile formName="AltaEvaluacion"/>
-            <formFile formName="AltaCapa"/>
-            <formFile formName="Login"/>
-            <formFile formName="Join"/>
-            <formFile formName="ConsultaReportes"/>
-          </formsDirectory>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory>
-            <dbTableDirectory>
-              <dbTableFile dbTableName="Encuesta"/>
-              <dbTableFile dbTableName="Seccion"/>
-              <dbTableFile dbTableName="Grupo"/>
-              <dbTableFile dbTableName="Registro"/>
-              <dbTableFile dbTableName="Pregunta"/>
-              <dbTableFile dbTableName="Respuesta"/>
-              <dbTableFile dbTableName="Categoria"/>
-              <dbTableFile dbTableName="Opcion"/>
-              <dbTableFile dbTableName="PreferenciaSimple"/>
-              <dbTableFile dbTableName="MateriaE"/>
-              <dbTableFile dbTableName="GrupoE"/>
-              <dbTableFile dbTableName="ProfesorE"/>
-              <dbTableFile dbTableName="NivelE"/>
-              <dbTableFile dbTableName="GradoE"/>
-              <dbTableFile dbTableName="CicloE"/>
-              <dbTableFile dbTableName="ProfesoresGrupo"/>
-              <dbTableFile dbTableName="EncuestaGrupo"/>
-              <dbTableFile dbTableName="ERealizadas"/>
-              <dbTableFile dbTableName="ValoresOpcion"/>
-              <dbTableFile dbTableName="PlanE"/>
-              <dbTableFile dbTableName="AsignacionGrupo"/>
-              <dbTableFile dbTableName="Reporte"/>
-              <dbTableFile dbTableName="ECapas"/>
-              <dbTableFile dbTableName="EncuestasOrganizacion"/>
-              <dbTableFile dbTableName="NivelesEducativosOrganizacion"/>
-              <dbTableFile dbTableName="RegistroOrganizacion"/>
-              <dbTableFile dbTableName="PlanesOrganizacion"/>
-              <dbTableFile dbTableName="CategoriasRespOrganizacion"/>
-              <dbTableFile dbTableName="Organizacion"/>
-              <dbTableFile dbTableName="Rol"/>
-              <dbTableFile dbTableName="Usuario"/>
-              <dbTableFile dbTableName="Subscripcion"/>
-              <dbTableFile dbTableName="ReportesEncuesta"/>
-            </dbTableDirectory>
-            <modelFile modelName="Encuesta"/>
-            <modelFile modelName="Seccion"/>
-            <modelFile modelName="Grupo"/>
-            <modelFile modelName="Registro"/>
-            <modelFile modelName="Pregunta"/>
-            <modelFile modelName="Respuesta"/>
-            <modelFile modelName="Categoria"/>
-            <modelFile modelName="Opcion"/>
-            <modelFile modelName="PreferenciaSimple"/>
-            <modelFile modelName="Nivel"/>
-            <modelFile modelName="Grado"/>
-            <modelFile modelName="Ciclo"/>
-            <modelFile modelName="Grupoe"/>
-            <modelFile modelName="Materia"/>
-            <modelFile modelName="Profesor"/>
-          </modelsDirectory>
-          <servicesDirectory enabled="false"/>
-          <viewsDirectory>
-            <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Seccion">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupo">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Respuesta">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Opcion">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Seccion">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Seccion">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Seccion">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Seccion">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupo">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupo">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupo">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupo">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Respuesta">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Respuesta">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Respuesta">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Respuesta">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Opcion">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Opcion">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Opcion">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Opcion">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Categoria">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="encuestadet"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="secciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="seccionesdet"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="grupos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="grupodet"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="secciondet"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="preguntas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="preguntadet"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Categoria">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Categoria">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Categoria">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Categoria">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generador">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generador">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="opciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupo">
-                <viewScriptFile forActionName="opciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="secciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Categoria">
-                <viewScriptFile forActionName="opciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Registro">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Registro">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Resultado">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Resultado">
-                <viewScriptFile forActionName="grafica"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="registro"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="tipos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="altae"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="altas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="grupo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Nivel">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Nivel">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Nivel">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Nivel">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grado">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grado">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grado">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grado">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grado">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Ciclo">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Ciclo">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Ciclo">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Ciclo">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="GrupoE">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="consulta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="opciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Materia">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Profesor">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Materia">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Materia">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Materia">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="grados"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grado">
-                <viewScriptFile forActionName="materias"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Materia">
-                <viewScriptFile forActionName="consulta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="asociarp"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="grupos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="aencuesta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="encuestas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="encuesta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="resultado"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Grupos">
-                <viewScriptFile forActionName="resultado"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Pregunta">
-                <viewScriptFile forActionName="grafica"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Opcion">
-                <viewScriptFile forActionName="avalor"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="resumen"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Normalize">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Normalize">
-                <viewScriptFile forActionName="preferenciap"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Plan">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Plan">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Plan">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Plan">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="rpreferencia"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="reporte"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Profesor">
-                <viewScriptFile forActionName="encuestas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="reportepa"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Index">
-                <viewScriptFile forActionName="reporteg"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Evaluacion">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Evaluacion">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Evaluacion">
-                <viewScriptFile forActionName="grupo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Evaluacion">
-                <viewScriptFile forActionName="capas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Evaluacion">
-                <viewScriptFile forActionName="acapa"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Util">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Util">
-                <viewScriptFile forActionName="repvertical"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Consulta">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="encrealizadas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Dashboard">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="User">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Organizacion">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Home">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Home">
-                <viewScriptFile forActionName="login"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Home">
-                <viewScriptFile forActionName="require"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Home">
-                <viewScriptFile forActionName="join"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="User">
-                <viewScriptFile forActionName="login"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Error">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Error">
-                <viewScriptFile forActionName="noauth"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="User">
-                <viewScriptFile forActionName="profile"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Encuestas">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Encuestas">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Encuestas">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Encuestas">
-                <viewScriptFile forActionName="editar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Encuestas">
-                <viewScriptFile forActionName="config"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="User">
-                <viewScriptFile forActionName="logout"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Home">
-                <viewScriptFile forActionName="results"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Encuestas">
-                <viewScriptFile forActionName="secciones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Unidad">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Multiplos">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="JsonController">
-                <viewScriptFile forActionName="unidades"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Inventario">
-                <viewScriptFile forActionName="editartodo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="crear"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="editar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Productoterminado">
-                <viewScriptFile forActionName="eliminar"/>
-              </viewControllerScriptsDirectory>
-            </viewScriptsDirectory>
-            <viewHelpersDirectory/>
-            <viewFiltersDirectory/>
-          </viewsDirectory>
-        </moduleDirectory>
         <moduleDirectory moduleName="contabilidad">
           <configsDirectory enabled="false"/>
           <controllersDirectory>
-            <controllerFile controllerName="Remision">
+            <controllerFile controllerName="Banco">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Clientes">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Divisa">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Empresas">
               <actionMethod actionName="index"/>
             </controllerFile>
             <controllerFile controllerName="Factura">
               <actionMethod actionName="index"/>
             </controllerFile>
-            <controllerFile controllerName="Banco">
+            <controllerFile controllerName="Guiacontable">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="enlazar"/>
             </controllerFile>
-            <controllerFile controllerName="Clientes">
+            <controllerFile controllerName="Impuestos">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="nota"/>
-              <actionMethod actionName="remision"/>
-              <actionMethod actionName="factura"/>
-              <actionMethod actionName="cobros"/>
-              <actionMethod actionName="consecutivofactura"/>
-              <actionMethod actionName="editaconsecutivo"/>
-              <actionMethod actionName="aplicacobro"/>
-              <actionMethod actionName="anticipo"/>
-              <actionMethod actionName="proyecto"/>
-              <actionMethod actionName="desechabledesayuno"/>
-              <actionMethod actionName="buscaanticipoclientes"/>
-              <actionMethod actionName="enlazafactura"/>
-              <actionMethod actionName="cancelar"/>
-              <actionMethod actionName="cancelarcli"/>
-              <actionMethod actionName="remisioncafe"/>
-              <actionMethod actionName="cobroremiclicafe"/>
-              <actionMethod actionName="aplicacobroremiclicafe"/>
             </controllerFile>
-            <controllerFile controllerName="Proveedores">
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Opera">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Poliza">
               <actionMethod actionName="index"/>
             </controllerFile>
             <controllerFile controllerName="Proveedor">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="agregarProducto"/>
-              <actionMethod actionName="agregarN"/>
-              <actionMethod actionName="agregarnota"/>
-              <actionMethod actionName="agregarnotaentrada"/>
-              <actionMethod actionName="nota"/>
-              <actionMethod actionName="remision"/>
-              <actionMethod actionName="factura"/>
-              <actionMethod actionName="pagos"/>
-              <actionMethod actionName="aplicarpago"/>
-              <actionMethod actionName="pagodos"/>
-              <actionMethod actionName="anticipo"/>
-              <actionMethod actionName="movimientos"/>
-              <actionMethod actionName="cancelar"/>
             </controllerFile>
-            <controllerFile controllerName="Tesoreia">
+            <controllerFile controllerName="Proyectos">
               <actionMethod actionName="index"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreria">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="inversiones"/>
-              <actionMethod actionName="nomina"/>
-              <actionMethod actionName="impuestos"/>
-              <actionMethod actionName="notacredito"/>
-              <actionMethod actionName="pagonomina"/>
-              <actionMethod actionName="aplicapagonomina"/>
-              <actionMethod actionName="impuestoempleado"/>
-            </controllerFile>
-            <controllerFile controllerName="Poliza">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="generar"/>
-            </controllerFile>
-            <controllerFile controllerName="NuevaNotaProveedor">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="NotaProveedor">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Notaproveedor">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="nueva"/>
-            </controllerFile>
-            <controllerFile controllerName="NotaCliente">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Notacliente">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="nueva"/>
-            </controllerFile>
-            <controllerFile controllerName="Fondeo">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Proyectos">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="proyectocliente"/>
-              <actionMethod actionName="proyectoproveedor"/>
-              <actionMethod actionName="proyectoxfecha"/>
-              <actionMethod actionName="proyectocafexfecha"/>
-            </controllerFile>
-            <controllerFile controllerName="Impuestos">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="editar"/>
-              <actionMethod actionName="enlazar"/>
-              <actionMethod actionName="enlazarProducto"/>
-              <actionMethod actionName="enlazarproducto"/>
-            </controllerFile>
-            <controllerFile controllerName="Divisa">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="editar"/>
-            </controllerFile>
-            <controllerFile controllerName="Json">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="bancosempresa"/>
-              <actionMethod actionName="impuestos"/>
-              <actionMethod actionName="clientese"/>
-              <actionMethod actionName="proveedorese"/>
-              <actionMethod actionName="sucursal"/>
-              <actionMethod actionName="asociace"/>
-              <actionMethod actionName="asociape"/>
-              <actionMethod actionName="sucursalese"/>
-              <actionMethod actionName="buscafacxp"/>
-              <actionMethod actionName="obtenerfacturaxp"/>
-              <actionMethod actionName="consecutivo"/>
-              <actionMethod actionName="productoxmovimiento"/>
-              <actionMethod actionName="totalproyecto"/>
-              <actionMethod actionName="getdescripciontipomovto"/>
-              <actionMethod actionName="empleado"/>
-              <actionMethod actionName="buscanominaxp"/>
-              <actionMethod actionName="proyectoremision"/>
-              <actionMethod actionName="buscaanticipocliente"/>
-              <actionMethod actionName="facturaantcli"/>
-              <actionMethod actionName="proyectocliente"/>
-              <actionMethod actionName="movimientosproveedor"/>
-              <actionMethod actionName="proyectoxfecha"/>
-              <actionMethod actionName="getcliente"/>
-              <actionMethod actionName="proyectoprovxfecha"/>
-              <actionMethod actionName="proyectoremprovxfecha"/>
-              <actionMethod actionName="proyectoremclixfecha"/>
-              <actionMethod actionName="proyectonominafecha"/>
-              <actionMethod actionName="proyectoporproveedor"/>
-              <actionMethod actionName="proyectoporremprov"/>
-              <actionMethod actionName="proyectonomina"/>
-              <actionMethod actionName="productoimpuesto"/>
-              <actionMethod actionName="numerofactura"/>
-              <actionMethod actionName="cancelafaccli"/>
-              <actionMethod actionName="aplicacanfaccli"/>
-              <actionMethod actionName="numfacprov"/>
-              <actionMethod actionName="facprovxsucynum"/>
-              <actionMethod actionName="eliminaprodimp"/>
-              <actionMethod actionName="remisioncafel"/>
-              <actionMethod actionName="remisioncafep"/>
-              <actionMethod actionName="buscacobroremclicafe"/>
-            </controllerFile>
-            <controllerFile controllerName="Guiacontable">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="editar"/>
-              <actionMethod actionName="altmodulos"/>
-              <actionMethod actionName="altamodulos"/>
-              <actionMethod actionName="altatipoproveedor"/>
-              <actionMethod actionName="adminmodulos"/>
-              <actionMethod actionName="editamodulos"/>
-              <actionMethod actionName="editamodulo"/>
-              <actionMethod actionName="admintipos"/>
-            </controllerFile>
-            <controllerFile controllerName="Notacredito">
-              <actionMethod actionName="index"/>
-            </controllerFile>
-            <controllerFile controllerName="Remisioncafe">
-              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory>
-            <formFile formName="AgregarFacturaProveedor"/>
-            <formFile formName="AgregarFacturaCliente"/>
-            <formFile formName="AltaBanco"/>
-            <formFile formName="AgregarRemisionCliente"/>
-            <formFile formName="Cobrofactura"/>
-            <formFile formName="CancelarFactura"/>
-            <formFile formName="CancelarFacturaCliente"/>
-            <formFile formName="CancelarRemisionliente"/>
-            <formFile formName="CancelarRemisionCliente"/>
-            <formFile formName="EmpresaClienteFR"/>
-            <formFile formName="NotaEntradaProveedor"/>
-            <formFile formName="NuevaNotaProveedor"/>
-            <formFile formName="NuevaNotaProveedor"/>
-            <formFile formName="NuevaNotaCliente"/>
-            <formFile formName="AgregarRemisionProveedor"/>
-            <formFile formName="AgregarFondeo"/>
-            <formFile formName="AgregarInversiones"/>
-            <formFile formName="AgregarNomina"/>
-            <formFile formName="AgregarImpuestos"/>
-            <formFile formName="AltaProyecto"/>
-            <formFile formName="Impuestos"/>
-            <formFile formName="PagosProveedor"/>
-            <formFile formName="CrarImpuesto"/>
-            <formFile formName="CrearImpuesto"/>
-            <formFile formName="AltaVendedor"/>
-            <formFile formName="Cuentasxp"/>
-            <formFile formName="GeneraPoliza"/>
-            <formFile formName="AltaDivisa"/>
-            <formFile formName="GuiaContable"/>
-            <formFile formName="NotaCredito"/>
-            <formFile formName="AnticipoClientes"/>
-            <formFile formName="AnticipoProveedor"/>
-            <formFile formName="PagoImpuesto"/>
-            <formFile formName="AgregarRemisioClienteCafeteria"/>
-            <formFile formName="AgregarRemisionClienteCafeteria"/>
-          </formsDirectory>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory>
-            <dbTableDirectory>
-              <dbTableFile dbTableName="Banco"/>
-              <dbTableFile dbTableName="Divisa"/>
-              <dbTableFile dbTableName="BancosEmpresa"/>
-              <dbTableFile dbTableName="Fiscales"/>
-              <dbTableFile dbTableName="Movimientos"/>
-              <dbTableFile dbTableName="Inventario"/>
-              <dbTableFile dbTableName="Capas"/>
-              <dbTableFile dbTableName="TipoMovimiento"/>
-              <dbTableFile dbTableName="Cardex"/>
-              <dbTableFile dbTableName="Cuentasxp"/>
-              <dbTableFile dbTableName="Cuentasxc"/>
-              <dbTableFile dbTableName="Bancosempresa"/>
-              <dbTableFile dbTableName="Proyecto"/>
-              <dbTableFile dbTableName="Factura"/>
-              <dbTableFile dbTableName="FacturaDetalle"/>
-              <dbTableFile dbTableName="Impuestos"/>
-              <dbTableFile dbTableName="Impuesto"/>
-              <dbTableFile dbTableName="FactutaImpuesto"/>
-              <dbTableFile dbTableName="ImpuestoProductos"/>
-              <dbTableFile dbTableName="FacturaImpuesto"/>
-              <dbTableFile dbTableName="Poliza"/>
-              <dbTableFile dbTableName="Modulos"/>
-              <dbTableFile dbTableName="Consecutivo"/>
-            </dbTableDirectory>
-            <modelFile modelName="Divisa"/>
-            <modelFile modelName="Banco"/>
-            <modelFile modelName="Fiscales"/>
-            <modelFile modelName="Empresas"/>
-            <modelFile modelName="Movimientos"/>
-            <modelFile modelName="Inventario"/>
-            <modelFile modelName="Capas"/>
-            <modelFile modelName="TipoMovimiento"/>
-            <modelFile modelName="Cardex"/>
-            <modelFile modelName="Cuentasxp"/>
-            <modelFile modelName="Cuentasxc"/>
-            <modelFile modelName="Bancosempresa"/>
-            <modelFile modelName="Proyecto"/>
-            <modelFile modelName="Factura"/>
-            <modelFile modelName="Facturadet"/>
-            <modelFile modelName="Facturadetalle"/>
-            <modelFile modelName="Impuestos"/>
-            <modelFile modelName="Impuesto"/>
-            <modelFile modelName="ImpuestoProductos"/>
-            <modelFile modelName="Poliza"/>
-            <modelFile modelName="TipoProveedor"/>
-            <modelFile modelName="Modulos"/>
-            <modelFile modelName="Consecutivo"/>
-          </modelsDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
             <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Factura">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Remision">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Factura">
-                <viewScriptFile forActionName="agregarCliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Factura">
-                <viewScriptFile forActionName="agregarcliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Factura">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Banco">
                 <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Banco">
-                <viewScriptFile forActionName="alta"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedores">
+              <viewControllerScriptsDirectory forControllerName="Divisa">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
+              <viewControllerScriptsDirectory forControllerName="Empresas">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreia">
+              <viewControllerScriptsDirectory forControllerName="Factura">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
+              <viewControllerScriptsDirectory forControllerName="Guiacontable">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Impuestos">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Opera">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Poliza">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Banco">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Banco">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="agregarProducto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="agregarN"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="agregarnota"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="agregarnotaentrada"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="NuevaNotaProveedor">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="NotaProveedor">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Notaproveedor">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Notaproveedor">
-                <viewScriptFile forActionName="nueva"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="NotaCliente">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Notacliente">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Notacliente">
-                <viewScriptFile forActionName="nueva"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="nota"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="remision"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="factura"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="nota"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="remision"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="factura"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Fondeo">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="inversiones"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="nomina"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="impuestos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="tesoreria">
-                <viewScriptFile forActionName="fondeo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proyectos">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proyectos">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Impuestos">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Impuestos">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Impuestos">
-                <viewScriptFile forActionName="editar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Impuestos">
-                <viewScriptFile forActionName="enlazar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Impuestos">
-                <viewScriptFile forActionName="enlazarProducto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Impuestos">
-                <viewScriptFile forActionName="enlazarproducto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="pagos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Poliza">
-                <viewScriptFile forActionName="generar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="aplicarpago"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Divisa">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Divisa">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Divisa">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Divisa">
-                <viewScriptFile forActionName="editar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="bancosempresa"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="impuestos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="clientese"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proveedorese"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="sucursal"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="editar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="altmodulos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="altamodulos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="asociace"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="asociape"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Banco">
-                <viewScriptFile forActionName="enlazar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="pagodos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="sucursalese"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="buscafacxp"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="altatipoproveedor"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="cobros"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="obtenerfacturaxp"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="consecutivofactura"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="consecutivo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="editaconsecutivo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="aplicacobro"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Notacredito">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="notacredito"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="anticipo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="anticipo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="proyecto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="adminmodulos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="editamodulos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="editamodulo"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Guiacontable">
-                <viewScriptFile forActionName="admintipos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="desechabledesayuno"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="productoxmovimiento"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="totalproyecto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="getdescripciontipomovto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="pagonomina"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="empleado"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="buscanominaxp"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="aplicapagonomina"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoremision"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="buscaanticipoclientes"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="buscaanticipocliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="enlazafactura"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="facturaantcli"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proyectos">
-                <viewScriptFile forActionName="proyectocliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proyectos">
-                <viewScriptFile forActionName="proyectoproveedor"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectocliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="movimientos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="movimientosproveedor"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proyectos">
-                <viewScriptFile forActionName="proyectoxfecha"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoxfecha"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="getcliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoprovxfecha"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoremprovxfecha"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoremclixfecha"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectonominafecha"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoporproveedor"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectoporremprov"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="proyectonomina"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Tesoreria">
-                <viewScriptFile forActionName="impuestoempleado"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="productoimpuesto"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="cancelar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="cancelar"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="numerofactura"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="cancelafaccli"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="cancelarcli"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="aplicacanfaccli"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="numfacprov"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="facprovxsucynum"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="eliminaprodimp"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Remisioncafe">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="remisioncafe"/>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="inventario">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="Empresas">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Inventario">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Multiplos">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Producto">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Productoterminado">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Unidad">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="User">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+          </controllersDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresas">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proyectos">
-                <viewScriptFile forActionName="proyectocafexfecha"/>
+              <viewControllerScriptsDirectory forControllerName="Inventario">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="remisioncafel"/>
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="remisioncafep"/>
+              <viewControllerScriptsDirectory forControllerName="Multiplos">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="cobroremiclicafe"/>
+              <viewControllerScriptsDirectory forControllerName="Producto">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="buscacobroremclicafe"/>
+              <viewControllerScriptsDirectory forControllerName="Productoterminado">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="aplicacobroremiclicafe"/>
+              <viewControllerScriptsDirectory forControllerName="Unidad">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="User">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1678,470 +175,150 @@
         <moduleDirectory moduleName="sistema">
           <configsDirectory enabled="false"/>
           <controllersDirectory>
-            <controllerFile controllerName="Domicilio">
+            <controllerFile controllerName="Cliente">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Telefono">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="fiscal"/>
-            </controllerFile>
-            <controllerFile controllerName="Email">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="fiscal"/>
-            </controllerFile>
-            <controllerFile controllerName="Fiscales">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Estados">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-            </controllerFile>
-            <controllerFile controllerName="Municipios">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Empresa">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="empresas"/>
-              <actionMethod actionName="clientes"/>
-              <actionMethod actionName="proveedores"/>
-              <actionMethod actionName="sucursales"/>
-            </controllerFile>
-            <controllerFile controllerName="Json">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="municipios"/>
-              <actionMethod actionName="stelefonos"/>
-              <actionMethod actionName="semails"/>
-              <actionMethod actionName="sdomicilio"/>
-            </controllerFile>
-            <controllerFile controllerName="Parametro">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="baja"/>
-            </controllerFile>
-            <controllerFile controllerName="Subparametro">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="baja"/>
-              <actionMethod actionName="edita"/>
-            </controllerFile>
-            <controllerFile controllerName="Rol">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-            </controllerFile>
-            <controllerFile controllerName="Usuario">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-            </controllerFile>
-            <controllerFile controllerName="Empresas">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="admin"/>
-              <actionMethod actionName="edita"/>
-              <actionMethod actionName="empresa"/>
             </controllerFile>
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="cliente"/>
             </controllerFile>
-            <controllerFile controllerName="Proveedores">
+            <controllerFile controllerName="Domicilio">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="proveedor"/>
+            </controllerFile>
+            <controllerFile controllerName="Email">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Empresa">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Empresas">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Estados">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Fiscales">
+              <actionMethod actionName="index"/>
             </controllerFile>
             <controllerFile controllerName="Html">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="municipios"/>
-              <actionMethod actionName="domicilio"/>
-              <actionMethod actionName="telefonos"/>
-              <actionMethod actionName="emails"/>
+            </controllerFile>
+            <controllerFile controllerName="Json">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Municipios">
+              <actionMethod actionName="index"/>
             </controllerFile>
             <controllerFile controllerName="Normalize">
               <actionMethod actionName="index"/>
             </controllerFile>
-            <controllerFile controllerName="Reporte">
+            <controllerFile controllerName="Parametro">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-            </controllerFile>
-            <controllerFile controllerName="Sucursal">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="atelefono"/>
-              <actionMethod actionName="etelefono"/>
-              <actionMethod actionName="dtelefono"/>
-              <actionMethod actionName="aemail"/>
-              <actionMethod actionName="eemail"/>
-              <actionMethod actionName="demail"/>
-              <actionMethod actionName="edomicilio"/>
-              <actionMethod actionName="alta"/>
             </controllerFile>
             <controllerFile controllerName="Proveedor">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="sucursales"/>
             </controllerFile>
-            <controllerFile controllerName="Cliente">
+            <controllerFile controllerName="Proveedores">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="sucursales"/>
+            </controllerFile>
+            <controllerFile controllerName="Reporte">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Rol">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Subparametro">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Sucursal">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Telefono">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Usuario">
+              <actionMethod actionName="index"/>
             </controllerFile>
             <controllerFile controllerName="Vendedores">
               <actionMethod actionName="index"/>
-              <actionMethod actionName="alta"/>
-              <actionMethod actionName="editar"/>
+            </controllerFile>
+            <controllerFile controllerName="Test">
+              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory>
-            <formFile formName="AltaFiscales"/>
-            <formFile formName="AltaDomicilio"/>
-            <formFile formName="AltaTelefono"/>
-            <formFile formName="AltaEmail"/>
-            <formFile formName="AltaEstado"/>
-            <formFile formName="AltaMunicipio"/>
-            <formFile formName="AltaEmpresa"/>
-            <formFile formName="AltaParametro"/>
-            <formFile formName="AltaSubparametro"/>
-            <formFile formName="AltaRol"/>
-            <formFile formName="AltaUsuario"/>
-            <formFile formName="AltaReporte"/>
-            <formFile formName="AltaSucursal"/>
-            <formFile formName="Pruebas"/>
-            <formFile formName="AltaVendedor"/>
-          </formsDirectory>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory>
-            <dbTableDirectory>
-              <dbTableFile dbTableName="Telefono"/>
-              <dbTableFile dbTableName="Email"/>
-              <dbTableFile dbTableName="Domicilio"/>
-              <dbTableFile dbTableName="Estado"/>
-              <dbTableFile dbTableName="Municipio"/>
-              <dbTableFile dbTableName="Empresa"/>
-              <dbTableFile dbTableName="Parametro"/>
-              <dbTableFile dbTableName="Subparametro"/>
-              <dbTableFile dbTableName="Rol"/>
-              <dbTableFile dbTableName="Usuario"/>
-              <dbTableFile dbTableName="Fiscal"/>
-              <dbTableFile dbTableName="FiscalesDomicilios"/>
-              <dbTableFile dbTableName="FiscalesTelefonos"/>
-              <dbTableFile dbTableName="FiscalesEmail"/>
-              <dbTableFile dbTableName="Empresas"/>
-              <dbTableFile dbTableName="Clientes"/>
-              <dbTableFile dbTableName="Proveedores"/>
-              <dbTableFile dbTableName="TipoReporte"/>
-              <dbTableFile dbTableName="Reporte"/>
-              <dbTableFile dbTableName="TipoProveedor"/>
-              <dbTableFile dbTableName="Sucursal"/>
-              <dbTableFile dbTableName="Modulo"/>
-              <dbTableFile dbTableName="Vendedor"/>
-            </dbTableDirectory>
-            <modelFile modelName="Domicilio"/>
-            <modelFile modelName="Telefono"/>
-            <modelFile modelName="Email"/>
-            <modelFile modelName="Estado"/>
-            <modelFile modelName="Fiscal"/>
-            <modelFile modelName="Municipio"/>
-            <modelFile modelName="Empresa"/>
-            <modelFile modelName="Parametro"/>
-            <modelFile modelName="Subparametro"/>
-            <modelFile modelName="Rol"/>
-            <modelFile modelName="Usuario"/>
-            <modelFile modelName="Fiscales"/>
-            <modelFile modelName="Empresas"/>
-            <modelFile modelName="Clientes"/>
-            <modelFile modelName="Proveedores"/>
-            <modelFile modelName="Sucursal"/>
-            <modelFile modelName="Vendedor"/>
-            <modelFile modelName="TipoProveedor"/>
-          </modelsDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
             <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Domicilio">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Telefono">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Email">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Fiscales">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Estados">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Municipios">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Fiscales">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Domicilio">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Telefono">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Email">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Estados">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Municipios">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Estados">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Estados">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Estados">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Municipios">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Municipios">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Municipios">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Telefono">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Telefono">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Telefono">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Email">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Email">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Email">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresa">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresa">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="municipios"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Parametro">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Subparametro">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Parametro">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Subparametro">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Rol">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Usuario">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Rol">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Usuario">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresas">
+              <viewControllerScriptsDirectory forControllerName="Cliente">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedores">
+              <viewControllerScriptsDirectory forControllerName="Domicilio">
                 <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresas">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="municipios"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="domicilio"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="telefonos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Html">
-                <viewScriptFile forActionName="emails"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresa">
-                <viewScriptFile forActionName="empresas"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresa">
-                <viewScriptFile forActionName="clientes"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresa">
-                <viewScriptFile forActionName="proveedores"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedores">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Parametro">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Parametro">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Parametro">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Subparametro">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Subparametro">
-                <viewScriptFile forActionName="baja"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Subparametro">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresas">
-                <viewScriptFile forActionName="admin"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresas">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Telefono">
-                <viewScriptFile forActionName="fiscal"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Email">
-                <viewScriptFile forActionName="fiscal"/>
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresa">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Empresas">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Estados">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Fiscales">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Html">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Municipios">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Normalize">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Reporte">
+              <viewControllerScriptsDirectory forControllerName="Parametro">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Reporte">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Clientes">
-                <viewScriptFile forActionName="cliente"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Domicilio">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Fiscales">
-                <viewScriptFile forActionName="edita"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresas">
-                <viewScriptFile forActionName="empresa"/>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Proveedores">
-                <viewScriptFile forActionName="proveedor"/>
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Reporte">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Rol">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Subparametro">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Sucursal">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="atelefono"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="etelefono"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="dtelefono"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="aemail"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="eemail"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="demail"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="edomicilio"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Sucursal">
-                <viewScriptFile forActionName="alta"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Empresa">
-                <viewScriptFile forActionName="sucursales"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
+              <viewControllerScriptsDirectory forControllerName="Telefono">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Cliente">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Proveedor">
-                <viewScriptFile forActionName="sucursales"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Cliente">
-                <viewScriptFile forActionName="sucursales"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="stelefonos"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="semails"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Json">
-                <viewScriptFile forActionName="sdomicilio"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Vendedores">
+              <viewControllerScriptsDirectory forControllerName="Usuario">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Vendedores">
-                <viewScriptFile forActionName="alta"/>
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Vendedores">
-                <viewScriptFile forActionName="editar"/>
+              <viewControllerScriptsDirectory forControllerName="Test">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -2157,38 +334,6 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Error">
             <viewScriptFile forActionName="error"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Resultados">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Index">
-            <viewScriptFile forActionName="login"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Index">
-            <viewScriptFile forActionName="normalize"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Usuario">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Usuario">
-            <viewScriptFile forActionName="perfil"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Index">
-            <viewScriptFile forActionName="logout"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Vendedores">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Consulta">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Usuario">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Usuario">
-            <viewScriptFile forActionName="perfil"/>
-          <viewControllerScriptsDirectory forControllerName="Index">
-            <viewScriptFile forActionName="productoimpuesto"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
@@ -2218,7 +363,7 @@
       <htaccessFile filesystemName=".htaccess"/>
     </publicDirectory>
     <projectProvidersDirectory enabled="false"/>
-    <temporaryDirectory enabled="false"></temporaryDirectory>
+    <temporaryDirectory enabled="false"/>
     <testsDirectory>
       <testPHPUnitConfigFile filesystemName="phpunit.xml"/>
       <testPHPUnitBootstrapFile filesystemName="bootstrap.php"/>
@@ -2226,384 +371,150 @@
         <testApplicationControllerDirectory>
           <testApplicationControllerFile forControllerName="Index">
             <testApplicationActionMethod forActionName="index"/>
-            <testApplicationActionMethod forActionName="login"/>
-            <testApplicationActionMethod forActionName="normalize"/>
-            <testApplicationActionMethod forActionName="logout"/>
-            <testApplicationActionMethod forActionName="productoimpuesto"/>
-          </testApplicationControllerFile>
-          <testApplicationControllerFile forControllerName="Usuario">
-            <testApplicationActionMethod forActionName="index"/>
-            <testApplicationActionMethod forActionName="perfil"/>
-            <testApplicationActionMethod forActionName="index"/>
-            <testApplicationActionMethod forActionName="perfil"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
         <testApplicationModulesDirectory>
-          <testApplicationModuleDirectory forModuleName="sistema">
+          <testApplicationModuleDirectory forModuleName="contabilidad">
             <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="Domicilio">
+              <testApplicationControllerFile forControllerName="Banco">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Telefono">
+              <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="fiscal"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Email">
+              <testApplicationControllerFile forControllerName="Divisa">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="fiscal"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Fiscales">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="edita"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Estados">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="baja"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Municipios">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="edita"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Empresa">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="empresas"/>
-                <testApplicationActionMethod forActionName="clientes"/>
-                <testApplicationActionMethod forActionName="proveedores"/>
-                <testApplicationActionMethod forActionName="sucursales"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Json">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="municipios"/>
-                <testApplicationActionMethod forActionName="stelefonos"/>
-                <testApplicationActionMethod forActionName="semails"/>
-                <testApplicationActionMethod forActionName="sdomicilio"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Parametro">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="baja"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Subparametro">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="edita"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Rol">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Usuario">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Empresas">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="empresa"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Clientes">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="cliente"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Proveedores">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="proveedor"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Html">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="municipios"/>
-                <testApplicationActionMethod forActionName="domicilio"/>
-                <testApplicationActionMethod forActionName="telefonos"/>
-                <testApplicationActionMethod forActionName="emails"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Normalize">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Reporte">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Sucursal">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="atelefono"/>
-                <testApplicationActionMethod forActionName="etelefono"/>
-                <testApplicationActionMethod forActionName="dtelefono"/>
-                <testApplicationActionMethod forActionName="aemail"/>
-                <testApplicationActionMethod forActionName="eemail"/>
-                <testApplicationActionMethod forActionName="demail"/>
-                <testApplicationActionMethod forActionName="edomicilio"/>
-                <testApplicationActionMethod forActionName="alta"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Proveedor">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="sucursales"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Cliente">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="sucursales"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Vendedores">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="editar"/>
-              </testApplicationControllerFile>
-            </testApplicationControllerDirectory>
-          </testApplicationModuleDirectory>
-          <testApplicationModuleDirectory forModuleName="contabilidad">
-            <testApplicationControllerDirectory>
               <testApplicationControllerFile forControllerName="Factura">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="agregarCliente"/>
-                <testApplicationActionMethod forActionName="agregarcliente"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Guiacontable">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Remision">
+              <testApplicationControllerFile forControllerName="Impuestos">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Banco">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="enlazar"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Clientes">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="nota"/>
-                <testApplicationActionMethod forActionName="remision"/>
-                <testApplicationActionMethod forActionName="factura"/>
-                <testApplicationActionMethod forActionName="cobros"/>
-                <testApplicationActionMethod forActionName="consecutivofactura"/>
-                <testApplicationActionMethod forActionName="editaconsecutivo"/>
-                <testApplicationActionMethod forActionName="aplicacobro"/>
-                <testApplicationActionMethod forActionName="anticipo"/>
-                <testApplicationActionMethod forActionName="proyecto"/>
-                <testApplicationActionMethod forActionName="desechabledesayuno"/>
-                <testApplicationActionMethod forActionName="buscaanticipoclientes"/>
-                <testApplicationActionMethod forActionName="enlazafactura"/>
-                <testApplicationActionMethod forActionName="cancelar"/>
-                <testApplicationActionMethod forActionName="cancelarcli"/>
-                <testApplicationActionMethod forActionName="remisioncafe"/>
-                <testApplicationActionMethod forActionName="cobroremiclicafe"/>
-                <testApplicationActionMethod forActionName="aplicacobroremiclicafe"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Proveedores">
+              <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Proveedor">
+              <testApplicationControllerFile forControllerName="Opera">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="agregarProducto"/>
-                <testApplicationActionMethod forActionName="agregarN"/>
-                <testApplicationActionMethod forActionName="agregarnota"/>
-                <testApplicationActionMethod forActionName="agregarnotaentrada"/>
-                <testApplicationActionMethod forActionName="nota"/>
-                <testApplicationActionMethod forActionName="remision"/>
-                <testApplicationActionMethod forActionName="factura"/>
-                <testApplicationActionMethod forActionName="pagos"/>
-                <testApplicationActionMethod forActionName="aplicarpago"/>
-                <testApplicationActionMethod forActionName="pagodos"/>
-                <testApplicationActionMethod forActionName="anticipo"/>
-                <testApplicationActionMethod forActionName="movimientos"/>
-                <testApplicationActionMethod forActionName="cancelar"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Tesoreia">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Tesoreria">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="inversiones"/>
-                <testApplicationActionMethod forActionName="nomina"/>
-                <testApplicationActionMethod forActionName="impuestos"/>
-                <testApplicationActionMethod forActionName="notacredito"/>
-                <testApplicationActionMethod forActionName="pagonomina"/>
-                <testApplicationActionMethod forActionName="aplicapagonomina"/>
-                <testApplicationActionMethod forActionName="impuestoempleado"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Poliza">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="generar"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="NuevaNotaProveedor">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="NotaProveedor">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Notaproveedor">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="nueva"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="NotaCliente">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Notacliente">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="nueva"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Fondeo">
+              <testApplicationControllerFile forControllerName="Proveedor">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proyectos">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="proyectocliente"/>
-                <testApplicationActionMethod forActionName="proyectoproveedor"/>
-                <testApplicationActionMethod forActionName="proyectoxfecha"/>
-                <testApplicationActionMethod forActionName="proyectocafexfecha"/>
               </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Impuestos">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="editar"/>
-                <testApplicationActionMethod forActionName="enlazar"/>
-                <testApplicationActionMethod forActionName="enlazarProducto"/>
-                <testApplicationActionMethod forActionName="enlazarproducto"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Divisa">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="editar"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Json">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="bancosempresa"/>
-                <testApplicationActionMethod forActionName="impuestos"/>
-                <testApplicationActionMethod forActionName="clientese"/>
-                <testApplicationActionMethod forActionName="proveedorese"/>
-                <testApplicationActionMethod forActionName="sucursal"/>
-                <testApplicationActionMethod forActionName="asociace"/>
-                <testApplicationActionMethod forActionName="asociape"/>
-                <testApplicationActionMethod forActionName="sucursalese"/>
-                <testApplicationActionMethod forActionName="buscafacxp"/>
-                <testApplicationActionMethod forActionName="obtenerfacturaxp"/>
-                <testApplicationActionMethod forActionName="consecutivo"/>
-                <testApplicationActionMethod forActionName="productoxmovimiento"/>
-                <testApplicationActionMethod forActionName="totalproyecto"/>
-                <testApplicationActionMethod forActionName="getdescripciontipomovto"/>
-                <testApplicationActionMethod forActionName="empleado"/>
-                <testApplicationActionMethod forActionName="buscanominaxp"/>
-                <testApplicationActionMethod forActionName="proyectoremision"/>
-                <testApplicationActionMethod forActionName="buscaanticipocliente"/>
-                <testApplicationActionMethod forActionName="facturaantcli"/>
-                <testApplicationActionMethod forActionName="proyectocliente"/>
-                <testApplicationActionMethod forActionName="movimientosproveedor"/>
-                <testApplicationActionMethod forActionName="proyectoxfecha"/>
-                <testApplicationActionMethod forActionName="getcliente"/>
-                <testApplicationActionMethod forActionName="proyectoprovxfecha"/>
-                <testApplicationActionMethod forActionName="proyectoremprovxfecha"/>
-                <testApplicationActionMethod forActionName="proyectoremclixfecha"/>
-                <testApplicationActionMethod forActionName="proyectonominafecha"/>
-                <testApplicationActionMethod forActionName="proyectoporproveedor"/>
-                <testApplicationActionMethod forActionName="proyectoporremprov"/>
-                <testApplicationActionMethod forActionName="proyectonomina"/>
-                <testApplicationActionMethod forActionName="productoimpuesto"/>
-                <testApplicationActionMethod forActionName="numerofactura"/>
-                <testApplicationActionMethod forActionName="cancelafaccli"/>
-                <testApplicationActionMethod forActionName="aplicacanfaccli"/>
-                <testApplicationActionMethod forActionName="numfacprov"/>
-                <testApplicationActionMethod forActionName="facprovxsucynum"/>
-                <testApplicationActionMethod forActionName="eliminaprodimp"/>
-                <testApplicationActionMethod forActionName="remisioncafel"/>
-                <testApplicationActionMethod forActionName="remisioncafep"/>
-                <testApplicationActionMethod forActionName="buscacobroremclicafe"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Guiacontable">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="editar"/>
-                <testApplicationActionMethod forActionName="altmodulos"/>
-                <testApplicationActionMethod forActionName="altamodulos"/>
-                <testApplicationActionMethod forActionName="altatipoproveedor"/>
-                <testApplicationActionMethod forActionName="adminmodulos"/>
-                <testApplicationActionMethod forActionName="editamodulos"/>
-                <testApplicationActionMethod forActionName="editamodulo"/>
-                <testApplicationActionMethod forActionName="admintipos"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Notacredito">
-                <testApplicationActionMethod forActionName="index"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Remisioncafe">
+              <testApplicationControllerFile forControllerName="Tesoreria">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
           <testApplicationModuleDirectory forModuleName="inventario">
             <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="Producto">
+              <testApplicationControllerFile forControllerName="Empresas">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="edita"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Inventario">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="edita"/>
-                <testApplicationActionMethod forActionName="editarTodo"/>
-                <testApplicationActionMethod forActionName="editartodo"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Unidad">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="edita"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Multiplos">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="admin"/>
-                <testApplicationActionMethod forActionName="baja"/>
-                <testApplicationActionMethod forActionName="alta"/>
-                <testApplicationActionMethod forActionName="edita"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="JsonController">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="unidades"/>
-              </testApplicationControllerFile>
-              <testApplicationControllerFile forControllerName="Productoterminado">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="crear"/>
-                <testApplicationActionMethod forActionName="editar"/>
-                <testApplicationActionMethod forActionName="eliminar"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="unidades"/>
-                <testApplicationActionMethod forActionName="multiplos"/>
-                <testApplicationActionMethod forActionName="productos"/>
-                <testApplicationActionMethod forActionName="productoterminado"/>
-                <testApplicationActionMethod forActionName="llenaproducto"/>
-                <testApplicationActionMethod forActionName="productoxmovimiento"/>
-                <testApplicationActionMethod forActionName="productoxsucursal"/>
-                <testApplicationActionMethod forActionName="eliminarproductoenlazado"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Multiplos">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Producto">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Productoterminado">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Unidad">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="User">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+            </testApplicationControllerDirectory>
+          </testApplicationModuleDirectory>
+          <testApplicationModuleDirectory forModuleName="sistema">
+            <testApplicationControllerDirectory>
+              <testApplicationControllerFile forControllerName="Cliente">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Clientes">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Domicilio">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Email">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Empresa">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Empresas">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Estados">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Fiscales">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Html">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Json">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Municipios">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Normalize">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Parametro">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Proveedor">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Proveedores">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Reporte">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Rol">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Subparametro">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Sucursal">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Telefono">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Usuario">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Vendedores">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Test">
+                <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
