@@ -87,7 +87,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				    $select = $tablaFiscales->select()->from($tablaFiscales)->where("rfc=?",$fiscal["rfc"]);
 				    $rowFiscales = $tablaFiscales->fetchAll($select);
 					if(!is_null($rowFiscales)) {
-					    throw new Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+					    try{
+					        
+					    }catch(Exception $ex){
+					        throw new Zend_Controller_Action_Exception("Error: Empresa ya registrada en el sistema");
+					    }
 					}
 				}
 			}elseif($tipo == "PR"){
@@ -96,7 +100,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 				    $rowFiscales = $select->query()->fetchAll();
 				    //print_r(count($rowFiscales));
 				    if(count($rowFiscales) > 1) {
-				        echo("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
+				        throw new Zend_Controller_Action_Exception("Error: <strong>".$fiscal["razonSocial"]."</strong> ya esta dado de alta en el sistema, RFC duplicado");
 				    }
 				}
 			}
@@ -144,7 +148,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 		}catch(Exception $ex){
 		    $dbAdapter->rollBack();
 		    print_r($ex->getMessage());
-		    throw new Util_Exception_BussinessException("Error: Empresa ya registrada en el sistema");
+		    throw new Zend_Controller_Action_Exception("Error: Empresa ya registrada en el sistema");
 		    //throw new Exception("Error: Empresa ya registrada en el sistema");
 		}
 	}
