@@ -1,23 +1,38 @@
 <?php
-
+/**
+ * 
+ * @author EnginnerRodriguez
+ *
+ */
 class IndexController extends Zend_Controller_Action
 {
+    private $appDAO = null;
 
-    private $usuarioDAO = null;
-
-    private $rolDAO = null;
+    // private $usuarioDAO = null;
+    // private $rolDAO = null;
 
     public function init()
     {
         /* Initialize action controller here */
-        $this->usuarioDAO = new Sistema_DAO_Usuario;
-		$this->rolDAO = new Sistema_DAO_Rol;
+        $this->_helper->layout->setLayout('homePymes');
+        
+        $this->appDAO = new App_Data_DAO_Login();
+        
+        // $this->usuarioDAO = new Sistema_DAO_Usuario;
+		// $this->rolDAO = new Sistema_DAO_Rol;
     }
 
     public function indexAction()
     {
         // action body
-        $this->_helper->layout->setLayout('homePymes');
+        $request = $this->getRequest();
+        
+        if ($request->isPost()) {
+            $datos = $request->getPost();
+            print_r($datos);
+            
+            $this->appDAO->login($datos);
+        }
     }
 
     public function loginAction()
@@ -27,6 +42,14 @@ class IndexController extends Zend_Controller_Action
         //$formulario = new Application_Form_Login;
 		//$this->view->formulario = $formulario;
 		
+        if ($request->isPost()) {
+            $datos = $request->getPost();
+            print_r($datos);
+            
+            $this->appDAO->login($datos);
+        }
+        
+        /*
 		if($request->isPost()){
 		    $post = $request->getPost();
             //print_r($post);
@@ -65,29 +88,12 @@ class IndexController extends Zend_Controller_Action
 		    //LogOut and Redirect to Main Page
 		    $this->_helper->redirector->gotoSimple("index", "index", "default");
 		}
+		*/
     }
 
     public function normalizeAction()
     {
         // action body
     }
-
-    public function logoutAction()
-    {
-        // action body
-        $auth = Zend_Auth::getInstance();
-		if($auth->hasIdentity()){
-			$auth->clearIdentity();
-		}
-		$this->redirect("/");
-    }
+    
 }
-
-
-
-
-
-
-
-
-
