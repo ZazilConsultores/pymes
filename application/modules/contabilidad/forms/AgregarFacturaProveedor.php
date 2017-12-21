@@ -92,7 +92,11 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eProducto->setAttrib("class", "form-control");
 		$eProducto->setAttrib("required","true");
 		
-		$subEncabezado->addElements(array($eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,/*$eidProducto*/));
+		$eImp = new Zend_Form_Element_Hidden('importe');
+		$eImp->setAttrib("class", "form-control");
+		$eImp->setAttrib("required","true");
+		
+		$subEncabezado->addElements(array($eImp,$eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,/*$eidProducto*/));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		//========================================================================================================================>>

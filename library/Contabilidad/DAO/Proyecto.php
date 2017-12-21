@@ -245,4 +245,21 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	        }
 	    }
 	}
+	
+	public function obtieneProyectoxTipoProv($idProyecto,$idTipProv,$fechaI, $fechaF){
+	    $tablaMovimientos  = $this->tablaMovimiento;
+	    $select = $tablaMovimientos->select()->setIntegrityCheck(false)
+	    ->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura),(Movimientos.idTipoMovimiento)'))
+	    ->join('Factura','Movimientos.idFactura = Factura.idFactura', array('numeroFactura','total'))
+	    ->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores',array('Movimientos.idCoP'))
+	    ->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa', array())
+	    ->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+	    ->join('TipoProveedor','Proveedores.idTipoProveedor = Proveedores.idTipoProveedor',  array())
+	    ->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo'))
+	    ->where('Movimientos.idProyecto =?', $idProyecto)->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
+	    ->where("TipoProveedor.idTipoProveedor=?",$idTipProv)->order("Factura.numeroFactura ASC");
+	       //print_r("$select");
+	     return $tablaMovimientos->fetchAll($select);
+	   
+	}
 }

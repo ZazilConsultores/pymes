@@ -2,11 +2,17 @@
 
 class Contabilidad_ProveedorController extends Zend_Controller_Action
 {
+
     private $empresaDAO = null;
+
     private $notaEntradaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $pagoProveedor = null;
+
     private $anticipoDAO = null;
 
     public function init()
@@ -221,7 +227,60 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 			$this->facturaDAO->cancelaFactura($idFactura);
 		}    
     }
+
+    public function buscaantiprovAction()
+    {
+        $request = $this->getRequest();
+        $sucu = $this->getParam("idSucursal");
+        print_r($sucu);
+        $prov = $this->getParam("idCoP");
+        $empresas = $this->empresaDAO->obtenerFiscalesEmpresas();
+        $this->view->empresas = $empresas;
+        $cobrosDAO = new Contabilidad_DAO_CobroCliente;
+        //$this->view->datosFacturas = $cobrosDAO->obtieneFacturaParaAnticipoCliente($idSucursal, $idCoP);
+        if($request->isPost()){
+            $datos = $request->getPost();
+            $idSucursal = $this->getParam("sucursal");
+            $cl = $this->getParam("cliente");
+        }
+    }
+
+    public function enlazafacturaAction()
+    {
+        $request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AgregarFacturaProveedor();
+        $this->view->formulario = $formulario;
+        $formulario->removeSubForm("1");
+        
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $datos = $formulario->getValues();
+                $encabezado = $datos[0];
+                //$formaPago = $datos[1];
+                $productos = json_decode($encabezado['productos'],TRUE);
+                $importe = json_decode($encabezado['importe'],TRUE);
+                print_r($importe);
+                $contador=0;
+                try{
+                    $guardaFac = $this->facturaDAO->guardaAnticipoPagoFactura($encabezado, $importe, $productos);
+                    foreach ($productos as $producto){
+                        $guardaDetalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+                        $contador++;
+                    }
+                    $this->view->messageSuccess = "Se ha agregado Factura exitosamente";
+                }catch(Util_Exception_BussinessException $ex){
+                    $this->view->messageFail = $ex->getMessage();
+                }
+            }
+        }
+    }
+
+
 }
+
+
+
+
 
 
 

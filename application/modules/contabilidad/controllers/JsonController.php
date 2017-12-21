@@ -27,23 +27,22 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
     public function init()
     {
-	    	$auth = Zend_Auth::getInstance();
-	        $dataIdentity = $auth->getIdentity();
-	        /* Initialize action controller here */
-	        $this->bancoDAO = new Contabilidad_DAO_Banco;
-			$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
-			$this->fiscalesDAO = new Sistema_DAO_Fiscales;
-			$this->pagosDAO = new Contabilidad_DAO_PagoProveedor;
-			$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
-			$this->empresaDAO = new Sistema_DAO_Empresa;
-			$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
-			$this->facturaProDAO = new Contabilidad_DAO_FacturaProveedor;
-			$this->proyectoClienteDAO = new Contabilidad_DAO_ProyectoCliente;
-			$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
-			$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
-			
-			$this->_helper->layout->disableLayout();
-			$this->_helper->viewRenderer->setNoRender(true);
+        $auth = Zend_Auth::getInstance();
+	    $dataIdentity = $auth->getIdentity();
+	    /* Initialize action controller here */
+	    $this->bancoDAO = new Contabilidad_DAO_Banco;
+		$this->impuestoProductosDAO = new Contabilidad_DAO_Impuesto;
+		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
+		$this->pagosDAO = new Contabilidad_DAO_PagoProveedor;
+		$this->cobrosDAO = new Contabilidad_DAO_CobroCliente;
+		$this->empresaDAO = new Sistema_DAO_Empresa;
+		$this->facturaCliDAO = new Contabilidad_DAO_FacturaCliente;
+		$this->facturaProDAO = new Contabilidad_DAO_FacturaProveedor;
+		$this->proyectoClienteDAO = new Contabilidad_DAO_ProyectoCliente;
+		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
+		$this->notaSalidaDAO = new Contabilidad_DAO_NotaSalida;
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function indexAction()
@@ -594,6 +593,33 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         }
     }
 
+    public function buscaantprovAction()
+    {
+        $sucu = $this->getParam("sucu");
+        $pv = $this->getParam("pv");
+        
+        $buscaPago = $this->pagosDAO->busca_AnticipoProv($sucu, $pv);
+        if(!is_null($buscaPago)){
+            echo Zend_Json::encode($buscaPago);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function proyectoxtipoprovAction()
+    {
+        $idProyecto = $this->getParam("idProyecto");
+        $idTipProv = $this->getParam("idTipoProv");
+        $fechaI = $this->getParam("fechaI");
+        $fechaF = $this->getParam("fechaF");
+        $proyectoTipProv = $this->proyectoDAO->obtieneProyectoxTipoProv($idProyecto,$idTipProv, $fechaI, $fechaF);
+        if(!is_null($proyectoTipProv)){
+            echo Zend_Json::encode($proyectoTipProv);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
 
@@ -631,6 +657,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
 	
 	
 	
@@ -642,6 +670,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
 
 
 

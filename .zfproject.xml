@@ -42,6 +42,8 @@
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="buscaantprov"/>
+              <actionMethod actionName="proyectoxtipoprov"/>
             </controllerFile>
             <controllerFile controllerName="Opera">
               <actionMethod actionName="index"/>
@@ -51,9 +53,12 @@
             </controllerFile>
             <controllerFile controllerName="Proveedor">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="buscaantiprov"/>
+              <actionMethod actionName="enlazafactura"/>
             </controllerFile>
             <controllerFile controllerName="Proyectos">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="proyectoxtipoprov"/>
             </controllerFile>
             <controllerFile controllerName="Tesoreria">
               <actionMethod actionName="index"/>
@@ -103,6 +108,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Tesoreria">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="buscaantiprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="buscaantprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="enlazafactura"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proyectos">
+                <viewScriptFile forActionName="proyectoxtipoprov"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="proyectoxtipoprov"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -399,6 +419,8 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="buscaantprov"/>
+                <testApplicationActionMethod forActionName="proyectoxtipoprov"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Opera">
                 <testApplicationActionMethod forActionName="index"/>
@@ -408,9 +430,12 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proveedor">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="buscaantiprov"/>
+                <testApplicationActionMethod forActionName="enlazafactura"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proyectos">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="proyectoxtipoprov"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Tesoreria">
                 <testApplicationActionMethod forActionName="index"/>

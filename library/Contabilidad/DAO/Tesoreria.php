@@ -437,6 +437,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			$mfImpuesto = array(
 				'idTipoMovimiento'=>$notaCredito[0]['idTipoMovimiento'],
 				'idFactura'=>$idFactura,
+			    'idCuentasxp'=>0,
 				'idImpuesto'=>4, //Iva
 				'importe'=>$impuestos[0]['iva']
 			);

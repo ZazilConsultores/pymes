@@ -62,9 +62,10 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li class="dropdown-submenu">
-					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'anticipo'), null, true); ?>">Anticipo</a>
+					<a class="test" tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'index'), null, true); ?>">Anticipo</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'tesoreria', 'action' => 'pagonomina'), null, true); ?>">Busqueda Anticipo Proveedor</a></li>	
+					<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'anticipo'), null, true); ?>">Nuevo Anticipo Proveedor</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'buscaantiprov'), null, true); ?>">Busqueda Anticipo Proveedor</a></li>	
 					</ul>
 				</li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'factura'), null, true); ?>">Factura</a></li>
@@ -120,6 +121,7 @@
 			<ul class="dropdown-menu">
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'proyecto'), null, true); ?>">Proyecto por Movimiento</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectoxfecha'), null, true); ?>">Proyecto por Fecha</a></li>
+				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectoxtipoprov'), null, true); ?>">Proyecto por Tipo Proveedor</a></li>
 			</ul>
 		</li>
 		<li class="dropdown-submenu">

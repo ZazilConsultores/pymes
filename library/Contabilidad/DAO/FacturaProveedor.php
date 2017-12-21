@@ -21,6 +21,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	private $tablaImpuestoProductos;
 	private $tablaFacturaImpuesto;
 	private $tablaProductoCompuesto;
+	private $tablaCuentasxp;
 		
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -40,6 +41,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		$this->tablaImpuestos = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
 		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
+		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
 	}
 	
 	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos)
@@ -209,7 +211,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		 		$tablaMultiplos = $this->tablaMultiplos;
 				$select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
 				$rowMultiplo = $tablaMultiplos->fetchRow($select);
-				
+				print_r("$select");
 				if(!is_null($rowMultiplo)){
 					//====================Operaciones para convertir unidad minima====================================================== 
 					$cantidad = 0;
@@ -650,5 +652,83 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 			$rowNumFac->save();
 		}
 	}
-
+	
+	public function guardaAnticipoPagoFactura(array $encabezado,$importe, $productos){
+	    $dbAdapter = Zend_Registry::get('dbmodgeneral');
+	    $dbAdapter->beginTransaction();
+	    $fechaInicio = new Zend_Date($encabezado['fecha'],'YY-mm-dd');
+	    $stringFecha = $fechaInicio->toString('YY-mm-dd');
+	    print_r("===");
+	    print_r($importe);
+	    try{
+	        //Valida que la factura no exista
+	        $tablaFactura = $this->tablaFactura;
+	        $select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento = ?",$encabezado['idTipoMovimiento'])->where("numeroFactura=?",$encabezado['numeroFactura'])
+	        ->where("idCoP=?",$encabezado['idCoP'])->where("idSucursal=?",$encabezado['idSucursal']);
+	        $rowFactura = $tablaFactura->fetchRow($select);
+	        //print_r("$select");
+	        if(!is_null($rowFactura)){
+	            print_r("La Factura Ya existe");
+	        }else{
+	            //Seleccionamos la cuentaxc
+	            $tablaCXP = $this->tablaCuentasxp;
+	            $select = $tablaCXP->select()->from($tablaCXP)->where("idTipoMovimiento = ?",18)->where("idSucursal=?",$encabezado['idSucursal'])->where("estatus=?",'A')
+	            ->where("idFactura is null")->where("idCoP=?",$encabezado['idCoP'])->where("total=?",$importe[0]['total']);
+	            $rowCXP = $tablaCXP->fetchRow($select);
+	            print_r("$select");
+	            if(!is_null($rowCXP)){
+	                //Guarda Movimiento en tabla factura
+	                $mFactura = array(
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	                    'idSucursal'=>$encabezado['idSucursal'],
+	                    'idCoP'=>$encabezado['idCoP'],
+	                    'idDivisa'=>1,
+	                    'numeroFactura'=>$encabezado['numeroFactura'],
+	                    'estatus'=>"A",
+	                    'conceptoPago'=>"LI",
+	                    'descuento'=>$importe[0]['descuento'],
+	                    'formaPago'=>$rowCXP['formaLiquidar'],
+	                    'fecha'=>$stringFecha,
+	                    'subTotal'=>$importe[0]['subTotal'],
+	                    'total'=>$importe[0]['total'],
+	                    'saldo'=>'0',
+	                    'folioFiscal'=>$encabezado['folioFiscal'],
+	                    'importePagado'=>$importe[0]['total']
+	                );
+	                $dbAdapter->insert("Factura", $mFactura);
+	                //Obtine el ultimo id en tabla factura
+	                $idFactura = $dbAdapter->lastInsertId("Factura","idFactura");
+	                //Guarda en facturaImpuesto
+	                $tablaImpuesto = $this->tablaImpuestos;
+	                $select = $tablaImpuesto->select()->from($tablaImpuesto)->where("abreviatura = ?",'IVA');
+	                $rowImpFactura = $tablaImpuesto->fetchRow($select);
+	                //print_r("$select");
+	                $mfImpuesto = array(
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	                    'idFactura'=>$idFactura,
+	                    'idImpuesto'=>$rowImpFactura['idImpuesto'],
+	                    'idCuentasxp'=>0,
+	                    'importe'=>$importe[0]['iva']
+	                );
+	                $dbAdapter->insert("FacturaImpuesto", $mfImpuesto);
+	                //Actualiza idFactura en CXC
+	                $rowCXP->idFactura = $idFactura;
+	                $rowCXP->save();
+	            }
+	        }
+	        $dbAdapter->commit();
+	    }catch(exception $ex){
+	        print_r("<br />");
+	        print_r("================");
+	        print_r("<br />");
+	        print_r("Excepcion Lanzada");
+	        print_r("<br />");
+	        print_r("================");
+	        print_r("<br />");
+	        print_r($ex->getMessage());
+	        print_r("<br />");
+	        print_r("<br />");
+	        $dbAdapter->rollBack();
+	    }
+	}
 }

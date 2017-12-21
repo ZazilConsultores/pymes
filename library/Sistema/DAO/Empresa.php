@@ -370,9 +370,11 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	 */
 	public function obtenerTipoProveedor()
 	{
+	     
+	    
 		$tablaTipoProveedor = $this->tablaTipoProveedor;
+		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->order("descripcion DESC");
 		$rows = $tablaTipoProveedor->fetchAll();
-		
 		if(is_null($rows)){
 			return null;
 		}else{

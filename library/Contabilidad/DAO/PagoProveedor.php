@@ -219,5 +219,16 @@
 			$rowFactura->save();	
 			
 		}
+		
+		public function busca_AnticipoProv($idSucursal,$pv){
+		    //tipo Movimiento facturaProv = 2
+		    $tablaCuentasxp = $this->tablaCuentasxp;
+		    $select = $tablaCuentasxp->select()->from($tablaCuentasxp)->where("idTipoMovimiento =?",18)->where("estatus <> ?", "C")->where("idFactura IS NULL")
+		    ->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pv);
+		    $rowsCuentasxp = $tablaCuentasxp->fetchAll($select)->toArray();
+		    //print_r("$select");
+		    return $rowsCuentasxp;
+		    
+		}
     }
 ?>

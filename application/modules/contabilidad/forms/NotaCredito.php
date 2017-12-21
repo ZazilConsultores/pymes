@@ -20,7 +20,7 @@ class Contabilidad_Form_NotaCredito extends Zend_Form
 			
         $this->setAttrib("id", "nuevaNotaCliente");
         $subEncabezado = new Zend_Form_SubForm;
-		$subEncabezado->setLegend("Nueva Nota de Crédito");
+		//$subEncabezado->setLegend("Nueva Nota de Crédito");
 		
 		$eNumeroFolio = new Zend_Form_Element_Text('numFolio');
 		$eNumeroFolio->setLabel('Número Factura: ');

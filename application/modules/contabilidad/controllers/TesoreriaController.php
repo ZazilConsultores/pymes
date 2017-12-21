@@ -130,10 +130,8 @@ class Contabilidad_TesoreriaController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $formulario = new Contabilidad_Form_NotaCredito;
-
-		if($request->isGet()){
-			$this->view->formulario = $formulario;
-		}elseif($request->isPost()){
+        $this->view->formulario = $formulario;
+		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$notaCredito = $formulario->getValues();
 				print_r($notaCredito);

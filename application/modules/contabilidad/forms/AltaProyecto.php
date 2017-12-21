@@ -6,7 +6,8 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
     public function init()
     {
     	$this->setAttrib("id", "altaProyecto");
-		
+    	$empresaDAO = new Sistema_DAO_Empresa;
+    	
     	$eNumFolio = new Zend_Form_Element_Text('numeroFolio');
 		$eNumFolio->setLabel('Ingresar número de Folio:');
 		$eNumFolio->setAttrib("class", "form-control");
@@ -79,6 +80,14 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eProyecto->setAttrib("class", "form-control");
 		$eProyecto->setRegisterInArrayValidator(FALSE);
 		
+		$eTipoProv =  new Zend_Form_Element_Select('idTipoProv');
+		$eTipoProv->setLabel("Seleccionar Tipo Proveedor:");
+		$eTipoProv->setAttrib("class", "form-control");
+		$rTiposProveedor = $empresaDAO->obtenerTipoProveedor();
+		foreach ($rTiposProveedor as $rTipoProveedor) {
+		    $eTipoProv->addMultiOption($rTipoProveedor["idTipoProveedor"], $rTipoProveedor["descripcion"]);
+		}
+		
 		$eFechaInicio =  new Zend_Form_Element_Text('fechaInicial');
         $eFechaInicio->setLabel('Seleccionar Fecha Inicio: ');
 		$eFechaInicio->setAttrib("class", "form-control");
@@ -92,7 +101,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eBoton->setAttrib("class", "btn btn-warning");
 		
 		
-		$subBusqueda->addElements(array($eProyecto,$eFechaInicio,$eFechaFin, $eBoton));
+		$subBusqueda->addElements(array($eProyecto,$eTipoProv,$eFechaInicio,$eFechaFin, $eBoton));
 		$subBusqueda->setName("busqueda");
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
@@ -104,14 +113,18 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$this->addElement($eSucursal);
 		$this->addElement($eCliente);
 		
+		
 		$this->addElement($eNombreProyecto);
+		
 		$this->addElement($eCliente);
 		$this->addElement($eFechaApertura);
 		$this->addElement($eFechaCierre);
 		$this->addElement($eCostoInicio);
 		$this->addElement($eCostoFinal);
 		$this->addElement($eGanancia);
+		
 		$this->addSubForms(array($subBusqueda));
+		
 		$this->addElement($eSubmit);
 		
     }
