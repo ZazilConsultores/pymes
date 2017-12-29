@@ -608,16 +608,27 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
     public function proyectoxtipoprovAction()
     {
-        $idProyecto = $this->getParam("idProyecto");
+        $idSucursal = $this->getParam("suc");
         $idTipProv = $this->getParam("idTipoProv");
         $fechaI = $this->getParam("fechaI");
         $fechaF = $this->getParam("fechaF");
-        $proyectoTipProv = $this->proyectoDAO->obtieneProyectoxTipoProv($idProyecto,$idTipProv, $fechaI, $fechaF);
+        $proyectoTipProv = $this->proyectoDAO->obtieneProyectoxTipoProv($idSucursal,$idTipProv, $fechaI, $fechaF);
         if(!is_null($proyectoTipProv)){
             echo Zend_Json::encode($proyectoTipProv);
         }else{
             echo Zend_Json::encode(array());
         }
+    }
+
+    public function empresasreypiAction()//obtieneRemionENyPI
+    {
+        $idCoP = $this->getParam("CoP");
+        $empresaMovtoREyPI= $this->facturaProDAO->obtieneRemionENyPI($idCoP);
+        if(!is_null($empresaMovtoREyPI)){
+            echo Zend_Json::encode($empresaMovtoREyPI);
+        }else{
+            echo Zend_Json::encode(array());
+        } 
     }
 
 
@@ -659,6 +670,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
 	
 	
 	
@@ -670,6 +682,7 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
 
 
 

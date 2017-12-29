@@ -275,8 +275,40 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
         }
     }
 
+    public function movtoremypagoimpAction()
+    {
+        $ProvDAO  = new Contabilidad_DAO_NotaEntrada;
+        $facturaProvDAO = new Contabilidad_DAO_FacturaProveedor;
+        $request = $this->getRequest();
+        $proveedores = $ProvDAO->obtenerProveedores();
+        $this->view->proveedores = $proveedores;
+        if($request->isGet()){
+            $this->view->proveedores = $proveedores;
+        }if($request->isPost()){
+            $datos = $request->getPost();
+        }
+    }
+
+    public function movtofondeoAction()
+    {
+        $ProvDAO  = new Contabilidad_DAO_NotaEntrada;
+        $facturaProvDAO = new Contabilidad_DAO_FacturaProveedor;
+        $request = $this->getRequest();
+        $proveedores = $ProvDAO->obtenerProveedores();
+        $this->view->proveedores = $proveedores;
+        if($request->isGet()){
+            $this->view->proveedores = $proveedores;
+        }if($request->isPost()){
+            $datos = $request->getPost();
+        }
+    }
+
 
 }
+
+
+
+
 
 
 

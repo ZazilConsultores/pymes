@@ -4,7 +4,7 @@
 <section class="panel panel-success">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Gran Cafe del Centro: Proyecto por Fecha.
+			Proyecto Por Tipo Proveedor.
 		</h3>
 	</div>
 	<div class="panel-body">
@@ -24,6 +24,7 @@
 			<thead>
 				<th>Tipo Movimiento</th>
 				<th>CoP</th>
+				<th>Proyecto</th>
 				<th>Número Factura</th>
 				<th>Importe</th>
 			</thead>
@@ -42,6 +43,7 @@
 			<thead>
 				<th>Tipo Movimiento</th>
 				<th>CoP</th>
+				<th>Proyecto</th>
 				<th>Número Factura</th>
 				<th>Importe</th>
 			</thead>
@@ -60,6 +62,7 @@
 			<thead>
 				<th>Tipo Movimiento</th>
 				<th>CoP</th>
+				<th>Proyecto</th>
 				<th>Número Factura</th>
 				<th>Importe</th>
 			</thead>
@@ -78,6 +81,7 @@
 			<thead>
 				<th>Tipo Movimiento</th>
 				<th>CoP</th>
+				<th>Proyecto</th>
 				<th>Número Factura</th>
 				<th>Importe</th>
 			</thead>
@@ -148,7 +152,7 @@
 		}
 		
 		function AddRowFP(){
-			$('#detalleProyectoxfp tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfp"class="form-control" style="width:120px"></input></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
+			$('#detalleProyectoxfp tbody').append('<tr><td><b>Total de registros</b></td><td><input id="totalRegfp"class="form-control" style="width:120px"></input></td><td></td><td style="text-align:right"><b>Total:</b></td><td><input id="totalfp"class="form-control" style="width:120px"></input></td></tr>');
     	}
     	function calculaTotalFP(){
 			var total = 0;
@@ -194,9 +198,9 @@
 			var fechaIn = fechaI.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
 			var fechaF  = $("#fechaFinal").val();
 			var fechaFN  = fechaF.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
-			var idProyecto = $("select#idProyecto").val();
+			var suc = $("select#idSucursal").val();
 			var idTipoProv = $("select#idTipoProv").val();
-			var urlProyectoFC = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/idProyecto/" + idProyecto + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
+			var urlProyectoFC = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/suc/" + suc + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
 			console.log(urlProyectoFC);
 			//====================================================================>>
 			$.ajax({
@@ -214,7 +218,8 @@
 							console.log("El tipo es factura Cliente");
 							tbody.append($('<tr>').
 							append($('<td>').append("Factura Cliente")).
-							append($('<td>').append(data[i].razonSocial)).	
+							append($('<td>').append(data[i].razonSocial)).
+							append($('<td>').append(data[i].descripcion)).		
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].total).attr("id", "importe"))
 							
@@ -233,9 +238,9 @@
 			var fechaIn = fechaI.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
 			var fechaF  = $("#fechaFinal").val();
 			var fechaFN  = fechaF.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
-			var idProyecto = $("select#idProyecto").val();
+			var suc = $("select#idSucursal").val();
 			var idTipoProv = $("select#idTipoProv").val();
-			var urlProyectoFP = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/idProyecto/" + idProyecto + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
+			var urlProyectoFP = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/suc/" + suc + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
 			console.log(urlProyectoFP);
 			$.ajax({
 				url: urlProyectoFP,
@@ -252,7 +257,8 @@
 							console.log("El tipo es factura Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("FACTURA PROVEEDOR")).
-							append($('<td>').append(data[i].razonSocial)).	
+							append($('<td>').append(data[i].razonSocial)).
+							append($('<td>').append(data[i].descripcion)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].total).attr("id", "importe")));
 						}
@@ -268,9 +274,9 @@
 			var fechaIn = fechaI.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
 			var fechaF  = $("#fechaFinal").val();
 			var fechaFN  = fechaF.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
-			var idProyecto = $("select#idProyecto").val();
+			var suc = $("select#idSucursal").val();
 			var idTipoProv = $("select#idTipoProv").val();
-			var urlProyectoRP = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/idProyecto/" + idProyecto + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
+			var urlProyectoRP = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/suc/" + suc + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
 			console.log(urlProyectoRP);
 			$.ajax({
 				url: urlProyectoRP,
@@ -287,7 +293,8 @@
 							console.log("El tipo es remision Proveedor");
 							tbody.append($('<tr>').
 							append($('<td>').append("REMISION PROVEEDOR")).
-							append($('<td>').append(data[i].razonSocial)).	
+							append($('<td>').append(data[i].razonSocial)).
+							append($('<td>').append(data[i].descripcion)).	
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].total).attr("id", "importe")));
 						}
@@ -305,9 +312,9 @@
 			var fechaIn = fechaI.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
 			var fechaF  = $("#fechaFinal").val();
 			var fechaFN  = fechaF.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$2-$1");
-			var idProyecto = $("select#idProyecto").val();
+			var suc = $("select#idSucursal").val();
 			var idTipoProv = $("select#idTipoProv").val();
-			var urlProyectoPI = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/idProyecto/" + idProyecto + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
+			var urlProyectoPI = window.location.origin + "/General/contabilidad/json/proyectoxtipoprov/suc/" + suc + "/idTipoProv/" + idTipoProv + "/fechaI/" + fechaIn + "/fechaF/" + fechaFN;
 			console.log(urlProyectoPI);
 			$.ajax({
 				url: urlProyectoPI,
@@ -325,6 +332,7 @@
 							tbody.append($('<tr>').
 							append($('<td>').append("PAGO IMPUESTO")).
 							append($('<td>').append(data[i].razonSocial)).	
+							append($('<td>').append(data[i].descripcion)).
 							append($('<td>').append(data[i].numeroFactura)).
 							append($('<td>').append(data[i].total).attr("id", "importe")));
 						}

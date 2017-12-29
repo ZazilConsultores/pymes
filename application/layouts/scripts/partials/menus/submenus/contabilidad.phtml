@@ -71,7 +71,16 @@
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'factura'), null, true); ?>">Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'nota'), null, true); ?>">Nota</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'remision'), null, true); ?>">Remision</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'movimientos'), null, true); ?>">Movimientos</a></li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="#">
+						Movimientos
+					</a>
+					<ul class="dropdown-menu">
+					<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'movtofondeo'), null, true); ?>">Fondeo</a></li>	
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'movimientos'), null, true); ?>">Factura o  Pago Nomina</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proveedor', 'action' => 'movtoremypagoimp'), null, true); ?>">Remision  o  Pago Impuesto</a></li>		
+					</ul>
+				</li>
 				<li class="dropdown-submenu">
 					<a class="test" tabindex="-1" href="#">
 						Pagos
@@ -129,6 +138,7 @@
 				Operacion Gran Cafe del Centro.
 			</a>
 			<ul class="dropdown-menu">
+				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => ' facclicafe'), null, true); ?>">Factura Cliente Cafeteria</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'remisioncafe'), null, true); ?>">Remision Cliente Cafeteria</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'cobroremiclicafe'), null, true); ?>">Cobro Remision Cafeteria</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectocafexfecha'), null, true); ?>">Proyecto por Fecha Cafeteria</a></li>

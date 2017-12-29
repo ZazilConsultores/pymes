@@ -82,7 +82,8 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
 		$formulario = new Contabilidad_Form_AltaProyecto;
 		$formulario->removeElement("numeroFolio");
 		$formulario->removeElement("idCliente");
-		$formulario->removeElement("descripcion");
+		$formulario->removeElement("descripcion");//idTipoProv
+		$formulario->getSubForm('0')->removeElement('idTipoProv');
 		$formulario->removeElement("fechaApertura");
 		$formulario->removeElement("fechaCierre");
 		$formulario->removeElement("costoInicial");
@@ -108,6 +109,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
         $formulario->removeElement("costoInicial");
         $formulario->removeElement("costoFinal");
         $formulario->removeElement("ganancia");
+        $formulario->getSubForm('0')->removeElement('idTipoProv');
         $formulario->removeElement("submit");
         $formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
         $this->view->formulario = $formulario;
@@ -128,6 +130,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
         $formulario->removeElement("costoInicial");
         $formulario->removeElement("costoFinal");
         $formulario->removeElement("ganancia");
+        $formulario->getSubForm('0')->removeElement('idProyecto');
         $formulario->removeElement("submit");
         $formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
         $this->view->formulario = $formulario;

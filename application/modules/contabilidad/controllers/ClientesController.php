@@ -1,14 +1,23 @@
 <?php
 class Contabilidad_ClientesController extends Zend_Controller_Action
 {
+
     private $empresaDAO = null;
+
     private $sucursalDAO = null;
+
     private $notaSalidaDAO = null;
+
     private $remisionEntradaDAO = null;
+
     private $facturaDAO = null;
+
     private $impuestosDAO = null;
+
     private $cobroClienteDAO = null;
+
     private $anticipoDAO = null;
+
     private $proyectoDAO = null;
 
     public function init()
@@ -299,9 +308,15 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $encabezado = $datos[0];
                 $formaPago =$datos[1];
                 $productos = json_decode($encabezado['productos'], TRUE);
+                print_r($productos);
                 $contador = 0;
                 try{
+                    foreach ($productos as $producto){
+                            $desechable  = $this->facturaDAO->restaDesechable($producto);
+                        
+                    }
                     $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
+                   
                     $contador++;
                     $this->view->messageSuccess ="Remision de Salida realizada exitosamente!!" ;
                 }catch(Util_Exception_BussinessException $ex){
@@ -358,6 +373,41 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         }
     }
 
+    public function facclicafeAction()
+    {
+        $request = $this->getRequest();
+        $formulario = new Contabilidad_Form_AgregarFacturaCliente;
+        $this->view->formulario = $formulario;
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $datos = $formulario->getValues();
+                $encabezado = $datos[0];
+                $formaPago = $datos[1];
+                $productos = json_decode($encabezado['productos'],TRUE);
+                
+                $importe = json_decode($formaPago['importes'],TRUE);
+                $contador=0;
+                try{
+                    $guardaFactura = $this->facturaDAO->guardaFactura($encabezado, $importe, $formaPago, $productos);
+                    //$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
+                    foreach ($productos as $producto){
+                        if($encabezado["idEmpresas"]==6 || $encabezado["idEmpresas"]==13 ){
+                            $desechable  = $this->facturaDAO->restaDesechable($producto);
+                        }
+                        $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
+                        $restaProducto  = $this->facturaDAO->restarProducto($encabezado, $producto);
+                        $contador++;
+                    }
+                    $this->view->messageSuccess = "Se ha agregado Factura exitosamente";
+                }catch(Util_Exception_BussinessException $ex){
+                    $this->view->messageFail = $ex->getMessage();
+                }
+            }
+        }
+    }
+
 
 }
+
+
 
