@@ -84,7 +84,8 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 				'estatus'=>"A",
 				'secuencial'=> $secuencial,
 				'costoUnitario'=>$precioUnitario,
-				'totalImporte'=>$producto['importe']);
+			    'totalImporte'=>$producto['importe'],
+			    );
 			//print_r($mMovtos);
 			$dbAdapter->insert("Movimientos",$mMovtos);
 			if(!is_null($rowProducto && !is_null($rowMultiplo))){
@@ -447,7 +448,11 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           'estatus'=>$estatus,
 	           'secuencial'=> $secuencial,
 	           'costoUnitario'=>$precioUnitario,
-	           'totalImporte'=>$producto['importe']);
+	           'totalImporte'=>$producto['importe'],
+	           'entrega'=>$producto['tipoEmpaque']
+	           
+	       );
+
 	       $dbAdapter->insert("Movimientos",$mMovtos);
 	       if(!is_null($rowProducto && !is_null($rowMultiplo))){
 	           $claveProducto = substr($rowProducto->claveProducto, 0,2);
@@ -728,9 +733,10 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
         }
 	}
 	
-	public function restaDesechableCafe($producto){
-	    $can  = $producto['cantidad'];
-	    if($producto['tipoEmpaque'] == 1){
+	public function restaDesechableCafe($productos){
+	   
+	    $can  = $productos['cantidad'];
+	    if($productos['tipoEmpaque'] == 'D'){
 	        //Vaso p/café
 	        $tablaInventario = $this->tablaInventario;
 	        $select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",137);
@@ -907,7 +913,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	        }else{
 	            echo "No hay existencia de bolsa camiseta en inventario";
 	        }
-	    }else if($producto['tipoEmpaque'] == 2){
+	    }else if($productos['tipoEmpaque'] == 'C'){
 	        //================================================================================================>>Desechable comida
 	        //Vaso rojo
 	        $tablaInventario = $this->tablaInventario;
@@ -1135,5 +1141,5 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	            echo "No hay existencia de papel aluminio de camiseta en inventario";
 	        }
 	    }
-	}
+	   }
 }

@@ -89,8 +89,8 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
 			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
 			->where('Movimientos.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-			//print_r("$select");
-			return $tablaMovimientos->fetchAll($select);
+			print_r("$select");
+			//return $tablaMovimientos->fetchAll($select);
 	}
 	
 	public function obtieneProyectoxfecha($idProyecto,$fechaI, $fechaF){
@@ -246,7 +246,7 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	    }
 	}
 	
-	public function obtieneProyectoxTipoProv($idProyecto,$idTipProv,$fechaI, $fechaF){
+	public function obtieneProyectoxTipoProv($idSucursal,$idTipProv,$fechaI, $fechaF){
 	    $tablaMovimientos  = $this->tablaMovimiento;
 	    $select = $tablaMovimientos->select()->setIntegrityCheck(false)
 	    ->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura),(Movimientos.idTipoMovimiento)'))
@@ -254,12 +254,14 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	    ->join('Proveedores','Movimientos.idCoP = Proveedores.idProveedores',array('Movimientos.idCoP'))
 	    ->join('Empresa','Proveedores.idEmpresa = Empresa.idEmpresa', array())
 	    ->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
+	    ->join('Proyecto','Movimientos.idProyecto = Proyecto.idProyecto',  array('descripcion'))
 	    ->join('TipoProveedor','Proveedores.idTipoProveedor = Proveedores.idTipoProveedor',  array())
 	    ->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo'))
-	    ->where('Movimientos.idProyecto =?', $idProyecto)->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
-	    ->where("TipoProveedor.idTipoProveedor=?",$idTipProv)->order("Factura.numeroFactura ASC");
-	       //print_r("$select");
-	     return $tablaMovimientos->fetchAll($select);
+	    ->where('Movimientos.fecha >= ?',$fechaI)->where('Movimientos.fecha <=?',$fechaF)
+	    ->where('Movimientos.idSucursal =?',$idSucursal )
+	    ->where("proveedores.idTipoProveedor=?",$idTipProv)->order("Factura.numeroFactura ASC");
+	    //print_r("$select");
+	    return $tablaMovimientos->fetchAll($select);
 	   
 	}
 }

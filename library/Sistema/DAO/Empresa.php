@@ -373,8 +373,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 	     
 	    
 		$tablaTipoProveedor = $this->tablaTipoProveedor;
-		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->order("descripcion DESC");
-		$rows = $tablaTipoProveedor->fetchAll();
+		$select = $tablaTipoProveedor->select()->from($tablaTipoProveedor)->order("descripcion ASC");
+		$rows = $tablaTipoProveedor->fetchAll($select);
 		if(is_null($rows)){
 			return null;
 		}else{

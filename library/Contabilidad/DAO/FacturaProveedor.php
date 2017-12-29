@@ -597,9 +597,10 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		}
 	}
 	
+	//Obtiene los movimientos de facturaProv y pago nomina
 	public function obtieneProyectoProveedor($idCoP){
 		$tablaTipoMovimiento =  $this->tablaTipoMovimiento;
-		$select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "+");
+		$select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "+")->orWhere("idTipoMovimiento = ?",20);
 		$rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
 		$idsTipoMovimiento = array ();
 		foreach ($rowsTipoMovtos as $rowTipoMovimiento) {
@@ -616,9 +617,34 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
 			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
 			->where('Factura.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-			//print_r("$select");
-		return $tablaMovimientos->fetchAll($select);
+			print_r("$select");
+		//return $tablaMovimientos->fetchAll($select);
 		
+	}
+	
+	//Obtiene los movimientos de remision de proveedor y pago de impuesto
+	public function obtieneRemionENyPI($idCoP){
+	    $tablaTipoMovimiento =  $this->tablaTipoMovimiento;
+	    $select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("idTipoMovimiento = ?",12)->orWhere("idTipoMovimiento = ?",10);
+	    $rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
+	    $idsTipoMovimiento = array ();
+	    foreach ($rowsTipoMovtos as $rowTipoMovimiento) {
+	        if(!in_array($rowTipoMovimiento->idTipoMovimiento, $idsTipoMovimiento)){
+	            $idsTipoMovimiento[] = $rowTipoMovimiento->idTipoMovimiento;
+	        }
+	    }
+	    
+	    $tablaMovimientos = $this->tablaMovimiento;
+	    $select= $tablaMovimientos->select()
+	    ->setIntegrityCheck(false)
+	    ->from($tablaMovimientos, array('Movimientos.idSucursal'))
+	    ->join('Cuentasxp', 'Movimientos.numeroFolio = Cuentasxp.numeroFolio', array('Cuentasxp.numeroFolio','Cuentasxp.total'))
+	    ->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
+	    ->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
+	    ->where('Movimientos.idCoP =?', $idCoP)->where('Movimientos.idTipoMovimiento = Cuentasxp.idTipoMovimiento')->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+	    //print_r("$select");
+	    return $tablaMovimientos->fetchAll($select);
+	    
 	}
 
 	//Busca factura por sucursal 	

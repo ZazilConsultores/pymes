@@ -24,6 +24,7 @@
             </controllerFile>
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="facclicafe"/>
             </controllerFile>
             <controllerFile controllerName="Divisa">
               <actionMethod actionName="index"/>
@@ -44,6 +45,7 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="buscaantprov"/>
               <actionMethod actionName="proyectoxtipoprov"/>
+              <actionMethod actionName="empresasreypi"/>
             </controllerFile>
             <controllerFile controllerName="Opera">
               <actionMethod actionName="index"/>
@@ -55,6 +57,8 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="buscaantiprov"/>
               <actionMethod actionName="enlazafactura"/>
+              <actionMethod actionName="movtoremypagoimp"/>
+              <actionMethod actionName="movtofondeo"/>
             </controllerFile>
             <controllerFile controllerName="Proyectos">
               <actionMethod actionName="index"/>
@@ -124,6 +128,18 @@
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="proyectoxtipoprov"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="movtoremypagoimp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Proveedor">
+                <viewScriptFile forActionName="movtofondeo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="empresasreypi"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="facclicafe"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -140,6 +156,7 @@
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="obtienecardex"/>
             </controllerFile>
             <controllerFile controllerName="Multiplos">
               <actionMethod actionName="index"/>
@@ -155,6 +172,10 @@
             </controllerFile>
             <controllerFile controllerName="User">
               <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Cardex">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="busca"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -186,6 +207,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="User">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Cardex">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Cardex">
+                <viewScriptFile forActionName="busca"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="obtienecardex"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -401,6 +431,7 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="facclicafe"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Divisa">
                 <testApplicationActionMethod forActionName="index"/>
@@ -421,6 +452,7 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="buscaantprov"/>
                 <testApplicationActionMethod forActionName="proyectoxtipoprov"/>
+                <testApplicationActionMethod forActionName="empresasreypi"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Opera">
                 <testApplicationActionMethod forActionName="index"/>
@@ -432,6 +464,8 @@
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="buscaantiprov"/>
                 <testApplicationActionMethod forActionName="enlazafactura"/>
+                <testApplicationActionMethod forActionName="movtoremypagoimp"/>
+                <testApplicationActionMethod forActionName="movtofondeo"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Proyectos">
                 <testApplicationActionMethod forActionName="index"/>
@@ -452,6 +486,7 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="obtienecardex"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Multiplos">
                 <testApplicationActionMethod forActionName="index"/>
@@ -467,6 +502,10 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="User">
                 <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Cardex">
+                <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="busca"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>

@@ -39,6 +39,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
 		$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
 	}
+	
 	public function obtenerEmpleadosNomina(){
 		
 	$tablaEmpresa = $this->tablaEmpresa;
