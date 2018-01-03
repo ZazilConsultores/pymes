@@ -338,7 +338,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	
 	public function generaCXC(array $encabezado, $formaPago, $productos){
 		$dbAdapter =  Zend_Registry::get('dbmodgeneral');	
-		//$dbAdapter->beginTransaction();
+		$dbAdapter->beginTransaction();
 		$dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		
@@ -461,7 +461,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                   $tablaProductoCompuesto = $this->tablaProductoCompuesto;
 	                   $select = $tablaProductoCompuesto->select()->from($tablaProductoCompuesto)->where("idProducto=?",$producto["descripcion"]);
 	                   $rowsProductoComp = $tablaProductoCompuesto->fetchAll($select);
-	                   //print_r("Producto Paquete"); print_r("<br />");print_r("$select");print_r("<br />");
+	                   print_r("Producto Paquete"); print_r("<br />");print_r("$select");print_r("<br />");
 	                   foreach($rowsProductoComp as $rowProductoComp){//Recorremos el paquete y buscamos si el productoEnlazado es un producto compuesto
 	                       $tablaProductoEnlazado = $this->tablaProductoCompuesto;
 	                       $select = $tablaProductoEnlazado->select()->from($tablaProductoEnlazado)->where("idProducto=?",$rowProductoComp["productoEnlazado"]);
@@ -502,7 +502,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                                       $tablaCapas = $this->tablaCapas;
 	                                                       $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInventario["idProducto"]);
 	                                                       $rowCapas= $tablaCapas->fetchRow($select);
-	                                                       //print_r("$select"); print_r("<br />"); print_r("Cantidad actual en capas:");
+	                                                       print_r("$select"); print_r("<br />"); print_r("Cantidad actual en capas:");
 	                                                       $canCapas = $rowCapas["cantidad"] - $cantMateria;
 	                                                       //print_r($canCapas); print_r("<br />");
 	                                                       if($canCapas > 0){

@@ -102,6 +102,23 @@
 				}
 			});
 		});
+
+		$("select#idEmpresas").on('click', function(){
+			$url =  window.location.origin + "/General/contabilidad/json/bancosempresa/emp/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				//console.log($ajax);
+				dataType: "json",
+				success: function(data){
+					$("select#1-idBanco").empty();
+					$.each(data, function(i,item){	
+						$("select#1-idBanco").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco)); 
+					});
+				}
+			});
+			
+		});
 		
 		$("select#idSucursal").on('click', function(){
 		var url = window.location.origin + "/General/sistema/json/proyectos/idSucursal/" + this.value;
