@@ -78,7 +78,7 @@ class Contabilidad_Form_AnticipoProveedor extends Zend_Form
 		$eNumFolio->setAttrib("required", "true");
 		
 		$eBanco = New Zend_Form_Element_Select('idBanco');
-		$eBanco->setLabel('Banco Entrada:');
+		$eBanco->setLabel('Banco Salida:');
 		$eBanco->setAttrib("class", "form-control");
 		$eBanco->setRegisterInArrayValidator(FALSE);
 		

@@ -41,7 +41,7 @@
     });
 
     $("#detalle").on ('click', function (){
-    	var mes =  $("txtMonth").html();
+    	var mes =  $("txtMonth").datepicker().datepicker('setDate');
         console.log(mes);
     });
 </script>
