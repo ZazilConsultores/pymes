@@ -294,7 +294,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function remisioncafeAction()
     {
         $request = $this->getRequest();
-        $select = $this->db->select()->from("Producto")->where("producto like ?",'Paquete%')->orWhere("producto like ?",'Desayuno niño%')->order("producto ASC");
+        $select = $this->db->select()->from("Producto")->where("producto like ?",'Paquete%')->orWhere("producto like ?",'Desayuno niño%')
+        ->orWhere("claveProducto like ?",'PTVTBBCC%')->order("producto ASC");
         $statement = $select->query();
         $rowsProducto =  $statement->fetchAll();
         $jsonDesProductos = Zend_Json::encode($rowsProducto);
@@ -308,7 +309,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $encabezado = $datos[0];
                 $formaPago =$datos[1];
                 $productos = json_decode($encabezado['productos'], TRUE);
-                print_r($productos);
+                //print_r($productos);
                 $contador = 0;
                 try{
                     foreach ($productos as $producto){

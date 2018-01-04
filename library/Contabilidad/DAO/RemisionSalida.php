@@ -461,12 +461,12 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                   $tablaProductoCompuesto = $this->tablaProductoCompuesto;
 	                   $select = $tablaProductoCompuesto->select()->from($tablaProductoCompuesto)->where("idProducto=?",$producto["descripcion"]);
 	                   $rowsProductoComp = $tablaProductoCompuesto->fetchAll($select);
-	                   print_r("Producto Paquete"); print_r("<br />");print_r("$select");print_r("<br />");
+	                   //print_r("Producto Paquete"); print_r("<br />");print_r("$select");print_r("<br />");
 	                   foreach($rowsProductoComp as $rowProductoComp){//Recorremos el paquete y buscamos si el productoEnlazado es un producto compuesto
 	                       $tablaProductoEnlazado = $this->tablaProductoCompuesto;
 	                       $select = $tablaProductoEnlazado->select()->from($tablaProductoEnlazado)->where("idProducto=?",$rowProductoComp["productoEnlazado"]);
 	                       $rowProductoEnlazado = $tablaProductoEnlazado->fetchRow($select);
-	                       //print_r("El paquete contiene");print_r("<br />");print_r("$select");print_r("<br />");
+	                       print_r("El paquete contiene");print_r("<br />");print_r("$select");print_r("<br />");
 	                       $cantProdComp = $cantidad * $rowProductoComp->cantidad;
 	                       //print_r("La cantidad en producto compuesto"); print_r("<br />"); print_r($cantProdComp); print_r("<br />");
 	                       if(!is_null($rowProductoEnlazado)){
@@ -474,25 +474,25 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                           $tablaProductoEnlazadoCompuesto = $this->tablaProductoCompuesto;
 	                           $select = $tablaProductoEnlazadoCompuesto->select()->from($tablaProductoEnlazadoCompuesto)->where("idProducto = ?",$rowProductoComp["productoEnlazado"]);
 	                           $rowsProductoEnl = $tablaProductoEnlazadoCompuesto->fetchAll($select);
-	                           //print_r("<br />"); print_r("$select"); print_r("<br />"); Compuesto dentro de compuesto
+	                           print_r("<br />"); print_r("$select"); print_r("<br />"); 
 	                           if(!is_null($rowsProductoEnl)){
 	                               foreach($rowsProductoEnl as $rowProductoEnl){
 	                                   $tablaProductoEnlazadoEnlazado = $this->tablaProductoCompuesto;
 	                                   $select = $tablaProductoEnlazadoEnlazado->select()->from($tablaProductoEnlazadoEnlazado)->where("idProducto = ?",$rowProductoEnl["productoEnlazado"]);
 	                                   $rowsProductoEnlEnl = $tablaProductoEnlazadoEnlazado->fetchRow($select);
 	                                   if(!is_null($rowsProductoEnlEnl)){
-	                                       //print_r("EL PRODUCTO COMPUESTO COMPUESTO ES:"); print_r("<br />"); print_r("$select");
+	                                       print_r("EL PRODUCTO COMPUESTO COMPUESTO ES:"); print_r("<br />"); print_r("$select");
 	                                       $tablaProductoCompEnlazado = $this->tablaProductoCompuesto;
 	                                       $select = $tablaProductoCompEnlazado->select()->from($tablaProductoCompEnlazado)->where("idProducto = ?",$rowsProductoEnlEnl["idProducto"]);
 	                                       $rowsCompEnlazado = $tablaProductoCompEnlazado->fetchAll($select);
-	                                       //print_r("EL PRODUCTO COMPUESTO COMPUESTO CONTIENE:"); print_r("<br />"); print_r("$select");
+	                                       print_r("EL PRODUCTO COMPUESTO COMPUESTO CONTIENE:"); print_r("<br />"); print_r("$select");
 	                                       foreach($rowsCompEnlazado as $rowCompEnlazado){
 	                                           $cantMateria = $rowCompEnlazado->cantidad * $cantProdComp;
 	                                           //print_r("La cantidad del producto del producto compuesto es:"); print_r($cantMateria); print_r("<br />");
 	                                           $tablaInventario = $this->tablaInventario;
 	                                           $select = $tablaInventario->select()->from($tablaInventario)->where("idProducto=?",$rowCompEnlazado["productoEnlazado"]);
 	                                           $rowsInventario= $tablaInventario->fetchAll($select);
-	                                           //print_r("$select");
+	                                           print_r("$select");
 	                                           if(!is_null($rowsInventario)){
 	                                               foreach($rowsInventario as $rowInventario){
 	                                                   $cantInv = $rowInventario->existenciaReal - $cantMateria;
@@ -532,7 +532,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                   //print_r("$select");
 	                                   if(!is_null($rowsInventario)){
 	                                       foreach($rowsInventario as $rowInventario){
-	                                           //print_r("$select"); print_r("<br />");
+	                                           print_r("$select"); print_r("<br />");
 	                                           $cantInv = $rowInventario->existenciaReal - $cantMateria;
 	                                           //print_r($cantInv); print_r("<br />");
 	                                           if( $cantInv > 0){
@@ -540,14 +540,25 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                               $tablaCapas = $this->tablaCapas;
 	                                               $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInventario["idProducto"]);
 	                                               $rowCapas= $tablaCapas->fetchRow($select);
-	                                               //print_r("$select");print_r("<br />");print_r("Cantidad actual en capas:");
-	                                               $canCapas = $rowCapas["cantidad"] - $cantMateria;
-	                                               //print_r($canCapas); print_r("<br />");
+	                                               print_r("$select");print_r("<br />");print_r("Cantidad actual en capas:");
+	                                               $canCapas =  $rowCapas["cantidad"] - $cantMateria;
+	                                               print_r($canCapas); print_r("<br />");
 	                                               if($canCapas > 0){
 	                                                   $rowCapas->cantidad = $canCapas;
 	                                                   $rowCapas->save();
 	                                               }else{
-	                                                   //$rowCapas->delete($select);
+	                                                   $rowCapas->delete($select);
+	                                                   $tablaCapas = $this->tablaCapas;
+	                                                   $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInventario["idProducto"]);
+	                                                   $rowRestoCapas= $tablaCapas->fetchRow($select);
+	                                                   $restoCapas = $rowRestoCapas["cantidad"] - $canCapas;
+	                                                   print_r("restocapas");
+	                                                   print_r($restoCapas);
+	                                                   //print_r($restoCapas);
+	                                                   //$rowRestoCapas->cantidad = $restoCapas;
+	                                                   //$rowRestoCapas->save();
+	                                                 
+	                                                   
 	                                               }//if canCapas
 	                                               //Actulizamos en Inventario
 	                                               $tablaInventario = $this->tablaInventario;
