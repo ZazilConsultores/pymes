@@ -295,7 +295,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $select = $this->db->select()->from("Producto")->where("producto like ?",'Paquete%')->orWhere("producto like ?",'Desayuno niño%')
-        ->orWhere("claveProducto like ?",'PTVTBBCC%')->order("producto ASC");
+        ->orWhere("claveProducto like ?",'PTVTBBCC%')->orWhere("claveProducto like ?",'PTVTDECC%')->order("producto ASC");
         $statement = $select->query();
         $rowsProducto =  $statement->fetchAll();
         $jsonDesProductos = Zend_Json::encode($rowsProducto);
