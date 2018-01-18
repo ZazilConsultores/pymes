@@ -119,15 +119,9 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        $rowTotalSalidas = $tCxP->fetchRow($select)->toArray();
 	        $itemBanco['salidas'] = $rowTotalSalidas;
 	        
-	        $data = array(
-	            'idBanco' => $idBanco,
-	            'mes' => $mes,
-	            'anio' => $anio,
-	            'entradas' => $rowTotalEntrada['totalEntradas'],
-	            'salidas' => $rowTotalSalidas['totalSalidas'],
-	            'saldoIniMes' => '0.0',
-	            'saldoFinMes' => '0.0'
-	        );
+	       
+	        //print_r($data); print_r('<br /><br />');
+	        
 	        
 	        //print_r($itemBanco); print_r('<br />');
 	        //break;
@@ -135,27 +129,43 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	       
 	        //Busca el saldo en tabla saldosEmpresa
 	        $select = $tSB->select()->from($tSB, array('saldoFinMes','saldoIniMes'))->where('idBanco=?',$idBanco) ->where('mes = ?',$mes)->where('anio=?',$anio);
-	        $rowSB = $tSB->fetchRow($select)->toArray();
-	        $itemBanco['saldos'] = $rowSB;
+	        $rowSB = $tSB->fetchRow($select);
+	       
+	        
 	        //print_r($select->__toString());
-	        $data['saldoIniMes'] = $rowSB['saldoIniMes'];
-	        $data['saldoFinMes'] = $rowSB['saldoFinMes'];
+	        //$data['saldoIniMes'] = $rowSB['saldoIniMes'];
+	        //$data['saldoFinMes'] = $rowSB['saldoFinMes'];
 	        
 	        if(!is_null($rowSB)){
 	            //print_r('update');
-	            //return $rowsEditorial->toArray();
+	            $rowSB = $tSB->fetchRow($select)->toArray();
+	            $itemBanco['saldos'] = $rowSB;
 	        }else{
 	           $select = $tSB->select()->from($tSB, array('saldoFinMes'))->where('idBanco=?',$idBanco) ->where('mes < ?',$mes)->where('anio=?',$anio)->order('mes desc');
 	            $rowMesSA = $tSB->fetchRow($select)->toArray();
-	            //$tSB->insert(array("idBanco"=>$idBanco,"mes"=>$mes,"anio"=>$anio,"entradas"=>0,"salidas"=>0,"saldoIniMes"=>0,"saldoFinMes"=>0));
+	            $saldoIniMes = $rowMesSA['saldoFinMes'];
+	            $totalEntradas = is_null($rowTotalEntrada['totalEntradas']) ? '0.0' : $rowTotalEntrada['totalEntradas'] ;
+	            $totalSalidas = is_null($rowTotalSalidas['totalSalidas']) ? '0.0' : $rowTotalSalidas['totalSalidas'] ;
+	            $saldoFinMes = $totalEntradas + $saldoIniMes - $totalSalidas;
+	            $data = array(
+	                'idBanco' => $idBanco,
+	                'mes' => $mes,
+	                'anio' => $anio,
+	                'entradas' => $totalEntradas,
+	                'salidas' => $totalSalidas,
+	                'saldoIniMes' => $saldoIniMes,
+	                'saldoFinMes' => $saldoFinMes
+	            );
 	            $tSB->insert($data);
+	            $itemBanco['saldos'] = $rowSB;
 	           
 	        }
 	        //Agregamos saldoEmpresa
 	        $itemBanco['saldo'] = $rowSB;
 	        $saldosBanco[] =$itemBanco;
+	        
 	    }
-	    
+	    //return ;
 	    return $saldosBanco;
 	    
 	}
