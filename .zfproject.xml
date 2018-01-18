@@ -270,6 +270,7 @@
               <actionMethod actionName="saldocxpmes"/>
               <actionMethod actionName="saldocxcmes"/>
               <actionMethod actionName="saldoempresames"/>
+              <actionMethod actionName="saldobanco"/>
             </controllerFile>
             <controllerFile controllerName="Municipios">
               <actionMethod actionName="index"/>
@@ -406,6 +407,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="saldoempresames"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="saldobanco"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -584,6 +588,7 @@
                 <testApplicationActionMethod forActionName="saldocxpmes"/>
                 <testApplicationActionMethod forActionName="saldocxcmes"/>
                 <testApplicationActionMethod forActionName="saldoempresames"/>
+                <testApplicationActionMethod forActionName="saldobanco"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Municipios">
                 <testApplicationActionMethod forActionName="index"/>

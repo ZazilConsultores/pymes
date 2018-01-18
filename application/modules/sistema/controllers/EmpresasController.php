@@ -107,30 +107,19 @@ class Sistema_EmpresasController extends Zend_Controller_Action
         $formulario->removeElement("costoInicial");
         $formulario->removeElement("costoFinal");
         $formulario->removeElement("ganancia");
-        $formulario->getSubForm("0")->removeElement("button");
-        //$formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
+        $formulario->removeElement("submit");
         $this->view->formulario = $formulario;
-        if($request->isPost()){
+        /*if($request->isPost()){
             if($formulario->isValid($request->getPost())){
                 $datos = $formulario->getValues();
                 $idBanco = $datos[0]["idBanco"];
-                print_r($idBanco); 
-                $this->empresasDAO->obtenerSaldoxBanco($idBanco);
+                $idEmpresa = $datos["idEmpresas"];
+                //print_r($idEmpresa); 
+                $saldoBanco = $this->empresasDAO->obtenerSaldoxBanco($idEmpresa,$idBanco);
+                //$this->view->$saldoBanco = $productoDAO->obtenerProductos();
             }
 
             
-        }
-        
-        /*$this->view->formulario = $formulario;
-        if($request->isPost()){
-            if($formulario->isValid($request->getPost())){
-                $contenedor = $formulario->getValues();
-                
-                //print_r($contenedor);
-                $this->empresaDAO->crearEmpresa($contenedor);
-                print_r($contenedor);
-                $this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
-            }
         }*/
     }
 

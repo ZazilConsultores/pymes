@@ -169,8 +169,22 @@ class Sistema_JsonController extends Zend_Controller_Action
         }
     }
 
+    public function saldobancoAction()
+    {
+        $idEmpresa = $this->getParam("em");
+        $idBanco = $this->getParam("ban");
+        $saldoBanco  = $this->empresasDAO->obtenerSaldoxBanco($idEmpresa, $idBanco);
+        if(!is_null($saldoBanco)){
+            echo Zend_Json::encode($saldoBanco);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
+
+
 
 
 

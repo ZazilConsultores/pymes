@@ -171,17 +171,24 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	}
 	
 	
-	public function obtenerSaldoxBanco($idBanco){
+	public function obtenerSaldoxBanco($idEmpresa,$idBanco){
 	    $tB = $this->tablaBanco;
 	    $tBE = $this->tablaBancosEmpresa;
 	    $tSB = $this->tablaSaldosBancos;
 	    
-	    $select = $tB->select()->from($tB)->where('idBanco=?',$idBanco);
-	    $rowBanco = $tB->fetchRow($select);
-	    
-	    $select = $tBE->select()->from($tBE)->where('idBanco=?',$rowBanco['']);
-	    $rowBanco = $tB->fetchRow($select);
-	    
-	    print_r($select->__toString());
+	    $select = $tBE->select()->from($tBE)->where('idEmpresa = ?',$idEmpresa);
+	    $rowtBE = $tBE->fetchRow($select);
+	    $ids = explode(',', $rowtBE['idBanco']);
+	    foreach ($ids as $id){
+	       if($idBanco == $id){
+	           $select = $tB->select()->from($tB)->where('idBanco = ?',$idBanco);
+	           $rowtB =$tB->fetchRow($select);
+	           
+	           $select = $tSB->select()->from($tSB)->where('idBanco = ?', $rowtB['idBanco']);
+	           $rowtSB =$tSB->fetchAll($select);
+	           //print_r($select->__toString());
+	           return $rowtSB->toArray();
+	       }
+	    }
 	}
 }
