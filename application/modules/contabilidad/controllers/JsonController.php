@@ -620,12 +620,23 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         }
     }
 
-    public function empresasreypiAction()//obtieneRemionENyPI
+    public function empresasreypiAction()
     {
         $idCoP = $this->getParam("CoP");
         $empresaMovtoREyPI= $this->facturaProDAO->obtieneRemionENyPI($idCoP);
         if(!is_null($empresaMovtoREyPI)){
             echo Zend_Json::encode($empresaMovtoREyPI);
+        }else{
+            echo Zend_Json::encode(array());
+        } 
+    }
+
+    public function movtocliremAction()
+    {
+        $idCoP = $this->getParam("CoP");
+        $empresaMovtoCliREyPI= $this->facturaCliDAO->obtieneRemionSAyPI($idCoP);
+        if(!is_null($empresaMovtoCliREyPI)){
+            echo Zend_Json::encode($empresaMovtoCliREyPI);
         }else{
             echo Zend_Json::encode(array());
         } 
@@ -671,6 +682,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
 	
 	
 	
@@ -682,6 +695,8 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
 
 
 

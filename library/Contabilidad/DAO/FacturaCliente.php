@@ -2,6 +2,7 @@
 class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFacturaCliente{
 	
 	private $tablaMovimiento;
+	private $tablaTipoMovimiento;
 	private $tablaFactura;
 	private $tablaClientes;
 	private $tablaCuentasxc;
@@ -20,6 +21,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
+		$this->tablaTipoMovimiento= new Contabilidad_Model_DbTable_TipoMovimiento(array('db'=>$dbAdapter));
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
 		$this->tablaClientes = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
 		$this->tablaCuentasxc = new Contabilidad_Model_DbTable_Cuentasxc(array('db'=>$dbAdapter));
@@ -1144,5 +1146,30 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	        print_r("<br />");
 	        $dbAdapter->rollBack();
 	    }
+	}
+	
+	//Obtiene los movimientos de remision de proveedor y pago de impuesto
+	public function obtieneRemionSAyPI($idCoP){
+	    $tablaTipoMovimiento =  $this->tablaTipoMovimiento;
+	    $select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("idTipoMovimiento = ?",13);
+	    $rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
+	    $idsTipoMovimiento = array ();
+	    foreach ($rowsTipoMovtos as $rowTipoMovimiento) {
+	        if(!in_array($rowTipoMovimiento->idTipoMovimiento, $idsTipoMovimiento)){
+	            $idsTipoMovimiento[] = $rowTipoMovimiento->idTipoMovimiento;
+	        }
+	    }
+	    
+	    $tablaCXC = $this->tablaCuentasxc;
+	    $select= $tablaCXC->select()
+	    ->setIntegrityCheck(false)
+	    ->from($tablaCXC, array('idSucursal','total'))
+	    ->join('Movimientos', 'Cuentasxc.idSucursal = Movimientos.idSucursal', array('numeroFolio'))
+	    ->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
+	    ->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
+	    ->where('Movimientos.idCoP =?', $idCoP)->where('Movimientos.idTipoMovimiento = Cuentasxc.idTipoMovimiento')->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Movimientos.idTipoMovimiento')->order("Movimientos.numeroFolio ASC");
+	    print_r("$select");
+	    //return $tablaCXC->fetchAll($select);
+	    
 	}
 }

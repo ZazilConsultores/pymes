@@ -7,20 +7,21 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
     {
     	$this->setAttrib("id", "altaProyecto");
     	$empresaDAO = new Sistema_DAO_Empresa;
+    	$bancoDAO = new Contabilidad_DAO_Banco;
     	
     	$eNumFolio = new Zend_Form_Element_Text('numeroFolio');
 		$eNumFolio->setLabel('Ingresar número de Folio:');
 		$eNumFolio->setAttrib("class", "form-control");
 		
     	$tablasFiscales = new Inventario_DAO_Empresa();
-		$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales(); 
+    	$rowset = $tablasFiscales->obtenerInformacionEmpresasIdFiscales(); 
 
     	$eEmpresa = new Zend_Form_Element_Select('idEmpresas');
 		$eEmpresa->setLabel("Seleccionar Empresa:");
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
+			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
@@ -42,7 +43,6 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		foreach($rowset as $fila){
 			$eCliente->addMultiOption($fila->idCliente,$fila->razonSocial);
 		}
-		
 					
     	$eNombreProyecto =  new Zend_Form_Element_Text('descripcion');
         $eNombreProyecto->setLabel('Ingresar Nombre Proyecto: ');
@@ -88,6 +88,11 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		    $eTipoProv->addMultiOption($rTipoProveedor["idTipoProveedor"], $rTipoProveedor["descripcion"]);
 		}
 		
+		$eBanco =  new Zend_Form_Element_Select('idBanco');
+		$eBanco->setLabel("Seleccionar Banco:");
+		$eBanco->setAttrib("class", "form-control");
+		$eBanco->setRegisterInArrayValidator(FALSE);
+		
 		$eFechaInicio =  new Zend_Form_Element_Text('fechaInicial');
         $eFechaInicio->setLabel('Seleccionar Fecha Inicio: ');
 		$eFechaInicio->setAttrib("class", "form-control");
@@ -101,7 +106,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eBoton->setAttrib("class", "btn btn-warning");
 		
 		
-		$subBusqueda->addElements(array($eProyecto,$eTipoProv,$eFechaInicio,$eFechaFin, $eBoton));
+		$subBusqueda->addElements(array($eProyecto,$eTipoProv, $eBanco, $eFechaInicio,$eFechaFin, $eBoton));
 		$subBusqueda->setName("busqueda");
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');

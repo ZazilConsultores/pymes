@@ -9,7 +9,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
 {
 
     private $empresaDAO = null;
-
+    private $empresasDAO = null;
     private $domicilioDAO = null;
 
     private $fiscalesDAO = null;
@@ -22,6 +22,7 @@ class Sistema_EmpresasController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->empresaDAO = new Sistema_DAO_Empresa;
+        $this->empresasDAO = new Sistema_DAO_Empresas;
 		//$this->fiscalDAO = new Sistema_DAO_Fiscal;
 		$this->fiscalesDAO = new Sistema_DAO_Fiscales;
 		$this->domicilioDAO = new Sistema_DAO_Domicilio;
@@ -97,23 +98,46 @@ class Sistema_EmpresasController extends Zend_Controller_Action
         $formulario->removeElement("numeroFolio");
         $formulario->removeElement("idCliente");
         $formulario->getSubForm("0")->removeElement("idProyecto");
+        $formulario->getSubForm("0")->removeElement("idTipoProv");
+        $formulario->getSubForm("0")->removeElement("fechaInicial");
+        $formulario->getSubForm("0")->removeElement("fechaFinal");
         $formulario->removeElement("descripcion");
         $formulario->removeElement("fechaApertura");
         $formulario->removeElement("fechaCierre");
         $formulario->removeElement("costoInicial");
         $formulario->removeElement("costoFinal");
         $formulario->removeElement("ganancia");
-        $formulario->removeElement("submit");
-        $formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
+        $formulario->getSubForm("0")->removeElement("button");
+        //$formulario->getSubForm("0")->getElement("button")->setAttrib("class", "btn btn-success");
         $this->view->formulario = $formulario;
-        if($request->isGet()){
-            $this->view->formulario = $formulario;
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $datos = $formulario->getValues();
+                $idBanco = $datos[0]["idBanco"];
+                print_r($idBanco); 
+                $this->empresasDAO->obtenerSaldoxBanco($idBanco);
+            }
+
+            
         }
+        
+        /*$this->view->formulario = $formulario;
+        if($request->isPost()){
+            if($formulario->isValid($request->getPost())){
+                $contenedor = $formulario->getValues();
+                
+                //print_r($contenedor);
+                $this->empresaDAO->crearEmpresa($contenedor);
+                print_r($contenedor);
+                $this->_helper->redirector->gotoSimple("empresas", "empresa", "sistema");
+            }
+        }*/
     }
 
     public function saldomesAction()
     {
-        // action body
+        
+        
     }
 
 

@@ -126,7 +126,7 @@ class Contabilidad_DAO_NotaEntrada implements Contabilidad_Interfaces_INotaEntra
 								'idSucursal'=>$encabezado['idSucursal'],
 								'numeroFolio'=>$encabezado["numFolio"],
 								'idProducto'=>$producto['descripcion'],
-								'idDivisa'=>$cantidad,
+								'idDivisa'=>1,
 								'secuencial'=>1,
 								'cantidad'=>$cantidad,
 								'fechaEntrada'=>$stringIni,

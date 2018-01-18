@@ -34,7 +34,16 @@
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'factura'), null, true); ?>">Factura</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'nota'), null, true); ?>">Nota</a></li>
 				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'remision'), null, true); ?>">Remision</a></li>
-				<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectocliente'), null, true); ?>">Movimientos</a></li>
+				<li class="dropdown-submenu">
+					<a class="test" tabindex="-1" href="#">
+						Movimientos
+					</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'movtofondeo'), null, true); ?>">Fondeo</a></li>	
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'proyectos', 'action' => 'proyectocliente'), null, true); ?>">Factura o  Pago Nomina</a></li>
+						<li><a tabindex="-1" href="<?php echo $this->url(array('module' => 'contabilidad', 'controller' => 'clientes', 'action' => 'movtoremypagoimp'), null, true); ?>">Remision  o  Pago Impuesto</a></li>		
+					</ul>
+				</li>
 				<li class="dropdown-submenu">
 					<a class="test" tabindex="-1" href="#">
 						Cobros

@@ -407,8 +407,24 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
         }
     }
 
+    public function movtoremypagoimpAction()
+    {
+        $cliDAO = $this->notaSalidaDAO;
+        //$facturaProvDAO = new Contabilidad_DAO_FacturaProveedor;
+        $request = $this->getRequest();
+        $clientes =$cliDAO->obtenerClientes();
+        $this->view->clientes= $clientes;
+        if($request->isGet()){
+            $this->view->clientes = $clientes;
+        }if($request->isPost()){
+            $datos = $request->getPost();
+        }
+    }
+
 
 }
+
+
 
 
 

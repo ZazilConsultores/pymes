@@ -17,6 +17,8 @@ class Sistema_JsonController extends Zend_Controller_Action
 
     private $empresaDAO = null;
 
+    private $empresasDAO = null;
+
     public function init()
     {
         /* Initialize action controller here */
@@ -26,6 +28,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 		
         $this->municipioDAO = new Inventario_DAO_Municipio;
 		$this->empresaDAO = new Sistema_DAO_Empresa;
+		$this->empresasDAO = new Sistema_DAO_Empresas;
 		$this->estadoDAO = new Sistema_DAO_Estado;
 		$this->sucursalDAO = new Sistema_DAO_Sucursal;
 		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
@@ -129,8 +132,51 @@ class Sistema_JsonController extends Zend_Controller_Action
         
     }
 
+    public function saldocxpmesAction()
+    {
+        $mes = $this->getParam("mm");
+
+        $saldoM  = $this->empresasDAO->obtenerSaldoCXP($mes, $anio);
+        
+        if(!is_null($saldoM)){
+            echo Zend_Json::encode($saldoM);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function saldocxcmesAction()
+    {
+        $mes = $this->getParam("mm");
+        $saldoMCXC  = $this->empresasDAO->obtenerSaldoCXC($mes);
+        if(!is_null($saldoMCXC)){
+            echo Zend_Json::encode($saldoMCXC);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
+    public function saldoempresamesAction()
+    {
+        $mes = $this->getParam("mm");
+        $anio = $this->getParam("anio");
+        
+        $saldoEmpresaMes  = $this->empresasDAO->obtenerSaldoEmpresasPorMes($mes, $anio);
+        if(!is_null($saldoEmpresaMes)){
+            echo Zend_Json::encode($saldoEmpresaMes);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
+
+
+
+
+
+
 
 
 

@@ -25,6 +25,7 @@
             <controllerFile controllerName="Clientes">
               <actionMethod actionName="index"/>
               <actionMethod actionName="facclicafe"/>
+              <actionMethod actionName="movtoremypagoimp"/>
             </controllerFile>
             <controllerFile controllerName="Divisa">
               <actionMethod actionName="index"/>
@@ -46,6 +47,8 @@
               <actionMethod actionName="buscaantprov"/>
               <actionMethod actionName="proyectoxtipoprov"/>
               <actionMethod actionName="empresasreypi"/>
+              <actionMethod actionName="movtoCliRem"/>
+              <actionMethod actionName="movtoclirem"/>
             </controllerFile>
             <controllerFile controllerName="Opera">
               <actionMethod actionName="index"/>
@@ -139,6 +142,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Clientes">
                 <viewScriptFile forActionName="facclicafe"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Clientes">
+                <viewScriptFile forActionName="movtoremypagoimp"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="movtoCliRem"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="movtoclirem"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -255,6 +267,9 @@
             </controllerFile>
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="saldocxpmes"/>
+              <actionMethod actionName="saldocxcmes"/>
+              <actionMethod actionName="saldoempresames"/>
             </controllerFile>
             <controllerFile controllerName="Municipios">
               <actionMethod actionName="index"/>
@@ -298,7 +313,16 @@
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
-          <modelsDirectory/>
+          <modelsDirectory>
+            <modelFile modelName="Saldomesempresas"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Saldomesempresas"/>
+              <dbTableFile dbTableName="Saldosempresas"/>
+              <dbTableFile dbTableName="SaldosBancos"/>
+            </dbTableDirectory>
+            <modelFile modelName="Saldosempresas"/>
+            <modelFile modelName="SaldosBancos"/>
+          </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
             <viewScriptsDirectory>
@@ -374,6 +398,15 @@
               <viewControllerScriptsDirectory forControllerName="Empresas">
                 <viewScriptFile forActionName="saldomes"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="saldocxpmes"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="saldocxcmes"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="saldoempresames"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -436,6 +469,7 @@
               <testApplicationControllerFile forControllerName="Clientes">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="facclicafe"/>
+                <testApplicationActionMethod forActionName="movtoremypagoimp"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Divisa">
                 <testApplicationActionMethod forActionName="index"/>
@@ -457,6 +491,8 @@
                 <testApplicationActionMethod forActionName="buscaantprov"/>
                 <testApplicationActionMethod forActionName="proyectoxtipoprov"/>
                 <testApplicationActionMethod forActionName="empresasreypi"/>
+                <testApplicationActionMethod forActionName="movtoCliRem"/>
+                <testApplicationActionMethod forActionName="movtoclirem"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Opera">
                 <testApplicationActionMethod forActionName="index"/>
@@ -545,6 +581,9 @@
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
+                <testApplicationActionMethod forActionName="saldocxpmes"/>
+                <testApplicationActionMethod forActionName="saldocxcmes"/>
+                <testApplicationActionMethod forActionName="saldoempresames"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Municipios">
                 <testApplicationActionMethod forActionName="index"/>
