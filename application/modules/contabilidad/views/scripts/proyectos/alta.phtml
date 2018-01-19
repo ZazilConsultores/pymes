@@ -35,7 +35,7 @@
 $(document).ready(function(){
 	$("select#idEmpresas").on('change', function(){
 		//var idFiscales = $(this).val();
-		var url = window.location.origin + "/General/contabilidad/json/sucursalese/idFiscales/" + this.value;
+		var url = window.location.origin + "/General/sistema/json/sucursales/idFiscales/" + this.value;
 			console.log(url);
 			$.ajax({
 				url: url,

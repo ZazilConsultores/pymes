@@ -21,7 +21,7 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eEmpresa->setAttrib("class", "form-control");
 		
 		foreach ($rowset as $fila) {
-			$eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
+		    $eEmpresa->addMultiOption($fila->idEmpresas, $fila->razonSocial);
 		}
 		
 		$eSucursal = new Zend_Form_Element_Select('idSucursal');
@@ -29,9 +29,9 @@ class Contabilidad_Form_AltaProyecto extends Zend_Form
 		$eSucursal->setAttrib("class", "form-control");
 		$eSucursal->setRegisterInArrayValidator(FALSE);
 		
-		foreach ($rowset as $fila) {
+		/*foreach ($rowset as $fila) {
 			$eEmpresa->addMultiOption($fila->idFiscales, $fila->razonSocial);
-		}
+		}*/
 	
 		$eCliente = new Zend_Form_Element_Select('idCliente');
 		$eCliente->setLabel('Seleccionar Cliente:');
