@@ -16,6 +16,16 @@ class Sistema_Model_Estado
     public function setIdEstado($idEstado) {
         $this->idEstado = $idEstado;
     }
+    
+    private $claveEstado;
+    
+    public function getClaveEstado() {
+        return $this->claveEstado;
+    }
+    
+    public function setClaveEstado($claveEstado) {
+        $this->claveEstado = $claveEstado;
+    }
 
     private $estado;
 
@@ -40,6 +50,7 @@ class Sistema_Model_Estado
 	public function __construct(array $datos)
 	{
 		if(array_key_exists("idEstado", $datos)) $this->idEstado = $datos["idEstado"];
+		$this->claveEstado = $datos["claveEstado"];
 		$this->estado = $datos["estado"];
 		if(array_key_exists("capital", $datos)) $this->capital = $datos["capital"];
 	}
@@ -49,6 +60,7 @@ class Sistema_Model_Estado
 		$datos = array();
 		
 		$datos["idEstado"] = $this->idEstado;
+		$datos["claveEstado"] = $this->claveEstado;
 		$datos["estado"] = $this->estado;
 		$datos["capital"] = $this->capital;
 		

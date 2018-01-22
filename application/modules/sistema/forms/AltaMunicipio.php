@@ -9,6 +9,10 @@ class Sistema_Form_AltaMunicipio extends Zend_Form
         $subForm = new Zend_Form_SubForm();
 		$subForm->setLegend("Alta de Municipio");
 		
+		$eClaveMunicipio = new Zend_Form_Element_Text('claveMunicipio');
+		$eClaveMunicipio->setLabel('Clave Municipio:');
+		$eClaveMunicipio->setAttrib("class", "form-control");
+		
        	$eMunicipio = new Zend_Form_Element_Text('municipio');
 		$eMunicipio->setLabel('Municipio:');
 		$eMunicipio->setAttrib("class", "form-control");
@@ -20,7 +24,7 @@ class Sistema_Form_AltaMunicipio extends Zend_Form
 		$eAgregar->setAttrib("class", "btn btn-primary");
 		
 		$subForm->addElements(array($eMunicipio,$eAgregar));
-		$this->addElements(array($eMunicipio,$eAgregar));
+		$this->addElements(array($eClaveMunicipio,$eMunicipio,$eAgregar));
 	
     }
 

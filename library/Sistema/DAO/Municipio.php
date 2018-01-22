@@ -48,10 +48,12 @@ class Sistema_DAO_Municipio implements Sistema_Interfaces_IMunicipio {
 		$tablaMunicipio = $this->tablaMunicipio;
 		$tablaMunicipio->insert($municipio->toArray());
 	}
-	public function editarMunicipio($idMunicipio, Sistema_Model_Municipio $municipio)
+	public function editarMunicipio($idMunicipio, array $municipio)
 	{
+	    unset($municipio["agregar"]);
 		$tablaMunicipio = $this->tablaMunicipio;
 		$where = $tablaMunicipio->getAdapter()->quoteInto("idMunicipio = ?", $idMunicipio);
+		$tablaMunicipio->update($municipio, $where);
 		
 	}
 	public function eliminarMunicipio($idMunicipio)

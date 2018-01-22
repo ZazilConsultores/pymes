@@ -43,16 +43,11 @@ class Inventario_UnidadController extends Zend_Controller_Action {
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				$unidad = new Inventario_Model_Unidad($datos[0]);
-				//print_r($datos[0]);
-				//print_r('<br />');
-				//print_r($unidad->toArray());
 				try{
 					$this->unidadDAO->crearUnidad($unidad);
-					$mensaje = "Unidad <strong>" . $unidad->getUnidad() . "</strong> creado exitosamente";
-					$this->view->messageSuccess = $mensaje;
-					
+					$this->view->messageSuccess = "Unidad <strong>" . $unidad->getUnidad() . "</strong> creado exitosamente";
 				}catch(Util_Exception_BussinessException $ex){
-					$this->view->messageFail = $ex->getMessage();		
+				    $this->view->messageFail =  "Error: <strong>".$ex->getMessage()."</strong>";
 				}
 			}			
 		}	

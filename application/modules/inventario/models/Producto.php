@@ -51,6 +51,16 @@ class Inventario_Model_Producto
     public function setIdsSubparametros($idsSubparametro) {
         $this->idsSubparametros = $idsSubparametro;
     }
+    
+    private $sat3;
+    
+    public function getSat3() {
+        return $this->sat3;
+    }
+    
+    public function setSat3($sat3) {
+        $this->sat3 = $sat3;
+    }
 	
 	public function __construct(array $datos)
 	{
@@ -60,6 +70,7 @@ class Inventario_Model_Producto
 		$this->claveProducto = $datos["claveProducto"];
 		$this->codigoBarras = $datos["codigoBarras"];
 		if(array_key_exists("idsSubparametros", $datos)) $this->idsSubparametros = $datos["idsSubparametros"];
+		$this->sat3 = $datos["sat3"];
 		//$this->idsSubparametros = $datos["idsSubparametros"];
 
 	}
@@ -73,6 +84,7 @@ class Inventario_Model_Producto
 		$datos["claveProducto"] = $this->claveProducto;
 		$datos["codigoBarras"] = $this->codigoBarras;
 		$datos["idsSubparametros"]=$this->idsSubparametros;
+		$datos["sat3"]=$this->sat3;
 		
 		return $datos;
 			 

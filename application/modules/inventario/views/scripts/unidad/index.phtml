@@ -2,13 +2,12 @@
 		$formulario = $this->formulario;
 		$formulario->setAction($this->url(array("module"=>"inventario", "controller"=>"unidad", "action" => "edita"), null, true));
 ?>
-<section class="row">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">
+<section class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">
 				Unidades para productos del sistema.
-			</h3>
-		</div>
+		</h3>
+	</div>
 		<div class="panel-body">
 			<a class="btn btn-success" href="<?php echo $this->url(array("module"=>"inventario","controller"=>"unidad","action"=>"alta")) ?>">
 				<span class="glyphicon glyphicon-plus"></span> Nueva Unidad
@@ -19,6 +18,7 @@
 					<tr>
 						<th>Unidad</th>
 						<th>Abreviatura</th>
+						<th>SAT</th>
 						<th>Administrar</th>
 						
 					</tr>
@@ -28,6 +28,7 @@
 					<tr>
 						<td><?php echo $unidad->getUnidad() ?></td>
 						<td><?php echo $unidad->getAbreviatura() ?> </td>
+						<td><?php echo $unidad->getSat3() ?> </td>
 					
 						<td>
 							<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"inventario", "controller"=>"unidad", "action" => "admin", "idUnidad" => $unidad->getIdUnidad()), null, true); ?>">
@@ -40,5 +41,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+	
 </section>

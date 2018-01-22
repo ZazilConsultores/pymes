@@ -32,7 +32,6 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 	{
 		$tablaUnidad = $this->tablaUnidad;
 		$rowUnidades = $tablaUnidad->fetchAll();
-		
 		$modelUnidades = array();
 		
 		foreach ($rowUnidades as $rowUnidad) {
@@ -50,10 +49,6 @@ class Inventario_DAO_Unidad implements Inventario_Interfaces_IUnidad {
 		$tablaUnidad = $this->tablaUnidad;
 		$select = $tablaUnidad->select()->from($tablaUnidad);
 		$rowUnidad = $tablaUnidad->fetchRow($select);
-		//print_r("<br />");
-		//print_r($row->toArray());
-		//if(!is_null($row)) throw new Util_Exception_BussinessException("Unidad: <strong>" . $unidad->getUnidad() . "</strong> duplicado en el sistema");
-		//$unidad->setHash($unidad->getHash());
 		
 		$tablaUnidad->insert($unidad->toArray());
 	

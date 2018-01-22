@@ -19,11 +19,16 @@ class Inventario_Form_AltaUnidad extends Zend_Form
 		$eAbreviacion->setAttrib('class','form-control');
 		$eAbreviacion->setAttrib('required', 'required');
 		
-		$subCero->addElements(array($eUnidad,$eAbreviacion));
+		$eSAT = new Zend_Form_Element_Text('sat3');
+		$eSAT->setLabel('SAT3: ');
+		$eSAT->setAttrib('class','form-control');
+		$eSAT->setAttrib('required', 'required');
+		
+		$subCero->addElements(array($eUnidad,$eAbreviacion,$eSAT));
 		
 		$eAgregar = new Zend_Form_Element_Submit('submit');
 		$eAgregar->setLabel('Agregar');
-		$eAgregar->setAttrib("class", "btn btn-primary");
+		$eAgregar->setAttrib("class", "btn btn-success");
 		
 		$this->addSubForms(array($subCero));
 

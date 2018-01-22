@@ -46,9 +46,13 @@ class Inventario_Form_AltaProducto extends Zend_Form
 		//$eIdsSubparametro = new Zend_Form_Element_Hidden("idsSubparametro");
 		
 		$eCodigoBarras = new Zend_Form_Element_Text('codigoBarras');
-		$eCodigoBarras->setLabel('Codigo de Barras:');
+		$eCodigoBarras->setLabel('Código de Barras:');
 		$eCodigoBarras->setValue('-');
 		$eCodigoBarras->setAttrib('class','form-control');
+		
+		$eSAT3 = new Zend_Form_Element_Text('sat3');
+		$eSAT3->setLabel('SAT3:');
+		$eSAT3->setAttrib('class','form-control');
 		
 		//$subDetalle->addElements(array($eProducto,$eClaveProducto, $eCodigoBarras));
 		
@@ -63,7 +67,7 @@ class Inventario_Form_AltaProducto extends Zend_Form
     	$this->addElement($eProducto);
 		$this->addElement($eClaveProducto);
 		$this->addElement($eCodigoBarras);
-		//$this->addElement($eIdsSubparametro);
+		$this->addElement($eSAT3);
 	//	$this->addElement($eProducto);
     	
 		

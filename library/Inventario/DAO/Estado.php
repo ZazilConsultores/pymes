@@ -4,7 +4,7 @@
  * @copyright 2016, Zazil Consultores S.A. de C.V.
  * @version 1.0.0
  */
-class Inventario_DAO_Estado implements Inventario_Interfaces_IEstado {
+/*class Inventario_DAO_Estado implements Sistema_Interfaces_IEstado {
 	private $tablaEstado;
 	
 	public function __construct() {
@@ -47,7 +47,7 @@ class Inventario_DAO_Estado implements Inventario_Interfaces_IEstado {
 		$tablaEstado->insert($estado->toArray());
 	}
 	
-	public function editarEstado($idEstado, Sistema_Model_Estado $estado){
+	public function editarEstado(array $estado){
 		$tablaEstado = $this->tablaEstado;
 		$where = $tablaEstado->getAdapter()->quoteInto("idEstado = ?", $idEstado);
 		//$select = $tablaEstado->select()->from($tablaEstado)->where("idEstado = ?", $idEstado);
@@ -62,4 +62,4 @@ class Inventario_DAO_Estado implements Inventario_Interfaces_IEstado {
 		
 		$tablaEstado->delete($where);
 	}
-}
+}*/

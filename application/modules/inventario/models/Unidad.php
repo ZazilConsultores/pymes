@@ -31,6 +31,17 @@ class Inventario_Model_Unidad
     public function setAbreviatura($abreviatura) {
         $this->abreviatura = $abreviatura;
     }
+    
+    private $sat3;
+    
+    public function getSat3() {
+        return $this->sat3;
+    }
+    
+    public function setSat3($set3) {
+        $this->setSat3= $set3;
+    }
+   
 
 	/*private $hash;
 	
@@ -49,6 +60,7 @@ class Inventario_Model_Unidad
 		if (array_key_exists("idUnidad", $datos)) $this->idUnidad = $datos["idUnidad"];
 		$this->unidad = $datos["unidad"];
 		$this->abreviatura = $datos["abreviatura"];
+		$this->sat3 = $datos["sat3"];
 		//if(array_key_exists("hash", $datos)) $this->hash = $datos["hash"];
 	}
 	public function toArray()
@@ -58,6 +70,7 @@ class Inventario_Model_Unidad
 		$datos["idUnidad"] = $this->idUnidad;
 		$datos["unidad"] = $this->unidad;
 		$datos["abreviatura"] = $this->abreviatura;
+		$datos["sat3"] = $this->sat3;
 		//$datos["hash"] = $this->hash;
 		
 		return $datos;

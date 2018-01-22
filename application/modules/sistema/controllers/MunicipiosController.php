@@ -8,8 +8,8 @@ class Sistema_MunicipiosController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->municipiosDAO = new Inventario_DAO_Municipio;
-		$this->estadoDAO = new Inventario_DAO_Estado;
+        $this->municipiosDAO = new Sistema_DAO_Municipio;
+		$this->estadoDAO = new Sistema_DAO_Estado;
     }
 
     public function indexAction()
@@ -37,7 +37,7 @@ class Sistema_MunicipiosController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$municipio = new Application_Model_Municipio($datos);
+				$municipio = new Sistema_Model_Municipio($datos);
 				$this->municipiosDAO->crearMunicipio($municipio);
 				$this->_helper->redirector->gotoSimple("index", "municipios", "sistema", array("idEstado"=>$idEstado));
 			}
@@ -53,6 +53,7 @@ class Sistema_MunicipiosController extends Zend_Controller_Action
 		$municipio = $this->municipiosDAO->obtenerMunicipio($idMunicipio);
 		
 		$formulario = new Sistema_Form_AltaMunicipio;
+		$formulario->getElement("claveMunicipio")->setValue($municipio->getClaveMunicipio());
 		$formulario->getElement("municipio")->setValue($municipio->getmunicipio());
 		$formulario->getElement("agregar")->setLabel("Actualizar");
 		
@@ -67,7 +68,16 @@ class Sistema_MunicipiosController extends Zend_Controller_Action
 
     public function editaAction()
     {
-        // action body
+        $request = $this->getRequest();
+        $idMunicipio = $this->getParam("idMunicipio");
+         if($request->isPost()){
+            $datos = $request->getPost();
+            //print_r($datos);
+           
+            $this->municipiosDAO->editarMunicipio($idMunicipio, $datos);
+            
+            
+        }
     }
 
 

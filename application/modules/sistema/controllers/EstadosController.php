@@ -8,7 +8,7 @@ class Sistema_EstadosController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         //Inicializamos el DAO que ocuparemos en la administracion de estados
-        $this->estadosDAO = new Inventario_DAO_Estado;
+        $this->estadosDAO = new Sistema_DAO_Estado;
     }
 
     public function indexAction()
@@ -30,7 +30,7 @@ class Sistema_EstadosController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
-				$estado = new Application_Model_Estado($datos);
+				$estado = new Sistema_Model_DbTable_Estado($datos);
 				$this->estadosDAO->crearEstado($estado);
 				$this->_helper->redirector->gotoSimple("index", "estados", "sistema");
 			}
@@ -46,6 +46,7 @@ class Sistema_EstadosController extends Zend_Controller_Action
 		
 		$formulario = new Sistema_Form_AltaEstado;
 		
+		$formulario->getElement("claveEstado")->setValue($estado->getClaveEstado());
 		$formulario->getElement("estado")->setValue($estado->getEstado());
 		$formulario->getElement("capital")->setValue($estado->getCapital());
 		$formulario->getElement("agregar")->setLabel("Actualizar");
@@ -59,12 +60,18 @@ class Sistema_EstadosController extends Zend_Controller_Action
         // action body
         $request = $this->getRequest();
 		$idEstado = $this->getParam("idEstado");
-		$post = $request->getPost();
 		
-		$estadoModel = new Application_Model_Estado($post);
-		//print_r($estadoModel->toArray());
-		$this->estadosDAO->editarEstado($idEstado, $estadoModel);
-		$this->_helper->redirector->gotoSimple("index", "estados", "sistema");
+		try{
+		    if($request->isPost()){
+		        $datos = $request->getPost();
+		        //print_r($datos);
+		        $this->estadosDAO->editarEstado($idEstado, $datos);   
+		    }
+		      $this->view->messageSuccess = "El estado ha sido actualizado exitosamente";
+		    }catch(Exception $ex){
+		      $this->view->messageFail = "El estado no se pudo actualizar";
+		}
+		
     }
 
     public function bajaAction()

@@ -17,6 +17,7 @@
 				<thead>
 					<tr>
 						<th>Numero Estado</th>
+						<th>Clave Estado</th>
 						<th>Estado</th>
 						<th>Capital</th>
 						<th>Administrar</th>
@@ -27,6 +28,7 @@
 					<?php foreach ($estados as $estado) : ?>
 					<tr>
 						<td><?php echo $estado->getIdEstado() ?></td>
+						<td><?php echo $estado->getClaveEstado() ?></td>
 						<td><?php echo $estado->getEstado() ?></td>
 						<td><?php echo $estado->getCapital() ?></td>
 						<td>

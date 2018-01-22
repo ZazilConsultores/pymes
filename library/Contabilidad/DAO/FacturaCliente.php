@@ -222,7 +222,8 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'secuencial'=>$secuencial,
 					'estatus'=>"A",
 					'costoUnitario'=>$precioUnitario,
-					'totalImporte'=>$producto['importe']
+					'totalImporte'=>$producto['importe'],
+				    'entrega'=>$producto['entrega']
 				);
 				$dbAdapter->insert("Movimientos",$mMovimiento);
 				//Buscamos la descripción del producto en Tabla Producto

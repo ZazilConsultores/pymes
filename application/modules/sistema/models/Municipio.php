@@ -25,6 +25,15 @@ class Sistema_Model_Municipio
     public function setIdEstado($idEstado) {
         $this->idEstado = $idEstado;
     }
+    private $claveMunicipio;
+    
+    public function getClaveMunicipio() {
+        return $this->claveMunicipio;
+    }
+    
+    public function setClaveMunicipio($claveMunicipio) {
+        $this->claveMunicipio = $claveMunicipio;
+    }
 
     private $municipio;
 
@@ -40,6 +49,7 @@ class Sistema_Model_Municipio
     {
     	if(array_key_exists("idMunicipio", $datos)) $this->idMunicipio = $datos["idMunicipio"];
 		if(array_key_exists("idEstado", $datos)) $this->idEstado = $datos["idEstado"];
+		$this->claveMunicipio = $datos["claveMunicipio"];
         $this->municipio = $datos["municipio"];
     }
 	
@@ -49,6 +59,7 @@ class Sistema_Model_Municipio
 		
 		$datos["idMunicipio"] = $this->idMunicipio;
 		$datos["idEstado"] = $this->idEstado; 
+		$datos["claveMunicipio"] = $this->claveMunicipio; 
 		$datos["municipio"] = $this->municipio;
 				
 		return $datos;

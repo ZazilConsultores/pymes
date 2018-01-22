@@ -108,7 +108,6 @@ class Inventario_InventarioController extends Zend_Controller_Action
 			if($formulario->isValid($request->getPost())){
 				$datos = $formulario->getValues();
 				print_r($datos);
-				
 				$this->inventarioDAO->editarTodo($datos);		
 			}
 		}

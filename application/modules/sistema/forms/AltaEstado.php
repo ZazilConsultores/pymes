@@ -9,6 +9,10 @@ class Sistema_Form_AltaEstado extends Zend_Form
         $subForm = new Zend_Form_SubForm();
 		$subForm->setLegend("Alta de Estado");
 		
+		$eClave = new Zend_Form_Element_Text('claveEstado');
+		$eClave->setLabel('Clave Estado:');
+		$eClave->setAttrib("class", "form-control");
+		
         $eEstado = new Zend_Form_Element_Text('estado');
 		$eEstado->setLabel('Estado:');
 		$eEstado->setAttrib("class", "form-control");
@@ -26,7 +30,7 @@ class Sistema_Form_AltaEstado extends Zend_Form
 		//$this->addSubForm($subForm, "alta");
 		//$this->addElement($eEstado);
 		//$this->addElement($eAgregar);
-		$this->addElements(array($eEstado, $eCapital, $eAgregar));
+		$this->addElements(array($eClave,$eEstado, $eCapital, $eAgregar));
     }
 
 
