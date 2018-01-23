@@ -28,7 +28,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		);
         
         $tipoEmpresa = Zend_Registry::get("tipoEmpresa");
-		$estadoDAO = new Inventario_DAO_Estado;
+		$estadoDAO = new Sistema_DAO_Estado;
 		$empresaDAO = new Sistema_DAO_Empresa;
 		
 		$estados = $estadoDAO->obtenerEstados();
@@ -100,7 +100,15 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		foreach ($municipios as $municipio) {
 			$eMunicipio->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
 		}
+		
 		//$eMunicipio->setMultiOptions(array("0"=>"Seleccione Estado"));
+		$eColonia = new Zend_Form_Element_Select("idColonia");
+		$eColonia->setLabel("Seleccione Colonia: ");
+		$eColonia->setAttrib("class", "form-control");
+		$eColonia->setRegisterInArrayValidator(FALSE);
+		foreach ($colonias as $colonia) {
+		    $eColonia->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
+		}
 		
 		$eCalle = new Zend_Form_Element_Text("calle");
 		$eCalle->setLabel("Calle:");

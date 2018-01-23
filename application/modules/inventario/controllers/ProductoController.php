@@ -80,10 +80,12 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		
 		$idProducto= $this->getParam("idProducto");
 		$producto = $this->productoDAO->obtenerProducto($idProducto);
+		$subparametro = $this->subparametroDAO->obtenerSubparametroProducto($idProducto);
 		
-		$formulario = new Inventario_Form_AltaProducto;
+		$formulario = new Inventario_Form_EditaProducto;
+		//$formulario->getElement("producto")->setValue($subparametro->getIdSubparametro());
 		$formulario->getElement("producto")->setValue($producto->getProducto());
-		$formulario->getElement("codigoBarras")->setValue($producto->getCodigoBarras());
+		//$formulario->getElement("codigoBarras")->setValue($producto->getCodigoBarras());
 		$formulario->getElement("submit")->setLabel("Actualizar Producto");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -92,7 +94,7 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				$datos = $formulario->getValues();
+				/*$datos = $formulario->getValues();
 				//print_r($datos);
 				$producto = new Inventario_Model_Producto($datos);
 				$producto->setClaveProducto($this->subparametroDAO->generarClaveProducto($datos['0']));
@@ -107,7 +109,7 @@ class Inventario_ProductoController extends Zend_Controller_Action
 					$this->view->messageFail = "El producto: <strong>".$producto->getProducto()."</strong>  no se pudo actualizar. Error: <strong>".$ex->getMessage()."</strong>";
 				}
 				//print_r("<br /><br />");
-				//print_r($producto->toArray());
+				//print_r($producto->toArray());*/
 			}
 		}
 		

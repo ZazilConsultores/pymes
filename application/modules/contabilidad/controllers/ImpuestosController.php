@@ -58,6 +58,7 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 		$formulario->getElement("abreviatura")->setValue($impuesto->getAbreviatura());
 		$formulario->getElement("descripcion")->setValue($impuesto->getDescripcion());
 		$formulario->getElement("estatus")->setValue($impuesto->getEstatus());
+		$formulario->getElement("sat3")->setValue($impuesto->getSat3());
 		$formulario->getElement("idEnlazarImpuesto")->setLabel("Actualizar");
 		$formulario->getElement("idEnlazarImpuesto")->setAttrib("class", "btn btn-warning");
 		if($request->isPost()){
@@ -65,11 +66,9 @@ class Contabilidad_ImpuestosController extends Zend_Controller_Action
 			{
 				$datos = $formulario->getValues();
 				$datos["fechaPublicacion"] = date ("Y-m-d H:i:s",time());
-				print_r($datos);
-				$impuesto = new Contabilidad_Model_Impuesto($datos);
-				//$arrImp = $impuesto->toArray();
+				//print_r($datos);
 				try{
-					$this->impuestoDAO->editarImpuesto($idImpuesto, $impuesto);
+					$this->impuestoDAO->editarImpuesto($idImpuesto, $datos);
 				}catch(exception $ex){
 					
 				}

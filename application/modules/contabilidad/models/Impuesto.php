@@ -41,6 +41,17 @@ class Contabilidad_Model_Impuesto
     public function setEstatus($estatus) {
         $this->estatus = $estatus;
     }
+    
+    private $sat3;
+    
+    
+    public function getSat3() {
+        return $this->sat3;
+    }
+    
+    public function setSat3($sat3) {
+        $this->sat3 = $sat3;
+    }
 
    
     private $fechaPublicacion;
@@ -60,6 +71,7 @@ class Contabilidad_Model_Impuesto
 		$this->descripcion = $datos["descripcion"];
 		
 		if(array_key_exists("estatus", $datos)) $this->estatus = $datos["estatus"];
+		$this->sat3 = $datos["sat3"];
 		if(array_key_exists("fechaPublicacion", $datos)) $this->fechaPublicacion = $datos["fechaPublicacion"];
 	}
 	
@@ -71,6 +83,7 @@ class Contabilidad_Model_Impuesto
 		$datos["abreviatura"] = $this->abreviatura;
 		$datos["descripcion"] = $this->descripcion;	
 		$datos["estatus"] = $this->estatus;
+		$datos["sat3"] = $this->sat3;
 		$datos["fechaPublicacion"]=$this->fechaPublicacion;
 		
 		return $datos;		

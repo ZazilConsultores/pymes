@@ -69,7 +69,7 @@
 		$tablaImpuesto = $this->tablaImpuesto;
 		$where = $tablaImpuesto->getAdapter()->quoteInto("idImpuesto = ?", $idImpuesto);
 		$tablaImpuesto->update($impuesto, $where);
-		print_r("$tablaImpuesto");
+		//print_r("$tablaImpuesto");
 	}
 	
 	public function obtenerImpuestoProductos($idImpuesto) {

@@ -258,6 +258,42 @@ class Sistema_DAO_Subparametro implements Sistema_Interfaces_ISubparametro {
 		//print_r($select->__toString());
 		return $rowSubparametro;
 		
-	}		
+	}
+	
+	public function obtenerSubparametroProducto ($idProducto)
+	{
+	    /*$tablaPr= $this->tablaSubparametro;
+	    $claveProducto = "";
+	    $idsSubparametro = "";
+	    
+	    foreach ($claves as $idParametro => $idSubparametro) {
+	        if($idSubparametro <> "0"){
+	            $sub = $this->obtenerSubparametro($idSubparametro);
+	            $claveProducto .= $sub->getClaveSubparametro();
+	            $idsSubparametro .=  $sub->getIdSubparametro() . ",";
+	        }
+	    }
+	    
+	    return $idsSubparametro;*/
+	    $tablaPr = $this->tablaProducto;
+	    $tablaSu = $this->tablaSubparametro;
+	    
+	    $select = $tablaPr->select()->from($tablaPr)->where('idProducto = ?', $idProducto);
+	    $rowProducto = $tablaPr->fetchRow($select);
+	    $claveProducto = "";
+	    if(!is_null($rowProducto)){
+	       
+	        $idsSub = explode(",", $rowProducto->idsSubparametros);
+	       
+	        $select = $tablaSu->select()->from($tablaSu)->where("idSubparametro IN (?)", $idsSub);
+	        $rowsSub = $tablaSu->fetchAll($select);
+	        foreach ($rowsSub as $rowSub ) {
+	           
+	            //$claveProducto .= $rowSub->getClaveSubparametro();
+	            //$idsSubparametro .=  $rowSub->getIdSubparametro() . ",";
+	        }
+	    }
+	    return $claveProducto;
+	}
 }
 

@@ -223,7 +223,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'estatus'=>"A",
 					'costoUnitario'=>$precioUnitario,
 					'totalImporte'=>$producto['importe'],
-				    'entrega'=>$producto['entrega']
+				    'entrega'=>$producto['tipoEmpaque']
 				);
 				$dbAdapter->insert("Movimientos",$mMovimiento);
 				//Buscamos la descripción del producto en Tabla Producto
@@ -663,11 +663,13 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	
 	public function restaDesechable($producto){
 	    $can  = $producto['cantidad'];
-	    if($producto['tipoEmpaque'] == 1){
+	    print_r($can);
+	    if($producto['tipoEmpaque'] == 'D'){
 	        //Vaso p/café
 	        $tablaInventario = $this->tablaInventario;
 	        $select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",137);
 	        $rowInvCafe  = $tablaInventario->fetchRow($select);
+	        print_r($select->__toString());
 	        if(!is_null($rowInvCafe)){
 	            $tablaCapas = $this->tablaCapas;
 	            $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvCafe["idProducto"]);
@@ -840,12 +842,13 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	        }else{
 	            echo "No hay existencia de bolsa camiseta en inventario";
 	        }
-	    }else if($producto['tipoEmpaque'] == 2){
+	    }else if($producto['tipoEmpaque'] == 'C'){
 	        //================================================================================================>>Desechable comida
 	        //Vaso rojo
 	        $tablaInventario = $this->tablaInventario;
 	        $select = $tablaInventario->select()->from($tablaInventario)->where("idProducto  = ?",97);
 	        $rowInvVasoRojo  = $tablaInventario->fetchRow($select);
+	        print_r($select->__toString());
 	        if(!is_null($rowInvVasoRojo)){
 	            $tablaCapas = $this->tablaCapas;
 	            $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInvVasoRojo["idProducto"]);

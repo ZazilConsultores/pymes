@@ -48,6 +48,10 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		$eEstatus->setLabel('Estatus:');
 		$eEstatus->setAttrib("class", "form-control");
 		
+		$eSAT3 = new Zend_Form_Element_Text('sat3');
+		$eSAT3->setLabel('Clave SAT3:');
+		$eSAT3->setAttrib("class", "form-control");
+		
 		$eFechaPublicion = new Zend_Form_Element_Hidden('fechaPublicacion');
 		$eFechaPublicion->setAttrib("class", "form-control");
 	
@@ -63,6 +67,7 @@ class Contabilidad_Form_CrearImpuesto extends Zend_Form
 		$this->addElement($eImporte);	
 		$this->addElement($ePorcentaje);
 		$this->addElement($eEstatus);
+		$this->addElement($eSAT3);
 		$this->addElement($eFechaPublicion);
 		$this->addElement($eSubmit);
         

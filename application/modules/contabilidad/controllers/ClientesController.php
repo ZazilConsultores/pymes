@@ -313,8 +313,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $contador = 0;
                 try{
                     foreach ($productos as $producto){
-                            $desechable  = $this->facturaDAO->restaDesechable($producto);
-                        
+                        // $desechable  = $this->facturaDAO->restaDesechable($producto);
                     }
                     $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
                    
@@ -393,6 +392,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                     //$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
                     foreach ($productos as $producto){
                         if($encabezado["idEmpresas"]==6 || $encabezado["idEmpresas"]==13 ){
+                            print_r('empresas');
                             $desechable  = $this->facturaDAO->restaDesechable($producto);
                         }
                         $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);

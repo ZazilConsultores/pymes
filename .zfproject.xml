@@ -190,7 +190,9 @@
               <actionMethod actionName="busca"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory enabled="false"/>
+          <formsDirectory enabled="false">
+            <formFile formName="EditaProducto"/>
+          </formsDirectory>
           <layoutsDirectory enabled="false"/>
           <modelsDirectory/>
           <servicesDirectory enabled="false"/>
