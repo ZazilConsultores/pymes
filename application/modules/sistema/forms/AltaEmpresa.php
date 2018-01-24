@@ -106,9 +106,9 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eColonia->setLabel("Seleccione Colonia: ");
 		$eColonia->setAttrib("class", "form-control");
 		$eColonia->setRegisterInArrayValidator(FALSE);
-		foreach ($colonias as $colonia) {
+		/*foreach ($colonias as $colonia) {
 		    $eColonia->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
-		}
+		}*/
 		
 		$eCalle = new Zend_Form_Element_Text("calle");
 		$eCalle->setLabel("Calle:");

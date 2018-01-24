@@ -17,9 +17,18 @@ class MainConfig {
 		Zend_Registry::set('tipo', $tipo);
 		$tipoInventario = array('1'=>'PEPS');
 		Zend_Registry::set('tipoInventario',$tipoInventario);
-		$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
+		//$formaPago = array('CH'=>'CHEQUE','DE'=>'DEPOSITO','EF'=>'EFECTIVO','SP'=>'SPEI', 'DO'=>'DOCUMENTO');
+		//Zend_Registry::set('formaPago', $formaPago);
+		$formaPago = array('01'=>'EFECTIVO','02'=>'CHEQUE NOMINATIVO','03'=>'TRANSFERENCIA ELECTRÓNICA DE FONDOS',
+		    '04'=>'TARJETA DE CRÉDITO', '05'=>'MONEDERO ELECTRÓNICO','06'=>'DINERO ELECTRÓNICO','08'=>'VALES DE DEPENSA',
+		    '12'=>'DACIÓN EN PAGO','13'=>'PAGO POR SUDROGACIÓN','14'=>'PAGO POR CONSIGNACIÓN','15'=>'CONDONACIÓN',
+		    '17'=>'COMPENSACIÓN','23'=>'NOVACIÓN','24'=>'CONFUSIÓN','25'=>'REMISIÓN DE DEUDA','26'=>'PRESCRIPCIÓN O CADUCIDAD',
+		    '27'=>'A SATISFACCIÓN DEL ACREEDOR','28'=>'TARJETA DE DÉBITO','29'=>'TARJETA DE SERVICIOS','30'=>'APLICACIÓN DE ANTICIPIOS',
+		    '31'=>'INTERMEDIARIO PAGOS','99'=>'POR DEFINIR');
 		Zend_Registry::set('formaPago', $formaPago);
-		$conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
+		//$conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
+		//Zend_Registry::set('conceptoPago', $conceptoPago);
+		$conceptoPago = array('PUE'=>'PAGO EN UNA SOLA EXHIBICIÓN','PPD'=>'PAGO EN PARCIALIDADES O DIFERDAS','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
 		Zend_Registry::set('conceptoPago', $conceptoPago);
 		$padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 		Zend_Registry::set('padre', $padre);

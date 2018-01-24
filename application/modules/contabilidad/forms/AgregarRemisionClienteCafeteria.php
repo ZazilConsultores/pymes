@@ -146,7 +146,10 @@ class Contabilidad_Form_AgregarRemisionClienteCafeteria extends Zend_Form
         
         foreach($bancos as $banco)
         {
-            $eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
+            if ($banco->getIdBanco()==46){
+                $eBanco->addMultiOption($banco->getIdBanco(), $banco->getBanco());
+            }
+            
         }
         
         $eSubmit = new Zend_Form_Element_Submit("submit");

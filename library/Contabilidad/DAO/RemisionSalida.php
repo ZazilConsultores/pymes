@@ -91,7 +91,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 			if(!is_null($rowProducto && !is_null($rowMultiplo))){
 				$claveProducto = substr($rowProducto->claveProducto, 0,2);
 				switch($claveProducto){
-					case 'PT': //======================================================================================================PRODUCTO TERMINADO
+					case 'PT'://======================================================================================================PRODUCTO TERMINADO
 					$tablaProductoCompuesto = $this->tablaProductoCompuesto;
 					$select = $tablaProductoCompuesto->select()->from($tablaProductoCompuesto)->where("idProducto=?",$producto["descripcion"]);
 					$rowsProductoComp = $tablaProductoCompuesto->fetchAll($select);
@@ -142,6 +142,21 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 															if($canCapas > 0){
 																$rowCapas->cantidad = $canCapas;
 																$rowCapas->save();
+																$mCardex = array(
+																    'idSucursal'=>$encabezado['idSucursal'],
+																    'numerofolio'=>$encabezado['numFolio'],
+																    'idProducto'=>$producto['descripcion'],
+																    'idDivisa'=>1,
+																    'secuencialEntrada'=>$rowCapas['secuencial'],
+																    'fechaEntrada'=>$rowCapas['fechaEntrada'],
+																    'secuencialSalida'=>$secuencialSalida,
+																    'fechaSalida'=>$stringIni,
+																    'cantidad'=>$cantidad,
+																    'costo'=>$costo,
+																    'costoSalida'=>$costoSalida,
+																    'utilidad'=>$utilidad);
+																//print_r($mCardex);
+																$dbAdapter->insert("Cardex",$mCardex);
 															}else{
 																//$rowCapas->delete($select);
 															}//if canCapas
@@ -390,7 +405,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	
 	public function restaProductoCafeteria(array $encabezado, $productos, $formaPago){
 	    $dbAdapter =  Zend_Registry::get('dbmodgeneral');
-	    //$dbAdapter->beginTransaction();
+	    $dbAdapter->beginTransaction();
 	    $dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 	    $stringIni = $dateIni->toString ('yyyy-MM-dd');
 	    try {

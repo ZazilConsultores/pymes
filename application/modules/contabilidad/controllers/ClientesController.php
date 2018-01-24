@@ -312,9 +312,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 //print_r($productos);
                 $contador = 0;
                 try{
-                    foreach ($productos as $producto){
-                        // $desechable  = $this->facturaDAO->restaDesechable($producto);
-                    }
                     $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
                    
                     $contador++;

@@ -408,14 +408,14 @@ $(document).ready(function (){
 	$("#1-pagada").on("change", function(){
 		var total = $("#total").val();
 		if ($("#1-pagada:checked").val()==1){
-			//console.log("input desahabilitado");
+			console.log($("#1-pagada:checked").val());
 			$("#1-pagos").attr('disabled', 'disabled');
 			$("#1-pagos").val(total); 
 			//calculateGrandTotal();
 		}else{
 			$("#1-pagos").removeAttr("disabled");
 			$("#1-pagos").val(0);
-			//console.log("input habilitado");
+			//console.log($("#1-pagos").val(0););
 		}
 	});
 });
