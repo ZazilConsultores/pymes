@@ -63,15 +63,11 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 			}else{
 				//Situacion de Pago $conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
 				if(($formaPago['pagada']) == "1"){
-					$conceptoPago = "LI";
+					$conceptoPago = "PUE";
 					$importePagado = $importe[0]['total'];
 					$saldo = 0;
-				}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
-					$conceptoPago = "PE";
-					$importePagado = 0;
-					$saldo = $importe[0]['total'];
-				}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
-					$conceptoPago = "PA";
+				}else{
+					$conceptoPago = "PPD";
 					$importePagado = $formaPago['pagos'];
 					$saldo = $importe[0]['total']- $formaPago['pagos'];
 				}	

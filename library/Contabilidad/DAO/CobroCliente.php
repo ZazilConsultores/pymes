@@ -27,7 +27,7 @@
 			//tipo Movimiento facturaCliente = 2
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",2)->where("estatus <> ?", "C")
-			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
+			->where("conceptoPago <>?","PUE")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$cl);
 			$rowsFacturaxc = $tablaFactura->fetchAll($select)->toArray();
 			return $rowsFacturaxc;
 							
@@ -353,9 +353,9 @@
 			$iFactura = $rowFactura->importePagado + $datos["pago"];
 			$rowFactura->importePagado = $iFactura;
 			if($saldo <= 0){
-				$rowFactura->conceptoPago = "LI";
+				$rowFactura->conceptoPago = "PUE";
 			}else{
-				$rowFactura->conceptoPago = "PA";
+				$rowFactura->conceptoPago = "PPD";
 			}
 			$rowFactura->saldo = $saldo;
 			$rowFactura->save();	

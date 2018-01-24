@@ -28,7 +28,7 @@ class MainConfig {
 		Zend_Registry::set('formaPago', $formaPago);
 		//$conceptoPago = array('AN'=>'ANTICIPO','LI'=>'LIQUIDACION','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
 		//Zend_Registry::set('conceptoPago', $conceptoPago);
-		$conceptoPago = array('PUE'=>'PAGO EN UNA SOLA EXHIBICIÓN','PPD'=>'PAGO EN PARCIALIDADES O DIFERDAS','PA'=>'PAGO','PE'=>'PENDIENTE DE PAGO');
+		$conceptoPago = array('PUE'=>'PAGO EN UNA SOLA EXHIBICIÓN','PPD'=>'PAGO EN PARCIALIDADES O DIFERDAS');
 		Zend_Registry::set('conceptoPago', $conceptoPago);
 		$padre = array('G' => 'GRUPO', 'S' => 'SECCION');
 		Zend_Registry::set('padre', $padre);

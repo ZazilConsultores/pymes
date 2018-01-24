@@ -59,15 +59,11 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 				print_r("La Factura Ya existe");
 			 }else{
 				if(($formaPago['pagada']) == "1"){
-					$conceptoPago = "LI";
+					$conceptoPago = "PUE";
 					$importePagado = $importe[0]['total'];
 					$saldo = 0;
-				}elseif(($formaPago['pagada'])== "0" AND $formaPago['pagos'] =="0"){
-					$conceptoPago = "PE";
-					$importePagado = 0;
-					$saldo = $importe[0]['total'];
-				}elseif($formaPago['pagos'] <> 0 AND $formaPago['pagos'] <> $importe[0]['total']){
-					$conceptoPago = "PA";
+				}else{
+					$conceptoPago = "PPD";
 					$importePagado = $formaPago['pagos'];
 					$saldo = $importe[0]['total']- $formaPago['pagos'];
 				}	
@@ -663,7 +659,6 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	
 	public function restaDesechable($producto){
 	    $can  = $producto['cantidad'];
-	    print_r($can);
 	    if($producto['tipoEmpaque'] == 'D'){
 	        //Vaso p/café
 	        $tablaInventario = $this->tablaInventario;

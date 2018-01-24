@@ -24,7 +24,7 @@
 		public function busca_Cuentasxp($idSucursal,$pr){
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",4)->where("estatus <> ?", "C")
-			->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pr);
+			->where("conceptoPago <>?","PUE")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pr);
 			$rowsFacturaxp = $tablaFactura->fetchAll($select)->toArray();
 			
 			return $rowsFacturaxp;
@@ -210,9 +210,9 @@
 			$iFactura = $rowFactura->importePagado + $datos["pago"];
 			$rowFactura->importePagado = $iFactura;
 			if($saldo <= 0){
-				$rowFactura->conceptoPago = "LI";
+				$rowFactura->conceptoPago = "PUE";
 			}else{
-				$rowFactura->conceptoPago = "PA";
+				$rowFactura->conceptoPago = "PPD";
 			}
 			$rowFactura->formaPago = $datos["formaPago"];
 			$rowFactura->saldo = $saldo;

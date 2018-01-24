@@ -381,7 +381,6 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $encabezado = $datos[0];
                 $formaPago = $datos[1];
                 $productos = json_decode($encabezado['productos'],TRUE);
-                
                 $importe = json_decode($formaPago['importes'],TRUE);
                 $contador=0;
                 try{
@@ -389,7 +388,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                     //$restaPT = $this->facturaDAO->restaProductoTerminado($encabezado, $formaPago, $productos);
                     foreach ($productos as $producto){
                         if($encabezado["idEmpresas"]==6 || $encabezado["idEmpresas"]==13 ){
-                            print_r('empresas');
+                           // print_r('empresas');
                             $desechable  = $this->facturaDAO->restaDesechable($producto);
                         }
                         $detalle = $this->facturaDAO->guardaDetalleFactura($encabezado, $producto, $importe);
