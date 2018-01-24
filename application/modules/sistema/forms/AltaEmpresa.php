@@ -38,7 +38,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$subFiscales->setLegend("Datos Fiscales");
 		
 
-        //   ===============================================================
+        //===============================================================
         $eRazonSocial = new Zend_Form_Element_Text("razonSocial");
 		$eRazonSocial->setLabel("Razon Social: ");
 		$eRazonSocial->setAttrib("class", "form-control");
@@ -62,7 +62,13 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eTipoEmpresa->setLabel("Tipo de Empresa: ");
 		$eTipoEmpresa->setAttrib("class", "form-control");
 		$eTipoEmpresa->setMultiOptions($tipoEmpresa);
-		//$eTipoEmpresa->removeMultiOption("");
+		
+		$regimenFiscal = Zend_Registry::get("regFiscal");
+		$eRegFiscal = new Zend_Form_Element_Select("regFiscal");
+		$eRegFiscal->setLabel("Tipo de Empresa: ");
+		$eRegFiscal->setAttrib("class", "form-control");
+		$eRegFiscal->setMultiOptions($regimenFiscal);
+		
 		
 		$eTipoProveedor = new Zend_Form_Element_Select("tipoProveedor");
 		$eTipoProveedor->setLabel("Tipo Proveedor:");
@@ -74,7 +80,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		
 		//$formulario->getSubForm("0")->addElement($eTipoProveedor);
         
-        $subFiscales->addElements(array($eRazonSocial,$eRFC, $eCuenta,$eTipoEmpresa,$eTipoProveedor));
+        $subFiscales->addElements(array($eRazonSocial,$eRFC, $eCuenta,$eTipoEmpresa,$eRegFiscal,$eTipoProveedor));
 		$subFiscales->setElementDecorators($decoratorsElemento);
 		$subFiscales->setDecorators($decoratorsCategoria);
 		//   ===============================================================

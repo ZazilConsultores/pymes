@@ -58,5 +58,8 @@ class MainConfig {
 		
 		$origen = array('S' => 'Subtotal', 'I' => 'Iva', 'T' => 'Total');
 		Zend_Registry::set('origen', $origen);
+		
+		$regimenFiscal = array('601' => 'General de Ley Personas Morales', '612' => 'Personas Físicas con Actividades Empresariales y Profesionales');
+		Zend_Registry::set('regFiscal', $regimenFiscal);
 	}
 }

@@ -33,6 +33,12 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		$eRazonSocial->setLabel('Razon Social:');
 		$eRazonSocial->setAttrib("class", "form-control");
 		
+		$regimenFiscal = Zend_Registry::get("regFiscal");
+		$eRegFiscal = new Zend_Form_Element_Select("regFiscal");
+		$eRegFiscal->setLabel("Tipo de Empresa: ");
+		$eRegFiscal->setAttrib("class", "form-control");
+		$eRegFiscal->setMultiOptions($regimenFiscal);
+		
 		
 		$eSubmit = new Zend_Form_Element_Submit('submit');
 		$eSubmit->setLabel('Agregar Fiscales');
@@ -41,7 +47,7 @@ class Sistema_Form_AltaFiscales extends Zend_Form
 		//$this->setElementDecorators($decoratorsElemento);
 		//$this->setDecorators($decoratorsCategoria);
 		
-		$this->addElements(array($eRFC,$eRazonSocial,$eSubmit));
+		$this->addElements(array($eRFC,$eRazonSocial,$eRegFiscal, $eSubmit));
     }
 
 

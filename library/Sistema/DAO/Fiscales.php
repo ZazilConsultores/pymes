@@ -550,15 +550,37 @@ class Sistema_DAO_Fiscales implements Sistema_Interfaces_IFiscales {
 	 * 
 	 */
 	public function getEmpresaByIdFiscales($idFiscales){
-		$tablaEmpresa = $this->tablaEmpresa;
+	    $tFiscales = $this->tablaFiscales;
+	    $tEmpresa = $this->tablaEmpresa;
+	    $tEmpresas = $this->tablaEmpresas;
+		/*$tablaEmpresa = $this->tablaEmpresa;
 		$select = $tablaEmpresa->select()->from($tablaEmpresa)->where("idFiscales=?",$idFiscales);
-		$rowEmpresa = $tablaEmpresa->fetchRow($select);
+		$rowEmpresa = $tablaEmpresa->fetchRow($select);*/
 		
-		$tablaEmpresas = $this->tablaEmpresas;
+		/*$tablaEmpresas = $this->tablaEmpresas;
 		$select = $tablaEmpresas->select()->from($tablaEmpresas)->where("idEmpresa=?",$rowEmpresa->idEmpresa);
 		$rowEmpresas = $tablaEmpresas->fetchRow($select);
-		print_r("$select");
-		return $rowEmpresas->toArray();
+		//print_r("$select");
+		return $rowEmpresas->toArray();*/
+	    
+	    $empresas = array();
+	    
+	    $select = $tFiscales->select()->from($tFiscales)->where('idFiscales=?',$idFiscales);
+	    $rowF = $tFiscales->fetchRow($select);
+	    $iEmpresas['fiscales'] = $rowF; 
+	   
+	    $select = $tEmpresa->select()->from($tEmpresa,array('idEmpresa'))->where('idFiscales=?',$rowF->idFiscales);
+	    $rowE = $tEmpresa->fetchRow($select);
+	    $iEmpresas['empresa'] = $rowE;
+	    
+	    $select = $tEmpresas->select()->from($tEmpresas,array('regFiscal'))->where('idEmpresa=?',$rowE->idEmpresa);
+	    $rowEm = $tEmpresas->fetchRow($select);
+	    $iEmpresas['empresas'] = $rowEm;
+	    //print_r($iEmpresas);
+	    $empresas[] =$iEmpresas;
+	   
+	    return $empresas;
+	    
 	}
 	
 	/**
