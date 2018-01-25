@@ -23,6 +23,7 @@ class Sistema_ProveedoresController extends Zend_Controller_Action
         $request = $this->getRequest();
         $formulario = new Sistema_Form_AltaEmpresa;
 		$formulario->getSubForm("0")->getElement("tipo")->setMultiOptions(array("PR"=>"Proveedor"));
+		$formulario->getSubForm("0")->removeElement("regFiscal");
 		//$formulario->getSubForm("0")->getElement("cuenta")->setAttrib("disabled", "true");
 		$formulario->getElement("submit")->setLabel("Crear Proveedor");
 		$this->view->formulario = $formulario;

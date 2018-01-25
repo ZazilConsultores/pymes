@@ -73,7 +73,12 @@
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
-          <modelsDirectory/>
+          <modelsDirectory>
+            <modelFile modelName="CFDI"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="CFDI"/>
+            </dbTableDirectory>
+          </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
             <viewScriptsDirectory>

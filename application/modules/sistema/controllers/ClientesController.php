@@ -24,6 +24,7 @@ class Sistema_ClientesController extends Zend_Controller_Action
         $formulario = new Sistema_Form_AltaEmpresa;
 		$formulario->getSubForm("0")->getElement("tipo")->setMultiOptions(array("CL"=>"Cliente"));
 		$formulario->getSubForm("0")->removeElement("tipoProveedor");
+		$formulario->getSubForm("0")->removeElement("regFiscal");
 		$formulario->getSubForm("0")->getElement("cuenta")->setAttrib("class", "form-control");
 		$formulario->getElement("submit")->setLabel("Actualizar	Fiscales");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");

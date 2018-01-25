@@ -87,7 +87,8 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 					'total'=>$importe[0]['total'],
 					'folioFiscal'=>$encabezado['folioFiscal'],
 					'importePagado'=>$importePagado,
-					'saldo'=>$saldo
+					'saldo'=>$saldo,
+				    'CFDI'=>$encabezado['CFDI']
 				);
 				$dbAdapter->insert("Factura", $mFactura);
 				//Obtine el ultimo id en tabla factura y Guarda los impuestos

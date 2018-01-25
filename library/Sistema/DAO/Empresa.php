@@ -77,6 +77,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//	En la informacion fiscal tipo y tipoProveedor no van a la base de datos
 			unset($fiscal["tipo"]);
 			unset($fiscal["tipoProveedor"]);
+			
 			//	Agregamos al array de fiscales el campo fecha
 			$fiscal['fecha'] = $fecha;
 			print_r("<br />");
@@ -103,7 +104,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			}
 			
 			//No genero error por lo que procedemos a insertar en la tabla
-			$dbAdapter->insert("Fiscales", $fiscal);
+			
+			$dbAdapter->insert("Fiscales", array("rfc"=>$fiscal['rfc'],"razonSocial"=>$fiscal['razonSocial'], "fecha"=>$fiscal['fecha']));
 			// Obtenemos el id autoincrementable de la tabla Fiscales
 			$idFiscales = $dbAdapter->lastInsertId("Fiscales","idFiscales");
 			// Creamos registro en la tabla Empresa
@@ -113,7 +115,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			//Insertamos en empresa, cliente o proveedor
 			switch ($tipo) {
 				case 'EM':
-					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>0));
+					$dbAdapter->insert("Empresas", array("idEmpresa"=>$idEmpresa,"consecutivo"=>0, "regFiscal"=>$fiscal['regFiscal']));
 					$dbAdapter->insert("Clientes", array("idEmpresa"=>$idEmpresa, "cuenta"=>$cuenta,"saldo"=>"0"));
 					$dbAdapter->insert("Proveedores", array("idEmpresa"=>$idEmpresa,"idTipoProveedor"=>$tipoProveedor,"cuenta"=>$cuenta,"saldo"=>"0"));
 					break;	

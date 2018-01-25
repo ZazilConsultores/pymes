@@ -96,7 +96,18 @@ class Contabilidad_Form_AgregarFacturaProveedor extends Zend_Form
 		$eImp->setAttrib("class", "form-control");
 		$eImp->setAttrib("required","true");
 		
-		$subEncabezado->addElements(array($eImp,$eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eFecha, $eProducto,/*$eidProducto*/));
+		$tablaCFDI = new Contabilidad_DAO_CFDI();
+		$rowsCFDI = $tablaCFDI->obtenerCFDI();
+		
+		$eCFDI = new Zend_Form_Element_Select('CFDI');
+		$eCFDI->setLabel('Seleccionar CFDI:');
+		$eCFDI->setAttrib("class", "form-control");
+		
+		foreach ($rowsCFDI as $rowCFDI) {
+		    $eCFDI->addMultiOption($rowCFDI['sat3'], $rowCFDI['descripcion']);
+		}
+		
+		$subEncabezado->addElements(array($eImp,$eTipoMovto,$eNumeroFactura,$eFolioFiscal,$eEmpresa,$eSucursal,$eProyecto,$eProveedor,$eCFDI,$eFecha, $eProducto,/*$eidProducto*/));
 		$subEncabezado->setElementDecorators($decoratorsElemento);
 		$subEncabezado->setDecorators($decoratorsPresentacion);
 		//========================================================================================================================>>
