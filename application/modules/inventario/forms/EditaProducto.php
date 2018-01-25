@@ -6,7 +6,7 @@ class Inventario_Form_EditaProducto extends Zend_Form
     public function init()
     {
         $subConfiguracion = new Zend_Form_SubForm();
-        $subConfiguracion->setLegend("Configuracion de Producto");
+        //$subConfiguracion->setLegend("Configuracion de Producto");
         //===================================================================================>>>>
         
         $parametroDAO = new Inventario_DAO_Parametro;
@@ -14,7 +14,7 @@ class Inventario_Form_EditaProducto extends Zend_Form
         
         $parametros = $parametroDAO->obtenerParametros();
         
-        foreach ($parametros as $parametro){
+       /* foreach ($parametros as $parametro){
             $subparametros= $subparametroDAO->obtenerSubparametros($parametro->getIdParametro());
             $elemento = new Zend_Form_Element_Select($parametro->getIdParametro());
             $elemento->setLabel($parametro->getParametro());
@@ -28,7 +28,7 @@ class Inventario_Form_EditaProducto extends Zend_Form
             }
             $subConfiguracion->addElement($elemento);
             
-        }
+        }*/
         
         //$subDetalle = new Zend_Form_SubForm();
         //$subDetalle->setLegend("Detalle Producto");

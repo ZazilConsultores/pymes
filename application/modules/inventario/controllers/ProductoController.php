@@ -83,9 +83,9 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		$subparametro = $this->subparametroDAO->obtenerSubparametroProducto($idProducto);
 		
 		$formulario = new Inventario_Form_EditaProducto;
-		//$formulario->getElement("producto")->setValue($subparametro->getIdSubparametro());
 		$formulario->getElement("producto")->setValue($producto->getProducto());
-		//$formulario->getElement("codigoBarras")->setValue($producto->getCodigoBarras());
+		$formulario->getElement("codigoBarras")->setValue($producto->getCodigoBarras());
+		$formulario->getElement("sat3")->setValue($producto->getSat3());
 		$formulario->getElement("submit")->setLabel("Actualizar Producto");
 		$formulario->getElement("submit")->setAttrib("class", "btn btn-warning");
 		
@@ -94,22 +94,21 @@ class Inventario_ProductoController extends Zend_Controller_Action
 		
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
-				/*$datos = $formulario->getValues();
-				//print_r($datos);
-				$producto = new Inventario_Model_Producto($datos);
-				$producto->setClaveProducto($this->subparametroDAO->generarClaveProducto($datos['0']));
-				$producto->setIdsSubparametros($this->subparametroDAO->generarIdsSubparametros($datos['0']));
-				$arrProducto = $producto->toArray();
-				unset($arrProducto["idProducto"]);
+				$datos = $formulario->getValues();
+				print_r($datos);
+				/*$producto = new Inventario_Model_Producto($datos);
+				//$producto->setClaveProducto($this->subparametroDAO->generarClaveProducto($datos['0']));
+				//$producto->setIdsSubparametros($this->subparametroDAO->generarIdsSubparametros($datos['0']));
+				//$arrProducto = $producto->toArray();
+				//unset($arrProducto["idProducto"]);*/
 				
 				try{
-					$this->productoDAO->editarProducto($idProducto, $arrProducto);
+					//$this->productoDAO->editarProducto($idProducto, $arrProducto);
+				    $this->productoDAO->editaCampoProducto($idProducto, $datos);
 					$this->view->messageSuccess = "El producto: <strong>".$producto->getProducto()."</strong> ha sido actualizado exitosamente";
 				}catch(Exception $ex){
 					$this->view->messageFail = "El producto: <strong>".$producto->getProducto()."</strong>  no se pudo actualizar. Error: <strong>".$ex->getMessage()."</strong>";
 				}
-				//print_r("<br /><br />");
-				//print_r($producto->toArray());*/
 			}
 		}
 		
