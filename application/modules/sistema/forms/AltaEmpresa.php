@@ -30,6 +30,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
         $tipoEmpresa = Zend_Registry::get("tipoEmpresa");
 		$estadoDAO = new Sistema_DAO_Estado;
 		$empresaDAO = new Sistema_DAO_Empresa;
+		$regFiscalDAO = new Sistema_DAO_RegimenFiscal();
 		
 		$estados = $estadoDAO->obtenerEstados();
 		$municipioDAO = new Inventario_DAO_Municipio;
@@ -63,11 +64,14 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eTipoEmpresa->setAttrib("class", "form-control");
 		$eTipoEmpresa->setMultiOptions($tipoEmpresa);
 		
-		$regimenFiscal = Zend_Registry::get("regFiscal");
+		
 		$eRegFiscal = new Zend_Form_Element_Select("regFiscal");
 		$eRegFiscal->setLabel("Tipo de Empresa: ");
 		$eRegFiscal->setAttrib("class", "form-control");
-		$eRegFiscal->setMultiOptions($regimenFiscal);
+		$regimenFiscales = $regFiscalDAO->obtenerRegimesFiscales();
+		foreach ($regimenFiscales as $regimenFiscal) {
+		    $eRegFiscal->addMultiOption($regimenFiscal["sat3"], $regimenFiscal["descripcion"]);
+		}
 		
 		
 		$eTipoProveedor = new Zend_Form_Element_Select("tipoProveedor");

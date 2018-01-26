@@ -327,9 +327,11 @@
               <dbTableFile dbTableName="Saldomesempresas"/>
               <dbTableFile dbTableName="Saldosempresas"/>
               <dbTableFile dbTableName="SaldosBancos"/>
+              <dbTableFile dbTableName="RegimenFiscal"/>
             </dbTableDirectory>
             <modelFile modelName="Saldosempresas"/>
             <modelFile modelName="SaldosBancos"/>
+            <modelFile modelName="RegimenFiscal"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
