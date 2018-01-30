@@ -278,6 +278,8 @@
               <actionMethod actionName="saldocxcmes"/>
               <actionMethod actionName="saldoempresames"/>
               <actionMethod actionName="saldobanco"/>
+              <actionMethod actionName="colonias"/>
+              <actionMethod actionName="obtienecp"/>
             </controllerFile>
             <controllerFile controllerName="Municipios">
               <actionMethod actionName="index"/>
@@ -328,10 +330,12 @@
               <dbTableFile dbTableName="Saldosempresas"/>
               <dbTableFile dbTableName="SaldosBancos"/>
               <dbTableFile dbTableName="RegimenFiscal"/>
+              <dbTableFile dbTableName="Colonia"/>
             </dbTableDirectory>
             <modelFile modelName="Saldosempresas"/>
             <modelFile modelName="SaldosBancos"/>
             <modelFile modelName="RegimenFiscal"/>
+            <modelFile modelName="Colonia"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -419,6 +423,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="saldobanco"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="colonias"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="obtienecp"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -598,6 +608,8 @@
                 <testApplicationActionMethod forActionName="saldocxcmes"/>
                 <testApplicationActionMethod forActionName="saldoempresames"/>
                 <testApplicationActionMethod forActionName="saldobanco"/>
+                <testApplicationActionMethod forActionName="colonias"/>
+                <testApplicationActionMethod forActionName="obtienecp"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Municipios">
                 <testApplicationActionMethod forActionName="index"/>

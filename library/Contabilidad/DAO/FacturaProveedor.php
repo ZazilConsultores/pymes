@@ -597,26 +597,45 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	//Obtiene los movimientos de facturaProv y pago nomina
 	public function obtieneProyectoProveedor($idCoP){
 		$tablaTipoMovimiento =  $this->tablaTipoMovimiento;
-		$select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "+")->orWhere("idTipoMovimiento = ?",20);
-		$rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
-		$idsTipoMovimiento = array ();
-		foreach ($rowsTipoMovtos as $rowTipoMovimiento) {
-			if(!in_array($rowTipoMovimiento->idTipoMovimiento, $idsTipoMovimiento)){
-				$idsTipoMovimiento[] = $rowTipoMovimiento->idTipoMovimiento;
-			}
-		}
-		
 		$tablaMovimientos = $this->tablaMovimiento;
-			$select= $tablaMovimientos->select()
-			->setIntegrityCheck(false)
-			->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
-			->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.numeroFactura','Factura.fecha'))
-			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
-			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
-			->where('Factura.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-			//print_r("$select");
-		return $tablaMovimientos->fetchAll($select);
 		
+		
+		$select = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "+");
+		$rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
+		//print_r($select->__toString());
+		$movtos = array();
+		foreach ($rowsTipoMovtos as $rowTipo) {
+		   $select = $tablaMovimientos->select()->from($tablaMovimientos)->where('idTipoMovimiento = ?',$rowTipo['idTipoMovimiento']);
+		   $rowsT = $tablaMovimientos->fetchAll($select);
+		   //print_r($select->__toString());
+		   foreach ($rowsT as $rowT){
+		       $select1 = $tablaMovimientos->select()->from($tablaMovimientos,array('idTipoMovimiento','idProyecto','numeroFolio','totalImporte'))->where('idCoP = ?',$idCoP)->where('idTipoMovimiento = ?',$rowT['idTipoMovimiento']);
+		       $rowN = $tablaMovimientos->fetchRow($select1)->toArray();
+		       //print_r($select1->__toString());
+		       $iMovtos['mov'] = $rowN;
+		       $movtos[] =$iMovtos;
+		   }
+	
+		    
+		    /*$select1 = $tMovtos->select()->from($tMovtos,array('idTipoMovimiento','idSucursal','idProyecto'))->where('idTipoMovimiento=?',$rowTipo['idTipoMovimiento'])
+		    ->order('idTipoMovimiento ASC');
+		    $rowN = $tMovtos->fetchAll($select1)->toArray();
+		    //print_r($select1->__toString());
+		    $iMovtos['mov'] = $rowN;
+		    $movtos[] =$iMovtos;
+		            
+		            /*$select = $tMovtos->select()->from($tMovtos,array('idTipoMovimiento','idSucursal','idProyecto'))->where('idTipoMovimiento=?',4);
+		            $rowF = $tMovtos->fetchAll($select)->toArray();
+		            //print_r($select->__toString());
+		            $iMovtos['mov'] = $rowF;
+		            
+		        }
+		       
+		       
+		    }*/
+		    
+		}
+		return $movtos;
 	}
 	
 	//Obtiene los movimientos de remision de proveedor y pago de impuesto

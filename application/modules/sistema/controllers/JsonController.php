@@ -18,6 +18,7 @@ class Sistema_JsonController extends Zend_Controller_Action
     private $empresaDAO = null;
 
     private $empresasDAO = null;
+    private $coloniaDAO = null;
 
     public function init()
     {
@@ -34,6 +35,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 		$this->proyectoDAO = new Contabilidad_DAO_Proyecto;
 		$this->multiploDAO = new Inventario_DAO_Multiplo;
 		$this->bancosEmpresaDAO = new Contabilidad_DAO_Fondeo;
+		$this->coloniaDAO = new Sistema_DAO_Colonia;
 		$this->db = Zend_Db_Table::getDefaultAdapter();
     }
 
@@ -181,8 +183,42 @@ class Sistema_JsonController extends Zend_Controller_Action
         }
     }
 
+    public function coloniasAction()
+    {
+        // action body
+        $idMunicipio = $this->getParam("mun");
+        $colonias = $this->municipioDAO->obtenerColonias($idMunicipio);
+        
+        $arrayColonias = array();
+        
+        foreach ($colonias as $colonia) {
+            //$arrayMunicipios[] = array("idMunicipio"=>$municipio->getIdMunicipio(), "municipio"=>$municipio->getMunicipio());
+        
+            $arrayColonias[] = array("idColonia"=>$colonia->getIdColonia(), "colonia"=>$colonia->getColonia(), "CP"=>$colonia->getCP());
+        }
+        //print_r($municipios);
+        //$this->view->jsonArray = json_encode($arrayMunicipios);
+        //return json_encode($arrayMunicipios);
+        echo Zend_Json::encode($arrayColonias);
+    }
+
+    public function obtienecpAction()
+    {
+        $col = $this->getParam("col");
+        $colonia  = $this->coloniaDAO->obtenerColonia($col);
+        if(!is_null($colonia)){
+            echo Zend_Json::encode($colonia);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+    }
+
 
 }
+
+
+
+
 
 
 

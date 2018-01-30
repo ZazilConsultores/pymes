@@ -53,6 +53,52 @@
 				}
 			});
 		});
+
+		$("select#1-idMunicipio").on('change', function(){
+			//console.log(this.value);
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/sistema/json/colonias/mun/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					$("select#1-idColonias").empty();
+					$("input#1-codigoPostal").empty();
+					$.each(data, function(i,item){//function(key,value)		
+						$("select#1-idColonias").append($("<option></option>").attr("value",data[i].idColonia).text(data[i].colonia));
+						$("input#1-codigoPostal").val(data[i].CP)
+						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
+					});
+					
+				}
+			});
+		});
+
+		$("select#1-idColonias").on('change', function(){
+			console.log('Hola');
+			//Borro el contenido del select municipio
+			//Obtengo los municipios del estado
+			$url = "/General/sistema/json/obtienecp/col/" + this.value;
+			console.log($url);
+			$.ajax({
+				url: $url,
+				dataType: "json",
+				success: function(data){
+					console.log($url);
+					console.dir(data);
+					//$("input#1-codigoPostal").empty();
+					
+					$("input#1-codigoPostal").val(data.CP)
+						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
+					
+					
+				}
+			});
+		});
 		
 	});
 </script>

@@ -6,11 +6,14 @@
  */
 class Inventario_DAO_Municipio implements Inventario_Interfaces_IMunicipio {
 	private $tablaMunicipio;
+	private $tablaColonia;
 	
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		
 		$this->tablaMunicipio = new Sistema_Model_DbTable_Municipio(array('db'=>$dbAdapter));
+		$this->tablaColonia = new Sistema_Model_DbTable_Colonia(array('db'=>$dbAdapter));
+	
 	}
 	
 	public function obtenerMunicipio($idMunicipio)
@@ -43,6 +46,24 @@ class Inventario_DAO_Municipio implements Inventario_Interfaces_IMunicipio {
 		return $modelMunicipios;
 		
 	}
+	
+	public function obtenerColonias($idMunicipio)
+	{
+	    $tablaCol= $this->tablaColonia;
+	    $where = $tablaCol->getAdapter()->quoteInto("idMunicipio = ?", $idMunicipio);
+	    $rowsColonias= $tablaCol->fetchAll($where);
+	    
+	    $modelColonias = array();
+	    
+	    foreach ($rowsColonias as $rowColonia) {
+	        $modelColonia = new Sistema_Model_Colonia($rowColonia->toArray());
+	        $modelColonias[] = $modelColonia;
+	    }
+	    
+	    return $modelColonias;
+	    
+	}
+	
 	public function crearMunicipio(Sistema_Model_Municipio $idMunicipio)
 	{
 		$tablaMunicipio = $this->tablaMunicipio;

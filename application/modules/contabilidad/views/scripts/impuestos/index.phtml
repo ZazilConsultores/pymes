@@ -34,7 +34,7 @@
 				<td><?php echo $impuesto->getDescripcion() ?></td>
 				<td><?php echo $impuesto->getEstatus() ?></td>
 				<td><?php echo $impuesto->getSat3() ?></td>
-				<td><?php echo $impuesto->getFechaPublicacion() ?></td>
+				<td><?php echo  date("d-m-Y", strtotime($impuesto->getFechaPublicacion())) ?></td>
 				<td>
 					
 					<a class="btn btn-info" href="<?php echo $this->url(array("module"=>"contabilidad","controller"=>"impuestos","action"=>"enlazar")) ?>">

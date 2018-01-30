@@ -39,8 +39,8 @@
 						<td><?php echo $proyecto->getNumeroFolio() ?></td>
 						<td><?php echo $sucursal->getNombreSucursal() ?></td>
 						<td><?php echo $proyecto->getDescripcion() ?></td>
-						<td><?php echo $proyecto->getFechaApertura() ?></td>
-						<td><?php echo $proyecto->getFechaCierre() ?></td>
+						<td><?php echo  date("d-m-Y", strtotime($proyecto->getFechaApertura())); ?></td>
+						<td><?php echo  date("d-m-Y", strtotime($proyecto->getFechaCierre())); ?></td>
 						<td><?php echo $proyecto->getCostoInicial() ?></td>
 						<td><?php echo $proyecto->getCostoFinal() ?></td>
 						<td><?php echo $proyecto->getGanancia() ?></td>
