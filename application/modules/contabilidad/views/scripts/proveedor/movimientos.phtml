@@ -321,14 +321,15 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoCF").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu =item['mov']['idSucursal'];
-					if(sucu == 2 ){
+					var tipoM =item['mov']['idTipoMovimiento'];
+					var su =item['mov']['idSucursal'];
+					if(tipoM == 4 || tipoM == 7 || tipoM == 12 && su ==2){
 						console.log("El tipo es factura Proveedor");
 						tbody.append($('<tr>').
 						append($('<td>').append(item['mov']['idTipoMovimiento'])).
 						append($('<td>').append(item['mov']['idProyecto'])).	
-						append($('<td>').append(item['mov'][''])).
-						append($('<td>').append([item].idSucursal)));
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['idTipoMovimiento'])));
 					}
 				});
 			AddRowCF();
