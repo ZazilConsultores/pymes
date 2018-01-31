@@ -612,23 +612,26 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		//print_r($idsTipo);
 		$idsMov = array();
 		foreach ($idsTipo as $idTipo){
-		    $select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idTipoMovimiento = ?", $idTipo)->where('idCoP = ?', $idCoP);
+		    $select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idTipoMovimiento = ?", $idTipo);
 		    $rowsId = $tablaMovimientos->fetchAll($select)->toArray();
-		    foreach ($rowsId as $rowId){
-		        $idsMov [] = $rowId['idTipoMovimiento'];
-		    }
+		    print_r($select->__toString());
+		    /*foreach ($rowsId as $rowId){
+		        $idsMov [] = $rowId['idCoP'];
+		    }*/
 		    
 		}
 		//print_r($idsMov);
-		foreach ($idsMov as $idMov){
+		/*foreach ($idsMov as $idMov){
 		    $iMovi = array();
-		    $select = $tablaMovimientos->select()->from($tablaMovimientos,array('idTipoMovimiento','idSucursal','idProyecto','numeroFolio'))->where("idTipoMovimiento = ?", $idMov);
-		    $row = $tablaMovimientos->fetchAll($select)->toArray();
-		    print_r($select->__toString());
-		    /*$iMovi['mov'] = $row;
-		    $movto[] =$iMovi;*/
+		    $select = $tablaMovimientos->select()->from($tablaMovimientos,array('idTipoMovimiento','idSucursal','idProyecto','numeroFolio'))->where('idCoP =?',$idCoP);
+		    $row = $tablaMovimientos->fetchRow($select)->toArray();
+		    //print_r($select->__toString());
+		    $iMovi['mov'] = $row;
+		    $movto[] =$iMovi;
 		}
-		return $movto;
+		return $movto;*/
+		
+		
 	}
 	
 	//Obtiene los movimientos de remision de proveedor y pago de impuesto

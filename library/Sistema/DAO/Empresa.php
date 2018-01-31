@@ -128,6 +128,8 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			}
 			//Insertamos en domicilio
 			unset($datos[1]["idEstado"]);
+			print_r($datos[1]);
+			print_r("<br />");
 			$dbAdapter->insert("Domicilio", $datos[1]);
 			$idDomicilio = $dbAdapter->lastInsertId("Domicilio","idDomicilio");
 			$dbAdapter->insert("FiscalesDomicilios", array("idFiscales"=>$idFiscales,"idDomicilio"=>$idDomicilio,"fecha" => $fecha,"esSucursal"=>"N"));
@@ -142,7 +144,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
 			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail, "fecha"=>date("Y-m-d h:i:s",time())));
 			
-			$dbAdapter->commit();
+			///$dbAdapter->commit();
 			
 		}catch(Exception $ex){
 		    $dbAdapter->rollBack();

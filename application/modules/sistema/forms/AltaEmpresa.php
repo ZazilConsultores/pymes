@@ -108,16 +108,16 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eMunicipio->setAttrib("class", "form-control");
 		$eMunicipio->setRegisterInArrayValidator(FALSE);
 		foreach ($municipios as $municipio) {
-			//$eMunicipio->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
+			$eMunicipio->addMultiOption($municipio->getIdMunicipio(),$municipio->getMunicipio());
 		}
 		$eCP = new Zend_Form_Element_Text("codigoPostal");
 		$eCP->setLabel("Codigo Postal");
 		$eCP->setAttrib("class", "form-control");
 		//$eCP->setAttrib("required", "true");
 		
-		/*$colonias = $municipioDAO->obtenerColonias("818");
+		$colonias = $municipioDAO->obtenerColonias("818");
 		//$eMunicipio->setMultiOptions(array("0"=>"Seleccione Estado"));
-		$eColoni = new Zend_Form_Element_Select("idColonias");
+		$eColoni = new Zend_Form_Element_Select("idColonia");
 		$eColoni->setLabel("Seleccione Colonia: ");
 		$eColoni->setAttrib("class", "form-control");
 		$eColoni->setRegisterInArrayValidator(FALSE);
@@ -125,7 +125,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		foreach ($colonias as $colonia) {
 		    $eColoni->addMultiOption($colonia->getIdColonia(),$colonia->getColonia());
 		    $eCP->setValue($colonia->getCP());
-		}*/
+		}
 		
 		$eCalle = new Zend_Form_Element_Text("calle");
 		$eCalle->setLabel("Calle:");
@@ -150,7 +150,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eNumExterior->setLabel("Numero Exterior");
 		$eNumExterior->setAttrib("class", "form-control");
 		
-		$subDomicilio->addElements(array($eEstado,$eMunicipio/*$eColoni*/,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
+		$subDomicilio->addElements(array($eEstado,$eMunicipio,$eColoni,$eCalle,$eNumInterior,$eNumExterior/*$eColonia*/,$eCP));
 		$subDomicilio->setElementDecorators($decoratorsElemento);
 		$subDomicilio->setDecorators($decoratorsCategoria);
 		//   ===============================================================

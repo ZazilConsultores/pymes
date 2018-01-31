@@ -78,24 +78,15 @@
 			});
 		});
 
-		$("select#1-idColonias").on('change', function(){
+		$("select#1-idColonia").on('change', function(){
 			console.log('Hola');
-			//Borro el contenido del select municipio
-			//Obtengo los municipios del estado
 			$url = "/General/sistema/json/obtienecp/col/" + this.value;
-			console.log($url);
+			//console.log($url);
 			$.ajax({
 				url: $url,
 				dataType: "json",
 				success: function(data){
-					console.log($url);
-					console.dir(data);
-					//$("input#1-codigoPostal").empty();
-					
-					$("input#1-codigoPostal").val(data.CP)
-						//$("select#1-idMunicipio").append($("<option></option>").attr("value",key).text(value)); 
-					
-					
+					$("input#1-codigoPostal").val(data.CP)	
 				}
 			});
 		});
