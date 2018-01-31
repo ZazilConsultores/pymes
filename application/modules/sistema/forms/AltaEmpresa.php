@@ -150,7 +150,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eNumExterior->setLabel("Numero Exterior");
 		$eNumExterior->setAttrib("class", "form-control");
 		
-		$subDomicilio->addElements(array($eEstado,$eMunicipio,$eColoni,$eCalle,$eNumInterior,$eNumExterior/*$eColonia*/,$eCP));
+		$subDomicilio->addElements(array($eEstado,$eMunicipio/*$eColoni*/,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
 		$subDomicilio->setElementDecorators($decoratorsElemento);
 		$subDomicilio->setDecorators($decoratorsCategoria);
 		//   ===============================================================

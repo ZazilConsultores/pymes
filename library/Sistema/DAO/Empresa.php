@@ -144,7 +144,7 @@ class Sistema_DAO_Empresa implements Sistema_Interfaces_IEmpresa {
 			$idEmail = $dbAdapter->lastInsertId("Email","idEmail");
 			$dbAdapter->insert("FiscalesEmail", array("idFiscales"=>$idFiscales,"idEmail"=>$idEmail, "fecha"=>date("Y-m-d h:i:s",time())));
 			
-			///$dbAdapter->commit();
+			$dbAdapter->commit();
 			
 		}catch(Exception $ex){
 		    $dbAdapter->rollBack();
