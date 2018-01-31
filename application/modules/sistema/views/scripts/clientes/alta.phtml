@@ -32,6 +32,7 @@
 </section>
 <script>
 	$().ready(function(){
+		$("input#1-colonia").removeClass("hidden");
 		$("select#1-idEstado").on('change', function(){
 			console.log(this.value);
 			//Borro el contenido del select municipio
@@ -79,7 +80,9 @@
 		});
 
 		$("select#1-idColonia").on('change', function(){
-			console.log('Hola');
+			var descol =  $("select#1-idColonia  option:selected").text();
+			console.log(descol);
+			$("input#1-colonia").val(descol);
 			$url = "/General/sistema/json/obtienecp/col/" + this.value;
 			//console.log($url);
 			$.ajax({

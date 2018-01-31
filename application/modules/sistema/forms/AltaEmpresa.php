@@ -132,8 +132,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eCalle->setAttrib("class", "form-control");
 		$eCalle->setAttrib("required", "true");
 		
-		$eColonia = new Zend_Form_Element_Text("colonia");
-		$eColonia->setLabel("Colonia");
+		$eColonia = new Zend_Form_Element_Hidden('colonia');
 		$eColonia->setAttrib("class", "form-control");
 		$eColonia->setAttrib("required", "true");
 		
@@ -150,7 +149,7 @@ class Sistema_Form_AltaEmpresa extends Zend_Form
 		$eNumExterior->setLabel("Numero Exterior");
 		$eNumExterior->setAttrib("class", "form-control");
 		
-		$subDomicilio->addElements(array($eEstado,$eMunicipio/*$eColoni*/,$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
+		$subDomicilio->addElements(array($eEstado,$eMunicipio,/*$eColoni,*/$eCalle,$eNumInterior,$eNumExterior,$eColonia,$eCP));
 		$subDomicilio->setElementDecorators($decoratorsElemento);
 		$subDomicilio->setDecorators($decoratorsCategoria);
 		//   ===============================================================

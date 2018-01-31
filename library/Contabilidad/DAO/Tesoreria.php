@@ -168,11 +168,11 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');
 		try{
 			if(($empresa['pagada']) == "1"){
-				$conceptoPago = "LI";
+				$conceptoPago = "PUE";
 				$importePagado = $nomina['subsidio'];
 				$saldo = 0;
 			}else{
-				$conceptoPago = "PE";
+				$conceptoPago = "PPD";
 				$importePagado = 0;
 				$saldo = $nomina['nominaxpagar'];
 			}
@@ -192,6 +192,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				'total'=>$nomina['nominaxpagar'],
 				'folioFiscal'=>$empresa['folioFiscal'],
 				'importePagado'=>$nomina['subsidio'],
+			    'CFDI'=>'-',
 				'saldo'=>$saldo
 			);
 			$dbAdapter->insert("Factura",$mFactura);
