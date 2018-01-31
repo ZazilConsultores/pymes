@@ -623,7 +623,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		foreach ($idsMov as $idMov){
 		    $iMovi = array();
 		    $select = $tablaMovimientos->select()->from($tablaMovimientos,array('idTipoMovimiento','idSucursal','idProyecto','numeroFolio'))->where("idTipoMovimiento = ?", $idMov);
-		    $row = $tablaMovimientos->fetchRow($select)->toArray();
+		    $row = $tablaMovimientos->fetchAll($select)->toArray();
 		    print_r($select->__toString());
 		    /*$iMovi['mov'] = $row;
 		    $movto[] =$iMovi;*/
