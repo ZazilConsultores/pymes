@@ -83,6 +83,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 					'total'=>$importe[0]['total'],
 					'saldo'=>$saldo,
 					'folioFiscal'=>$encabezado['folioFiscal'],
+				    'CFDI'=>'-',
 					'importePagado'=>$importePagado
 				);	
 				$dbAdapter->insert("Factura", $mFactura);
@@ -1100,7 +1101,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	                    'idDivisa'=>1,
 	                    'numeroFactura'=>$encabezado['numeroFactura'],
 	                    'estatus'=>"A",
-	                    'conceptoPago'=>"LI",
+	                    'conceptoPago'=>"PUE",
 	                    'descuento'=>$importe[0]['descuento'],
 	                    'formaPago'=>$rowCXC['formaLiquidar'],
 	                    'fecha'=>$stringFecha,
@@ -1108,6 +1109,7 @@ class Contabilidad_DAO_FacturaCliente implements Contabilidad_Interfaces_IFactur
 	                    'total'=>$importe[0]['total'],
 	                    'saldo'=>'0',
 	                    'folioFiscal'=>$encabezado['folioFiscal'],
+	                    'CFDI'=>'-',
 	                    'importePagado'=>$importe[0]['total']
 	                );
 	                $dbAdapter->insert("Factura", $mFactura);

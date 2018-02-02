@@ -294,7 +294,7 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
     public function remisioncafeAction()
     {
         $request = $this->getRequest();
-        $select = $this->db->select()->from("Producto")->where("producto like ?",'Paquete%')->orWhere("producto like ?",'Desayuno niño%')
+        $select = $this->db->select()->from("Producto")->where("producto like ?",'Paquete%')->orWhere("producto like ?",'Desayuno posadas%')
         ->orWhere("claveProducto like ?",'PTVTBBCC%')->orWhere("claveProducto like ?",'PTVTENCC%')->orWhere("claveProducto like ?",'PTVTDECC%')->order("producto ASC");
         $statement = $select->query();
         $rowsProducto =  $statement->fetchAll();
@@ -311,9 +311,8 @@ class Contabilidad_ClientesController extends Zend_Controller_Action
                 $productos = json_decode($encabezado['productos'], TRUE);
                 //print_r($productos);
                 $contador = 0;
-                try{
+                try{        
                     $remisionSalidaDAO->restaProductoCafeteria($encabezado, $productos, $formaPago);
-                   
                     $contador++;
                     $this->view->messageSuccess ="Remision de Salida realizada exitosamente!!" ;
                 }catch(Util_Exception_BussinessException $ex){

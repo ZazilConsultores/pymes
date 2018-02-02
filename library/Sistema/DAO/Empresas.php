@@ -85,6 +85,7 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        }
 	    }
 	    
+	    //print_r($idsBanco);
 	    
 	    // Variable Contenedor General
 	    $saldosBanco = array();
@@ -95,8 +96,10 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        
 	        $select = $tB->select()->from($tB,array('idBanco','banco'))->where('idBanco=?',$idBanco)->order('banco');
 	        $rowBanco = $tB->fetchRow($select)->toArray();
+	        //print_r($select->__toString());
+	      
 	        // Agrego Banco
-	        $itemBanco['banco'] = $rowBanco; 
+	       //$itemBanco['banco'] = $rowBanco; 
 	       
 	       
 	        $select = $tCxC->select()->from($tCxC,array('totalEntradas'=>'SUM(total)'))

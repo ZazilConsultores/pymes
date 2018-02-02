@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 interface Inventario_Interfaces_ICardex{
-    public function obtenerIdProducto($idSucursal,$idProducto);
+    public function obtenerIdProductoCardex($idSucursal,$idProducto);
 	
 	
 }

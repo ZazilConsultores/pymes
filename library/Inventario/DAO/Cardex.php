@@ -14,10 +14,11 @@
 	
 		$this->tablaCardex = new Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
 	}
-	public function obtenerIdProducto($idSucursal,$idProducto){
+	public function obtenerIdProductoCardex($idSucursal,$idProducto){
 	    $tablaCardex = $this->tablaCardex;
 	    $select = $tablaCardex->select()->from($tablaCardex)->where("idProducto = ?", $idProducto)
 	    ->where("idSucursal = ?", $idSucursal);
+	    //print_r($select->__toString());
 	    $rowsProducto = $tablaCardex->fetchAll($select);
 	    if(is_null($rowsProducto)){
 	        return null;

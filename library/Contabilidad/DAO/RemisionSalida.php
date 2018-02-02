@@ -410,12 +410,12 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	    $stringIni = $dateIni->toString ('yyyy-MM-dd');
 	    try {
 	        if(($formaPago['pagada']) == "1"){
-	           $conceptoPago = "LI";
+	           $conceptoPago = "PUE";
 	           $importePagado = $formaPago['importePago'];
 	           $saldo = 0;
 	           $estatus = 'A';
 	       }else{
-	            $conceptoPago = "PE";
+	           $conceptoPago = "PPD";
 	           $importePagado = 0;
 	           $saldo = $formaPago['importePago'];
 	           $estatus = 'P';
@@ -467,8 +467,67 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           'entrega'=>$producto['tipoEmpaque']
 	           
 	       );
-
+	       print_r($mMovtos);
 	       $dbAdapter->insert("Movimientos",$mMovtos);
+	       print_r("<br />"); print_r("<br />");
+	       print_r("<br />");print_r("<br />");print_r("<br />");print_r("<br />");
+	       $tablaCapas = $this->tablaCapas;
+	       $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion'])
+	       ->order("fechaEntrada ASC");
+	       print_r("$select");
+	       $rowCapas = $tablaCapas->fetchRow($select);
+	       //=======================================Seleccionar tabla Movimiento
+	       $tablaMovimiento = $this->tablaMovimiento;
+	       $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("idProducto =?", $producto['descripcion'])
+	       ->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
+	       ->where("idCoP=?",$encabezado['idCoP'])
+	       ->where("idEmpresas=?",$encabezado['idEmpresas'])
+	       ->where("fecha=?",$stringIni)
+	       ->order("secuencial DESC");
+	       print_r("$select");
+	       $rowMovimiento = $tablaMovimiento->fetchRow($select);
+	       
+	       $tablaMultiplos = $this->tablaMultiplos;
+	       $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+	       $rowMultiplo = $tablaMultiplos->fetchRow($select);
+	       
+	       $cantidad = 0;
+	       $precioUnitario = 0;
+	       $cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+	       $precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+	       //SecuencialEntrada
+	       $tablaCardex = $this->tablaCardex;
+	       $select = $tablaCardex->select()->from($tablaCardex)->where("numeroFolio=?",$encabezado['numFolio'])
+	       ->where("idSucursal=?",$encabezado['idSucursal'])
+	       ->where("fechaEntrada=?", $stringIni)
+	       ->order("secuencialEntrada DESC");
+	       print_r("$select");
+	       $rowCardex = $tablaCardex->fetchRow($select);
+	       if(!is_null($rowCardex)){
+	           $secuencialSalida= $rowCardex->secuencialSalida + 1;
+	       }else{
+	           $secuencialSalida = 1;
+	       }
+	       $costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
+	       $costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
+	       $utilidad = $costoSalida- $costo;
+	       $mCardex = array(
+	           'idSucursal'=>$encabezado['idSucursal'],
+	           'numerofolio'=>$encabezado['numFolio'],
+	           'idProducto'=>$producto['descripcion'],
+	           'idDivisa'=>1,
+	           'secuencialEntrada'=>$rowCapas['secuencial'],
+	           'fechaEntrada'=>$rowCapas['fechaEntrada'],
+	           'secuencialSalida'=>$secuencialSalida,
+	           'fechaSalida'=>$stringIni,
+	           'cantidad'=>$cantidad,
+	           'costo'=>$costo,
+	           'costoSalida'=>$costoSalida,
+	           'utilidad'=>$utilidad
+	       );
+	       print_r($mCardex);
+	       $dbAdapter->insert("Cardex",$mCardex);
+	     
 	       if(!is_null($rowProducto && !is_null($rowMultiplo))){
 	           $claveProducto = substr($rowProducto->claveProducto, 0,2);
 	           switch($claveProducto){
@@ -550,7 +609,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                           print_r("$select"); print_r("<br />");
 	                                           $cantInv = $rowInventario->existenciaReal - $cantMateria;
 	                                           //print_r($cantInv); print_r("<br />");
-	                                           if( $cantInv > 0){
+	                                           if($cantInv > 0){
 	                                               //Actualizamos capas conforme tipoInventario PEPS
 	                                               $tablaCapas = $this->tablaCapas;
 	                                               $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?", $rowInventario["idProducto"]);
@@ -613,8 +672,10 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                           $rowInventario->existenciaReal = $cantInv;
 	                           $rowInventario->save();
 	                       }//if $rowProductoEnlazado
+	                       
 	                   }// foreach $rowProductoComp
 	                   
+	                  
 	                   break;
 	               case 'VS':
 	                   break;
@@ -721,6 +782,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           }//switch
 	       }//Cierra if rowMultiplo y Producto
 	       $resta = $this->restaDesechableCafe($producto);
+	      
 	       }
 	       if(($formaPago['pagada'])=="1"){
 	           $mCuentasxc = array(
@@ -1168,4 +1230,85 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	        }
 	    }
 	   }
+	   
+
+	   public function creaCardex(array $encabezado, $producto){
+	       $dbAdapter =  Zend_Registry::get('dbmodgeneral');
+	       $dbAdapter->beginTransaction();
+	       $dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
+	       $stringIni = $dateIni->toString ('yyyy-MM-dd');
+	       
+	       try{
+	           $tablaCapas = $this->tablaCapas;
+	           $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion'])
+	           ->order("fechaEntrada ASC");
+	           print_r("$select");
+	           $rowCapas = $tablaCapas->fetchRow($select);
+	           //=======================================Seleccionar tabla Movimiento
+	           $tablaMovimiento = $this->tablaMovimiento;
+	           $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("idProducto =?", $producto['descripcion'])
+	           ->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
+	           ->where("idCoP=?",$encabezado['idCoP'])
+	           ->where("idEmpresas=?",$encabezado['idEmpresas'])
+	           ->where("fecha=?",$stringIni)
+	           ->order("secuencial DESC");
+	           print_r("$select");
+	           $rowMovimiento = $tablaMovimiento->fetchRow($select);
+	           
+	           $tablaMultiplos = $this->tablaMultiplos;
+	           $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+	           $rowMultiplo = $tablaMultiplos->fetchRow($select);
+	           
+	           $cantidad = 0;
+	           $precioUnitario = 0;
+	           $cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
+	           $precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
+	           //SecuencialEntrada
+	           $tablaCardex = $this->tablaCardex;
+	           $select = $tablaCardex->select()->from($tablaCardex)->where("numeroFolio=?",$encabezado['numFolio'])
+	           ->where("idSucursal=?",$encabezado['idSucursal'])
+	           ->where("fechaEntrada=?", $stringIni)
+	           ->order("secuencialEntrada DESC");
+	           print_r("$select");
+	           $rowCardex = $tablaCardex->fetchRow($select);
+	           if(!is_null($rowCardex)){
+	               $secuencialSalida= $rowCardex->secuencialSalida + 1;
+	           }else{
+	               $secuencialSalida = 1;
+	           }
+	           $costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
+	           $costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
+	           $utilidad = $costoSalida- $costo;
+	           $mCardex = array(
+	               'idSucursal'=>$encabezado['idSucursal'],
+	               'numerofolio'=>$encabezado['numFolio'],
+	               'idProducto'=>$producto['descripcion'],
+	               'idDivisa'=>1,
+	               'secuencialEntrada'=>$rowCapas['secuencial'],
+	               'fechaEntrada'=>$rowCapas['fechaEntrada'],
+	               'secuencialSalida'=>$secuencialSalida,
+	               'fechaSalida'=>$stringIni,
+	               'cantidad'=>$cantidad,
+	               'costo'=>$costo,
+	               'costoSalida'=>$costoSalida,
+	               'utilidad'=>$utilidad
+	           );
+	           print_r($mCardex);
+	           $dbAdapter->insert("Cardex",$mCardex);
+	           $dbAdapter->commit();
+	       }catch(exception $ex){
+	           print_r("<br />");
+	           print_r("================");
+	           print_r("<br />");
+	           print_r("Excepcion Lanzada");
+	           print_r("<br />");
+	           print_r("================");
+	           print_r("<br />");
+	           print_r($ex->getMessage());
+	           print_r("<br />");
+	           print_r("<br />");
+	           $dbAdapter->rollBack();
+	       }
+	   }
+	   
 }

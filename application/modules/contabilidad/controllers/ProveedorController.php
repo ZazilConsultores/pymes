@@ -191,6 +191,7 @@ class Contabilidad_ProveedorController extends Zend_Controller_Action
 		if($request->isPost()){
 			if($formulario->isValid($request->getPost())){
 				$anticipo = $formulario->getValues();
+				print_r($anticipo);
 				try{
 					$this->anticipoDAO->guardaAnticipoProveedor($anticipo);
 					$this->view->messageSuccess = "Anticipo: <strong>".$anticipo["numeroReferencia"]."</strong> creado exitosamente";

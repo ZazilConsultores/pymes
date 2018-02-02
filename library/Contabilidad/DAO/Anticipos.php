@@ -36,7 +36,7 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 			$anticipo['comentario'] ="-";
 			$anticipo['fechaPago'] =$stringfecha;
 			$anticipo['estatus'] ="A";
-			$anticipo['conceptoPago'] ="LI";
+			$anticipo['conceptoPago'] ="PUE";
 			$anticipo['subtotal'] = 0;
 			$tablaCXC = $this->tablaCuentasxc;
 			$select = $tablaCXC->select()->from($tablaCXC)->where("idCoP=?",$anticipo['idCoP'])->where("idSucursal=?",$anticipo['idSucursal'])->where("fecha=?", $anticipo['fecha'])->order("secuencial DESC");
@@ -91,7 +91,7 @@ class Contabilidad_DAO_Anticipos implements Contabilidad_Interfaces_IAnticipos{
 			$anticipo['comentario'] ="-";
 			$anticipo['fechaPago'] = $stringfecha;
 			$anticipo['estatus'] ="A";
-			$anticipo['conceptoPago'] ="LI";
+			$anticipo['conceptoPago'] ="PUE";
 			$anticipo['subtotal'] = 0;
 			$tablaCXP = $this->tablaCuentasxp;
 			$select = $tablaCXP->select()->from($tablaCXP)->where("idCoP=?",$anticipo['idCoP'])->where("idSucursal=?",$anticipo['idSucursal'])->where("fecha=?", $anticipo['fecha'])->order("secuencial DESC");

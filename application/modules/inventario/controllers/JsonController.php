@@ -135,7 +135,7 @@ class Inventario_JsonController extends Zend_Controller_Action
         $idSucursal= $this->getParam("suc");
         $idProducto= $this->getParam("prod");
 
-        $cardex  = $this->cardexoDAO->obtenerIdProducto($idSucursal, $idProducto);
+        $cardex  = $this->cardexoDAO->obtenerIdProductoCardex($idSucursal, $idProducto);
         if(!is_null($cardex)){
             echo Zend_Json::encode($cardex);
         }else{

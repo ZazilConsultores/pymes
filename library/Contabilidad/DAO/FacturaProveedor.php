@@ -22,6 +22,8 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	private $tablaFacturaImpuesto;
 	private $tablaProductoCompuesto;
 	private $tablaCuentasxp;
+	private $tablaProyecto;
+	
 		
 	public function __construct() {
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
@@ -42,6 +44,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 		$this->tablaImpuestoProductos = new Contabilidad_Model_DbTable_ImpuestoProductos(array('db'=>$dbAdapter));
 		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
 		$this->tablaCuentasxp = new Contabilidad_Model_DbTable_Cuentasxp(array('db'=>$dbAdapter));
+		$this->tablaProyecto = new Contabilidad_Model_DbTable_Proyecto(array('db'=>$dbAdapter));
 	}
 	
 	public function guardaFactura(array $encabezado, $importe, $formaPago, $productos)
@@ -596,41 +599,35 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	
 	//Obtiene los movimientos de facturaProv y pago nomina
 	public function obtieneProyectoProveedor($idCoP){
-		$tablaTipoMovimiento =  $this->tablaTipoMovimiento;
-		$tablaMovimientos = $this->tablaMovimiento;
-		
-		$select = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "+");
-		$rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
-		$idsTipo = array();
-		foreach ($rowsTipoMovtos as $rowTipoMovto){
-		    $idsTipo[] = $rowTipoMovto['idTipoMovimiento'];
-		}
-	
-		//Variable Contenedor General
-		$movto = array();
-		
-		//print_r($idsTipo);
-		$idsMov = array();
-		foreach ($idsTipo as $idTipo){
-		    $select = $tablaMovimientos->select()->from($tablaMovimientos)->where("idTipoMovimiento = ?", $idTipo);
-		    $rowsId = $tablaMovimientos->fetchAll($select)->toArray();
-		    print_r($select->__toString());
-		    /*foreach ($rowsId as $rowId){
-		        $idsMov [] = $rowId['idCoP'];
-		    }*/
-		    
-		}
-		//print_r($idsMov);
-		/*foreach ($idsMov as $idMov){
-		    $iMovi = array();
-		    $select = $tablaMovimientos->select()->from($tablaMovimientos,array('idTipoMovimiento','idSucursal','idProyecto','numeroFolio'))->where('idCoP =?',$idCoP);
-		    $row = $tablaMovimientos->fetchRow($select)->toArray();
-		    //print_r($select->__toString());
-		    $iMovi['mov'] = $row;
-		    $movto[] =$iMovi;
-		}
-		return $movto;*/
-		
+	    $tM = $this->tablaMovimiento;
+	    $tT = $this->tablaTipoMovimiento;
+	    $tP = $this->tablaProyecto;
+	    $MovPro = array();
+	    
+	    $select = $tM->select()->from($tM,array('idTipoMovimiento','idSucursal','idProyecto','idCoP','numeroFolio','totalImporte'))
+	    ->where('idCoP = ?',$idCoP)->order('numeroFolio ASC');
+	    $rowsMov = $tM->fetchAll($select)->toArray();
+	    //print_r($select->__toString());
+	    
+	    
+	    foreach ($rowsMov as $rowMov){
+	        //Variable item
+	        $itMoPr = array();
+	        $itMoPr['mov'] = $rowMov;
+	        //Buscaa tipo
+	        $select = $tT->select()->from($tT,array('idTipoMovimiento','descripcion'))->where('idTipoMovimiento = ?',$rowMov['idTipoMovimiento']);
+	        $rowT = $tT->fetchRow($select)->toArray();
+	        //print_r($select->__toString());
+	        $itMoPr['tipo'] = $rowT;
+	        
+	        //Busca Proyecto
+	        $select = $tP->select()->from($tP,array('idProyecto', 'descripcion'))->where('idProyecto = ?',$rowMov['idProyecto']);
+	        $rowP = $tP->fetchRow($select)->toArray();
+	        //print_r($select->__toString());
+	        $itMoPr['proy'] = $rowP;
+	        $MovPro[] =$itMoPr;
+	    }
+	    return $MovPro;
 		
 	}
 	
@@ -723,7 +720,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	                    'idDivisa'=>1,
 	                    'numeroFactura'=>$encabezado['numeroFactura'],
 	                    'estatus'=>"A",
-	                    'conceptoPago'=>"LI",
+	                    'conceptoPago'=>"PUE",
 	                    'descuento'=>$importe[0]['descuento'],
 	                    'formaPago'=>$rowCXP['formaLiquidar'],
 	                    'fecha'=>$stringFecha,
@@ -731,6 +728,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	                    'total'=>$importe[0]['total'],
 	                    'saldo'=>'0',
 	                    'folioFiscal'=>$encabezado['folioFiscal'],
+	                    'CFDI'=>$encabezado['CFDI'],
 	                    'importePagado'=>$importe[0]['total']
 	                );
 	                $dbAdapter->insert("Factura", $mFactura);
