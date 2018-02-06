@@ -71,26 +71,39 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	}
 	
 	public function obtieneProyectoCliente($idCoP){
-		$tablaTipoMovimiento =  $this->tablaTipoMovimiento;
-		$select   = $tablaTipoMovimiento->select()->from($tablaTipoMovimiento)->where("afectaInventario = ?", "-");
-		$rowsTipoMovtos = $tablaTipoMovimiento->fetchAll($select);
-		$idsTipoMovimiento = array ();
-		foreach ($rowsTipoMovtos as $rowTipoMovimiento) {
-			if(!in_array($rowTipoMovimiento->idTipoMovimiento, $idsTipoMovimiento)){
-				$idsTipoMovimiento[] = $rowTipoMovimiento->idTipoMovimiento;
-			}
-		}
 		
-		$tablaMovimientos = $this->tablaMovimiento;
-			$select= $tablaMovimientos->select()
-			->setIntegrityCheck(false)
-			->from($tablaMovimientos, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
-			->join('Factura', 'Movimientos.idFactura = Factura.idFactura', array('total','Factura.idSucursal','Factura.idTipoMovimiento','Factura.numeroFactura','Factura.fecha'))
-			->join('Proyecto', 'Movimientos.idProyecto = Proyecto.idProyecto', array('descripcion'))
-			->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo' ))
-			->where('Movimientos.idCoP =?', $idCoP)->where("Movimientos.idTipoMovimiento  IN (?)", $idsTipoMovimiento)->order('Factura.idTipoMovimiento')->order("Factura.numeroFactura ASC");
-			//print_r("$select");
-			return $tablaMovimientos->fetchAll($select);
+	    $tM = $this->tablaMovimiento;
+	    $tT = $this->tablaTipoMovimiento;
+	    $tP = $this->tablaProyecto;
+	    $MovPro = array();
+	    
+	    $select = $tM->select()->from($tM,array('idTipoMovimiento','idSucursal','idProyecto','idCoP','numeroFolio','totalImporte'))
+	    ->where('idCoP = ?',$idCoP)->order('numeroFolio ASC');
+	    $rowsMov = $tM->fetchAll($select)->toArray();
+	    //print_r($select->__toString());
+	    
+	   
+	    
+	    
+	    foreach ($rowsMov as $rowMov){
+	        //Variable item
+	        $itMoPr = array();
+	        $itMoPr['mov'] = $rowMov;
+	        //Buscaa tipo
+	        $select = $tT->select()->from($tT,array('idTipoMovimiento','descripcion'))->where('idTipoMovimiento = ?',$rowMov['idTipoMovimiento'])
+	        ->where("afectaInventario = ?", "-");
+	        $rowT = $tT->fetchRow($select)->toArray();
+	        //print_r($select->__toString());
+	        $itMoPr['tipo'] = $rowT;
+	        
+	        //Busca Proyecto
+	        $select = $tP->select()->from($tP,array('idProyecto', 'descripcion'))->where('idProyecto = ?',$rowMov['idProyecto']);
+	        $rowP = $tP->fetchRow($select)->toArray();
+	        //print_r($select->__toString());
+	        $itMoPr['proy'] = $rowP;
+	        $MovPro[] =$itMoPr;
+	    }
+	    return $MovPro;
 	}
 	
 	public function obtieneProyectoxfecha($idProyecto,$fechaI, $fechaF){

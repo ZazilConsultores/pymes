@@ -340,14 +340,14 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoCF").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					if(sucu == 2 ){
 						console.log("El tipo es factura Proveedor");
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
 					}
 				});
 			AddRowCF();
@@ -368,15 +368,15 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoZA").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 3 ){
 						console.log("El tipo es factura Proveedor");
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
 					}
 				});
 			AddRowZA();
@@ -396,14 +396,13 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxSI").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
-					
+					var sucu = item['mov']['idSucursal'];
 					if(sucu == 4 ){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
 					}
 				});
 			AddRowSI();
@@ -423,15 +422,14 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxIK").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 5 ){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
-					}
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));					}
 				});
 			AddRowIK();
 			calculaTotalIK();
@@ -450,14 +448,14 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxMI").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 6){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
 					}
 				});
 			AddRowMI();
@@ -477,14 +475,14 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxEV").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 7){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
 					}
 				});
 			AddRowEV();
@@ -504,15 +502,15 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxKI").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 8){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
-					}
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
+						}
 				});
 			AddRowKI();
 			calculaTotalKI();
@@ -531,14 +529,15 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxAR").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 9){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));
+						
 					}
 				});
 			AddRowAR();
@@ -558,15 +557,14 @@ $().ready(function(){
 				var tbody = $("table#detalleProyectoxGX").find('tbody');
 				tbody.empty();
 				$.each(data, function(i,item){
-					var sucu = data[i].idSucursal;
+					var sucu = item['mov']['idSucursal'];
 					
 					if(sucu == 10){
 						tbody.append($('<tr>').
-						append($('<td>').append(data[i].descripcionTipo)).
-						append($('<td>').append(data[i].descripcion)).	
-						append($('<td>').append(data[i].numeroFactura)).
-						append($('<td>').append(data[i].total).attr("id", "importe")));
-					}
+						append($('<td>').append(item['tipo']['descripcion'])).
+						append($('<td>').append(item['proy']['descripcion'])).	
+						append($('<td>').append(item['mov']['numeroFolio'])).
+						append($('<td>').append(item['mov']['totalImporte']).attr("id", "importe")));					}
 				});
 			AddRowGI();
 			calculaTotalGI();
