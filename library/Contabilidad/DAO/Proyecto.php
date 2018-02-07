@@ -91,14 +91,9 @@ class Contabilidad_DAO_Proyecto implements Contabilidad_Interfaces_IProyecto {
 	        if($rowTipoMov['idTipoMovimiento']==2){
 	            $tMo  = $this->tablaMovimiento;
 	            $select = $tMo->select()->setIntegrityCheck(false)
-	            ->from($tMo, new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'))
+	            ->from($tMo, array(new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'),'idProyecto'))
 	            ->join('Factura','Movimientos.idFactura = Factura.idFactura',array('idTipoMovimiento','idSucursal','idCoP','numeroFactura','total'))
-	            ->join('Proyecto','Movimientos.idProyecto = Proyecto.idProyecto')
-	            ->join('Clientes','Movimientos.idCoP = Clientes.idCliente')
-	            ->join('Empresa','Clientes.idEmpresa = Empresa.idEmpresa')
-	            ->join('Fiscales','Empresa.idFiscales = Fiscales.idFiscales',  array('razonSocial'))
-	            ->join('TipoMovimiento', 'Movimientos.idTipoMovimiento = TipoMovimiento.idTipoMovimiento', array('descripcion AS descripcionTipo'))
-	            ->where('Movimientos.idTipoMovimiento =?', 2)
+	            ->where('Movimientos.idTipoMovimiento =?', 2)->where('Movimientos.idCoP = ?',$idCoP)
 	            ->order("Factura.numeroFactura ASC");
 	            $rowsMov = $tMo->fetchAll($select)->toArray();
 	            //print_r($select->__toString());

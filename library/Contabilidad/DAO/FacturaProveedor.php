@@ -602,33 +602,81 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	    $tM = $this->tablaMovimiento;
 	    $tT = $this->tablaTipoMovimiento;
 	    $tP = $this->tablaProyecto;
+	    $tF = $this->tablaFactura;
+	    
 	    $MovPro = array();
 	    
-	    $select = $tM->select()->from($tM,array('idTipoMovimiento','idSucursal','idProyecto','idCoP','numeroFolio','totalImporte'))
-	    ->where('idCoP = ?',$idCoP)->order('numeroFolio ASC');
-	    $rowsMov = $tM->fetchAll($select)->toArray();
+	    $select = $tT->select()->from($tT)->where('afectaInventario =?', '+');
+	    $rowsTipoMov = $tM->fetchAll($select)->toArray();
 	    //print_r($select->__toString());
 	    
-	    
-	    foreach ($rowsMov as $rowMov){
-	        //Variable item
-	        $itMoPr = array();
-	        $itMoPr['mov'] = $rowMov;
-	        //Buscaa tipo
-	        $select = $tT->select()->from($tT,array('idTipoMovimiento','descripcion'))->where('idTipoMovimiento = ?',$rowMov['idTipoMovimiento']);
-	        $rowT = $tT->fetchRow($select)->toArray();
-	        //print_r($select->__toString());
-	        $itMoPr['tipo'] = $rowT;
+	    foreach ($rowsTipoMov as $rowTipoMov) {
 	        
-	        //Busca Proyecto
-	        $select = $tP->select()->from($tP,array('idProyecto', 'descripcion'))->where('idProyecto = ?',$rowMov['idProyecto']);
-	        $rowP = $tP->fetchRow($select)->toArray();
-	        //print_r($select->__toString());
-	        $itMoPr['proy'] = $rowP;
-	        $MovPro[] =$itMoPr;
+	        if($rowTipoMov['idTipoMovimiento']==4){ 
+	            $tMo  = $this->tablaMovimiento;
+	            $select = $tMo->select()->setIntegrityCheck(false)
+	            ->from($tMo, array(new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'),'idProyecto'))
+	            ->join('Factura','Movimientos.idFactura = Factura.idFactura',array('idTipoMovimiento','idSucursal','idCoP','numeroFactura','total'))
+	            ->where('Movimientos.idTipoMovimiento =?', 4)->where('Movimientos.idCoP = ?',$idCoP)
+	            ->order("Factura.numeroFactura ASC");
+	            $rowsMov = $tMo->fetchAll($select)->toArray();
+	            //print_r($select->__toString());
+	            
+	        }else{
+	    
+	            $select = $tM->select()->from($tM,array('idTipoMovimiento','idSucursal','idProyecto','idCoP','numeroFolio','totalImporte'))
+	            ->where('idCoP = ?',$idCoP)->where('idTipoMovimiento =?',$rowTipoMov['idTipoMovimiento'])->order('numeroFolio ASC');
+	            $rowsMov = $tM->fetchAll($select)->toArray();
+	            //print_r($select->__toString());
+	        }
+	        
+	        foreach ($rowsMov as $rowMov){
+	            //Variable item
+	            $itMoPr = array();
+	            $itMoPr['mov'] = $rowMov;
+	            //Buscaa tipo
+	            $select = $tT->select()->from($tT,array('idTipoMovimiento','descripcion'))->where('idTipoMovimiento = ?',$rowMov['idTipoMovimiento']);
+	            $rowT = $tT->fetchRow($select)->toArray();
+	            //print_r($select->__toString());
+	            //Si es factura, hay que traer el total en tabla factura
+	            if($rowMov['idTipoMovimiento']==4){
+	                //seleccionas en Movimiento
+	                $datos = array(
+	                    'idTipoMovimiento' =>  $rowMov['idTipoMovimiento'],
+	                    'idSucursal' =>  $rowMov['idSucursal'],
+	                    'idProyecto' =>  $rowMov['idProyecto'],
+	                    'idCoP' =>  $rowMov['idCoP'],
+	                    'numeroFolio' =>  $rowMov['numeroFactura'],
+	                    'totalImporte' =>  $rowMov['total']
+	                    
+	                );
+	                $itMoPr['mov'] = $datos;
+	            }else{
+	                $itMoPr['mov'] = $rowMov;
+	            }
+	            
+	            $itMoPr['tipo'] = $rowT;
+	            
+	            if(is_null($rowMov['idProyecto'])){
+	                $datos = array(
+	                    'idProyecto' => '0',
+	                    'descripcion' => '-'
+	                );
+	                $itMoPr['proy'] = $datos;
+	                $MovPro[] =$itMoPr;
+	                
+	            }else{
+	                //Busca Proyecto
+	                $select = $tP->select()->from($tP,array('idProyecto', 'descripcion'))->where('idProyecto = ?',$rowMov['idProyecto']);
+	                $rowP = $tP->fetchRow($select)->toArray();
+	                //print_r($select->__toString());
+	                $itMoPr['proy'] = $rowP;
+	                $MovPro[] =$itMoPr;
+	            }
+	        }
+	        
 	    }
 	    return $MovPro;
-		
 	}
 	
 	//Obtiene los movimientos de remision de proveedor y pago de impuesto
