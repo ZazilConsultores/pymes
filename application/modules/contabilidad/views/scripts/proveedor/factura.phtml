@@ -338,7 +338,9 @@ $(document).ready(function () {
     	var totalIva;
     	var descuento;
     	var ieps;
+    	var ish;
     	var totalIEPS;
+    	var totalISH;
     	var totalDescuento;	    
     	$("table#productos").find('input[id^="costoTotal_"]').each(function () {
         	grandTotal += +$(this).val();  
@@ -380,6 +382,15 @@ $(document).ready(function () {
 			console.log(totalIEPS);
 			$("input#total").val(totalIEPS.toFixed(2)); 
    	   	}
+
+   		/*ISH*/
+   		ish = $("#ish").val();
+   		console.log(ish);
+   		if (ish !=0){
+   	   		totalISH = parseFloat($("#subTotal").val()) + parseFloat($("input#iva").val()) + parseFloat( $("#ish").val());
+			console.log(totalISH);
+			$("input#total").val(totalISH.toFixed(2)); 
+   	   	}
    	}
    
   	//Habilita IvaPorcentaje
@@ -392,6 +403,9 @@ $(document).ready(function () {
     	calculateGrandTotal();
     });
     $("#ieps").on('change',function(){
+    	calculateGrandTotal();
+    });
+    $("#ish").on('change',function(){
     	calculateGrandTotal();
     });
   	//Calcula por si hay descuento       

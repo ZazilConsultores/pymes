@@ -10,7 +10,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-success">
 			<div class="panel-heading">
-				<h4 class="panel-title">Cierre Por Mes<strong></strong></h4>
+				<h4 class="panel-title">Cierre Banco Por Mes<strong></strong></h4>
 			</div>
 			<div class="panel-body">
 				<form class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded">
@@ -20,7 +20,6 @@
         					<input id="txtMonth" name="txtMonth" type="text" class="date-picker-month form-control" />
         				</div>
             		</div>
-            			
             		<div class="form-group">
             			<label for="txtAnio" class="col-md-1 control-label">Año: </label>
             				<div class="col-md-4">
@@ -29,13 +28,12 @@
             		</div>
 					<!-- Boton consulta -->
 					<div class="form-group">
-						
 						<div class="col-md-offset-2 col-md-10">
-							<button id="querySaldo" type="button" class="btn btn-success">
-								<i class="fa fa-search"></i> Consultar 
-							</button>
-							<button id="querySaldo" type="button" class="btn btn-success">
+						<button id="querySaldo" type="button" class="btn btn-success">
 								<i class="fa fa-search"></i> Generar 
+							</button>
+							<button id="queryConsultar" type="button" class="btn btn-info">
+								<i class="fa fa-search"></i> Consultar 
 							</button>
 							
 						</div>
@@ -48,7 +46,7 @@
 <section>
 	<div class="panel panel-info">
 		<div class="panel-heading">
-			<h4 class="panel-title">Detalle Saldo Banco Por Mes.</h4>
+			<h4 class="panel-title">Detalle Cierre Saldo Banco Por Mes.</h4>
 		</div>
 		<table id="detalleBanco" class="table table-striped table-condensed">
 			<thead>
@@ -65,116 +63,108 @@
 		</table>
 	</div>
 </section>
+
 <script>
-
-    $(function() {
-        $('.date-picker-month').datepicker({
-        	
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'MM',
-            onClose: function(dateText, inst) { 
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
-            }
-        });
-    	$(".date-picker-month").focus(function () {
-            $(".ui-datepicker-year").hide();
-        });
-    });
-    
-    $(function() {
-        $('.date-picker-year').datepicker({
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy',
-            onClose: function(dateText, inst) { 
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, 1));
-            }
-        });
-    	$(".date-picker-year").focus(function () {
-            $(".ui-datepicker-month").hide();
-        });
-    });
-
-    $("#querySaldo").on ('click', function (){
-    	//var mes =  $("#txtMonth").datepicker().datepicker('setDate');
-    	var mes = document.getElementById('txtMonth').value;
-        console.log(mes);
-        
-    });
-
-	//Llena tabla del producto terminado correspondiente
-	$("#querySaldo").on("click", function (){
-		var mes = document.getElementById('txtMonth').value;
-		var sEn = 0;
-		var siEn =0 ;
-		var sSa = 0;
-		var anio = $('#txtAnio').val();
-        console.log(anio);
-		if(mes == 'Enero'){
-			mm = '01';
-	 		console.log(mm);
-	 	}else if(mes == 'Febrero'){
-	 		mm = '02';
-	 	}else if(mes == 'Marzo' ){
-	 		mm = '03';
-	 	}else if(mes == 'Abril'){
-	 		mm = '04';
-	 	}else if(mes == 'Mayo'){
-	 		mm = '05';
-	 	}else if(mes == 'Junio' ){
-	 		mm = '06';
-	 	}else if(mes == 'Julio'){
-	 		mm = '07';
-	 	}else if(mes == 'Agosto' ){
-	 		mm = '08';
-	 	}else if(mes == 'Septiembre'){
-	 		mm = '09';
-	 	}else if(mes == 'Octubre'){
-	 		mm = '10';
-	 	}else if(mes == 'Noviembre'){
-	 		mm = '11';
-	 	}else if(mes == 'Diciembre'){
-	 		mm = '12';
-	 	}
-		var urlSalidas = window.location.origin + "/General/sistema/json/saldoempresames/mm/"+ mm + "/anio/" + anio;
-		// var urlEntradas = window.location.origin + "/General/sistema/json/saldocxcmes/mm/"+ mm;
-		console.log(urlSalidas);
-		//console.log(urlEntradas);
-		$.ajax({
-			//url: urlEntradas,
-			url: urlSalidas,
-			dataType: "json",
-			success: function(data){
-				
-				var tbody = $("table#detalleBanco").find('tbody');
-				tbody.empty();
-				$.each(data, function(i,item){
-					if(mm ==05 && anio == 2017){
-						console.log('Inician entradas en y salidas en 0');
-						tbody.append($('<tr>').
-							  append($('<td>').append(item['banco']['banco'])).
-							  append($('<td>').append(item['saldos']['saldoIniMes'])).	
-							  append($('<td>').append(0)).
-							  append($('<td>').append(0)).
-							  append($('<td>').append(item['saldos']['saldoFinMes'])));
-		
-					}else{
-						tbody.append($('<tr>').
-							  append($('<td>').append(item['banco']['banco'])).
-						      append($('<td>').append(item['saldos']['saldoIniMes'])).	
-							  append($('<td>').append(data[i].entradas.totalEntradas)).
-							  append($('<td>').append(data[i].salidas.totalSalidas)).
-							  append($('<td>').append(item['saldos']['saldoFinMes'])));
-
-					}
-					
-				});
-			}
-		});
+$(function() {
+	
+	$('.date-picker-month').datepicker({
+		changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'MM',
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+        }
 	});
+
+	$(".date-picker-month").focus(function(){
+		$(".ui-datepicker-year").hide();
+    });
+});
+    
+$(function() {
+	
+	$('.date-picker-year').datepicker({
+		changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'yy',
+        onClose: function(dateText, inst){
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, 1));
+        }
+	});
+
+	$(".date-picker-year").focus(function () {
+    	$(".ui-datepicker-month").hide();
+    });
+});
+
+$("#querySaldo").on ('click', function (){
+	var mes = document.getElementById('txtMonth').value;
+});
+
+//Llena tabla del producto terminado correspondiente
+$("#querySaldo").on("click", function (){
+	var mes = document.getElementById('txtMonth').value;
+	var sEn = 0;
+	var siEn =0 ;
+	var sSa = 0;
+	var anio = $('#txtAnio').val();
+
+	if(mes == 'Enero'){
+		mm = '01';
+	}else if(mes == 'Febrero'){
+		mm = '02';
+	}else if(mes == 'Marzo' ){
+		mm = '03';
+	}else if(mes == 'Abril'){
+		mm = '04';
+	}else if(mes == 'Mayo'){
+		mm = '05';
+	}else if(mes == 'Junio' ){
+		mm = '06';
+	}else if(mes == 'Julio'){
+		mm = '07';
+	}else if(mes == 'Agosto' ){
+		mm = '08';
+	}else if(mes == 'Septiembre'){
+		mm = '09';
+	}else if(mes == 'Octubre'){
+		mm = '10';
+	}else if(mes == 'Noviembre'){
+		mm = '11';
+	}else if(mes == 'Diciembre'){
+		mm = '12';
+	}
+
+	var urlSalidas = window.location.origin + "/General/sistema/json/saldoempresames/mm/"+ mm + "/anio/" + anio;
+	console.log(urlSalidas);
+	$.ajax({
+		url: urlSalidas,
+		dataType: "json",
+		success: function(data){
+			var tbody = $("table#detalleBanco").find('tbody');
+			tbody.empty();
+			$.each(data, function(i,item){
+				if(mm ==05 && anio == 2017){
+					tbody.append($('<tr>').
+						append($('<td>').append(item['banco']['banco'])).
+						append($('<td>').append(item['saldos']['saldoIniMes'])).	
+						append($('<td>').append(0)).
+						append($('<td>').append(0)).
+						append($('<td>').append(item['saldos']['saldoFinMes'])));
+				}else{
+					tbody.append($('<tr>').
+						append($('<td>').append(item['banco']['banco'])).
+						append($('<td>').append(item['saldos']['saldoIniMes'])).	
+						append($('<td>').append(data[i].entradas.totalEntradas)).
+						append($('<td>').append(data[i].salidas.totalSalidas)).
+						append($('<td>').append(item['saldos']['saldoFinMes'])));
+				}
+			});
+		}
+	});
+});
 </script>
