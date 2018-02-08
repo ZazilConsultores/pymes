@@ -99,7 +99,7 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        // Agrego Banco
 	        $itemBanco['banco'] = $rowBanco; 
 	       
-	       $select = $tCxC->select()->from($tCxC,array('idBanco','totalEntradas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
+	       $select = $tCxC->select()->from($tCxC,array('totalEntradas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
     	   ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
 	       $rowTotalEntrada = $tCxC->fetchRow($select)->toArray();
 	       //print_r($select->__toString());	      
@@ -112,10 +112,9 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        // Agregamos Total de Salidas
 	        $itemBanco['salidas'] = $rowTotalSalidas;
 	        
-	        $saldosBanco[] =$itemBanco;
-	       
+	        
 	        //Busca el saldo en tabla saldosEmpresa
-	        $select = $tSB->select()->from($tSB, array('entradas','salidas','saldoFinMes','saldoIniMes','idBanco'))
+	        $select = $tSB->select()->from($tSB)
 	        ->where('idBanco=?',$idBanco)->where('mes = ?',$mes)->where('anio=?',$anio);
 	        $rowSB = $tSB->fetchRow($select);
 	      
@@ -130,6 +129,9 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	            //print_r($select->__toString());print_r("<br />");
 	            if($rowsSB['entradas']  !==  $rowTotalE['totalEntradas']){
 	                //print_r('la entrada se ha modificado');print_r("<br />");
+	                $saldoIniMes = $rowMesSA['saldoFinMes'];
+	                $saldoFinMes = $totalEntradas + $saldoIniMes - $totalSalidas;
+	                
 	                $data = array("entradas" => $rowTotalE['totalEntradas']);
 	                $tSalBan = $this->tablaSaldosBancos;
 	                $where = $tSalBan->getAdapter()->quoteInto("idsaldosBancos=?", $rowsSB['idBanco']);
@@ -167,11 +169,12 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	                'saldoFinMes' => $saldoFinMes
 	            );
 	            $tSB->insert($data);
-	            $itemBanco['saldos'] = $rowSB;
+	            $itemBanco['saldos'] = $rowsSB;
 	           
 	        }
+	        
 	        //Agregamos saldoEmpresa
-	        $itemBanco['saldo'] = $rowSB;
+	        //$itemBanco['saldo'] = $rowSB;
 	        $saldosBanco[] =$itemBanco;
 	        
 	    }

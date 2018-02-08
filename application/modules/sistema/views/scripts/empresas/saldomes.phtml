@@ -105,8 +105,46 @@ $("#querySaldo").on ('click', function (){
 	var mes = document.getElementById('txtMonth').value;
 });
 
-//Llena tabla del producto terminado correspondiente
-$("#querySaldo").on("click", function (){
+$("#querySaldo").on("click",function(){
+	var mes = document.getElementById('txtMonth').value;
+	var sEn = 0;
+	var siEn =0 ;
+	var sSa = 0;
+	var anio = $('#txtAnio').val();
+
+	if(mes == 'Enero'){
+		mm = '01';
+	}else if(mes == 'Febrero'){
+		mm = '02';
+	}else if(mes == 'Marzo' ){
+		mm = '03';
+	}else if(mes == 'Abril'){
+		mm = '04';
+	}else if(mes == 'Mayo'){
+		mm = '05';
+	}else if(mes == 'Junio' ){
+		mm = '06';
+	}else if(mes == 'Julio'){
+		mm = '07';
+	}else if(mes == 'Agosto' ){
+		mm = '08';
+	}else if(mes == 'Septiembre'){
+		mm = '09';
+	}else if(mes == 'Octubre'){
+		mm = '10';
+	}else if(mes == 'Noviembre'){
+		mm = '11';
+	}else if(mes == 'Diciembre'){
+		mm = '12';
+	}
+
+	var urlSalidas = window.location.origin + "/General/sistema/json/saldoempresames/mm/"+ mm + "/anio/" + anio;
+	//console.log(urlSalidas);
+	alert("El cierre se ha generado correctamente!!");
+	
+});
+
+$("#queryConsultar").on("click", function (){
 	var mes = document.getElementById('txtMonth').value;
 	var sEn = 0;
 	var siEn =0 ;

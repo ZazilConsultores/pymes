@@ -34,116 +34,113 @@
 		</table>
 	</div>
 </section>
+
 <script>
-	$().ready(function(){
-		var url = window.location.origin + "/General/";
-			
-		$("#idEmpresas").on('change',function(){
-			//console.log($(this).val());
-			var idEmp = $(this).val();
-			if(idEmp != 0){
-				var urlQuerySucursales = url + 'sistema/json/sucursales/idFiscales/'+idEmp;
-				console.log(urlQuerySucursales);
-				$.ajax({
-					url: urlQuerySucursales,
-					dataType: "json",
-					success: function(data){
-						console.dir(data);
-						$("#idSucursal").empty();
-						$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
-						$.each(data, function (i,item){
-							$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
-						});
-					}
+$().ready(function(){
+	var url = window.location.origin + "/General/";
+
+	$("#idEmpresas").on('change',function(){
+		var idEmp = $(this).val();
+		if(idEmp != 0){
+			var urlQuerySucursales = url + 'sistema/json/sucursales/idFiscales/'+idEmp;
+			$.ajax({
+				url: urlQuerySucursales,
+				dataType: "json",
+				success: function(data){
+					$("#idSucursal").empty();
+    				$("#idSucursal").append($("<option></option>").attr("value","0").text("Seleccione Sucursal..."));
+    				$.each(data, function (i,item){
+    					$("#idSucursal").append($("<option></option>").attr("value",data[i].idSucursal).text(data[i].nombreSucursal));
+    				});
+				}
+			});
+		}
+	});
+		
+	$("select#idEmpresas").on('change', function(){
+		$url = url + "contabilidad/json/bancosempresa/emp/" + this.value;
+		$.ajax({
+			url: $url,
+			dataType: "json",
+			success: function(data){
+				$("select#idBanco").empty();
+				$.each(data, function(i,item){	
+					$("select#idBanco").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco));
 				});
 			}
 		});
-		
-		$("select#idEmpresas").on('change', function(){
-			$url = url + "contabilidad/json/bancosempresa/emp/" + this.value;
-			console.log($url);
-			$.ajax({
-				url: $url,
-				//console.log($ajax);
-				dataType: "json",
-				success: function(data){
-					$("select#idBanco").empty();
-					$.each(data, function(i,item){	
-						$("select#idBanco").append($("<option></option>").attr("value",data[i].idBanco).text(data[i].banco));
-						
-					});
-				}
-			});
+	});
+
+	$("#button").on("click", function (){
+		var em = $("select#idEmpresas").val();
+		var ban = $("select#idBanco").val();
+		var urlSBanco = window.location.origin + "/General/sistema/json/saldobanco/em/"+ em + "/ban/" + ban;
+		$.ajax({
+			url: urlSBanco,
+			dataType: "json",
+			success: function(data){
+			var tbody = $("table#detalleSaldoBancoMes").find('tbody');
+			tbody.empty();
+			$.each(data, function(i,item){
+				var mm ;
+				if(data[i].mes == 01){
+					mm= 'Enero';
+				}else if(data[i].mes == 02){
+					mm= 'Febrero';
+				}else if(data[i].mes == 03){
+					mm= 'Marzo';
+				}else if(data[i].mes == 04){
+					mm= 'Abril';
+				}else if(data[i].mes == 05){
+					mm= 'Mayo';
+				}else if(data[i].mes == 06){
+					mm= 'Junio';
+				}else if(data[i].mes == 07){
+					mm= 'Julio';
+				}else if(data[i].mes == 08){
+					mm= 'Agosto';
+				}else if(data[i].mes == 09){
+					mm= 'Septiembre';
+				}else if(data[i].mes == 10){
+					mm= 'Octubre';
+				}else if(data[i].mes == 11){
+					mm= 'Noviembre';
+				}else if(data[i].mes == 12){
+					mm= 'Diciembre';
+				}	
+
+				tbody.append($('<tr>').
+					  append($('<td>').append(mm)).	
+					  append($('<td>').append(data[i].anio)).
+					  append($('<td>').append(data[i].entradas).attr("id", "totalEntradas")).
+					  append($('<td>').append(data[i].salidas).attr("id", "totalSalidas")).
+					  append($('<td>').append(data[i].saldoIniMes)).
+					  append($('<td>').append(data[i].saldoFinMes)));	
+				});
+			    AddRow();
+				calculaTotal();
+			}
+		});
+	});
+
+	function AddRow(){
+		$('#detalleSaldoBancoMes tbody').append('<tr><td></td><td><b>Total:</b></td><td><input id="saldoE"class="form-control" style="width:120px"></input></td><td><input id="saldoS"class="form-control" style="width:120px"></input></td><td></td><td></td></tr>');
+    }
+
+	function calculaTotal(){
+		var total = 0;
+
+		$("table#detalleSaldoBancoMes").find("td[id^='totalEntradas']").each(function(){
+			total += +$(this).text();
+			$("#saldoE").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		});
 
-		$("#button").on("click", function (){
-			console.log('sigue');
-			var em = $("select#idEmpresas").val();
-			var ban = $("select#idBanco").val();
-			var urlSBanco = window.location.origin + "/General/sistema/json/saldobanco/em/"+ em + "/ban/" + ban;
-			console.log(urlSBanco);
-			$.ajax({
-				url: urlSBanco,
-				dataType: "json",
-				success: function(data){
-					var tbody = $("table#detalleSaldoBancoMes").find('tbody');
-					tbody.empty();
-					$.each(data, function(i,item){
-						var mm ;
-						if(data[i].mes == 01){
-							mm= 'Enero';
-						}else if(data[i].mes == 02){
-							mm= 'Febrero';
-						}else if(data[i].mes == 03){
-							mm= 'Marzo';
-						}else if(data[i].mes == 04){
-							mm= 'Abril';
-						}else if(data[i].mes == 05){
-							mm= 'Mayo';
-						}else if(data[i].mes == 06){
-							mm= 'Junio';
-						}else if(data[i].mes == 07){
-							mm= 'Julio';
-						}else if(data[i].mes == 08){
-							mm= 'Agosto';
-						}else if(data[i].mes == 09){
-							mm= 'Septiembre';
-						}else if(data[i].mes == 10){
-							mm= 'Octubre';
-						}else if(data[i].mes == 11){
-							mm= 'Noviembre';
-						}else if(data[i].mes == 12){
-							mm= 'Diciembre';
-						}	
-						tbody.append($('<tr>').
-							  append($('<td>').append(mm)).	
-							  append($('<td>').append(data[i].anio)).
-							  append($('<td>').append(data[i].entradas).attr("id", "totalEntradas")).
-							  append($('<td>').append(data[i].salidas).attr("id", "totalSalidas")).
-							  append($('<td>').append(data[i].saldoIniMes)).
-							  append($('<td>').append(data[i].saldoFinMes)));	
-					});
-					AddRow();
-					 calculaTotal();
-				}
-			});
-			
-			
+		$("table#detalleSaldoBancoMes").find("td[id^='totalSalidas']").each(function(){
+			total += +$(this).text();
+			$("#saldoS").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		});
-		function AddRow(){
-			$('#detalleSaldoBancoMes tbody').append('<tr><td></td><td><b>Total:</b></td><td><input id="totalEntradas"class="form-control" style="width:120px"></input></td><td><input id="totalSalidas"class="form-control" style="width:120px"></input></td><td></td><td></td></tr>');
-    	}
-		function calculaTotal(){
-			var total = 0;
-			
-			$("table#detalleSaldoBancoMes").find("td[id^='totalEntradas']").each(function(){
-			   	console.log($(this).text());
-			   	total += +$(this).text(); 
-			   	$("detalleSaldoBancoMes#totalEntradas").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-			   
-			 });
 				
-		}		
-	});//document ready
+	}		
+});//document ready
 </script>
 
