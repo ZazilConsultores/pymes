@@ -10,7 +10,10 @@ class Inventario_JsonController extends Zend_Controller_Action
     private $productoTermindoDAO = null;
 
     private $inventarioDAO = null;
+
     private $cardexoDAO = null;
+    
+    private $descuentoDAO = null;
 
     public function init()
     {
@@ -23,6 +26,7 @@ class Inventario_JsonController extends Zend_Controller_Action
 		$this->productoTermindoDAO = new Inventario_DAO_Productoterminado;
 		$this->inventarioDAO = new Inventario_DAO_Inventario;
 		$this->cardexoDAO = new Inventario_DAO_Cardex;
+		$this->descuentoDAO = new Contabilidad_DAO_Descuentos;
     }
 
     public function indexAction()
@@ -144,8 +148,23 @@ class Inventario_JsonController extends Zend_Controller_Action
         
     }
 
+    public function obtenerdescuentoAction()
+    {
+        $idDescuento= $this->getParam("de");
+       
+        $desc = $this->descuentoDAO->obtenerDescuento($idDescuento);
+        if(!is_null($desc)){
+            echo Zend_Json::encode($desc);
+        }else{
+            echo Zend_Json::encode(array());
+        }
+        
+    }
+
 
 }
+
+
 
 
 

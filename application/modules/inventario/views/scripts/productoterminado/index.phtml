@@ -767,7 +767,7 @@ $(document).ready(function() {
 	$("table#subPT").on("change","select[id^='productoTerminado']", function (){
 		var idPt = $("select#productoTerminado").val();
 		var urlPT = window.location.origin + "/General/inventario/json/productoterminado/productoTerminado/"+idPt;
-		//console.log("El producto terminado es:");console.log(urlPT);
+		console.log(urlPT);
 		$.ajax({
 			url: urlPT,
 			dataType: "json",
@@ -785,6 +785,7 @@ $(document).ready(function() {
 					var botonEliminar = $('<button></button>').attr("id","eliminar").attr("class","btn btn-danger").text("Eliminar").attr("productoCompuesto",data[i].idProductoCompuesto);
 					//var botonEliminar = $('<button></button>').attr("id","eliminar_" + cont).attr("class","btn btn-danger").text("Eliminar").attr("fila",fila);
 					var importe = data[i].cantidad * data[i].costoUnitario;
+					console.log(importe);
 					importe = parseFloat(importe.toFixed(2));
 					var costoUnitario = data[i].costoUnitario;
 						

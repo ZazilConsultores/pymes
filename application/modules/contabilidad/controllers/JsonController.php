@@ -642,7 +642,6 @@ class Contabilidad_JsonController extends Zend_Controller_Action
         } 
     }
 
-
 }
 
 
@@ -684,6 +683,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 
 
 
+
+
+
 	
 	
 	
@@ -695,6 +697,9 @@ class Contabilidad_JsonController extends Zend_Controller_Action
 	
 	
 	
+
+
+
 
 
 

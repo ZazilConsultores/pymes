@@ -176,6 +176,7 @@
             <controllerFile controllerName="Json">
               <actionMethod actionName="index"/>
               <actionMethod actionName="obtienecardex"/>
+              <actionMethod actionName="obtenerdescuento"/>
             </controllerFile>
             <controllerFile controllerName="Multiplos">
               <actionMethod actionName="index"/>
@@ -237,6 +238,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Json">
                 <viewScriptFile forActionName="obtienecardex"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Json">
+                <viewScriptFile forActionName="obtenerdescuento"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -552,6 +556,7 @@
               <testApplicationControllerFile forControllerName="Json">
                 <testApplicationActionMethod forActionName="index"/>
                 <testApplicationActionMethod forActionName="obtienecardex"/>
+                <testApplicationActionMethod forActionName="obtenerdescuento"/>
               </testApplicationControllerFile>
               <testApplicationControllerFile forControllerName="Multiplos">
                 <testApplicationActionMethod forActionName="index"/>

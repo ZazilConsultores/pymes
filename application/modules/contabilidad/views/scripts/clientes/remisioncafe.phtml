@@ -1,5 +1,7 @@
 <?php
 	$formulario = $this->formulario;
+	$descuentoDAO = new Contabilidad_DAO_Descuentos;
+	$descuentos = $descuentoDAO->obtenerDescuentos();
 	$messageFail = $this->messageFail;
 	$messageSuccess = $this->messageSuccess;
 ?>
@@ -63,7 +65,7 @@
 				<tbody>
 				</tbody>
 				<tfoot>
-				<tr>
+					<tr>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
@@ -73,7 +75,14 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>Descuento:</td>
-						<td><input id="descuento" class="form-control" disabled="true" /></td>				
+    					<td>
+    						<select id="descuento"  class="form-control">
+    						<option value="0">Seleccione Descuento</option>
+    							<?php foreach ($descuentos as $descuento) : ?>
+    								<option value="<?php echo $descuento["idDescuentos"] ?>"><?php echo $descuento["descripcion"]; ?></option>
+    							<?php endforeach; ?>
+    						</select>
+    					</td>		
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
@@ -250,21 +259,6 @@
  		});//cierra funcion Multiplo del producto
 
  		$("a#generarJsonArray").on("click",function(){
- 			 /*var favorite = [];
- 			 $.each($("input[name='empaque']:checked"), function(){            
-                 favorite.push($(this).val()); 
-             });
- 			 alert("My favourite sports are: " + favorite.join(", "));
- 			$('input[name="empaque"]:checked').each(function() {
- 			   console.log(this.value);
- 			  if ($(this).val()==="desayuno"){
- 	 			  console.log("el tipo empaque es desayuno");
- 			 }else if($(this).val()==="comida"){
- 				console.log("el tipo empaque es comida");
- 			 }else{
- 				console.log("el tipo empaque es traste");
- 	 		}
- 			});*/
  	 	});
  		
 
@@ -366,10 +360,10 @@
         	grandTotal += +$(this).val(); 
     	});
     	
-    	 $("input#total").val('$' + grandTotal.toFixed(2));
+    	 $("input#total").val(grandTotal.toFixed(2));
     	 $("input#1-importePago").val(grandTotal.toFixed(2)); 
    		}
-
+   		
 		$("#1-pagada").on("change", function(){
 			var total = $("#total").val();
 			if ($("#1-pagada:checked").val()==1){
@@ -383,6 +377,33 @@
 				$("#1-pagos").val(0);
 				console.log($("#1-pagada").val());
 			}
+		});
+
+		$("#descuento").on("change", function(){
+			var des = $("#descuento").val();
+			var t = $("#total").val();
+			var porcentaje;
+			var tp;
+			var td;
+
+			var urlD = window.location.origin + "/General/inventario/json/obtenerdescuento/de/"+des;
+			console.log(urlD);
+			$.ajax({
+				url: urlD,
+				dataType: "json",
+				success: function(data){
+					if(data.idDescuentos == des){
+						porcentaje = data.porcentaje;
+						tp = porcentaje * t/100;
+						td = t -tp;
+						$('input#total').val(td);
+					}
+						
+						
+					
+				}
+			});
+			
 		});
 		
 		var idFila;

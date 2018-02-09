@@ -14,16 +14,28 @@ class Contabilidad_DAO_Descuentos implements Contabilidad_Interfaces_IDescuentos
 
 	}
 	
-	public function obtenerDescuento(){
+	public function obtenerDescuentos(){
 	    $tD = $this->tablaDescuentos;
 	    $rowsD = $tD->fetchAll();
 	    
 	    if(is_null($rowsD)){
 	        return null;
 	    }else{
-	        return $rowSucursales->toArray();
+	        return $rowsD->toArray();
 	    }
 	
-		
+	}
+	
+	public function obtenerDescuento($idDescuento){
+	    $tD = $this->tablaDescuentos;
+	    $select = $tD->select()->from($tD)->where("idDescuentos = ?",$idDescuento);
+	    $rowDescuento  = $tD->fetchRow($select);
+	    
+	    if(is_null($rowDescuento)){
+	        return null;
+	    }else{
+	        return $rowDescuento->toArray();
+	    }
+	    
 	}
 }
