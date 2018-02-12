@@ -24,7 +24,7 @@
 		public function busca_Cuentasxp($idSucursal,$pr){
 			$tablaFactura = $this->tablaFactura;
 			$select = $tablaFactura->select()->from($tablaFactura)->where("idTipoMovimiento =?",4)->where("estatus <> ?", "C")
-			->where("conceptoPago <>?","PUE")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pr);
+			->where("conceptoPago <>?","PUE")->where("conceptoPago <>?","LI")->where("idSucursal =?", $idSucursal)->where("idCoP = ?" ,$pr);
 			$rowsFacturaxp = $tablaFactura->fetchAll($select)->toArray();
 			
 			return $rowsFacturaxp;
