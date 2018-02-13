@@ -85,7 +85,6 @@ $(function() {
 });
     
 $(function() {
-	
 	$('.date-picker-year').datepicker({
 		changeYear: true,
         showButtonPanel: true,
@@ -101,9 +100,7 @@ $(function() {
     });
 });
 
-$("#querySaldo").on ('click', function (){
-	var mes = document.getElementById('txtMonth').value;
-});
+
 
 $("#querySaldo").on("click",function(){
 	var mes = document.getElementById('txtMonth').value;
@@ -140,8 +137,12 @@ $("#querySaldo").on("click",function(){
 
 	var urlSalidas = window.location.origin + "/General/sistema/json/saldoempresames/mm/"+ mm + "/anio/" + anio;
 	//console.log(urlSalidas);
-	alert("El cierre se ha generado correctamente!!");
-	
+	$.ajax({
+		url: urlSalidas,
+		dataType: "json",
+		success: function(data){
+		}
+	});
 });
 
 $("#queryConsultar").on("click", function (){

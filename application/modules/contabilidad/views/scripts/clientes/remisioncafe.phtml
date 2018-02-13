@@ -269,22 +269,7 @@
  			//Array Json de productos
  			var productos = [];
  			var empaque = [];
-
- 			/*$('input[name="empaque"]:checked').each(function() {
-				if ($(this).val()=="desayuno"){
-					tipoEmpaque  = 'D';
-					console.log(tipoEmpaque);
-				}else if($(this).val()=="comida"){
-					tipoEmpaque  = 'C';
-					console.log(tipoEmpaque);
-				}else{
-					tipoEmpaque  = 'T';
-	 				console.log(tipoEmpaque);
-	 	 		}
- 				
- 			});*/
- 			//empaque.push(new Emp(tipoEmpaque));
-
+ 			
  			tabla.each(function(){
  				var row = $(this);
  				var cantidad = row.find("input[id^='idCantidad_']").val();
@@ -307,9 +292,6 @@
  	 	 			tipoEmpaque = 'T';
  	 	 			console.log(tipoEmpaque);
  	 	 	 	}
- 				
- 				
- 				
  				
  				productos.push(new Producto(cantidad, unidad, codigoBarras, descripcion, precioUnitario, importe, tipoEmpaque));
  				if(cantidad.length < 1 || unidad == null|| descripcion.length < 1 || precioUnitario.length < 1 || importe.length < 1 ) {  
@@ -398,12 +380,9 @@
 						td = t -tp;
 						$('input#total').val(td);
 					}
-						
-						
-					
 				}
 			});
-			
+			calculaGrandTotal();
 		});
 		
 		var idFila;

@@ -94,67 +94,99 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        
 	        $select = $tB->select()->from($tB,array('idBanco','banco'))->where('idBanco=?',$idBanco)->order('banco');
 	        $rowBanco = $tB->fetchRow($select)->toArray();
-	        //print_r($select->__toString());
+	        //print_r($select->__toString());// Agrego Banco
+	        $itemBanco['banco'] = $rowBanco;
 	        
-	        // Agrego Banco
-	        $itemBanco['banco'] = $rowBanco; 
-	       
-	       $select = $tCxC->select()->from($tCxC,array('totalEntradas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
-    	   ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
-	       $rowTotalEntrada = $tCxC->fetchRow($select)->toArray();
-	       //print_r($select->__toString());	      
-	       // Agregamos Total de Entradas
-	       $itemBanco['entradas'] = $rowTotalEntrada;
-	       
-	       $select = $tCxP->select()->from($tCxP,array('totalSalidas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
-	       ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
+	        $select = $tCxC->select()->from($tCxC,array('totalEntradas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
+	        ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
+	        $rowTotalEntrada = $tCxC->fetchRow($select)->toArray();
+	        //print_r($select->__toString());// Agregamos Total de Entradas
+	        $itemBanco['entradas'] = $rowTotalEntrada;
+	        
+	        $select = $tCxP->select()->from($tCxP,array('totalSalidas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
+	        ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
 	        $rowTotalSalidas = $tCxP->fetchRow($select)->toArray();
 	        // Agregamos Total de Salidas
 	        $itemBanco['salidas'] = $rowTotalSalidas;
 	        
-	        
 	        //Busca el saldo en tabla saldosEmpresa
-	        $select = $tSB->select()->from($tSB)
-	        ->where('idBanco=?',$idBanco)->where('mes = ?',$mes)->where('anio=?',$anio);
+	        $select = $tSB->select()->from($tSB)->where('idBanco=?',$idBanco)->where('mes = ?',$mes)->where('anio=?',$anio);
 	        $rowSB = $tSB->fetchRow($select);
-	      
+	        
 	        if(!is_null($rowSB)){
 	            $rowsSB = $tSB->fetchRow($select)->toArray();
 	            //print_r($select->__toString());print_r("<br />");
-	            
 	            //Si el registro ya existe, verificamos que el saldo de banco en cxc 
 	            $select = $tCxC->select()->from($tCxC,array('idBanco','totalEntradas'=>'SUM(total)'))->where('idBanco = ?', $rowsSB['idBanco'])
 	            ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
 	            $rowTotalE = $tCxC->fetchRow($select)->toArray();
-	            //print_r($select->__toString());print_r("<br />");
-	            if($rowsSB['entradas']  !==  $rowTotalE['totalEntradas']){
-	                //print_r('la entrada se ha modificado');print_r("<br />");
-	                $saldoIniMes = $rowMesSA['saldoFinMes'];
-	                $saldoFinMes = $totalEntradas + $saldoIniMes - $totalSalidas;
+	           
+	            if($rowsSB['entradas']  !==  $rowTotalE['totalEntradas'] && $rowsSB['mes']<>05 &&  !is_null($rowTotalE['totalEntradas'])){
+	                //si la entrada se ha modificado, buscado en la tabla saldo Bancos, el registro del banco print_r("Se Ha MODIFICADO");print_r("<br />");
+	                //print_r("La cantidad ha cambiado");print_r("<br />");
+	                $select = $tSB->select()->from($tSB)->where('idBanco=?', $rowsSB['idBanco'])->where('mes = ?',$mes)->where('anio=?',$anio);
+	                $rowSaldoA = $tSB->fetchRow($select)->toArray();
+	                //print_r($select->__toString());print_r("<br />");
+	               
+	                $select = $tSB->select()->from($tSB, array('saldoFinMes'))->where('idBanco=?',$rowSaldoA['idBanco']) ->where('mes < ?',$mes)->where('anio=?',$anio)->order('mes desc');
+	                $rowMesASA = $tSB->fetchRow($select);
+	                $saldoAIniAMesE = $rowMesASA['saldoFinMes'];
+	                $saldoAFinMes = $rowTotalE['totalEntradas'] + $saldoIniAMes - $rowSaldoA['salidas'];
 	                
-	                $data = array("entradas" => $rowTotalE['totalEntradas']);
-	                $tSalBan = $this->tablaSaldosBancos;
-	                $where = $tSalBan->getAdapter()->quoteInto("idsaldosBancos=?", $rowsSB['idBanco']);
-	                $tSalBan->update($data, $where);
+	                //print_r($saldoAAIniMes);print_r("<br />");print_r($saldoAFinMes);print_r("<br />");
+	                $data = array(
+	                    "entradas" => $rowTotalE['totalEntradas'], 
+	                    "saldoIniMes" => $saldoAIniAMesE,
+	                    "saldoFinMes" => $saldoAFinMes
+	                );
+	                $where = array(
+	                    'idBanco = ?' => $rowSaldoA['idBanco'],
+	                    'mes = ?' =>  $rowSaldoA['mes'],
+	                    'anio = ?' => $rowSaldoA['anio']
+	                );
+	              
+	                $tSB->update($data, $where);
 	            }
 	            
+	            
+	            $itemBanco['saldos'] = $rowsSB;
 	            //Si el registro ya existe, verificamos que el saldo de banco en cxp
 	            $select = $tCxP->select()->from($tCxP,array('idBanco','totalSalidas'=>'SUM(total)'))->where('idBanco = ?', $rowsSB['idBanco'])
 	            ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
 	            $rowTotalS = $tCxP->fetchRow($select)->toArray();
 	            //print_r($select->__toString());print_r("<br />");
-	            if($rowsSB['salidas']  !==  $rowTotalS['totalSalidas']){
-	                //print_r('la entrada se ha modificado');print_r("<br />");
-	                $data = array("salidas" => $rowTotalS['totalSalidas']);
-	                $tSalBanco = $this->tablaSaldosBancos;
-	                $where = $tSalBanco->getAdapter()->quoteInto("idsaldosBancos=?", $rowsSB['idBanco']);
-	                $tSalBanco->update($data, $where);
+	           
+	           if($rowsSB['salidas']  !==  $rowTotalS['totalSalidas'] && $rowsSB['mes']<>05 &&  !is_null($rowTotalS['totalSalidas'])){
+	                //si la entrada se ha modificado, buscado en la tabla saldo Bancos, el registro del banco print_r("Se Ha MODIFICADO");print_r("<br />");
+	                $select = $tSB->select()->from($tSB)->where('idBanco=?', $rowsSB['idBanco'])->where('mes = ?',$mes)->where('anio=?',$anio);
+	                $rowSaldoA = $tSB->fetchRow($select)->toArray();
+	                //print_r($select->__toString());print_r("<br />");
+	                
+	                $select = $tSB->select()->from($tSB, array('saldoFinMes'))->where('idBanco=?',$rowSaldoA['idBanco']) ->where('mes < ?',$mes)->where('anio=?',$anio)->order('mes desc');
+	                $rowMesASA = $tSB->fetchRow($select);
+	                $saldoIniAMes = $rowMesASA['saldoFinMes'];
+	                //print_r($select->__toString());print_r("<br />");print_r($saldoIniAMes);print_r("<br />");
+	                
+	                $saldoAFinMes = $rowTotalE['totalEntradas'] + $saldoIniAMes - $rowTotalS['totalSalidas'];
+	                //print_r($saldoAFinMes);print_r("<br />");
+	                
+	                $data = array(
+	                    "entradas" => $rowTotalE['totalEntradas'],
+	                    "saldoIniMes" => $saldoIniAMes,
+	                    "saldoFinMes" => $saldoAFinMes
+	                );
+	                $where = array(
+	                    'idBanco = ?' => $rowSaldoA['idBanco'],
+	                    'mes = ?' =>  $rowSaldoA['mes'],
+	                    'anio = ?' => $rowSaldoA['anio']
+	                );
+	                
+	                $tSB->update($data, $where);
 	            }
-	            
 	            $itemBanco['saldos'] = $rowsSB;
 	        }else{
-	           $select = $tSB->select()->from($tSB, array('saldoFinMes'))->where('idBanco=?',$idBanco) ->where('mes < ?',$mes)->where('anio=?',$anio)->order('mes desc');
-	            $rowMesSA = $tSB->fetchRow($select)->toArray();
+	            $select = $tSB->select()->from($tSB, array('saldoFinMes'))->where('idBanco=?',$idBanco) ->where('mes < ?',$mes)->where('anio=?',$anio)->order('mes desc');
+	            $rowMesSA = $tSB->fetchRow($select);
 	            $saldoIniMes = $rowMesSA['saldoFinMes'];
 	            $totalEntradas = is_null($rowTotalEntrada['totalEntradas']) ? '0.0' : $rowTotalEntrada['totalEntradas'] ;
 	            $totalSalidas = is_null($rowTotalSalidas['totalSalidas']) ? '0.0' : $rowTotalSalidas['totalSalidas'] ;
@@ -169,7 +201,7 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	                'saldoFinMes' => $saldoFinMes
 	            );
 	            $tSB->insert($data);
-	            $itemBanco['saldos'] = $rowsSB;
+	            //$itemBanco['saldos'] = $rowsSB;
 	           
 	        }
 	        

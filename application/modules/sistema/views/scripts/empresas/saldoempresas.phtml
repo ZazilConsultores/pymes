@@ -129,6 +129,7 @@ $().ready(function(){
 
 	function calculaTotal(){
 		var total = 0;
+		var totalS = 0;
 
 		$("table#detalleSaldoBancoMes").find("td[id^='totalEntradas']").each(function(){
 			total += +$(this).text();
@@ -136,8 +137,8 @@ $().ready(function(){
 		});
 
 		$("table#detalleSaldoBancoMes").find("td[id^='totalSalidas']").each(function(){
-			total += +$(this).text();
-			$("#saldoS").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			totalS += +$(this).text();
+			$("#saldoS").val("$" + totalS.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		});
 				
 	}		
