@@ -136,6 +136,11 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eISPT->setAttrib("class", "form-control");
 		$eISPT->setValue(0);
 		
+		$eICV= new Zend_Form_Element_Text('ICV');
+		$eICV->setLabel('ICV:');
+		$eICV->setAttrib("class", "form-control");
+		$eICV->setValue(0);
+        		
 		$eNominaxPagar = new Zend_Form_Element_Text('nominaxpagar');
 		$eNominaxPagar->setLabel("Nomina por Pagar:");
 		$eNominaxPagar->setAttrib("class", "form-control");
@@ -146,7 +151,7 @@ class Contabilidad_Form_AgregarNomina extends Zend_Form
 		$eSubmit->setAttrib("class", "btn btn-success");
 		
 		//$subEmpresa->addElements(array($eTipoMovimiento,$eEmpresa,$eSucursal,$eProveedor,$eFecha, $eNumFolio));
-		$subDatosNomina->addElements(array($eSueldo,$eSubsidio, $eIMSS, $eISPT,$eNominaxPagar));
+		$subDatosNomina->addElements(array($eSueldo,$eSubsidio, $eIMSS, $eISPT,$eICV,$eNominaxPagar));
 		$subDatosNomina->setElementDecorators($decoratorsElemento);
 		$subDatosNomina->setDecorators($decoratorsPresentacion);
 	

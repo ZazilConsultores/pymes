@@ -403,132 +403,172 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 		}
 	}
 	
-	public function restaProductoCafeteria(array $encabezado, $productos, $formaPago){
-	    $dbAdapter =  Zend_Registry::get('dbmodgeneral');
+    public function restaProductoCafeteria(array $encabezado, $productos, $formaPago){
+        $dbAdapter =  Zend_Registry::get('dbmodgeneral');
 	    $dbAdapter->beginTransaction();
 	    $dateIni = new Zend_Date($encabezado['fecha'],'YY-MM-dd');
 	    $stringIni = $dateIni->toString ('yyyy-MM-dd');
+	    
+	    if(($formaPago['pagada']) == "1"){
+	        $conceptoPago = "PUE";
+	        $importePagado = $formaPago['importePago'];
+	        $saldo = 0;
+	        $estatus = 'A';
+	    }else{
+	        $conceptoPago = "PPD";
+	        $importePagado = 0;
+	        $saldo = $formaPago['importePago'];
+	        $estatus = 'P';
+	        
+	    }
+	    
 	    try {
-	        if(($formaPago['pagada']) == "1"){
-	           $conceptoPago = "PUE";
-	           $importePagado = $formaPago['importePago'];
-	           $saldo = 0;
-	           $estatus = 'A';
-	       }else{
-	           $conceptoPago = "PPD";
-	           $importePagado = 0;
-	           $saldo = $formaPago['importePago'];
-	           $estatus = 'P';
-	          
-	       }
-	       foreach($productos as $producto){
-	           $tablaMovimiento = $this->tablaMovimiento;
-	           $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])->where("idCoP=?",$encabezado['idCoP'])
-	           ->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
-	           $rowMovimiento = $tablaMovimiento->fetchRow($select);
-	       
-	           //Seleccionamos el producto para su clasificación
-	           $tablaProducto = $this->tablaProducto;
-	           $select = $tablaProducto->select()->from($tablaProducto)->where("idProducto=?", $producto["descripcion"]);
-	           $rowProducto = $tablaProducto->fetchRow($select);
-	           //print_r("$select");Convertimos la unidad del producto
-	           $tablaMultiplos = $this->tablaMultiplos;
-	           $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-	           $rowMultiplo = $tablaMultiplos->fetchRow($select);
-	           $cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
-	           $precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
-	           //GuardaMovimiento en tabla Movimiento.
-	           $tablaMovimiento = $this->tablaMovimiento;
-	           $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("numeroFolio=?",$encabezado['numFolio'])
-	           ->where("idCoP=?",$encabezado['idCoP'])
-	           ->where("idSucursal=?",$encabezado['idSucursal'])
-	           ->where("fecha=?", $stringIni)
-	           ->order("secuencial DESC");
-	           $rowMovimiento = $tablaMovimiento->fetchRow($select);
-	           if(!is_null($rowMovimiento)){
-	               $secuencial= $rowMovimiento->secuencial +1;
-	           }else{
-	               $secuencial = 1;
-	           }
-	       $mMovtos = array(
-	           'idProducto' => $producto['descripcion'],
-	           'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
-	           'idEmpresas'=>$encabezado['idEmpresas'],
-	           'idSucursal'=>$encabezado['idSucursal'],
-	           'idCoP'=>$encabezado['idCoP'],
-	           'idProyecto'=>$encabezado['idProyecto'],
-	           'numeroFolio'=>$encabezado['numFolio'],
-	           'cantidad'=>$cantidad,
-	           'fecha'=>$stringIni,
-	           'estatus'=>$estatus,
-	           'secuencial'=> $secuencial,
-	           'costoUnitario'=>$precioUnitario,
-	           'totalImporte'=>$producto['importe'],
-	           'entrega'=>$producto['tipoEmpaque']
+	        
+	        foreach($productos as $producto){
+	            
+	            $tM = $this->tablaMovimiento;
+	            $tP = $this->tablaProducto;
+	            $tMu = $this->tablaMultiplos;
+	            $tI = $this->tablaInventario;
+	            $tPC = $this->tablaProductoCompuesto;
+	            $tC = $this->tablaCapas;
+	            
+	            $secuencial = 0;
+	            $canR = 0;
+	            $canC = 0;
+	            $canNR = 0;
+	            
+	            $select = $tI->select()->from($tI)->where("idProducto=?", $producto["descripcion"]);
+	            $rowIP = $tI->fetchRow($select);
+	            
+	            if(!is_null($rowIP)){
+	                $select = $tP->select()->from($tP)->where("idProducto=?", $producto["descripcion"]);
+	                $rowProducto = $tP->fetchRow($select);
+	                
+	                //Convertimos la unidad del producto
+	                $select = $tMu->select()->from($tMu)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
+	                $rowMultiplo = $tMu->fetchRow($select);
+	                
+	                $cantidad = $producto['cantidad'] * $rowMultiplo["cantidad"];
+	                $precioUnitario = $producto['precioUnitario'] / $rowMultiplo["cantidad"];
+	                
+	                //Asignamos secuencial y GuardaMovimiento en tabla Movimiento.
+	                $select = $tM->select()->from($tM)->where("numeroFolio=?",$encabezado['numFolio'])->where("idCoP=?",$encabezado['idCoP'])
+	                ->where("idSucursal=?",$encabezado['idSucursal'])->where("fecha=?", $stringIni)->order("secuencial DESC");
+	                $rowMovimiento = $tM->fetchRow($select);
+	                
+	                if(!is_null($rowMovimiento && !is_null($rowMultiplo))){
+	                    $secuencial = $rowMovimiento->secuencial +1;
+	                }else{
+	                    $secuencial = 1;
+	                }
+	                
+	                $mMovtos = array(
+	                    'idProducto' => $producto['descripcion'],
+	                    'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
+	                    'idEmpresas'=>$encabezado['idEmpresas'],
+	                    'idSucursal'=>$encabezado['idSucursal'],
+	                    'idCoP'=>$encabezado['idCoP'],
+	                    'idProyecto'=>$encabezado['idProyecto'],
+	                    'numeroFolio'=>$encabezado['numFolio'],
+	                    'cantidad'=>$cantidad,
+	                    'fecha'=>$stringIni,
+	                    'estatus'=>$estatus,
+	                    'secuencial'=> $secuencial,
+	                    'costoUnitario'=>$precioUnitario,
+	                    'totalImporte'=>$producto['importe'],
+	                    'entrega'=>$producto['tipoEmpaque']
+	                );
+	                $dbAdapter->insert("Movimientos",$mMovtos);
+	                
+	                //Clasificamos el producto
+	                /*$claveProducto = substr($rowProducto->claveProducto, 0,2);
+	                switch($claveProducto){
+	                    case 'PT'://======================================================================================================PRODUCTO TERMINADO
+	                        $select = $tPC->select()->from($tPC)->where("idProducto=?",$producto["descripcion"]);
+	                        $rowsProductoComp = $tPC->fetchAll($select);
+	                        //print_r($select->__toString());print_r("<br />");
+	                        foreach($rowsProductoComp as $rowProductoComp){//Recorremos el paquete 
+	                            $select = $tPC->select()->from($tPC)->where("idProducto=?",$rowProductoComp["productoEnlazado"]);
+	                            $rowPE = $tPC->fetchRow($select);
+	                            //print_r("El paquete contiene");print_r("<br />");print_r($select->__toString());print_r("<br />");
+	                            $cantProdComp = $cantidad * $rowProductoComp->cantidad;
+	                            
+	                            if(!is_null($rowPE)){//Estos productos enlazados son productos compuesto
+	                                $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPE["idProducto"]);
+	                                $rowsPEnl = $tPC->fetchAll($select);
+	                                print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                foreach($rowsPEnl as $rowPEnl){
+	                                    
+	                                    $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPEnl["productoEnlazado"]);
+	                                    $rowsPrEnl = $tPC->fetchAll($select);
+	                                    print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                    
+	                                    foreach($rowsPrEnl as $rowPrEnl){
+	                                        $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPrEnl["productoEnlazado"]);
+	                                        $rowsPrEnlazados = $tPC->fetchAll($select);
+	                                        print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                        foreach($rowsPrEnlazados as $rowPrEnlazados){
+	                                            $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPrEnlazados["productoEnlazado"]);
+	                                            $rowsPrEnla = $tPC->fetchAll($select);
+	                                            print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                        }
+	                                    }
+	                                    
+	                                }
+	                                 
+	                            }else {
+	                                $select = $tI->select()->from($tI)->where("idProducto = ?",$rowProductoComp["productoEnlazado"]);
+	                                $rowI = $tI->fetchRow($select);
+	                                $canR = $rowI['existenciaReal'] - $cantProdComp;
+	                                print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                print_r($canR);
+	                                if(!is_null($rowI && $canR >0 )){
+	                                    //El  tipo de Inventario PEPS
+	                                    $select = $tC->select()->from($tC)->where("idProducto = ?",$rowI["idProducto"])->order("fechaEntrada ASC");
+	                                    $rowC = $tC->fetchRow($select);
+	                                    $canC = $rowC['cantidad'] - $cantProdComp;
+	                                    print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                    print_r("<br />"); print_r($canC);
+	                                    if($canC < 0){
+	                                        //Eliminados el registro de la capa 
+	                                        $rowC->delete($select);
+	                                        $canNR = $canC;
+	                                        print_r("<br />"); print_r($canC);
+	                                        //Actualizamos capas
+	                                        $select = $tC->select()->from($tC)->where("idProducto = ?",$rowI["idProducto"])->order("fechaEntrada ASC");
+	                                        $rowCa = $tC->fetchRow($select);
+	                                        $cc = $rowCa['cantidad'];
+	                                        $canNuR = $cc - ($canNR);
+	                                        print_r("<br />");print_r($canNuR); print_r("<br />");
+	                                        //$rowCa->cantidad = $canNR;
+	                                        //$rowCa->save();
+	                                     
+	                                    }else{
+	                                        //Solo actualizamos el registro
+	                                    }
+	                                }
+	                               
+	                            }
+	                           
+	                            
+	                            
+	                            
+	                        }// foreach $rowsProductoComp
+	                        break;
+	                    case 'VS'://======================================================================================================PRODUCTO SERVICIO
+	                        break;
+	                    case 'SV'://======================================================================================================PRODUCTO SERVICIO
+	                        break;
+	                    default:
+	               } 
+	            }else{
+	                echo("No se cuenta con existencia del producto");
+	            }//if de existencia del producto en inmventario
+	            
+	            
 	           
-	       );
-	       print_r($mMovtos);
-	       $dbAdapter->insert("Movimientos",$mMovtos);
-	       print_r("<br />"); print_r("<br />");
-	       print_r("<br />");print_r("<br />");print_r("<br />");print_r("<br />");
-	       $tablaCapas = $this->tablaCapas;
-	       $select = $tablaCapas->select()->from($tablaCapas)->where("idProducto=?",$producto['descripcion'])
-	       ->order("fechaEntrada ASC");
-	       print_r("$select");
-	       $rowCapas = $tablaCapas->fetchRow($select);
-	       //=======================================Seleccionar tabla Movimiento
-	       $tablaMovimiento = $this->tablaMovimiento;
-	       $select = $tablaMovimiento->select()->from($tablaMovimiento)->where("idProducto =?", $producto['descripcion'])
-	       ->where("idTipoMovimiento=?",$encabezado['idTipoMovimiento'])
-	       ->where("idCoP=?",$encabezado['idCoP'])
-	       ->where("idEmpresas=?",$encabezado['idEmpresas'])
-	       ->where("fecha=?",$stringIni)
-	       ->order("secuencial DESC");
-	       print_r("$select");
-	       $rowMovimiento = $tablaMovimiento->fetchRow($select);
-	       
-	       $tablaMultiplos = $this->tablaMultiplos;
-	       $select = $tablaMultiplos->select()->from($tablaMultiplos)->where("idProducto=?",$producto['descripcion'])->where("idUnidad=?",$producto['unidad']);
-	       $rowMultiplo = $tablaMultiplos->fetchRow($select);
-	       
-	       $cantidad = 0;
-	       $precioUnitario = 0;
-	       $cantidad = $producto['cantidad'] * $rowMultiplo->cantidad;
-	       $precioUnitario = $producto['precioUnitario'] / $rowMultiplo->cantidad;
-	       //SecuencialEntrada
-	       $tablaCardex = $this->tablaCardex;
-	       $select = $tablaCardex->select()->from($tablaCardex)->where("numeroFolio=?",$encabezado['numFolio'])
-	       ->where("idSucursal=?",$encabezado['idSucursal'])
-	       ->where("fechaEntrada=?", $stringIni)
-	       ->order("secuencialEntrada DESC");
-	       print_r("$select");
-	       $rowCardex = $tablaCardex->fetchRow($select);
-	       if(!is_null($rowCardex)){
-	           $secuencialSalida= $rowCardex->secuencialSalida + 1;
-	       }else{
-	           $secuencialSalida = 1;
-	       }
-	       $costo = $rowMovimiento['cantidad'] * $rowCapas['costoUnitario'];
-	       $costoSalida= $rowMovimiento['cantidad'] * $producto['precioUnitario'];
-	       $utilidad = $costoSalida- $costo;
-	       $mCardex = array(
-	           'idSucursal'=>$encabezado['idSucursal'],
-	           'numerofolio'=>$encabezado['numFolio'],
-	           'idProducto'=>$producto['descripcion'],
-	           'idDivisa'=>1,
-	           'secuencialEntrada'=>$rowCapas['secuencial'],
-	           'fechaEntrada'=>$rowCapas['fechaEntrada'],
-	           'secuencialSalida'=>$secuencialSalida,
-	           'fechaSalida'=>$stringIni,
-	           'cantidad'=>$cantidad,
-	           'costo'=>$costo,
-	           'costoSalida'=>$costoSalida,
-	           'utilidad'=>$utilidad
-	       );
-	       print_r($mCardex);
-	       $dbAdapter->insert("Cardex",$mCardex);
-	     
-	       if(!is_null($rowProducto && !is_null($rowMultiplo))){
+	           /*if(!is_null($rowProducto && !is_null($rowMultiplo))){
 	           $claveProducto = substr($rowProducto->claveProducto, 0,2);
 	           switch($claveProducto){
 	               case 'PT': //======================================================================================================PRODUCTO TERMINADO
@@ -542,6 +582,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                       $rowProductoEnlazado = $tablaProductoEnlazado->fetchRow($select);
 	                       print_r("El paquete contiene");print_r("<br />");print_r("$select");print_r("<br />");
 	                       $cantProdComp = $cantidad * $rowProductoComp->cantidad;
+	                       
 	                       //print_r("La cantidad en producto compuesto"); print_r("<br />"); print_r($cantProdComp); print_r("<br />");
 	                       if(!is_null($rowProductoEnlazado)){
 	                           //Estos productos enlazados son productos compuesto print_r("<br />"); print_r("El producto compuesto contiene");print_r("<br />");
@@ -782,7 +823,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           }//switch
 	       }//Cierra if rowMultiplo y Producto
 	       $resta = $this->restaDesechableCafe($producto);
-	      
+	      */
 	       }
 	       if(($formaPago['pagada'])=="1"){
 	           $mCuentasxc = array(
@@ -806,6 +847,8 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	           //print_r($mCuentasxc);
 	           $dbAdapter->insert("Cuentasxc", $mCuentasxc);
 	       }
+	       }//foreach producto
+	       $dbAdapter->commit();
         }catch(exception $ex){
 	       print_r("<br />");
 	       print_r("================");

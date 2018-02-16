@@ -17,14 +17,12 @@ class Contabilidad_Form_AgregarRemisionClienteCafeteria extends Zend_Form
         );
         
         $this->setAttrib("id", "nuevaRemisionCliente");
-        
         $subEncabezado = new Zend_Form_SubForm;
         
         $eNumeroFolio = new Zend_Form_Element_Text('numFolio');
         $eNumeroFolio->setLabel('Número de  Folio:');
         $eNumeroFolio->setAttrib("class", "form-control");
         $eNumeroFolio->setAttrib("required", "true");
-        
         
         $tipoMovimientoDAO = new Contabilidad_DAO_TipoMovimiento;
         $tiposMovimientos = $tipoMovimientoDAO->obtenerTiposMovimientos();
@@ -128,14 +126,12 @@ class Contabilidad_Form_AgregarRemisionClienteCafeteria extends Zend_Form
         $eConceptoPago = new Zend_Form_Element_Select('conceptoPago');
         $eConceptoPago->setLabel('Seleccionar Concepto Pago:');
         $eConceptoPago->setAttrib("class", "form-control");
-        //$conceptoPago = array ('LI'=>'LIQUIDACION');
         $eConceptoPago->setMultiOptions($conceptoPago );
         
         $eImportePago = new Zend_Form_Element_Text('importePago');
         $eImportePago->setLabel('Importe Pago:');
         $eImportePago->setAttrib("class", "form-control");
         $eImportePago->setAttrib("required", "true");
-        //$eImportePago->setAttrib("disabled", "true");
         
         $bancoDAO = new Contabilidad_DAO_Banco;
         $bancos = $bancoDAO->obtenerBancos();

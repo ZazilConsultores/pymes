@@ -206,9 +206,12 @@
 			//});//cierra el addRow
 			
 		}
+		
 		// cuando se presione el boton con id=addRow, se inserta una nueva fila en la tabla de productos
 		$("button#addRow").on("click",function(){
 			agregar();
+			console.log("checked"); 
+			$("#traste:checked").val()==1;
 		});//cierra el addRow
 		
 		//Funcion Eliminar #btnLimpiar_2
@@ -320,8 +323,7 @@
 		  this.precioUnitario = precioUnitario;
 		  this.importe = importe;
 		  this.tipoEmpaque = tipoEmpaque;
-		  /*this.com = com;
-		  this.tras = tras;	*/			
+	
 		}
 	
         $("table#remisionSalida").on("change", 'input[id^="idCantidad_"], input[id^="costoUnitario_"]', function (event) {
@@ -348,16 +350,13 @@
    		
 		$("#1-pagada").on("change", function(){
 			var total = $("#total").val();
+
 			if ($("#1-pagada:checked").val()==1){
-				console.log("input desahabilitado");
 				$("#1-pagos").attr('disabled', 'disabled');
 				$("#1-pagos").val(total);
-				console.log($("#1-pagada").val()); 
-				//calculateGrandTotal();
 			}else{
 				$("#1-pagos").removeAttr("disabled");
 				$("#1-pagos").val(0);
-				console.log($("#1-pagada").val());
 			}
 		});
 

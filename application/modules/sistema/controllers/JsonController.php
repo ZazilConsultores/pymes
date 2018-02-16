@@ -92,9 +92,7 @@ class Sistema_JsonController extends Zend_Controller_Action
 
     public function sucursalesAction()
     {
-        // action body
         $idEmpresas = $this->getParam("idFiscales");
-		//$sucursales = $this->sucursalDAO->obtenerSucursales($idFiscales);
 		$sucursales = $this->empresaDAO->obtenerSucursalesEmpresas($idEmpresas);
 		echo Zend_Json::encode($sucursales);
     }

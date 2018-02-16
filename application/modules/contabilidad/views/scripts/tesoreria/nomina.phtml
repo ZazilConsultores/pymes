@@ -94,10 +94,13 @@ $(document).ready(function(){
 	$("#1-ISPT").on("change", function (event){
 		calculaNomina();
 	});
+	$("#1-ICV").on("change", function (event){
+		calculaNomina();
+	});
 	
 	function calculaNomina(){
 		var total;  
-		total = parseFloat($("input#1-sueldo").val()) + parseFloat($("input#1-subsidio").val())-$("input#1-IMSS").val()-$("input#1-ISPT").val();
+		total = parseFloat($("input#1-sueldo").val()) + parseFloat($("input#1-subsidio").val())-$("input#1-IMSS").val()-$("input#1-ISPT").val() - $("input#1-ICV").val() ;
 		console.log("El total:"+ total);
 		$("#1-nominaxpagar").val(total.toFixed(2));
 	}

@@ -289,6 +289,16 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 				);
 				$dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
 			}
+			if (!is_null($nomina["ICV"])){
+			    $mFacturaImpuesto = array(
+			        'idTipoMovimiento'=>$empresa["idTipoMovimiento"],
+			        'idFactura'=>$idFactura,
+			        'idImpuesto'=>10,
+			        'idCuentasxp'=>0,
+			        'importe'=>$nomina['ICV'],
+			    );
+			    $dbAdapter->insert("FacturaImpuesto",$mFacturaImpuesto);
+			}
 			$dbAdapter->commit();
 		}catch(exception $ex){
 			print_r("<br />");
