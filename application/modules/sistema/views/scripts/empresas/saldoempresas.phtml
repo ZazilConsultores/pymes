@@ -107,15 +107,16 @@ $().ready(function(){
 					mm= 'Noviembre';
 				}else if(data[i].mes == 12){
 					mm= 'Diciembre';
-				}	
-
+				}
+				
 				tbody.append($('<tr>').
-					  append($('<td>').append(mm)).	
+					  append($('<td>').append(mm)).
 					  append($('<td>').append(data[i].anio)).
-					  append($('<td>').append(data[i].entradas).attr("id", "totalEntradas")).
-					  append($('<td>').append(data[i].salidas).attr("id", "totalSalidas")).
-					  append($('<td>').append(data[i].saldoIniMes)).
-					  append($('<td>').append(data[i].saldoFinMes)));	
+					  append($('<td>').append(parseFloat(data[i].entradas).toFixed(3)).attr('id','totalEntradas')).
+					  append($('<td>').append(parseFloat(data[i].salidas).toFixed(3)).attr('id','totalSalidas')).
+					  append($('<td>').append(parseFloat(data[i].saldoIniMes).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ","))).
+					  append($('<td>').append(parseFloat(data[i].saldoFinMes).toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ",")))
+					  );	
 				});
 			    AddRow();
 				calculaTotal();
@@ -133,7 +134,7 @@ $().ready(function(){
 
 		$("table#detalleSaldoBancoMes").find("td[id^='totalEntradas']").each(function(){
 			total += +$(this).text();
-			$("#saldoE").val("$" + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			$("#saldoE").val("$" + total.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		});
 
 		$("table#detalleSaldoBancoMes").find("td[id^='totalSalidas']").each(function(){

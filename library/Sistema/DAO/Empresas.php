@@ -101,13 +101,23 @@ class Sistema_DAO_Empresas implements Sistema_Interfaces_IEmpresas {
 	        ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
 	        $rowTotalEntrada = $tCxC->fetchRow($select)->toArray();
 	        //print_r($select->__toString());// Agregamos Total de Entradas
-	        $itemBanco['entradas'] = $rowTotalEntrada;
+	        if(!is_null($rowTotalEntrada)){
+	            $itemBanco['entradas'] = $rowTotalEntrada;
+	        }else {
+	            $itemBanco['entradas'] = 0;
+	        }
+	        
 	        
 	        $select = $tCxP->select()->from($tCxP,array('totalSalidas'=>'SUM(total)'))->where('idBanco = ?', $idBanco)
 	        ->where("date_format(fechaPago, '%m')= ?",$mes)->where("date_format(fechaPago, '%Y')= ?",$anio);
 	        $rowTotalSalidas = $tCxP->fetchRow($select)->toArray();
 	        // Agregamos Total de Salidas
-	        $itemBanco['salidas'] = $rowTotalSalidas;
+	       
+	        if(!is_null($rowTotalEntrada)){
+	            $itemBanco['salidas'] = $rowTotalSalidas;
+	        }else {
+	            $itemBanco['salidas'] = 0;
+	        }
 	        
 	        //Busca el saldo en tabla saldosEmpresa
 	        $select = $tSB->select()->from($tSB)->where('idBanco=?',$idBanco)->where('mes = ?',$mes)->where('anio=?',$anio);

@@ -194,13 +194,24 @@ $("#queryConsultar").on("click", function (){
 						append($('<td>').append(0)).
 						append($('<td>').append(0)).
 						append($('<td>').append(item['saldos']['saldoFinMes'])));
+					
 				}else{
+					if(data[i].entradas.totalEntradas == null){
+						tE =0;
+					}else{
+						tE = parseFloat(data[i].entradas.totalEntradas).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					}
+					if(data[i].salidas.totalSalidas == null){
+						tS =0;
+					}else{
+						tS = parseFloat(data[i].salidas.totalSalidas).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					}
 					tbody.append($('<tr>').
 						append($('<td>').append(item['banco']['banco'])).
-						append($('<td>').append(item['saldos']['saldoIniMes'])).	
-						append($('<td>').append(data[i].entradas.totalEntradas)).
-						append($('<td>').append(data[i].salidas.totalSalidas)).
-						append($('<td>').append(item['saldos']['saldoFinMes'])));
+						append($('<td>').append(parseFloat(data[i].saldos.saldoIniMes).toFixed(3))).	
+						append($('<td>').append(tE)).
+						append($('<td>').append(tS)).
+						append($('<td>').append(parseFloat(data[i].saldos.saldoFinMes).toFixed(3))));
 				}
 			});
 		}
