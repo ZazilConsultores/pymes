@@ -501,15 +501,22 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                foreach($rowsPEnl as $rowPEnl){
 	                                    $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPEnl["productoEnlazado"]);
 	                                    $rowPrEnl = $tPC->fetchRow($select);
-	                                    print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                    //print_r($select->__toString()); print_r("<br />");
 	                                    if(!is_null($rowPrEnl)){
-	                                        
+	                                        $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPrEnl["idProducto"]);
+	                                        $rowsPrEnl = $tPC->fetchAll($select);
+	                                        //print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                        foreach($rowsPrEnl as $rowPrEnl){
+	                                            $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPrEnl["idProducto"]);
+	                                            $rowsProEnl = $tPC->fetchRow($select);
+	                                            print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                            
+	                                        }
 	                                    }else{
 	                                        $select = $tI->select()->from($tI)->where("idProducto = ?",$rowPEnl["productoEnlazado"]);
 	                                        $rowI = $tI->fetchRow($select);
-	                                        print_r($select->__toString());
-	                                        $canR = $rowI['existenciaReal'] - $rowPEnl['cantidad'];
-	                                        //print_r("<br />"); print_r($select->__toString()); print_r("<br />");print_r($canR);
+	                                        $cantR = $rowI['existenciaReal'] - $rowPEnl['cantidad'];
+	                                        //print_r("<br />"); print_r($select->__toString()); print_r("<br />");
 	                                        if(!is_null($rowI)){
 	                                            //El  tipo de Inventario PEPS
 	                                            $select = $tC->select()->from($tC)->where("idProducto = ?",$rowI["idProducto"])->order("fechaEntrada ASC");
@@ -518,22 +525,39 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                            //print_r("<br />"); print_r($canC);
 	                                            if($canC < 0){
 	                                                //Eliminados el registro de la capa
-	                                                $rowC->delete($select);
+	                                                //$rowC->delete($select);
 	                                                $canNR = $canC;
 	                                                //Actualizamos capas print_r("<br />"); print_r($canC);
 	                                                $select = $tC->select()->from($tC)->where("idProducto = ?",$rowI["idProducto"])->order("fechaEntrada ASC");
 	                                                $rowCa = $tC->fetchRow($select);
 	                                                $canNR = $rowCa['cantidad'] - abs($canNR);
-	                                                $rowCa->cantidad = $canNR;
-	                                                $rowCa->save();
+	                                                
+	                                                $data = array(
+	                                                    "cantidad" => $canNR
+	                                                );
+	                                                $where = array(
+	                                                    'idCapas = ?' => $rowC['idCapas']
+	                                                );
+	                                                $tC->update($data, $where);
 	                                            }else{
-	                                                $rowC->cantidad = $canC;
-	                                                $rowC->save();
+	                                                $data = array(
+	                                                    "cantidad" => $canC
+	                                                );
+	                                                $where = array(
+	                                                    'idCapas = ?' => $rowC['idCapas']
+	                                                );
+	                                                $tC->update($data, $where);
+	                                                
 	                                            }
 	                                            //Actulizamos existencias en Inventario
-	                                            $rowI->existencia = $canR;
-	                                            $rowI->existenciaReal = $canR;
-	                                            $rowI->save();
+	                                            $data = array(
+	                                                "existencia" => $cantR,
+	                                                "existenciaReal" => $cantR
+	                                            );
+	                                            $where = array(
+	                                                'idInventario = ?' => $rowI['idInventario']
+	                                            );
+	                                            $tI->update($data, $where);
 	                                        }
 	                                    }
 	                                   
@@ -548,15 +572,14 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                            $rowsPrEnla = $tPC->fetchAll($select);
 	                                            print_r("<br />"); print_r($select->__toString()); print_r("<br />");
 	                                        }
-	                                    }*/
-	                                    
+	                                    }*/ 
 	                                }
 	                                 
 	                            }else {
 	                                $select = $tI->select()->from($tI)->where("idProducto = ?",$rowProductoComp["productoEnlazado"]);
 	                                $rowI = $tI->fetchRow($select);
 	                                $canR = $rowI['existenciaReal'] - $cantProdComp;
-	                                //print_r("<br />"); print_r($select->__toString()); print_r("<br />");print_r($canR);
+	                                //print_r("<br />"); print_r($select->__toString());  print_r("<br />");print_r($canR);
 	                                if(!is_null($rowI)){
 	                                    //El  tipo de Inventario PEPS
 	                                    $select = $tC->select()->from($tC)->where("idProducto = ?",$rowI["idProducto"])->order("fechaEntrada ASC");
@@ -565,17 +588,18 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                    //print_r("<br />"); print_r($canC);
 	                                    if($canC < 0){
 	                                        //Eliminados el registro de la capa 
-	                                        $rowC->delete($select);
+	                                        //$rowC->delete($select);
+	                                        $tC->delete($select);
 	                                        $canNR = $canC;
 	                                        //Actualizamos capas print_r("<br />"); print_r($canC);
 	                                        $select = $tC->select()->from($tC)->where("idProducto = ?",$rowI["idProducto"])->order("fechaEntrada ASC");
 	                                        $rowCa = $tC->fetchRow($select);
-	                                        $canNR = $rowCa['cantidad'] - abs($canNR);
-	                                        $rowCa->cantidad = $canNR;
-	                                        $rowCa->save();
+	                                        $cantNR = $rowCa['cantidad'] - abs($canNR);
+	                                        $rowCa['cantidad'] = $canNR;
+	                                        //$rowCa->save();
 	                                     }else{
 	                                         $rowC->cantidad = $canC;
-	                                         $rowC->save();
+	                                         //$rowC->save();
 	                                    }
 	                                    //Actulizamos existencias en Inventario
 	                                    $rowI->existencia = $canR;

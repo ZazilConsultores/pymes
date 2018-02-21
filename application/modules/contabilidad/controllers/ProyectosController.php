@@ -81,6 +81,7 @@ class Contabilidad_ProyectosController extends Zend_Controller_Action
     	$request = $this->getRequest();
 		$formulario = new Contabilidad_Form_AltaProyecto;
 		$formulario->removeElement("numeroFolio");
+		$formulario->getSubForm('0')->removeElement("idBanco");
 		$formulario->removeElement("idCliente");
 		$formulario->removeElement("descripcion");//idTipoProv
 		$formulario->getSubForm('0')->removeElement('idTipoProv');
