@@ -612,7 +612,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	    
 	    foreach ($rowsTipoMov as $rowTipoMov) {
 	        
-	        if($rowTipoMov['idTipoMovimiento']==4){ 
+	        if($rowTipoMov['idTipoMovimiento'] == 4){ 
 	            $tMo  = $this->tablaMovimiento;
 	            $select = $tMo->select()->setIntegrityCheck(false)
 	            ->from($tMo, array(new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'),'idProyecto'))

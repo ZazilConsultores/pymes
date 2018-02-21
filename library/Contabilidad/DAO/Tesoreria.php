@@ -13,6 +13,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	private $tablaImpuesto;
 	private $tablaBanco;
 	private $tablaEmpresa;
+	private $tablaEmpresas;
 	private $tablaCuentasxc;
 	private $tablaCuentasxp;
 	private $tablaMultiplos;
@@ -21,11 +22,14 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 	private $tablaCapas;  
 	private $tablaCardex;
 	private $tablaProveedor;
+	private $tablaCliente;
+
 		 
 	public function __construct(){
 		$dbAdapter = Zend_Registry::get('dbmodgeneral');
 		$this->tablaMovimiento = new Contabilidad_Model_DbTable_Movimientos(array('db'=>$dbAdapter));
 		$this->tablaEmpresa  = new Sistema_Model_DbTable_Empresa(array('db'=>$dbAdapter));
+		$this->tablaEmpresas  = new Sistema_Model_DbTable_Empresas(array('db'=>$dbAdapter));
 		$this->tablaImpuesto  = new Contabilidad_Model_DbTable_Impuesto(array('db'=>$dbAdapter));
 		$this->tablaBanco = new Contabilidad_Model_DbTable_Banco(array('db'=>$dbAdapter));
 		$this->tablaFactura = new Contabilidad_Model_DbTable_Factura(array('db'=>$dbAdapter));
@@ -38,6 +42,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$this->tablaCardex = new Contabilidad_Model_DbTable_Cardex(array('db'=>$dbAdapter));
 		$this->tablaFacturaImpuesto = new Contabilidad_Model_DbTable_FacturaImpuesto(array('db'=>$dbAdapter));
 		$this->tablaProveedor = new Sistema_Model_DbTable_Proveedores(array('db'=>$dbAdapter));
+		$this->tablaCliente = new Sistema_Model_DbTable_Clientes(array('db'=>$dbAdapter));
 	}
 	
 	public function obtenerEmpleadosNomina(){
@@ -84,6 +89,23 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		
 		
 		try{
+		    
+		    $tES = $this->tablaEmpresas;
+		    $tE = $this->tablaEmpresa;
+		    $tC = $this->tablaCliente;
+		    
+		    $select = $tES->select()->from($tES)->where('idEmpresas = ?',$empresa['idEmpresas']);
+		    $rEmpresas = $tES->fetchRow($select);
+		    print_r($select->__toString());
+		    
+		    $select = $tE->select()->from($tE)->where('idEmpresa = ?',$rEmpresas['idEmpresa']);
+		    $rEmpresa = $tE->fetchRow($select);
+		    //print_r($select->__toString());
+		    
+		    $select = $tC->select()->from($tC)->where('idEmpresa = ?',$rEmpresa['idEmpresa']);
+		    $rC = $tC->fetchRow($select);
+		    //print_r($select->__toString());
+		    
 			$secuencial=0;	
 			$tablaCuentasxc = $this->tablaCuentasxc;
 			$select = $tablaCuentasxc->select()->from($tablaCuentasxc)->where("numeroFolio=?",$empresa['numFolio'])
@@ -104,7 +126,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$empresa['idEmpresas'],/**/
+			 'idCoP'=>$rC['idCliente'],/**/
 			'idBanco'=>$fondeo['idBancoE'],
 			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
@@ -123,11 +145,25 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			$dbAdapter->insert("Cuentasxc",$mCuentasxc);
 			$sumaBanco = $this->sumaBanco($fondeo);
 			
+			/*Guarda Proveedor*/
+			$tP = $this->tablaProveedor;
+			
+			$select = $tES->select()->from($tES)->where('idEmpresas = ?',$empresa['idEmpresas']);
+			$rEmpresas = $tES->fetchRow($select);
+			print_r($select->__toString());
+			
+			$select = $tE->select()->from($tE)->where('idEmpresa = ?',$rEmpresas['idEmpresa']);
+			$rEmpresa = $tE->fetchRow($select);
+			//print_r($select->__toString());
+			
+			$select = $tP->select()->from($tP)->where('idEmpresa = ?',$rEmpresa['idEmpresa']);
+			$rP = $tP->fetchRow($select);
+			
 			$mCuentasxp = array(
 			'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 			'idSucursal'=>$empresa['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$empresa['idEmpresas'],/**/
+			'idCoP'=>$rP['idProveedores'],/**/
 			'idBanco'=>$fondeo['idBancoS'],
 			'idDivisa'=>$fondeo['idDivisa'],
 			//'idsImpuestos'=>$datos['idProducto'],
@@ -841,11 +877,28 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 		$stringIni = $dateIni->toString ('yyyy-MM-dd');	
 		
 		try{
+		    
+		    $tES = $this->tablaEmpresas;
+		    $tE = $this->tablaEmpresa;
+		    $tP = $this->tablaProveedor;
+		    
+		    $select = $tES->select()->from($tES)->where('idEmpresas = ?',$encabezado['idEmpresas']);
+		    $rEmpresas = $tES->fetchRow($select);
+		    //print_r($select->__toString());
+		    
+		    $select = $tE->select()->from($tE)->where('idEmpresa = ?',$rEmpresas['idEmpresa']);
+		    $rEmpresa = $tE->fetchRow($select);
+		    //print_r($select->__toString());
+		    
+		    $select = $tP->select()->from($tP)->where('idEmpresa = ?',$rEmpresa['idEmpresa']);
+		    $rP = $tP->fetchRow($select);
+		    //print_r($select->__toString());
+		     
 			$mMovtos = array(
 				'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 				'idEmpresas' => $encabezado['idEmpresas'],
 				'idSucursal'=>$encabezado['idSucursal'],
-				'idCoP'=>$encabezado['idEmpresas'],
+			    'idCoP'=>$rP['idProveedores'],
 				'numeroFolio'=>$encabezado['numFolio'],
 				'idProducto'=>229, //Varios servicios otros
 				'idProyecto'=>$encabezado['idProyecto'],
@@ -863,7 +916,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 			'idTipoMovimiento'=>$encabezado['idTipoMovimiento'],
 			'idSucursal'=>$encabezado['idSucursal'],
 			//'idFactura'=>$datos['idTipoMovimiento'],
-			'idCoP'=>$encabezado['idEmpresas'],
+			'idCoP'=>$rP['idProveedores'],
 			'idBanco'=>$info['idBancoS'],
 			'idDivisa'=>1,
 			'numeroFolio'=>$encabezado['numFolio'],

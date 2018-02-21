@@ -391,6 +391,14 @@ $(document).ready(function () {
 			console.log(totalISH);
 			$("input#total").val(totalISH.toFixed(2)); 
    	   	}
+
+   		/*ISR*/
+   		isr = $("#isr").val();
+   		if (isr !=0){
+   	   		totalISR = parseFloat($("#subTotal").val()) + parseFloat($("input#iva").val()) - parseFloat( $("#isr").val());
+			console.log(totalISR);
+			$("input#total").val(totalISR.toFixed(2)); 
+   	   	}
    	}
    
   	//Habilita IvaPorcentaje
@@ -406,6 +414,9 @@ $(document).ready(function () {
     	calculateGrandTotal();
     });
     $("#ish").on('change',function(){
+    	calculateGrandTotal();
+    });
+    $("#isr").on('change',function(){
     	calculateGrandTotal();
     });
   	//Calcula por si hay descuento       

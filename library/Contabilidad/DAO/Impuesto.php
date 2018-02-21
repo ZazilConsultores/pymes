@@ -148,5 +148,7 @@
 		//print_r("$where");
 		$tablaImpuestoProductos->delete($where);
 	}
+	
+	
 }
 ?>
