@@ -270,7 +270,7 @@ class Contabilidad_DAO_Tesoreria implements Contabilidad_Interfaces_ITesoreria{
 					'idTipoMovimiento'=>$empresa['idTipoMovimiento'],
 					'idSucursal'=>$empresa['idSucursal'],
 					'idFactura'=>$idFactura,
-					'idCoP'=>$empresa['idEmpresas'],
+					'idCoP'=>$empresa['idCoP'],
 					'idBanco'=>$empresa['idBanco'],
 					'idDivisa'=>1,
 					'numeroFolio'=>$empresa['numFolio'],
