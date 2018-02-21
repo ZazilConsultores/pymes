@@ -606,7 +606,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	    
 	    $MovPro = array();
 	    
-	    $select = $tT->select()->from($tT)->where('afectaInventario =?', '+');
+	    $select = $tT->select()->from($tT)->where('afectaInventario =?', '+')->orWhere('idTipoMovimiento =?',10);
 	    $rowsTipoMov = $tM->fetchAll($select)->toArray();
 	    //print_r($select->__toString());
 	    
