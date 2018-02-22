@@ -487,7 +487,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                    case 'PT'://======================================================================================================PRODUCTO TERMINADO
 	                        $select = $tPC->select()->from($tPC)->where("idProducto=?",$producto["descripcion"]);
 	                        $rowsProductoComp = $tPC->fetchAll($select);
-	                        //print_r($select->__toString());print_r("<br />");
+	                        print_r($select->__toString());print_r("<br />");
 	                        foreach($rowsProductoComp as $rowProductoComp){//Recorremos el paquete 
 	                            $select = $tPC->select()->from($tPC)->where("idProducto=?",$rowProductoComp["productoEnlazado"]);
 	                            $rowPE = $tPC->fetchRow($select);
@@ -506,51 +506,64 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                        $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPrEnl["idProducto"]);
 	                                        $rowsPrEnl = $tPC->fetchAll($select);
 	                                        //print_r("<br />"); print_r($select->__toString()); print_r("<br />");
-	                                        foreach($rowsPrEnl as $rowPrEnl){
-	                                            $select = $tI->select()->from($tI)->where("idProducto = ?",$rowPrEnl["productoEnlazado"]);
-	                                            $rowIn = $tI->fetchRow($select);
-	                                            $cantiR = $rowIn['existenciaReal'] - $rowPrEnl['cantidad'];
-	                                            if(!is_null($rowIn)){
-	                                                //El  tipo de Inventario PEPS
-	                                                $select = $tC->select()->from($tC)->where("idProducto = ?",$rowIn["idProducto"])->order("fechaEntrada ASC");
-	                                                $rowC = $tC->fetchRow($select);
-	                                                $canC = $rowC['cantidad'] - $rowPrEnl['cantidad'];
-	                                                //print_r("<br />"); print_r($canC);
-	                                                if($canC < 0){
-	                                                    //Eliminados el registro de la capa
-	                                                    $rowC->delete($select);
-	                                                    $canNR = $canC;
-	                                                    //Actualizamos capas print_r("<br />"); print_r($canC);
+	                                        foreach($rowsPrEnl as $rowProEnl){
+	                                            $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowProEnl["productoEnlazado"]);
+	                                            $rowProdEnl = $tPC->fetchRow($select);
+	                                            //print_r("<br />"); print_r($select->__toString()); print_r("<br />");
+	                                            
+	                                            if(!is_null($rowProdEnl)){
+	                                               
+	                                                
+	                                            }else{
+	                                                $select = $tI->select()->from($tI)->where("idProducto = ?",$rowProEnl["productoEnlazado"]);
+	                                                $rowIn = $tI->fetchRow($select);
+	                                                $cantiR = $rowIn['existenciaReal'] - $rowProEnl['cantidad'];
+	                                                print_r($cantiR); print_r("<br />");
+	                                                if(!is_null($rowI)){
 	                                                    $select = $tC->select()->from($tC)->where("idProducto = ?",$rowIn["idProducto"])->order("fechaEntrada ASC");
-	                                                    $rowCa = $tC->fetchRow($select);
-	                                                    $canNR = $rowCa['cantidad'] - abs($canNR);
-	                                                    
-	                                                    $data = array(
-	                                                        "cantidad" => $canNR
-	                                                    );
-	                                                    $where = array(
-	                                                        'idCapas = ?' => $rowC['idCapas']
-	                                                    );
-	                                                    $tC->update($data, $where);
+	                                                    $rowC = $tC->fetchRow($select);
+	                                                    $canC = $rowC['cantidad'] - $rowProEnl['cantidad'];
+	                                                    //print_r("<br />"); print_r($canC);
+	                                                    if($canC < 0){
+	                                                        $rowC->delete($select);
+	                                                        $canNR = $canC;
+	                                                        //Actualizamos capas print_r("<br />"); print_r($canC);
+	                                                        $select = $tC->select()->from($tC)->where("idProducto = ?",$rowIn["idProducto"])->order("fechaEntrada ASC");
+	                                                        $rowCa = $tC->fetchRow($select);
+	                                                        $canNR = $rowCa['cantidad'] - abs($canNR);
+	                                                        
+	                                                        $data = array(
+	                                                            "cantidad" => $canNR
+	                                                        );
+	                                                        
+	                                                        $where = array(
+	                                                            'idCapas = ?' => $rowC['idCapas']
+	                                                        );
+    	                                                        
+    	                                                     $tC->update($data, $where);
 	                                                }else{
-	                                                    $data = array(
-	                                                        "cantidad" => $canC
-	                                                    );
-	                                                    $where = array(
-	                                                        'idCapas = ?' => $rowC['idCapas']
-	                                                    );
-	                                                    $tC->update($data, $where);
+	                                                     $data = array(
+	                                                     "cantidad" => $canC
+	                                                     );
+	                                                     $where = array(
+	                                                     'idCapas = ?' => $rowC['idCapas']
+	                                                     );
+	                                                     $tC->update($data, $where);
+	                                                     
+	                                                     }
+	                                                     //Actulizamos existencias en Inventario
+	                                                     $data = array(
+	                                                     "existencia" => $cantiR,
+	                                                     "existenciaReal" => $cantiR
+	                                                     );
+	                                                     $where = array(
+	                                                     'idInventario = ?' => $rowIn['idInventario']
+	                                                     );
+	                                                     $tI->update($data, $where);
 	                                                    
 	                                                }
-	                                                //Actulizamos existencias en Inventario
-	                                                $data = array(
-	                                                    "existencia" => $cantiR,
-	                                                    "existenciaReal" => $cantiR
-	                                                );
-	                                                $where = array(
-	                                                    'idInventario = ?' => $rowIn['idInventario']
-	                                                );
-	                                                $tI->update($data, $where);
+	                                              
+	                                                
 	                                            }
 	                                            
 	                                        }
