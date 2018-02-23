@@ -617,7 +617,7 @@ class Contabilidad_DAO_FacturaProveedor implements Contabilidad_Interfaces_IFact
 	            $select = $tMo->select()->setIntegrityCheck(false)
 	            ->from($tMo, array(new Zend_Db_Expr('DISTINCT(Movimientos.idFactura)as idFactura'),'idProyecto'))
 	            ->join('Factura','Movimientos.idFactura = Factura.idFactura',array('idTipoMovimiento','idSucursal','idCoP','numeroFactura','total'))
-	            ->where('Movimientos.idTipoMovimiento =?', 4)->where('Movimientos.idCoP = ?',$idCoP)
+	            ->where('Movimientos.idTipoMovimiento =?', 4)->where('Movimientos.idCoP = ?',$idCoP)->where('Factura.idCoP = ?',$idCoP)
 	            ->order("Factura.numeroFactura ASC");
 	            $rowsMov = $tMo->fetchAll($select)->toArray();
 	            //print_r($select->__toString());
