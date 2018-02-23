@@ -493,7 +493,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                            $rowPE = $tPC->fetchRow($select);//print_r("El paquete contiene");print_r("<br />");print_r($select->__toString());print_r("<br />");
 	                            $cantProdComp = $cantidad * $rowProductoComp->cantidad;
 	                            if(!is_null($rowPE)){//Estos productos enlazados son productos compuesto
-	                                /*$select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPE["idProducto"]);
+	                              $select = $tPC->select()->from($tPC)->where("idProducto = ?",$rowPE["idProducto"]);
 	                                $rowsPEnl = $tPC->fetchAll($select);
 	                                print_r("<br />"); print_r($select->__toString()); print_r("<br />");
 	                                foreach($rowsPEnl as $rowPEnl){
@@ -674,7 +674,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                                'idInventario = ?' => $rowI['idInventario']
 	                                            );
 	                                            $tI->update($data, $where);
-	                                        }*/
+	                                        }
 	                                   }//if $rowPrEnl
 	                                }//foreach de producto Com
 	                            }else {
@@ -736,8 +736,7 @@ class Contabilidad_DAO_RemisionSalida implements Contabilidad_Interfaces_IRemisi
 	                                        'idInventario = ?' => $rowI['idInventario']
 	                                    );
 	                                    $tI->update($data, $where);
-	                                }//
-	                               
+	                                }
 	                            }// if $rowPE
 	                        }// foreach $rowsProductoComp
 	                        break;
